@@ -3,7 +3,7 @@ pragma solidity ^0.4.19;
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 
 contract Dao is ResolverClient, DaoConstants {
-  using DoublyLinkedList for DoublyLinkedList.Address;
+  using DoublyLinkedList for DoublyLinkedList.Bytes;
 
   struct Voting {
     uint256 start_time;
@@ -13,21 +13,21 @@ contract Dao is ResolverClient, DaoConstants {
     uint256 noVotes;
   }
 
+  struct ProposalVersion {
+    bytes32 doc_ipfs_hash;
+    uint256 created;
+    Voting draftVoting;
+    uint256 milestoneCount;
+    uint256[] milestoneDurations;
+    uint256[] milestoneFundings;
+  }
+
+  struct KycInfo {
+    bytes32 doc;
+    uint256 id_expiration;
+  }
+
   struct Proposal {
-
-    struct ProposalVersion {
-      bytes32 doc_ipfs_hash;
-      uint256 created;
-      Voting draftVoting;
-      uint256 milestoneCount;
-      uint256[] milestoneDurations;
-      uint256[] milestoneFundings;
-    }
-
-    struct KycInfo {
-      bytes32 doc;
-      uint256 id_expiration;
-    }
 
     ProposalVersion[] allProposalVersions;
 
@@ -44,10 +44,10 @@ contract Dao is ResolverClient, DaoConstants {
     bytes32 proposalId;
   }
 
-  DoublyLinkedList.bytes allProposals;
+  DoublyLinkedList.Bytes allProposals;
 
   mapping(bytes32 => Proposal) proposalsById;
-  mapping(bytes32 => DoublyLinkedList.bytes) proposalsByState;
+  mapping(bytes32 => DoublyLinkedList.Bytes) proposalsByState;
 
   uint256 start_of_first_quarter;
 
