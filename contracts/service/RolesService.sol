@@ -2,7 +2,7 @@ pragma solidity ^0.4.19;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
-import "./../DaoRoles.sol";
+import "./../DaoIdentity.sol";
 import "./../DaoConstants.sol";
 
 contract RolesService is ResolverClient, DaoConstants {
@@ -23,8 +23,8 @@ contract RolesService is ResolverClient, DaoConstants {
   }
 
   function dao_roles() internal
-           returns (DaoRoles _contract)
+           returns (DaoIdentity _contract)
   {
-    _contract = DaoRoles(get_contract(CONTRACT_DAO_ROLES));
+    _contract = DaoIdentity(get_contract(CONTRACT_DAO_ROLES));
   }
 }

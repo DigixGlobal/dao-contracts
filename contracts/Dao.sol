@@ -24,17 +24,9 @@ contract Dao is ResolverClient, DaoConstants {
     uint256[] milestoneFundings;
   }
 
-  struct KycInfo {
-    bytes32 doc;
-    uint256 id_expiration;
-  }
-
   struct Proposal {
-
     ProposalVersion[] allProposalVersions;
-
     address proposer;
-    KycInfo proposerKyc;
 
     address endorser;
     Voting votingRound;
