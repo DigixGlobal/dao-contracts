@@ -1,6 +1,6 @@
 pragma solidity ^0.4.19;
 
-import "@digix/cacp-contracts/contracts/ResolverClient.sol";
+import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "./DaoRoles.sol"
 
 contract RolesService is ResolverClient {
