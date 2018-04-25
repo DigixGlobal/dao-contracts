@@ -45,14 +45,11 @@ contract Dao is ResolverClient, DaoConstants {
   }
 
   DoublyLinkedList.Bytes allProposals;
-
   mapping(bytes32 => Proposal) proposalsById;
   mapping(bytes32 => DoublyLinkedList.Bytes) proposalsByState;
-
   uint256 start_of_first_quarter;
 
   function Dao(address _resolver) public {
     require(init(CONTRACT_DAO, _resolver));
   }
-
 }
