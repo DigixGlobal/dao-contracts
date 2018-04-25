@@ -1,0 +1,49 @@
+{
+  "name": "@digix/dao-contracts",
+  "version": "1.0.0",
+  "description": "Smart contracts for DigixDAO",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DigixGlobal/dao-contracts.git"
+  },
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "digix",
+    "dao"
+  ],
+  "dependencies": {
+    "@digix/truffle-lightwallet-provider": "^0.1.4",
+    "@digix/doxity": "^0.5.2",
+    "@digix/multi-hash": "0.0.2",
+    "@digix/tempo": "^0.2.0",
+    "@digix/solidity-core-libraries": "^0.2.3",
+    "@digix/solidity-collections": "^1.1.0",
+    "@digix/solidity-statemachine": "^0.2.0",
+    "@digix/cdap": "^0.1.0",
+    "@digix/cacp-contracts": "^0.2.8",
+    "awaiting": "^3.0.0",
+    "eslint": "^3.14.1",
+    "eth-gas-reporter": "^0.1.1",
+    "ethereumjs-testrpc": "^3.9.2",
+    "canvas": "^1.6.7",
+    "canvas-to-buffer": "^1.0.9",
+    "dijix": "0.0.15",
+    "dijix-attestation": "0.0.9",
+    "dijix-image": "0.0.10",
+    "dijix-pdf": "0.0.8"
+  },
+  "author": "DigixGlobal",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/DigixGlobal/dao-contracts/issues"
+  },
+  "homepage": "https://github.com/DigixGlobal/dao-contracts#readme"
+}
