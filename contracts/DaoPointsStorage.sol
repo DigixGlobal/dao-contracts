@@ -1,10 +1,11 @@
 pragma solidity ^0.4.19;
 
-import "@digix/cacp-contracts/contracts/ResolverClient.sol";
+import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "./service/DaoService.sol";
 import "./lib/MathHelper.sol";
+import "./DaoConstants.sol";
 
-contract DaoPointsStorage is ResolverClient {
+contract DaoPointsStorage is ResolverClient, DaoConstants {
   struct Token {
     mapping (address => uint256) balance;
     uint256 totalSupply;
@@ -22,27 +23,18 @@ contract DaoPointsStorage is ResolverClient {
            internal
            returns (DaoService _contract)
   {
-    _contract = DaoService(getContract(CONTRACT_DAO_SERVICE));
+    _contract = DaoService(get_contract(CONTRACT_DAO_SERVICE));
   }
 
   /// @notice add quarter points for a _participant in the current quarter
   function addQuarterPoint(address _participant, uint256 _point)
-           if_sender_is(CONTRACT_DAO_POINTS_INTERFACE)
+           if_sender_is(CONTRACT_INTERACTIVE_QUARTER_POINTS)
            public
            returns (bool _success)
   {
     uint256 _currentQuarter = MathHelper.currentQuarter(dao_service().getDaoStartTime());
-    if (quarterPoint[_currentQuarter].totalSupply == 0) {
-      quarterPoint[_currentQuarter].totalSupply = _point;
-    } else {
-      quarterPoint[_currentQuarter].totalSupply += _point;
-    }
-
-    if (quarterPoint[_currentQuarter].balance[_participant] == 0) {
-      quarterPoint[_currentQuarter].balance[_participant] == _point;
-    } else {
-      quarterPoint[_currentQuarter].balance[_participant] += _point;
-    }
+    quarterPoint[_currentQuarter].totalSupply += _point;
+    quarterPoint[_currentQuarter].balance[_participant] += _point;
 
     _success = true;
   }
@@ -65,31 +57,22 @@ contract DaoPointsStorage is ResolverClient {
 
   /// @notice add reputation points for a _participant
   function addReputation(address _participant, uint256 _point)
-           if_sender_is(CONTRACT_DAO_POINTS_INTERFACE)
+           if_sender_is(CONTRACT_INTERACTIVE_REPUTATION_POINTS)
            public
-           returns (uint256 _point, uint256 _totalPoint)
+           returns (uint256 _newPoint, uint256 _totalPoint)
   {
-    if (reputationPoint.totalSupply == 0) {
-      reputationPoint.totalSupply = _point;
-    } else {
-      reputationPoint.totalSupply += _point;
-    }
+    reputationPoint.totalSupply += _point;
+    reputationPoint.balance[_participant] += _point;
 
-    if (reputationPoint.balance[_participant] == 0) {
-      reputationPoint.balance[_participant] = _point;
-    } else {
-      reputationPoint.balance[_participant] += _point;
-    }
-
-    _point = reputationPoint.balance[_participant];
+    _newPoint = reputationPoint.balance[_participant];
     _totalPoint = reputationPoint.totalSupply;
   }
 
   /// @notice subtract reputation points for a _participant
   function subtractReputation(address _participant, uint256 _point)
-           if_sender_is(CONTRACT_DAO_POINTS_INTERFACE)
+           if_sender_is(CONTRACT_INTERACTIVE_REPUTATION_POINTS)
            public
-           returns (uint256 _point, uint256 _totalPoint)
+           returns (uint256 _newPoint, uint256 _totalPoint)
   {
     if (reputationPoint.totalSupply > _point) {
       reputationPoint.totalSupply -= _point;
@@ -103,7 +86,7 @@ contract DaoPointsStorage is ResolverClient {
       reputationPoint.balance[_participant] = 0;
     }
 
-    _point = reputationPoint.balance[_participant];
+    _newPoint = reputationPoint.balance[_participant];
     _totalPoint = reputationPoint.totalSupply;
   }
 

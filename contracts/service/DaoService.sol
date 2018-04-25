@@ -1,9 +1,10 @@
 pragma solidity ^0.4.19;
 
-import "@digix/cacp-contracts/contracts/ResolverClient.sol";
+import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "./../Dao.sol";
+import "./../DaoConstants.sol";
 
-contract DaoService is ResolverClient {
+contract DaoService is ResolverClient, DaoConstants {
   function DaoService(address _resolver)
            public
   {
@@ -21,6 +22,6 @@ contract DaoService is ResolverClient {
            public
            returns (uint256 _time)
   {
-    _time = dao().startOfFirstQuarter();
+    _time = dao().start_of_first_quarter();
   }
 }
