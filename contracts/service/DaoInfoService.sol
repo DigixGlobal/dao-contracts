@@ -25,4 +25,11 @@ contract DaoInfoService is ResolverClient, DaoConstants {
     _time = dao_storage().start_of_first_quarter();
   }
 
+  function getCurrentQuarter()
+           public
+           constant
+           returns (uint256 _quarterId)
+  {
+    _quarterId = (now - dao_storage().start_of_first_quarter()) / (90 days);
+  }
 }

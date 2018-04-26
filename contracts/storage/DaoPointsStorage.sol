@@ -2,7 +2,6 @@ pragma solidity ^0.4.19;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../service/DaoInfoService.sol";
-import "../lib/MathHelper.sol";
 import "../common/DaoConstants.sol";
 
 contract DaoPointsStorage is ResolverClient, DaoConstants {
@@ -19,7 +18,7 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
     require(init(CONTRACT_DAO_POINTS_STORAGE, _resolver));
   }
 
-  function dao_service()
+  function dao_info_service()
            internal
            returns (DaoInfoService _contract)
   {
@@ -28,11 +27,11 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
 
   /// @notice add quarter points for a _participant in the current quarter
   function addQuarterPoint(address _participant, uint256 _point)
-           if_sender_is(CONTRACT_INTERACTIVE_QUARTER_POINTS)
+           if_sender_is(CONTRACT_INTERACTIVE_QUARTER_POINT)
            public
            returns (bool _success)
   {
-    uint256 _currentQuarter = MathHelper.currentQuarter(dao_service().getDaoStartTime());
+    uint256 _currentQuarter = dao_info_service().getCurrentQuarter();
     quarterPoint[_currentQuarter].totalSupply += _point;
     quarterPoint[_currentQuarter].balance[_participant] += _point;
 
@@ -57,7 +56,7 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
 
   /// @notice add reputation points for a _participant
   function addReputation(address _participant, uint256 _point)
-           if_sender_is(CONTRACT_INTERACTIVE_REPUTATION_POINTS)
+           if_sender_is(CONTRACT_INTERACTIVE_REPUTATION_POINT)
            public
            returns (uint256 _newPoint, uint256 _totalPoint)
   {
@@ -70,21 +69,19 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
 
   /// @notice subtract reputation points for a _participant
   function subtractReputation(address _participant, uint256 _point)
-           if_sender_is(CONTRACT_INTERACTIVE_REPUTATION_POINTS)
+           if_sender_is(CONTRACT_INTERACTIVE_REPUTATION_POINT)
            public
            returns (uint256 _newPoint, uint256 _totalPoint)
   {
-    if (reputationPoint.totalSupply > _point) {
-      reputationPoint.totalSupply -= _point;
-    } else {
-      reputationPoint.totalSupply = 0;
-    }
-
+    uint256 _toDeduct = _point;
     if (reputationPoint.balance[_participant] > _point) {
       reputationPoint.balance[_participant] -= _point;
     } else {
+      _toDeduct = _point - reputationPoint.balance[_participant];
       reputationPoint.balance[_participant] = 0;
     }
+
+    reputationPoint.totalSupply -= _toDeduct;
 
     _newPoint = reputationPoint.balance[_participant];
     _totalPoint = reputationPoint.totalSupply;
