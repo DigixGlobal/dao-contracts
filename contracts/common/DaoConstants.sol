@@ -5,6 +5,8 @@ contract DaoConstants {
 
   bytes32 CONTRACT_DGD_LOCKING = "c:dgd:locking";
   bytes32 CONTRACT_DAO = "c:dao";
+  bytes32 CONTRACT_DAO_IDENTITY = "c:dao:identity";
+  bytes32 CONTRACT_DAO_DIRECTORY_STORAGE = "c:dao:directory:storage";
   bytes32 CONTRACT_DAO_REWARDS_MANAGER = "c:dao:rewards:manager";
   bytes32 CONTRACT_DAO_POINTS_STORAGE = "c:dao:points:storage";
   bytes32 CONTRACT_DAO_ROLES = "c:dao:roles";
@@ -20,4 +22,9 @@ contract DaoConstants {
 
   address ADDRESS_DGD_TOKEN = 0xE0B7927c4aF23765Cb51314A0E0521A9645F0E2A;
   address ADDRESS_DGX_TOKEN = 0x4f3AfEC4E5a3F2A6a1A411DEF7D7dFe50eE057bF;
+
+  uint8 ROLES_ROOT = 1;
+  uint8 ROLES_FOUNDERS = 2;
+  uint8 ROLES_PRLS = 3;
+  uint8 ROLES_KYC_ADMINS = 4;
 }

@@ -3,7 +3,7 @@ pragma solidity ^0.4.19;
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import 'zeppelin-solidity/contracts/token/ERC20/ERC20.sol';
 import "./lib/MathHelper.sol";
-import "./DaoConstants.sol";
+import "./common/DaoConstants.sol";
 
 contract DGDLocking is ResolverClient, DaoConstants {
 

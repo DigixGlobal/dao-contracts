@@ -2,7 +2,7 @@ pragma solidity ^0.4.19;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
-import "./DaoConstants.sol";
+import "./common/DaoConstants.sol";
 
 contract Dao is ResolverClient, DaoConstants {
   using DoublyLinkedList for DoublyLinkedList.Bytes;

@@ -1,64 +1,55 @@
 pragma solidity ^0.4.19;
 
-import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
-import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
-import "./service/RolesService.sol";
-import "zeppelin-solidity/contracts/ownership/Claimable.sol";
+import "./storage/DaoDirectoryStorage.sol";
+import "./common/IdentityCommon.sol";
 
-contract DaoIdentity is ResolverClient, RolesService, Claimable {
-  using DoublyLinkedList for DoublyLinkedList.Address;
+contract DaoIdentity is IdentityCommon {
 
-  struct KycInfo {
+  struct KycDetails {
     bytes32 doc;
     uint256 id_expiration;
   }
 
-  mapping (address => KycInfo) kycInfo;
+  mapping (address => KycDetails) kycInfo;
 
-  DoublyLinkedList.Address founders;
-  mapping (address => bool) public is_founder;
-
-  DoublyLinkedList.Address prls;
-  mapping (address => bool) public is_prl;
+  function dao_directory_storage()
+           returns (DaoDirectoryStorage _contract)
+  {
+    _contract = DaoDirectoryStorage(get_contract(CONTRACT_DAO_DIRECTORY_STORAGE));
+  }
 
   function DaoIdentity(address _resolver) public {
-    require(init(CONTRACT_DAO_ROLES, _resolver));
+    require(init(CONTRACT_DAO_IDENTITY, _resolver));
+    dao_directory_storage().create_role(ROLES_FOUNDERS, "founders");
+    dao_directory_storage().create_role(ROLES_PRLS, "prls");
+    dao_directory_storage().create_role(ROLES_KYC_ADMINS, "kycadmins");
+    dao_directory_storage().create_group(ROLES_FOUNDERS, "founders_group", "");  // group_id = 2
+    dao_directory_storage().create_group(ROLES_PRLS, "prls_group", "");          // group_id = 3
+    dao_directory_storage().create_group(ROLES_KYC_ADMINS, "kycadmins_group", "");  // group_id = 4
   }
 
-  function addFounder(address _new_founder)
-           public
-           onlyOwner()
+  function getUserRoleId(address _user)
+           returns (uint256 _role_id)
   {
-    founders.append(_new_founder);
-    is_founder[_new_founder] = true;
+    _role_id = dao_directory_storage().read_user_role_id(_user);
   }
 
-  function removeFounder(address _founder)
+  function addGroupUser(uint256 _group_id, address _user, bytes32 _doc)
            public
-           onlyOwner()
+           if_root()
   {
-    founders.remove_item(_founder);
-    is_founder[_founder] = false;
+    dao_directory_storage().update_add_user_to_group(_group_id, _user, _doc);
   }
 
-  function addPrl(address _new_prl)
+  function removeGroupUser(address _user)
            public
-           if_founder()
+           if_root()
   {
-    prls.append(_new_prl);
-    is_prl[_new_prl] = true;
-  }
-
-  function removePrl(address _prl)
-           public
-           if_founder()
-  {
-    prls.remove_item(_prl);
-    is_prl[_prl] = false;
+    dao_directory_storage().update_remove_group_user(_user);
   }
 
   function updateKyc(address _user, bytes32 _doc, uint256 _id_expiration)
-           if_prl()
+           if_kyc_admin()
   {
     kycInfo[_user].doc = _doc;
     kycInfo[_user].id_expiration = _id_expiration;
@@ -70,5 +61,13 @@ contract DaoIdentity is ResolverClient, RolesService, Claimable {
     _doc = kycInfo[_user].doc;
     _id_expiration = kycInfo[_user].id_expiration;
   }
-  
+
+  function isKycApproved(address _user)
+           returns (bool _approved)
+  {
+    uint256 _id_expiration;
+    (,_id_expiration) = readKycInfo(_user);
+    _approved = _id_expiration > now;
+  }
+
 }

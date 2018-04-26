@@ -2,7 +2,7 @@ pragma solidity ^0.4.19;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "./../Dao.sol";
-import "./../DaoConstants.sol";
+import "./../common/DaoConstants.sol";
 
 contract DaoService is ResolverClient, DaoConstants {
   function DaoService(address _resolver)

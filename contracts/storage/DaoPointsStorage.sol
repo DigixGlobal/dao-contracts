@@ -1,9 +1,9 @@
 pragma solidity ^0.4.19;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
-import "./service/DaoService.sol";
-import "./lib/MathHelper.sol";
-import "./DaoConstants.sol";
+import "../service/DaoService.sol";
+import "../lib/MathHelper.sol";
+import "../common/DaoConstants.sol";
 
 contract DaoPointsStorage is ResolverClient, DaoConstants {
   struct Token {

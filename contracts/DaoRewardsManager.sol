@@ -1,7 +1,7 @@
 pragma solidity ^0.4.19;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
-import "./DaoConstants.sol";
+import "./common/DaoConstants.sol";
 
 // this contract will receive DGXs fees from the DGX fees distributors
 contract DaoRewardsManager is ResolverClient, DaoConstants {
