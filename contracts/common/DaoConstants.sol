@@ -6,7 +6,7 @@ contract DaoConstants {
   uint8 PROPOSAL_STATE_VETTED = 3;
   uint8 PROPOSAL_STATE_FUNDED = 4;
 
-  bytes32 CONTRACT_DGD_LOCKING = "c:dgd:locking";
+  bytes32 CONTRACT_STAKE_LOCKING = "c:stake:locking";
   bytes32 CONTRACT_DAO = "c:dao";
   bytes32 CONTRACT_DAO_IDENTITY = "c:dao:identity";
   bytes32 CONTRACT_IDENTITY_STORAGE = "c:dao:identity:storage";
@@ -20,12 +20,15 @@ contract DaoConstants {
   bytes32 CONTRACT_DAO_CONFIG_STORAGE = "s:dao:config";
   bytes32 CONTRACT_INTERACTIVE_QUARTER_POINT = "i:quarter:point";
   bytes32 CONTRACT_INTERACTIVE_REPUTATION_POINT = "i:reputation:point";
+  bytes32 CONTRACT_STORAGE_STAKE = "s:stake";
 
   bytes32 CONTRACT_DGD_TOKEN = "t:dgd";
   bytes32 CONTRACT_DGX_TOKEN = "t:dgx";
 
   address ADDRESS_DGD_TOKEN = 0xE0B7927c4aF23765Cb51314A0E0521A9645F0E2A;
   address ADDRESS_DGX_TOKEN = 0x4f3AfEC4E5a3F2A6a1A411DEF7D7dFe50eE057bF;
+  // TODO: use correct address
+  address ADDRESS_DGD_BADGE = 0x4f3AfEC4E5a3F2A6a1A411DEF7D7dFe50eE057bF;
 
   uint8 ROLES_ROOT = 1;
   uint8 ROLES_FOUNDERS = 2;

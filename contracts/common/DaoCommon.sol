@@ -4,6 +4,7 @@ import "./../service/DaoInfoService.sol";
 import "./../common/DaoConstants.sol";
 import "./../common/IdentityCommon.sol";
 import "./../storage/ConfigsStorage.sol";
+import "./../storage/StakeStorage.sol";
 
 contract DaoCommon is IdentityCommon {
 
@@ -25,6 +26,10 @@ contract DaoCommon is IdentityCommon {
   {
     _contract = ConfigsStorage(get_contract(CONTRACT_DAO_CONFIG_STORAGE));
   }
+
+    function stakeStorage() internal returns (StakeStorage _contract) {
+        _contract = StakeStorage(get_contract(CONTRACT_DAO_CONFIG_STORAGE));
+    }
 
   function get_uint_config(bytes32 _config_key)
            returns (uint256 _config_value)
