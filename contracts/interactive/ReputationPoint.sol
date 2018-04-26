@@ -1,5 +1,7 @@
 pragma solidity ^0.4.19;
 
-contract ReputationPoint {
+import "./../interface/NonTransferableToken.sol";
+
+contract ReputationPoint is NonTransferableToken {
 
 }

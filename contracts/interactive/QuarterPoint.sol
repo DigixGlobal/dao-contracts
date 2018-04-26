@@ -1,5 +1,7 @@
 pragma solidity ^0.4.19;
 
-contract QuarterPoint {
+import "./../interface/NonTransferableToken.sol";
+
+contract QuarterPoint is NonTransferableToken {
 
 }
