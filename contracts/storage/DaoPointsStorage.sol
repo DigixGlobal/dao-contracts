@@ -1,7 +1,7 @@
 pragma solidity ^0.4.19;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
-import "../service/DaoService.sol";
+import "../service/DaoInfoService.sol";
 import "../lib/MathHelper.sol";
 import "../common/DaoConstants.sol";
 
@@ -21,9 +21,9 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
 
   function dao_service()
            internal
-           returns (DaoService _contract)
+           returns (DaoInfoService _contract)
   {
-    _contract = DaoService(get_contract(CONTRACT_DAO_SERVICE));
+    _contract = DaoInfoService(get_contract(CONTRACT_DAO_INFO_SERVICE));
   }
 
   /// @notice add quarter points for a _participant in the current quarter

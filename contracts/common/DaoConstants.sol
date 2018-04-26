@@ -6,14 +6,15 @@ contract DaoConstants {
   bytes32 CONTRACT_DGD_LOCKING = "c:dgd:locking";
   bytes32 CONTRACT_DAO = "c:dao";
   bytes32 CONTRACT_DAO_IDENTITY = "c:dao:identity";
-  bytes32 CONTRACT_DAO_DIRECTORY_STORAGE = "c:dao:directory:storage";
+  bytes32 CONTRACT_IDENTITY_STORAGE = "c:dao:identity:storage";
   bytes32 CONTRACT_DAO_REWARDS_MANAGER = "c:dao:rewards:manager";
   bytes32 CONTRACT_DAO_POINTS_STORAGE = "c:dao:points:storage";
   bytes32 CONTRACT_DAO_ROLES = "c:dao:roles";
-
+  bytes32 CONTRACT_CONFIG_CONTROLLER = "c:config:controller";
   bytes32 CONTRACT_ROLE_SERVICE = "s:role";
-  bytes32 CONTRACT_DAO_SERVICE = "s:dao";
-
+  bytes32 CONTRACT_DAO_INFO_SERVICE = "s:dao:info";
+  bytes32 CONTRACT_DAO_STORAGE = "s:dao:storage";
+  bytes32 CONTRACT_DAO_CONFIG_STORAGE = "s:dao:config";
   bytes32 CONTRACT_INTERACTIVE_QUARTER_POINTS = "i:quarter:point";
   bytes32 CONTRACT_INTERACTIVE_REPUTATION_POINTS = "i:reputation:point";
 
@@ -27,4 +28,7 @@ contract DaoConstants {
   uint8 ROLES_FOUNDERS = 2;
   uint8 ROLES_PRLS = 3;
   uint8 ROLES_KYC_ADMINS = 4;
+
+  bytes32 CONFIG_LOCKING_PHASE_DURATION = "locking_phase_duration";
+  bytes32 CONFIG_QUARTER_DURATION = "quarter_duration";
 }

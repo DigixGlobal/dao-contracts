@@ -3,9 +3,9 @@ pragma solidity ^0.4.19;
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import 'zeppelin-solidity/contracts/token/ERC20/ERC20.sol';
 import "./lib/MathHelper.sol";
-import "./common/DaoConstants.sol";
+import "./common/DaoCommon.sol";
 
-contract DGDLocking is ResolverClient, DaoConstants {
+contract DGDLocking is DaoCommon {
 
   mapping (address => uint256) lockedDGDStake;
   mapping (address => uint256) actualLockedDGD;
@@ -27,8 +27,12 @@ contract DGDLocking is ResolverClient, DaoConstants {
   }
 
   function withdrawDGD(uint256 _amount)
+           if_locking_phase()
            public
   {
-
+    address _sender = msg.sender;
+    require(actualLockedDGD[_sender] >= _amount);
+    actualLockedDGD[_sender] -= _amount;
+    require(ERC20(ADDRESS_DGD_TOKEN).transfer(msg.sender, _amount));
   }
 }

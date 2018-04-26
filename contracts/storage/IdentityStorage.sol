@@ -4,11 +4,19 @@ import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "@digix/cdap/contracts/storage/DirectoryStorage.sol";
 import "../common/DaoConstants.sol";
 
-contract DaoDirectoryStorage is ResolverClient, DaoConstants, DirectoryStorage {
-  function DaoDirectoryStorage(address _resolver)
+contract IdentityStorage is ResolverClient, DaoConstants, DirectoryStorage {
+
+  struct KycDetails {
+    bytes32 doc;
+    uint256 id_expiration;
+  }
+
+  mapping (address => KycDetails) kycInfo;
+
+  function IdentityStorage(address _resolver)
            public
   {
-    require(init(CONTRACT_DAO_DIRECTORY_STORAGE, _resolver));
+    require(init(CONTRACT_IDENTITY_STORAGE, _resolver));
     require(initialize_directory());
   }
 
@@ -48,4 +56,25 @@ contract DaoDirectoryStorage is ResolverClient, DaoConstants, DirectoryStorage {
     require(_success);
   }
 
+  function update_kyc(address _user, bytes32 _doc, uint256 _id_expiration)
+           if_sender_is(CONTRACT_DAO_IDENTITY)
+  {
+    kycInfo[_user].doc = _doc;
+    kycInfo[_user].id_expiration = _id_expiration;
+  }
+
+  function read_kyc_info(address _user)
+           returns (bytes32 _doc, uint256 _id_expiration)
+  {
+    _doc = kycInfo[_user].doc;
+    _id_expiration = kycInfo[_user].id_expiration;
+  }
+
+  function is_kyc_approved(address _user)
+           returns (bool _approved)
+  {
+    uint256 _id_expiration;
+    (,_id_expiration) = read_kyc_info(_user);
+    _approved = _id_expiration > now;
+  }
 }
