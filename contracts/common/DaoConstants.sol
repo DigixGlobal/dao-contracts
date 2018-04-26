@@ -1,7 +1,10 @@
 pragma solidity ^0.4.19;
 
 contract DaoConstants {
-  uint256 PROPOSAL_STATE_PREPROPOSAL = 1;
+  uint8 PROPOSAL_STATE_PREPROPOSAL = 1;
+  uint8 PROPOSAL_STATE_INITIAL = 2;
+  uint8 PROPOSAL_STATE_VETTED = 3;
+  uint8 PROPOSAL_STATE_FUNDED = 4;
 
   bytes32 CONTRACT_DGD_LOCKING = "c:dgd:locking";
   bytes32 CONTRACT_DAO = "c:dao";
@@ -15,8 +18,8 @@ contract DaoConstants {
   bytes32 CONTRACT_DAO_INFO_SERVICE = "s:dao:info";
   bytes32 CONTRACT_DAO_STORAGE = "s:dao:storage";
   bytes32 CONTRACT_DAO_CONFIG_STORAGE = "s:dao:config";
-  bytes32 CONTRACT_INTERACTIVE_QUARTER_POINTS = "i:quarter:point";
-  bytes32 CONTRACT_INTERACTIVE_REPUTATION_POINTS = "i:reputation:point";
+  bytes32 CONTRACT_INTERACTIVE_QUARTER_POINT = "i:quarter:point";
+  bytes32 CONTRACT_INTERACTIVE_REPUTATION_POINT = "i:reputation:point";
 
   bytes32 CONTRACT_DGD_TOKEN = "t:dgd";
   bytes32 CONTRACT_DGX_TOKEN = "t:dgx";

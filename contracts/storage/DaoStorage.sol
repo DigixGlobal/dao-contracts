@@ -32,7 +32,7 @@ contract DaoStorage is ResolverClient, DaoConstants {
     address endorser;
     Voting votingRound;
     Voting[] interimRounds;
-    uint256 currentState;
+    uint8 currentState;
     uint256 timeCreated;
 
     // this will always be the doc_ipfs_hash of the last proposal version
@@ -40,12 +40,11 @@ contract DaoStorage is ResolverClient, DaoConstants {
   }
 
   DoublyLinkedList.Bytes allProposals;
-  mapping(bytes32 => Proposal) proposalsById;
-  mapping(bytes32 => DoublyLinkedList.Bytes) proposalsByState;
+  mapping (bytes32 => Proposal) proposalsById;
+  mapping (uint8 => DoublyLinkedList.Bytes) proposalsByState;
   uint256 public start_of_first_quarter;
 
   function DaoStorage(address _resolver) public {
     require(init(CONTRACT_DAO_STORAGE, _resolver));
   }
-
 }

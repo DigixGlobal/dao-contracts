@@ -2,7 +2,7 @@ pragma solidity ^0.4.19;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "./common/DaoConstants.sol";
-import "./service/DaoService.sol";
+import "./service/DaoInfoService.sol";
 
 // this contract will receive DGXs fees from the DGX fees distributors
 contract DaoRewardsManager is ResolverClient, DaoConstants {
@@ -19,11 +19,11 @@ contract DaoRewardsManager is ResolverClient, DaoConstants {
     require(init(CONTRACT_DAO_REWARDS_MANAGER, _resolver));
   }
 
-  function dao_service()
+  function dao_info_service()
            internal
-           returns (DaoService _contract)
+           returns (DaoInfoService _contract)
   {
-    _contract = DaoService(get_contract(CONTRACT_DAO_SERVICE));
+    _contract = DaoInfoService(get_contract(CONTRACT_DAO_INFO_SERVICE));
   }
 
   function claimRewards(uint256[] quarters)
@@ -38,7 +38,7 @@ contract DaoRewardsManager is ResolverClient, DaoConstants {
            public
   {
     require(_token == ADDRESS_DGX_TOKEN);
-    uint256 _quarterId = dao_service().getCurrentQuarter();
+    uint256 _quarterId = dao_info_service().getCurrentQuarter();
     feesCollectedHistory[_quarterId] = _amount;
     permitClaim[_quarterId] = true;
   }
