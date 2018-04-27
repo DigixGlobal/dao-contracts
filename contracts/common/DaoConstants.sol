@@ -20,7 +20,7 @@ contract DaoConstants {
   bytes32 CONTRACT_CONFIG_STORAGE = "s:dao:config";
   bytes32 CONTRACT_INTERACTIVE_QUARTER_POINT = "i:quarter:point";
   bytes32 CONTRACT_INTERACTIVE_REPUTATION_POINT = "i:reputation:point";
-  bytes32 CONTRACT_STORAGE_STAKE = "s:stake";
+  bytes32 CONTRACT_STAKE_STORAGE = "s:stake";
 
   bytes32 CONTRACT_DGD_TOKEN = "t:dgd";
   bytes32 CONTRACT_DGX_TOKEN = "t:dgx";
@@ -37,4 +37,5 @@ contract DaoConstants {
 
   bytes32 CONFIG_LOCKING_PHASE_DURATION = "locking_phase_duration";
   bytes32 CONFIG_QUARTER_DURATION = "quarter_duration";
+  bytes32 CONFIG_MINIMUM_LOCKED_DGD = 10 ** 18;
 }

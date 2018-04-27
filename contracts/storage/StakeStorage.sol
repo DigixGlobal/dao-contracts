@@ -1,12 +1,18 @@
 pragma solidity ^0.4.19;
 
+import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../common/DaoConstants.sol";
 
 contract StakeStorage is ResolverClient, DaoConstants {
+    using DoublyLinkedList for DoublyLinkedList.Address;
+
     mapping (address => uint256) lockedDGDStake;
     mapping (address => uint256) actualLockedDGD;
     mapping (address => uint256) lockedBadge;
+    DoublyLinkedList.Address allParticipants;
+    DoublyLinkedList.Address allBadgeParticipants;
+
 
     function StakeStorage(address _resolver) public {
         require(init(CONTRACT_STORAGE_STAKE, _resolver));
@@ -45,5 +51,21 @@ contract StakeStorage is ResolverClient, DaoConstants {
         returns (uint256 _lockedBadge)
     {
         _lockedBadge = lockedBadge[_user];
+    }
+
+    function addParticipant(address _user) public {
+        allParticipants.append(_user);
+    }
+
+    function removeParticipant(address _user) public {
+        allParticipants.remove_item(_user);
+    }
+
+    function addBadgeParticipant(address _user) public {
+        allBadgeParticipants.append(_user);
+    }
+
+    function removeBadgeParticipant(address _user) public {
+        allBadgeParticipants.remove_item(_user);
     }
 }

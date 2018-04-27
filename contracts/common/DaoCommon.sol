@@ -5,6 +5,7 @@ import "./../common/DaoConstants.sol";
 import "./../common/IdentityCommon.sol";
 import "./../storage/ConfigsStorage.sol";
 import "./../storage/StakeStorage.sol";
+import "./../storage/DaoStorage.sol";
 
 contract DaoCommon is IdentityCommon {
     modifier if_locking_phase() {
@@ -12,28 +13,37 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
+    modifier if_main_phase() {
+        require((now - dao_info_service().getDaoStartTime()) % get_uint_config(CONFIG_QUARTER_DURATION) >= get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
+        _;
+    }
+
     function dao_info_service()
         internal
-        constant
         returns (DaoInfoService _contract)
     {
-        _contract = DaoInfoService(get_contract(CONTRACT_DAO_INFO_SERVICE));
+        _contract = DaoInfoService(get_contract(CONTRACT_DAO));
     }
 
     function configs_storage()
         internal
-        constant
         returns (ConfigsStorage _contract)
     {
         _contract = ConfigsStorage(get_contract(CONTRACT_CONFIG_STORAGE));
     }
 
-    function stakeStorage()
-        internal
-        constant
-        returns (StakeStorage _contract)
+    function stakeStorage() internal returns (StakeStorage _contract) {
+        _contract = StakeStorage(get_contract(CONTRACT_STAKE_STORAGE));
+    }
+
+    function daoStorage() internal returns (DaoStorage _contract) {
+        _contract = DaoStorage(get_contract(CONTRACT_DAO_STORAGE));
+    }
+
+    function get_uint_config(bytes32 _config_key)
+        returns (uint256 _config_value)
     {
-        _contract = StakeStorage(get_contract(CONTRACT_STORAGE_STAKE));
+        _config_value = configs_storage().uintConfigs(_config_key);
     }
 
     function get_uint_config(bytes32 _config_key)
