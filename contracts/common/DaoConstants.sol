@@ -37,5 +37,9 @@ contract DaoConstants {
 
   bytes32 CONFIG_LOCKING_PHASE_DURATION = "locking_phase_duration";
   bytes32 CONFIG_QUARTER_DURATION = "quarter_duration";
-  bytes32 CONFIG_MINIMUM_LOCKED_DGD = 10 ** 18;
+  bytes32 CONFIG_VOTING_COMMIT_PHASE = "voting_commit_phase";
+  bytes32 CONFIG_VOTING_PHASE_TOTAL = "voting_phase_total";
+  bytes32 CONFIG_INTERIM_COMMIT_PHASE = "interim_voting_commit_phase";
+  bytes32 CONFIG_INTERIM_PHASE_TOTAL = "interim_voting_phase_total";
+  uint256 CONFIG_MINIMUM_LOCKED_DGD = 10 ** 18;
 }

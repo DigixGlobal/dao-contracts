@@ -22,15 +22,18 @@ contract StakeLocking is DaoCommon {
         // TODO: calculate this properly
         _lockedDGDStake += _amount;
         stakeStorage().updateUserDGDStake(_user, _actualLockedDGD, _lockedDGDStake);
-        if (_actualLockedDGD >= get_uint_config(CONFIG_MINIMUM_LOCKED_DGD)) {
+        if (_actualLockedDGD >= CONFIG_MINIMUM_LOCKED_DGD) {
             stakeStorage().addParticipant(_user);
         }
 
         // interaction happens last
-        require(ERC20(ADDRESS_DGD_TOKEN).transferFrom(msg.sender, address(this), _amount));
+        require(ERC20(ADDRESS_DGD_TOKEN).transferFrom(_user, address(this), _amount));
     }
 
-    function lockBadge(uint256 _amount) if_locking_phase public {
+    function lockBadge(uint256 _amount)
+        public
+        if_locking_phase()
+    {
         address _user = msg.sender;
         uint256 _lockedBadge = stakeStorage().readUserLockedBadge(_user);
         require(_amount > 0);
@@ -42,7 +45,10 @@ contract StakeLocking is DaoCommon {
         require(ERC20(ADDRESS_DGD_BADGE).transferFrom(_user, address(this), _amount));
     }
 
-    function withdrawDGD(uint256 _amount) if_locking_phase public {
+    function withdrawDGD(uint256 _amount)
+        public
+        if_locking_phase()
+    {
         address _user = msg.sender;
         uint256 _actualLockedDGD;
         uint256 _lockedDGDStake;
@@ -50,7 +56,7 @@ contract StakeLocking is DaoCommon {
         require(_actualLockedDGD >= _amount);
         _actualLockedDGD -= _amount;
 
-        if (_actualLockedDGD < get_uint_config(CONFIG_MINIMUM_LOCKED_DGD)) {
+        if (_actualLockedDGD < CONFIG_MINIMUM_LOCKED_DGD) {
             stakeStorage().removeParticipant(_user);
         }
         stakeStorage().updateUserDGDStake(_user, _actualLockedDGD, _lockedDGDStake);
@@ -58,7 +64,10 @@ contract StakeLocking is DaoCommon {
         require(ERC20(ADDRESS_DGD_TOKEN).transfer(_user, _amount));
     }
 
-    function withdrawBadge(uint256 _amount) if_locking_phase public {
+    function withdrawBadge(uint256 _amount)
+        public
+        if_locking_phase()
+    {
         address _user = msg.sender;
         uint256 _lockedBadge = stakeStorage().readUserLockedBadge(_user);
         require(_lockedBadge >= _amount);

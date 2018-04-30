@@ -15,7 +15,7 @@ contract StakeStorage is ResolverClient, DaoConstants {
 
 
     function StakeStorage(address _resolver) public {
-        require(init(CONTRACT_STORAGE_STAKE, _resolver));
+        require(init(CONTRACT_STAKE_STORAGE, _resolver));
     }
 
     function updateUserDGDStake(address _user, uint256 _actualLockedDGD, uint256 _lockedDGDStake)
@@ -67,5 +67,31 @@ contract StakeStorage is ResolverClient, DaoConstants {
 
     function removeBadgeParticipant(address _user) public {
         allBadgeParticipants.remove_item(_user);
+    }
+
+    function isParticipant(address _user)
+      public
+      constant
+      returns (bool _is)
+    {
+      uint256 _index = allParticipants.find(_user);
+      if (_index == 0) {
+        _is = false;
+      } else {
+        _is = true;
+      }
+    }
+
+    function isBadgeParticipant(address _user)
+      public
+      constant
+      returns (bool _is)
+    {
+      uint256 _index = allBadgeParticipants.find(_user);
+      if (_index == 0) {
+        _is = false;
+      } else {
+        _is = true;
+      }
     }
 }

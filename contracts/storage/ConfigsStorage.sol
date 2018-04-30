@@ -16,6 +16,10 @@ contract ConfigsStorage is ResolverClient, DaoConstants {
 
     uintConfigs[CONFIG_LOCKING_PHASE_DURATION] = 10 days;
     uintConfigs[CONFIG_QUARTER_DURATION] = 90 days;
+    uintConfigs[CONFIG_VOTING_COMMIT_PHASE] = 3 weeks;
+    uintConfigs[CONFIG_VOTING_PHASE_TOTAL] = 4 weeks;
+    uintConfigs[CONFIG_INTERIM_COMMIT_PHASE] = 7 days;
+    uintConfigs[CONFIG_INTERIM_PHASE_TOTAL] = 10 days;
   }
 
   function set_uint_config(bytes32 _config_name, uint256 _new_value)
