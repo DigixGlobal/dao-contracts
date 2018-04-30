@@ -4,7 +4,6 @@ import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../common/DaoConstants.sol";
 
 contract StakeStorage is ResolverClient, DaoConstants {
-
     mapping (address => uint256) lockedDGDStake;
     mapping (address => uint256) actualLockedDGD;
     mapping (address => uint256) lockedBadge;
@@ -30,6 +29,7 @@ contract StakeStorage is ResolverClient, DaoConstants {
 
     function readUserDGDStake(address _user)
         public
+        constant
         returns (
             uint256 _actualLockedDGD,
             uint256 _lockedDGDStake
@@ -41,6 +41,7 @@ contract StakeStorage is ResolverClient, DaoConstants {
 
     function readUserLockedBadge(address _user)
         public
+        constant
         returns (uint256 _lockedBadge)
     {
         _lockedBadge = lockedBadge[_user];

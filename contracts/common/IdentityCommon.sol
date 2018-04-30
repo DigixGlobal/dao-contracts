@@ -26,9 +26,11 @@ contract IdentityCommon is ResolverClient, DaoConstants {
     _;
   }
 
-  function identity_storage() internal
-           returns (IdentityStorage _contract)
+  function identity_storage()
+    internal
+    constant
+    returns (IdentityStorage _contract)
   {
-    _contract = IdentityStorage(get_contract(CONTRACT_DAO_IDENTITY));
+    _contract = IdentityStorage(get_contract(CONTRACT_IDENTITY_STORAGE));
   }
 }

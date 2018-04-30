@@ -12,7 +12,7 @@ contract ConfigsStorage is ResolverClient, DaoConstants {
   function ConfigsStorage(address _resolver)
            public
   {
-    require(init(CONTRACT_DAO_CONFIG_STORAGE, _resolver));
+    require(init(CONTRACT_CONFIG_STORAGE, _resolver));
 
     uintConfigs[CONFIG_LOCKING_PHASE_DURATION] = 10 days;
     uintConfigs[CONFIG_QUARTER_DURATION] = 90 days;
