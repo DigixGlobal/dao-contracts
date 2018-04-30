@@ -109,7 +109,11 @@ contract Dao is DaoCommon {
         public
         if_interim_commit_phase(_proposalId, _index)
     {
+        require(daoStorage().readProposalState(_proposalId) == PROPOSAL_STATE_FUNDED);
+        require(dao_info_service().isParticipant(msg.sender));
+        require(daoStorage().readLastNonce(msg.sender) < _nonce);
 
+        daoStorage().commitInterimVote(_proposalId, _commitHash, msg.sender, _index, _nonce);
     }
 
     function revealVoteOnInterim(
@@ -121,7 +125,11 @@ contract Dao is DaoCommon {
         public
         if_interim_reveal_phase(_proposalId, _index)
     {
+        require(daoStorage().readProposalState(_proposalId) == PROPOSAL_STATE_FUNDED);
+        require(dao_info_service().isParticipant(msg.sender));
+        require(keccak256(_vote, _salt) == daoStorage().readInterimCommitVote(_proposalId, _index, msg.sender));
 
+        daoStorage().revealInterimVote(_proposalId, msg.sender, _salt, _vote, _index);
     }
 
     function claimDraftVotingResult()

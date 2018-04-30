@@ -2,7 +2,7 @@ pragma solidity ^0.4.19;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "./../storage/DaoStorage.sol";
-import "./../storage/StakeStorage.sol";
+import "./../storage/DaoStakeStorage.sol";
 import "./../common/DaoConstants.sol";
 
 contract DaoInfoService is ResolverClient, DaoConstants {
@@ -12,20 +12,20 @@ contract DaoInfoService is ResolverClient, DaoConstants {
       require(init(CONTRACT_DAO_INFO_SERVICE, _resolver));
     }
 
-    function dao_storage()
+    function daoStorage()
       internal
       constant
       returns (DaoStorage _contract)
     {
-      _contract = DaoStorage(get_contract(CONTRACT_DAO));
+      _contract = DaoStorage(get_contract(CONTRACT_DAO_STORAGE));
     }
 
-    function dao_stake_storage()
+    function daoStakeStorage()
       internal
       constant
-      returns (StakeStorage _contract)
+      returns (DaoStakeStorage _contract)
     {
-      _contract = StakeStorage(get_contract(CONTRACT_STAKE_STORAGE));
+      _contract = DaoStakeStorage(get_contract(CONTRACT_DAO_STAKE_STORAGE));
     }
 
     function getDaoStartTime()
@@ -33,7 +33,7 @@ contract DaoInfoService is ResolverClient, DaoConstants {
       constant
       returns (uint256 _time)
     {
-      _time = dao_storage().startOfFirstQuarter();
+      _time = daoStorage().startOfFirstQuarter();
     }
 
     function getCurrentQuarter()
@@ -41,7 +41,7 @@ contract DaoInfoService is ResolverClient, DaoConstants {
       constant
       returns (uint256 _quarterId)
     {
-      _quarterId = (now - dao_storage().startOfFirstQuarter()) / (90 days);
+      _quarterId = (now - daoStorage().startOfFirstQuarter()) / (90 days);
     }
 
     function isParticipant(address _user)
@@ -49,7 +49,7 @@ contract DaoInfoService is ResolverClient, DaoConstants {
       constant
       returns (bool _is)
     {
-      _is = dao_stake_storage().isParticipant(_user);
+      _is = daoStakeStorage().isParticipant(_user);
     }
 
     function isBadgeParticipant(address _user)
@@ -57,6 +57,6 @@ contract DaoInfoService is ResolverClient, DaoConstants {
       constant
       returns (bool _is)
     {
-      _is = dao_stake_storage().isBadgeParticipant(_user);
+      _is = daoStakeStorage().isBadgeParticipant(_user);
     }
 }

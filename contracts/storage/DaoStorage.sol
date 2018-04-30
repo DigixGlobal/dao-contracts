@@ -112,6 +112,25 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     _commitHash = proposalsById[_proposalId].votingRound.commits[_voter];
   }
 
+  /// @notice returns the latest committed vote by a voter on a proposal interim voting round
+  /// @param _proposalId proposal ID
+  /// @param _index index of the interim round
+  /// @param _voter address of the voter
+  /// @return {
+  ///   "_commitHash": ""
+  /// }
+  function readInterimCommitVote(
+    bytes32 _proposalId,
+    uint8 _index,
+    address _voter
+  )
+    public
+    constant
+    returns (bytes32 _commitHash)
+  {
+    _commitHash = proposalsById[_proposalId].interimRounds[_index].commits[_voter];
+  }
+
   /// @notice get all information and details of the first proposal
   /// return {
   ///   "_id": ""
@@ -529,6 +548,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     } else {
       _proposal.votingRound.noVotes[_voter] = true;
     }
+    _success = true;
   }
 
   /// @notice commit vote for a proposal in the INTERIM VOTING phase
@@ -551,7 +571,10 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     if_sender_is(CONTRACT_DAO)
     returns (bool _success)
   {
-
+    DaoStructs.Proposal _proposal = proposalsById[_proposalId];
+    lastNonce[_voter] = _nonce;
+    _proposal.interimRounds[_index].commits[_voter] = _hash;
+    _success = true;
   }
 
   /// @notice reveal vote for a proposal in INTERIM VOTING phase
@@ -560,7 +583,6 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
   /// @param _salt random number used with which commit was concetenated
   /// @param _vote true if voted for, false if voted against
   /// @param _index index of the interim voting round
-  /// @param _weight weight of the vote
   /// @return {
   ///   "_success": "if vote was counted successfully"
   /// }
@@ -569,13 +591,18 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     address _voter,
     uint256 _salt,
     bool _vote,
-    uint8 _index,
-    uint256 _weight
+    uint8 _index
   )
     public
     if_sender_is(CONTRACT_DAO)
     returns (bool _success)
   {
-
+    DaoStructs.Proposal _proposal = proposalsById[_proposalId];
+    if (_vote) {
+      _proposal.interimRounds[_index].yesVotes[_voter] = true;
+    } else {
+      _proposal.interimRounds[_index].noVotes[_voter] = true;
+    }
+    _success = true;
   }
 }

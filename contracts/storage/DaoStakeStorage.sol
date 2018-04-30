@@ -4,7 +4,7 @@ import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../common/DaoConstants.sol";
 
-contract StakeStorage is ResolverClient, DaoConstants {
+contract DaoStakeStorage is ResolverClient, DaoConstants {
     using DoublyLinkedList for DoublyLinkedList.Address;
 
     mapping (address => uint256) lockedDGDStake;
@@ -14,12 +14,12 @@ contract StakeStorage is ResolverClient, DaoConstants {
     DoublyLinkedList.Address allBadgeParticipants;
 
 
-    function StakeStorage(address _resolver) public {
-        require(init(CONTRACT_STAKE_STORAGE, _resolver));
+    function DaoStakeStorage(address _resolver) public {
+        require(init(CONTRACT_DAO_STAKE_STORAGE, _resolver));
     }
 
     function updateUserDGDStake(address _user, uint256 _actualLockedDGD, uint256 _lockedDGDStake)
-        if_sender_is(CONTRACT_STAKE_LOCKING)
+        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         public
     {
         actualLockedDGD[_user] = _actualLockedDGD;
@@ -27,7 +27,7 @@ contract StakeStorage is ResolverClient, DaoConstants {
     }
 
     function updateUserBadgeStake(address _user, uint256 _lockedBadge)
-        if_sender_is(CONTRACT_STAKE_LOCKING)
+        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         public
     {
         lockedBadge[_user] = _lockedBadge;

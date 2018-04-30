@@ -6,7 +6,7 @@ contract DaoConstants {
   uint256 PROPOSAL_STATE_VETTED = 3;
   uint256 PROPOSAL_STATE_FUNDED = 4;
 
-  bytes32 CONTRACT_STAKE_LOCKING = "c:stake:locking";
+  bytes32 CONTRACT_DAO_STAKE_LOCKING = "c:stake:locking";
   bytes32 CONTRACT_DAO = "c:dao";
   bytes32 CONTRACT_DAO_IDENTITY = "c:dao:identity";
   bytes32 CONTRACT_IDENTITY_STORAGE = "c:dao:identity:storage";
@@ -17,10 +17,10 @@ contract DaoConstants {
   bytes32 CONTRACT_ROLE_SERVICE = "s:role";
   bytes32 CONTRACT_DAO_INFO_SERVICE = "s:dao:info";
   bytes32 CONTRACT_DAO_STORAGE = "s:dao:storage";
-  bytes32 CONTRACT_CONFIG_STORAGE = "s:dao:config";
+  bytes32 CONTRACT_DAO_CONFIG_STORAGE = "s:dao:config";
+  bytes32 CONTRACT_DAO_STAKE_STORAGE = "s:stake";
   bytes32 CONTRACT_INTERACTIVE_QUARTER_POINT = "i:quarter:point";
   bytes32 CONTRACT_INTERACTIVE_REPUTATION_POINT = "i:reputation:point";
-  bytes32 CONTRACT_STAKE_STORAGE = "s:stake";
 
   bytes32 CONTRACT_DGD_TOKEN = "t:dgd";
   bytes32 CONTRACT_DGX_TOKEN = "t:dgx";
