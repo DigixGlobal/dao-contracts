@@ -85,6 +85,62 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     _start = proposalsById[_proposalId].interimRounds[_index].startTime;
   }
 
+  function readDraftVotingDetails(bytes32 _proposalId, address[] _allUsers)
+    public
+    constant
+    returns (uint256 _for, uint256 _against)
+  {
+    bytes32 _latestVersion = read_last_from_bytesarray(proposalsById[_proposalId].proposalVersionDocs);
+    DaoStructs.Voting _voting = proposalsById[_proposalId].proposalVersions[_latestVersion].draftVoting;
+    uint256 _n = _allUsers.length;
+    for (uint256 i = 0; i < _n; i++) {
+      if (_voting.yesVotes[_allUsers[i]] > 0)
+      {
+        _for += _voting.yesVotes[_allUsers[i]];
+      } else if (_voting.noVotes[_allUsers[i]] > 0) {
+        _against += _voting.noVotes[_allUsers[i]];
+      }
+    }
+  }
+
+  function readVotingDetails(bytes32 _proposalId, address[] _allUsers)
+    public
+    constant
+    returns (uint256 _for, uint256 _against)
+  {
+    DaoStructs.Voting _voting = proposalsById[_proposalId].votingRound;
+    uint256 _n = _allUsers.length;
+    for (uint256 i = 0; i < _n; i++) {
+      if (_voting.yesVotes[_allUsers[i]] > 0)
+      {
+        _for += _voting.yesVotes[_allUsers[i]];
+      } else if (_voting.noVotes[_allUsers[i]] > 0) {
+        _against += _voting.noVotes[_allUsers[i]];
+      }
+    }
+  }
+
+  function readInterimVotingDetails(
+    bytes32 _proposalId,
+    uint256 _index,
+    address[] _allUsers
+  )
+    public
+    constant
+    returns (uint256 _for, uint256 _against)
+  {
+    DaoStructs.Voting _voting = proposalsById[_proposalId].interimRounds[_index];
+    uint256 _n = _allUsers.length;
+    for (uint256 i = 0; i < _n; i++) {
+      if (_voting.yesVotes[_allUsers[i]] > 0)
+      {
+        _for += _voting.yesVotes[_allUsers[i]];
+      } else if (_voting.noVotes[_allUsers[i]] > 0) {
+        _against += _voting.noVotes[_allUsers[i]];
+      }
+    }
+  }
+
   /// @notice returns the last used nonce for an address
   /// @param _voter address of the dao member
   /// @return {
@@ -275,6 +331,19 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     _prlValid = _proposalVersion.draftVoting.prlValid;
   }
 
+  function readProposalFunding(bytes32 _proposalId)
+    public
+    constant
+    returns (uint256[] memory _fundings, uint256 _totalFunding)
+  {
+    bytes32 _latestVersion = read_last_from_bytesarray(proposalsById[_proposalId].proposalVersionDocs);
+    _fundings = proposalsById[_proposalId].proposalVersions[_latestVersion].milestoneFundings;
+    uint256 _n = _fundings.length;
+    for (uint256 i = 0; i < _n; i++) {
+      _totalFunding += _fundings[i];
+    }
+  }
+
   /// @notice get proposal version details for the first version
   /// @param _proposalId Proposal ID, i.e. hash of IPFS doc
   /// return {
@@ -449,19 +518,37 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     _success = true;
   }
 
+  function setProposalDraftPass(bytes32 _proposalId, bool _result)
+    public
+    if_sender_is(CONTRACT_DAO)
+  {
+    bytes32 _latestVersion = read_last_from_bytesarray(proposalsById[_proposalId].proposalVersionDocs);
+    proposalsById[_proposalId].proposalVersions[_latestVersion].draftVoting.passed = _result;
+  }
+
+  function setProposalPass(bytes32 _proposalId, bool _result)
+    public
+    if_sender_is(CONTRACT_DAO)
+  {
+    proposalsById[_proposalId].votingRound.passed = _result;
+  }
+
+  function setProposalInterimPass(bytes32 _proposalId, uint256 _index, bool _result)
+    public
+    if_sender_is(CONTRACT_DAO)
+  {
+    proposalsById[_proposalId].interimRounds[_index].passed = _result;
+  }
+
   /// @notice update the PRL status of the latest voting in a proposal
   /// @param _proposalId Proposal ID
   /// @param _valid PRL validity, true if legal, false if illegal
-  /// @return {
-  ///   "_success": "if proposal's PRL status was updated successfully"
-  /// }
   function updateProposalPRL(
     bytes32 _proposalId,
     bool _valid
   )
     public
     if_sender_is(CONTRACT_DAO)
-    returns (bool _success, bool _release)
   {
 
   }

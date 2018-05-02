@@ -34,4 +34,18 @@ contract DaoListingService is ResolverClient, DaoConstants, AddressIteratorInter
         );
     }
 
+    function listParticipants(uint256 _count, bool _from_start)
+        public
+        constant
+        returns (address[] _participants)
+    {
+        _participants = list_addresses(
+            _count,
+            daoStakeStorage().readFirstParticipant,
+            daoStakeStorage().readLastParticipant,
+            daoStakeStorage().readNextParticipant,
+            daoStakeStorage().readPreviousParticipant,
+            _from_start
+        );
+    }
 }

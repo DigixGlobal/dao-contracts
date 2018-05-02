@@ -13,6 +13,7 @@ library DaoStructs {
     uint256 totalYesVotes;
     uint256 totalNoVotes;
     bool prlValid;
+    bool passed;
   }
 
   struct ProposalVersion {

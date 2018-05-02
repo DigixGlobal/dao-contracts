@@ -2,12 +2,17 @@ pragma solidity ^0.4.19;
 
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
 import "./common/DaoCommon.sol";
+import "./service/DaoCalculatorService.sol";
 
 contract Dao is DaoCommon {
     using DoublyLinkedList for DoublyLinkedList.Address;
 
     function Dao(address _resolver) public {
         require(init(CONTRACT_DAO, _resolver));
+    }
+
+    function daoCalculatorService() internal returns (DaoCalculatorService _contract) {
+        _contract = DaoCalculatorService(get_contract(CONTRACT_DAO_CALCULATOR_SERVICE));
     }
 
     function submitPreproposal(
@@ -142,8 +147,59 @@ contract Dao is DaoCommon {
         public
         if_main_phase()
         if_from_proposer(_proposalId)
+        returns (bool _passed)
     {
         address[] memory _allBadgeHolders = daoListingService().listBadgeParticipants(10000, true);
         // calculate
+        uint256 _n = _allBadgeHolders.length;
+        uint256 _for;
+        uint256 _against;
+        (_for, _against) = daoStorage().readDraftVotingDetails(_proposalId, _allBadgeHolders);
+        uint256 _quorum = _for + _against;
+        require(_quorum > daoCalculatorService().minimumDraftQuorum(_proposalId));
+        if (daoCalculatorService().draftQuotaPass(_proposalId, _for, _against)) {
+            _passed = true;
+            daoStorage().setProposalDraftPass(_proposalId, true);
+        }
+    }
+
+    function claimVotingResult(bytes32 _proposalId)
+        public
+        if_main_phase()
+        if_from_proposer(_proposalId)
+        returns (bool _passed)
+    {
+        address[] memory _allStakeHolders = daoListingService().listParticipants(10000, true);
+        // calculate
+        uint256 _n = _allStakeHolders.length;
+        uint256 _for;
+        uint256 _against;
+        (_for, _against) = daoStorage().readVotingDetails(_proposalId, _allStakeHolders);
+        uint256 _quorum = _for + _against;
+        require(_quorum > daoCalculatorService().minimumVotingQuorum(_proposalId));
+        if (daoCalculatorService().votingQuotaPass(_proposalId, _for, _against)) {
+            _passed = true;
+            daoStorage().setProposalPass(_proposalId, true);
+        }
+    }
+
+    function claimInterimVotingResult(bytes32 _proposalId, uint256 _index)
+        public
+        if_main_phase()
+        if_from_proposer(_proposalId)
+        returns (bool _passed)
+    {
+        address[] memory _allStakeHolders = daoListingService().listParticipants(10000, true);
+        // calculate
+        uint256 _n = _allStakeHolders.length;
+        uint256 _for;
+        uint256 _against;
+        (_for, _against) = daoStorage().readInterimVotingDetails(_proposalId, _index, _allStakeHolders);
+        uint256 _quorum = _for + _against;
+        require(_quorum > daoCalculatorService().minimumVotingQuorum(_proposalId));
+        if (daoCalculatorService().votingQuotaPass(_proposalId, _for, _against)) {
+            _passed = true;
+            daoStorage().setProposalInterimPass(_proposalId, _index, true);
+        }
     }
 }

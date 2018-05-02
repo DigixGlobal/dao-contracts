@@ -25,6 +25,11 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
 
     uintConfigs[CONFIG_QUORUM_SCALING_FACTOR_NUMERATOR] = 60;
     uintConfigs[CONFIG_QUORUM_SCALING_FACTOR_DENOMINATOR] = 100; // 60%
+
+    uintConfigs[CONFIG_DRAFT_QUOTA_NUMERATOR] = 30;
+    uintConfigs[CONFIG_DRAFT_QUOTA_DENOMINATOR] = 100;
+    uintConfigs[CONFIG_VOTING_QUOTA_NUMERATOR] = 30;
+    uintConfigs[CONFIG_VOTING_QUOTA_DENOMINATOR] = 100;
   }
 
   function set_uint_config(bytes32 _config_name, uint256 _new_value)

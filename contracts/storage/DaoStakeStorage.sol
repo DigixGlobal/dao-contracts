@@ -111,44 +111,105 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
       }
     }
 
+    function addAndReadBadgeWeight(address[] _users)
+      public
+      constant
+      returns (uint256 _weight)
+    {
+      uint256 _n = _users.length;
+      for (uint256 i = 0; i < _n; i++) {
+        _weight += lockedBadge[_users[i]];
+      }
+    }
+
+    function addAndReadDGDWeight(address[] _users)
+      public
+      constant
+      returns (uint256 _weight)
+    {
+      uint256 _n = _users.length;
+      for (uint256 i = 0; i < _n; i++) {
+        _weight += lockedDGDStake[_users[i]];
+      }
+    }
 
     function readFirstBadgeParticipant()
-           public
-           constant
-           returns (address _item)
-  {
-    _item = read_first_from_addresses(allBadgeParticipants);
-  }
+        public
+        constant
+        returns (address _item)
+    {
+        _item = read_first_from_addresses(allBadgeParticipants);
+    }
 
-  function readLastBadgeParticipant()
-           public
-           constant
-           returns (address _item)
-  {
-    _item = read_last_from_addresses(allBadgeParticipants);
-  }
+    function readLastBadgeParticipant()
+        public
+        constant
+        returns (address _item)
+    {
+        _item = read_last_from_addresses(allBadgeParticipants);
+    }
 
-  function readNextBadgeParticipant(address _current_item)
-           public
-           constant
-           returns (address _item)
-  {
-    _item = read_next_from_addresses(allBadgeParticipants, _current_item);
-  }
+    function readNextBadgeParticipant(address _current_item)
+        public
+        constant
+        returns (address _item)
+    {
+        _item = read_next_from_addresses(allBadgeParticipants, _current_item);
+    }
 
-  function readPreviousBadgeParticipant(address _current_item)
-           public
-           constant
-           returns (address _item)
-  {
-    _item = read_previous_from_addresses(allBadgeParticipants, _current_item);
-  }
+    function readPreviousBadgeParticipant(address _current_item)
+        public
+        constant
+        returns (address _item)
+    {
+        _item = read_previous_from_addresses(allBadgeParticipants, _current_item);
+    }
 
-  function readTotalBadgeParticipant()
-           public
-           constant
-           returns (uint256 _total_count)
-  {
-    _total_count = read_total_addresses(allBadgeParticipants);
-  }
+    function readTotalBadgeParticipant()
+        public
+        constant
+        returns (uint256 _total_count)
+    {
+        _total_count = read_total_addresses(allBadgeParticipants);
+    }
+
+    function readFirstParticipant()
+        public
+        constant
+        returns (address _item)
+    {
+        _item = read_first_from_addresses(allParticipants);
+    }
+
+    function readLastParticipant()
+        public
+        constant
+        returns (address _item)
+    {
+        _item = read_last_from_addresses(allParticipants);
+    }
+
+    function readNextParticipant(address _current_item)
+        public
+        constant
+        returns (address _item)
+    {
+        _item = read_next_from_addresses(allParticipants, _current_item);
+    }
+
+    function readPreviousParticipant(address _current_item)
+        public
+        constant
+        returns (address _item)
+    {
+        _item = read_previous_from_addresses(allParticipants, _current_item);
+    }
+
+    function readTotalParticipant()
+        public
+        constant
+        returns (uint256 _total_count)
+    {
+        _total_count = read_total_addresses(allParticipants);
+    }
 }

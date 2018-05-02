@@ -50,4 +50,9 @@ contract DaoConstants {
   bytes32 CONFIG_QUORUM_FIXED_PORTION_DENOMINATOR = "quorum_fixed_quorum_denominator";
   bytes32 CONFIG_QUORUM_SCALING_FACTOR_NUMERATOR = "quorum_sfactor_numerator";
   bytes32 CONFIG_QUORUM_SCALING_FACTOR_DENOMINATOR = "quorum_sfactor_denominator";
+
+  bytes32 CONFIG_DRAFT_QUOTA_NUMERATOR = "draft_quota_numerator";
+  bytes32 CONFIG_DRAFT_QUOTA_DENOMINATOR = "draft_quota_denominator";
+  bytes32 CONFIG_VOTING_QUOTA_NUMERATOR = "voting_quota_numerator";
+  bytes32 CONFIG_VOTING_QUOTA_DENOMINATOR = "voting_quota_denominator";
 }
