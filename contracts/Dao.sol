@@ -4,6 +4,8 @@ import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
 import "./common/DaoCommon.sol";
 
 contract Dao is DaoCommon {
+    using DoublyLinkedList for DoublyLinkedList.Address;
+
     function Dao(address _resolver) public {
         require(init(CONTRACT_DAO, _resolver));
     }
@@ -30,7 +32,7 @@ contract Dao is DaoCommon {
         address _endorser = msg.sender;
 
         // endorser must be a Badge
-        require(stakeStorage().readUserLockedBadge(_endorser) > 0);
+        require(daoStakeStorage().readUserLockedBadge(_endorser) > 0);
 
         // proposal must be a preproposal
         require(daoStorage().readProposalState(_proposalId) == PROPOSAL_STATE_PREPROPOSAL);
@@ -50,7 +52,7 @@ contract Dao is DaoCommon {
         if_main_phase()
     {
         address _badgeHolder = msg.sender;
-        uint256 _badgeStake = stakeStorage().readUserLockedBadge(_badgeHolder);
+        uint256 _badgeStake = daoStakeStorage().readUserLockedBadge(_badgeHolder);
 
         // must stake at least one badge
         require(_badgeStake > 0);
@@ -77,7 +79,7 @@ contract Dao is DaoCommon {
         // nonce must be greater than last used nonce
         require(daoStorage().readLastNonce(msg.sender) < _nonce);
         // user must be a participant
-        require(dao_info_service().isParticipant(msg.sender));
+        require(daoInfoService().isParticipant(msg.sender));
 
         daoStorage().commitVote(_proposalId, _commitHash, msg.sender, _nonce);
     }
@@ -93,7 +95,7 @@ contract Dao is DaoCommon {
         // proposal should be in voting phase
         require(daoStorage().readProposalState(_proposalId) == PROPOSAL_STATE_VETTED);
         // user must be a participant
-        require(dao_info_service().isParticipant(msg.sender));
+        require(daoInfoService().isParticipant(msg.sender));
         // hash should match with _vote and _salt
         require(keccak256(_vote, _salt) == daoStorage().readCommitVote(_proposalId, msg.sender));
 
@@ -110,7 +112,7 @@ contract Dao is DaoCommon {
         if_interim_commit_phase(_proposalId, _index)
     {
         require(daoStorage().readProposalState(_proposalId) == PROPOSAL_STATE_FUNDED);
-        require(dao_info_service().isParticipant(msg.sender));
+        require(daoInfoService().isParticipant(msg.sender));
         require(daoStorage().readLastNonce(msg.sender) < _nonce);
 
         daoStorage().commitInterimVote(_proposalId, _commitHash, msg.sender, _index, _nonce);
@@ -126,16 +128,18 @@ contract Dao is DaoCommon {
         if_interim_reveal_phase(_proposalId, _index)
     {
         require(daoStorage().readProposalState(_proposalId) == PROPOSAL_STATE_FUNDED);
-        require(dao_info_service().isParticipant(msg.sender));
+        require(daoInfoService().isParticipant(msg.sender));
         require(keccak256(_vote, _salt) == daoStorage().readInterimCommitVote(_proposalId, _index, msg.sender));
 
         daoStorage().revealInterimVote(_proposalId, msg.sender, _salt, _vote, _index);
     }
 
-    function claimDraftVotingResult()
+    function claimDraftVotingResult(bytes32 _proposalId)
         public
         if_main_phase()
+        if_from_proposer(_proposalId)
     {
-
+        address[] memory _allBadgeHolders = daoListingService().listBadgeParticipants(10000, true);
+        // calculate
     }
 }

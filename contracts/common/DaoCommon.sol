@@ -1,6 +1,7 @@
 pragma solidity ^0.4.19;
 
 import "./../service/DaoInfoService.sol";
+import "./../service/DaoListingService.sol";
 import "./../common/DaoConstants.sol";
 import "./../common/IdentityCommon.sol";
 import "./../storage/DaoConfigsStorage.sol";
@@ -48,11 +49,24 @@ contract DaoCommon is IdentityCommon {
       _;
     }
 
+    modifier if_from_proposer(bytes32 _proposalId) {
+        // TODO: implement this function
+        /* require(msg.sender == daoStorage().readProposer(_proposalId)); */
+        _;
+    }
+
     function daoInfoService()
         internal
         returns (DaoInfoService _contract)
     {
         _contract = DaoInfoService(get_contract(CONTRACT_DAO_INFO_SERVICE));
+    }
+
+    function daoListingService()
+        internal
+        returns (DaoListingService _contract)
+    {
+        _contract = DaoListingService(get_contract(CONTRACT_DAO_LISTING_SERVICE));
     }
 
     function daoConfigsStorage()

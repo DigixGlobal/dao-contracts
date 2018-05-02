@@ -1,10 +1,11 @@
 pragma solidity ^0.4.19;
 
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
+import "@digix/solidity-collections/contracts/abstract/AddressIteratorStorage.sol";
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../common/DaoConstants.sol";
 
-contract DaoStakeStorage is ResolverClient, DaoConstants {
+contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage {
     using DoublyLinkedList for DoublyLinkedList.Address;
 
     mapping (address => uint256) lockedDGDStake;
@@ -12,7 +13,6 @@ contract DaoStakeStorage is ResolverClient, DaoConstants {
     mapping (address => uint256) lockedBadge;
     DoublyLinkedList.Address allParticipants;
     DoublyLinkedList.Address allBadgeParticipants;
-
 
     function DaoStakeStorage(address _resolver) public {
         require(init(CONTRACT_DAO_STAKE_STORAGE, _resolver));
@@ -94,4 +94,45 @@ contract DaoStakeStorage is ResolverClient, DaoConstants {
         _is = true;
       }
     }
+
+
+    function readFirstBadgeParticipant()
+           public
+           constant
+           returns (address _item)
+  {
+    _item = read_first_from_addresses(allBadgeParticipants);
+  }
+
+  function readLastBadgeParticipant()
+           public
+           constant
+           returns (address _item)
+  {
+    _item = read_last_from_addresses(allBadgeParticipants);
+  }
+
+  function readNextBadgeParticipant(address _current_item)
+           public
+           constant
+           returns (address _item)
+  {
+    _item = read_next_from_addresses(allBadgeParticipants, _current_item);
+  }
+
+  function readPreviousBadgeParticipant(address _current_item)
+           public
+           constant
+           returns (address _item)
+  {
+    _item = read_previous_from_addresses(allBadgeParticipants, _current_item);
+  }
+
+  function readTotalBadgeParticipant()
+           public
+           constant
+           returns (uint256 _total_count)
+  {
+    _total_count = read_total_addresses(allBadgeParticipants);
+  }
 }
