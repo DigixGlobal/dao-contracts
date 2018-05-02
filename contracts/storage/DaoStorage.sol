@@ -353,10 +353,10 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     private
   {
     DaoStructs.ProposalVersion storage _proposalVersion = proposalsById[_proposalId].proposalVersions[_version];
-    if (_proposalVersion.draftVoting.yesVotes[_voter]) {
-      _proposalVersion.draftVoting.yesVotes[_voter] = false;
-    } else if (_proposalVersion.draftVoting.noVotes[_voter]) {
-      _proposalVersion.draftVoting.noVotes[_voter] = false;
+    if (_proposalVersion.draftVoting.yesVotes[_voter] > 0) {
+      _proposalVersion.draftVoting.yesVotes[_voter] = 0;
+    } else if (_proposalVersion.draftVoting.noVotes[_voter] > 0) {
+      _proposalVersion.draftVoting.noVotes[_voter] = 0;
     } else {
       return;
     }
@@ -489,15 +489,15 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
     bytes32 _latestVersion = read_last_from_bytesarray(_proposal.proposalVersionDocs);
     DaoStructs.ProposalVersion storage _proposalVersion = _proposal.proposalVersions[_latestVersion];
-    if (_proposalVersion.draftVoting.yesVotes[_voter] ||
-          _proposalVersion.draftVoting.noVotes[_voter]) {
+    if ((_proposalVersion.draftVoting.yesVotes[_voter] > 0) ||
+          (_proposalVersion.draftVoting.noVotes[_voter] > 0)) {
       nullifyVote(_proposalId, _latestVersion, _voter);
     }
     lastNonce[_voter] = _nonce;
     if (_vote) {
-      _proposalVersion.draftVoting.yesVotes[_voter] = true;
+      _proposalVersion.draftVoting.yesVotes[_voter] = _weight;
     } else {
-      _proposalVersion.draftVoting.noVotes[_voter] = true;
+      _proposalVersion.draftVoting.noVotes[_voter] = _weight;
     }
     _success = true;
   }
@@ -530,13 +530,15 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
   /// @param _proposalId Proposal ID
   /// @param _voter address of the participant/voter
   /// @param _vote true if voted for, false if voted against
+  /// @param _weight weight of the vote as of the reveal time
   /// @return {
   ///   "_success": "if vote was counted successfully"
   /// }
   function revealVote(
     bytes32 _proposalId,
     address _voter,
-    bool _vote
+    bool _vote,
+    uint256 _weight
   )
     public
     if_sender_is(CONTRACT_DAO)
@@ -544,9 +546,9 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
   {
     DaoStructs.Proposal _proposal = proposalsById[_proposalId];
     if (_vote) {
-      _proposal.votingRound.yesVotes[_voter] = true;
+      _proposal.votingRound.yesVotes[_voter] = _weight;
     } else {
-      _proposal.votingRound.noVotes[_voter] = true;
+      _proposal.votingRound.noVotes[_voter] = _weight;
     }
     _success = true;
   }
@@ -582,6 +584,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
   /// @param _voter address of the participant/voter
   /// @param _salt random number used with which commit was concetenated
   /// @param _vote true if voted for, false if voted against
+  /// @param _weight weight of the vote as of the reveal time
   /// @param _index index of the interim voting round
   /// @return {
   ///   "_success": "if vote was counted successfully"
@@ -591,6 +594,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     address _voter,
     uint256 _salt,
     bool _vote,
+    uint256 _weight,
     uint8 _index
   )
     public
@@ -599,9 +603,9 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
   {
     DaoStructs.Proposal _proposal = proposalsById[_proposalId];
     if (_vote) {
-      _proposal.interimRounds[_index].yesVotes[_voter] = true;
+      _proposal.interimRounds[_index].yesVotes[_voter] = _weight;
     } else {
-      _proposal.interimRounds[_index].noVotes[_voter] = true;
+      _proposal.interimRounds[_index].noVotes[_voter] = _weight;
     }
     _success = true;
   }

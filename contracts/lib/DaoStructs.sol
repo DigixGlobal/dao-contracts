@@ -8,8 +8,8 @@ library DaoStructs {
   struct Voting {
     uint256 startTime;
     mapping (address => bytes32) commits;
-    mapping (address => bool) yesVotes;
-    mapping (address => bool) noVotes;
+    mapping (address => uint256) yesVotes;
+    mapping (address => uint256) noVotes;
     uint256 totalYesVotes;
     uint256 totalNoVotes;
     bool prlValid;

@@ -99,7 +99,9 @@ contract Dao is DaoCommon {
         // hash should match with _vote and _salt
         require(keccak256(_vote, _salt) == daoStorage().readCommitVote(_proposalId, msg.sender));
 
-        daoStorage().revealVote(_proposalId, msg.sender, _vote);
+        uint256 _weight;
+        (, _weight) = daoStakeStorage().readUserDGDStake(msg.sender);
+        daoStorage().revealVote(_proposalId, msg.sender, _vote, _weight);
     }
 
     function commitVoteOnInterim(
@@ -131,7 +133,9 @@ contract Dao is DaoCommon {
         require(daoInfoService().isParticipant(msg.sender));
         require(keccak256(_vote, _salt) == daoStorage().readInterimCommitVote(_proposalId, _index, msg.sender));
 
-        daoStorage().revealInterimVote(_proposalId, msg.sender, _salt, _vote, _index);
+        uint256 _weight;
+        (, _weight) = daoStakeStorage().readUserDGDStake(msg.sender);
+        daoStorage().revealInterimVote(_proposalId, msg.sender, _salt, _vote, _weight, _index);
     }
 
     function claimDraftVotingResult(bytes32 _proposalId)
