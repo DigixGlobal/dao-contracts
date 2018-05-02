@@ -15,6 +15,7 @@ contract DaoStakeLocking is DaoCommon {
         address _user = msg.sender;
         uint256 _actualLockedDGD;
         uint256 _lockedDGDStake;
+        uint256 _totalLockedDGDStake = daoStakeStorage().totalLockedDGDStake();
         (_actualLockedDGD, _lockedDGDStake) = daoStakeStorage().readUserDGDStake(_user);
 
         require(_amount > 0);
@@ -22,6 +23,7 @@ contract DaoStakeLocking is DaoCommon {
         // TODO: calculate this properly
         _lockedDGDStake += _amount;
         daoStakeStorage().updateUserDGDStake(_user, _actualLockedDGD, _lockedDGDStake);
+        daoStakeStorage().updateTotalLockedDGDStake(_totalLockedDGDStake + _amount);
         if (_actualLockedDGD >= CONFIG_MINIMUM_LOCKED_DGD) {
             daoStakeStorage().addParticipant(_user);
         }
@@ -36,9 +38,11 @@ contract DaoStakeLocking is DaoCommon {
     {
         address _user = msg.sender;
         uint256 _lockedBadge = daoStakeStorage().readUserLockedBadge(_user);
+        uint256 _totalLockedBadges = daoStakeStorage().totalLockedBadges();
         require(_amount > 0);
         _lockedBadge += _amount;
         daoStakeStorage().updateUserBadgeStake(_user, _lockedBadge);
+        daoStakeStorage().updateTotalLockedBadges(_totalLockedBadges + _amount);
 
         daoStakeStorage().addBadgeParticipant(_user);
         // interaction happens last
@@ -52,6 +56,8 @@ contract DaoStakeLocking is DaoCommon {
         address _user = msg.sender;
         uint256 _actualLockedDGD;
         uint256 _lockedDGDStake;
+        uint256 _totalLockedDGDStake = daoStakeStorage().totalLockedDGDStake();
+
         (_actualLockedDGD, _lockedDGDStake) = daoStakeStorage().readUserDGDStake(_user);
         require(_actualLockedDGD >= _amount);
         _actualLockedDGD -= _amount;
@@ -60,6 +66,7 @@ contract DaoStakeLocking is DaoCommon {
             daoStakeStorage().removeParticipant(_user);
         }
         daoStakeStorage().updateUserDGDStake(_user, _actualLockedDGD, _lockedDGDStake);
+        daoStakeStorage().updateTotalLockedDGDStake(_totalLockedDGDStake - _amount);
 
         require(ERC20(ADDRESS_DGD_TOKEN).transfer(_user, _amount));
     }
@@ -70,9 +77,12 @@ contract DaoStakeLocking is DaoCommon {
     {
         address _user = msg.sender;
         uint256 _lockedBadge = daoStakeStorage().readUserLockedBadge(_user);
+        uint256 _totalLockedBadges = daoStakeStorage().totalLockedBadges();
+
         require(_lockedBadge >= _amount);
         _lockedBadge -= _amount;
         daoStakeStorage().updateUserBadgeStake(_user, _lockedBadge);
+        daoStakeStorage().updateTotalLockedBadges(_totalLockedBadges - _amount);
 
         if (_lockedBadge == 0) {
             daoStakeStorage().removeBadgeParticipant(_user);

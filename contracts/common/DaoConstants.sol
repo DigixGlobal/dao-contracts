@@ -17,11 +17,13 @@ contract DaoConstants {
   bytes32 CONTRACT_ROLE_SERVICE = "s:role";
   bytes32 CONTRACT_DAO_INFO_SERVICE = "s:dao:info";
   bytes32 CONTRACT_DAO_LISTING_SERVICE = "s:dao:listing";
+  bytes32 CONTRACT_DAO_CALCULATOR_SERVICE = "s:dao:calculator";
   bytes32 CONTRACT_DAO_STORAGE = "s:dao:storage";
   bytes32 CONTRACT_DAO_CONFIG_STORAGE = "s:dao:config";
   bytes32 CONTRACT_DAO_STAKE_STORAGE = "s:stake";
   bytes32 CONTRACT_INTERACTIVE_QUARTER_POINT = "i:quarter:point";
   bytes32 CONTRACT_INTERACTIVE_REPUTATION_POINT = "i:reputation:point";
+  bytes32 CONTRACT_DAO_FUNDING_MANAGER = "i:dao:fundingmanager";
 
   bytes32 CONTRACT_DGD_TOKEN = "t:dgd";
   bytes32 CONTRACT_DGX_TOKEN = "t:dgx";
@@ -43,4 +45,9 @@ contract DaoConstants {
   bytes32 CONFIG_INTERIM_COMMIT_PHASE = "interim_voting_commit_phase";
   bytes32 CONFIG_INTERIM_PHASE_TOTAL = "interim_voting_phase_total";
   uint256 CONFIG_MINIMUM_LOCKED_DGD = 10 ** 18;
+
+  bytes32 CONFIG_QUORUM_FIXED_PORTION_NUMERATOR = "quorum_fixed_quorum_numerator";
+  bytes32 CONFIG_QUORUM_FIXED_PORTION_DENOMINATOR = "quorum_fixed_quorum_denominator";
+  bytes32 CONFIG_QUORUM_SCALING_FACTOR_NUMERATOR = "quorum_sfactor_numerator";
+  bytes32 CONFIG_QUORUM_SCALING_FACTOR_DENOMINATOR = "quorum_sfactor_denominator";
 }

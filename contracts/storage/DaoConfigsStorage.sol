@@ -19,6 +19,12 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
     uintConfigs[CONFIG_VOTING_PHASE_TOTAL] = 4 weeks;
     uintConfigs[CONFIG_INTERIM_COMMIT_PHASE] = 7 days;
     uintConfigs[CONFIG_INTERIM_PHASE_TOTAL] = 10 days;
+
+    uintConfigs[CONFIG_QUORUM_FIXED_PORTION_NUMERATOR] = 20;
+    uintConfigs[CONFIG_QUORUM_FIXED_PORTION_DENOMINATOR] = 100; // 20%
+
+    uintConfigs[CONFIG_QUORUM_SCALING_FACTOR_NUMERATOR] = 60;
+    uintConfigs[CONFIG_QUORUM_SCALING_FACTOR_DENOMINATOR] = 100; // 60%
   }
 
   function set_uint_config(bytes32 _config_name, uint256 _new_value)
