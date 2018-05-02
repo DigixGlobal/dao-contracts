@@ -1,6 +1,6 @@
 pragma solidity ^0.4.19;
 
-contract FundingManager {
+contract DaoFundingManager {
 
   function claimFunding(uint256 _proposal_id, uint256 _milestone_id)
            public
