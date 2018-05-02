@@ -533,7 +533,11 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     proposalsById[_proposalId].votingRound.passed = _result;
   }
 
-  function setProposalInterimPass(bytes32 _proposalId, uint256 _index, bool _result)
+  function setProposalInterimPass(
+    bytes32 _proposalId,
+    uint256 _index,
+    bool _result
+  )
     public
     if_sender_is(CONTRACT_DAO)
   {

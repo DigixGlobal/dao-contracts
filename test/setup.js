@@ -4,8 +4,8 @@ const ContractResolver = artifacts.require('./ContractResolver.sol');
 const DoublyLinkedList = artifacts.require('./DoublyLinkedList.sol');
 
 const IdentityStorage = artifacts.require('./IdentityStorage.sol');
-const ConfigsStorage = artifacts.require('./ConfigsStorage.sol');
-const StakeStorage = artifacts.require('./StakeStorage.sol');
+const DaoConfigsStorage = artifacts.require('./DaoConfigsStorage.sol');
+const DaoStakeStorage = artifacts.require('./DaoStakeStorage.sol');
 const DaoStorage = artifacts.require('./DaoStorage.sol');
 
 const DaoIdentity = artifacts.require('./DaoIdentity.sol');
@@ -23,6 +23,7 @@ const deployNewContractResolver = async function () {
 
 const getAccountsAndAddressOf = async function (accounts) {
   const addressOf = {
+    root: accounts[0],
     prl: accounts[1],
     kycadmin: accounts[2],
     founderBadgeHolder: accounts[3],
@@ -34,6 +35,25 @@ const getAccountsAndAddressOf = async function (accounts) {
     dgdHolder4: accounts[9]
   };
   return addressOf;
+};
+
+const deployStorage = async function (libs, contracts, resolver, addressOf) {
+  IdentityStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
+  contracts.identityStorage = await IdentityStorage.new(resolver.address);
+  contracts.daoConfigsStorage = await DaoConfigsStorage.new(resolver.address);
+  DaoStakeStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
+  contracts.daoStakeStorage = await DaoStakeStorage.new(resolver.address);
+  DaoStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
+  contracts.daoStorage = await DaoStorage.new(resolver.address);
+};
+
+const registerInteractive = async function (resolver, addressOf) {
+  const callingKeys = [
+    'c:dao:identity',
+    'c:stake:locking',
+    'c:dao',
+  ];
+  await a.map(callingKeys, 10, key => resolver.register_contract(key, addressOf.root));
 };
 
 const deployIdentity = async function (libs, contracts, resolver, addressOf) {
@@ -59,5 +79,7 @@ module.exports = {
   getAccountsAndAddressOf,
   deployIdentity,
   deployConfigsAndStake,
-  deployDao
+  deployDao,
+  deployStorage,
+  registerInteractive
 };

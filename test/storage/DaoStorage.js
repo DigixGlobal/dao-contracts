@@ -8,9 +8,8 @@ const {
   deployLibraries,
   deployNewContractResolver,
   getAccountsAndAddressOf,
-  deployIdentity,
-  deployConfigsAndStake,
-  deployDao,
+  deployStorage,
+  registerInteractive,
 } = require('../setup');
 
 const bN = web3.toBigNumber;
@@ -30,9 +29,8 @@ contract('DaoStorage', function (accounts) {
     resolver = await deployNewContractResolver();
     addressOf = await getAccountsAndAddressOf(accounts);
     contracts = {};
-    await deployIdentity(libs, contracts, resolver, addressOf);
-    await deployConfigsAndStake(libs, contracts, resolver, addressOf);
-    await deployDao(libs, contracts, resolver, addressOf);
+    await deployStorage(libs, contracts, resolver, addressOf);
+    await registerInteractive(resolver, addressOf);
   });
 
   describe('addProposal', function () {
