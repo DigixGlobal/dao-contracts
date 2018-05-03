@@ -85,6 +85,8 @@ contract Dao is DaoCommon {
         require(daoStorage().readLastNonce(msg.sender) < _nonce);
         // user must be a participant
         require(daoInfoService().isParticipant(msg.sender));
+        // commit should not be re-used, otherwise can copy same commit and same reveal
+        require(daoStorage().isCommitUsed(_proposalId, _commitHash) == false);
 
         daoStorage().commitVote(_proposalId, _commitHash, msg.sender, _nonce);
     }
@@ -121,6 +123,7 @@ contract Dao is DaoCommon {
         require(daoStorage().readProposalState(_proposalId) == PROPOSAL_STATE_FUNDED);
         require(daoInfoService().isParticipant(msg.sender));
         require(daoStorage().readLastNonce(msg.sender) < _nonce);
+        require(daoStorage().isInterimCommitUsed(_proposalId, _index, _commitHash) == false);
 
         daoStorage().commitInterimVote(_proposalId, _commitHash, msg.sender, _index, _nonce);
     }
@@ -140,7 +143,7 @@ contract Dao is DaoCommon {
 
         uint256 _weight;
         (, _weight) = daoStakeStorage().readUserDGDStake(msg.sender);
-        daoStorage().revealInterimVote(_proposalId, msg.sender, _salt, _vote, _weight, _index);
+        daoStorage().revealInterimVote(_proposalId, msg.sender, _vote, _weight, _index);
     }
 
     function claimDraftVotingResult(bytes32 _proposalId)
@@ -154,7 +157,7 @@ contract Dao is DaoCommon {
         uint256 _n = _allBadgeHolders.length;
         uint256 _for;
         uint256 _against;
-        (_for, _against) = daoStorage().readDraftVotingDetails(_proposalId, _allBadgeHolders);
+        (_for, _against) = daoStorage().readDraftVotingCount(_proposalId, _allBadgeHolders);
         uint256 _quorum = _for + _against;
         require(_quorum > daoCalculatorService().minimumDraftQuorum(_proposalId));
         if (daoCalculatorService().draftQuotaPass(_proposalId, _for, _against)) {
@@ -174,7 +177,7 @@ contract Dao is DaoCommon {
         uint256 _n = _allStakeHolders.length;
         uint256 _for;
         uint256 _against;
-        (_for, _against) = daoStorage().readVotingDetails(_proposalId, _allStakeHolders);
+        (_for, _against) = daoStorage().readVotingCount(_proposalId, _allStakeHolders);
         uint256 _quorum = _for + _against;
         require(_quorum > daoCalculatorService().minimumVotingQuorum(_proposalId));
         if (daoCalculatorService().votingQuotaPass(_proposalId, _for, _against)) {
@@ -194,12 +197,23 @@ contract Dao is DaoCommon {
         uint256 _n = _allStakeHolders.length;
         uint256 _for;
         uint256 _against;
-        (_for, _against) = daoStorage().readInterimVotingDetails(_proposalId, _index, _allStakeHolders);
+        (_for, _against) = daoStorage().readInterimVotingCount(_proposalId, _index, _allStakeHolders);
         uint256 _quorum = _for + _against;
         require(_quorum > daoCalculatorService().minimumVotingQuorum(_proposalId));
         if (daoCalculatorService().votingQuotaPass(_proposalId, _for, _against)) {
             _passed = true;
             daoStorage().setProposalInterimPass(_proposalId, _index, true);
         }
+    }
+
+    function setMilestoneDone(bytes32 _proposalId, uint256 _milestone_id)
+        public
+        if_main_phase()
+        if_from_proposer(_proposalId)
+        returns (bool _success)
+    {
+        // revert if voting for this _milstone_id has already begun
+        require(daoStorage().readProposalInterimVotingTime(_proposalId, _milestone_id) == 0);
+        daoStorage().setProposalInterimVoting(_proposalId, _milestone_id);
     }
 }

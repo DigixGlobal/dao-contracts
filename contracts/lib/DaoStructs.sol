@@ -7,12 +7,12 @@ library DaoStructs {
 
   struct Voting {
     uint256 startTime;
+    mapping (bytes32 => bool) usedCommits;
     mapping (address => bytes32) commits;
     mapping (address => uint256) yesVotes;
     mapping (address => uint256) noVotes;
     uint256 totalYesVotes;
     uint256 totalNoVotes;
-    bool prlValid;
     bool passed;
   }
 
@@ -35,5 +35,6 @@ library DaoStructs {
     mapping (bytes32 => ProposalVersion) proposalVersions;
     Voting votingRound;
     mapping (uint256 => Voting) interimRounds;
+    bool prlValid;
   }
 }

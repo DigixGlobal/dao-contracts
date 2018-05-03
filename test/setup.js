@@ -1,5 +1,9 @@
 const a = require('awaiting');
 
+const {
+  indexRange,
+} = require('@digix/helpers/lib/helpers');
+
 const ContractResolver = artifacts.require('./ContractResolver.sol');
 const DoublyLinkedList = artifacts.require('./DoublyLinkedList.sol');
 
@@ -29,13 +33,25 @@ const getAccountsAndAddressOf = async function (accounts) {
     founderBadgeHolder: accounts[3],
     badgeHolder1: accounts[4],
     badgeHolder2: accounts[5],
-    dgdHolder1: accounts[6],
-    dgdHolder2: accounts[7],
-    dgdHolder3: accounts[8],
-    dgdHolder4: accounts[9]
+    badgeHolder3: accounts[6],
+    badgeHolder4: accounts[7],
+    dgdHolder1: accounts[8],
+    dgdHolder2: accounts[9],
+    dgdHolder3: accounts[10],
+    dgdHolder4: accounts[11],
+    dgdHolder5: accounts[12],
+    dgdHolder6: accounts[13]
   };
   return addressOf;
 };
+
+const getAllParticipantAddresses = function (accounts) {
+  let addresses = [];
+  for (const i of indexRange(3, 14)) {
+    addresses.push(accounts[i]);
+  }
+  return addresses;
+}
 
 const deployStorage = async function (libs, contracts, resolver, addressOf) {
   IdentityStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
@@ -77,6 +93,7 @@ module.exports = {
   deployLibraries,
   deployNewContractResolver,
   getAccountsAndAddressOf,
+  getAllParticipantAddresses,
   deployIdentity,
   deployConfigsAndStake,
   deployDao,
