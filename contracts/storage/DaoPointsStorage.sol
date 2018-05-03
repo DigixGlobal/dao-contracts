@@ -18,7 +18,7 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
     require(init(CONTRACT_DAO_POINTS_STORAGE, _resolver));
   }
 
-  function dao_info_service()
+  function daoInfoService()
            internal
            returns (DaoInfoService _contract)
   {
@@ -31,7 +31,7 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
            public
            returns (bool _success)
   {
-    uint256 _currentQuarter = dao_info_service().getCurrentQuarter();
+    uint256 _currentQuarter = daoInfoService().getCurrentQuarter();
     quarterPoint[_currentQuarter].totalSupply += _point;
     quarterPoint[_currentQuarter].balance[_participant] += _point;
 

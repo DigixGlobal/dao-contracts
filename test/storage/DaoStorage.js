@@ -1,7 +1,5 @@
 const a = require('awaiting');
 
-const DaoStorage = artifacts.require('DaoStorage.sol');
-
 const {
   randomBytes32,
   randomBytes32s,
