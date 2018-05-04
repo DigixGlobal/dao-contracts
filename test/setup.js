@@ -10,6 +10,7 @@ const DoublyLinkedList = artifacts.require('./DoublyLinkedList.sol');
 const IdentityStorage = artifacts.require('./IdentityStorage.sol');
 const DaoConfigsStorage = artifacts.require('./DaoConfigsStorage.sol');
 const DaoStakeStorage = artifacts.require('./DaoStakeStorage.sol');
+const DaoPointsStorage = artifacts.require('./DaoPointsStorage.sol');
 const DaoStorage = artifacts.require('./DaoStorage.sol');
 
 const DaoIdentity = artifacts.require('./DaoIdentity.sol');
@@ -59,6 +60,7 @@ const deployStorage = async function (libs, contracts, resolver, addressOf) {
   contracts.daoConfigsStorage = await DaoConfigsStorage.new(resolver.address);
   DaoStakeStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
   contracts.daoStakeStorage = await DaoStakeStorage.new(resolver.address);
+  contracts.daoPointsStorage = await DaoPointsStorage.new(resolver.address);
   DaoStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
   contracts.daoStorage = await DaoStorage.new(resolver.address);
 };
@@ -69,6 +71,8 @@ const registerInteractive = async function (resolver, addressOf) {
     'c:stake:locking',
     'c:dao',
     'c:config:controller',
+    'i:quarter:point',
+    'i:reputation:point',
   ];
   await a.map(callingKeys, 10, key => resolver.register_contract(key, addressOf.root));
 };

@@ -15,15 +15,15 @@ contract ReputationPoint is ResolverClient, NonTransferableToken, DaoConstants {
   {
     require(init(CONTRACT_INTERACTIVE_REPUTATION_POINT, _resolver));
   }
-  
-  function dao_point_storage()
+
+  function daoPointsStorage()
            internal
            constant
            returns (DaoPointsStorage _contract)
   {
     _contract = DaoPointsStorage(get_contract(CONTRACT_DAO_POINTS_STORAGE));
   }
-  
+
   /// @notice display reputation points for the given account
   /// @param _who the account to query
   /// @return {
@@ -34,9 +34,9 @@ contract ReputationPoint is ResolverClient, NonTransferableToken, DaoConstants {
            constant
            returns (uint256 _balance)
   {
-    _balance = dao_point_storage().getReputation(_who);
+    _balance = daoPointsStorage().getReputation(_who);
   }
-  
+
   /// @notice display total reputation points for the dao
   /// @return {
   ///    "_supply": "total reputation point supply in the dao"
@@ -46,6 +46,6 @@ contract ReputationPoint is ResolverClient, NonTransferableToken, DaoConstants {
            constant
            returns (uint256 _supply)
   {
-    _supply = dao_point_storage().getTotalReputation();
+    _supply = daoPointsStorage().getTotalReputation();
   }
 }

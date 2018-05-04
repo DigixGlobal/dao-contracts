@@ -2,6 +2,7 @@ pragma solidity ^0.4.19;
 
 import "./../interface/NonTransferableToken.sol";
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
+import "./../service/DaoInfoService.sol";
 import "./../storage/DaoPointsStorage.sol";
 import "./../common/DaoConstants.sol";
 
@@ -16,7 +17,7 @@ contract QuarterPoint is ResolverClient, NonTransferableToken, DaoConstants {
     require(init(CONTRACT_INTERACTIVE_QUARTER_POINT, _resolver));
   }
 
-  function dao_point_storage()
+  function daoPointsStorage()
            internal
            constant
            returns (DaoPointsStorage _contract)
@@ -24,7 +25,7 @@ contract QuarterPoint is ResolverClient, NonTransferableToken, DaoConstants {
     _contract = DaoPointsStorage(get_contract(CONTRACT_DAO_POINTS_STORAGE));
   }
 
-  function dao_info_service()
+  function daoInfoService()
            internal
            constant
            returns (DaoInfoService _contract)
@@ -42,8 +43,8 @@ contract QuarterPoint is ResolverClient, NonTransferableToken, DaoConstants {
            constant
            returns (uint256 _balance)
   {
-    uint256 _currentQuarterId = dao_info_service().getCurrentQuarter();
-    _balance = dao_point_storage().getQuarterPoint(_who, _currentQuarterId);
+    uint256 _currentQuarterId = daoInfoService().getCurrentQuarter();
+    _balance = daoPointsStorage().getQuarterPoint(_who, _currentQuarterId);
   }
 
   /// @notice display quarter points for an account for the given quarter
@@ -57,7 +58,7 @@ contract QuarterPoint is ResolverClient, NonTransferableToken, DaoConstants {
            constant
            returns (uint256 _balance)
   {
-    _balance = dao_point_storage().getQuarterPoint(_who, _quarterId);
+    _balance = daoPointsStorage().getQuarterPoint(_who, _quarterId);
   }
 
   /// @notice display total quarter points for the current quarter
@@ -69,8 +70,8 @@ contract QuarterPoint is ResolverClient, NonTransferableToken, DaoConstants {
            constant
            returns (uint256 _supply)
   {
-    uint256 _currentQuarterId = dao_info_service().getCurrentQuarter();
-    _supply = dao_point_storage().getTotalQuarterPoint(_currentQuarterId);
+    uint256 _currentQuarterId = daoInfoService().getCurrentQuarter();
+    _supply = daoPointsStorage().getTotalQuarterPoint(_currentQuarterId);
   }
 
   /// @notice display total quarter points for the given quarter
@@ -83,6 +84,6 @@ contract QuarterPoint is ResolverClient, NonTransferableToken, DaoConstants {
            constant
            returns (uint256 _supply)
   {
-    _supply = dao_point_storage().getTotalQuarterPoint(_quarterId);
+    _supply = daoPointsStorage().getTotalQuarterPoint(_quarterId);
   }
 }

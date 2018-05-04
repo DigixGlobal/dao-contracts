@@ -1,7 +1,6 @@
 pragma solidity ^0.4.19;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
-import "../service/DaoInfoService.sol";
 import "../common/DaoConstants.sol";
 
 contract DaoPointsStorage is ResolverClient, DaoConstants {
@@ -18,22 +17,14 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
     require(init(CONTRACT_DAO_POINTS_STORAGE, _resolver));
   }
 
-  function daoInfoService()
-           internal
-           returns (DaoInfoService _contract)
-  {
-    _contract = DaoInfoService(get_contract(CONTRACT_DAO_INFO_SERVICE));
-  }
-
-  /// @notice add quarter points for a _participant in the current quarter
-  function addQuarterPoint(address _participant, uint256 _point)
+  /// @notice add quarter points for a _participant for a _quarterId
+  function addQuarterPoint(address _participant, uint256 _point, uint256 _quarterId)
            if_sender_is(CONTRACT_INTERACTIVE_QUARTER_POINT)
            public
            returns (bool _success)
   {
-    uint256 _currentQuarter = daoInfoService().getCurrentQuarter();
-    quarterPoint[_currentQuarter].totalSupply += _point;
-    quarterPoint[_currentQuarter].balance[_participant] += _point;
+    quarterPoint[_quarterId].totalSupply += _point;
+    quarterPoint[_quarterId].balance[_participant] += _point;
 
     _success = true;
   }
@@ -77,7 +68,7 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
     if (reputationPoint.balance[_participant] > _point) {
       reputationPoint.balance[_participant] -= _point;
     } else {
-      _toDeduct = _point - reputationPoint.balance[_participant];
+      _toDeduct = reputationPoint.balance[_participant];
       reputationPoint.balance[_participant] = 0;
     }
 
