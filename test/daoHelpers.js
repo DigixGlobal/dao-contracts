@@ -7,6 +7,14 @@ const proposalStates = function (bN) {
   }
 }
 
+const roles = function (bN) {
+  return {
+    FOUNDERS : bN(2),
+    PRLS : bN(3),
+    KYC_ADMINS : bN(4)
+  }
+}
+
 const timeLags = function () {
   return {
     ONE_SECOND_TIME_LAG : 1000
@@ -41,6 +49,7 @@ const EMPTY_BYTES = '0x000000000000000000000000000000000000000000000000000000000
 
 module.exports = {
   proposalStates,
+  roles,
   timeLags,
   sampleBadgeWeights,
   sampleStakeWeights,
