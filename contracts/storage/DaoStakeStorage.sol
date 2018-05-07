@@ -69,20 +69,36 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
         _lockedBadge = lockedBadge[_user];
     }
 
-    function addParticipant(address _user) public {
-        allParticipants.append(_user);
+    function addParticipant(address _user)
+        public
+        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
+        returns (bool _success)
+    {
+        _success = allParticipants.append(_user);
     }
 
-    function removeParticipant(address _user) public {
-        allParticipants.remove_item(_user);
+    function removeParticipant(address _user)
+        public
+        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
+        returns (bool _success)
+    {
+        _success = allParticipants.remove_item(_user);
     }
 
-    function addBadgeParticipant(address _user) public {
-        allBadgeParticipants.append(_user);
+    function addBadgeParticipant(address _user)
+        public
+        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
+        returns (bool _success)
+    {
+        _success = allBadgeParticipants.append(_user);
     }
 
-    function removeBadgeParticipant(address _user) public {
-        allBadgeParticipants.remove_item(_user);
+    function removeBadgeParticipant(address _user)
+        public
+        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
+        returns (bool _success)
+    {
+        _success = allBadgeParticipants.remove_item(_user);
     }
 
     function isParticipant(address _user)

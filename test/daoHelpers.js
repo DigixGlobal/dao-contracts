@@ -84,6 +84,7 @@ const sampleStakeWeights = function (bN) {
 }
 
 const EMPTY_BYTES = '0x0000000000000000000000000000000000000000000000000000000000000000';
+const EMPTY_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 module.exports = {
   proposalStates,
@@ -94,4 +95,5 @@ module.exports = {
   sampleBadgeWeights,
   sampleStakeWeights,
   EMPTY_BYTES,
+  EMPTY_ADDRESS,
 };
