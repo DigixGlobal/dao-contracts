@@ -11,7 +11,10 @@ contract Dao is DaoCommon {
         require(init(CONTRACT_DAO, _resolver));
     }
 
-    function daoCalculatorService() internal returns (DaoCalculatorService _contract) {
+    function daoCalculatorService()
+        internal
+        returns (DaoCalculatorService _contract)
+    {
         _contract = DaoCalculatorService(get_contract(CONTRACT_DAO_CALCULATOR_SERVICE));
     }
 

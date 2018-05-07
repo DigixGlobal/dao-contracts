@@ -11,7 +11,10 @@ contract DaoStakeLocking is DaoCommon {
         require(init(CONTRACT_DAO_STAKE_LOCKING, _resolver));
     }
 
-    function lockDGD(uint256 _amount) public {
+    function lockDGD(uint256 _amount)
+        public
+        returns (bool _success)
+    {
         address _user = msg.sender;
         uint256 _actualLockedDGD;
         uint256 _lockedDGDStake;
@@ -29,12 +32,14 @@ contract DaoStakeLocking is DaoCommon {
         }
 
         // interaction happens last
-        require(ERC20(ADDRESS_DGD_TOKEN).transferFrom(_user, address(this), _amount));
+        require(ERC20(ADDRESS_DGD_TOKEN).transferFrom(msg.sender, address(this), _amount));
+        _success = true;
     }
 
     function lockBadge(uint256 _amount)
         public
         if_locking_phase()
+        returns (bool _success)
     {
         address _user = msg.sender;
         uint256 _lockedBadge = daoStakeStorage().readUserLockedBadge(_user);
@@ -47,11 +52,13 @@ contract DaoStakeLocking is DaoCommon {
         daoStakeStorage().addBadgeParticipant(_user);
         // interaction happens last
         require(ERC20(ADDRESS_DGD_BADGE).transferFrom(_user, address(this), _amount));
+        _success = true;
     }
 
     function withdrawDGD(uint256 _amount)
         public
         if_locking_phase()
+        returns (bool _success)
     {
         address _user = msg.sender;
         uint256 _actualLockedDGD;
@@ -69,11 +76,13 @@ contract DaoStakeLocking is DaoCommon {
         daoStakeStorage().updateTotalLockedDGDStake(_totalLockedDGDStake - _amount);
 
         require(ERC20(ADDRESS_DGD_TOKEN).transfer(_user, _amount));
+        _success = true;
     }
 
     function withdrawBadge(uint256 _amount)
         public
         if_locking_phase()
+        returns (bool _success)
     {
         address _user = msg.sender;
         uint256 _lockedBadge = daoStakeStorage().readUserLockedBadge(_user);
@@ -89,5 +98,6 @@ contract DaoStakeLocking is DaoCommon {
         }
         // interaction happens last
         require(ERC20(ADDRESS_DGD_BADGE).transfer(_user, _amount));
+        _success = true;
     }
 }

@@ -13,8 +13,13 @@ const DaoStakeStorage = artifacts.require('./DaoStakeStorage.sol');
 const DaoPointsStorage = artifacts.require('./DaoPointsStorage.sol');
 const DaoStorage = artifacts.require('./DaoStorage.sol');
 
+const DaoInfoService = artifacts.require('./DaoInfoService.sol');
+const DaoListingService = artifacts.require('./DaoListingService.sol');
+const DaoCalculatorService = artifacts.require('./DaoCalculatorService.sol');
+
 const DaoIdentity = artifacts.require('./DaoIdentity.sol');
 const Dao = artifacts.require('./Dao.sol');
+const DaoStakeLocking = artifacts.require('./DaoStakeLocking.sol');
 
 const deployLibraries = async function () {
   const libs = {};
@@ -77,31 +82,23 @@ const registerInteractive = async function (resolver, addressOf) {
   await a.map(callingKeys, 10, key => resolver.register_contract(key, addressOf.root));
 };
 
-const deployIdentity = async function (libs, contracts, resolver, addressOf) {
-  IdentityStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
-  contracts.identityStorage = await IdentityStorage.new(resolver.address);
-  contracts.daoIdentity = await DaoIdentity.new(resolver.address);
+const deployServices = async function (libs, contracts, resolver, addressOf) {
+  contracts.daoInfoService = await DaoInfoService.new(resolver.address);
+  contracts.daoListingService = await DaoListingService.new(resolver.address);
+  contracts.daoCalculatorService = await DaoCalculatorService.new(resolver.address);
 };
 
-const deployConfigsAndStake = async function (libs, contracts, resolver, addressOf) {
-  contracts.configsStorage = await ConfigsStorage.new(resolver.address);
-  contracts.stakeStorage = await StakeStorage.new(resolver.address);
+const deployInteractive = async function (libs, contracts, resolver, addressOf) {
+  contracts.daoStakeLocking = await DaoStakeLocking.new(resolver.address);
 };
-
-const deployDao = async function (libs, contracts, resolver, addressOf) {
-  DaoStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
-  contracts.daoStorage = await DaoStorage.new(resolver.address);
-  contracts.dao = await Dao.new(resolver.address);
-}
 
 module.exports = {
   deployLibraries,
   deployNewContractResolver,
   getAccountsAndAddressOf,
   getAllParticipantAddresses,
-  deployIdentity,
-  deployConfigsAndStake,
-  deployDao,
   deployStorage,
-  registerInteractive
+  registerInteractive,
+  deployServices,
+  deployInteractive
 };

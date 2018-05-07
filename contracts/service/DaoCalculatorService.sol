@@ -35,7 +35,10 @@ contract DaoCalculatorService is DaoCommon {
         }
     }
 
-    function minimumVotingQuorum(bytes32 _proposalId) public returns (uint256 _minQuorum) {
+    function minimumVotingQuorum(bytes32 _proposalId)
+        public
+        returns (uint256 _minQuorum)
+    {
 
     }
 

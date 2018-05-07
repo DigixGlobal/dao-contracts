@@ -4,16 +4,22 @@ const proposalStates = function (bN) {
     PROPOSAL_STATE_INITIAL : bN(2),
     PROPOSAL_STATE_VETTED : bN(3),
     PROPOSAL_STATE_FUNDED : bN(4)
-  }
-}
+  };
+};
+
+const configs = function (bN) {
+  return {
+    CONFIG_MINIMUM_LOCKED_DGD : bN(10 * (10 ** 18))
+  };
+};
 
 const roles = function (bN) {
   return {
     FOUNDERS : bN(2),
     PRLS : bN(3),
     KYC_ADMINS : bN(4)
-  }
-}
+  };
+};
 
 const daoConstantsKeys = function () {
   return {
@@ -31,8 +37,8 @@ const daoConstantsKeys = function () {
     CONFIG_DRAFT_QUOTA_DENOMINATOR : 'draft_quota_denominator',
     CONFIG_VOTING_QUOTA_NUMERATOR : 'voting_quota_numerator',
     CONFIG_VOTING_QUOTA_DENOMINATOR : 'voting_quota_denominator'
-  }
-}
+  };
+};
 
 const daoConstantsValues = function (bN) {
   return {
@@ -50,14 +56,14 @@ const daoConstantsValues = function (bN) {
     CONFIG_DRAFT_QUOTA_DENOMINATOR : bN(100),
     CONFIG_VOTING_QUOTA_NUMERATOR : bN(30),
     CONFIG_VOTING_QUOTA_DENOMINATOR :bN(100)
-  }
-}
+  };
+};
 
 const timeLags = function () {
   return {
     ONE_SECOND_TIME_LAG : 1000
-  }
-}
+  };
+};
 
 const sampleBadgeWeights = function (bN) {
   return {
@@ -65,29 +71,30 @@ const sampleBadgeWeights = function (bN) {
     badgeHolder2 : bN(2),
     badgeHolder3 : bN(3),
     badgeHolder4 : bN(4)
-  }
-}
+  };
+};
 
 const sampleStakeWeights = function (bN) {
   return {
-    badgeHolder1 : bN(55),
-    badgeHolder2 : bN(120),
-    badgeHolder3 : bN(150),
-    badgeHolder4 : bN(175),
-    dgdHolder1   : bN(32),
-    dgdHolder2   : bN(41),
-    dgdHolder3   : bN(40),
-    dgdHolder4   : bN(30),
-    dgdHolder5   : bN(20),
-    dgdHolder6   : bN(46)
-  }
-}
+    badgeHolder1 : bN(55 * (10 ** 18)),
+    badgeHolder2 : bN(120 * (10 ** 18)),
+    badgeHolder3 : bN(150 * (10 ** 18)),
+    badgeHolder4 : bN(175 * (10 ** 18)),
+    dgdHolder1   : bN(32 * (10 ** 18)),
+    dgdHolder2   : bN(41 * (10 ** 18)),
+    dgdHolder3   : bN(40 * (10 ** 18)),
+    dgdHolder4   : bN(30 * (10 ** 18)),
+    dgdHolder5   : bN(20 * (10 ** 18)),
+    dgdHolder6   : bN(46 * (10 ** 18))
+  };
+};
 
 const EMPTY_BYTES = '0x0000000000000000000000000000000000000000000000000000000000000000';
 const EMPTY_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 module.exports = {
   proposalStates,
+  configs,
   roles,
   daoConstantsKeys,
   daoConstantsValues,
