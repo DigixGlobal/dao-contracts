@@ -31,8 +31,8 @@ contract DaoConstants {
 
   // these are addresses of contracts deployed in the development environment
   // TODO: update with correct addresses while final deployment
-  address ADDRESS_DGD_TOKEN = 0x823b657522FcA20a3582603f16f31a19D747Ce22;
-  address ADDRESS_DGD_BADGE = 0xCdBA4f7185a151a72c703aef5279024977Ce9596;
+  address ADDRESS_DGD_TOKEN = 0x792e9d2f5A2bb29DD1Fb58Bf16B89b61067621fb;
+  address ADDRESS_DGD_BADGE = 0x9cC91FaB462C8d055A13CC7e160E879fDfCD13ed;
 
   address ADDRESS_DGX_TOKEN = 0x4f3AfEC4E5a3F2A6a1A411DEF7D7dFe50eE057bF;
 

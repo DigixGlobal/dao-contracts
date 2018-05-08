@@ -18,6 +18,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
 
   function DaoStorage(address _resolver) public {
     require(init(CONTRACT_DAO_STORAGE, _resolver));
+    startOfFirstQuarter = now;
   }
 
   /////////////////////////////// READ FUNCTIONS //////////////////////////////

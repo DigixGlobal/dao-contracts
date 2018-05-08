@@ -9,7 +9,7 @@ const proposalStates = function (bN) {
 
 const configs = function (bN) {
   return {
-    CONFIG_MINIMUM_LOCKED_DGD : bN(10 * (10 ** 18))
+    CONFIG_MINIMUM_LOCKED_DGD : bN(10 ** 18)
   };
 };
 
@@ -67,10 +67,10 @@ const timeLags = function () {
 
 const sampleBadgeWeights = function (bN) {
   return {
-    badgeHolder1 : bN(1),
-    badgeHolder2 : bN(2),
-    badgeHolder3 : bN(3),
-    badgeHolder4 : bN(4)
+    badgeHolder1 : bN(10),
+    badgeHolder2 : bN(20),
+    badgeHolder3 : bN(30),
+    badgeHolder4 : bN(44)
   };
 };
 

@@ -15,20 +15,19 @@ contract DaoStakeLocking is DaoCommon {
         public
         returns (bool _success)
     {
-        address _user = msg.sender;
         uint256 _actualLockedDGD;
         uint256 _lockedDGDStake;
         uint256 _totalLockedDGDStake = daoStakeStorage().totalLockedDGDStake();
-        (_actualLockedDGD, _lockedDGDStake) = daoStakeStorage().readUserDGDStake(_user);
+        (_actualLockedDGD, _lockedDGDStake) = daoStakeStorage().readUserDGDStake(msg.sender);
 
         require(_amount > 0);
         _actualLockedDGD += _amount;
         // TODO: calculate this properly
         _lockedDGDStake += _amount;
-        daoStakeStorage().updateUserDGDStake(_user, _actualLockedDGD, _lockedDGDStake);
+        daoStakeStorage().updateUserDGDStake(msg.sender, _actualLockedDGD, _lockedDGDStake);
         daoStakeStorage().updateTotalLockedDGDStake(_totalLockedDGDStake + _amount);
         if (_actualLockedDGD >= CONFIG_MINIMUM_LOCKED_DGD) {
-            daoStakeStorage().addParticipant(_user);
+            daoStakeStorage().addParticipant(msg.sender);
         }
 
         // interaction happens last
@@ -41,17 +40,16 @@ contract DaoStakeLocking is DaoCommon {
         if_locking_phase()
         returns (bool _success)
     {
-        address _user = msg.sender;
-        uint256 _lockedBadge = daoStakeStorage().readUserLockedBadge(_user);
+        uint256 _lockedBadge = daoStakeStorage().readUserLockedBadge(msg.sender);
         uint256 _totalLockedBadges = daoStakeStorage().totalLockedBadges();
         require(_amount > 0);
         _lockedBadge += _amount;
-        daoStakeStorage().updateUserBadgeStake(_user, _lockedBadge);
+        daoStakeStorage().updateUserBadgeStake(msg.sender, _lockedBadge);
         daoStakeStorage().updateTotalLockedBadges(_totalLockedBadges + _amount);
 
-        daoStakeStorage().addBadgeParticipant(_user);
+        daoStakeStorage().addBadgeParticipant(msg.sender);
         // interaction happens last
-        require(ERC20(ADDRESS_DGD_BADGE).transferFrom(_user, address(this), _amount));
+        require(ERC20(ADDRESS_DGD_BADGE).transferFrom(msg.sender, address(this), _amount));
         _success = true;
     }
 
@@ -98,6 +96,24 @@ contract DaoStakeLocking is DaoCommon {
         }
         // interaction happens last
         require(ERC20(ADDRESS_DGD_BADGE).transfer(_user, _amount));
+        _success = true;
+    }
+
+    // to be removed, only for test purpose
+    function isLockingPhase()
+        public
+        if_locking_phase()
+        returns (bool _success)
+    {
+        _success = true;
+    }
+
+    // to be removed, only for test purpose
+    function isMainPhase()
+        public
+        if_main_phase()
+        returns (bool _success)
+    {
         _success = true;
     }
 }
