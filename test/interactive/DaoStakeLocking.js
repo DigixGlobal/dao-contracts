@@ -46,6 +46,7 @@ contract('DaoStakeLocking', function (accounts) {
     if (process.env.FIRST_TEST) {
       await initialTransferTokens();
     }
+    await resolver.register_contract('c:config:controller', addressOf.root);
   });
 
   const initialTransferTokens = async function () {
@@ -71,14 +72,17 @@ contract('DaoStakeLocking', function (accounts) {
 
   const setDummyConfig = async function () {
     // set locking phase to be 10 seconds
+    // set quarter phase to be 20 seconds
     // for testing purpose
-    await resolver.register_contract('c:config:controller', addressOf.root);
     await contracts.daoConfigsStorage.set_uint_config(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION, bN(10));
+    await contracts.daoConfigsStorage.set_uint_config(daoConstantsKeys().CONFIG_QUARTER_DURATION, bN(20));
   };
 
   const setConfig = async function () {
     await contracts.daoConfigsStorage.set_uint_config(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION,
                                                           daoConstantsValues(bN).CONFIG_LOCKING_PHASE_DURATION);
+    await contracts.daoConfigsStorage.set_uint_config(daoConstantsKeys().CONFIG_QUARTER_DURATION,
+                                                          daoConstantsValues(bN).CONFIG_QUARTER_DURATION);
   };
 
   describe('lockDGD', function () {
@@ -136,6 +140,18 @@ contract('DaoStakeLocking', function (accounts) {
     before(async function () {
       await setDummyConfig();
     });
+    const waitFor = async function (howManyBlocks) {
+      const timeThen = getCurrentTimestamp();
+      const blockNumberThen = web3.eth.blockNumber;
+      async function wait() {
+        await web3.eth.sendTransaction({ from: accounts[0], to: accounts[19], value: web3.toWei(0.0001, 'ether') });
+        if (web3.eth.blockNumber > blockNumberThen + howManyBlocks) return;
+        await wait();
+      }
+      console.log('       waiting for next phase...');
+      await wait();
+      return timeThen;
+    };
     it('[locking phase, amount = 0]: revert', async function () {
       assert(await a.failure(contracts.daoStakeLocking.lockBadge.call(
         bN(0),
@@ -154,20 +170,10 @@ contract('DaoStakeLocking', function (accounts) {
       const initialContractBalance = await contracts.badgeToken.balanceOf.call(contracts.daoStakeLocking.address);
       const initialLockedBadges = await contracts.daoStakeStorage.readUserLockedBadge.call(addressOf.badgeHolder1);
       const initialTotalLockedBadges = await contracts.daoStakeStorage.totalLockedBadges.call();
-      assert.isAtLeast(initialBalance, bN(1));
+      assert.isAtLeast(initialBalance.toNumber(), 1);
       const amount = bN(1);
       await contracts.badgeToken.approve(contracts.daoStakeLocking.address, amount, { from: addressOf.badgeHolder1 });
 
-      // print functions
-      console.log('allowance : ', await contracts.badgeToken.allowance.call(addressOf.badgeHolder1, contracts.daoStakeLocking.address));
-      console.log('current quarter : ', await contracts.daoInfoService.getCurrentQuarter.call());
-      console.log('dao started : ', await contracts.daoInfoService.getDaoStartTime.call());
-      console.log('locking phase duration : ', await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION));
-      console.log('quarter duration : ', await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION));
-      console.log('locking phase : ', await contracts.daoStakeLocking.isLockingPhase.call());
-      console.log('main phase : ', await contracts.daoStakeLocking.isMainPhase.call());
-
-      // continue
       assert.deepEqual(await contracts.daoStakeLocking.lockBadge.call(
         amount,
         { from: addressOf.badgeHolder1 },
@@ -180,25 +186,15 @@ contract('DaoStakeLocking', function (accounts) {
       assert.deepEqual(await contracts.daoStakeStorage.isBadgeParticipant.call(addressOf.badgeHolder1), true);
     });
     it('[after locking phase has ended, valid amount]: revert', async function () {
-      // spend 10 seconds (locking_time as set in dummyConfig), which is roughly 18 seconds
-      const timeThen = getCurrentTimestamp();
-      const blockNumberThen = web3.eth.blockNumber;
-      async function wait() {
-        await web3.eth.sendTransaction({ from: accounts[0], to: accounts[19], value: web3.toWei(0.0001, 'ether') });
-        if (web3.eth.blockNumber > blockNumberThen + 100) return;
-        await wait();
-      }
-      await wait();
+      // spend more than 10 seconds and less than 20 secs (locking_time/quarter_time as set in dummyConfig)
+      const timeThen = await waitFor(60);
       assert.isAtLeast(getCurrentTimestamp() - timeThen, 10);
-      console.log('gap was : ', getCurrentTimestamp() - timeThen);
+      assert.isBelow(getCurrentTimestamp() - timeThen, 20);
 
       // continue
-      assert.isAtLeast(await contracts.badgeToken.balanceOf.call(addressOf.badgeHolder2), bN(1));
+      assert.isAtLeast((await contracts.badgeToken.balanceOf.call(addressOf.badgeHolder2)).toNumber(), 1);
       await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(1), { from: addressOf.badgeHolder2 });
-      console.log('current quarter : ', await contracts.daoInfoService.getCurrentQuarter.call());
-      console.log('dao started : ', await contracts.daoInfoService.getDaoStartTime.call());
-      console.log('locking phase : ', await contracts.daoStakeLocking.isLockingPhase.call());
-      console.log('main phase : ', await contracts.daoStakeLocking.isMainPhase.call());
+
       assert(await a.failure(contracts.daoStakeLocking.lockBadge.call(
         bN(1),
         { from: addressOf.badgeHolder2 },
@@ -210,10 +206,115 @@ contract('DaoStakeLocking', function (accounts) {
   });
 
   describe('withdrawDGD', function () {
+    before(async function () {
+      await setDummyConfig();
+    });
+    const waitFor = async function (howManyBlocks) {
+      const timeThen = getCurrentTimestamp();
+      const blockNumberThen = web3.eth.blockNumber;
+      async function wait() {
+        await web3.eth.sendTransaction({ from: accounts[0], to: accounts[19], value: web3.toWei(0.0001, 'ether') });
+        if (web3.eth.blockNumber > blockNumberThen + howManyBlocks) return;
+        await wait();
+      }
+      console.log('       waiting for next phase...');
+      await wait();
+      return timeThen;
+    };
+    it('[withdraw more than locked amount]: revert', async function () {
+      // dgdHolder2 is the user in context
+      const lockedAmount = await contracts.daoStakeStorage.readUserDGDStake.call(addressOf.dgdHolder2);
+      await waitFor(50);
+      assert.deepEqual(await contracts.daoStakeLocking.isLockingPhase.call(), true);
+      const withdrawAmount = lockedAmount[0].plus(bN(1));
+      assert(await a.failure(contracts.daoStakeLocking.withdrawDGD.call(
+        withdrawAmount,
+        { from: addressOf.dgdHolder2 },
+      )));
+    });
+    it('[withdraw less than locked amount, still locked enough to be participant]: success, verify read functions', async function () {
+      const lockedAmount = await contracts.daoStakeStorage.readUserDGDStake.call(addressOf.dgdHolder2);
+      // make sure its locking phase and dgdHolder2 is a participant already
+      assert.deepEqual(await contracts.daoStakeLocking.isLockingPhase.call(), true);
+      assert.deepEqual(await contracts.daoStakeStorage.isParticipant.call(addressOf.dgdHolder2), true);
+      // if this amount is withdrawn, there will still be enough for dgdHolder2 to be participant
+      const withdrawAmount = lockedAmount[0].minus(configs(bN).CONFIG_MINIMUM_LOCKED_DGD);
 
+      // initial info
+      const balanceBefore = await contracts.dgdToken.balanceOf.call(addressOf.dgdHolder2);
+      const contractBalanceBefore = await contracts.dgdToken.balanceOf.call(contracts.daoStakeLocking.address);
+      const totalLockedDGDBefore = await contracts.daoStakeStorage.totalLockedDGDStake.call();
+
+      assert.deepEqual(await contracts.daoStakeLocking.withdrawDGD.call(withdrawAmount, { from: addressOf.dgdHolder2 }), true);
+      await contracts.daoStakeLocking.withdrawDGD(withdrawAmount, { from: addressOf.dgdHolder2 });
+
+      // verify that dgdHolder2 is still a participant
+      assert.deepEqual(await contracts.daoStakeStorage.isParticipant.call(addressOf.dgdHolder2), true);
+      // note the DGD balances
+      assert.deepEqual(await contracts.dgdToken.balanceOf.call(contracts.daoStakeLocking.address), contractBalanceBefore.minus(withdrawAmount));
+      assert.deepEqual(await contracts.dgdToken.balanceOf.call(addressOf.dgdHolder2), balanceBefore.plus(withdrawAmount));
+      const readStake = await contracts.daoStakeStorage.readUserDGDStake.call(addressOf.dgdHolder2);
+      assert.deepEqual(readStake[0], lockedAmount[0].minus(withdrawAmount));
+      assert.deepEqual(await contracts.daoStakeStorage.totalLockedDGDStake.call(), totalLockedDGDBefore.minus(withdrawAmount));
+    });
+    it('[withdraw less than locked amount, now should no more be a participant]: success, verify read functions', async function () {
+      const lockedAmount = await contracts.daoStakeStorage.readUserDGDStake.call(addressOf.dgdHolder2);
+      // make sure its locking phase and dgdHolder2 is a participant already
+      assert.deepEqual(await contracts.daoStakeLocking.isLockingPhase.call(), true);
+      assert.deepEqual(await contracts.daoStakeStorage.isParticipant.call(addressOf.dgdHolder2), true);
+      // if this amount is withdrawn, there will still be enough for dgdHolder2 to be participant
+      const withdrawAmount = randomBigNumber(bN, configs(bN).CONFIG_MINIMUM_LOCKED_DGD);
+
+      // initial info
+      const balanceBefore = await contracts.dgdToken.balanceOf.call(addressOf.dgdHolder2);
+      const contractBalanceBefore = await contracts.dgdToken.balanceOf.call(contracts.daoStakeLocking.address);
+      const totalLockedDGDBefore = await contracts.daoStakeStorage.totalLockedDGDStake.call();
+
+      assert.deepEqual(await contracts.daoStakeLocking.withdrawDGD.call(withdrawAmount, { from: addressOf.dgdHolder2 }), true);
+      await contracts.daoStakeLocking.withdrawDGD(withdrawAmount, { from: addressOf.dgdHolder2 });
+
+      // verify that dgdHolder2 is still a participant
+      assert.deepEqual(await contracts.daoStakeStorage.isParticipant.call(addressOf.dgdHolder2), false);
+      // note the DGD balances
+      assert.deepEqual(await contracts.dgdToken.balanceOf.call(contracts.daoStakeLocking.address), contractBalanceBefore.minus(withdrawAmount));
+      assert.deepEqual(await contracts.dgdToken.balanceOf.call(addressOf.dgdHolder2), balanceBefore.plus(withdrawAmount));
+      const readStake = await contracts.daoStakeStorage.readUserDGDStake.call(addressOf.dgdHolder2);
+      assert.deepEqual(readStake[0], lockedAmount[0].minus(withdrawAmount));
+      assert.deepEqual(await contracts.daoStakeStorage.totalLockedDGDStake.call(), totalLockedDGDBefore.minus(withdrawAmount));
+    });
+    it('[withdraw during the main phase]: revert', async function () {
+      await waitFor(50);
+      assert.deepEqual(await contracts.daoStakeLocking.isMainPhase.call(), true);
+      const lockedAmount = await contracts.daoStakeStorage.readUserDGDStake.call(addressOf.dgdHolder1);
+      const withdrawAmount = randomBigNumber(bN, lockedAmount[0]);
+      assert(await a.failure(contracts.daoStakeLocking.withdrawDGD.call(
+        withdrawAmount,
+        { from: addressOf.dgdHolder1 },
+      )));
+    });
+    after(async function () {
+      await setConfig();
+    });
   });
 
   describe('withdrawBadge', function () {
+    before(async function () {
+      await setDummyConfig();
+    });
+    it('[withdraw more than locked amount]: revert', async function () {
 
-  })
+    });
+    it('[withdraw less than locked amount, still badge participant]: success, verify read functions', async function () {
+
+    });
+    it('[withdraw all badges, now should no more be a badge participant]: success, verify read functions', async function () {
+
+    });
+    it('[withdraw during the main phase]: revert', async function () {
+
+    });
+    after(async function () {
+      await setConfig();
+    });
+  });
 });
