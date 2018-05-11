@@ -4,11 +4,19 @@ import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import 'zeppelin-solidity/contracts/token/ERC20/ERC20.sol';
 import "./lib/MathHelper.sol";
 import "./common/DaoCommon.sol";
+import "./service/DaoCalculatorService.sol";
 
 contract DaoStakeLocking is DaoCommon {
 
     function DaoStakeLocking(address _resolver) public {
         require(init(CONTRACT_DAO_STAKE_LOCKING, _resolver));
+    }
+
+    function daoCalculatorService()
+        internal
+        returns (DaoCalculatorService _contract)
+    {
+        _contract = DaoCalculatorService(get_contract(CONTRACT_DAO_CALCULATOR_SERVICE));
     }
 
     function lockDGD(uint256 _amount)
@@ -22,8 +30,8 @@ contract DaoStakeLocking is DaoCommon {
 
         require(_amount > 0);
         _actualLockedDGD += _amount;
-        // TODO: calculate this properly
-        _lockedDGDStake += _amount;
+
+        _lockedDGDStake += daoCalculatorService().calculateAdditionalLockedDGDStake(_amount);
         daoStakeStorage().updateUserDGDStake(msg.sender, _actualLockedDGD, _lockedDGDStake);
         daoStakeStorage().updateTotalLockedDGDStake(_totalLockedDGDStake + _amount);
         if (_actualLockedDGD >= CONFIG_MINIMUM_LOCKED_DGD) {

@@ -3,23 +3,42 @@ pragma solidity ^0.4.19;
 import "@digix/solidity-collections/contracts/abstract/BytesIteratorStorage.sol";
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
-import "../common/DaoCommon.sol";
 import "../common/DaoConstants.sol";
 import "../lib/DaoStructs.sol";
 
 contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
-  using DoublyLinkedList for DoublyLinkedList.Bytes;
+    using DoublyLinkedList for DoublyLinkedList.Bytes;
 
-  DoublyLinkedList.Bytes allProposals;
-  mapping (bytes32 => DaoStructs.Proposal) proposalsById;
-  mapping (uint256 => DoublyLinkedList.Bytes) proposalsByState;
-  mapping (address => uint256) lastNonce;
-  uint256 public startOfFirstQuarter;
+    bool public isReplacedByNewDao;
+    address public newDaoContract;
+    address public newDaoFundingManager;
 
-  function DaoStorage(address _resolver) public {
-    require(init(CONTRACT_DAO_STORAGE, _resolver));
-    startOfFirstQuarter = now;
-  }
+    DoublyLinkedList.Bytes allProposals;
+    mapping (bytes32 => DaoStructs.Proposal) proposalsById;
+    mapping (uint256 => DoublyLinkedList.Bytes) proposalsByState;
+    mapping (address => uint256) lastNonce;
+    uint256 public startOfFirstQuarter;
+
+    function DaoStorage(address _resolver) public {
+        require(init(CONTRACT_DAO_STORAGE, _resolver));
+    }
+
+    function setStartOfFirstQuarter(uint256 _start)
+        if_sender_is(CONTRACT_DAO)
+        public
+    {
+        require(startOfFirstQuarter == 0);
+        startOfFirstQuarter = _start;
+    }
+
+    function updateForDaoMigration(address _newDaoFundingManager, address _newDaoContract)
+        if_sender_is(CONTRACT_DAO)
+        public
+    {
+      isReplacedByNewDao = true;
+      newDaoContract = _newDaoContract;
+      newDaoFundingManager = _newDaoFundingManager;
+    }
 
   /////////////////////////////// READ FUNCTIONS //////////////////////////////
 

@@ -1,10 +1,12 @@
 pragma solidity ^0.4.19;
 
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
+import 'zeppelin-solidity/contracts/ownership/Claimable.sol';
 import "./common/DaoCommon.sol";
 import "./service/DaoCalculatorService.sol";
+import "./DaoFundingManager.sol";
 
-contract Dao is DaoCommon {
+contract Dao is DaoCommon, Claimable {
     using DoublyLinkedList for DoublyLinkedList.Address;
 
     function Dao(address _resolver) public {
@@ -16,6 +18,22 @@ contract Dao is DaoCommon {
         returns (DaoCalculatorService _contract)
     {
         _contract = DaoCalculatorService(get_contract(CONTRACT_DAO_CALCULATOR_SERVICE));
+    }
+
+    function daoFundingManager()
+        internal
+        returns (DaoFundingManager _contract)
+    {
+        _contract = DaoFundingManager(get_contract(CONTRACT_DAO_FUNDING_MANAGER));
+    }
+
+    function migrateToNewDao(address _newDaoFundingManager, address _newDaoContract) public onlyOwner {
+        daoStorage().updateForDaoMigration(_newDaoFundingManager, _newDaoContract);
+        daoFundingManager().moveFundsToNewDao(_newDaoFundingManager);
+    }
+
+    function setStartOfFirstQuarter(uint256 _start) public if_founder {
+        daoStorage().setStartOfFirstQuarter(_start);
     }
 
     function submitPreproposal(

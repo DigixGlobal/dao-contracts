@@ -7,15 +7,23 @@ import "./../common/IdentityCommon.sol";
 import "./../storage/DaoConfigsStorage.sol";
 import "./../storage/DaoStakeStorage.sol";
 import "./../storage/DaoStorage.sol";
+import "./../storage/DaoFundingStorage.sol";
 
 contract DaoCommon is IdentityCommon {
+    modifier daoIsValid() {
+        require(!daoStorage().isReplacedByNewDao());
+        _;
+    }
+
     modifier if_locking_phase() {
-        require((now - daoInfoService().getDaoStartTime()) % get_uint_config(CONFIG_QUARTER_DURATION) < get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
+        require(!daoStorage().isReplacedByNewDao());
+        require(currentTInQuarter() < get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
         _;
     }
 
     modifier if_main_phase() {
-        require((now - daoInfoService().getDaoStartTime()) % get_uint_config(CONFIG_QUARTER_DURATION) >= get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
+        require(!daoStorage().isReplacedByNewDao());
+        require(currentTInQuarter() >= get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
         _;
     }
 
@@ -54,6 +62,16 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
+    function currentQuarterIndex() internal returns(uint256 _quarterIndex) {
+        _quarterIndex = (now - daoStorage().startOfFirstQuarter()) / QUARTER_DURATION;
+        //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
+    }
+
+    function currentTInQuarter() internal returns(uint256 _currentT) {
+        _currentT = (now - daoStorage().startOfFirstQuarter()) % QUARTER_DURATION;
+        //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
+    }
+
     function daoInfoService()
         internal
         returns (DaoInfoService _contract)
@@ -81,6 +99,10 @@ contract DaoCommon is IdentityCommon {
 
     function daoStorage() internal returns (DaoStorage _contract) {
         _contract = DaoStorage(get_contract(CONTRACT_DAO_STORAGE));
+    }
+
+    function daoFundingStorage() internal returns (DaoFundingStorage _contract) {
+        _contract = DaoFundingStorage(get_contract(CONTRACT_DAO_FUNDING_STORAGE));
     }
 
     function get_uint_config(bytes32 _config_key)

@@ -10,6 +10,13 @@ contract DaoCalculatorService is DaoCommon {
       require(init(CONTRACT_DAO_CALCULATOR_SERVICE, _resolver));
     }
 
+    function calculateAdditionalLockedDGDStake(uint256 _additionalDgd)
+        public
+        returns (uint256 _additionalLockedDGDStake)
+    {
+        _additionalLockedDGDStake = _additionalDgd * (QUARTER_DURATION - currentTInQuarter()) / (QUARTER_DURATION - get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
+    }
+
     function minimumDraftQuorum(bytes32 _proposalId) public returns (uint256 _minQuorum) {
         uint256 _ethAsked;
         //TODO: implement this function
@@ -28,6 +35,7 @@ contract DaoCalculatorService is DaoCommon {
         public
         returns (bool _passed)
     {
+        //TODO: this function would not calculate properly cause of integer division
         uint256 _quota = _for / (_for + _against);
         if (_quota >
                 (get_uint_config(CONFIG_DRAFT_QUOTA_NUMERATOR) / get_uint_config(CONFIG_DRAFT_QUOTA_DENOMINATOR))) {
@@ -46,6 +54,7 @@ contract DaoCalculatorService is DaoCommon {
         public
         returns (bool _passed)
     {
+        //TODO: this function would not calculate properly cause of integer division
         uint256 _quota = _for / (_for + _against);
         if (_quota >
                 (get_uint_config(CONFIG_VOTING_QUOTA_NUMERATOR) / get_uint_config(CONFIG_VOTING_QUOTA_DENOMINATOR))) {

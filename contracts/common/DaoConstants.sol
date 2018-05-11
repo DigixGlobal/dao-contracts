@@ -24,6 +24,7 @@ contract DaoConstants {
   bytes32 CONTRACT_INTERACTIVE_QUARTER_POINT = "i:quarter:point";
   bytes32 CONTRACT_INTERACTIVE_REPUTATION_POINT = "i:reputation:point";
   bytes32 CONTRACT_DAO_FUNDING_MANAGER = "i:dao:fundingmanager";
+  bytes32 CONTRACT_DAO_FUNDING_STORAGE = "i:dao:fundingstorage";
 
   bytes32 CONTRACT_DGD_TOKEN = "t:dgd";
   bytes32 CONTRACT_DGX_TOKEN = "t:dgx";
@@ -58,4 +59,6 @@ contract DaoConstants {
   bytes32 CONFIG_DRAFT_QUOTA_DENOMINATOR = "draft_quota_denominator";
   bytes32 CONFIG_VOTING_QUOTA_NUMERATOR = "voting_quota_numerator";
   bytes32 CONFIG_VOTING_QUOTA_DENOMINATOR = "voting_quota_denominator";
+
+  uint256 QUARTER_DURATION = 90 days;
 }
