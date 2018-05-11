@@ -107,7 +107,6 @@ contract DaoStakeLocking is DaoCommon {
         _success = true;
     }
 
-    // to be removed, only for test purpose
     function isLockingPhase()
         public
         if_locking_phase()
@@ -116,7 +115,6 @@ contract DaoStakeLocking is DaoCommon {
         _success = true;
     }
 
-    // to be removed, only for test purpose
     function isMainPhase()
         public
         if_main_phase()
