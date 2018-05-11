@@ -21,6 +21,32 @@ const roles = function (bN) {
   };
 };
 
+const phases = {
+  LOCKING_PHASE: 1,
+  MAIN_PHASE: 2
+};
+
+// Locking phase : 1
+// Main phase : 2
+const getPhase = function (timeNow, startOfDao, lockingPhaseDuration, quarterDuration) {
+  if (((timeNow - startOfDao) % quarterDuration) < lockingPhaseDuration) {
+    return phases.LOCKING_PHASE;
+  } else {
+    return phases.MAIN_PHASE;
+  }
+};
+
+const getTimeToNextPhase = function (timeNow, startOfDao, lockingPhaseDuration, quarterDuration) {
+  const currentPhase = getPhase(timeNow, startOfDao, lockingPhaseDuration, quarterDuration);
+  let timeToNextPhase;
+  if (currentPhase == phases.LOCKING_PHASE) {
+    timeToNextPhase = lockingPhaseDuration - ((timeNow - startOfDao) % quarterDuration);
+  } else {
+    timeToNextPhase = quarterDuration - ((timeNow - startOfDao) % quarterDuration);
+  }
+  return timeToNextPhase;
+};
+
 const daoConstantsKeys = function () {
   return {
     CONFIG_LOCKING_PHASE_DURATION : 'locking_phase_duration',
@@ -101,6 +127,9 @@ module.exports = {
   timeLags,
   sampleBadgeWeights,
   sampleStakeWeights,
+  phases,
+  getPhase,
+  getTimeToNextPhase,
   EMPTY_BYTES,
   EMPTY_ADDRESS,
 };
