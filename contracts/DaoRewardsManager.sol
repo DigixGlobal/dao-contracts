@@ -7,13 +7,7 @@ import "./service/DaoInfoService.sol";
 // this contract will receive DGXs fees from the DGX fees distributors
 contract DaoRewardsManager is ResolverClient, DaoConstants {
 
-  // fees collected by quarterId
-  mapping(uint256 => uint256) feesCollectedHistory;
-
-  // permit claiming rewards by quarterId
-  mapping(uint256 => bool) permitClaim;
-
-  function DaoRoles(address _resolver)
+  function DaoRewardsManager(address _resolver)
            public
   {
     require(init(CONTRACT_DAO_REWARDS_MANAGER, _resolver));
@@ -34,13 +28,14 @@ contract DaoRewardsManager is ResolverClient, DaoConstants {
 
   }
 
-  function tokenFallback(address _token, uint256 _amount, bytes32 _data)
+  /* function  */
+  /* function tokenFallback(address _token, uint256 _amount, bytes32 _data)
            public
   {
     require(_token == ADDRESS_DGX_TOKEN);
     uint256 _quarterId = dao_info_service().getCurrentQuarter();
     feesCollectedHistory[_quarterId] = _amount;
     permitClaim[_quarterId] = true;
-  }
+  } */
 
 }

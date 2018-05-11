@@ -24,7 +24,8 @@ contract DaoConstants {
   bytes32 CONTRACT_INTERACTIVE_QUARTER_POINT = "i:quarter:point";
   bytes32 CONTRACT_INTERACTIVE_REPUTATION_POINT = "i:reputation:point";
   bytes32 CONTRACT_DAO_FUNDING_MANAGER = "i:dao:fundingmanager";
-  bytes32 CONTRACT_DAO_FUNDING_STORAGE = "i:dao:fundingstorage";
+  bytes32 CONTRACT_DAO_FUNDING_STORAGE = "s:dao:fundingstorage";
+  bytes32 CONTRACT_DAO_REWARDS_STORAGE = "s:dao:rewardsstorage";
 
   bytes32 CONTRACT_DGD_TOKEN = "t:dgd";
   bytes32 CONTRACT_DGX_TOKEN = "t:dgx";
