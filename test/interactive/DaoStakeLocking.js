@@ -46,9 +46,9 @@ contract('DaoStakeLocking', function (accounts) {
     await resolver.register_contract('c:dao', addressOf.root);
     await contracts.daoStorage.setStartOfFirstQuarter(getCurrentTimestamp());
     await deployServices(libs, contracts, resolver, addressOf);
-    await deployInteractive(libs, contracts, resolver, addressOf);
     contracts.dgdToken = await MockDGD.at(process.env.DGD_ADDRESS);
     contracts.badgeToken = await MockBadge.at(process.env.DGD_BADGE_ADDRESS);
+    await deployInteractive(libs, contracts, resolver, addressOf);
     if (process.env.FIRST_TEST) {
       await initialTransferTokens();
     }
@@ -74,9 +74,6 @@ contract('DaoStakeLocking', function (accounts) {
     await contracts.badgeToken.transfer(addressOf.badgeHolder2, sampleBadgeWeights(bN).badgeHolder2);
     await contracts.badgeToken.transfer(addressOf.badgeHolder3, sampleBadgeWeights(bN).badgeHolder3);
     await contracts.badgeToken.transfer(addressOf.badgeHolder4, sampleBadgeWeights(bN).badgeHolder4);
-
-    assert.deepEqual(await contracts.dgdToken.balanceOf.call(addressOf.dgdHolder3), sampleStakeWeights(bN).dgdHolder3);
-    assert.deepEqual(await contracts.badgeToken.balanceOf.call(addressOf.badgeHolder2), sampleBadgeWeights(bN).badgeHolder2);
   };
 
   const setDummyConfig = async function () {

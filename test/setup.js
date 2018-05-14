@@ -92,9 +92,10 @@ const deployServices = async function (libs, contracts, resolver, addressOf) {
 };
 
 const deployInteractive = async function (libs, contracts, resolver, addressOf) {
-  contracts.daoStakeLocking = await DaoStakeLocking.new(resolver.address);
+  contracts.daoStakeLocking = await DaoStakeLocking.new(resolver.address, contracts.dgdToken.address, contracts.badgeToken.address);
   contracts.daoIdentity = await DaoIdentity.new(resolver.address);
   contracts.daoFundingManager = await DaoFundingManager.new(resolver.address);
+  contracts.dao = await Dao.new(resolver.address);
 };
 
 module.exports = {

@@ -96,13 +96,12 @@ contract('DaoCalculatorService', function (accounts) {
     contracts = {};
     await deployStorage(libs, contracts, resolver, addressOf);
     await deployServices(libs, contracts, resolver, addressOf);
+    contracts.dgdToken = await MockDGD.at(process.env.DGD_ADDRESS);
+    contracts.badgeToken = await MockBadge.at(process.env.DGD_BADGE_ADDRESS);
     await deployInteractive(libs, contracts, resolver, addressOf);
     await resolver.register_contract('c:dao', accounts[0]);
     await resolver.register_contract('c:config:controller', accounts[0]);
     await contracts.daoStorage.setStartOfFirstQuarter(getCurrentTimestamp());
-
-    contracts.dgdToken = await MockDGD.at(process.env.DGD_ADDRESS);
-    contracts.badgeToken = await MockBadge.at(process.env.DGD_BADGE_ADDRESS);
 
     await createDummyDaoData();
     await dummyStake();

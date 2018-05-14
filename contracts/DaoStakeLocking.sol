@@ -8,8 +8,13 @@ import "./service/DaoCalculatorService.sol";
 
 contract DaoStakeLocking is DaoCommon {
 
-    function DaoStakeLocking(address _resolver) public {
+    address public dgdToken;
+    address public dgdBadgeToken;
+
+    function DaoStakeLocking(address _resolver, address _dgdToken, address _dgdBadgeToken) public {
         require(init(CONTRACT_DAO_STAKE_LOCKING, _resolver));
+        dgdToken = _dgdToken;
+        dgdBadgeToken = _dgdBadgeToken;
     }
 
     function daoCalculatorService()
@@ -39,7 +44,7 @@ contract DaoStakeLocking is DaoCommon {
         }
 
         // interaction happens last
-        require(ERC20(ADDRESS_DGD_TOKEN).transferFrom(msg.sender, address(this), _amount));
+        require(ERC20(dgdToken).transferFrom(msg.sender, address(this), _amount));
         _success = true;
     }
 
@@ -57,7 +62,7 @@ contract DaoStakeLocking is DaoCommon {
 
         daoStakeStorage().addBadgeParticipant(msg.sender);
         // interaction happens last
-        require(ERC20(ADDRESS_DGD_BADGE).transferFrom(msg.sender, address(this), _amount));
+        require(ERC20(dgdBadgeToken).transferFrom(msg.sender, address(this), _amount));
         _success = true;
     }
 
@@ -81,7 +86,7 @@ contract DaoStakeLocking is DaoCommon {
         daoStakeStorage().updateUserDGDStake(_user, _actualLockedDGD, _lockedDGDStake);
         daoStakeStorage().updateTotalLockedDGDStake(_totalLockedDGDStake - _amount);
 
-        require(ERC20(ADDRESS_DGD_TOKEN).transfer(_user, _amount));
+        require(ERC20(dgdToken).transfer(_user, _amount));
         _success = true;
     }
 
@@ -103,7 +108,7 @@ contract DaoStakeLocking is DaoCommon {
             daoStakeStorage().removeBadgeParticipant(_user);
         }
         // interaction happens last
-        require(ERC20(ADDRESS_DGD_BADGE).transfer(_user, _amount));
+        require(ERC20(dgdBadgeToken).transfer(_user, _amount));
         _success = true;
     }
 

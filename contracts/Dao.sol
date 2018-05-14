@@ -27,12 +27,12 @@ contract Dao is DaoCommon, Claimable {
         _contract = DaoFundingManager(get_contract(CONTRACT_DAO_FUNDING_MANAGER));
     }
 
-    function migrateToNewDao(address _newDaoFundingManager, address _newDaoContract) public onlyOwner {
+    function migrateToNewDao(address _newDaoFundingManager, address _newDaoContract) public onlyOwner() {
         daoStorage().updateForDaoMigration(_newDaoFundingManager, _newDaoContract);
         daoFundingManager().moveFundsToNewDao(_newDaoFundingManager);
     }
 
-    function setStartOfFirstQuarter(uint256 _start) public if_founder {
+    function setStartOfFirstQuarter(uint256 _start) public if_founder() {
         daoStorage().setStartOfFirstQuarter(_start);
     }
 
@@ -51,35 +51,69 @@ contract Dao is DaoCommon, Claimable {
       _;
     }
 
+    modifier if_badge_participant() {
+      require(daoInfoService().isBadgeParticipant(msg.sender));
+      _;
+    }
+
+    modifier if_valid_milestones(uint256 a, uint256 b) {
+      require(a == b);
+      _;
+    }
+
     function submitPreproposal(
         bytes32 _docIpfsHash,
-        uint256[] _milestoneDurations,
+        uint256[] _milestonesDurations,
         uint256[] _milestonesFundings
     )
         public
         if_main_phase()
+        if_participant()
+        if_valid_milestones(_milestonesDurations.length, _milestonesFundings.length)
         returns (bool _success)
     {
         address _proposer = msg.sender;
         require(identity_storage().is_kyc_approved(_proposer));
-        /* createProposal(_docIpfsHash, _milestoneDurations, _milestonesFundings); */
+        require(daoStorage().addProposal(_docIpfsHash, _proposer, _milestonesDurations, _milestonesFundings));
+        _success = true;
+    }
+
+    function modifyProposal(
+        bytes32 _proposalId,
+        bytes32 _docIpfsHash,
+        uint256[] _milestonesDurations,
+        uint256[] _milestonesFundings
+    )
+        public
+        if_main_phase()
+        if_participant()
+        if_valid_milestones(_milestonesDurations.length, _milestonesFundings.length)
+        returns (bool _success)
+    {
+        require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
+        uint256 _currentState = daoStorage().readProposalState(_proposalId);
+        require(_currentState == PROPOSAL_STATE_PREPROPOSAL ||
+          _currentState == PROPOSAL_STATE_INITIAL);
+        require(identity_storage().is_kyc_approved(msg.sender));
+        require(daoStorage().editProposal(_proposalId, _docIpfsHash, _milestonesDurations, _milestonesFundings));
+        daoStorage().updateProposalPRL(_proposalId, false);
         _success = true;
     }
 
     function endorseProposal(bytes32 _proposalId)
         public
         if_main_phase()
+        if_badge_participant()
+        returns (bool _success)
     {
         address _endorser = msg.sender;
-
-        // endorser must be a Badge
-        require(daoStakeStorage().readUserLockedBadge(_endorser) > 0);
 
         // proposal must be a preproposal
         require(daoStorage().readProposalState(_proposalId) == PROPOSAL_STATE_PREPROPOSAL);
 
         // update storage layer
         require(daoStorage().updateProposalEndorse(_proposalId, _endorser));
+        _success = true;
     }
 
     function voteOnDraft(
@@ -104,6 +138,8 @@ contract Dao is DaoCommon, Claimable {
         require(daoStorage().readLastNonce(msg.sender) < _nonce);
 
         daoStorage().addDraftVote(_proposalId, _badgeHolder, _voteYes, _badgeStake, _nonce);
+
+        // give quarter point
     }
 
     function commitVoteOnProposal(
@@ -147,6 +183,8 @@ contract Dao is DaoCommon, Claimable {
         uint256 _weight;
         (, _weight) = daoStakeStorage().readUserDGDStake(msg.sender);
         daoStorage().revealVote(_proposalId, msg.sender, _vote, _weight);
+
+        // give quarter point
     }
 
     function commitVoteOnInterim(
@@ -187,6 +225,8 @@ contract Dao is DaoCommon, Claimable {
         uint256 _weight;
         (, _weight) = daoStakeStorage().readUserDGDStake(msg.sender);
         daoStorage().revealInterimVote(_proposalId, msg.sender, _vote, _weight, _index);
+
+        // give quarter point
     }
 
     function claimDraftVotingResult(bytes32 _proposalId)
@@ -246,6 +286,10 @@ contract Dao is DaoCommon, Claimable {
         if (daoCalculatorService().votingQuotaPass(_for, _against)) {
             _passed = true;
             daoStorage().setProposalInterimPass(_proposalId, _index, true);
+        }
+        if (_passed) {
+          // give bonus points for all those who
+          // voted correct in the previous round
         }
     }
 
