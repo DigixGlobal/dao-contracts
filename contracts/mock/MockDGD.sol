@@ -7,7 +7,7 @@ contract MockDGD is StandardToken {
   string public constant symbol = "MDGD";
   uint8 public constant decimals = 18;
 
-  uint256 public constant INITIAL_SUPPLY = 2000000 * (10 ** 18);
+  uint256 public constant INITIAL_SUPPLY = 3000000 * (10 ** 18);
 
   /**
    * @dev Constructor that gives msg.sender all of existing tokens.

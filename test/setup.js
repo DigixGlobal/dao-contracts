@@ -12,6 +12,7 @@ const DaoConfigsStorage = artifacts.require('./DaoConfigsStorage.sol');
 const DaoStakeStorage = artifacts.require('./DaoStakeStorage.sol');
 const DaoPointsStorage = artifacts.require('./DaoPointsStorage.sol');
 const DaoStorage = artifacts.require('./DaoStorage.sol');
+const DaoFundingStorage = artifacts.require('DaoFundingStorage.sol');
 
 const DaoInfoService = artifacts.require('./DaoInfoService.sol');
 const DaoListingService = artifacts.require('./DaoListingService.sol');
@@ -20,6 +21,7 @@ const DaoCalculatorService = artifacts.require('./DaoCalculatorService.sol');
 const DaoIdentity = artifacts.require('./DaoIdentity.sol');
 const Dao = artifacts.require('./Dao.sol');
 const DaoStakeLocking = artifacts.require('./DaoStakeLocking.sol');
+const DaoFundingManager = artifacts.require('DaoFundingManager.sol');
 
 const deployLibraries = async function () {
   const libs = {};
@@ -68,6 +70,7 @@ const deployStorage = async function (libs, contracts, resolver, addressOf) {
   contracts.daoPointsStorage = await DaoPointsStorage.new(resolver.address);
   DaoStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
   contracts.daoStorage = await DaoStorage.new(resolver.address);
+  contracts.daoFundingStorage = await DaoFundingStorage.new(resolver.address);
 };
 
 const registerInteractive = async function (resolver, addressOf) {
@@ -90,6 +93,8 @@ const deployServices = async function (libs, contracts, resolver, addressOf) {
 
 const deployInteractive = async function (libs, contracts, resolver, addressOf) {
   contracts.daoStakeLocking = await DaoStakeLocking.new(resolver.address);
+  contracts.daoIdentity = await DaoIdentity.new(resolver.address);
+  contracts.daoFundingManager = await DaoFundingManager.new(resolver.address);
 };
 
 module.exports = {

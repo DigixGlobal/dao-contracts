@@ -7,7 +7,7 @@ contract MockBadge is StandardToken {
   string public constant symbol = "MDGB";
   uint8 public constant decimals = 0;
 
-  uint256 public constant INITIAL_SUPPLY = 150;
+  uint256 public constant INITIAL_SUPPLY = 200;
 
   /**
    * @dev Constructor that gives msg.sender all of existing tokens.
