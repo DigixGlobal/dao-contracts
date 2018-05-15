@@ -4,6 +4,7 @@ import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../common/DaoConstants.sol";
 
 contract DaoPointsStorage is ResolverClient, DaoConstants {
+
   struct Token {
     mapping (address => uint256) balance;
     uint256 totalSupply;
@@ -21,12 +22,13 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
   function addQuarterPoint(address _participant, uint256 _point, uint256 _quarterId)
            if_sender_is(CONTRACT_INTERACTIVE_QUARTER_POINT)
            public
-           returns (bool _success)
+           returns (uint256 _newPoint, uint256 _newTotalPoint)
   {
     quarterPoint[_quarterId].totalSupply += _point;
     quarterPoint[_quarterId].balance[_participant] += _point;
 
-    _success = true;
+    _newPoint = quarterPoint[_quarterId].balance[_participant];
+    _newTotalPoint = quarterPoint[_quarterId].totalSupply;
   }
 
   /// @notice get quarter points for a _participant in a _quarterId

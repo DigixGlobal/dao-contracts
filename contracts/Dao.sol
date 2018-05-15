@@ -116,30 +116,41 @@ contract Dao is DaoCommon, Claimable {
         _success = true;
     }
 
+    function updatePRL(bytes32 _proposalId, bool _valid)
+        public
+        if_prl()
+        returns (bool _success)
+    {
+        daoStorage().updateProposalPRL(_proposalId, _valid);
+        _success = true;
+    }
+
     function voteOnDraft(
         bytes32 _proposalId,
-        bytes32 _version_hash,
         bool _voteYes,
         uint256 _nonce
     )
         public
         if_main_phase()
+        if_badge_participant()
+        returns (bool _success)
     {
         address _badgeHolder = msg.sender;
         uint256 _badgeStake = daoStakeStorage().readUserLockedBadge(_badgeHolder);
 
-        // must stake at least one badge
-        require(_badgeStake > 0);
-
-        // _version_hash should be the last version in this proposal
-        require(daoStorage().getLastProposalVersion(_proposalId) == _version_hash);
-
         // _nonce should be greater than the last used nonce by this address
         require(daoStorage().readLastNonce(msg.sender) < _nonce);
 
-        daoStorage().addDraftVote(_proposalId, _badgeHolder, _voteYes, _badgeStake, _nonce);
+        bool _voted;
+        (_voted,,) = daoStorage().readDraftVote(_proposalId, _badgeHolder);
 
-        // give quarter point
+        require(daoStorage().addDraftVote(_proposalId, _badgeHolder, _voteYes, _badgeStake, _nonce));
+
+        if (_voted == false) {
+          daoQuarterPoint().add(_badgeHolder, get_uint_config(QUARTER_POINT_DRAFT_VOTE));
+        }
+
+        _success = true;
     }
 
     function commitVoteOnProposal(
@@ -152,16 +163,11 @@ contract Dao is DaoCommon, Claimable {
         is_proposal_state(_proposalId, PROPOSAL_STATE_VETTED)
         if_valid_nonce(_nonce)
         if_participant()
+        returns (bool _success)
     {
-        /* // proposal must be in the voting phase
-        require(daoStorage().readProposalState(_proposalId) == PROPOSAL_STATE_VETTED);
-        // nonce must be greater than last used nonce
-        require(daoStorage().readLastNonce(msg.sender) < _nonce);
-        // user must be a participant
-        require(daoInfoService().isParticipant(msg.sender)); */
-
         require(daoStorage().isCommitUsed(_proposalId, _commitHash) == false);
         daoStorage().commitVote(_proposalId, _commitHash, msg.sender, _nonce);
+        _success = true;
     }
 
     function revealVoteOnProposal(
@@ -173,18 +179,16 @@ contract Dao is DaoCommon, Claimable {
         if_reveal_phase(_proposalId)
         is_proposal_state(_proposalId, PROPOSAL_STATE_VETTED)
         if_participant()
+        returns (bool _success)
     {
-        /* // proposal should be in voting phase
-        require(daoStorage().readProposalState(_proposalId) == PROPOSAL_STATE_VETTED);
-        // user must be a participant
-        require(daoInfoService().isParticipant(msg.sender)); */
-
         require(keccak256(_vote, _salt) == daoStorage().readCommitVote(_proposalId, msg.sender));
         uint256 _weight;
         (, _weight) = daoStakeStorage().readUserDGDStake(msg.sender);
         daoStorage().revealVote(_proposalId, msg.sender, _vote, _weight);
 
-        // give quarter point
+        // TODO: give quarter point
+
+        _success = true;
     }
 
     function commitVoteOnInterim(
@@ -198,13 +202,11 @@ contract Dao is DaoCommon, Claimable {
         is_proposal_state(_proposalId, PROPOSAL_STATE_FUNDED)
         if_valid_nonce(_nonce)
         if_participant()
+        returns (bool _success)
     {
-        /* require(daoStorage().readProposalState(_proposalId) == PROPOSAL_STATE_FUNDED);
-        require(daoInfoService().isParticipant(msg.sender));
-        require(daoStorage().readLastNonce(msg.sender) < _nonce); */
-
         require(daoStorage().isInterimCommitUsed(_proposalId, _index, _commitHash) == false);
         daoStorage().commitInterimVote(_proposalId, _commitHash, msg.sender, _index, _nonce);
+        _success = true;
     }
 
     function revealVoteOnInterim(
@@ -217,16 +219,16 @@ contract Dao is DaoCommon, Claimable {
         if_interim_reveal_phase(_proposalId, _index)
         is_proposal_state(_proposalId, PROPOSAL_STATE_FUNDED)
         if_participant()
+        returns (bool _success)
     {
-        /* require(daoStorage().readProposalState(_proposalId) == PROPOSAL_STATE_FUNDED);
-        require(daoInfoService().isParticipant(msg.sender)); */
-
         require(keccak256(_vote, _salt) == daoStorage().readInterimCommitVote(_proposalId, _index, msg.sender));
         uint256 _weight;
         (, _weight) = daoStakeStorage().readUserDGDStake(msg.sender);
         daoStorage().revealInterimVote(_proposalId, msg.sender, _vote, _weight, _index);
 
-        // give quarter point
+        // TODO: give quarter point
+
+        _success = true;
     }
 
     function claimDraftVotingResult(bytes32 _proposalId)

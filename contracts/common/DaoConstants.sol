@@ -32,10 +32,6 @@ contract DaoConstants {
   bytes32 CONTRACT_BADGE_TOKEN = "t:badge";
 
   // these are addresses of contracts deployed in the development environment
-  // TODO: update with correct addresses while final deployment
-  address ADDRESS_DGD_TOKEN = 0x792e9d2f5A2bb29DD1Fb58Bf16B89b61067621fb;
-  address ADDRESS_DGD_BADGE = 0x9cC91FaB462C8d055A13CC7e160E879fDfCD13ed;
-
   address ADDRESS_DGX_TOKEN = 0x4f3AfEC4E5a3F2A6a1A411DEF7D7dFe50eE057bF;
 
   uint8 ROLES_ROOT = 1;
@@ -51,10 +47,14 @@ contract DaoConstants {
   bytes32 CONFIG_INTERIM_PHASE_TOTAL = "interim_voting_phase_total";
   uint256 CONFIG_MINIMUM_LOCKED_DGD = 10 ** 18;
 
-  bytes32 CONFIG_QUORUM_FIXED_PORTION_NUMERATOR = "quorum_fixed_quorum_numerator";
-  bytes32 CONFIG_QUORUM_FIXED_PORTION_DENOMINATOR = "quorum_fixed_quorum_denominator";
-  bytes32 CONFIG_QUORUM_SCALING_FACTOR_NUMERATOR = "quorum_sfactor_numerator";
-  bytes32 CONFIG_QUORUM_SCALING_FACTOR_DENOMINATOR = "quorum_sfactor_denominator";
+  bytes32 CONFIG_DRAFT_QUORUM_FIXED_PORTION_NUMERATOR = "draft_quorum_fixed_numerator";
+  bytes32 CONFIG_DRAFT_QUORUM_FIXED_PORTION_DENOMINATOR = "draft_quorum_fixed_denominator";
+  bytes32 CONFIG_DRAFT_QUORUM_SCALING_FACTOR_NUMERATOR = "draft_quorum_sfactor_numerator";
+  bytes32 CONFIG_DRAFT_QUORUM_SCALING_FACTOR_DENOMINATOR = "draft_quorum_sfactor_denominator";
+  bytes32 CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR = "vote_quorum_fixed_numerator";
+  bytes32 CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR = "vote_quorum_fixed_denominator";
+  bytes32 CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR = "vote_quorum_sfactor_numerator";
+  bytes32 CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR = "vote_quorum_sfactor_denominator";
 
   bytes32 CONFIG_DRAFT_QUOTA_NUMERATOR = "draft_quota_numerator";
   bytes32 CONFIG_DRAFT_QUOTA_DENOMINATOR = "draft_quota_denominator";
@@ -62,4 +62,9 @@ contract DaoConstants {
   bytes32 CONFIG_VOTING_QUOTA_DENOMINATOR = "voting_quota_denominator";
 
   uint256 QUARTER_DURATION = 90 days;
+
+  bytes32 QUARTER_POINT_DRAFT_VOTE = "quarter_point_draft_vote";
+  bytes32 QUARTER_POINT_VOTE = "quarter_point_vote";
+  bytes32 QUARTER_POINT_INTERIM_VOTE = "quarter_point_interim_vote";
+  bytes32 MINIMUM_QUARTER_POINT = "minimum_quarter_point";
 }

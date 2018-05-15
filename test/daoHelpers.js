@@ -66,7 +66,11 @@ const daoConstantsKeys = function () {
     CONFIG_DRAFT_QUOTA_NUMERATOR : 'draft_quota_numerator',
     CONFIG_DRAFT_QUOTA_DENOMINATOR : 'draft_quota_denominator',
     CONFIG_VOTING_QUOTA_NUMERATOR : 'voting_quota_numerator',
-    CONFIG_VOTING_QUOTA_DENOMINATOR : 'voting_quota_denominator'
+    CONFIG_VOTING_QUOTA_DENOMINATOR : 'voting_quota_denominator',
+    QUARTER_POINT_DRAFT_VOTE : 'quarter_point_draft_vote',
+    QUARTER_POINT_VOTE : 'quarter_point_vote',
+    QUARTER_POINT_INTERIM_VOTE : 'quarter_point_interim_vote',
+    MINIMUM_QUARTER_POINT : 'minimum_quarter_point'
   };
 };
 
@@ -89,7 +93,11 @@ const daoConstantsValues = function (bN) {
     CONFIG_DRAFT_QUOTA_NUMERATOR : bN(30),
     CONFIG_DRAFT_QUOTA_DENOMINATOR : bN(100),
     CONFIG_VOTING_QUOTA_NUMERATOR : bN(30),
-    CONFIG_VOTING_QUOTA_DENOMINATOR :bN(100)
+    CONFIG_VOTING_QUOTA_DENOMINATOR :bN(100),
+    QUARTER_POINT_DRAFT_VOTE : bN(1),
+    QUARTER_POINT_VOTE : bN(1),
+    QUARTER_POINT_INTERIM_VOTE : bN(1),
+    MINIMUM_QUARTER_POINT : bN(3)
   };
 };
 

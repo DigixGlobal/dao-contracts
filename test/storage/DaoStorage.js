@@ -159,6 +159,13 @@ contract('DaoStorage', function (accounts) {
       assert.deepEqual(readProposalVersionRes[3][2], newFundings[2]);
       assert.deepEqual(readProposalVersionRes[4], false);
 
+      const allUsers = [addressOf.badgeHolder1, addressOf.badgeHolder2, addressOf.badgeHolder3, addressOf.badgeHolder4,
+                        addressOf.dgdHolder1, addressOf.dgdHolder2, addressOf.dgdHolder3, addressOf.dgdHolder4,
+                        addressOf.dgdHolder5, addressOf.dgdHolder6];
+      const voting = await contracts.daoStorage.readDraftVotingCount.call(doc, allUsers);
+      assert.deepEqual(voting[0], bN(0));
+      assert.deepEqual(voting[1], bN(0));
+
       // prlValid is reset whenever proposal is modified
       assert.deepEqual(await contracts.daoStorage.readProposalPRL.call(doc), false);
     });

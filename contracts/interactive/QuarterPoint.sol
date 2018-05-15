@@ -33,6 +33,16 @@ contract QuarterPoint is ResolverClient, NonTransferableToken, DaoConstants {
     _contract = DaoInfoService(get_contract(CONTRACT_DAO_INFO_SERVICE));
   }
 
+  function add(address _who, uint256 _value)
+      public
+      if_sender_is(CONTRACT_DAO)
+      returns (uint256 _newPoint, uint256 _newTotalPoint)
+  {
+      require(_value > 0);
+      uint256 _currentQuarterId = daoInfoService().getCurrentQuarter();
+      (_newPoint, _newTotalPoint) = daoPointsStorage().addQuarterPoint(_who, _value, _currentQuarterId);
+  }
+
   /// @notice display quarter points for the current quarter
   /// @param _who the account to query
   /// @return {

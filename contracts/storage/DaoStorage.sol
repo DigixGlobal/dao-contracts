@@ -227,6 +227,24 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     _lastNonce = lastNonce[_voter];
   }
 
+  function readDraftVote(bytes32 _proposalId, address _voter)
+    public
+    constant
+    returns (bool _voted, bool _vote, uint256 _weight)
+  {
+    bytes32 _latestVersion = getLastProposalVersion(_proposalId);
+    DaoStructs.Voting _draftVoting = proposalsById[_proposalId].proposalVersions[_latestVersion].draftVoting;
+    if (_draftVoting.yesVotes[_voter] > 0) {
+      _voted = true;
+      _vote = true;
+      _weight = _draftVoting.yesVotes[_voter];
+    } else if (_draftVoting.noVotes[_voter] > 0) {
+      _voted = true;
+      _vote = false;
+      _weight = _draftVoting.noVotes[_voter];
+    }
+  }
+
   /// @notice returns the latest committed vote by a voter on a proposal
   /// @param _proposalId proposal ID
   /// @param _voter address of the voter

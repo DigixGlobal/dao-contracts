@@ -8,6 +8,8 @@ import "./../storage/DaoConfigsStorage.sol";
 import "./../storage/DaoStakeStorage.sol";
 import "./../storage/DaoStorage.sol";
 import "./../storage/DaoFundingStorage.sol";
+import "./../interactive/QuarterPoint.sol";
+import "./../interactive/ReputationPoint.sol";
 
 contract DaoCommon is IdentityCommon {
     modifier daoIsValid() {
@@ -105,6 +107,14 @@ contract DaoCommon is IdentityCommon {
 
     function daoFundingStorage() internal returns (DaoFundingStorage _contract) {
         _contract = DaoFundingStorage(get_contract(CONTRACT_DAO_FUNDING_STORAGE));
+    }
+
+    function daoQuarterPoint() internal returns (QuarterPoint _contract) {
+        _contract = QuarterPoint(get_contract(CONTRACT_INTERACTIVE_QUARTER_POINT));
+    }
+
+    function daoReputationPoint() internal returns (ReputationPoint _contract) {
+        _contract = ReputationPoint(get_contract(CONTRACT_INTERACTIVE_REPUTATION_POINT));
     }
 
     function get_uint_config(bytes32 _config_key)

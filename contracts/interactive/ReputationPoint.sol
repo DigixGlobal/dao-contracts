@@ -24,6 +24,24 @@ contract ReputationPoint is ResolverClient, NonTransferableToken, DaoConstants {
     _contract = DaoPointsStorage(get_contract(CONTRACT_DAO_POINTS_STORAGE));
   }
 
+  function add(address _who, uint256 _value)
+      public
+      if_sender_is(CONTRACT_DAO)
+      returns (uint256 _newPoint, uint256 _newTotalPoint)
+  {
+      require(_value > 0);
+      (_newPoint, _newTotalPoint) = daoPointsStorage().addReputation(_who, _value);
+  }
+
+  function subtract(address _who, uint256 _value)
+      public
+      if_sender_is(CONTRACT_DAO)
+      returns (uint256 _newPoint, uint256 _newTotalPoint)
+  {
+      require(_value > 0);
+      (_newPoint, _newTotalPoint) = daoPointsStorage().subtractReputation(_who, _value);
+  }
+
   /// @notice display reputation points for the given account
   /// @param _who the account to query
   /// @return {

@@ -21,7 +21,9 @@ const DaoCalculatorService = artifacts.require('./DaoCalculatorService.sol');
 const DaoIdentity = artifacts.require('./DaoIdentity.sol');
 const Dao = artifacts.require('./Dao.sol');
 const DaoStakeLocking = artifacts.require('./DaoStakeLocking.sol');
-const DaoFundingManager = artifacts.require('DaoFundingManager.sol');
+const DaoFundingManager = artifacts.require('./DaoFundingManager.sol');
+const QuarterPoint = artifacts.require('./QuarterPoint.sol');
+const ReputationPoint = artifacts.require('./ReputationPoint.sol');
 
 const deployLibraries = async function () {
   const libs = {};
@@ -96,6 +98,8 @@ const deployInteractive = async function (libs, contracts, resolver, addressOf) 
   contracts.daoIdentity = await DaoIdentity.new(resolver.address);
   contracts.daoFundingManager = await DaoFundingManager.new(resolver.address);
   contracts.dao = await Dao.new(resolver.address);
+  contracts.daoQuarterPoint = await QuarterPoint.new(resolver.address);
+  contracts.daoReputationPoint = await ReputationPoint.new(resolver.address);
 };
 
 module.exports = {
