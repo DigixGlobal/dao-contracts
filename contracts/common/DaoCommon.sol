@@ -7,7 +7,9 @@ import "./../common/IdentityCommon.sol";
 import "./../storage/DaoConfigsStorage.sol";
 import "./../storage/DaoStakeStorage.sol";
 import "./../storage/DaoStorage.sol";
+import "./../storage/DaoPointsStorage.sol";
 import "./../storage/DaoFundingStorage.sol";
+import "./../storage/DaoRewardsStorage.sol";
 import "./../interactive/QuarterPoint.sol";
 import "./../interactive/ReputationPoint.sol";
 
@@ -105,8 +107,16 @@ contract DaoCommon is IdentityCommon {
         _contract = DaoStorage(get_contract(CONTRACT_DAO_STORAGE));
     }
 
+    function daoPointsStorage() internal returns (DaoPointsStorage _contract) {
+        _contract = DaoPointsStorage(get_contract(CONTRACT_DAO_POINTS_STORAGE));
+    }
+
     function daoFundingStorage() internal returns (DaoFundingStorage _contract) {
         _contract = DaoFundingStorage(get_contract(CONTRACT_DAO_FUNDING_STORAGE));
+    }
+
+    function daoRewardsStorage() internal returns (DaoRewardsStorage _contract) {
+        _contract = DaoRewardsStorage(get_contract(CONTRACT_DAO_REWARDS_STORAGE));
     }
 
     function daoQuarterPoint() internal returns (QuarterPoint _contract) {

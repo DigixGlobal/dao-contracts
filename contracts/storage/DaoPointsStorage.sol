@@ -11,7 +11,7 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
   }
   Token reputationPoint;
   mapping (uint256 => Token) quarterPoint;
-
+  
   function DaoPointsStorage(address _resolver)
            public
   {

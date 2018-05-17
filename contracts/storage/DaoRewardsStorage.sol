@@ -11,10 +11,16 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         uint256 quarterPointScalingFactor;
         uint256 totalEffectiveDGD;
         uint256 dgxDistributionDay; // the timestamp when DGX rewards is distributable to Holders
+        uint256 dgxRewardsPool;
+        mapping (address => uint256) reputationPoint;
     }
 
     mapping(uint256 => DaoQuarterInfo) public allQuartersInfo;
     mapping(address => uint256) public claimableDGXs;
+    uint256 totalClaimableDGXs;
+
+    mapping (address => uint256) public lastParticipatedQuarter;
+    mapping (address => uint256) public lastQuarterThatRewardsWasUpdated;
 
     function DaoRewardsStorage(address _resolver)
            public
@@ -27,7 +33,8 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         uint256 _minimalParticipationPoint,
         uint256 _quarterPointScalingFactor,
         uint256 _totalEffectiveDGD,
-        uint256 _dgxDistributionDay
+        uint256 _dgxDistributionDay,
+        uint256 _dgxRewardsPool
     )
         if_sender_is(CONTRACT_DAO_REWARDS_MANAGER)
         public
@@ -36,6 +43,18 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         allQuartersInfo[_quarterIndex].quarterPointScalingFactor = _quarterPointScalingFactor;
         allQuartersInfo[_quarterIndex].totalEffectiveDGD = _totalEffectiveDGD;
         allQuartersInfo[_quarterIndex].dgxDistributionDay = _dgxDistributionDay;
+        allQuartersInfo[_quarterIndex].dgxRewardsPool = _dgxRewardsPool;
+    }
+
+    function updateReputationPointAtQuarter(
+        address _user,
+        uint256 _quarterIndex,
+        uint256 _reputationPoint
+    )
+        if_sender_is(CONTRACT_DAO_REWARDS_MANAGER)
+        public
+    {
+        allQuartersInfo[_quarterIndex].reputationPoint[_user] = _reputationPoint;
     }
 
     function updateClaimableDGX(address _user, uint256 _newClaimableDGX)
@@ -43,6 +62,46 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         public
     {
         claimableDGXs[_user] = _newClaimableDGX;
+    }
+
+    function updateLastPariticipatedQuarter(address _user, uint256 _lastQuarter)
+        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
+        public
+    {
+        lastParticipatedQuarter[_user] = _lastQuarter;
+    }
+
+    function updateLastQuarterThatRewardsWasUpdated(address _user, uint256 _lastQuarter)
+        if_sender_is(CONTRACT_DAO_REWARDS_MANAGER)
+        public
+    {
+        lastQuarterThatRewardsWasUpdated[_user] = _lastQuarter;
+    }
+
+    function readQuarterInfo(uint256 _quarterIndex)
+        public
+        constant
+        returns (
+            uint256 _minimalParticipationPoint,
+            uint256 _quarterPointScalingFactor,
+            uint256 _totalEffectiveDGD,
+            uint256 _dgxDistributionDay,
+            uint256 _dgxRewardsPool
+        )
+    {
+        _minimalParticipationPoint = allQuartersInfo[_quarterIndex].minimalParticipationPoint;
+        _quarterPointScalingFactor = allQuartersInfo[_quarterIndex].quarterPointScalingFactor;
+        _totalEffectiveDGD = allQuartersInfo[_quarterIndex].totalEffectiveDGD;
+        _dgxDistributionDay = allQuartersInfo[_quarterIndex].dgxDistributionDay;
+        _dgxRewardsPool = allQuartersInfo[_quarterIndex].dgxRewardsPool;
+    }
+
+    function readReputationPointAtQuarter(address _user, uint256 _quarterIndex)
+        public
+        constant
+        returns (uint256 _reputationPoint)
+    {
+        _reputationPoint = allQuartersInfo[_quarterIndex].reputationPoint[_user];
     }
 
 }

@@ -1,11 +1,10 @@
 pragma solidity ^0.4.19;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
-import "./common/DaoConstants.sol";
-import "./service/DaoInfoService.sol";
+import "./common/DaoCommon.sol";
 
 // this contract will receive DGXs fees from the DGX fees distributors
-contract DaoRewardsManager is ResolverClient, DaoConstants {
+contract DaoRewardsManager is DaoCommon {
 
   function DaoRewardsManager(address _resolver)
            public
@@ -13,29 +12,74 @@ contract DaoRewardsManager is ResolverClient, DaoConstants {
     require(init(CONTRACT_DAO_REWARDS_MANAGER, _resolver));
   }
 
-  function dao_info_service()
-           internal
-           returns (DaoInfoService _contract)
-  {
-    _contract = DaoInfoService(get_contract(CONTRACT_DAO_INFO_SERVICE));
-  }
+    function claimRewards(uint256[] quarters)
+        public
+    {
+        // withdraw from his claimableDGXs
+    }
 
-  function claimRewards(uint256[] quarters)
-           public
-  {
-    // check if this is the locking phase
-    // calculate his rewards
+    struct DaoQuarterInfo {
+        uint256 minimalParticipationPoint;
+        uint256 quarterPointScalingFactor;
+        uint256 totalEffectiveDGD;
+        uint256 dgxDistributionDay; // the timestamp when DGX rewards is distributable to Holders
+    }
 
-  }
+    function updateRewardsBeforeNewQuarter(address _user)
+        public
+    {
+        calculateUserRewardsLastQuarter(_user);
+        // update reputationPoint for this quarter
+    }
 
-  /* function  */
-  /* function tokenFallback(address _token, uint256 _amount, bytes32 _data)
-           public
-  {
-    require(_token == ADDRESS_DGX_TOKEN);
-    uint256 _quarterId = dao_info_service().getCurrentQuarter();
-    feesCollectedHistory[_quarterId] = _amount;
-    permitClaim[_quarterId] = true;
-  } */
+    // to be called to calculate and update the user rewards for the last participating quarter;
+    function calculateUserRewardsLastQuarter(address _user)
+        public
+    {
+        // the last participating quarter must be:
+        // - over
+        // - after the lastQuarterThatRewardsWasUpdated
+        uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(_user);
+        require(currentQuarterIndex() > _lastParticipatedQuarter);
+        require(_lastParticipatedQuarter > daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user));
+
+        // now we will calculate the user rewards based on info of the _lastParticipatedQuarter
+        DaoQuarterInfo qInfo;
+        (
+            qInfo.minimalParticipationPoint,
+            qInfo.quarterPointScalingFactor,
+            qInfo.totalEffectiveDGD,
+            qInfo.dgxDistributionDay,
+        ) = daoRewardsStorage().readQuarterInfo(_lastParticipatedQuarter);
+
+        uint256 _userQP = daoPointsStorage().getQuarterPoint(_user, _lastParticipatedQuarter);
+        // this RP has been updated at the beginning of the lastParticipatedQuarter in
+        // a call to updateRewardsBeforeNewQuarter();
+        uint256 _userRP = daoPointsStorage().getReputation(_user);
+
+        uint256 _dgxRewards;
+        // calculate _dgxRewards; This is basically the DGXs that user can withdraw on the dgxDistributionDay of the current quarter
+        // when user actually withdraw some time after that, he will be deducted demurrage.
+
+        // update claimableDGXs. The calculation needs to take into account demurrage since the
+        // dgxDistributionDay of the last quarter as well
+
+        // update lastQuarterThatRewardsWasUpdated
+
+    }
+
+    // this is called by the founder after transfering the DGX fees into the DAO at
+    // the beginning of the quarter
+    function calculateGlobalRewardsBeforeNewQuarter()
+        if_founder()
+        public
+    {
+        // go through every participants, calculate their EffectiveDGD balance
+        // and add up to get totalEffectiveDGD
+
+        // save this totalEffectiveDGD as well as all the current configs to DaoRewardsStorage
+
+        // save the dgxRewardsPool for the previous quarter as well
+    }
 
 }
