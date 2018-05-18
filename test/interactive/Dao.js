@@ -99,7 +99,7 @@ const lastNonces = {
   dgdHolder6: 1
 };
 
-contract('Dao', function (accounts) {
+contract('Dao | DaoVoting', function (accounts) {
   let libs;
   let resolver;
   let contracts;

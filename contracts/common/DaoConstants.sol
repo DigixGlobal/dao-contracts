@@ -8,6 +8,7 @@ contract DaoConstants {
 
   bytes32 CONTRACT_DAO_STAKE_LOCKING = "c:stake:locking";
   bytes32 CONTRACT_DAO = "c:dao";
+  bytes32 CONTRACT_DAO_VOTING = "c:dao:voting";
   bytes32 CONTRACT_DAO_IDENTITY = "c:dao:identity";
   bytes32 CONTRACT_IDENTITY_STORAGE = "c:dao:identity:storage";
   bytes32 CONTRACT_DAO_REWARDS_MANAGER = "c:dao:rewards:manager";

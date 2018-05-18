@@ -11,6 +11,17 @@ library DaoStructs {
     uint256 quorum;
   }
 
+  struct MilestoneInfo {
+    uint256 index;
+    uint256 duration;
+    uint256 funding;
+  }
+
+  struct Users {
+    address[] users;
+    uint256 usersLength;
+  }
+
   struct Voting {
     uint256 startTime;
     mapping (bytes32 => bool) usedCommits;

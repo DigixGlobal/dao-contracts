@@ -13,17 +13,6 @@ contract Dao is DaoCommon, Claimable {
         require(init(CONTRACT_DAO, _resolver));
     }
 
-    struct MilestoneInfo {
-      uint256 index;
-      uint256 duration;
-      uint256 funding;
-    }
-
-    struct Users {
-      address[] users;
-      uint256 usersLength;
-    }
-
     function daoCalculatorService()
         internal
         returns (DaoCalculatorService _contract)
@@ -117,106 +106,6 @@ contract Dao is DaoCommon, Claimable {
         _success = true;
     }
 
-    function voteOnDraft(
-        bytes32 _proposalId,
-        bool _voteYes,
-        uint256 _nonce
-    )
-        public
-        if_main_phase()
-        if_badge_participant()
-        returns (bool _success)
-    {
-        address _badgeHolder = msg.sender;
-        uint256 _badgeStake = daoStakeStorage().readUserLockedBadge(_badgeHolder);
-
-        // _nonce should be greater than the last used nonce by this address
-        require(daoStorage().readLastNonce(msg.sender) < _nonce);
-
-        bool _voted;
-        (_voted,,) = daoStorage().readDraftVote(_proposalId, _badgeHolder);
-
-        require(daoStorage().addDraftVote(_proposalId, _badgeHolder, _voteYes, _badgeStake, _nonce));
-
-        if (_voted == false) {
-          daoQuarterPoint().add(_badgeHolder, get_uint_config(QUARTER_POINT_DRAFT_VOTE));
-        }
-
-        _success = true;
-    }
-
-    function commitVoteOnProposal(
-        bytes32 _proposalId,
-        bytes32 _commitHash,
-        uint256 _nonce
-    )
-        public
-        if_commit_phase(_proposalId)
-        is_proposal_state(_proposalId, PROPOSAL_STATE_VETTED)
-        if_valid_nonce(_nonce)
-        if_participant()
-        returns (bool _success)
-    {
-        require(daoStorage().isCommitUsed(_proposalId, 0, _commitHash) == false);
-        daoStorage().commitVote(_proposalId, _commitHash, msg.sender, 0, _nonce);
-        _success = true;
-    }
-
-    function revealVoteOnProposal(
-        bytes32 _proposalId,
-        bool _vote,
-        uint256 _salt
-    )
-        public
-        if_reveal_phase(_proposalId)
-        is_proposal_state(_proposalId, PROPOSAL_STATE_VETTED)
-        has_not_revealed(_proposalId, 0)
-        if_participant()
-    {
-        require(keccak256(_vote, _salt) == daoStorage().readCommitVote(_proposalId, 0, msg.sender));
-        daoStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().readUserEffectiveDGDStake(msg.sender), 0);
-
-        // give quarter point
-        daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_VOTE));
-    }
-
-    function commitVoteOnInterim(
-        bytes32 _proposalId,
-        uint8 _index,
-        bytes32 _commitHash,
-        uint256 _nonce
-    )
-        public
-        if_interim_commit_phase(_proposalId, _index)
-        is_proposal_state(_proposalId, PROPOSAL_STATE_FUNDED)
-        if_valid_nonce(_nonce)
-        if_participant()
-        returns (bool _success)
-    {
-        require(daoStorage().isCommitUsed(_proposalId, _index, _commitHash) == false);
-        daoStorage().commitVote(_proposalId, _commitHash, msg.sender, _index, _nonce);
-        _success = true;
-    }
-
-    function revealVoteOnInterim(
-        bytes32 _proposalId,
-        uint8 _index,
-        bool _vote,
-        uint256 _salt
-    )
-        public
-        if_interim_reveal_phase(_proposalId, _index)
-        is_proposal_state(_proposalId, PROPOSAL_STATE_FUNDED)
-        has_not_revealed(_proposalId, _index)
-        if_participant()
-    {
-        require(keccak256(_vote, _salt) == daoStorage().readCommitVote(_proposalId, _index, msg.sender));
-        daoStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().readUserEffectiveDGDStake(msg.sender), _index);
-
-        // give quarter point
-        daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_INTERIM_VOTE));
-    }
-
     function claimDraftVotingResult(bytes32 _proposalId)
         public
         if_main_phase()
@@ -254,7 +143,7 @@ contract Dao is DaoCommon, Claimable {
         daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT));
 
         // set deadline of milestone 1 (set startTime for next interim voting round)
-        MilestoneInfo _info;
+        DaoStructs.MilestoneInfo _info;
         (_info.index, _info.duration, _info.funding) = daoStorage().readProposalMilestone(_proposalId, 0);
         daoStorage().setProposalVotingTime(_proposalId, 1, now + _info.duration);
 
@@ -281,14 +170,14 @@ contract Dao is DaoCommon, Claimable {
         daoStorage().setVotingClaim(_proposalId, _index, msg.sender);
         daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT));
 
-        Users _bonusVoters;
+        DaoStructs.Users _bonusVoters;
         if (_passed) {
           // give bonus points for all those who
           // voted YES in the previous round
           (_bonusVoters.users, _bonusVoters.usersLength) = daoStorage().readVotingRoundVotes(_proposalId, _index-1, _allStakeHolders, true);
 
           // set deadline for next milestone (set startTime for next interim voting round)
-          MilestoneInfo _info;
+          DaoStructs.MilestoneInfo _info;
           (_info.index, _info.duration, _info.funding) = daoStorage().readProposalMilestone(_proposalId, _index);
           daoStorage().setProposalVotingTime(_proposalId, _index + 1, now + _info.duration);
 
@@ -313,14 +202,4 @@ contract Dao is DaoCommon, Claimable {
             daoReputationPoint().add(_voters[i], (_qp * _rate * _p)/_base);
         }
     }
-
-    /* function setMilestoneDone(bytes32 _proposalId, uint256 _milestoneId)
-        public
-        if_main_phase()
-        if_from_proposer(_proposalId)
-        returns (bool _success)
-    {
-        require(daoStorage().readProposalVotingTime(_proposalId, _milestoneId) == 0);
-        daoStorage().setProposalVotingTime(_proposalId, _milestoneId, now);
-    } */
 }

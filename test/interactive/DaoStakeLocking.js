@@ -43,12 +43,11 @@ contract('DaoStakeLocking', function (accounts) {
     addressOf = await getAccountsAndAddressOf(accounts);
     contracts = {};
     await deployStorage(libs, contracts, resolver, addressOf);
-    await resolver.register_contract('c:dao', addressOf.root);
-    await contracts.daoStorage.setStartOfFirstQuarter(getCurrentTimestamp());
     await deployServices(libs, contracts, resolver, addressOf);
     contracts.dgdToken = await MockDGD.at(process.env.DGD_ADDRESS);
     contracts.badgeToken = await MockBadge.at(process.env.DGD_BADGE_ADDRESS);
     await deployInteractive(libs, contracts, resolver, addressOf);
+    await contracts.dao.setStartOfFirstQuarter(getCurrentTimestamp(), { from: addressOf.founderBadgeHolder });
     if (process.env.FIRST_TEST) {
       await initialTransferTokens();
     }
