@@ -7,11 +7,23 @@ contract DaoFundingManager is DaoCommon {
         require(init(CONTRACT_DAO_FUNDING_MANAGER, _resolver));
     }
 
-    function claimFunding(uint256 _proposal_id, uint256 _milestone_id)
+    function claimEthFunding(bytes32 _proposalId)
         public
+        if_from_proposer(_proposalId)
+        if_prl_approved(_proposalId)
+        returns (bool _success)
     {
-        //check ....
+        uint256 _value = daoFundingStorage().readClaimableEth(msg.sender);
+        daoFundingStorage().updateClaimableEth(msg.sender, 0);
+        msg.sender.transfer(_value);
+        _success = true;
+    }
 
+    function allocateEth(address _proposer, uint256 _value)
+        public
+        if_sender_is(CONTRACT_DAO)
+    {
+        daoFundingStorage().updateClaimableEth(_proposer, _value);
     }
 
     function moveFundsToNewDao(address _destinationForDaoFunds)

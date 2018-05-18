@@ -13,6 +13,7 @@ const DaoStakeStorage = artifacts.require('./DaoStakeStorage.sol');
 const DaoPointsStorage = artifacts.require('./DaoPointsStorage.sol');
 const DaoStorage = artifacts.require('./DaoStorage.sol');
 const DaoFundingStorage = artifacts.require('DaoFundingStorage.sol');
+const DaoRewardsStorage = artifacts.require('./DaoRewardsStorage.sol');
 
 const DaoInfoService = artifacts.require('./DaoInfoService.sol');
 const DaoListingService = artifacts.require('./DaoListingService.sol');
@@ -73,6 +74,7 @@ const deployStorage = async function (libs, contracts, resolver, addressOf) {
   DaoStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
   contracts.daoStorage = await DaoStorage.new(resolver.address);
   contracts.daoFundingStorage = await DaoFundingStorage.new(resolver.address);
+  contracts.daoRewardsStorage = await DaoRewardsStorage.new(resolver.address);
 };
 
 const registerInteractive = async function (resolver, addressOf) {

@@ -673,4 +673,252 @@ contract('Dao', function (accounts) {
       await contracts.daoStakeLocking.withdrawBadge(bN(4), { from: addressOf.badgeHolder4 });
     });
   });
+
+  // TODO
+  describe('claimDraftVotingResult', function () {
+    before(async function () {
+
+    });
+    it('[if locking phase]: revert', async function () {
+
+    });
+    it('[if non-dao member claims]: revert', async function () {
+
+    });
+    it('[if quorum is not met]: revert', async function () {
+
+    });
+    it('[if quota is not met]: revert', async function () {
+
+    });
+    it('[valid claim]: verify read functions', async function () {
+      // draft voting result set
+
+      // voting time is set
+
+      // claimer is set
+
+      // quarter point awarded to claimer
+    });
+    it('[claim a voting already claimed]: revert', async function () {
+
+    });
+    after(async function () {
+
+    });
+  });
+
+  // TODO
+  describe('commitVoteOnProposal', function () {
+    before(async function () {
+
+    });
+    it('[if not voting commit phase]: revert', async function () {
+
+    });
+    it('[if invalid proposal state for voting round]: revert', async function () {
+
+    });
+    it('[if called by non-participant]: revert', async function () {
+
+    });
+    it('[valid commit vote]: verify read functions', async function () {
+
+    });
+    it('[re-using nonce for commiting vote]: revert', async function () {
+
+    });
+    it('[update commit vote valid]: verify read functions', async function () {
+
+    });
+    it('[copying existing commit]: revert', async function () {
+
+    });
+    after(async function () {
+
+    });
+  });
+
+  // TODO
+  describe('revealVoteOnProposal', function () {
+    before(async function () {
+
+    });
+    it('[if not the voting reveal phase]: revert', async function () {
+
+    });
+    it('[if proposal state is not valid]: revert', async function () {
+
+    });
+    it('[if non-participant calls]: revert', async function () {
+
+    });
+    it('[revealed vote cannot verify last commit]: revert', async function () {
+
+    });
+    it('[reveal successfully]: verify read functions', async function () {
+      // read vote
+
+      // check quarter point
+    });
+    it('[revealing vote again]: revert', async function () {
+
+    });
+    after(async function () {
+
+    });
+  });
+
+  // TODO
+  describe('claimVotingResult', function () {
+    before(async function () {
+
+    });
+    it('[if locking phase]: revert', async function () {
+
+    });
+    it('[if non-dao member claims]: revert', async function () {
+
+    });
+    it('[if claiming before reveal phase ends]: revert', function () {
+
+    });
+    it('[if quorum is not met]: revert', async function () {
+
+    });
+    it('[if quota is not met]: revert', async function () {
+
+    });
+    it('[valid claim]: verify read functions', async function () {
+      // voting result set
+
+      // first interim voting time is set
+
+      // claimer is set
+
+      // quarter point is awarded to claimer
+
+      // claimable updated
+    });
+    it('[re-claim same voting round]: revert', async function () {
+
+    });
+    after(async function () {
+
+    });
+  });
+
+  // TODO
+  describe('commitVoteOnInterim', function () {
+    before(async function () {
+
+    });
+    it('[if not interim voting commit phase]: revert', async function () {
+
+    });
+    it('[if invalid proposal state for interim voting round]: revert', async function () {
+
+    });
+    it('[if called by non-participant]: revert', async function () {
+
+    });
+    it('[valid commit vote]: verify read functions', async function () {
+
+    });
+    it('[re-using nonce for commiting vote]: revert', async function () {
+
+    });
+    it('[update commit vote valid]: verify read functions', async function () {
+
+    });
+    it('[copying existing commit]: revert', async function () {
+
+    });
+    after(async function () {
+
+    });
+  });
+
+  // TODO
+  describe('revealVoteOnInterim', function () {
+    before(async function () {
+
+    });
+    it('[if not the interim voting reveal phase]: revert', async function () {
+
+    });
+    it('[if proposal state is not valid]: revert', async function () {
+
+    });
+    it('[if non-participant calls]: revert', async function () {
+
+    });
+    it('[revealed vote cannot verify last commit]: revert', async function () {
+
+    });
+    it('[reveal successfully]: verify read functions', async function () {
+      // read vote
+
+      // check quarter point
+    });
+    it('[revealing vote again]: revert', async function () {
+
+    });
+    after(async function () {
+
+    });
+  });
+
+  // TODO
+  describe('claimInterimVotingResult', function () {
+    before(async function () {
+
+    });
+    it('[if locking phase]: revert', async function () {
+
+    });
+    it('[if non-dao member claims]: revert', async function () {
+
+    });
+    it('[if claiming before reveal phase ends]: revert', function () {
+
+    });
+    it('[if quorum is not met]: verify read functions', async function () {
+      // voting result set
+
+      // claimer is set
+
+      // quarter point is awarded to claimer
+
+      // bonus reputation is awarded
+    });
+    it('[if quota is not met]: verify read functions', async function () {
+      // voting result set
+
+      // claimer is set
+
+      // quarter point is awarded to claimer
+
+      // bonus reputation is awarded
+    });
+    it('[passing claim]: verify read functions', async function () {
+      // voting result set
+
+      // first interim voting time is set
+
+      // claimer is set
+
+      // quarter point is awarded to claimer
+
+      // bonus reputation is awarded
+
+      // claimable eth updated
+    });
+    it('[re-claim same interim voting round]: revert', async function () {
+
+    });
+    after(async function () {
+
+    });
+  });
 });

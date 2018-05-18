@@ -67,4 +67,9 @@ contract DaoConstants {
   bytes32 QUARTER_POINT_VOTE = "quarter_point_vote";
   bytes32 QUARTER_POINT_INTERIM_VOTE = "quarter_point_interim_vote";
   bytes32 MINIMUM_QUARTER_POINT = "minimum_quarter_point";
+  bytes32 QUARTER_POINT_CLAIM_RESULT = "quarter_point_claim_result";
+
+  bytes32 REPUTATION_PER_EXTRA_QP = "reputation_per_extra_qp";
+  bytes32 BONUS_REPUTATION_NUMERATOR = "bonus_reputation_numerator";
+  bytes32 BONUS_REPUTATION_DENOMINATOR = "bonus_reputation_denominator";
 }

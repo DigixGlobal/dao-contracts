@@ -61,6 +61,14 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
         _lockedDGDStake = lockedDGDStake[_user];
     }
 
+    function readUserEffectiveDGDStake(address _user)
+        public
+        constant
+        returns (uint256 _stake)
+    {
+        _stake = lockedDGDStake[_user];
+    }
+
     function readUserLockedBadge(address _user)
         public
         constant

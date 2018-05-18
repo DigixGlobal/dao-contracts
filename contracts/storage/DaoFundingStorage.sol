@@ -7,9 +7,24 @@ import "../common/DaoConstants.sol";
 contract DaoFundingStorage is ResolverClient, DaoConstants {
 
     uint256 public ethInDao;
+    mapping (address => uint256) claimableEth;
 
     function DaoFundingStorage(address _resolver) public {
         require(init(CONTRACT_DAO_FUNDING_STORAGE, _resolver));
+    }
+
+    function updateClaimableEth(address _proposer, uint256 _value)
+        if_sender_is(CONTRACT_DAO_FUNDING_MANAGER)
+        public
+    {
+        claimableEth[_proposer] = _value;
+    }
+
+    function readClaimableEth(address _proposer)
+        public
+        returns (uint256 _value)
+    {
+        _value = claimableEth[_proposer];
     }
 
     function addEth(uint256 _ethAmount)

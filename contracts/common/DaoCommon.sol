@@ -32,38 +32,103 @@ contract DaoCommon is IdentityCommon {
     }
 
     modifier if_commit_phase(bytes32 _proposalId) {
-        uint256 _start = daoStorage().readProposalVotingTime(_proposalId);
+        uint256 _start = daoStorage().readProposalVotingTime(_proposalId, 0);
         require(_start > 0);
         require(now - _start < get_uint_config(CONFIG_VOTING_COMMIT_PHASE));
         _;
     }
 
     modifier if_reveal_phase(bytes32 _proposalId) {
-      uint256 _start = daoStorage().readProposalVotingTime(_proposalId);
+      uint256 _start = daoStorage().readProposalVotingTime(_proposalId, 0);
       require(_start > 0);
       require(now - _start < get_uint_config(CONFIG_VOTING_PHASE_TOTAL));
       require(now - _start > get_uint_config(CONFIG_VOTING_COMMIT_PHASE));
       _;
     }
 
+    modifier if_after_reveal_phase(bytes32 _proposalId) {
+      uint256 _start = daoStorage().readProposalVotingTime(_proposalId, 0);
+      require(_start > 0);
+      require(now - _start > get_uint_config(CONFIG_VOTING_PHASE_TOTAL));
+      _;
+    }
+
     modifier if_interim_commit_phase(bytes32 _proposalId, uint8 _index) {
-        uint256 _start = daoStorage().readProposalInterimVotingTime(_proposalId, _index);
+        uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
         require(_start > 0);
         require(now - _start < get_uint_config(CONFIG_INTERIM_COMMIT_PHASE));
         _;
     }
 
-    modifier if_interim_reveal_phase(bytes32 _proposalId, uint8 _index) {
-      uint256 _start = daoStorage().readProposalInterimVotingTime(_proposalId, _index);
+    modifier if_interim_reveal_phase(bytes32 _proposalId, uint256 _index) {
+      uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
       require(_start > 0);
       require(now - _start < get_uint_config(CONFIG_INTERIM_PHASE_TOTAL));
       require(now - _start > get_uint_config(CONFIG_INTERIM_COMMIT_PHASE));
       _;
     }
 
+    modifier if_after_interim_reveal_phase(bytes32 _proposalId, uint256 _index) {
+      uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
+      require(_start > 0);
+      require(now - _start > get_uint_config(CONFIG_INTERIM_PHASE_TOTAL));
+      _;
+    }
+
     modifier if_from_proposer(bytes32 _proposalId) {
         require(msg.sender == daoStorage().readProposalProposer(_proposalId));
         _;
+    }
+
+    modifier is_proposal_state(bytes32 _proposalId, uint256 _STATE) {
+      require(daoStorage().readProposalState(_proposalId) == _STATE);
+      _;
+    }
+
+    modifier if_prl_approved(bytes32 _proposalId) {
+      require(daoStorage().readProposalPRL(_proposalId) == true);
+      _;
+    }
+
+    modifier if_valid_nonce(uint256 _nonce) {
+      require(daoStorage().readLastNonce(msg.sender) < _nonce);
+      _;
+    }
+
+    modifier if_participant() {
+      require(daoInfoService().isParticipant(msg.sender));
+      _;
+    }
+
+    modifier if_badge_participant() {
+      require(daoInfoService().isBadgeParticipant(msg.sender));
+      _;
+    }
+
+    modifier if_dao_member() {
+      require(daoInfoService().isParticipant(msg.sender) ||
+                daoInfoService().isBadgeParticipant(msg.sender));
+      _;
+    }
+
+    modifier if_valid_milestones(uint256 a, uint256 b) {
+      require(a == b);
+      _;
+    }
+
+    modifier if_draft_not_claimed(bytes32 _proposalId) {
+      require(daoStorage().getDraftClaimer(_proposalId) == 0x0);
+      _;
+    }
+
+    modifier if_not_claimed(bytes32 _proposalId, uint256 _index) {
+      require(daoStorage().getClaimer(_proposalId, _index) == 0x0);
+      _;
+    }
+
+    modifier has_not_revealed(bytes32 _proposalId, uint256 _index) {
+      require(daoStorage().readVote(_proposalId, _index, msg.sender) == 0);
+      _;
     }
 
     function currentQuarterIndex() internal returns(uint256 _quarterIndex) {

@@ -39,6 +39,11 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
       uintConfigs[QUARTER_POINT_VOTE] = 1;
       uintConfigs[QUARTER_POINT_INTERIM_VOTE] = 1;
       uintConfigs[MINIMUM_QUARTER_POINT] = 3;
+      uintConfigs[QUARTER_POINT_CLAIM_RESULT] = 1;
+
+      uintConfigs[REPUTATION_PER_EXTRA_QP] = 5;
+      uintConfigs[BONUS_REPUTATION_NUMERATOR] = 20;
+      uintConfigs[BONUS_REPUTATION_DENOMINATOR] = 100;
   }
 
   function set_uint_config(bytes32 _config_name, uint256 _new_value)

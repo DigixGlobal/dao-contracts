@@ -1,9 +1,15 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.23;
 
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
 
 library DaoStructs {
   using DoublyLinkedList for DoublyLinkedList.Bytes;
+
+  struct VotingCount {
+    uint256 forCount;
+    uint256 againstCount;
+    uint256 quorum;
+  }
 
   struct Voting {
     uint256 startTime;
@@ -14,6 +20,7 @@ library DaoStructs {
     uint256 totalYesVotes;
     uint256 totalNoVotes;
     bool passed;
+    address claimer;
   }
 
   struct ProposalVersion {
