@@ -86,6 +86,7 @@ const registerInteractive = async function (resolver, addressOf) {
     'c:config:controller',
     'i:quarter:point',
     'i:reputation:point',
+    'i:dao:fundingmanager',
   ];
   await a.map(callingKeys, 10, key => resolver.register_contract(key, addressOf.root));
 };
