@@ -41,6 +41,8 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
       uintConfigs[MINIMUM_QUARTER_POINT] = 3;
       uintConfigs[QUARTER_POINT_CLAIM_RESULT] = 1;
 
+      uintConfigs[QUARTER_POINT_CLAIM_RESULT] = 1;
+
       uintConfigs[REPUTATION_PER_EXTRA_QP] = 5;
       uintConfigs[BONUS_REPUTATION_NUMERATOR] = 20;
       uintConfigs[BONUS_REPUTATION_DENOMINATOR] = 100;

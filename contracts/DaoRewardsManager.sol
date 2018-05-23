@@ -2,9 +2,14 @@ pragma solidity ^0.4.19;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "./common/DaoCommon.sol";
+import "./lib/DaoStructs.sol";
+import "./service/DaoCalculatorService.sol";
+import 'openzeppelin-solidity/contracts/token/ERC20/ERC20.sol';
 
 // this contract will receive DGXs fees from the DGX fees distributors
 contract DaoRewardsManager is DaoCommon {
+
+    using DaoStructs for DaoStructs.DaoQuarterInfo;
 
   function DaoRewardsManager(address _resolver)
            public
@@ -12,17 +17,17 @@ contract DaoRewardsManager is DaoCommon {
     require(init(CONTRACT_DAO_REWARDS_MANAGER, _resolver));
   }
 
+  function daoCalculatorService()
+      internal
+      returns (DaoCalculatorService _contract)
+  {
+      _contract = DaoCalculatorService(get_contract(CONTRACT_DAO_CALCULATOR_SERVICE));
+  }
+
     function claimRewards(uint256[] quarters)
         public
     {
         // withdraw from his claimableDGXs
-    }
-
-    struct DaoQuarterInfo {
-        uint256 minimalParticipationPoint;
-        uint256 quarterPointScalingFactor;
-        uint256 totalEffectiveDGD;
-        uint256 dgxDistributionDay; // the timestamp when DGX rewards is distributable to Holders
     }
 
     function updateRewardsBeforeNewQuarter(address _user)
@@ -44,13 +49,7 @@ contract DaoRewardsManager is DaoCommon {
         require(_lastParticipatedQuarter > daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user));
 
         // now we will calculate the user rewards based on info of the _lastParticipatedQuarter
-        DaoQuarterInfo qInfo;
-        (
-            qInfo.minimalParticipationPoint,
-            qInfo.quarterPointScalingFactor,
-            qInfo.totalEffectiveDGD,
-            qInfo.dgxDistributionDay,
-        ) = daoRewardsStorage().readQuarterInfo(_lastParticipatedQuarter);
+        DaoStructs.DaoQuarterInfo memory qInfo = readQuarterInfo(_lastParticipatedQuarter);
 
         uint256 _userQP = daoPointsStorage().getQuarterPoint(_user, _lastParticipatedQuarter);
         // this RP has been updated at the beginning of the lastParticipatedQuarter in
@@ -76,10 +75,64 @@ contract DaoRewardsManager is DaoCommon {
     {
         // go through every participants, calculate their EffectiveDGD balance
         // and add up to get totalEffectiveDGD
+        uint256 _noOfParticipants = daoStakeStorage().readTotalParticipant();
+        address[] memory _allParticipants = daoListingService().listBadgeParticipants(_noOfParticipants, true);
+        address _currentParticipant;
+        require(currentQuarterIndex() > 0); // throw if this is the first quarter
+        uint256 _previousQuarter = currentQuarterIndex() - 1;
+        uint256 _totalEffectiveDGD;
 
-        // save this totalEffectiveDGD as well as all the current configs to DaoRewardsStorage
+        DaoStructs.DaoQuarterInfo memory _qInfo = readQuarterInfo(_previousQuarter);
 
-        // save the dgxRewardsPool for the previous quarter as well
+        for (uint256 i=0;i<_noOfParticipants;i++) {
+            _currentParticipant = _allParticipants[i];
+            // check if this participant really did participate in the previous quarter
+            if (daoRewardsStorage().lastParticipatedQuarter(_currentParticipant) < _previousQuarter) {
+                continue;
+            }
+            _totalEffectiveDGD += daoCalculatorService().calculateUserEffectiveDGDBalance(
+                _qInfo.minimalParticipationPoint,
+                _qInfo.quarterPointScalingFactor,
+                _qInfo.reputationPointScalingFactor,
+                daoPointsStorage().getQuarterPoint(_currentParticipant, _previousQuarter),
+                daoPointsStorage().getReputation(_currentParticipant),
+                daoStakeStorage().lockedDGDStake(_currentParticipant)
+            );
+        }
+
+        // calculate how much DGX rewards we got for this quarter
+        uint256 _dgxRewardsPool =
+            ERC20(ADDRESS_DGX_TOKEN).balanceOf(address(this))
+            + daoRewardsStorage().totalDGXsClaimed()
+            - _qInfo.sumRewardsFromBeginning;
+
+        // save the dgxRewardsPool, totalEffectiveDGD as well as all the current configs to DaoRewardsStorage
+        daoRewardsStorage().updateQuarterInfo(
+            _previousQuarter + 1,
+            get_uint_config(MINIMUM_QUARTER_POINT),
+            get_uint_config(CONFIG_QUARTER_POINT_SCALING_FACTOR),
+            get_uint_config(CONFIG_REPUTATION_POINT_SCALING_FACTOR),
+            _totalEffectiveDGD,
+            now,
+            _dgxRewardsPool,
+            _qInfo.sumRewardsFromBeginning + _dgxRewardsPool
+        );
+
+    }
+
+    function readQuarterInfo(uint256 _quarterIndex)
+        internal
+        returns (DaoStructs.DaoQuarterInfo _qInfo)
+    {
+        (
+            _qInfo.minimalParticipationPoint,
+            _qInfo.quarterPointScalingFactor,
+            _qInfo.reputationPointScalingFactor,
+            _qInfo.totalEffectiveDGD,
+            _qInfo.dgxDistributionDay,
+            _qInfo.dgxRewardsPool,
+            _qInfo.sumRewardsFromBeginning
+        ) = daoRewardsStorage().readQuarterInfo(_quarterIndex);
     }
 
 }

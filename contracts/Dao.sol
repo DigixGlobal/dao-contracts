@@ -113,6 +113,7 @@ contract Dao is DaoCommon, Claimable {
         if_dao_member()
         returns (bool _passed)
     {
+        //TODO use the real total number of badgeHolders instead of 10000
         address[] memory _allBadgeHolders = daoListingService().listBadgeParticipants(10000, true);
         DaoStructs.VotingCount _count;
         (_count.forCount, _count.againstCount, _count.quorum) = daoStorage().readDraftVotingCount(_proposalId, _allBadgeHolders);

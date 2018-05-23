@@ -55,4 +55,16 @@ library DaoStructs {
     mapping (uint256 => Voting) interimRounds;
     bool prlValid;
   }
+
+  struct DaoQuarterInfo {
+      uint256 minimalParticipationPoint;
+      uint256 quarterPointScalingFactor;
+      uint256 reputationPointScalingFactor;
+      uint256 totalEffectiveDGD;
+      uint256 dgxDistributionDay; // the timestamp when DGX rewards is distributable to Holders
+      uint256 dgxRewardsPool;
+      uint256 sumRewardsFromBeginning;
+      mapping (address => uint256) reputationPoint;
+  }
+
 }

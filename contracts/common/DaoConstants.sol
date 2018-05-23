@@ -62,6 +62,12 @@ contract DaoConstants {
   bytes32 CONFIG_VOTING_QUOTA_NUMERATOR = "voting_quota_numerator";
   bytes32 CONFIG_VOTING_QUOTA_DENOMINATOR = "voting_quota_denominator";
 
+
+  bytes32 CONFIG_QUARTER_POINT_SCALING_FACTOR = "quarter_point_scaling_factor";
+  bytes32 CONFIG_REPUTATION_POINT_SCALING_FACTOR = "reputation_point_scaling_factor";
+
+
+
   uint256 QUARTER_DURATION = 90 days;
 
   bytes32 QUARTER_POINT_DRAFT_VOTE = "quarter_point_draft_vote";

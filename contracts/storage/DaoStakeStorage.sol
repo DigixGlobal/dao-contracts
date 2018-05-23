@@ -8,8 +8,8 @@ import "../common/DaoConstants.sol";
 contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage {
     using DoublyLinkedList for DoublyLinkedList.Address;
 
-    mapping (address => uint256) lockedDGDStake;
-    mapping (address => uint256) actualLockedDGD;
+    mapping (address => uint256) public lockedDGDStake;
+    mapping (address => uint256) public actualLockedDGD;
     mapping (address => uint256) lockedBadge;
     uint256 public totalLockedDGDStake;
     uint256 public totalLockedBadges;

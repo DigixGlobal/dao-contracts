@@ -87,4 +87,37 @@ contract DaoCalculatorService is DaoCommon {
         _minimumQuorum += (_totalStake * _ethAsked * _scalingFactorNumerator) / (_ethInDao * _scalingFactorDenominator);
     }
 
+    function calculateUserEffectiveDGDBalance(
+        uint256 _minimalParticipationPoint,
+        uint256 _quarterPointScalingFactor,
+        uint256 _reputationPointScalingFactor,
+        uint256 _quarterPoint,
+        uint256 _reputationPoint,
+        uint256 _lockedDGDStake
+    )
+        public
+        pure
+        returns (uint256 _effectiveDGDBalance)
+    {
+        uint256 _baseDGDBalance = min(_quarterPoint, _minimalParticipationPoint) * _lockedDGDStake / _minimalParticipationPoint;
+        _effectiveDGDBalance =
+            _baseDGDBalance
+            * (_quarterPointScalingFactor + _quarterPoint - _minimalParticipationPoint)
+            * (_reputationPointScalingFactor + _reputationPoint)
+            / (_quarterPointScalingFactor * _reputationPointScalingFactor);
+    }
+
+    function max(uint256 a, uint256 b) internal pure returns (uint256 _max){
+        _max = b;
+        if (a > b) {
+            _max = a;
+        }
+    }
+
+    function min(uint256 a, uint256 b) internal pure returns (uint256 _min){
+        _min = b;
+        if (a < b) {
+            _min = a;
+        }
+    }
 }
