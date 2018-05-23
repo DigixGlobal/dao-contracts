@@ -4,7 +4,7 @@ import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "./common/DaoCommon.sol";
 import "./lib/DaoStructs.sol";
 import "./service/DaoCalculatorService.sol";
-import 'openzeppelin-solidity/contracts/token/ERC20/ERC20.sol';
+import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
 // this contract will receive DGXs fees from the DGX fees distributors
 contract DaoRewardsManager is DaoCommon {

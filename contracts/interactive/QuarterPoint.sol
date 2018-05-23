@@ -1,12 +1,11 @@
 pragma solidity ^0.4.19;
 
-import "./../interface/NonTransferableToken.sol";
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "./../service/DaoInfoService.sol";
 import "./../storage/DaoPointsStorage.sol";
 import "./../common/DaoConstants.sol";
 
-contract QuarterPoint is ResolverClient, NonTransferableToken, DaoConstants {
+contract QuarterPoint is ResolverClient, DaoConstants {
   string public name = "DigixDao Quarter Point";
   string public symbol = "DQP";
   uint8 public decimals = 0;
@@ -33,14 +32,18 @@ contract QuarterPoint is ResolverClient, NonTransferableToken, DaoConstants {
     _contract = DaoInfoService(get_contract(CONTRACT_DAO_INFO_SERVICE));
   }
 
-  function add(address _who, uint256 _value)
+  function add(address _who, uint256 _value, bool _isBadge)
       public
       if_sender_is(CONTRACT_DAO)
       returns (uint256 _newPoint, uint256 _newTotalPoint)
   {
       require(_value > 0);
       uint256 _currentQuarterId = daoInfoService().getCurrentQuarter();
-      (_newPoint, _newTotalPoint) = daoPointsStorage().addQuarterPoint(_who, _value, _currentQuarterId);
+      if (_isBadge) {
+        (_newPoint, _newTotalPoint) = daoPointsStorage().addQuarterBadgePoint(_who, _value, _currentQuarterId);
+      } else {
+        (_newPoint, _newTotalPoint) = daoPointsStorage().addQuarterPoint(_who, _value, _currentQuarterId);
+      }
   }
 
   /// @notice display quarter points for the current quarter
@@ -51,10 +54,11 @@ contract QuarterPoint is ResolverClient, NonTransferableToken, DaoConstants {
   function balanceOf(address _who)
            public
            constant
-           returns (uint256 _balance)
+           returns (uint256 _quarterPoint, uint256 _quarterBadgePoint)
   {
     uint256 _currentQuarterId = daoInfoService().getCurrentQuarter();
-    _balance = daoPointsStorage().getQuarterPoint(_who, _currentQuarterId);
+    _quarterPoint = daoPointsStorage().getQuarterPoint(_who, _currentQuarterId);
+    _quarterBadgePoint = daoPointsStorage().getQuarterBadgePoint(_who, _currentQuarterId);
   }
 
   /// @notice display quarter points for an account for the given quarter
@@ -66,9 +70,10 @@ contract QuarterPoint is ResolverClient, NonTransferableToken, DaoConstants {
   function balanceInQuarter(address _who, uint256 _quarterId)
            public
            constant
-           returns (uint256 _balance)
+           returns (uint256 _quarterPoint, uint256 _quarterBadgePoint)
   {
-    _balance = daoPointsStorage().getQuarterPoint(_who, _quarterId);
+    _quarterPoint = daoPointsStorage().getQuarterPoint(_who, _quarterId);
+    _quarterBadgePoint = daoPointsStorage().getQuarterBadgePoint(_who, _quarterId);
   }
 
   /// @notice display total quarter points for the current quarter
@@ -78,10 +83,11 @@ contract QuarterPoint is ResolverClient, NonTransferableToken, DaoConstants {
   function totalSupply()
            public
            constant
-           returns (uint256 _supply)
+           returns (uint256 _totalQuarterPoint, uint256 _totalQuarterBadgePoint)
   {
     uint256 _currentQuarterId = daoInfoService().getCurrentQuarter();
-    _supply = daoPointsStorage().getTotalQuarterPoint(_currentQuarterId);
+    _totalQuarterPoint = daoPointsStorage().getTotalQuarterPoint(_currentQuarterId);
+    _totalQuarterBadgePoint = daoPointsStorage().getTotalQuarterBadgePoint(_currentQuarterId);
   }
 
   /// @notice display total quarter points for the given quarter
@@ -92,8 +98,9 @@ contract QuarterPoint is ResolverClient, NonTransferableToken, DaoConstants {
   function totalSupplyInQuarter(uint256 _quarterId)
            public
            constant
-           returns (uint256 _supply)
+           returns (uint256 _totalQuarterPoint, uint256 _totalQuarterBadgePoint)
   {
-    _supply = daoPointsStorage().getTotalQuarterPoint(_quarterId);
+    _totalQuarterPoint = daoPointsStorage().getTotalQuarterPoint(_quarterId);
+    _totalQuarterBadgePoint = daoPointsStorage().getTotalQuarterBadgePoint(_quarterId);
   }
 }

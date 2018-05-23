@@ -1,11 +1,10 @@
 pragma solidity ^0.4.19;
 
-import "./../interface/NonTransferableToken.sol";
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "./../storage/DaoPointsStorage.sol";
 import "./../common/DaoConstants.sol";
 
-contract ReputationPoint is ResolverClient, NonTransferableToken, DaoConstants {
+contract ReputationPoint is ResolverClient, DaoConstants {
   string public name = "DigixDao Reputation Point";
   string public symbol = "DRP";
   uint8 public decimals = 0;

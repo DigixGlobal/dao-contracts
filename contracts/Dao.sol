@@ -1,7 +1,7 @@
 pragma solidity ^0.4.23;
 
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
-import 'zeppelin-solidity/contracts/ownership/Claimable.sol';
+import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
 import "./common/DaoCommon.sol";
 import "./service/DaoCalculatorService.sol";
 import "./DaoFundingManager.sol";
@@ -122,7 +122,7 @@ contract Dao is DaoCommon, Claimable {
         _passed = true;
         daoStorage().setProposalDraftPass(_proposalId, true);
         daoStorage().setDraftVotingClaim(_proposalId, msg.sender);
-        daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT));
+        daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT), false);
     }
 
     function claimVotingResult(bytes32 _proposalId)
@@ -141,7 +141,7 @@ contract Dao is DaoCommon, Claimable {
         _passed = true;
         daoStorage().setProposalPass(_proposalId, 0, _passed);
         daoStorage().setVotingClaim(_proposalId, 0, msg.sender); // 0 for voting, interim starts from 1
-        daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT));
+        daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT), false);
 
         // set deadline of milestone 1 (set startTime for next interim voting round)
         DaoStructs.MilestoneInfo _info;
@@ -169,7 +169,7 @@ contract Dao is DaoCommon, Claimable {
         }
         daoStorage().setProposalPass(_proposalId, _index, _passed);
         daoStorage().setVotingClaim(_proposalId, _index, msg.sender);
-        daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT));
+        daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT), false);
 
         DaoStructs.Users _bonusVoters;
         if (_passed) {

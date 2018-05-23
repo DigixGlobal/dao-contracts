@@ -62,7 +62,7 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         claimableDGXs[_user] = _newClaimableDGX;
     }
 
-    function updateLastPariticipatedQuarter(address _user, uint256 _lastQuarter)
+    function updateLastParticipatedQuarter(address _user, uint256 _lastQuarter)
         if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         public
     {

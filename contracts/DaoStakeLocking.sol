@@ -67,7 +67,7 @@ contract DaoStakeLocking is DaoCommon {
         // then, lock again in the middle of the quarter. This will not take into account that A was staked in earlier
         if (_newInfo.userActualLockedDGD >= CONFIG_MINIMUM_LOCKED_DGD) {
             daoStakeStorage().addParticipant(msg.sender);
-            daoRewardsStorage().updateLastPariticipatedQuarter(msg.sender, currentQuarterIndex());
+            daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
         }
 
         // interaction happens last
@@ -113,7 +113,7 @@ contract DaoStakeLocking is DaoCommon {
         if (_newInfo.userActualLockedDGD < CONFIG_MINIMUM_LOCKED_DGD) {
             daoStakeStorage().removeParticipant(msg.sender);
         } else {
-            daoRewardsStorage().updateLastPariticipatedQuarter(msg.sender, currentQuarterIndex());
+            daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
         }
 
         daoStakeStorage().updateUserDGDStake(msg.sender, _newInfo.userActualLockedDGD, _newInfo.userLockedDGDStake);
@@ -156,7 +156,7 @@ contract DaoStakeLocking is DaoCommon {
         // This has to happen at least once before user can participate in next quarter
         daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
 
-        daoRewardsStorage().updateLastPariticipatedQuarter(msg.sender, currentQuarterIndex());
+        daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
     }
 
     function isLockingPhase()

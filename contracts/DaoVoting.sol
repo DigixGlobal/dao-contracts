@@ -1,7 +1,7 @@
 pragma solidity ^0.4.23;
 
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
-import 'zeppelin-solidity/contracts/ownership/Claimable.sol';
+import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
 import "./common/DaoCommon.sol";
 
 contract DaoVoting is DaoCommon, Claimable {
@@ -33,7 +33,7 @@ contract DaoVoting is DaoCommon, Claimable {
       require(daoStorage().addDraftVote(_proposalId, _badgeHolder, _voteYes, _badgeStake, _nonce));
 
       if (_voted == false) {
-        daoQuarterPoint().add(_badgeHolder, get_uint_config(QUARTER_POINT_DRAFT_VOTE));
+        daoQuarterPoint().add(_badgeHolder, get_uint_config(QUARTER_POINT_DRAFT_VOTE), true);
       }
 
       _success = true;
@@ -71,7 +71,7 @@ contract DaoVoting is DaoCommon, Claimable {
       daoStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().readUserEffectiveDGDStake(msg.sender), 0);
 
       // give quarter point
-      daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_VOTE));
+      daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_VOTE), false);
   }
 
   function commitVoteOnInterim(
@@ -108,6 +108,6 @@ contract DaoVoting is DaoCommon, Claimable {
       daoStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().readUserEffectiveDGDStake(msg.sender), _index);
 
       // give quarter point
-      daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_INTERIM_VOTE));
+      daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_INTERIM_VOTE), false);
   }
 }

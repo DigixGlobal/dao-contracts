@@ -26,6 +26,7 @@ const DaoStakeLocking = artifacts.require('./DaoStakeLocking.sol');
 const DaoFundingManager = artifacts.require('./DaoFundingManager.sol');
 const QuarterPoint = artifacts.require('./QuarterPoint.sol');
 const ReputationPoint = artifacts.require('./ReputationPoint.sol');
+const DaoRewardsManager = artifacts.require('./DaoRewardsManager.sol');
 
 const deployLibraries = async function () {
   const libs = {};
@@ -87,6 +88,7 @@ const registerInteractive = async function (resolver, addressOf) {
     'i:quarter:point',
     'i:reputation:point',
     'i:dao:fundingmanager',
+    'c:dao:rewards:manager'
   ];
   await a.map(callingKeys, 10, key => resolver.register_contract(key, addressOf.root));
 };
@@ -105,6 +107,7 @@ const deployInteractive = async function (libs, contracts, resolver, addressOf) 
   contracts.daoVoting = await DaoVoting.new(resolver.address);
   contracts.daoQuarterPoint = await QuarterPoint.new(resolver.address);
   contracts.daoReputationPoint = await ReputationPoint.new(resolver.address);
+  contracts.daoRewardsManager = await DaoRewardsManager.new(resolver.address);
 };
 
 module.exports = {
