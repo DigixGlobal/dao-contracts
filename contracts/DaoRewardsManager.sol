@@ -30,6 +30,13 @@ contract DaoRewardsManager is DaoCommon {
         // withdraw from his claimableDGXs
     }
 
+    function allocateFinalReward(bytes32 _proposalId)
+      public
+      if_sender_is(CONTRACT_DAO)
+    {
+      // allocate rewards to proposer based on how big the project was?
+    }
+
     function updateRewardsBeforeNewQuarter(address _user)
         public
     {
@@ -76,7 +83,7 @@ contract DaoRewardsManager is DaoCommon {
         // go through every participants, calculate their EffectiveDGD balance
         // and add up to get totalEffectiveDGD
         uint256 _noOfParticipants = daoStakeStorage().readTotalParticipant();
-        address[] memory _allParticipants = daoListingService().listBadgeParticipants(_noOfParticipants, true);
+        address[] memory _allParticipants = daoListingService().listParticipants(_noOfParticipants, true);
         address _currentParticipant;
         require(currentQuarterIndex() > 0); // throw if this is the first quarter
         uint256 _previousQuarter = currentQuarterIndex() - 1;
@@ -117,7 +124,6 @@ contract DaoRewardsManager is DaoCommon {
             _dgxRewardsPool,
             _qInfo.sumRewardsFromBeginning + _dgxRewardsPool
         );
-
     }
 
     function readQuarterInfo(uint256 _quarterIndex)
@@ -134,5 +140,4 @@ contract DaoRewardsManager is DaoCommon {
             _qInfo.sumRewardsFromBeginning
         ) = daoRewardsStorage().readQuarterInfo(_quarterIndex);
     }
-
 }

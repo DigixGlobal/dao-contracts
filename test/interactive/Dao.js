@@ -700,6 +700,9 @@ contract('Dao | DaoVoting', function (accounts) {
 
       // quarter point awarded to claimer
     });
+    it('[if less than VOTING_PHASE time left, the voting should be pushed to the start of MAIN_PHASE]: verify', async function () {
+
+    });
     it('[claim a voting already claimed]: revert', async function () {
 
     });
@@ -799,6 +802,9 @@ contract('Dao | DaoVoting', function (accounts) {
       // quarter point is awarded to claimer
 
       // claimable updated
+    });
+    it('[if milestone 1 time ends around the LOCKING_PHASE, interim voting should be pushed to start of MAIN_PHASE]: verify', async function () {
+
     });
     it('[re-claim same voting round]: revert', async function () {
 
@@ -913,6 +919,12 @@ contract('Dao | DaoVoting', function (accounts) {
       // bonus reputation is awarded
 
       // claimable eth updated
+    });
+    it('[if next milestone period ends nearby LOCKING_PHASE, push it to the beginning of MAIN_PHASE]: verify', async function () {
+
+    });
+    it('[if there is no more milestone left, and if voting result is PASS, final rewards must be given to proposer]', async function () {
+
     });
     it('[re-claim same interim voting round]: revert', async function () {
 

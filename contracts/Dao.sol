@@ -5,6 +5,7 @@ import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
 import "./common/DaoCommon.sol";
 import "./service/DaoCalculatorService.sol";
 import "./DaoFundingManager.sol";
+import "./DaoRewardsManager.sol";
 
 contract Dao is DaoCommon, Claimable {
     using DoublyLinkedList for DoublyLinkedList.Address;
@@ -25,6 +26,13 @@ contract Dao is DaoCommon, Claimable {
         returns (DaoFundingManager _contract)
     {
         _contract = DaoFundingManager(get_contract(CONTRACT_DAO_FUNDING_MANAGER));
+    }
+
+    function daoRewardsManager()
+        internal
+        returns (DaoRewardsManager _contract)
+    {
+        _contract = DaoRewardsManager(get_contract(CONTRACT_DAO_REWARDS_MANAGER));
     }
 
     function migrateToNewDao(
@@ -121,6 +129,7 @@ contract Dao is DaoCommon, Claimable {
         require(daoCalculatorService().draftQuotaPass(_count.forCount, _count.againstCount));
         _passed = true;
         daoStorage().setProposalDraftPass(_proposalId, true);
+        daoStorage().setProposalVotingTime(_proposalId, 0, calculateNextVotingTime(0, false));
         daoStorage().setDraftVotingClaim(_proposalId, msg.sender);
         daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT), false);
     }
@@ -146,7 +155,7 @@ contract Dao is DaoCommon, Claimable {
         // set deadline of milestone 1 (set startTime for next interim voting round)
         DaoStructs.MilestoneInfo _info;
         (_info.index, _info.duration, _info.funding) = daoStorage().readProposalMilestone(_proposalId, 0);
-        daoStorage().setProposalVotingTime(_proposalId, 1, now + _info.duration);
+        daoStorage().setProposalVotingTime(_proposalId, 1, calculateNextVotingTime(_info.duration, true));
 
         // update claimable funds
         daoFundingManager().allocateEth(daoStorage().readProposalProposer(_proposalId), _info.funding);
@@ -180,16 +189,37 @@ contract Dao is DaoCommon, Claimable {
           // set deadline for next milestone (set startTime for next interim voting round)
           DaoStructs.MilestoneInfo _info;
           (_info.index, _info.duration, _info.funding) = daoStorage().readProposalMilestone(_proposalId, _index);
-          daoStorage().setProposalVotingTime(_proposalId, _index + 1, now + _info.duration);
-
-          // update claimable funds
-          daoFundingManager().allocateEth(daoStorage().readProposalProposer(_proposalId), _info.funding);
+          if (_info.duration > 0 && _info.funding > 0) {
+            daoStorage().setProposalVotingTime(_proposalId, _index + 1, calculateNextVotingTime(_info.duration, true));
+            // update claimable funds
+            daoFundingManager().allocateEth(daoStorage().readProposalProposer(_proposalId), _info.funding);
+          } else {
+            // give final reward
+            daoRewardsManager().allocateFinalReward(_proposalId);
+          }
         } else {
           // give bonus points for all those who
           // voted NO in the previous round
           (_bonusVoters.users, _bonusVoters.usersLength) = daoStorage().readVotingRoundVotes(_proposalId, _index-1, _allStakeHolders, false);
         }
         if (_bonusVoters.usersLength > 0) addBonusReputation(_bonusVoters.users, _bonusVoters.usersLength);
+    }
+
+    function calculateNextVotingTime(uint256 _time, bool _isInterim)
+      private
+      returns (uint256 _votingTime)
+    {
+      _votingTime = now + _time;
+      uint256 _timeToGo = getTimeFromNextLockingPhase(now + _time);
+      if (_isInterim) {
+        if (_timeToGo < get_uint_config(CONFIG_INTERIM_PHASE_TOTAL)) {
+          _votingTime = now + _time + _timeToGo + get_uint_config(CONFIG_LOCKING_PHASE_DURATION);
+        }
+      } else {
+        if (_timeToGo < get_uint_config(CONFIG_VOTING_PHASE_TOTAL)) {
+          _votingTime = now + _time + _timeToGo + get_uint_config(CONFIG_LOCKING_PHASE_DURATION);
+        }
+      }
     }
 
     function addBonusReputation(address[] _voters, uint256 _n)

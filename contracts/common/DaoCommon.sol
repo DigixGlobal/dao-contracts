@@ -137,10 +137,23 @@ contract DaoCommon is IdentityCommon {
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
+    function getQuarterIndex(uint256 _time) internal returns (uint256 _index) {
+      _index = (_time - daoStorage().startOfFirstQuarter()) / get_uint_config(CONFIG_QUARTER_DURATION);
+      /* _index = (_time - daoStorage().startOfFirstQuarter()) / QUARTER_DURATION; */
+      //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
+    }
+
     function currentTInQuarter() internal returns(uint256 _currentT) {
         /* _currentT = (now - daoStorage().startOfFirstQuarter()) % QUARTER_DURATION; */
         _currentT = (now - daoStorage().startOfFirstQuarter()) % get_uint_config(CONFIG_QUARTER_DURATION);
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
+    }
+
+    function getTimeFromNextLockingPhase(uint256 _time) internal returns(uint256 _timeToGo) {
+      uint256 _quarterIndex = getQuarterIndex(_time);
+      _timeToGo = ((_quarterIndex + 1) * get_uint_config(CONFIG_QUARTER_DURATION)) - _time;
+      /* _timeToGo = ((_quarterIndex + 1) * QUARTER_DURATION) - _time; */
+      //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
     function daoInfoService()

@@ -466,9 +466,15 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
   {
     require(_index >= 0);
     bytes32 _latestVersion = getLastProposalVersion(_proposalId);
-    _milestoneId = _index;
-    _duration = proposalsById[_proposalId].proposalVersions[_latestVersion].milestoneDurations[_index];
-    _funding = proposalsById[_proposalId].proposalVersions[_latestVersion].milestoneFundings[_index];
+    if (_index < proposalsById[_proposalId].proposalVersions[_latestVersion].milestoneDurations.length) {
+      _milestoneId = _index;
+      _duration = proposalsById[_proposalId].proposalVersions[_latestVersion].milestoneDurations[_index];
+      _funding = proposalsById[_proposalId].proposalVersions[_latestVersion].milestoneFundings[_index];
+    } else {
+      _milestoneId = 0;
+      _duration = 0;
+      _funding = 0;
+    }
   }
 
   function readProposalDuration(bytes32 _proposalId)
@@ -689,8 +695,6 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
       proposalsByState[PROPOSAL_STATE_INITIAL].remove_item(_proposalId);
       proposalsByState[PROPOSAL_STATE_VETTED].append(_proposalId);
       proposalsById[_proposalId].currentState = PROPOSAL_STATE_VETTED;
-      setProposalVotingTime(_proposalId, 0, now);
-      /* proposalsById[_proposalId].votingRound.startTime = now; */
     }
     _success = true;
   }
