@@ -24,6 +24,7 @@
     "@digix/cdap": "^0.1.0",
     "@digix/doxity": "^0.5.2",
     "@digix/helpers": "^1.0.0",
+    "@digix/lite-dgx-contract": "^1.0.1",
     "@digix/multi-hash": "0.0.2",
     "@digix/solidity-collections": "^1.1.0",
     "@digix/solidity-core-libraries": "^0.2.3",
@@ -40,7 +41,7 @@
     "eslint": "^3.14.1",
     "eth-gas-reporter": "^0.1.1",
     "ethereumjs-testrpc": "^3.9.2",
-    "openzeppelin-solidity": "1.9.0",
+    "openzeppelin-solidity": "1.9.0"
   },
   "author": "DigixGlobal",
   "license": "BSD-3-Clause",

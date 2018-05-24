@@ -1,8 +1,10 @@
 pragma solidity ^0.4.19;
 
+import "./../mock/MockDgxDemurrageCalculator.sol";
 import "./../common/DaoCommon.sol";
 
 contract DaoCalculatorService is DaoCommon {
+    address public dgxDemurrageCalculatorAddress;
 
     function DaoCalculatorService(address _resolver)
       public
@@ -105,6 +107,14 @@ contract DaoCalculatorService is DaoCommon {
             * (_quarterPointScalingFactor + _quarterPoint - _minimalParticipationPoint)
             * (_reputationPointScalingFactor + _reputationPoint)
             / (_quarterPointScalingFactor * _reputationPointScalingFactor);
+    }
+
+    function calculateDemurrage(uint256 _balance, uint256 _daysElapsed)
+        public
+        view
+        returns (uint256 _demurrageFees)
+    {
+        (_demurrageFees,) = MockDgxDemurrageCalculator(dgxDemurrageCalculatorAddress).calculateDemurrage(_balance, _daysElapsed);
     }
 
     function max(uint256 a, uint256 b) internal pure returns (uint256 _max){

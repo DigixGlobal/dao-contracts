@@ -56,22 +56,42 @@ contract DaoRewardsManager is DaoCommon {
         require(_lastParticipatedQuarter > daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user));
 
         // now we will calculate the user rewards based on info of the _lastParticipatedQuarter
-        DaoStructs.DaoQuarterInfo memory qInfo = readQuarterInfo(_lastParticipatedQuarter);
+        DaoStructs.DaoQuarterInfo memory _qInfo = readQuarterInfo(_lastParticipatedQuarter);
+        uint256 _lastLastDgxDistributionDay = _qInfo.dgxDistributionDay;
+        if (_lastParticipatedQuarter != 0) {
+            (,,,,_lastLastDgxDistributionDay,,) = daoRewardsStorage().readQuarterInfo(_lastParticipatedQuarter - 1);
+        }
+        // now we "deduct the demurrage" from the claimable DGXs for time period from
+        // _lastLastDgxDistributionDay to _qInfo.dgxDistributionDay
+        uint256 _userClaimableDgx = daoRewardsStorage().claimableDGXs(_user);
+        _userClaimableDgx -= daoCalculatorService().calculateDemurrage(_userClaimableDgx, (_qInfo.dgxDistributionDay - _lastLastDgxDistributionDay) / (1 days) );
 
-        uint256 _userQP = daoPointsStorage().getQuarterPoint(_user, _lastParticipatedQuarter);
+        /* uint256 _userQP = ; */
         // this RP has been updated at the beginning of the lastParticipatedQuarter in
         // a call to updateRewardsBeforeNewQuarter();
-        uint256 _userRP = daoPointsStorage().getReputation(_user);
+        /* uint256 _userRP = ; */
 
         uint256 _dgxRewards;
         // calculate _dgxRewards; This is basically the DGXs that user can withdraw on the dgxDistributionDay of the current quarter
         // when user actually withdraw some time after that, he will be deducted demurrage.
 
+        uint256 _effectiveDGDBalance = daoCalculatorService().calculateUserEffectiveDGDBalance(
+            _qInfo.minimalParticipationPoint,
+            _qInfo.quarterPointScalingFactor,
+            _qInfo.reputationPointScalingFactor,
+            daoPointsStorage().getQuarterPoint(_user, _lastParticipatedQuarter),
+            daoPointsStorage().getReputation(_user),
+            daoStakeStorage().lockedDGDStake(_user)
+        );
+
+        _dgxRewards = _effectiveDGDBalance * _qInfo.dgxRewardsPool / _qInfo.totalEffectiveDGD;
+        _userClaimableDgx += _dgxRewards;
         // update claimableDGXs. The calculation needs to take into account demurrage since the
         // dgxDistributionDay of the last quarter as well
+        daoRewardsStorage().updateClaimableDGX(_user, _dgxRewards);
 
         // update lastQuarterThatRewardsWasUpdated
-
+        daoRewardsStorage().updateLastQuarterThatRewardsWasUpdated(_user, _lastParticipatedQuarter);
     }
 
     // this is called by the founder after transfering the DGX fees into the DAO at
