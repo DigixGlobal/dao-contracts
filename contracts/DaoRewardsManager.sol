@@ -12,18 +12,18 @@ contract DaoRewardsManager is DaoCommon {
     using DaoStructs for DaoStructs.DaoQuarterInfo;
     using MathHelper for MathHelper;
 
-  function DaoRewardsManager(address _resolver)
-           public
-  {
-    require(init(CONTRACT_DAO_REWARDS_MANAGER, _resolver));
-  }
+    function DaoRewardsManager(address _resolver)
+        public
+    {
+        require(init(CONTRACT_DAO_REWARDS_MANAGER, _resolver));
+    }
 
-  function daoCalculatorService()
-      internal
-      returns (DaoCalculatorService _contract)
-  {
-      _contract = DaoCalculatorService(get_contract(CONTRACT_DAO_CALCULATOR_SERVICE));
-  }
+    function daoCalculatorService()
+        internal
+        returns (DaoCalculatorService _contract)
+    {
+        _contract = DaoCalculatorService(get_contract(CONTRACT_DAO_CALCULATOR_SERVICE));
+    }
 
     function claimRewards(uint256[] quarters)
         public
@@ -31,15 +31,9 @@ contract DaoRewardsManager is DaoCommon {
         // withdraw from his claimableDGXs
     }
 
-    function allocateFinalReward(bytes32 _proposalId)
-      public
-      if_sender_is(CONTRACT_DAO)
-    {
-      // allocate rewards to proposer based on how big the project was?
-    }
-
     function updateRewardsBeforeNewQuarter(address _user)
         public
+        if_sender_is(CONTRACT_DAO)
     {
         uint256 _currentQuarter = currentQuarterIndex();
         // do nothing if the rewards was already updated for the previous quarter
@@ -132,6 +126,7 @@ contract DaoRewardsManager is DaoCommon {
     // the beginning of the quarter
     function calculateGlobalRewardsBeforeNewQuarter()
         if_founder()
+        if_locking_phase()
         public
     {
         // go through every participants, calculate their EffectiveDGD balance

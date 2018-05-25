@@ -1,11 +1,9 @@
 pragma solidity ^0.4.23;
 
-import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
 import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
 import "./common/DaoCommon.sol";
 
 contract DaoVoting is DaoCommon, Claimable {
-  using DoublyLinkedList for DoublyLinkedList.Address;
 
   function DaoVoting(address _resolver) public {
       require(init(CONTRACT_DAO_VOTING, _resolver));

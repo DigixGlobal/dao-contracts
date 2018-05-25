@@ -66,7 +66,9 @@ contract DaoCalculatorService is DaoCommon {
         returns (uint256 _minQuorum)
     {
       //TODO: implement this function
-      _minQuorum = 0;
+      _minQuorum = get_uint_config(CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR) *
+                     daoStakeStorage().totalLockedDGDStake() /
+                     get_uint_config(CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR);
     }
 
     function votingQuotaPass(uint256 _for, uint256 _against)

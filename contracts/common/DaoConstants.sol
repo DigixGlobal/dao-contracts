@@ -9,6 +9,7 @@ contract DaoConstants {
   bytes32 CONTRACT_DAO_STAKE_LOCKING = "c:stake:locking";
   bytes32 CONTRACT_DAO = "c:dao";
   bytes32 CONTRACT_DAO_VOTING = "c:dao:voting";
+  bytes32 CONTRACT_DAO_VOTING_CLAIMS = "c:dao:voting:claims";
   bytes32 CONTRACT_DAO_IDENTITY = "c:dao:identity";
   bytes32 CONTRACT_IDENTITY_STORAGE = "c:dao:identity:storage";
   bytes32 CONTRACT_DAO_REWARDS_MANAGER = "c:dao:rewards:manager";
@@ -63,11 +64,8 @@ contract DaoConstants {
   bytes32 CONFIG_VOTING_QUOTA_NUMERATOR = "voting_quota_numerator";
   bytes32 CONFIG_VOTING_QUOTA_DENOMINATOR = "voting_quota_denominator";
 
-
   bytes32 CONFIG_QUARTER_POINT_SCALING_FACTOR = "quarter_point_scaling_factor";
   bytes32 CONFIG_REPUTATION_POINT_SCALING_FACTOR = "reputation_point_scaling_factor";
-
-
 
   uint256 QUARTER_DURATION = 90 days;
 
@@ -76,6 +74,7 @@ contract DaoConstants {
   bytes32 QUARTER_POINT_INTERIM_VOTE = "quarter_point_interim_vote";
   bytes32 MINIMUM_QUARTER_POINT = "minimum_quarter_point";
   bytes32 QUARTER_POINT_CLAIM_RESULT = "quarter_point_claim_result";
+  bytes32 QUARTER_POINT_MILESTONE_COMPLETION = "q_p_milestone_completion";
 
   bytes32 REPUTATION_PER_EXTRA_QP = "reputation_per_extra_qp";
   bytes32 BONUS_REPUTATION_NUMERATOR = "bonus_reputation_numerator";
@@ -86,6 +85,9 @@ contract DaoConstants {
 
   bytes32 CONFIG_SPECIAL_QUOTA_NUMERATOR = "config_special_quota_numerator";
   bytes32 CONFIG_SPECIAL_QUOTA_DENOMINATOR = "config_special_quota_denominator";
+
+  bytes32 CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR = "special_quorum_numerator";
+  bytes32 CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR = "special_quorum_denominator";
 
   bytes32 CONFIG_MAXIMUM_REPUTATION_DEDUCTION = "config_max_reputation_deduction";
   bytes32 CONFIG_PUNISHMENT_FOR_NOT_LOCKING = "config_punishment_not_locking";
