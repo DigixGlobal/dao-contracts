@@ -46,14 +46,14 @@ contract('DaoRewardsStorage', function (accounts) {
       const quarterPointScalingFactor = bN(30);
       const totalEffectiveDGD = bN(50 * (10 ** 18));
       const dgxDistributionDay = getCurrentTimestamp() + 360000;
-      const dgxRewardsPool = bN(25 * (10 ** 9));
+      const dgxRewardsPoolLastQuarter = bN(25 * (10 ** 9));
       assert.ok(await contracts.daoRewardsStorage.updateQuarterInfo.call(
         quarterId,
         minimalParticipationPoint,
         quarterPointScalingFactor,
         totalEffectiveDGD,
         bN(dgxDistributionDay),
-        dgxRewardsPool,
+        dgxRewardsPoolLastQuarter,
         { from: accounts[0] },
       ));
       await contracts.daoRewardsStorage.updateQuarterInfo(
@@ -62,7 +62,7 @@ contract('DaoRewardsStorage', function (accounts) {
         quarterPointScalingFactor,
         totalEffectiveDGD,
         bN(dgxDistributionDay),
-        dgxRewardsPool,
+        dgxRewardsPoolLastQuarter,
         { from: accounts[0] },
       );
       const quarterInfo = await contracts.daoRewardsStorage.readQuarterInfo.call(quarterId);
@@ -70,14 +70,14 @@ contract('DaoRewardsStorage', function (accounts) {
       assert.deepEqual(quarterInfo[1], quarterPointScalingFactor);
       assert.deepEqual(quarterInfo[2], totalEffectiveDGD);
       assert.deepEqual(quarterInfo[3], bN(dgxDistributionDay));
-      assert.deepEqual(quarterInfo[4], dgxRewardsPool);
+      assert.deepEqual(quarterInfo[4], dgxRewardsPoolLastQuarter);
       await contracts.daoRewardsStorage.updateQuarterInfo(
         quarterId,
         minimalParticipationPoint.plus(bN(1)),
         quarterPointScalingFactor.plus(bN(5)),
         totalEffectiveDGD,
         bN(dgxDistributionDay),
-        dgxRewardsPool,
+        dgxRewardsPoolLastQuarter,
         { from: accounts[0] },
       );
       const quarterInfo2 = await contracts.daoRewardsStorage.readQuarterInfo.call(quarterId);
@@ -85,7 +85,7 @@ contract('DaoRewardsStorage', function (accounts) {
       assert.deepEqual(quarterInfo2[1], quarterPointScalingFactor.plus(bN(5)));
       assert.deepEqual(quarterInfo2[2], totalEffectiveDGD);
       assert.deepEqual(quarterInfo2[3], bN(dgxDistributionDay));
-      assert.deepEqual(quarterInfo2[4], dgxRewardsPool);
+      assert.deepEqual(quarterInfo2[4], dgxRewardsPoolLastQuarter);
     });
     it('[not called by DAO_REWARDS_MANAGER]: revert', async function () {
       const quarterId = bN(2);
@@ -93,7 +93,7 @@ contract('DaoRewardsStorage', function (accounts) {
       const quarterPointScalingFactor = bN(30);
       const totalEffectiveDGD = bN(45 * (10 ** 18));
       const dgxDistributionDay = getCurrentTimestamp() + 360000;
-      const dgxRewardsPool = bN(20 * (10 ** 9));
+      const dgxRewardsPoolLastQuarter = bN(20 * (10 ** 9));
       for (let i = 1; i < 20; i++) {
         assert(await a.failure(contracts.daoRewardsStorage.updateQuarterInfo.call(
           quarterId,
@@ -101,7 +101,7 @@ contract('DaoRewardsStorage', function (accounts) {
           quarterPointScalingFactor,
           totalEffectiveDGD,
           dgxDistributionDay,
-          dgxRewardsPool,
+          dgxRewardsPoolLastQuarter,
           { from: accounts[i] },
         )));
       }

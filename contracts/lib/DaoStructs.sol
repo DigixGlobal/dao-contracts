@@ -72,7 +72,7 @@ library DaoStructs {
       uint256 reputationPointScalingFactor;
       uint256 totalEffectiveDGD;
       uint256 dgxDistributionDay; // the timestamp when DGX rewards is distributable to Holders
-      uint256 dgxRewardsPool;
+      uint256 dgxRewardsPoolLastQuarter;
       uint256 sumRewardsFromBeginning;
       mapping (address => uint256) reputationPoint;
   }

@@ -29,7 +29,7 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         uint256 _reputationPointScalingFactor,
         uint256 _totalEffectiveDGD,
         uint256 _dgxDistributionDay,
-        uint256 _dgxRewardsPool,
+        uint256 _dgxRewardsPoolLastQuarter,
         uint256 _sumRewardsFromBeginning
     )
         if_sender_is(CONTRACT_DAO_REWARDS_MANAGER)
@@ -40,7 +40,7 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         allQuartersInfo[_quarterIndex].reputationPointScalingFactor = _reputationPointScalingFactor;
         allQuartersInfo[_quarterIndex].totalEffectiveDGD = _totalEffectiveDGD;
         allQuartersInfo[_quarterIndex].dgxDistributionDay = _dgxDistributionDay;
-        allQuartersInfo[_quarterIndex].dgxRewardsPool = _dgxRewardsPool;
+        allQuartersInfo[_quarterIndex].dgxRewardsPoolLastQuarter = _dgxRewardsPoolLastQuarter;
         allQuartersInfo[_quarterIndex].sumRewardsFromBeginning = _sumRewardsFromBeginning;
     }
 
@@ -85,7 +85,7 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
             uint256 _reputationPointScalingFactor,
             uint256 _totalEffectiveDGD,
             uint256 _dgxDistributionDay,
-            uint256 _dgxRewardsPool,
+            uint256 _dgxRewardsPoolLastQuarter,
             uint256 _sumRewardsFromBeginning
         )
     {
@@ -94,8 +94,24 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         _reputationPointScalingFactor = allQuartersInfo[_quarterIndex].reputationPointScalingFactor;
         _totalEffectiveDGD = allQuartersInfo[_quarterIndex].totalEffectiveDGD;
         _dgxDistributionDay = allQuartersInfo[_quarterIndex].dgxDistributionDay;
-        _dgxRewardsPool = allQuartersInfo[_quarterIndex].dgxRewardsPool;
+        _dgxRewardsPoolLastQuarter = allQuartersInfo[_quarterIndex].dgxRewardsPoolLastQuarter;
         _sumRewardsFromBeginning = allQuartersInfo[_quarterIndex].sumRewardsFromBeginning;
+    }
+
+    function readDgxDistributionDay(uint256 _quarterIndex)
+        public
+        view
+        returns (uint256 _distributionDay)
+    {
+        _distributionDay = allQuartersInfo[_quarterIndex].dgxDistributionDay;
+    }
+
+    function readRewardsPoolOfQuarter(uint256 _quarterIndex)
+        public
+        view
+        returns (uint256 _rewardsPool)
+    {
+        _rewardsPool = allQuartersInfo[_quarterIndex + 1].dgxRewardsPoolLastQuarter;
     }
 
     function readReputationPointAtQuarter(address _user, uint256 _quarterIndex)
