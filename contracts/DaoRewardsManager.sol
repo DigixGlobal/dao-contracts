@@ -10,6 +10,7 @@ import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 contract DaoRewardsManager is DaoCommon {
 
     using DaoStructs for DaoStructs.DaoQuarterInfo;
+    using MathHelper for MathHelper;
 
   function DaoRewardsManager(address _resolver)
            public
@@ -40,8 +41,40 @@ contract DaoRewardsManager is DaoCommon {
     function updateRewardsBeforeNewQuarter(address _user)
         public
     {
+        uint256 _currentQuarter = currentQuarterIndex();
+        // do nothing if the rewards was already updated for the previous quarter
+        if (daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user) >= _currentQuarter - 1 ) {
+            return;
+        }
+
         calculateUserRewardsLastQuarter(_user);
+
         // update reputationPoint for this quarter
+        uint256 _userQP = daoPointsStorage().getQuarterPoint(_user, _currentQuarter - 1);
+        uint256 _userRP = daoPointsStorage().getReputation(_user);
+
+        // first, deduct RP for non participating quarters:
+        uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(_user);
+        uint256 _reputationDeduction = (_currentQuarter - 1 - _lastParticipatedQuarter) *
+            ( get_uint_config(CONFIG_MAXIMUM_REPUTATION_DEDUCTION) + get_uint_config(CONFIG_PUNISHMENT_FOR_NOT_LOCKING));
+        daoPointsStorage().subtractReputation(_user, _reputationDeduction);
+
+        _userRP = daoPointsStorage().getReputation(_user);
+
+        // now, we add/deduct RP based on _userQP;
+        if (_userQP < get_uint_config(MINIMUM_QUARTER_POINT)) {
+            _reputationDeduction = (get_uint_config(MINIMUM_QUARTER_POINT) - _userQP)
+                * get_uint_config(CONFIG_MAXIMUM_REPUTATION_DEDUCTION)
+                / get_uint_config(MINIMUM_QUARTER_POINT);
+            daoPointsStorage().subtractReputation(_user, _reputationDeduction);
+        } else {
+            daoPointsStorage().addReputation(
+                _user,
+                (_userQP - get_uint_config(MINIMUM_QUARTER_POINT))
+                * get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_NUM)
+                / get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_DEN)
+            );
+        }
     }
 
     // to be called to calculate and update the user rewards for the last participating quarter;
@@ -53,6 +86,7 @@ contract DaoRewardsManager is DaoCommon {
         // - after the lastQuarterThatRewardsWasUpdated
         uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(_user);
         require(currentQuarterIndex() > _lastParticipatedQuarter);
+
         require(_lastParticipatedQuarter > daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user));
 
         // now we will calculate the user rewards based on info of the _lastParticipatedQuarter

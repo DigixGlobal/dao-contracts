@@ -52,6 +52,11 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
 
       uintConfigs[CONFIG_SPECIAL_QUOTA_NUMERATOR] = 50;
       uintConfigs[CONFIG_SPECIAL_QUOTA_DENOMINATOR] = 100;
+
+      uintConfigs[CONFIG_MAXIMUM_REPUTATION_DEDUCTION] = 20;
+      uintConfigs[CONFIG_PUNISHMENT_FOR_NOT_LOCKING] = 5;
+      uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_NUM] = 1; // 1 extra QP gains 1/4 RP
+      uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_DEN] = 4;
   }
 
   function set_uint_config(bytes32 _config_name, uint256 _new_value)

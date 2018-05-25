@@ -2,10 +2,11 @@ pragma solidity ^0.4.19;
 
 import "./../mock/MockDgxDemurrageCalculator.sol";
 import "./../common/DaoCommon.sol";
+import "./../lib/MathHelper.sol";
 
 contract DaoCalculatorService is DaoCommon {
     address public dgxDemurrageCalculatorAddress;
-
+    using MathHelper for MathHelper;
     function DaoCalculatorService(address _resolver)
       public
     {
@@ -119,7 +120,7 @@ contract DaoCalculatorService is DaoCommon {
         pure
         returns (uint256 _effectiveDGDBalance)
     {
-        uint256 _baseDGDBalance = min(_quarterPoint, _minimalParticipationPoint) * _lockedDGDStake / _minimalParticipationPoint;
+        uint256 _baseDGDBalance = MathHelper.min(_quarterPoint, _minimalParticipationPoint) * _lockedDGDStake / _minimalParticipationPoint;
         _effectiveDGDBalance =
             _baseDGDBalance
             * (_quarterPointScalingFactor + _quarterPoint - _minimalParticipationPoint)
@@ -135,17 +136,5 @@ contract DaoCalculatorService is DaoCommon {
         (_demurrageFees,) = MockDgxDemurrageCalculator(dgxDemurrageCalculatorAddress).calculateDemurrage(_balance, _daysElapsed);
     }
 
-    function max(uint256 a, uint256 b) internal pure returns (uint256 _max){
-        _max = b;
-        if (a > b) {
-            _max = a;
-        }
-    }
 
-    function min(uint256 a, uint256 b) internal pure returns (uint256 _min){
-        _min = b;
-        if (a < b) {
-            _min = a;
-        }
-    }
 }
