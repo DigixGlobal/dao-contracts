@@ -76,6 +76,13 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         lastQuarterThatRewardsWasUpdated[_user] = _lastQuarter;
     }
 
+    function addToTotalDgxClaimed(uint256 _dgxClaimed)
+        if_sender_is(CONTRACT_DAO_REWARDS_MANAGER)
+        public
+    {
+        totalDGXsClaimed += _dgxClaimed;
+    }
+
     function readQuarterInfo(uint256 _quarterIndex)
         public
         constant

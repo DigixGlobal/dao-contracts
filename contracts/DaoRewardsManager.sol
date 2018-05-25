@@ -43,7 +43,7 @@ contract DaoRewardsManager is DaoCommon {
                 daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user) + 1
             )
         );
-
+        daoRewardsStorage().addToTotalDgxClaimed(_claimableDGX);
         daoRewardsStorage().updateClaimableDGX(_user, 0);
         ERC20(ADDRESS_DGX_TOKEN).transfer(_user, _claimableDGX);
     }
