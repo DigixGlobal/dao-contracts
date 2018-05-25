@@ -56,6 +56,16 @@ library DaoStructs {
     bool prlValid;
   }
 
+  struct SpecialProposal {
+    bytes32 proposalId;
+    address proposer;
+    uint256 timeCreated;
+    Voting voting;
+    uint256[] uintConfigs;
+    address[] addressConfigs;
+    bytes32[] bytesConfigs;
+  }
+
   struct DaoQuarterInfo {
       uint256 minimalParticipationPoint;
       uint256 quarterPointScalingFactor;

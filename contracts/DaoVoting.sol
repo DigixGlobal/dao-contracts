@@ -74,6 +74,39 @@ contract DaoVoting is DaoCommon, Claimable {
       daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_VOTE), false);
   }
 
+  function commitVoteOnSpecialProposal(
+      bytes32 _proposalId,
+      bytes32 _commitHash,
+      uint256 _nonce
+  )
+      public
+      if_commit_phase_special(_proposalId)
+      if_valid_nonce_special(_nonce)
+      if_participant()
+      returns (bool _success)
+  {
+      require(daoSpecialStorage().isCommitUsed(_proposalId, _commitHash) == false);
+      daoSpecialStorage().commitVote(_proposalId, _commitHash, msg.sender, _nonce);
+      _success = true;
+  }
+
+  function revealVoteOnSpecialProposal(
+      bytes32 _proposalId,
+      bool _vote,
+      uint256 _salt
+  )
+      public
+      if_reveal_phase_special(_proposalId)
+      has_not_revealed_special(_proposalId)
+      if_participant()
+  {
+      require(keccak256(_vote, _salt) == daoSpecialStorage().readCommitVote(_proposalId, msg.sender));
+      daoSpecialStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().readUserEffectiveDGDStake(msg.sender));
+
+      // give quarter point
+      daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_VOTE), false);
+  }
+
   function commitVoteOnInterim(
       bytes32 _proposalId,
       uint8 _index,

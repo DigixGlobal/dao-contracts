@@ -21,14 +21,14 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
       uintConfigs[CONFIG_INTERIM_PHASE_TOTAL] = 10 days;
 
       uintConfigs[CONFIG_DRAFT_QUORUM_FIXED_PORTION_NUMERATOR] = 20;
-      uintConfigs[CONFIG_DRAFT_QUORUM_FIXED_PORTION_DENOMINATOR] = 100; // 20%
+      uintConfigs[CONFIG_DRAFT_QUORUM_FIXED_PORTION_DENOMINATOR] = 100;
       uintConfigs[CONFIG_DRAFT_QUORUM_SCALING_FACTOR_NUMERATOR] = 60;
-      uintConfigs[CONFIG_DRAFT_QUORUM_SCALING_FACTOR_DENOMINATOR] = 100; // 60%
+      uintConfigs[CONFIG_DRAFT_QUORUM_SCALING_FACTOR_DENOMINATOR] = 100;
 
       uintConfigs[CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR] = 20;
-      uintConfigs[CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR] = 100; // 20%
+      uintConfigs[CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR] = 100;
       uintConfigs[CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR] = 60;
-      uintConfigs[CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR] = 100; // 60%
+      uintConfigs[CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR] = 100;
 
       uintConfigs[CONFIG_DRAFT_QUOTA_NUMERATOR] = 30;
       uintConfigs[CONFIG_DRAFT_QUOTA_DENOMINATOR] = 100;
@@ -46,24 +46,30 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
       uintConfigs[REPUTATION_PER_EXTRA_QP] = 5;
       uintConfigs[BONUS_REPUTATION_NUMERATOR] = 20;
       uintConfigs[BONUS_REPUTATION_DENOMINATOR] = 100;
+
+      uintConfigs[SPECIAL_PROPOSAL_COMMIT_PHASE] = 3 weeks;
+      uintConfigs[SPECIAL_PROPOSAL_PHASE_TOTAL] = 4 weeks;
+
+      uintConfigs[CONFIG_SPECIAL_QUOTA_NUMERATOR] = 50;
+      uintConfigs[CONFIG_SPECIAL_QUOTA_DENOMINATOR] = 100;
   }
 
   function set_uint_config(bytes32 _config_name, uint256 _new_value)
-      if_sender_is(CONTRACT_CONFIG_CONTROLLER)
+      if_sender_is(CONTRACT_DAO)
       public
   {
       uintConfigs[_config_name] = _new_value;
   }
 
   function set_address_config(bytes32 _config_name, address _new_value)
-      if_sender_is(CONTRACT_CONFIG_CONTROLLER)
+      if_sender_is(CONTRACT_DAO)
       public
   {
       addressConfigs[_config_name] = _new_value;
   }
 
   function set_bytes_config(bytes32 _config_name, bytes32 _new_value)
-      if_sender_is(CONTRACT_CONFIG_CONTROLLER)
+      if_sender_is(CONTRACT_DAO)
       public
   {
       bytesConfigs[_config_name] = _new_value;

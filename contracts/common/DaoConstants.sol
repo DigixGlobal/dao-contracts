@@ -20,6 +20,7 @@ contract DaoConstants {
   bytes32 CONTRACT_DAO_LISTING_SERVICE = "s:dao:listing";
   bytes32 CONTRACT_DAO_CALCULATOR_SERVICE = "s:dao:calculator";
   bytes32 CONTRACT_DAO_STORAGE = "s:dao:storage";
+  bytes32 CONTRACT_DAO_SPECIAL_STORAGE = "s:dao:special:storage";
   bytes32 CONTRACT_DAO_CONFIG_STORAGE = "s:dao:config";
   bytes32 CONTRACT_DAO_STAKE_STORAGE = "s:stake";
   bytes32 CONTRACT_INTERACTIVE_QUARTER_POINT = "i:quarter:point";
@@ -79,4 +80,10 @@ contract DaoConstants {
   bytes32 REPUTATION_PER_EXTRA_QP = "reputation_per_extra_qp";
   bytes32 BONUS_REPUTATION_NUMERATOR = "bonus_reputation_numerator";
   bytes32 BONUS_REPUTATION_DENOMINATOR = "bonus_reputation_denominator";
+
+  bytes32 SPECIAL_PROPOSAL_COMMIT_PHASE = "special_proposal_commit_phase";
+  bytes32 SPECIAL_PROPOSAL_PHASE_TOTAL = "special_proposal_phase_total";
+
+  bytes32 CONFIG_SPECIAL_QUOTA_NUMERATOR = "config_special_quota_numerator";
+  bytes32 CONFIG_SPECIAL_QUOTA_DENOMINATOR = "config_special_quota_denominator";
 }

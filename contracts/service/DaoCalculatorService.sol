@@ -60,12 +60,30 @@ contract DaoCalculatorService is DaoCommon {
       );
     }
 
+    function minimumVotingQuorumForSpecial()
+        public
+        returns (uint256 _minQuorum)
+    {
+      //TODO: implement this function
+      _minQuorum = 0;
+    }
+
     function votingQuotaPass(uint256 _for, uint256 _against)
         public
         returns (bool _passed)
     {
         if ((_for * get_uint_config(CONFIG_VOTING_QUOTA_DENOMINATOR)) >
                 (get_uint_config(CONFIG_VOTING_QUOTA_NUMERATOR) * (_for + _against))) {
+            _passed = true;
+        }
+    }
+
+    function votingQuotaForSpecialPass(uint256 _for, uint256 _against)
+        public
+        returns (bool _passed)
+    {
+        if ((_for * get_uint_config(CONFIG_SPECIAL_QUOTA_DENOMINATOR)) >
+                (get_uint_config(CONFIG_SPECIAL_QUOTA_NUMERATOR) * (_for + _against))) {
             _passed = true;
         }
     }

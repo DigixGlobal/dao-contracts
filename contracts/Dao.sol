@@ -205,6 +205,96 @@ contract Dao is DaoCommon, Claimable {
         if (_bonusVoters.usersLength > 0) addBonusReputation(_bonusVoters.users, _bonusVoters.usersLength);
     }
 
+    function claimSpecialProposalVotingResult(bytes32 _proposalId)
+      public
+      if_main_phase()
+      if_dao_member()
+      if_not_claimed_special(_proposalId)
+      if_after_reveal_phase_special(_proposalId)
+      returns (bool _passed)
+    {
+      address[] memory _allStakeHolders = daoListingService().listParticipants(10000, true);
+      DaoStructs.VotingCount _count;
+      (_count.forCount, _count.againstCount, _count.quorum) = daoSpecialStorage().readVotingCount(_proposalId, _allStakeHolders);
+      if ((_count.quorum > daoCalculatorService().minimumVotingQuorumForSpecial()) ||
+            (daoCalculatorService().votingQuotaForSpecialPass(_count.forCount, _count.againstCount))) {
+        _passed = true;
+      }
+      daoSpecialStorage().setPass(_proposalId, _passed);
+      daoSpecialStorage().setVotingClaim(_proposalId, msg.sender);
+      daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT), false);
+      if (_passed) {
+        setConfigs(_proposalId);
+      }
+    }
+
+    function setConfigs(bytes32 _proposalId)
+      private
+    {
+      uint256[] memory _uintConfigs;
+      address[] memory _addressConfigs;
+      bytes32[] memory _bytesConfigs;
+      (
+        _uintConfigs,
+        _addressConfigs,
+        _bytesConfigs
+      ) = daoSpecialStorage().readConfigs(_proposalId);
+      daoConfigsStorage().set_uint_config(CONFIG_LOCKING_PHASE_DURATION, _uintConfigs[0]);
+      daoConfigsStorage().set_uint_config(CONFIG_QUARTER_DURATION, _uintConfigs[1]);
+      daoConfigsStorage().set_uint_config(CONFIG_VOTING_COMMIT_PHASE, _uintConfigs[2]);
+      daoConfigsStorage().set_uint_config(CONFIG_VOTING_PHASE_TOTAL, _uintConfigs[3]);
+      daoConfigsStorage().set_uint_config(CONFIG_INTERIM_COMMIT_PHASE, _uintConfigs[4]);
+      daoConfigsStorage().set_uint_config(CONFIG_INTERIM_PHASE_TOTAL, _uintConfigs[5]);
+      daoConfigsStorage().set_uint_config(CONFIG_DRAFT_QUORUM_FIXED_PORTION_NUMERATOR, _uintConfigs[6]);
+      daoConfigsStorage().set_uint_config(CONFIG_DRAFT_QUORUM_FIXED_PORTION_DENOMINATOR, _uintConfigs[7]);
+      daoConfigsStorage().set_uint_config(CONFIG_DRAFT_QUORUM_SCALING_FACTOR_NUMERATOR, _uintConfigs[8]);
+      daoConfigsStorage().set_uint_config(CONFIG_DRAFT_QUORUM_SCALING_FACTOR_DENOMINATOR, _uintConfigs[9]);
+      daoConfigsStorage().set_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR, _uintConfigs[10]);
+      daoConfigsStorage().set_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR, _uintConfigs[11]);
+      daoConfigsStorage().set_uint_config(CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR, _uintConfigs[12]);
+      daoConfigsStorage().set_uint_config(CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR, _uintConfigs[13]);
+      daoConfigsStorage().set_uint_config(CONFIG_DRAFT_QUOTA_NUMERATOR, _uintConfigs[14]);
+      daoConfigsStorage().set_uint_config(CONFIG_DRAFT_QUOTA_DENOMINATOR, _uintConfigs[15]);
+      daoConfigsStorage().set_uint_config(CONFIG_VOTING_QUOTA_NUMERATOR, _uintConfigs[16]);
+      daoConfigsStorage().set_uint_config(CONFIG_VOTING_QUOTA_DENOMINATOR, _uintConfigs[17]);
+      daoConfigsStorage().set_uint_config(QUARTER_POINT_DRAFT_VOTE, _uintConfigs[18]);
+      daoConfigsStorage().set_uint_config(QUARTER_POINT_VOTE, _uintConfigs[19]);
+      daoConfigsStorage().set_uint_config(QUARTER_POINT_INTERIM_VOTE, _uintConfigs[20]);
+      daoConfigsStorage().set_uint_config(MINIMUM_QUARTER_POINT, _uintConfigs[21]);
+      daoConfigsStorage().set_uint_config(QUARTER_POINT_CLAIM_RESULT, _uintConfigs[22]);
+      daoConfigsStorage().set_uint_config(QUARTER_POINT_CLAIM_RESULT, _uintConfigs[23]);
+      daoConfigsStorage().set_uint_config(REPUTATION_PER_EXTRA_QP, _uintConfigs[24]);
+      daoConfigsStorage().set_uint_config(BONUS_REPUTATION_NUMERATOR, _uintConfigs[25]);
+      daoConfigsStorage().set_uint_config(BONUS_REPUTATION_DENOMINATOR, _uintConfigs[26]);
+      daoConfigsStorage().set_uint_config(SPECIAL_PROPOSAL_COMMIT_PHASE, _uintConfigs[27]);
+      daoConfigsStorage().set_uint_config(SPECIAL_PROPOSAL_PHASE_TOTAL, _uintConfigs[28]);
+      daoConfigsStorage().set_uint_config(CONFIG_SPECIAL_QUOTA_NUMERATOR, _uintConfigs[29]);
+      daoConfigsStorage().set_uint_config(CONFIG_SPECIAL_QUOTA_DENOMINATOR, _uintConfigs[30]);
+    }
+
+    function createSpecialProposal(
+      bytes32 _doc,
+      uint256[] _uintConfigs,
+      address[] _addressConfigs,
+      bytes32[] _bytesConfigs
+    )
+      public
+      if_founder()
+      if_main_phase()
+      returns (bool _success)
+    {
+      require(getTimeFromNextLockingPhase(now) > get_uint_config(SPECIAL_PROPOSAL_PHASE_TOTAL));
+      address _proposer = msg.sender;
+      daoSpecialStorage().addSpecialProposal(
+        _doc,
+        _proposer,
+        _uintConfigs,
+        _addressConfigs,
+        _bytesConfigs
+      );
+      _success = true;
+    }
+
     function calculateNextVotingTime(uint256 _time, bool _isInterim)
       private
       returns (uint256 _votingTime)

@@ -7,6 +7,7 @@ import "./../common/IdentityCommon.sol";
 import "./../storage/DaoConfigsStorage.sol";
 import "./../storage/DaoStakeStorage.sol";
 import "./../storage/DaoStorage.sol";
+import "./../storage/DaoSpecialStorage.sol";
 import "./../storage/DaoPointsStorage.sol";
 import "./../storage/DaoFundingStorage.sol";
 import "./../storage/DaoRewardsStorage.sol";
@@ -95,6 +96,11 @@ contract DaoCommon is IdentityCommon {
       _;
     }
 
+    modifier if_valid_nonce_special(uint256 _nonce) {
+      require(daoSpecialStorage().readLastNonce(msg.sender) < _nonce);
+      _;
+    }
+
     modifier if_participant() {
       require(daoInfoService().isParticipant(msg.sender));
       _;
@@ -126,8 +132,40 @@ contract DaoCommon is IdentityCommon {
       _;
     }
 
+    modifier if_not_claimed_special(bytes32 _proposalId) {
+      require(daoSpecialStorage().getClaimer(_proposalId) == 0x0);
+      _;
+    }
+
     modifier has_not_revealed(bytes32 _proposalId, uint256 _index) {
       require(daoStorage().readVote(_proposalId, _index, msg.sender) == 0);
+      _;
+    }
+
+    modifier has_not_revealed_special(bytes32 _proposalId) {
+      require(daoSpecialStorage().readVote(_proposalId, msg.sender) == 0);
+      _;
+    }
+
+    modifier if_after_reveal_phase_special(bytes32 _proposalId) {
+      uint256 _start = daoSpecialStorage().readVotingTime(_proposalId);
+      require(_start > 0);
+      require(now - _start > get_uint_config(SPECIAL_PROPOSAL_PHASE_TOTAL));
+      _;
+    }
+
+    modifier if_commit_phase_special(bytes32 _proposalId) {
+        uint256 _start = daoSpecialStorage().readVotingTime(_proposalId);
+        require(_start > 0);
+        require(now - _start < get_uint_config(SPECIAL_PROPOSAL_COMMIT_PHASE));
+        _;
+    }
+
+    modifier if_reveal_phase_special(bytes32 _proposalId) {
+      uint256 _start = daoSpecialStorage().readVotingTime(_proposalId);
+      require(_start > 0);
+      require(now - _start < get_uint_config(SPECIAL_PROPOSAL_PHASE_TOTAL));
+      require(now - _start > get_uint_config(SPECIAL_PROPOSAL_COMMIT_PHASE));
       _;
     }
 
@@ -183,6 +221,10 @@ contract DaoCommon is IdentityCommon {
 
     function daoStorage() internal returns (DaoStorage _contract) {
         _contract = DaoStorage(get_contract(CONTRACT_DAO_STORAGE));
+    }
+
+    function daoSpecialStorage() internal returns (DaoSpecialStorage _contract) {
+        _contract = DaoSpecialStorage(get_contract(CONTRACT_DAO_SPECIAL_STORAGE));
     }
 
     function daoPointsStorage() internal returns (DaoPointsStorage _contract) {

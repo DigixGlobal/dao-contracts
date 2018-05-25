@@ -8,6 +8,9 @@ import "../lib/DaoStructs.sol";
 
 contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     using DoublyLinkedList for DoublyLinkedList.Bytes;
+    using DaoStructs for DaoStructs.Proposal;
+    using DaoStructs for DaoStructs.Voting;
+    using DaoStructs for DaoStructs.ProposalVersion;
 
     bool public isReplacedByNewDao;
     address public newDaoContract;
