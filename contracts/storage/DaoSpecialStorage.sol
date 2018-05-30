@@ -7,9 +7,6 @@ import "../lib/DaoStructs.sol";
 
 contract DaoSpecialStorage is ResolverClient, DaoConstants {
   using DoublyLinkedList for DoublyLinkedList.Bytes;
-  using DaoStructs for DaoStructs.Voting;
-  using DaoStructs for DaoStructs.ProposalVersion;
-  using DaoStructs for DaoStructs.SpecialProposal;
 
   DoublyLinkedList.Bytes proposals;
   mapping (bytes32 => DaoStructs.SpecialProposal) proposalsById;

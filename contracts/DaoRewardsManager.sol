@@ -48,15 +48,9 @@ contract DaoRewardsManager is DaoCommon {
         ERC20(ADDRESS_DGX_TOKEN).transfer(_user, _claimableDGX);
     }
 
-    function allocateFinalReward(bytes32 _proposalId)
-      public
-      if_sender_is(CONTRACT_DAO)
-    {
-      // allocate rewards to proposer based on how big the project was?
-    }
-
     function updateRewardsBeforeNewQuarter(address _user)
         public
+        if_sender_is(CONTRACT_DAO)
     {
         uint256 _currentQuarter = currentQuarterIndex();
         // do nothing if the rewards was already updated for the previous quarter
@@ -153,6 +147,7 @@ contract DaoRewardsManager is DaoCommon {
     // the beginning of the quarter
     function calculateGlobalRewardsBeforeNewQuarter()
         if_founder()
+        if_locking_phase()
         public
     {
         // go through every participants, calculate their EffectiveDGD balance

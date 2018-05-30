@@ -8,9 +8,6 @@ import "../lib/DaoStructs.sol";
 
 contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     using DoublyLinkedList for DoublyLinkedList.Bytes;
-    using DaoStructs for DaoStructs.Proposal;
-    using DaoStructs for DaoStructs.Voting;
-    using DaoStructs for DaoStructs.ProposalVersion;
 
     bool public isReplacedByNewDao;
     address public newDaoContract;
@@ -437,7 +434,8 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
       uint256 _created,
       uint256[] _milestoneDurations,
       uint256[] _milestoneFundings,
-      bool _prlValid
+      bool _prlValid,
+      uint256 _finalReward
     )
   {
     DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
@@ -447,6 +445,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     _milestoneDurations = _proposalVersion.milestoneDurations;
     _milestoneFundings = _proposalVersion.milestoneFundings;
     _prlValid = _proposal.prlValid;
+    _finalReward = _proposalVersion.finalReward;
   }
 
   function readProposalFunding(bytes32 _proposalId)
@@ -465,7 +464,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
   function readProposalMilestone(bytes32 _proposalId, uint256 _index)
     public
     constant
-    returns (uint256 _milestoneId, uint256 _duration, uint256 _funding)
+    returns (uint256 _milestoneId, uint256 _duration, uint256 _funding, uint256 _finalReward)
   {
     require(_index >= 0);
     bytes32 _latestVersion = getLastProposalVersion(_proposalId);
@@ -477,6 +476,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
       _milestoneId = 0;
       _duration = 0;
       _funding = 0;
+      _finalReward = proposalsById[_proposalId].proposalVersions[_latestVersion].finalReward;
     }
   }
 
@@ -613,7 +613,8 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     bytes32 _doc,
     address _proposer,
     uint256[] _milestoneDurations,
-    uint256[] _milestoneFundings
+    uint256[] _milestoneFundings,
+    uint256 _finalReward
   )
     public
     if_sender_is(CONTRACT_DAO)
@@ -631,6 +632,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     proposalsById[_doc].proposalVersions[_doc].milestoneCount = _milestoneFundings.length;
     proposalsById[_doc].proposalVersions[_doc].milestoneDurations = _milestoneDurations;
     proposalsById[_doc].proposalVersions[_doc].milestoneFundings = _milestoneFundings;
+    proposalsById[_doc].proposalVersions[_doc].finalReward = _finalReward;
     _success = true;
   }
 
@@ -646,7 +648,8 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     bytes32 _proposalId,
     bytes32 _newDoc,
     uint256[] _newMilestoneDurations,
-    uint256[] _newMilestoneFundings
+    uint256[] _newMilestoneFundings,
+    uint256 _finalReward
   )
     public
     if_sender_is(CONTRACT_DAO)
@@ -659,6 +662,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     _proposal.proposalVersions[_newDoc].milestoneCount = _newMilestoneFundings.length;
     _proposal.proposalVersions[_newDoc].milestoneDurations = _newMilestoneDurations;
     _proposal.proposalVersions[_newDoc].milestoneFundings = _newMilestoneFundings;
+    _proposal.proposalVersions[_newDoc].finalReward = _finalReward;
     _proposal.prlValid = false;
     _success = true;
   }

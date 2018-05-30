@@ -15,6 +15,7 @@ library DaoStructs {
     uint256 index;
     uint256 duration;
     uint256 funding;
+    uint256 finalReward;
   }
 
   struct Users {
@@ -41,6 +42,7 @@ library DaoStructs {
     uint256 milestoneCount;
     uint256[] milestoneDurations;
     uint256[] milestoneFundings;
+    uint256 finalReward;
   }
 
   struct Proposal {
