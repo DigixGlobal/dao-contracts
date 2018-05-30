@@ -123,27 +123,27 @@ contract DaoCommon is IdentityCommon {
     }
 
     modifier if_draft_not_claimed(bytes32 _proposalId) {
-      require(daoStorage().getDraftClaimer(_proposalId) == 0x0);
+      require(daoStorage().getDraftClaimer(_proposalId) == EMPTY_ADDRESS);
       _;
     }
 
     modifier if_not_claimed(bytes32 _proposalId, uint256 _index) {
-      require(daoStorage().getClaimer(_proposalId, _index) == 0x0);
+      require(daoStorage().getClaimer(_proposalId, _index) == EMPTY_ADDRESS);
       _;
     }
 
     modifier if_not_claimed_special(bytes32 _proposalId) {
-      require(daoSpecialStorage().getClaimer(_proposalId) == 0x0);
+      require(daoSpecialStorage().getClaimer(_proposalId) == EMPTY_ADDRESS);
       _;
     }
 
     modifier has_not_revealed(bytes32 _proposalId, uint256 _index) {
-      require(daoStorage().readVote(_proposalId, _index, msg.sender) == 0);
+      require(daoStorage().readVote(_proposalId, _index, msg.sender) == uint(0));
       _;
     }
 
     modifier has_not_revealed_special(bytes32 _proposalId) {
-      require(daoSpecialStorage().readVote(_proposalId, msg.sender) == 0);
+      require(daoSpecialStorage().readVote(_proposalId, msg.sender) == uint(0));
       _;
     }
 

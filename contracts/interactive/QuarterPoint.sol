@@ -34,7 +34,7 @@ contract QuarterPoint is ResolverClient, DaoConstants {
 
   function add(address _who, uint256 _value, bool _isBadge)
       public
-      if_sender_is(CONTRACT_DAO)
+      if_sender_is_from([CONTRACT_DAO_VOTING, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES])
       returns (uint256 _newPoint, uint256 _newTotalPoint)
   {
       require(_value > 0);

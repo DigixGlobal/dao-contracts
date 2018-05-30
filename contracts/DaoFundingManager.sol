@@ -21,7 +21,7 @@ contract DaoFundingManager is DaoCommon {
 
     function allocateEth(address _proposer, uint256 _value)
         public
-        if_sender_is(CONTRACT_DAO)
+        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
         daoFundingStorage().updateClaimableEth(_proposer, _value);
     }

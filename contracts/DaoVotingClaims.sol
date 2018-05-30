@@ -1,6 +1,5 @@
 pragma solidity ^0.4.23;
 
-import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
 import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
 import "./common/DaoCommon.sol";
 import "./service/DaoCalculatorService.sol";
@@ -8,6 +7,9 @@ import "./DaoFundingManager.sol";
 import "./DaoRewardsManager.sol";
 
 contract DaoVotingClaims is DaoCommon, Claimable {
+  using DaoStructs for DaoStructs.VotingCount;
+  using DaoStructs for DaoStructs.MilestoneInfo;
+  using DaoStructs for DaoStructs.Users;
 
   function daoCalculatorService()
       internal
@@ -43,10 +45,18 @@ contract DaoVotingClaims is DaoCommon, Claimable {
   {
       //TODO use the real total number of badgeHolders instead of 10000
       address[] memory _allBadgeHolders = daoListingService().listBadgeParticipants(10000, true);
-      DaoStructs.VotingCount _count;
+
+      DaoStructs.VotingCount memory _count;
       (_count.forCount, _count.againstCount, _count.quorum) = daoStorage().readDraftVotingCount(_proposalId, _allBadgeHolders);
       require(_count.quorum > daoCalculatorService().minimumDraftQuorum(_proposalId));
       require(daoCalculatorService().draftQuotaPass(_count.forCount, _count.againstCount));
+
+      /* uint256 _for;
+      uint256 _against;
+      (_for, _against,) = daoStorage().readDraftVotingCount(_proposalId, _allBadgeHolders);
+      require((_for + _against) > daoCalculatorService().minimumDraftQuorum(_proposalId));
+      require(daoCalculatorService().draftQuotaPass(_for, _against)); */
+
       _passed = true;
       daoStorage().setProposalDraftPass(_proposalId, true);
       daoStorage().setProposalVotingTime(_proposalId, 0, calculateNextVotingTime(0, false));
@@ -63,7 +73,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
       returns (bool _passed)
   {
       address[] memory _allStakeHolders = daoListingService().listParticipants(10000, true);
-      DaoStructs.VotingCount _count;
+      DaoStructs.VotingCount memory _count;
       (_count.forCount, _count.againstCount, _count.quorum) = daoStorage().readVotingCount(_proposalId, 0, _allStakeHolders);
       require(_count.quorum > daoCalculatorService().minimumVotingQuorum(_proposalId, 0));
       require(daoCalculatorService().votingQuotaPass(_count.forCount, _count.againstCount));
@@ -73,7 +83,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
       daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT), false);
 
       // set deadline of milestone 1 (set startTime for next interim voting round)
-      DaoStructs.MilestoneInfo _info;
+      DaoStructs.MilestoneInfo memory _info;
       (_info.index, _info.duration, _info.funding,) = daoStorage().readProposalMilestone(_proposalId, 0);
       daoStorage().setProposalVotingTime(_proposalId, 1, calculateNextVotingTime(_info.duration, true));
 
@@ -90,7 +100,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
       returns (bool _passed)
   {
       address[] memory _allStakeHolders = daoListingService().listParticipants(10000, true);
-      DaoStructs.VotingCount _count;
+      DaoStructs.VotingCount memory _count;
       (_count.forCount, _count.againstCount, _count.quorum) = daoStorage().readVotingCount(_proposalId, _index, _allStakeHolders);
       if ((_count.quorum > daoCalculatorService().minimumVotingQuorum(_proposalId, _index)) ||
             (daoCalculatorService().votingQuotaPass(_count.forCount, _count.againstCount))) {
@@ -110,7 +120,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         (_bonusVoters.users, _bonusVoters.usersLength) = daoStorage().readVotingRoundVotes(_proposalId, _index-1, _allStakeHolders, true);
 
         // set deadline for next milestone (set startTime for next interim voting round)
-        DaoStructs.MilestoneInfo _info;
+        DaoStructs.MilestoneInfo memory _info;
         (_info.index, _info.duration, _info.funding, _info.finalReward) = daoStorage().readProposalMilestone(_proposalId, _index);
         if (_info.duration > 0 && _info.funding > 0) {
           daoStorage().setProposalVotingTime(_proposalId, _index + 1, calculateNextVotingTime(_info.duration, true));
@@ -137,7 +147,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     returns (bool _passed)
   {
     address[] memory _allStakeHolders = daoListingService().listParticipants(10000, true);
-    DaoStructs.VotingCount _count;
+    DaoStructs.VotingCount memory _count;
     (_count.forCount, _count.againstCount, _count.quorum) = daoSpecialStorage().readVotingCount(_proposalId, _allStakeHolders);
     if ((_count.quorum > daoCalculatorService().minimumVotingQuorumForSpecial()) ||
           (daoCalculatorService().votingQuotaForSpecialPass(_count.forCount, _count.againstCount))) {

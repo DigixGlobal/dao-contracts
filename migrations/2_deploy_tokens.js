@@ -6,6 +6,7 @@ const Types = artifacts.require('./Types.sol');
 const MockDgxDemurrageReporter = artifacts.require('./MockDgxDemurrageReporter.sol');
 
 module.exports = async function (deployer, network, accounts) {
+  if ((network !== 'development') || process.env.SKIP) { return null; }
   deployer.deploy(DGDToken)
     .then(() => {
       return deployer.deploy(DGDBadgeToken);

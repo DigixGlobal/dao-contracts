@@ -1,6 +1,8 @@
 pragma solidity ^0.4.19;
 
 contract DaoConstants {
+  bytes32 EMPTY_BYTES = bytes32(0x0);
+  address EMPTY_ADDRESS = address(0x0);
   uint256 PROPOSAL_STATE_PREPROPOSAL = 1;
   uint256 PROPOSAL_STATE_INITIAL = 2;
   uint256 PROPOSAL_STATE_VETTED = 3;
@@ -48,7 +50,7 @@ contract DaoConstants {
   bytes32 CONFIG_VOTING_PHASE_TOTAL = "voting_phase_total";
   bytes32 CONFIG_INTERIM_COMMIT_PHASE = "interim_voting_commit_phase";
   bytes32 CONFIG_INTERIM_PHASE_TOTAL = "interim_voting_phase_total";
-  uint256 CONFIG_MINIMUM_LOCKED_DGD = 10 ** 18;
+  uint256 CONFIG_MINIMUM_LOCKED_DGD = 10 ** 9;
 
   bytes32 CONFIG_DRAFT_QUORUM_FIXED_PORTION_NUMERATOR = "draft_quorum_fixed_numerator";
   bytes32 CONFIG_DRAFT_QUORUM_FIXED_PORTION_DENOMINATOR = "draft_quorum_fixed_denominator";

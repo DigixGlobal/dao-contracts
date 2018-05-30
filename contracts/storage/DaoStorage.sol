@@ -8,6 +8,9 @@ import "../lib/DaoStructs.sol";
 
 contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     using DoublyLinkedList for DoublyLinkedList.Bytes;
+    using DaoStructs for DaoStructs.Voting;
+    using DaoStructs for DaoStructs.Proposal;
+    using DaoStructs for DaoStructs.ProposalVersion;
 
     bool public isReplacedByNewDao;
     address public newDaoContract;
@@ -150,7 +153,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     }
   }
 
-  function readDraftVotingCount(bytes32 _proposalId, address[] _allUsers)
+  function readDraftVotingCount(bytes32 _proposalId, address[] memory _allUsers)
     public
     constant
     returns (uint256 _for, uint256 _against, uint256 _quorum)
@@ -693,7 +696,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
 
   function setProposalDraftPass(bytes32 _proposalId, bool _result)
     public
-    if_sender_is(CONTRACT_DAO)
+    if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     returns (bool _success)
   {
     bytes32 _latestVersion = read_last_from_bytesarray(proposalsById[_proposalId].proposalVersionDocs);
@@ -708,7 +711,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
 
   function setProposalPass(bytes32 _proposalId, uint256 _index, bool _result)
     public
-    if_sender_is(CONTRACT_DAO)
+    if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     returns (bool _success)
   {
     if (_index == 0) {
@@ -730,7 +733,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     uint256 _time
   )
     public
-    if_sender_is(CONTRACT_DAO)
+    if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
   {
     if (_index == 0) {
       proposalsById[_proposalId].votingRound.startTime = _time;
@@ -741,7 +744,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
 
   function setDraftVotingClaim(bytes32 _proposalId, address _claimer)
     public
-    if_sender_is(CONTRACT_DAO)
+    if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
   {
     bytes32 _latestVersion = getLastProposalVersion(_proposalId);
     proposalsById[_proposalId].proposalVersions[_latestVersion].draftVoting.claimer = _claimer;
@@ -749,7 +752,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
 
   function setVotingClaim(bytes32 _proposalId, uint256 _index, address _claimer)
     public
-    if_sender_is(CONTRACT_DAO)
+    if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
   {
     DaoStructs.Proposal _proposal = proposalsById[_proposalId];
     if (_index == 0) {
@@ -789,7 +792,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     uint256 _nonce
   )
     public
-    if_sender_is(CONTRACT_DAO)
+    if_sender_is(CONTRACT_DAO_VOTING)
     returns (bool _success)
   {
     DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
@@ -825,7 +828,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     uint256 _nonce
   )
     public
-    if_sender_is(CONTRACT_DAO)
+    if_sender_is(CONTRACT_DAO_VOTING)
     returns (bool _success)
   {
     DaoStructs.Proposal _proposal = proposalsById[_proposalId];
@@ -857,7 +860,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     uint256 _index
   )
     public
-    if_sender_is(CONTRACT_DAO)
+    if_sender_is(CONTRACT_DAO_VOTING)
     returns (bool _success)
   {
     DaoStructs.Voting _voting;

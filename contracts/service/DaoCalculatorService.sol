@@ -17,7 +17,9 @@ contract DaoCalculatorService is DaoCommon {
         public
         returns (uint256 _additionalLockedDGDStake)
     {
-        _additionalLockedDGDStake = _additionalDgd * (QUARTER_DURATION - currentTInQuarter()) / (QUARTER_DURATION - get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
+        // todo: change this to fixed quarter duration
+        /* _additionalLockedDGDStake = _additionalDgd * (QUARTER_DURATION - currentTInQuarter()) / (QUARTER_DURATION - get_uint_config(CONFIG_LOCKING_PHASE_DURATION)); */
+        _additionalLockedDGDStake = _additionalDgd * (get_uint_config(CONFIG_QUARTER_DURATION) - currentTInQuarter()) / (get_uint_config(CONFIG_QUARTER_DURATION) - get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
     }
 
     function minimumDraftQuorum(bytes32 _proposalId) public returns (uint256 _minQuorum) {

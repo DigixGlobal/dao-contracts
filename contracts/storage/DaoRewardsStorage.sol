@@ -6,7 +6,6 @@ import "../lib/DaoStructs.sol";
 
 // this contract will receive DGXs fees from the DGX fees distributors
 contract DaoRewardsStorage is ResolverClient, DaoConstants {
-
     using DaoStructs for DaoStructs.DaoQuarterInfo;
 
     mapping(uint256 => DaoStructs.DaoQuarterInfo) public allQuartersInfo;

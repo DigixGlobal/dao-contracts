@@ -8,9 +8,8 @@ import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
 // this contract will receive DGXs fees from the DGX fees distributors
 contract DaoRewardsManager is DaoCommon {
-
-    using DaoStructs for DaoStructs.DaoQuarterInfo;
     using MathHelper for MathHelper;
+    using DaoStructs for DaoStructs.DaoQuarterInfo;
 
   function DaoRewardsManager(address _resolver)
            public
@@ -50,11 +49,11 @@ contract DaoRewardsManager is DaoCommon {
 
     function updateRewardsBeforeNewQuarter(address _user)
         public
-        if_sender_is(CONTRACT_DAO)
+        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
     {
         uint256 _currentQuarter = currentQuarterIndex();
         // do nothing if the rewards was already updated for the previous quarter
-        if (daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user) >= _currentQuarter - 1 ) {
+        if (daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user) + 1 >= _currentQuarter) {
             return;
         }
 
