@@ -25,7 +25,7 @@ contract ReputationPoint is ResolverClient, DaoConstants {
 
   function add(address _who, uint256 _value)
       public
-      if_sender_is(CONTRACT_DAO)
+      if_sender_is_from([CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_REWARDS_MANAGER, EMPTY_BYTES])
       returns (uint256 _newPoint, uint256 _newTotalPoint)
   {
       require(_value > 0);
@@ -34,7 +34,7 @@ contract ReputationPoint is ResolverClient, DaoConstants {
 
   function subtract(address _who, uint256 _value)
       public
-      if_sender_is(CONTRACT_DAO)
+      if_sender_is_from([CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_REWARDS_MANAGER, EMPTY_BYTES])
       returns (uint256 _newPoint, uint256 _newTotalPoint)
   {
       require(_value > 0);

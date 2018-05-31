@@ -171,12 +171,12 @@ contract DaoCommon is IdentityCommon {
 
     function currentQuarterIndex() internal returns(uint256 _quarterIndex) {
         /* _quarterIndex = (now - daoStorage().startOfFirstQuarter()) / QUARTER_DURATION; */
-        _quarterIndex = (now - daoStorage().startOfFirstQuarter()) / get_uint_config(CONFIG_QUARTER_DURATION);
+        _quarterIndex = getQuarterIndex(now);
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
     function getQuarterIndex(uint256 _time) internal returns (uint256 _index) {
-      _index = (_time - daoStorage().startOfFirstQuarter()) / get_uint_config(CONFIG_QUARTER_DURATION);
+      _index = ((_time - daoStorage().startOfFirstQuarter()) / get_uint_config(CONFIG_QUARTER_DURATION)) + 1;
       /* _index = (_time - daoStorage().startOfFirstQuarter()) / QUARTER_DURATION; */
       //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }

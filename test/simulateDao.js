@@ -1,4 +1,5 @@
 const a = require('awaiting');
+const assert = require('assert');
 
 const MockDGD = artifacts.require('./MockDGD.sol');
 const MockBadge = artifacts.require('./MockBadge.sol');
@@ -151,6 +152,7 @@ const setupMockTokens = async function (contracts, addressOf) {
   contracts.badgeToken = await MockBadge.deployed();
   contracts.dgxStorage = await MockDgxStorage.deployed();
   contracts.dgxToken = await MockDgx.deployed();
+  await contracts.dgxStorage.setInteractive(contracts.dgxToken.address);
   contracts.demurrageReporter = await MockDgxDemurrageReporter.deployed();
   if (process.env.FIRST_TEST) {
     console.log('transferring initial tokens');
@@ -511,15 +513,15 @@ const claimDraftVotingResult = async function (contracts, addressOf) {
   // second is reverted (coz its failing)
   await contracts.daoVotingClaims.claimDraftVotingResult(
     proposalIds.firstProposal,
-    { from: addressOf.badgeHolder1 },
+    { from: addressOf.badgeHolder3 },
   );
   await contracts.daoVotingClaims.claimDraftVotingResult(
     proposalIds.thirdProposal,
-    { from: addressOf.dgdHolder3 },
+    { from: addressOf.badgeHolder3 },
   );
   await contracts.daoVotingClaims.claimDraftVotingResult(
     proposalIds.fourthProposal,
-    { from: addressOf.dgdHolder4 },
+    { from: addressOf.badgeHolder3 },
   );
 };
 
@@ -707,7 +709,7 @@ const claimVotingResult = async function (contracts, addressOf) {
   await waitForRevealPhaseToGetOver(contracts, addressOf, proposalIds.firstProposal, bN(0));
   await contracts.daoVotingClaims.claimVotingResult(
     proposalIds.firstProposal,
-    { from: addressOf.dgdHolder1 },
+    { from: addressOf.badgeHolder3 },
   );
 };
 
@@ -729,6 +731,23 @@ const confirmContinuedParticipation = async function (contracts, addressOf) {
   await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.dgdHolder4 });
   await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.dgdHolder5 });
   await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.dgdHolder6 });
+};
+
+const somePrinting = async function (contracts, addressOf) {
+  console.log('');
+  console.log('stake of badge holder 3 : ', await contracts.daoStakeStorage.readUserDGDStake.call(addressOf.badgeHolder3));
+  console.log('quarter points : ', await contracts.daoQuarterPoint.balanceInQuarter.call(addressOf.badgeHolder3, bN(1)));
+  console.log('reputation points : ', await contracts.daoReputationPoint.balanceOf.call(addressOf.badgeHolder3));
+  console.log('dgx rewards badge holder  3 : ', await contracts.daoRewardsStorage.claimableDGXs.call(addressOf.badgeHolder3));
+  console.log('');
+};
+
+const claimDGXs = async function (contracts, addressOf) {
+  console.log('claiming now...');
+  console.log('dgx balance : ', await contracts.dgxToken.balanceOf.call(addressOf.badgeHolder3));
+  await contracts.daoRewardsManager.claimRewards({ from: addressOf.badgeHolder3 });
+  console.log('dgx balance : ', await contracts.dgxToken.balanceOf.call(addressOf.badgeHolder3));
+  console.log('claimed successfully');
 };
 
 module.exports = async function () {
@@ -810,12 +829,34 @@ module.exports = async function () {
     await claimFunding(contracts, addressOf);
     console.log('ETH funding has been claimed by the proposer');
 
+    // await somePrinting(contracts, addressOf);
+
     // wait for the quarter to end
     await phaseCorrection(contracts, addressOf, phases.LOCKING_PHASE, quarters.QUARTER_2);
-    console.log('in the second quarter, locking phase');
+    console.log('in the second quarter (quarterId = 2), locking phase');
+
+    // test if locking phase
+    assert.deepEqual(await contracts.daoStakeLocking.isLockingPhase.call(), true);
+    assert(await a.failure(contracts.daoStakeLocking.isMainPhase.call()));
+
+    // call the global rewards calculation
+    await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(20 * (10 ** 9)));
+    console.log('transferred dgx to rewards manager');
+    await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
+    console.log('updated the rewards for previous quarter (quarterId = 1)');
+
+    console.log('--------')
+    console.log('quarter info for quarter1 : ', await contracts.daoRewardsStorage.readQuarterInfo.call(bN(1)));
+    console.log('--------')
+    console.log('quarter info for quarter2 : ', await contracts.daoRewardsStorage.readQuarterInfo.call(bN(2)));
+    console.log('--------')
 
     // confirm participation for the next quarter
     await confirmContinuedParticipation(contracts, addressOf);
     console.log('confirmed participation of all members');
+
+    // await somePrinting(contracts, addressOf);
+
+    await claimDGXs(contracts, addressOf);
   });
 };

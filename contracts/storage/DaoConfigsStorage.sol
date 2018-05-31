@@ -56,8 +56,11 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
 
       uintConfigs[CONFIG_MAXIMUM_REPUTATION_DEDUCTION] = 20;
       uintConfigs[CONFIG_PUNISHMENT_FOR_NOT_LOCKING] = 5;
-      uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_NUM] = 1; // 1 extra QP gains 1/4 RP
-      uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_DEN] = 4;
+      uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_NUM] = 1; // 1 extra QP gains 1/1 RP
+      uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_DEN] = 1;
+
+      uintConfigs[CONFIG_QUARTER_POINT_SCALING_FACTOR] = 10;
+      uintConfigs[CONFIG_REPUTATION_POINT_SCALING_FACTOR] = 10;
   }
 
   function set_uint_config(bytes32 _config_name, uint256 _new_value)
@@ -123,6 +126,8 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
     uintConfigs[CONFIG_PUNISHMENT_FOR_NOT_LOCKING] = _uintConfigs[35];
     uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_NUM] = _uintConfigs[36];
     uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_DEN] = _uintConfigs[37];
+    uintConfigs[CONFIG_QUARTER_POINT_SCALING_FACTOR] = _uintConfigs[38];
+    uintConfigs[CONFIG_REPUTATION_POINT_SCALING_FACTOR] = _uintConfigs[39];
   }
 
   function readUintConfigs()

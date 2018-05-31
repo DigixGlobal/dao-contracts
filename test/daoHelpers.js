@@ -29,13 +29,13 @@ const phases = {
 };
 
 const quarters = {
-  QUARTER_1: 0,
-  QUARTER_2: 1,
-  QUARTER_3: 2,
+  QUARTER_1: 1,
+  QUARTER_2: 2,
+  QUARTER_3: 3,
 };
 
 const assertQuarter = function (timeNow, startOfDao, lockingPhaseDuration, quarterDuration, quarterId) {
-  const quarterNow = Math.floor((timeNow - startOfDao) / quarterDuration);
+  const quarterNow = Math.floor((timeNow - startOfDao) / quarterDuration) + 1;
   assert.strictEqual(quarterId, quarterNow);
 };
 

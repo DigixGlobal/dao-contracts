@@ -36,9 +36,6 @@ contract DaoConstants {
   bytes32 CONTRACT_DGX_TOKEN = "t:dgx";
   bytes32 CONTRACT_BADGE_TOKEN = "t:badge";
 
-  // these are addresses of contracts deployed in the development environment
-  address ADDRESS_DGX_TOKEN = 0x4f3AfEC4E5a3F2A6a1A411DEF7D7dFe50eE057bF;
-
   uint8 ROLES_ROOT = 1;
   uint8 ROLES_FOUNDERS = 2;
   uint8 ROLES_PRLS = 3;

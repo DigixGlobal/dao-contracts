@@ -61,7 +61,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
       daoStorage().setProposalDraftPass(_proposalId, true);
       daoStorage().setProposalVotingTime(_proposalId, 0, calculateNextVotingTime(0, false));
       daoStorage().setDraftVotingClaim(_proposalId, msg.sender);
-      daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT), false);
+      daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex(), false);
   }
 
   function claimVotingResult(bytes32 _proposalId)
@@ -80,7 +80,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
       _passed = true;
       daoStorage().setProposalPass(_proposalId, 0, _passed);
       daoStorage().setVotingClaim(_proposalId, 0, msg.sender); // 0 for voting, interim starts from 1
-      daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT), false);
+      daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex(), false);
 
       // set deadline of milestone 1 (set startTime for next interim voting round)
       DaoStructs.MilestoneInfo memory _info;
@@ -108,12 +108,12 @@ contract DaoVotingClaims is DaoCommon, Claimable {
       }
       daoStorage().setProposalPass(_proposalId, _index, _passed);
       daoStorage().setVotingClaim(_proposalId, _index, msg.sender);
-      daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT), false);
+      daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex(), false);
 
       DaoStructs.Users _bonusVoters;
       if (_passed) {
         // give quarter points to proposer for finishing the milestone
-        daoQuarterPoint().add(daoStorage().readProposalProposer(_proposalId), get_uint_config(QUARTER_POINT_MILESTONE_COMPLETION), false);
+        daoQuarterPoint().add(daoStorage().readProposalProposer(_proposalId), get_uint_config(QUARTER_POINT_MILESTONE_COMPLETION), currentQuarterIndex(), false);
 
         // give bonus points for all those who
         // voted YES in the previous round
@@ -155,7 +155,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     }
     daoSpecialStorage().setPass(_proposalId, _passed);
     daoSpecialStorage().setVotingClaim(_proposalId, msg.sender);
-    daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT), false);
+    daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex(), false);
     if (_passed) {
       setConfigs(_proposalId);
     }

@@ -32,17 +32,16 @@ contract QuarterPoint is ResolverClient, DaoConstants {
     _contract = DaoInfoService(get_contract(CONTRACT_DAO_INFO_SERVICE));
   }
 
-  function add(address _who, uint256 _value, bool _isBadge)
+  function add(address _who, uint256 _value, uint256 _quarterId, bool _isBadge)
       public
       if_sender_is_from([CONTRACT_DAO_VOTING, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES])
       returns (uint256 _newPoint, uint256 _newTotalPoint)
   {
       require(_value > 0);
-      uint256 _currentQuarterId = daoInfoService().getCurrentQuarter();
       if (_isBadge) {
-        (_newPoint, _newTotalPoint) = daoPointsStorage().addQuarterBadgePoint(_who, _value, _currentQuarterId);
+        (_newPoint, _newTotalPoint) = daoPointsStorage().addQuarterBadgePoint(_who, _value, _quarterId);
       } else {
-        (_newPoint, _newTotalPoint) = daoPointsStorage().addQuarterPoint(_who, _value, _currentQuarterId);
+        (_newPoint, _newTotalPoint) = daoPointsStorage().addQuarterPoint(_who, _value, _quarterId);
       }
   }
 
@@ -51,14 +50,13 @@ contract QuarterPoint is ResolverClient, DaoConstants {
   /// @return {
   ///    "_balance": "quarter point balance of the given account in the current quarter"
   /// }
-  function balanceOf(address _who)
+  function balanceOf(address _who, uint256 _quarterId)
            public
            constant
            returns (uint256 _quarterPoint, uint256 _quarterBadgePoint)
   {
-    uint256 _currentQuarterId = daoInfoService().getCurrentQuarter();
-    _quarterPoint = daoPointsStorage().getQuarterPoint(_who, _currentQuarterId);
-    _quarterBadgePoint = daoPointsStorage().getQuarterBadgePoint(_who, _currentQuarterId);
+    _quarterPoint = daoPointsStorage().getQuarterPoint(_who, _quarterId);
+    _quarterBadgePoint = daoPointsStorage().getQuarterBadgePoint(_who, _quarterId);
   }
 
   /// @notice display quarter points for an account for the given quarter
@@ -80,14 +78,13 @@ contract QuarterPoint is ResolverClient, DaoConstants {
   /// @return {
   ///    "_supply": "total quarter point supply in the current quarter"
   /// }
-  function totalSupply()
+  function totalSupply(uint256 _quarterId)
            public
            constant
            returns (uint256 _totalQuarterPoint, uint256 _totalQuarterBadgePoint)
   {
-    uint256 _currentQuarterId = daoInfoService().getCurrentQuarter();
-    _totalQuarterPoint = daoPointsStorage().getTotalQuarterPoint(_currentQuarterId);
-    _totalQuarterBadgePoint = daoPointsStorage().getTotalQuarterBadgePoint(_currentQuarterId);
+    _totalQuarterPoint = daoPointsStorage().getTotalQuarterPoint(_quarterId);
+    _totalQuarterBadgePoint = daoPointsStorage().getTotalQuarterBadgePoint(_quarterId);
   }
 
   /// @notice display total quarter points for the given quarter

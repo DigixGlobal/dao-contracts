@@ -5,12 +5,16 @@ import "./../common/DaoCommon.sol";
 import "./../lib/MathHelper.sol";
 
 contract DaoCalculatorService is DaoCommon {
+
     address public dgxDemurrageCalculatorAddress;
+
     using MathHelper for MathHelper;
-    function DaoCalculatorService(address _resolver)
+
+    function DaoCalculatorService(address _resolver, address _dgxDemurrageCalculatorAddress)
       public
     {
       require(init(CONTRACT_DAO_CALCULATOR_SERVICE, _resolver));
+      dgxDemurrageCalculatorAddress = _dgxDemurrageCalculatorAddress;
     }
 
     function calculateAdditionalLockedDGDStake(uint256 _additionalDgd)
@@ -19,7 +23,8 @@ contract DaoCalculatorService is DaoCommon {
     {
         // todo: change this to fixed quarter duration
         /* _additionalLockedDGDStake = _additionalDgd * (QUARTER_DURATION - currentTInQuarter()) / (QUARTER_DURATION - get_uint_config(CONFIG_LOCKING_PHASE_DURATION)); */
-        _additionalLockedDGDStake = _additionalDgd * (get_uint_config(CONFIG_QUARTER_DURATION) - currentTInQuarter()) / (get_uint_config(CONFIG_QUARTER_DURATION) - get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
+        _additionalLockedDGDStake = _additionalDgd * (get_uint_config(CONFIG_QUARTER_DURATION) - MathHelper.max(currentTInQuarter(), get_uint_config(CONFIG_LOCKING_PHASE_DURATION))) /
+                                    (get_uint_config(CONFIG_QUARTER_DURATION) - get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
     }
 
     function minimumDraftQuorum(bytes32 _proposalId) public returns (uint256 _minQuorum) {

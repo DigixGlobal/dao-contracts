@@ -26,7 +26,7 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         uint256 _minimalParticipationPoint,
         uint256 _quarterPointScalingFactor,
         uint256 _reputationPointScalingFactor,
-        uint256 _totalEffectiveDGD,
+        uint256 _totalEffectiveDGDLastQuarter,
         uint256 _dgxDistributionDay,
         uint256 _dgxRewardsPoolLastQuarter,
         uint256 _sumRewardsFromBeginning
@@ -37,7 +37,7 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         allQuartersInfo[_quarterIndex].minimalParticipationPoint = _minimalParticipationPoint;
         allQuartersInfo[_quarterIndex].quarterPointScalingFactor = _quarterPointScalingFactor;
         allQuartersInfo[_quarterIndex].reputationPointScalingFactor = _reputationPointScalingFactor;
-        allQuartersInfo[_quarterIndex].totalEffectiveDGD = _totalEffectiveDGD;
+        allQuartersInfo[_quarterIndex].totalEffectiveDGDLastQuarter = _totalEffectiveDGDLastQuarter;
         allQuartersInfo[_quarterIndex].dgxDistributionDay = _dgxDistributionDay;
         allQuartersInfo[_quarterIndex].dgxRewardsPoolLastQuarter = _dgxRewardsPoolLastQuarter;
         allQuartersInfo[_quarterIndex].sumRewardsFromBeginning = _sumRewardsFromBeginning;
@@ -89,7 +89,7 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
             uint256 _minimalParticipationPoint,
             uint256 _quarterPointScalingFactor,
             uint256 _reputationPointScalingFactor,
-            uint256 _totalEffectiveDGD,
+            uint256 _totalEffectiveDGDLastQuarter,
             uint256 _dgxDistributionDay,
             uint256 _dgxRewardsPoolLastQuarter,
             uint256 _sumRewardsFromBeginning
@@ -98,7 +98,7 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         _minimalParticipationPoint = allQuartersInfo[_quarterIndex].minimalParticipationPoint;
         _quarterPointScalingFactor = allQuartersInfo[_quarterIndex].quarterPointScalingFactor;
         _reputationPointScalingFactor = allQuartersInfo[_quarterIndex].reputationPointScalingFactor;
-        _totalEffectiveDGD = allQuartersInfo[_quarterIndex].totalEffectiveDGD;
+        _totalEffectiveDGDLastQuarter = allQuartersInfo[_quarterIndex].totalEffectiveDGDLastQuarter;
         _dgxDistributionDay = allQuartersInfo[_quarterIndex].dgxDistributionDay;
         _dgxRewardsPoolLastQuarter = allQuartersInfo[_quarterIndex].dgxRewardsPoolLastQuarter;
         _sumRewardsFromBeginning = allQuartersInfo[_quarterIndex].sumRewardsFromBeginning;
@@ -110,6 +110,14 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         returns (uint256 _distributionDay)
     {
         _distributionDay = allQuartersInfo[_quarterIndex].dgxDistributionDay;
+    }
+
+    function readTotalEffectiveDGDLastQuarter(uint256 _quarterIndex)
+        public
+        view
+        returns (uint256 _totalEffectiveDGDLastQuarter)
+    {
+        _totalEffectiveDGDLastQuarter = allQuartersInfo[_quarterIndex].totalEffectiveDGDLastQuarter;
     }
 
     function readRewardsPoolOfQuarter(uint256 _quarterIndex)
