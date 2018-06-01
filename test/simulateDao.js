@@ -111,12 +111,6 @@ const DaoRewardsManager = artifacts.require('./DaoRewardsManager.sol');
 
 const {
   getAccountsAndAddressOf,
-  // assignDeployedContracts,
-  // deployNewContractResolver,
-  // deployLibraries,
-  // deployStorage,
-  // deployServices,
-  // deployInteractive,
   initialTransferTokens,
   proposalIds,
   proposers,
@@ -146,6 +140,127 @@ const {
 const bN = web3.toBigNumber;
 
 const dotenv = require('dotenv');
+
+let salts;
+let votes;
+let votingCommits;
+
+const assignVotesAndCommits = function (addressOf) {
+  salts = {
+    firstProposal: {
+      badgeHolder1: randomBigNumber(bN),
+      badgeHolder2: randomBigNumber(bN),
+      badgeHolder3: randomBigNumber(bN),
+      badgeHolder4: randomBigNumber(bN),
+      dgdHolder1: randomBigNumber(bN),
+      dgdHolder2: randomBigNumber(bN),
+      dgdHolder3: randomBigNumber(bN),
+      dgdHolder4: randomBigNumber(bN),
+      dgdHolder5: randomBigNumber(bN),
+      dgdHolder6: randomBigNumber(bN),
+    },
+    thirdProposal: {
+      badgeHolder1: randomBigNumber(bN),
+      badgeHolder2: randomBigNumber(bN),
+      badgeHolder3: randomBigNumber(bN),
+      badgeHolder4: randomBigNumber(bN),
+      dgdHolder1: randomBigNumber(bN),
+      dgdHolder2: randomBigNumber(bN),
+      dgdHolder3: randomBigNumber(bN),
+      dgdHolder4: randomBigNumber(bN),
+      dgdHolder5: randomBigNumber(bN),
+      dgdHolder6: randomBigNumber(bN),
+    },
+    fourthProposal: {
+      badgeHolder1: randomBigNumber(bN),
+      badgeHolder2: randomBigNumber(bN),
+      badgeHolder3: randomBigNumber(bN),
+      badgeHolder4: randomBigNumber(bN),
+      dgdHolder1: randomBigNumber(bN),
+      dgdHolder2: randomBigNumber(bN),
+      dgdHolder3: randomBigNumber(bN),
+      dgdHolder4: randomBigNumber(bN),
+      dgdHolder5: randomBigNumber(bN),
+      dgdHolder6: randomBigNumber(bN),
+    }
+  };
+  votes = {
+    firstProposal: {
+      badgeHolder1: true,
+      badgeHolder2: true,
+      badgeHolder3: true,
+      badgeHolder4: true,
+      dgdHolder1: true,
+      dgdHolder2: true,
+      dgdHolder3: true,
+      dgdHolder4: true,
+      dgdHolder5: true,
+      dgdHolder6: true,
+    },
+    thirdProposal: {
+      badgeHolder1: true,
+      badgeHolder2: true,
+      badgeHolder3: true,
+      badgeHolder4: true,
+      dgdHolder1: true,
+      dgdHolder2: true,
+      dgdHolder3: true,
+      dgdHolder4: true,
+      dgdHolder5: true,
+      dgdHolder6: true,
+    },
+    fourthProposal: {
+      badgeHolder1: true,
+      badgeHolder2: true,
+      badgeHolder3: true,
+      badgeHolder4: true,
+      dgdHolder1: true,
+      dgdHolder2: true,
+      dgdHolder3: true,
+      dgdHolder4: true,
+      dgdHolder5: true,
+      dgdHolder6: true,
+    },
+  };
+  votingCommits = {
+    firstProposal: {
+      badgeHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder1}, {t: 'bool', v: votes.firstProposal.badgeHolder1}, {t: 'uint256', v: salts.firstProposal.badgeHolder1}),
+      badgeHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder2}, {t: 'bool', v: votes.firstProposal.badgeHolder2}, {t: 'uint256', v: salts.firstProposal.badgeHolder2}),
+      badgeHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder3}, {t: 'bool', v: votes.firstProposal.badgeHolder3}, {t: 'uint256', v: salts.firstProposal.badgeHolder3}),
+      badgeHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder4}, {t: 'bool', v: votes.firstProposal.badgeHolder4}, {t: 'uint256', v: salts.firstProposal.badgeHolder4}),
+      dgdHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder1}, {t: 'bool', v: votes.firstProposal.dgdHolder1}, {t: 'uint256', v: salts.firstProposal.dgdHolder1}),
+      dgdHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder2}, {t: 'bool', v: votes.firstProposal.dgdHolder2}, {t: 'uint256', v: salts.firstProposal.dgdHolder2}),
+      dgdHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder3}, {t: 'bool', v: votes.firstProposal.dgdHolder3}, {t: 'uint256', v: salts.firstProposal.dgdHolder3}),
+      dgdHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder4}, {t: 'bool', v: votes.firstProposal.dgdHolder4}, {t: 'uint256', v: salts.firstProposal.dgdHolder4}),
+      dgdHolder5: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder5}, {t: 'bool', v: votes.firstProposal.dgdHolder5}, {t: 'uint256', v: salts.firstProposal.dgdHolder5}),
+      dgdHolder6: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder6}, {t: 'bool', v: votes.firstProposal.dgdHolder6}, {t: 'uint256', v: salts.firstProposal.dgdHolder6}),
+    },
+    thirdProposal: {
+      badgeHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder1}, {t: 'bool', v: votes.thirdProposal.badgeHolder1}, {t: 'uint256', v: salts.thirdProposal.badgeHolder1}),
+      badgeHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder2}, {t: 'bool', v: votes.thirdProposal.badgeHolder2}, {t: 'uint256', v: salts.thirdProposal.badgeHolder2}),
+      badgeHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder3}, {t: 'bool', v: votes.thirdProposal.badgeHolder3}, {t: 'uint256', v: salts.thirdProposal.badgeHolder3}),
+      badgeHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder4}, {t: 'bool', v: votes.thirdProposal.badgeHolder4}, {t: 'uint256', v: salts.thirdProposal.badgeHolder4}),
+      dgdHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder1}, {t: 'bool', v: votes.thirdProposal.dgdHolder1}, {t: 'uint256', v: salts.thirdProposal.dgdHolder1}),
+      dgdHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder2}, {t: 'bool', v: votes.thirdProposal.dgdHolder2}, {t: 'uint256', v: salts.thirdProposal.dgdHolder2}),
+      dgdHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder3}, {t: 'bool', v: votes.thirdProposal.dgdHolder3}, {t: 'uint256', v: salts.thirdProposal.dgdHolder3}),
+      dgdHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder4}, {t: 'bool', v: votes.thirdProposal.dgdHolder4}, {t: 'uint256', v: salts.thirdProposal.dgdHolder4}),
+      dgdHolder5: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder5}, {t: 'bool', v: votes.thirdProposal.dgdHolder5}, {t: 'uint256', v: salts.thirdProposal.dgdHolder5}),
+      dgdHolder6: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder6}, {t: 'bool', v: votes.thirdProposal.dgdHolder6}, {t: 'uint256', v: salts.thirdProposal.dgdHolder6}),
+    },
+    fourthProposal: {
+      badgeHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder1}, {t: 'bool', v: votes.fourthProposal.badgeHolder1}, {t: 'uint256', v: salts.fourthProposal.badgeHolder1}),
+      badgeHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder2}, {t: 'bool', v: votes.fourthProposal.badgeHolder2}, {t: 'uint256', v: salts.fourthProposal.badgeHolder2}),
+      badgeHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder3}, {t: 'bool', v: votes.fourthProposal.badgeHolder3}, {t: 'uint256', v: salts.fourthProposal.badgeHolder3}),
+      badgeHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder4}, {t: 'bool', v: votes.fourthProposal.badgeHolder4}, {t: 'uint256', v: salts.fourthProposal.badgeHolder4}),
+      dgdHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder1}, {t: 'bool', v: votes.fourthProposal.dgdHolder1}, {t: 'uint256', v: salts.fourthProposal.dgdHolder1}),
+      dgdHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder2}, {t: 'bool', v: votes.fourthProposal.dgdHolder2}, {t: 'uint256', v: salts.fourthProposal.dgdHolder2}),
+      dgdHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder3}, {t: 'bool', v: votes.fourthProposal.dgdHolder3}, {t: 'uint256', v: salts.fourthProposal.dgdHolder3}),
+      dgdHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder4}, {t: 'bool', v: votes.fourthProposal.dgdHolder4}, {t: 'uint256', v: salts.fourthProposal.dgdHolder4}),
+      dgdHolder5: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder5}, {t: 'bool', v: votes.fourthProposal.dgdHolder5}, {t: 'uint256', v: salts.fourthProposal.dgdHolder5}),
+      dgdHolder6: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder6}, {t: 'bool', v: votes.fourthProposal.dgdHolder6}, {t: 'uint256', v: salts.fourthProposal.dgdHolder6}),
+    },
+  };
+};
 
 const setupMockTokens = async function (contracts, addressOf) {
   dotenv.config();
@@ -527,120 +642,6 @@ const claimDraftVotingResult = async function (contracts, addressOf) {
 };
 
 const votingCommitRound = async function (contracts, addressOf) {
-  const salts = {
-    firstProposal: {
-      badgeHolder1: randomBigNumber(bN),
-      badgeHolder2: randomBigNumber(bN),
-      badgeHolder3: randomBigNumber(bN),
-      badgeHolder4: randomBigNumber(bN),
-      dgdHolder1: randomBigNumber(bN),
-      dgdHolder2: randomBigNumber(bN),
-      dgdHolder3: randomBigNumber(bN),
-      dgdHolder4: randomBigNumber(bN),
-      dgdHolder5: randomBigNumber(bN),
-      dgdHolder6: randomBigNumber(bN),
-    },
-    thirdProposal: {
-      badgeHolder1: randomBigNumber(bN),
-      badgeHolder2: randomBigNumber(bN),
-      badgeHolder3: randomBigNumber(bN),
-      badgeHolder4: randomBigNumber(bN),
-      dgdHolder1: randomBigNumber(bN),
-      dgdHolder2: randomBigNumber(bN),
-      dgdHolder3: randomBigNumber(bN),
-      dgdHolder4: randomBigNumber(bN),
-      dgdHolder5: randomBigNumber(bN),
-      dgdHolder6: randomBigNumber(bN),
-    },
-    fourthProposal: {
-      badgeHolder1: randomBigNumber(bN),
-      badgeHolder2: randomBigNumber(bN),
-      badgeHolder3: randomBigNumber(bN),
-      badgeHolder4: randomBigNumber(bN),
-      dgdHolder1: randomBigNumber(bN),
-      dgdHolder2: randomBigNumber(bN),
-      dgdHolder3: randomBigNumber(bN),
-      dgdHolder4: randomBigNumber(bN),
-      dgdHolder5: randomBigNumber(bN),
-      dgdHolder6: randomBigNumber(bN),
-    },
-  };
-  const votes = {
-    firstProposal: {
-      badgeHolder1: true,
-      badgeHolder2: true,
-      badgeHolder3: true,
-      badgeHolder4: true,
-      dgdHolder1: true,
-      dgdHolder2: true,
-      dgdHolder3: true,
-      dgdHolder4: true,
-      dgdHolder5: true,
-      dgdHolder6: true,
-    },
-    thirdProposal: {
-      badgeHolder1: true,
-      badgeHolder2: true,
-      badgeHolder3: true,
-      badgeHolder4: true,
-      dgdHolder1: true,
-      dgdHolder2: true,
-      dgdHolder3: true,
-      dgdHolder4: true,
-      dgdHolder5: true,
-      dgdHolder6: true,
-    },
-    fourthProposal: {
-      badgeHolder1: true,
-      badgeHolder2: true,
-      badgeHolder3: true,
-      badgeHolder4: true,
-      dgdHolder1: true,
-      dgdHolder2: true,
-      dgdHolder3: true,
-      dgdHolder4: true,
-      dgdHolder5: true,
-      dgdHolder6: true,
-    },
-  };
-  const votingCommits = {
-    firstProposal: {
-      badgeHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder1}, {t: 'bool', v: votes.firstProposal.badgeHolder1}, {t: 'uint256', v: salts.firstProposal.badgeHolder1}),
-      badgeHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder2}, {t: 'bool', v: votes.firstProposal.badgeHolder2}, {t: 'uint256', v: salts.firstProposal.badgeHolder2}),
-      badgeHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder3}, {t: 'bool', v: votes.firstProposal.badgeHolder3}, {t: 'uint256', v: salts.firstProposal.badgeHolder3}),
-      badgeHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder4}, {t: 'bool', v: votes.firstProposal.badgeHolder4}, {t: 'uint256', v: salts.firstProposal.badgeHolder4}),
-      dgdHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder1}, {t: 'bool', v: votes.firstProposal.dgdHolder1}, {t: 'uint256', v: salts.firstProposal.dgdHolder1}),
-      dgdHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder2}, {t: 'bool', v: votes.firstProposal.dgdHolder2}, {t: 'uint256', v: salts.firstProposal.dgdHolder2}),
-      dgdHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder3}, {t: 'bool', v: votes.firstProposal.dgdHolder3}, {t: 'uint256', v: salts.firstProposal.dgdHolder3}),
-      dgdHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder4}, {t: 'bool', v: votes.firstProposal.dgdHolder4}, {t: 'uint256', v: salts.firstProposal.dgdHolder4}),
-      dgdHolder5: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder5}, {t: 'bool', v: votes.firstProposal.dgdHolder5}, {t: 'uint256', v: salts.firstProposal.dgdHolder5}),
-      dgdHolder6: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder6}, {t: 'bool', v: votes.firstProposal.dgdHolder6}, {t: 'uint256', v: salts.firstProposal.dgdHolder6}),
-    },
-    thirdProposal: {
-      badgeHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder1}, {t: 'bool', v: votes.thirdProposal.badgeHolder1}, {t: 'uint256', v: salts.thirdProposal.badgeHolder1}),
-      badgeHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder2}, {t: 'bool', v: votes.thirdProposal.badgeHolder2}, {t: 'uint256', v: salts.thirdProposal.badgeHolder2}),
-      badgeHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder3}, {t: 'bool', v: votes.thirdProposal.badgeHolder3}, {t: 'uint256', v: salts.thirdProposal.badgeHolder3}),
-      badgeHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder4}, {t: 'bool', v: votes.thirdProposal.badgeHolder4}, {t: 'uint256', v: salts.thirdProposal.badgeHolder4}),
-      dgdHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder1}, {t: 'bool', v: votes.thirdProposal.dgdHolder1}, {t: 'uint256', v: salts.thirdProposal.dgdHolder1}),
-      dgdHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder2}, {t: 'bool', v: votes.thirdProposal.dgdHolder2}, {t: 'uint256', v: salts.thirdProposal.dgdHolder2}),
-      dgdHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder3}, {t: 'bool', v: votes.thirdProposal.dgdHolder3}, {t: 'uint256', v: salts.thirdProposal.dgdHolder3}),
-      dgdHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder4}, {t: 'bool', v: votes.thirdProposal.dgdHolder4}, {t: 'uint256', v: salts.thirdProposal.dgdHolder4}),
-      dgdHolder5: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder5}, {t: 'bool', v: votes.thirdProposal.dgdHolder5}, {t: 'uint256', v: salts.thirdProposal.dgdHolder5}),
-      dgdHolder6: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder6}, {t: 'bool', v: votes.thirdProposal.dgdHolder6}, {t: 'uint256', v: salts.thirdProposal.dgdHolder6}),
-    },
-    fourthProposal: {
-      badgeHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder1}, {t: 'bool', v: votes.fourthProposal.badgeHolder1}, {t: 'uint256', v: salts.fourthProposal.badgeHolder1}),
-      badgeHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder2}, {t: 'bool', v: votes.fourthProposal.badgeHolder2}, {t: 'uint256', v: salts.fourthProposal.badgeHolder2}),
-      badgeHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder3}, {t: 'bool', v: votes.fourthProposal.badgeHolder3}, {t: 'uint256', v: salts.fourthProposal.badgeHolder3}),
-      badgeHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder4}, {t: 'bool', v: votes.fourthProposal.badgeHolder4}, {t: 'uint256', v: salts.fourthProposal.badgeHolder4}),
-      dgdHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder1}, {t: 'bool', v: votes.fourthProposal.dgdHolder1}, {t: 'uint256', v: salts.fourthProposal.dgdHolder1}),
-      dgdHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder2}, {t: 'bool', v: votes.fourthProposal.dgdHolder2}, {t: 'uint256', v: salts.fourthProposal.dgdHolder2}),
-      dgdHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder3}, {t: 'bool', v: votes.fourthProposal.dgdHolder3}, {t: 'uint256', v: salts.fourthProposal.dgdHolder3}),
-      dgdHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder4}, {t: 'bool', v: votes.fourthProposal.dgdHolder4}, {t: 'uint256', v: salts.fourthProposal.dgdHolder4}),
-      dgdHolder5: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder5}, {t: 'bool', v: votes.fourthProposal.dgdHolder5}, {t: 'uint256', v: salts.fourthProposal.dgdHolder5}),
-      dgdHolder6: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder6}, {t: 'bool', v: votes.fourthProposal.dgdHolder6}, {t: 'uint256', v: salts.fourthProposal.dgdHolder6}),
-    },
-  };
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.badgeHolder1,
@@ -793,7 +794,6 @@ const votingCommitRound = async function (contracts, addressOf) {
     votingCommits.fourthProposal.dgdHolder6,
     { from: addressOf.dgdHolder6 },
   );
-  return {salts: salts, votes: votes};
 };
 
 const votingRevealRound = async function (contracts, addressOf, commits) {
@@ -1059,9 +1059,281 @@ const interimVotingCommitRound = async function (contracts, addressOf) {
   const interimRoundVotingTime1 = await contracts.daoStorage.readProposalVotingTime.call(proposalIds.firstProposal, bN(1));
   const interimRoundVotingTime3 = await contracts.daoStorage.readProposalVotingTime.call(proposalIds.thirdProposal, bN(1));
   const interimRoundVotingTime4 = await contracts.daoStorage.readProposalVotingTime.call(proposalIds.fourthProposal, bN(1));
-  console.log('interim voting proposal 1 : ', interimRoundVotingTime1);
-  console.log('interim voting proposal 3 : ', interimRoundVotingTime3);
-  console.log('interim voting proposal 4 : ', interimRoundVotingTime4);
+  let timeNow = getCurrentTimestamp();
+  if (timeNow === interimRoundVotingTime4.toNumber()) {
+    await waitFor(1, addressOf);
+  }
+  timeNow = getCurrentTimestamp();
+  assert.equal(timeNow > interimRoundVotingTime1.toNumber(), true);
+  assert.equal(timeNow > interimRoundVotingTime3.toNumber(), true);
+  assert.equal(timeNow > interimRoundVotingTime4.toNumber(), true);
+  assert.equal(timeNow < (interimRoundVotingTime1.toNumber() + 10), true); // 10 is the interim commit phase
+  assert.equal(timeNow < (interimRoundVotingTime3.toNumber() + 10), true);
+  assert.equal(timeNow < (interimRoundVotingTime4.toNumber() + 10), true);
+
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.firstProposal,
+    bN(1),
+    votingCommits.firstProposal.badgeHolder1,
+    { from: addressOf.badgeHolder1 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.firstProposal,
+    bN(1),
+    votingCommits.firstProposal.badgeHolder2,
+    { from: addressOf.badgeHolder2 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.firstProposal,
+    bN(1),
+    votingCommits.firstProposal.badgeHolder3,
+    { from: addressOf.badgeHolder3 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.firstProposal,
+    bN(1),
+    votingCommits.firstProposal.badgeHolder4,
+    { from: addressOf.badgeHolder4 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.firstProposal,
+    bN(1),
+    votingCommits.firstProposal.dgdHolder1,
+    { from: addressOf.dgdHolder1 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.firstProposal,
+    bN(1),
+    votingCommits.firstProposal.dgdHolder2,
+    { from: addressOf.dgdHolder2 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.firstProposal,
+    bN(1),
+    votingCommits.firstProposal.dgdHolder3,
+    { from: addressOf.dgdHolder3 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.firstProposal,
+    bN(1),
+    votingCommits.firstProposal.dgdHolder4,
+    { from: addressOf.dgdHolder4 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.firstProposal,
+    bN(1),
+    votingCommits.firstProposal.dgdHolder5,
+    { from: addressOf.dgdHolder5 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.firstProposal,
+    bN(1),
+    votingCommits.firstProposal.dgdHolder6,
+    { from: addressOf.dgdHolder6 },
+  );
+
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.thirdProposal,
+    bN(1),
+    votingCommits.thirdProposal.badgeHolder1,
+    { from: addressOf.badgeHolder1 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.thirdProposal,
+    bN(1),
+    votingCommits.thirdProposal.badgeHolder2,
+    { from: addressOf.badgeHolder2 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.thirdProposal,
+    bN(1),
+    votingCommits.thirdProposal.badgeHolder3,
+    { from: addressOf.badgeHolder3 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.thirdProposal,
+    bN(1),
+    votingCommits.thirdProposal.badgeHolder4,
+    { from: addressOf.badgeHolder4 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.thirdProposal,
+    bN(1),
+    votingCommits.thirdProposal.dgdHolder1,
+    { from: addressOf.dgdHolder1 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.thirdProposal,
+    bN(1),
+    votingCommits.thirdProposal.dgdHolder2,
+    { from: addressOf.dgdHolder2 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.thirdProposal,
+    bN(1),
+    votingCommits.thirdProposal.dgdHolder3,
+    { from: addressOf.dgdHolder3 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.thirdProposal,
+    bN(1),
+    votingCommits.thirdProposal.dgdHolder4,
+    { from: addressOf.dgdHolder4 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.thirdProposal,
+    bN(1),
+    votingCommits.thirdProposal.dgdHolder5,
+    { from: addressOf.dgdHolder5 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.thirdProposal,
+    bN(1),
+    votingCommits.thirdProposal.dgdHolder6,
+    { from: addressOf.dgdHolder6 },
+  );
+
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.fourthProposal,
+    bN(1),
+    votingCommits.fourthProposal.badgeHolder1,
+    { from: addressOf.badgeHolder1 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.fourthProposal,
+    bN(1),
+    votingCommits.fourthProposal.badgeHolder2,
+    { from: addressOf.badgeHolder2 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.fourthProposal,
+    bN(1),
+    votingCommits.fourthProposal.badgeHolder3,
+    { from: addressOf.badgeHolder3 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.fourthProposal,
+    bN(1),
+    votingCommits.fourthProposal.badgeHolder4,
+    { from: addressOf.badgeHolder4 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.fourthProposal,
+    bN(1),
+    votingCommits.fourthProposal.dgdHolder1,
+    { from: addressOf.dgdHolder1 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.fourthProposal,
+    bN(1),
+    votingCommits.fourthProposal.dgdHolder2,
+    { from: addressOf.dgdHolder2 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.fourthProposal,
+    bN(1),
+    votingCommits.fourthProposal.dgdHolder3,
+    { from: addressOf.dgdHolder3 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.fourthProposal,
+    bN(1),
+    votingCommits.fourthProposal.dgdHolder4,
+    { from: addressOf.dgdHolder4 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.fourthProposal,
+    bN(1),
+    votingCommits.fourthProposal.dgdHolder5,
+    { from: addressOf.dgdHolder5 },
+  );
+  await contracts.daoVoting.commitVoteOnInterim(
+    proposalIds.fourthProposal,
+    bN(1),
+    votingCommits.fourthProposal.dgdHolder6,
+    { from: addressOf.dgdHolder6 },
+  );
+};
+
+const interimVotingRevealRound = async function (contracts, addressOf) {
+  await waitForRevealPhase(contracts, addressOf, proposalIds.firstProposal, bN(1));
+  await contracts.daoVoting.revealVoteOnInterim(
+    proposalIds.firstProposal,
+    bN(1),
+    votes.firstProposal.badgeHolder1,
+    salts.firstProposal.badgeHolder1,
+    { from: addressOf.badgeHolder1 },
+  );
+  await contracts.daoVoting.revealVoteOnInterim(
+    proposalIds.firstProposal,
+    bN(1),
+    votes.firstProposal.badgeHolder2,
+    salts.firstProposal.badgeHolder2,
+    { from: addressOf.badgeHolder2 },
+  );
+  await contracts.daoVoting.revealVoteOnInterim(
+    proposalIds.firstProposal,
+    bN(1),
+    votes.firstProposal.badgeHolder3,
+    salts.firstProposal.badgeHolder3,
+    { from: addressOf.badgeHolder3 },
+  );
+  await contracts.daoVoting.revealVoteOnInterim(
+    proposalIds.firstProposal,
+    bN(1),
+    votes.firstProposal.badgeHolder4,
+    salts.firstProposal.badgeHolder4,
+    { from: addressOf.badgeHolder4 },
+  );
+  await contracts.daoVoting.revealVoteOnInterim(
+    proposalIds.firstProposal,
+    bN(1),
+    votes.firstProposal.dgdHolder1,
+    salts.firstProposal.dgdHolder1,
+    { from: addressOf.dgdHolder1 },
+  );
+  await contracts.daoVoting.revealVoteOnInterim(
+    proposalIds.firstProposal,
+    bN(1),
+    votes.firstProposal.dgdHolder2,
+    salts.firstProposal.dgdHolder2,
+    { from: addressOf.dgdHolder2 },
+  );
+  await contracts.daoVoting.revealVoteOnInterim(
+    proposalIds.firstProposal,
+    bN(1),
+    votes.firstProposal.dgdHolder3,
+    salts.firstProposal.dgdHolder3,
+    { from: addressOf.dgdHolder3 },
+  );
+  await contracts.daoVoting.revealVoteOnInterim(
+    proposalIds.firstProposal,
+    bN(1),
+    votes.firstProposal.dgdHolder4,
+    salts.firstProposal.dgdHolder4,
+    { from: addressOf.dgdHolder4 },
+  );
+  await contracts.daoVoting.revealVoteOnInterim(
+    proposalIds.firstProposal,
+    bN(1),
+    votes.firstProposal.dgdHolder5,
+    salts.firstProposal.dgdHolder5,
+    { from: addressOf.dgdHolder5 },
+  );
+  await contracts.daoVoting.revealVoteOnInterim(
+    proposalIds.firstProposal,
+    bN(1),
+    votes.firstProposal.dgdHolder6,
+    salts.firstProposal.dgdHolder6,
+    { from: addressOf.dgdHolder6 },
+  );
+};
+
+const interimVotingRoundClaim = async function (contracts, addressOf) {
+  await waitForRevealPhaseToGetOver(contracts, addressOf, proposalIds.firstProposal, bN(1));
+  await contracts.daoVotingClaims.claimInterimVotingResult(proposalIds.firstProposal, bN(1), { from: addressOf.dgdHolder1 });
+  await contracts.daoVotingClaims.claimInterimVotingResult(proposalIds.thirdProposal, bN(1), { from: addressOf.dgdHolder2 });
+  await contracts.daoVotingClaims.claimInterimVotingResult(proposalIds.fourthProposal, bN(1), { from: addressOf.dgdHolder3 });
 };
 
 module.exports = async function () {
@@ -1074,6 +1346,7 @@ module.exports = async function () {
     console.log('got accounts');
     contracts = {};
     libs = {};
+    assignVotesAndCommits(addressOf);
 
     // get deployed mock tokens
     await setupMockTokens(contracts, addressOf);
@@ -1130,9 +1403,12 @@ module.exports = async function () {
 
     // first voting round
     await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);
-    const commits = await votingCommitRound(contracts, addressOf);
+    await votingCommitRound(contracts, addressOf);
     console.log('commit voting has been done');
-    await votingRevealRound(contracts, addressOf, commits);
+    await votingRevealRound(contracts, addressOf, {
+      votes: votes,
+      salts: salts,
+    });
     console.log('revealed the committed votes');
 
     // claim the result of the voting round
@@ -1191,6 +1467,12 @@ module.exports = async function () {
     console.log('in the second quarter (quarterId = 2), main phase');
 
     await interimVotingCommitRound(contracts, addressOf);
-    console.log('done with interim voting round');
+    console.log('done with interim voting commit round');
+
+    await interimVotingRevealRound(contracts, addressOf);
+    console.log('done with interim voting reveal round');
+
+    await interimVotingRoundClaim(contracts, addressOf);
+    console.log('done with claiming interim round voting');
   });
 };

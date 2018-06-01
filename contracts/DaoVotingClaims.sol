@@ -104,7 +104,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
       daoStorage().setVotingClaim(_proposalId, _index, msg.sender);
       daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex(), false);
 
-      DaoStructs.Users _bonusVoters;
+      DaoStructs.Users memory _bonusVoters;
       if (_passed) {
         // give quarter points to proposer for finishing the milestone
         daoQuarterPoint().add(daoStorage().readProposalProposer(_proposalId), get_uint_config(QUARTER_POINT_MILESTONE_COMPLETION), currentQuarterIndex(), false);
