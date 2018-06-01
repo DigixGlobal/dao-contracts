@@ -1,34 +1,44 @@
+const a = require('awaiting');
+
 const MockCommitRevealContract = artifacts.require('MockCommitRevealContract.sol');
 
 const bN = web3.toBigNumber;
 
-contract('MockCommitRevealContract', function () {
+const {
+  randomBigNumber,
+} = require('@digix/helpers/lib/helpers');
+
+const Web3Utils = require('web3-utils');
+
+contract('MockCommitRevealContract', function (accounts) {
   let contract;
   before(async function () {
     contract = await MockCommitRevealContract.new();
   });
-  describe('Overall Test', function () {
-    it('set the commit', async function () {
-      const salt1 = 12345;
-      const salt2 = 98765;
-      const in1 = salt1.toString().concat(':').concat(true.toString());
-      const in2 = salt2.toString().concat(':').concat(false.toString());
-      const commit1 = web3.sha3(in1);
-      const commit2 = web3.sha3(in2);
-      await contract.setCommit(commit1, commit2);
-    });
-    it('compute solidity commits', async function () {
-      const salt1 = 12345;
-      const salt2 = 98765;
-      const in1 = salt1.toString().concat(':').concat(true.toString());
-      const in2 = salt2.toString().concat(':').concat(false.toString());
-      await contract.computeSolidityCommit(in1, in2);
+  describe('address[1]', function () {
+    it('verify', async function () {
+      const vote1 = true;
+      const salt1 = randomBigNumber(bN);
+      const commit1 = Web3Utils.soliditySha3(
+        {type: 'address', value: accounts[1]},
+        {type: 'bool', value: vote1},
+        {type: 'uint256', value: salt1},
+      );
+      await contract.setCommit(commit1, { from: accounts[1] });
 
-      console.log('printing vals from contract');
-      console.log('initial commit 1 : ', await contract.commit1.call());
-      console.log('initial commit 2 : ', await contract.commit2.call());
-      console.log('solidity commit 1 : ', await contract.solidityCommit1.call());
-      console.log('solidity commit 2 : ', await contract.solidityCommit2.call());
+      const vote2 = false;
+      const salt2 = randomBigNumber(bN);
+      const commit2 = Web3Utils.soliditySha3(
+        {type: 'address', value: accounts[2]},
+        {type: 'bool', value: vote2},
+        {type: 'uint256', value: salt2},
+      );
+      await contract.setCommit(commit2, { from: accounts[2] });
+
+      assert.deepEqual(await contract.verify.call(vote1, salt1, { from: accounts[1] }), true);
+      assert.deepEqual(await contract.verify.call(vote2, salt2, { from: accounts[2] }), true);
+      assert(await a.failure(contract.verify.call(vote2, salt2, { from: accounts[1] })));
+      assert(await a.failure(contract.verify.call(vote1, salt1, { from: accounts[2] })));
     });
   });
 });

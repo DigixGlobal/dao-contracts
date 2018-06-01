@@ -45,7 +45,6 @@ contract DaoVoting is DaoCommon, Claimable {
       if_participant()
       returns (bool _success)
   {
-      require(daoStorage().isCommitUsed(_proposalId, 0, _commitHash) == false);
       daoStorage().commitVote(_proposalId, _commitHash, msg.sender, 0);
       _success = true;
   }
@@ -53,8 +52,7 @@ contract DaoVoting is DaoCommon, Claimable {
   function revealVoteOnProposal(
       bytes32 _proposalId,
       bool _vote,
-      /* uint256 _salt */
-      string _reveal
+      uint256 _salt
   )
       public
       if_reveal_phase(_proposalId)
@@ -62,7 +60,7 @@ contract DaoVoting is DaoCommon, Claimable {
       has_not_revealed(_proposalId, 0)
       if_participant()
   {
-      require(keccak256(_reveal) == daoStorage().readCommitVote(_proposalId, 0, msg.sender));
+      require(keccak256(msg.sender, _vote, _salt) == daoStorage().readCommitVote(_proposalId, 0, msg.sender));
       daoStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().readUserEffectiveDGDStake(msg.sender), 0);
 
       // give quarter point
@@ -78,7 +76,6 @@ contract DaoVoting is DaoCommon, Claimable {
       if_participant()
       returns (bool _success)
   {
-      require(daoSpecialStorage().isCommitUsed(_proposalId, _commitHash) == false);
       daoSpecialStorage().commitVote(_proposalId, _commitHash, msg.sender, 0);
       _success = true;
   }
@@ -86,15 +83,14 @@ contract DaoVoting is DaoCommon, Claimable {
   function revealVoteOnSpecialProposal(
       bytes32 _proposalId,
       bool _vote,
-      /* uint256 _salt */
-      string _reveal
+      uint256 _salt
   )
       public
       if_reveal_phase_special(_proposalId)
       has_not_revealed_special(_proposalId)
       if_participant()
   {
-      require(keccak256(_reveal) == daoSpecialStorage().readCommitVote(_proposalId, msg.sender));
+      require(keccak256(msg.sender, _vote, _salt) == daoSpecialStorage().readCommitVote(_proposalId, msg.sender));
       daoSpecialStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().readUserEffectiveDGDStake(msg.sender));
 
       // give quarter point
@@ -112,7 +108,6 @@ contract DaoVoting is DaoCommon, Claimable {
       if_participant()
       returns (bool _success)
   {
-      require(daoStorage().isCommitUsed(_proposalId, _index, _commitHash) == false);
       daoStorage().commitVote(_proposalId, _commitHash, msg.sender, _index);
       _success = true;
   }
@@ -121,8 +116,7 @@ contract DaoVoting is DaoCommon, Claimable {
       bytes32 _proposalId,
       uint8 _index,
       bool _vote,
-      /* uint256 _salt */
-      string _reveal
+      uint256 _salt
   )
       public
       if_interim_reveal_phase(_proposalId, _index)
@@ -130,7 +124,7 @@ contract DaoVoting is DaoCommon, Claimable {
       has_not_revealed(_proposalId, _index)
       if_participant()
   {
-      require(keccak256(_reveal) == daoStorage().readCommitVote(_proposalId, _index, msg.sender));
+      require(keccak256(msg.sender, _vote, _salt) == daoStorage().readCommitVote(_proposalId, _index, msg.sender));
       daoStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().readUserEffectiveDGDStake(msg.sender), _index);
 
       // give quarter point

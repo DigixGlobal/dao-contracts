@@ -12,7 +12,6 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
 
   DoublyLinkedList.Bytes proposals;
   mapping (bytes32 => DaoStructs.SpecialProposal) proposalsById;
-  mapping (address => uint256) lastNonce;
 
   function DaoSpecialStorage(address _resolver) public {
       require(init(CONTRACT_DAO_SPECIAL_STORAGE, _resolver));
@@ -77,14 +76,6 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
     _start = proposalsById[_proposalId].voting.startTime;
   }
 
-  function readLastNonce(address _voter)
-    public
-    constant
-    returns (uint256 _lastNonce)
-  {
-    _lastNonce = lastNonce[_voter];
-  }
-
   function commitVote(
     bytes32 _proposalId,
     bytes32 _hash,
@@ -96,18 +87,8 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
     returns (bool _success)
   {
     DaoStructs.SpecialProposal _proposal = proposalsById[_proposalId];
-    lastNonce[_voter] = _nonce;
     _proposal.voting.commits[_voter] = _hash;
-    _proposal.voting.usedCommits[_hash] = true;
     _success = true;
-  }
-
-  function isCommitUsed(bytes32 _proposalId, bytes32 _commit)
-    public
-    constant
-    returns (bool _used)
-  {
-    _used = proposalsById[_proposalId].voting.usedCommits[_commit];
   }
 
   function readCommitVote(bytes32 _proposalId, address _voter)

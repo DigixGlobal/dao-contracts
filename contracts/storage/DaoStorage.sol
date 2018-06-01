@@ -828,10 +828,8 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     DaoStructs.Proposal _proposal = proposalsById[_proposalId];
     if (_index == 0) {
       _proposal.votingRound.commits[_voter] = _hash;
-      _proposal.votingRound.usedCommits[_hash] = true;
     } else {
       _proposal.interimRounds[_index].commits[_voter] = _hash;
-      _proposal.interimRounds[_index].usedCommits[_hash] = true;
     }
     _success = true;
   }

@@ -1,22 +1,20 @@
 pragma solidity ^0.4.23;
 
 contract MockCommitRevealContract {
-  bytes32 public commit1;
-  bytes32 public commit2;
-  bytes32 public solidityCommit1;
-  bytes32 public solidityCommit2;
+  mapping (address => bytes32) commits;
 
-  function setCommit(bytes32 _commit1, bytes32 _commit2)
+  function setCommit(bytes32 _commit)
     public
   {
-    commit1 = _commit1;
-    commit2 = _commit2;
+    commits[msg.sender] = _commit;
   }
 
-  function computeSolidityCommit(string _raw1, string _raw2)
+  function verify(bool _vote, uint256 _salt)
     public
+    view
+    returns (bool)
   {
-    solidityCommit1 = keccak256(_raw1);
-    solidityCommit2 = keccak256(_raw2);
+    require(keccak256(msg.sender, _vote, _salt) == commits[msg.sender]);
+    return true;
   }
 }

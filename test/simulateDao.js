@@ -1,5 +1,6 @@
 const a = require('awaiting');
 const assert = require('assert');
+const web3Utils = require('web3-utils');
 
 const MockDGD = artifacts.require('./MockDGD.sol');
 const MockBadge = artifacts.require('./MockBadge.sol');
@@ -542,7 +543,7 @@ const claimDraftVotingResult = async function (contracts, addressOf) {
 };
 
 const votingCommitRound = async function (contracts, addressOf) {
-  const votes = {
+  const salts = {
     firstProposal: {
       badgeHolder1: randomBigNumber(bN),
       badgeHolder2: randomBigNumber(bN),
@@ -580,412 +581,420 @@ const votingCommitRound = async function (contracts, addressOf) {
       dgdHolder6: randomBigNumber(bN),
     },
   };
-  const votingCommits = {
+  const votes = {
     firstProposal: {
-      badgeHolder1: web3.sha3(votes.firstProposal.badgeHolder1.toString().concat(':').concat(true.toString())),
-      badgeHolder2: web3.sha3(votes.firstProposal.badgeHolder2.toString().concat(':').concat(true.toString())),
-      badgeHolder3: web3.sha3(votes.firstProposal.badgeHolder3.toString().concat(':').concat(true.toString())),
-      badgeHolder4: web3.sha3(votes.firstProposal.badgeHolder4.toString().concat(':').concat(true.toString())),
-      dgdHolder1: web3.sha3(votes.firstProposal.dgdHolder1.toString().concat(':').concat(true.toString())),
-      dgdHolder2: web3.sha3(votes.firstProposal.dgdHolder2.toString().concat(':').concat(true.toString())),
-      dgdHolder3: web3.sha3(votes.firstProposal.dgdHolder3.toString().concat(':').concat(true.toString())),
-      dgdHolder4: web3.sha3(votes.firstProposal.dgdHolder4.toString().concat(':').concat(true.toString())),
-      dgdHolder5: web3.sha3(votes.firstProposal.dgdHolder5.toString().concat(':').concat(true.toString())),
-      dgdHolder6: web3.sha3(votes.firstProposal.dgdHolder6.toString().concat(':').concat(true.toString())),
+      badgeHolder1: true,
+      badgeHolder2: true,
+      badgeHolder3: true,
+      badgeHolder4: true,
+      dgdHolder1: true,
+      dgdHolder2: true,
+      dgdHolder3: true,
+      dgdHolder4: true,
+      dgdHolder5: true,
+      dgdHolder6: true,
     },
     thirdProposal: {
-      badgeHolder1: web3.sha3(votes.thirdProposal.badgeHolder1.toString().concat(':').concat(true.toString())),
-      badgeHolder2: web3.sha3(votes.thirdProposal.badgeHolder2.toString().concat(':').concat(true.toString())),
-      badgeHolder3: web3.sha3(votes.thirdProposal.badgeHolder3.toString().concat(':').concat(true.toString())),
-      badgeHolder4: web3.sha3(votes.thirdProposal.badgeHolder4.toString().concat(':').concat(true.toString())),
-      dgdHolder1: web3.sha3(votes.thirdProposal.dgdHolder1.toString().concat(':').concat(true.toString())),
-      dgdHolder2: web3.sha3(votes.thirdProposal.dgdHolder2.toString().concat(':').concat(true.toString())),
-      dgdHolder3: web3.sha3(votes.thirdProposal.dgdHolder3.toString().concat(':').concat(true.toString())),
-      dgdHolder4: web3.sha3(votes.thirdProposal.dgdHolder4.toString().concat(':').concat(true.toString())),
-      dgdHolder5: web3.sha3(votes.thirdProposal.dgdHolder5.toString().concat(':').concat(true.toString())),
-      dgdHolder6: web3.sha3(votes.thirdProposal.dgdHolder6.toString().concat(':').concat(true.toString())),
+      badgeHolder1: true,
+      badgeHolder2: true,
+      badgeHolder3: true,
+      badgeHolder4: true,
+      dgdHolder1: true,
+      dgdHolder2: true,
+      dgdHolder3: true,
+      dgdHolder4: true,
+      dgdHolder5: true,
+      dgdHolder6: true,
     },
     fourthProposal: {
-      badgeHolder1: web3.sha3(votes.fourthProposal.badgeHolder1.toString().concat(':').concat(true.toString())),
-      badgeHolder2: web3.sha3(votes.fourthProposal.badgeHolder2.toString().concat(':').concat(true.toString())),
-      badgeHolder3: web3.sha3(votes.fourthProposal.badgeHolder3.toString().concat(':').concat(true.toString())),
-      badgeHolder4: web3.sha3(votes.fourthProposal.badgeHolder4.toString().concat(':').concat(true.toString())),
-      dgdHolder1: web3.sha3(votes.fourthProposal.dgdHolder1.toString().concat(':').concat(true.toString())),
-      dgdHolder2: web3.sha3(votes.fourthProposal.dgdHolder2.toString().concat(':').concat(true.toString())),
-      dgdHolder3: web3.sha3(votes.fourthProposal.dgdHolder3.toString().concat(':').concat(true.toString())),
-      dgdHolder4: web3.sha3(votes.fourthProposal.dgdHolder4.toString().concat(':').concat(true.toString())),
-      dgdHolder5: web3.sha3(votes.fourthProposal.dgdHolder5.toString().concat(':').concat(true.toString())),
-      dgdHolder6: web3.sha3(votes.fourthProposal.dgdHolder6.toString().concat(':').concat(true.toString())),
+      badgeHolder1: true,
+      badgeHolder2: true,
+      badgeHolder3: true,
+      badgeHolder4: true,
+      dgdHolder1: true,
+      dgdHolder2: true,
+      dgdHolder3: true,
+      dgdHolder4: true,
+      dgdHolder5: true,
+      dgdHolder6: true,
+    },
+  };
+  const votingCommits = {
+    firstProposal: {
+      badgeHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder1}, {t: 'bool', v: votes.firstProposal.badgeHolder1}, {t: 'uint256', v: salts.firstProposal.badgeHolder1}),
+      badgeHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder2}, {t: 'bool', v: votes.firstProposal.badgeHolder2}, {t: 'uint256', v: salts.firstProposal.badgeHolder2}),
+      badgeHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder3}, {t: 'bool', v: votes.firstProposal.badgeHolder3}, {t: 'uint256', v: salts.firstProposal.badgeHolder3}),
+      badgeHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder4}, {t: 'bool', v: votes.firstProposal.badgeHolder4}, {t: 'uint256', v: salts.firstProposal.badgeHolder4}),
+      dgdHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder1}, {t: 'bool', v: votes.firstProposal.dgdHolder1}, {t: 'uint256', v: salts.firstProposal.dgdHolder1}),
+      dgdHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder2}, {t: 'bool', v: votes.firstProposal.dgdHolder2}, {t: 'uint256', v: salts.firstProposal.dgdHolder2}),
+      dgdHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder3}, {t: 'bool', v: votes.firstProposal.dgdHolder3}, {t: 'uint256', v: salts.firstProposal.dgdHolder3}),
+      dgdHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder4}, {t: 'bool', v: votes.firstProposal.dgdHolder4}, {t: 'uint256', v: salts.firstProposal.dgdHolder4}),
+      dgdHolder5: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder5}, {t: 'bool', v: votes.firstProposal.dgdHolder5}, {t: 'uint256', v: salts.firstProposal.dgdHolder5}),
+      dgdHolder6: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder6}, {t: 'bool', v: votes.firstProposal.dgdHolder6}, {t: 'uint256', v: salts.firstProposal.dgdHolder6}),
+    },
+    thirdProposal: {
+      badgeHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder1}, {t: 'bool', v: votes.thirdProposal.badgeHolder1}, {t: 'uint256', v: salts.thirdProposal.badgeHolder1}),
+      badgeHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder2}, {t: 'bool', v: votes.thirdProposal.badgeHolder2}, {t: 'uint256', v: salts.thirdProposal.badgeHolder2}),
+      badgeHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder3}, {t: 'bool', v: votes.thirdProposal.badgeHolder3}, {t: 'uint256', v: salts.thirdProposal.badgeHolder3}),
+      badgeHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder4}, {t: 'bool', v: votes.thirdProposal.badgeHolder4}, {t: 'uint256', v: salts.thirdProposal.badgeHolder4}),
+      dgdHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder1}, {t: 'bool', v: votes.thirdProposal.dgdHolder1}, {t: 'uint256', v: salts.thirdProposal.dgdHolder1}),
+      dgdHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder2}, {t: 'bool', v: votes.thirdProposal.dgdHolder2}, {t: 'uint256', v: salts.thirdProposal.dgdHolder2}),
+      dgdHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder3}, {t: 'bool', v: votes.thirdProposal.dgdHolder3}, {t: 'uint256', v: salts.thirdProposal.dgdHolder3}),
+      dgdHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder4}, {t: 'bool', v: votes.thirdProposal.dgdHolder4}, {t: 'uint256', v: salts.thirdProposal.dgdHolder4}),
+      dgdHolder5: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder5}, {t: 'bool', v: votes.thirdProposal.dgdHolder5}, {t: 'uint256', v: salts.thirdProposal.dgdHolder5}),
+      dgdHolder6: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder6}, {t: 'bool', v: votes.thirdProposal.dgdHolder6}, {t: 'uint256', v: salts.thirdProposal.dgdHolder6}),
+    },
+    fourthProposal: {
+      badgeHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder1}, {t: 'bool', v: votes.fourthProposal.badgeHolder1}, {t: 'uint256', v: salts.fourthProposal.badgeHolder1}),
+      badgeHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder2}, {t: 'bool', v: votes.fourthProposal.badgeHolder2}, {t: 'uint256', v: salts.fourthProposal.badgeHolder2}),
+      badgeHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder3}, {t: 'bool', v: votes.fourthProposal.badgeHolder3}, {t: 'uint256', v: salts.fourthProposal.badgeHolder3}),
+      badgeHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder4}, {t: 'bool', v: votes.fourthProposal.badgeHolder4}, {t: 'uint256', v: salts.fourthProposal.badgeHolder4}),
+      dgdHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder1}, {t: 'bool', v: votes.fourthProposal.dgdHolder1}, {t: 'uint256', v: salts.fourthProposal.dgdHolder1}),
+      dgdHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder2}, {t: 'bool', v: votes.fourthProposal.dgdHolder2}, {t: 'uint256', v: salts.fourthProposal.dgdHolder2}),
+      dgdHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder3}, {t: 'bool', v: votes.fourthProposal.dgdHolder3}, {t: 'uint256', v: salts.fourthProposal.dgdHolder3}),
+      dgdHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder4}, {t: 'bool', v: votes.fourthProposal.dgdHolder4}, {t: 'uint256', v: salts.fourthProposal.dgdHolder4}),
+      dgdHolder5: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder5}, {t: 'bool', v: votes.fourthProposal.dgdHolder5}, {t: 'uint256', v: salts.fourthProposal.dgdHolder5}),
+      dgdHolder6: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder6}, {t: 'bool', v: votes.fourthProposal.dgdHolder6}, {t: 'uint256', v: salts.fourthProposal.dgdHolder6}),
     },
   };
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.badgeHolder1,
-    // bN(++lastNonces.badgeHolder1),
     { from: addressOf.badgeHolder1 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.badgeHolder2,
-    // bN(++lastNonces.badgeHolder2),
     { from: addressOf.badgeHolder2 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.badgeHolder3,
-    // bN(++lastNonces.badgeHolder3),
     { from: addressOf.badgeHolder3 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.badgeHolder4,
-    // bN(++lastNonces.badgeHolder4),
     { from: addressOf.badgeHolder4 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.dgdHolder1,
-    // bN(++lastNonces.dgdHolder1),
     { from: addressOf.dgdHolder1 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.dgdHolder2,
-    // bN(++lastNonces.dgdHolder2),
     { from: addressOf.dgdHolder2 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.dgdHolder3,
-    // bN(++lastNonces.dgdHolder3),
     { from: addressOf.dgdHolder3 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.dgdHolder4,
-    // bN(++lastNonces.dgdHolder4),
     { from: addressOf.dgdHolder4 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.dgdHolder5,
-    // bN(++lastNonces.dgdHolder5),
     { from: addressOf.dgdHolder5 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.dgdHolder6,
-    // bN(++lastNonces.dgdHolder6),
     { from: addressOf.dgdHolder6 },
   );
 
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.thirdProposal,
     votingCommits.thirdProposal.badgeHolder1,
-    bN(++lastNonces.badgeHolder1),
     { from: addressOf.badgeHolder1 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.thirdProposal,
     votingCommits.thirdProposal.badgeHolder2,
-    bN(++lastNonces.badgeHolder2),
     { from: addressOf.badgeHolder2 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.thirdProposal,
     votingCommits.thirdProposal.badgeHolder3,
-    bN(++lastNonces.badgeHolder3),
     { from: addressOf.badgeHolder3 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.thirdProposal,
     votingCommits.thirdProposal.badgeHolder4,
-    bN(++lastNonces.badgeHolder4),
     { from: addressOf.badgeHolder4 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.thirdProposal,
     votingCommits.thirdProposal.dgdHolder1,
-    bN(++lastNonces.dgdHolder1),
     { from: addressOf.dgdHolder1 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.thirdProposal,
     votingCommits.thirdProposal.dgdHolder2,
-    bN(++lastNonces.dgdHolder2),
     { from: addressOf.dgdHolder2 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.thirdProposal,
     votingCommits.thirdProposal.dgdHolder3,
-    bN(++lastNonces.dgdHolder3),
     { from: addressOf.dgdHolder3 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.thirdProposal,
     votingCommits.thirdProposal.dgdHolder4,
-    bN(++lastNonces.dgdHolder4),
     { from: addressOf.dgdHolder4 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.thirdProposal,
     votingCommits.thirdProposal.dgdHolder5,
-    bN(++lastNonces.dgdHolder5),
     { from: addressOf.dgdHolder5 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.thirdProposal,
     votingCommits.thirdProposal.dgdHolder6,
-    bN(++lastNonces.dgdHolder6),
     { from: addressOf.dgdHolder6 },
   );
 
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.fourthProposal,
     votingCommits.fourthProposal.badgeHolder1,
-    bN(++lastNonces.badgeHolder1),
     { from: addressOf.badgeHolder1 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.fourthProposal,
     votingCommits.fourthProposal.badgeHolder2,
-    bN(++lastNonces.badgeHolder2),
     { from: addressOf.badgeHolder2 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.fourthProposal,
     votingCommits.fourthProposal.badgeHolder3,
-    bN(++lastNonces.badgeHolder3),
     { from: addressOf.badgeHolder3 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.fourthProposal,
     votingCommits.fourthProposal.badgeHolder4,
-    bN(++lastNonces.badgeHolder4),
     { from: addressOf.badgeHolder4 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.fourthProposal,
     votingCommits.fourthProposal.dgdHolder1,
-    bN(++lastNonces.dgdHolder1),
     { from: addressOf.dgdHolder1 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.fourthProposal,
     votingCommits.fourthProposal.dgdHolder2,
-    bN(++lastNonces.dgdHolder2),
     { from: addressOf.dgdHolder2 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.fourthProposal,
     votingCommits.fourthProposal.dgdHolder3,
-    bN(++lastNonces.dgdHolder3),
     { from: addressOf.dgdHolder3 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.fourthProposal,
     votingCommits.fourthProposal.dgdHolder4,
-    bN(++lastNonces.dgdHolder4),
     { from: addressOf.dgdHolder4 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.fourthProposal,
     votingCommits.fourthProposal.dgdHolder5,
-    bN(++lastNonces.dgdHolder5),
     { from: addressOf.dgdHolder5 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.fourthProposal,
     votingCommits.fourthProposal.dgdHolder6,
-    bN(++lastNonces.dgdHolder6),
     { from: addressOf.dgdHolder6 },
   );
-  return votes;
+  return {salts: salts, votes: votes};
 };
 
-const votingRevealRound = async function (contracts, addressOf, votes) {
+const votingRevealRound = async function (contracts, addressOf, commits) {
   await waitForRevealPhase(contracts, addressOf, proposalIds.firstProposal, bN(0));
 
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.firstProposal,
-    true,
-    votes.firstProposal.badgeHolder1.toString().concat(':').concat(true.toString()),
+    commits.votes.firstProposal.badgeHolder1,
+    commits.salts.firstProposal.badgeHolder1,
     { from: addressOf.badgeHolder1 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.firstProposal,
-    true,
-    votes.firstProposal.badgeHolder2.toString().concat(':').concat(true.toString()),
+    commits.votes.firstProposal.badgeHolder2,
+    commits.salts.firstProposal.badgeHolder2,
     { from: addressOf.badgeHolder2 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.firstProposal,
-    true,
-    votes.firstProposal.badgeHolder3.toString().concat(':').concat(true.toString()),
+    commits.votes.firstProposal.badgeHolder3,
+    commits.salts.firstProposal.badgeHolder3,
     { from: addressOf.badgeHolder3 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.firstProposal,
-    true,
-    votes.firstProposal.badgeHolder4.toString().concat(':').concat(true.toString()),
+    commits.votes.firstProposal.badgeHolder4,
+    commits.salts.firstProposal.badgeHolder4,
     { from: addressOf.badgeHolder4 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.firstProposal,
-    true,
-    votes.firstProposal.dgdHolder1.toString().concat(':').concat(true.toString()),
+    commits.votes.firstProposal.dgdHolder1,
+    commits.salts.firstProposal.dgdHolder1,
     { from: addressOf.dgdHolder1 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.firstProposal,
-    true,
-    votes.firstProposal.dgdHolder2.toString().concat(':').concat(true.toString()),
+    commits.votes.firstProposal.dgdHolder2,
+    commits.salts.firstProposal.dgdHolder2,
     { from: addressOf.dgdHolder2 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.firstProposal,
-    true,
-    votes.firstProposal.dgdHolder3.toString().concat(':').concat(true.toString()),
+    commits.votes.firstProposal.dgdHolder3,
+    commits.salts.firstProposal.dgdHolder3,
     { from: addressOf.dgdHolder3 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.firstProposal,
-    true,
-    votes.firstProposal.dgdHolder4.toString().concat(':').concat(true.toString()),
+    commits.votes.firstProposal.dgdHolder4,
+    commits.salts.firstProposal.dgdHolder4,
     { from: addressOf.dgdHolder4 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.firstProposal,
-    true,
-    votes.firstProposal.dgdHolder5.toString().concat(':').concat(true.toString()),
+    commits.votes.firstProposal.dgdHolder5,
+    commits.salts.firstProposal.dgdHolder5,
     { from: addressOf.dgdHolder5 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.firstProposal,
-    true,
-    votes.firstProposal.dgdHolder6.toString().concat(':').concat(true.toString()),
+    commits.votes.firstProposal.dgdHolder6,
+    commits.salts.firstProposal.dgdHolder6,
     { from: addressOf.dgdHolder6 },
   );
 
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.thirdProposal,
-    true,
-    votes.thirdProposal.badgeHolder1.toString().concat(':').concat(true.toString()),
+    commits.votes.thirdProposal.badgeHolder1,
+    commits.salts.thirdProposal.badgeHolder1,
     { from: addressOf.badgeHolder1 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.thirdProposal,
-    true,
-    votes.thirdProposal.badgeHolder2.toString().concat(':').concat(true.toString()),
+    commits.votes.thirdProposal.badgeHolder2,
+    commits.salts.thirdProposal.badgeHolder2,
     { from: addressOf.badgeHolder2 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.thirdProposal,
-    true,
-    votes.thirdProposal.badgeHolder3.toString().concat(':').concat(true.toString()),
+    commits.votes.thirdProposal.badgeHolder3,
+    commits.salts.thirdProposal.badgeHolder3,
     { from: addressOf.badgeHolder3 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.thirdProposal,
-    true,
-    votes.thirdProposal.badgeHolder4.toString().concat(':').concat(true.toString()),
+    commits.votes.thirdProposal.badgeHolder4,
+    commits.salts.thirdProposal.badgeHolder4,
     { from: addressOf.badgeHolder4 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.thirdProposal,
-    true,
-    votes.thirdProposal.dgdHolder1.toString().concat(':').concat(true.toString()),
+    commits.votes.thirdProposal.dgdHolder1,
+    commits.salts.thirdProposal.dgdHolder1,
     { from: addressOf.dgdHolder1 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.thirdProposal,
-    true,
-    votes.thirdProposal.dgdHolder2.toString().concat(':').concat(true.toString()),
+    commits.votes.thirdProposal.dgdHolder2,
+    commits.salts.thirdProposal.dgdHolder2,
     { from: addressOf.dgdHolder2 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.thirdProposal,
-    true,
-    votes.thirdProposal.dgdHolder3.toString().concat(':').concat(true.toString()),
+    commits.votes.thirdProposal.dgdHolder3,
+    commits.salts.thirdProposal.dgdHolder3,
     { from: addressOf.dgdHolder3 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.thirdProposal,
-    true,
-    votes.thirdProposal.dgdHolder4.toString().concat(':').concat(true.toString()),
+    commits.votes.thirdProposal.dgdHolder4,
+    commits.salts.thirdProposal.dgdHolder4,
     { from: addressOf.dgdHolder4 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.thirdProposal,
-    true,
-    votes.thirdProposal.dgdHolder5.toString().concat(':').concat(true.toString()),
+    commits.votes.thirdProposal.dgdHolder5,
+    commits.salts.thirdProposal.dgdHolder5,
     { from: addressOf.dgdHolder5 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.thirdProposal,
-    true,
-    votes.thirdProposal.dgdHolder6.toString().concat(':').concat(true.toString()),
+    commits.votes.thirdProposal.dgdHolder6,
+    commits.salts.thirdProposal.dgdHolder6,
     { from: addressOf.dgdHolder6 },
   );
 
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.fourthProposal,
-    true,
-    votes.fourthProposal.badgeHolder1.toString().concat(':').concat(true.toString()),
+    commits.votes.fourthProposal.badgeHolder1,
+    commits.salts.fourthProposal.badgeHolder1,
     { from: addressOf.badgeHolder1 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.fourthProposal,
-    true,
-    votes.fourthProposal.badgeHolder2.toString().concat(':').concat(true.toString()),
+    commits.votes.fourthProposal.badgeHolder2,
+    commits.salts.fourthProposal.badgeHolder2,
     { from: addressOf.badgeHolder2 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.fourthProposal,
-    true,
-    votes.fourthProposal.badgeHolder3.toString().concat(':').concat(true.toString()),
+    commits.votes.fourthProposal.badgeHolder3,
+    commits.salts.fourthProposal.badgeHolder3,
     { from: addressOf.badgeHolder3 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.fourthProposal,
-    true,
-    votes.fourthProposal.badgeHolder4.toString().concat(':').concat(true.toString()),
+    commits.votes.fourthProposal.badgeHolder4,
+    commits.salts.fourthProposal.badgeHolder4,
     { from: addressOf.badgeHolder4 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.fourthProposal,
-    true,
-    votes.fourthProposal.dgdHolder1.toString().concat(':').concat(true.toString()),
+    commits.votes.fourthProposal.dgdHolder1,
+    commits.salts.fourthProposal.dgdHolder1,
     { from: addressOf.dgdHolder1 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.fourthProposal,
-    true,
-    votes.fourthProposal.dgdHolder2.toString().concat(':').concat(true.toString()),
+    commits.votes.fourthProposal.dgdHolder2,
+    commits.salts.fourthProposal.dgdHolder2,
     { from: addressOf.dgdHolder2 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.fourthProposal,
-    true,
-    votes.fourthProposal.dgdHolder3.toString().concat(':').concat(true.toString()),
+    commits.votes.fourthProposal.dgdHolder3,
+    commits.salts.fourthProposal.dgdHolder3,
     { from: addressOf.dgdHolder3 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.fourthProposal,
-    true,
-    votes.fourthProposal.dgdHolder4.toString().concat(':').concat(true.toString()),
+    commits.votes.fourthProposal.dgdHolder4,
+    commits.salts.fourthProposal.dgdHolder4,
     { from: addressOf.dgdHolder4 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.fourthProposal,
-    true,
-    votes.fourthProposal.dgdHolder5.toString().concat(':').concat(true.toString()),
+    commits.votes.fourthProposal.dgdHolder5,
+    commits.salts.fourthProposal.dgdHolder5,
     { from: addressOf.dgdHolder5 },
   );
   await contracts.daoVoting.revealVoteOnProposal(
     proposalIds.fourthProposal,
-    true,
-    votes.fourthProposal.dgdHolder6.toString().concat(':').concat(true.toString()),
+    commits.votes.fourthProposal.dgdHolder6,
+    commits.salts.fourthProposal.dgdHolder6,
     { from: addressOf.dgdHolder6 },
   );
 };
@@ -1137,9 +1146,9 @@ module.exports = async function () {
 
     // first voting round
     await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);
-    const votes = await votingCommitRound(contracts, addressOf);
+    const commits = await votingCommitRound(contracts, addressOf);
     console.log('commit voting has been done');
-    await votingRevealRound(contracts, addressOf, votes);
+    await votingRevealRound(contracts, addressOf, commits);
     console.log('revealed the committed votes');
 
     // claim the result of the voting round
