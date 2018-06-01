@@ -91,6 +91,7 @@ const getAccountsAndAddressOf = function (accounts) {
     dgdHolder5: accounts[12],
     dgdHolder6: accounts[13],
     allBadgeHolders: [accounts[4], accounts[5], accounts[6], accounts[7]],
+    allParticipants: [accounts[4], accounts[5], accounts[6], accounts[7], accounts[8], accounts[9], accounts[10], accounts[11], accounts[12], accounts[13]],
   };
   return addressOf;
 };
@@ -235,21 +236,21 @@ const milestoneDurations = function (bN) {
   return {
     firstProposal: {
       versionOne: [bN(1000), bN(1500), bN(2000)],
-      versionTwo: [bN(1000), bN(2000), bN(2500)],
+      versionTwo: [bN(30), bN(30), bN(20)],
       versionThree: [bN(1000), bN(1500), bN(1500), bN(2000)],
     },
     secondProposal: {
       versionOne: [bN(500), bN(700), bN(300)],
-      versionTwo: [bN(500), bN(700), bN(300)],
+      versionTwo: [bN(20), bN(20), bN(20)],
       versionThree: [bN(500), bN(700), bN(300)],
       versionFour: [bN(500), bN(700), bN(300)],
     },
     thirdProposal: {
       versionOne: [bN(2000), bN(3000)],
-      versionTwo: [bN(2500), bN(2500)],
+      versionTwo: [bN(10), bN(10)],
     },
     fourthProposal: {
-      versionOne: [bN(100), bN(100), bN(200), bN(200)],
+      versionOne: [bN(25), bN(25), bN(25), bN(25)],
     },
   };
 };

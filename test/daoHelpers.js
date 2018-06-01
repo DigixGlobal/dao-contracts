@@ -116,6 +116,14 @@ const daoConstantsValues = function (bN) {
   };
 };
 
+const max = function (list) {
+  let max = -1;
+  for (const item of list) {
+    if (item > max) max = item;
+  }
+  return max;
+}
+
 const timeLags = function () {
   return {
     ONE_SECOND_TIME_LAG: 1000,
@@ -163,6 +171,7 @@ module.exports = {
   getPhase,
   getTimeToNextPhase,
   assertQuarter,
+  max,
   EMPTY_BYTES,
   EMPTY_ADDRESS,
 };

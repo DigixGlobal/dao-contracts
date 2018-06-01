@@ -38,7 +38,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
       uintConfigs[QUARTER_POINT_DRAFT_VOTE] = 1;
       uintConfigs[QUARTER_POINT_VOTE] = 1;
       uintConfigs[QUARTER_POINT_INTERIM_VOTE] = 1;
-      uintConfigs[MINIMUM_QUARTER_POINT] = 3;
+      uintConfigs[MINIMUM_QUARTER_POINT] = 1;
       uintConfigs[QUARTER_POINT_CLAIM_RESULT] = 1;
       uintConfigs[QUARTER_POINT_MILESTONE_COMPLETION] = 3;
 

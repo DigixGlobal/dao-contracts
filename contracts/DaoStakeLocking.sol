@@ -151,10 +151,11 @@ contract DaoStakeLocking is DaoCommon {
         public
     {
         StakeInformation memory _info = getStakeInformation(msg.sender);
-        refreshDGDStake(msg.sender, _info, true);
 
         // This has to happen at least once before user can participate in next quarter
         daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
+
+        refreshDGDStake(msg.sender, _info, true);
 
         daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
     }

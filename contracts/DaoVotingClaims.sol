@@ -51,12 +51,6 @@ contract DaoVotingClaims is DaoCommon, Claimable {
       require(_count.quorum > daoCalculatorService().minimumDraftQuorum(_proposalId));
       require(daoCalculatorService().draftQuotaPass(_count.forCount, _count.againstCount));
 
-      /* uint256 _for;
-      uint256 _against;
-      (_for, _against,) = daoStorage().readDraftVotingCount(_proposalId, _allBadgeHolders);
-      require((_for + _against) > daoCalculatorService().minimumDraftQuorum(_proposalId));
-      require(daoCalculatorService().draftQuotaPass(_for, _against)); */
-
       _passed = true;
       daoStorage().setProposalDraftPass(_proposalId, true);
       daoStorage().setProposalVotingTime(_proposalId, 0, calculateNextVotingTime(0, false));
@@ -179,13 +173,17 @@ contract DaoVotingClaims is DaoCommon, Claimable {
   {
     _votingTime = now + _time;
     uint256 _timeToGo = getTimeFromNextLockingPhase(now + _time);
-    if (_isInterim) {
-      if (_timeToGo < get_uint_config(CONFIG_INTERIM_PHASE_TOTAL)) {
-        _votingTime = now + _time + _timeToGo + get_uint_config(CONFIG_LOCKING_PHASE_DURATION);
-      }
+    if (timeInQuarter(_votingTime) < get_uint_config(CONFIG_LOCKING_PHASE_DURATION)) {
+      _votingTime += get_uint_config(CONFIG_LOCKING_PHASE_DURATION) - timeInQuarter(_votingTime) + 1;
     } else {
-      if (_timeToGo < get_uint_config(CONFIG_VOTING_PHASE_TOTAL)) {
-        _votingTime = now + _time + _timeToGo + get_uint_config(CONFIG_LOCKING_PHASE_DURATION);
+      if (_isInterim) {
+        if (_timeToGo < get_uint_config(CONFIG_INTERIM_PHASE_TOTAL)) {
+          _votingTime += _timeToGo + get_uint_config(CONFIG_LOCKING_PHASE_DURATION) + 1;
+        }
+      } else {
+        if (_timeToGo < get_uint_config(CONFIG_VOTING_PHASE_TOTAL)) {
+          _votingTime += _timeToGo + get_uint_config(CONFIG_LOCKING_PHASE_DURATION) + 1;
+        }
       }
     }
   }

@@ -170,27 +170,25 @@ contract DaoCommon is IdentityCommon {
     }
 
     function currentQuarterIndex() internal returns(uint256 _quarterIndex) {
-        /* _quarterIndex = (now - daoStorage().startOfFirstQuarter()) / QUARTER_DURATION; */
         _quarterIndex = getQuarterIndex(now);
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
     function getQuarterIndex(uint256 _time) internal returns (uint256 _index) {
       _index = ((_time - daoStorage().startOfFirstQuarter()) / get_uint_config(CONFIG_QUARTER_DURATION)) + 1;
-      /* _index = (_time - daoStorage().startOfFirstQuarter()) / QUARTER_DURATION; */
       //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
+    function timeInQuarter(uint256 _time) internal returns (uint256 _timeInQuarter) {
+      _timeInQuarter = (_time - daoStorage().startOfFirstQuarter()) % get_uint_config(CONFIG_QUARTER_DURATION);
+    }
+
     function currentTInQuarter() internal returns(uint256 _currentT) {
-        /* _currentT = (now - daoStorage().startOfFirstQuarter()) % QUARTER_DURATION; */
-        _currentT = (now - daoStorage().startOfFirstQuarter()) % get_uint_config(CONFIG_QUARTER_DURATION);
-        //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
+        _currentT = timeInQuarter(now);
     }
 
     function getTimeFromNextLockingPhase(uint256 _time) internal returns(uint256 _timeToGo) {
-      uint256 _quarterIndex = getQuarterIndex(_time);
-      _timeToGo = ((_quarterIndex + 1) * get_uint_config(CONFIG_QUARTER_DURATION)) - _time;
-      /* _timeToGo = ((_quarterIndex + 1) * QUARTER_DURATION) - _time; */
+      _timeToGo = get_uint_config(CONFIG_QUARTER_DURATION) - timeInQuarter(_time);
       //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
