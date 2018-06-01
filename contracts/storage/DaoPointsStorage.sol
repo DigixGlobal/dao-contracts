@@ -47,6 +47,7 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
   /// @notice get quarter points for a _participant in a _quarterId
   function getQuarterPoint(address _participant, uint256 _quarterId)
            public
+           view
            returns (uint256 _point)
   {
     _point = quarterPoint[_quarterId].balance[_participant];
@@ -54,6 +55,7 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
 
   function getQuarterBadgePoint(address _participant, uint256 _quarterId)
     public
+    view
     returns (uint256 _point)
   {
     _point = quarterBadgePoint[_quarterId].balance[_participant];
@@ -62,6 +64,7 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
   /// @notice get total quarter points for a particular _quarterId
   function getTotalQuarterPoint(uint256 _quarterId)
            public
+           view
            returns (uint256 _totalPoint)
   {
     _totalPoint = quarterPoint[_quarterId].totalSupply;
@@ -69,6 +72,7 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
 
   function getTotalQuarterBadgePoint(uint256 _quarterId)
     public
+    view
     returns (uint256 _totalPoint)
   {
     _totalPoint = quarterBadgePoint[_quarterId].totalSupply;
@@ -110,6 +114,7 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
   /// @notice get reputation points for a _participant
   function getReputation(address _participant)
            public
+           view
            returns (uint256 _point)
   {
     _point = reputationPoint.balance[_participant];
@@ -118,6 +123,7 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
   /// @notice get total reputation points distributed in the dao
   function getTotalReputation()
            public
+           view
            returns (uint256 _totalPoint)
   {
     _totalPoint = reputationPoint.totalSupply;

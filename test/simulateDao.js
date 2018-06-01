@@ -412,28 +412,24 @@ const draftVoting = async function (contracts, addressOf) {
     proposalIds.firstProposal,
     moreVersions.firstProposal.versionTwo,
     true,
-    // bN(++lastNonces.badgeHolder1),
     { from: addressOf.badgeHolder1 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.firstProposal,
     moreVersions.firstProposal.versionTwo,
     true,
-    // bN(++lastNonces.badgeHolder2),
     { from: addressOf.badgeHolder2 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.firstProposal,
     moreVersions.firstProposal.versionTwo,
     true,
-    // bN(++lastNonces.badgeHolder3),
     { from: addressOf.badgeHolder3 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.firstProposal,
     moreVersions.firstProposal.versionTwo,
     true,
-    // bN(++lastNonces.badgeHolder4),
     { from: addressOf.badgeHolder4 },
   );
 
@@ -441,28 +437,24 @@ const draftVoting = async function (contracts, addressOf) {
     proposalIds.secondProposal,
     moreVersions.secondProposal.versionTwo,
     false,
-    // bN(++lastNonces.badgeHolder1),
     { from: addressOf.badgeHolder1 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.secondProposal,
     moreVersions.secondProposal.versionTwo,
     false,
-    // bN(++lastNonces.badgeHolder2),
     { from: addressOf.badgeHolder2 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.secondProposal,
     moreVersions.secondProposal.versionTwo,
     false,
-    // bN(++lastNonces.badgeHolder3),
     { from: addressOf.badgeHolder3 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.secondProposal,
     moreVersions.secondProposal.versionTwo,
     false,
-    // bN(++lastNonces.badgeHolder4),
     { from: addressOf.badgeHolder4 },
   );
 
@@ -470,28 +462,24 @@ const draftVoting = async function (contracts, addressOf) {
     proposalIds.thirdProposal,
     moreVersions.thirdProposal.versionTwo,
     true,
-    // bN(++lastNonces.badgeHolder1),
     { from: addressOf.badgeHolder1 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.thirdProposal,
     moreVersions.thirdProposal.versionTwo,
     false,
-    // bN(++lastNonces.badgeHolder2),
     { from: addressOf.badgeHolder2 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.thirdProposal,
     moreVersions.thirdProposal.versionTwo,
     true,
-    // bN(++lastNonces.badgeHolder3),
     { from: addressOf.badgeHolder3 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.thirdProposal,
     moreVersions.thirdProposal.versionTwo,
     true,
-    // bN(++lastNonces.badgeHolder4),
     { from: addressOf.badgeHolder4 },
   );
 
@@ -499,28 +487,24 @@ const draftVoting = async function (contracts, addressOf) {
     proposalIds.fourthProposal,
     proposalIds.fourthProposal,
     false,
-    // bN(++lastNonces.badgeHolder1),
     { from: addressOf.badgeHolder1 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.fourthProposal,
     proposalIds.fourthProposal,
     true,
-    // bN(++lastNonces.badgeHolder2),
     { from: addressOf.badgeHolder2 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.fourthProposal,
     proposalIds.fourthProposal,
     true,
-    // bN(++lastNonces.badgeHolder3),
     { from: addressOf.badgeHolder3 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.fourthProposal,
     proposalIds.fourthProposal,
     true,
-    // bN(++lastNonces.badgeHolder4),
     { from: addressOf.badgeHolder4 },
   );
 };
@@ -1169,10 +1153,37 @@ module.exports = async function () {
     await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
     console.log('updated the rewards for previous quarter (quarterId = 1)');
 
+    console.log('\t\t#### Info of users for last quarter: ')
+    const printStake = async (user, userString) => {
+      console.log(`DGDstake of ${userString} = `, await contracts.daoStakeStorage.lockedDGDStake.call(user));
+      console.log(`Badge QP of ${userString}= `, await contracts.daoPointsStorage.getQuarterBadgePoint.call(user, bN(1)));
+      console.log(`LockedBadge of ${userString} = `, await contracts.daoStakeStorage.lockedBadge.call(user));
+      console.log(`effectiveDGDBalance of ${userString} = `, await contracts.daoRewardsManager.getUserEffectiveDGDBalanceLastQuarter.call(user));
+      console.log(`effectiveBadgeBalance of ${userString} = `, await contracts.daoRewardsManager.getUserEffectiveBadgeBalanceLastQuarter.call(user));
+      console.log();
+    };
+    await printStake(addressOf.badgeHolder1, 'addressOf.badgeHolder1');
+    await printStake(addressOf.badgeHolder2, 'addressOf.badgeHolder2');
+    await printStake(addressOf.badgeHolder3, 'addressOf.badgeHolder3');
+    await printStake(addressOf.badgeHolder4, 'addressOf.badgeHolder4');
+
     // confirm participation for the next quarter
     await confirmContinuedParticipation(contracts, addressOf);
     console.log('confirmed participation of all members');
 
+    const printPoints = async (user, userString) => {
+      console.log(`Claimable DGX of ${userString} = `, await contracts.daoRewardsStorage.claimableDGXs.call(user));
+      console.log(`QP of ${userString}= `, await contracts.daoPointsStorage.getQuarterPoint.call(user, bN(1)));
+      console.log(`Badge QP of ${userString}= `, await contracts.daoPointsStorage.getQuarterBadgePoint.call(user, bN(1)));
+      console.log(`RP of ${userString}= `, await contracts.daoPointsStorage.getReputation.call(user));
+      console.log();
+    };
+
+
+    await printPoints(addressOf.badgeHolder1, 'addressOf.badgeHolder1');
+    await printPoints(addressOf.badgeHolder2, 'addressOf.badgeHolder2');
+    await printPoints(addressOf.badgeHolder3, 'addressOf.badgeHolder3');
+    await printPoints(addressOf.badgeHolder4, 'addressOf.badgeHolder4');
     await claimDGXs(contracts, addressOf);
     console.log('claimed all dgxs');
 

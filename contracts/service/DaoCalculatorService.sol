@@ -117,7 +117,7 @@ contract DaoCalculatorService is DaoCommon {
         _minimumQuorum += (_totalStake * _ethAsked * _scalingFactorNumerator) / (_ethInDao * _scalingFactorDenominator);
     }
 
-    function calculateUserEffectiveDGDBalance(
+    function calculateUserEffectiveBalance(
         uint256 _minimalParticipationPoint,
         uint256 _quarterPointScalingFactor,
         uint256 _reputationPointScalingFactor,

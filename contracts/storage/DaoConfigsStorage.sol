@@ -38,7 +38,6 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
       uintConfigs[QUARTER_POINT_DRAFT_VOTE] = 1;
       uintConfigs[QUARTER_POINT_VOTE] = 1;
       uintConfigs[QUARTER_POINT_INTERIM_VOTE] = 1;
-      uintConfigs[MINIMUM_QUARTER_POINT] = 1;
       uintConfigs[QUARTER_POINT_CLAIM_RESULT] = 1;
       uintConfigs[QUARTER_POINT_MILESTONE_COMPLETION] = 3;
 
@@ -59,8 +58,13 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
       uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_NUM] = 1; // 1 extra QP gains 1/1 RP
       uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_DEN] = 1;
 
+      uintConfigs[CONFIG_MINIMAL_PARTICIPATION_POINT] = 3;
       uintConfigs[CONFIG_QUARTER_POINT_SCALING_FACTOR] = 10;
       uintConfigs[CONFIG_REPUTATION_POINT_SCALING_FACTOR] = 10;
+
+      uintConfigs[CONFIG_MINIMAL_BADGE_PARTICIPATION_POINT] = 3;
+      uintConfigs[CONFIG_BADGE_QUARTER_POINT_SCALING_FACTOR] = 10;
+      uintConfigs[CONFIG_BADGE_REPUTATION_POINT_SCALING_FACTOR] = 10;
 
       uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM] = 5; //5% of DGX to Badge holder voting activity
       uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_DEN] = 100;
@@ -112,7 +116,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
     uintConfigs[QUARTER_POINT_DRAFT_VOTE] = _uintConfigs[18];
     uintConfigs[QUARTER_POINT_VOTE] = _uintConfigs[19];
     uintConfigs[QUARTER_POINT_INTERIM_VOTE] = _uintConfigs[20];
-    uintConfigs[MINIMUM_QUARTER_POINT] = _uintConfigs[21];
+    uintConfigs[CONFIG_MINIMAL_PARTICIPATION_POINT] = _uintConfigs[21];
     uintConfigs[QUARTER_POINT_CLAIM_RESULT] = _uintConfigs[22];
     uintConfigs[QUARTER_POINT_CLAIM_RESULT] = _uintConfigs[23];
     uintConfigs[QUARTER_POINT_MILESTONE_COMPLETION] = uintConfigs[24];

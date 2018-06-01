@@ -73,6 +73,12 @@ library DaoStructs {
       uint256 quarterPointScalingFactor;
       uint256 reputationPointScalingFactor;
       uint256 totalEffectiveDGDLastQuarter;
+
+      uint256 badgeMinimalParticipationPoint;
+      uint256 badgeQuarterPointScalingFactor;
+      uint256 badgeReputationPointScalingFactor;
+      uint256 totalEffectiveBadgeLastQuarter;
+
       uint256 dgxDistributionDay; // the timestamp when DGX rewards is distributable to Holders
       uint256 dgxRewardsPoolLastQuarter;
       uint256 sumRewardsFromBeginning;

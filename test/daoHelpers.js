@@ -85,7 +85,7 @@ const daoConstantsKeys = function () {
     QUARTER_POINT_DRAFT_VOTE: 'quarter_point_draft_vote',
     QUARTER_POINT_VOTE: 'quarter_point_vote',
     QUARTER_POINT_INTERIM_VOTE: 'quarter_point_interim_vote',
-    MINIMUM_QUARTER_POINT: 'minimum_quarter_point',
+    CONFIG_MINIMAL_PARTICIPATION_POINT: 'CONFIG_MINIMAL_PARTICIPATION_POINT',
   };
 };
 
@@ -112,7 +112,7 @@ const daoConstantsValues = function (bN) {
     QUARTER_POINT_DRAFT_VOTE: bN(1),
     QUARTER_POINT_VOTE: bN(1),
     QUARTER_POINT_INTERIM_VOTE: bN(1),
-    MINIMUM_QUARTER_POINT: bN(3),
+    CONFIG_MINIMAL_PARTICIPATION_POINT: bN(3),
   };
 };
 

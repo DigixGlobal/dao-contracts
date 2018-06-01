@@ -63,15 +63,19 @@ contract DaoConstants {
   bytes32 CONFIG_VOTING_QUOTA_NUMERATOR = "voting_quota_numerator";
   bytes32 CONFIG_VOTING_QUOTA_DENOMINATOR = "voting_quota_denominator";
 
+  bytes32 CONFIG_MINIMAL_PARTICIPATION_POINT = "CONFIG_MINIMAL_QP";
   bytes32 CONFIG_QUARTER_POINT_SCALING_FACTOR = "quarter_point_scaling_factor";
-  bytes32 CONFIG_REPUTATION_POINT_SCALING_FACTOR = "reputation_point_scaling_factor";
+  bytes32 CONFIG_REPUTATION_POINT_SCALING_FACTOR = "rep_point_scaling_factor";
+
+  bytes32 CONFIG_MINIMAL_BADGE_PARTICIPATION_POINT = "CONFIG_MINIMAL_B_QP";
+  bytes32 CONFIG_BADGE_QUARTER_POINT_SCALING_FACTOR = "b_qp_scaling_factor";
+  bytes32 CONFIG_BADGE_REPUTATION_POINT_SCALING_FACTOR = "b_rep_point_scaling_factor";
 
   uint256 QUARTER_DURATION = 90 days;
 
   bytes32 QUARTER_POINT_DRAFT_VOTE = "quarter_point_draft_vote";
   bytes32 QUARTER_POINT_VOTE = "quarter_point_vote";
   bytes32 QUARTER_POINT_INTERIM_VOTE = "quarter_point_interim_vote";
-  bytes32 MINIMUM_QUARTER_POINT = "minimum_quarter_point";
   bytes32 QUARTER_POINT_CLAIM_RESULT = "quarter_point_claim_result";
   bytes32 QUARTER_POINT_MILESTONE_COMPLETION = "q_p_milestone_completion";
 
@@ -90,6 +94,7 @@ contract DaoConstants {
 
   bytes32 CONFIG_MAXIMUM_REPUTATION_DEDUCTION = "config_max_reputation_deduction";
   bytes32 CONFIG_PUNISHMENT_FOR_NOT_LOCKING = "config_punishment_not_locking";
+
   bytes32 CONFIG_REPUTATION_PER_EXTRA_QP_NUM = "config_rep_per_extra_qp_num";
   bytes32 CONFIG_REPUTATION_PER_EXTRA_QP_DEN = "config_rep_per_extra_qp_den";
 

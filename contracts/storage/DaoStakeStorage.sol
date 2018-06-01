@@ -10,7 +10,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     mapping (address => uint256) public lockedDGDStake;
     mapping (address => uint256) public actualLockedDGD;
-    mapping (address => uint256) lockedBadge;
+    mapping (address => uint256) public lockedBadge;
     uint256 public totalLockedDGDStake;
     uint256 public totalLockedBadges;
     DoublyLinkedList.Address allParticipants;
