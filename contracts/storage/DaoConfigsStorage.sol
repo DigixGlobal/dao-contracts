@@ -61,6 +61,9 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
 
       uintConfigs[CONFIG_QUARTER_POINT_SCALING_FACTOR] = 10;
       uintConfigs[CONFIG_REPUTATION_POINT_SCALING_FACTOR] = 10;
+
+      uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM] = 5; //5% of DGX to Badge holder voting activity
+      uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_DEN] = 100;
   }
 
   function set_uint_config(bytes32 _config_name, uint256 _new_value)

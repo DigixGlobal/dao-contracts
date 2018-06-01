@@ -19,7 +19,6 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     DoublyLinkedList.Bytes allProposals;
     mapping (bytes32 => DaoStructs.Proposal) proposalsById;
     mapping (uint256 => DoublyLinkedList.Bytes) proposalsByState;
-    mapping (address => uint256) lastNonce;
     uint256 public startOfFirstQuarter;
 
     function DaoStorage(address _resolver) public {
@@ -231,13 +230,13 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
   /// @return {
   ///   "_lastNonce": ""
   /// }
-  function readLastNonce(address _voter)
+  /* function readLastNonce(address _voter)
     public
     constant
     returns (uint256 _lastNonce)
   {
     _lastNonce = lastNonce[_voter];
-  }
+  } */
 
   function readDraftVote(bytes32 _proposalId, address _voter)
     public
@@ -780,7 +779,6 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
   /// @param _voter address of participant/voter
   /// @param _vote true if voting for, false if voting against
   /// @param _weight weight of the vote, or number of badges staked in this case
-  /// @param _nonce nonce used for this vote
   /// @return {
   ///   "_success": "if draft vote for proposal added/updated successfully"
   /// }
@@ -788,8 +786,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     bytes32 _proposalId,
     address _voter,
     bool _vote,
-    uint256 _weight,
-    uint256 _nonce
+    uint256 _weight
   )
     public
     if_sender_is(CONTRACT_DAO_VOTING)
@@ -802,7 +799,6 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
           (_proposalVersion.draftVoting.noVotes[_voter] > 0)) {
       nullifyVote(_proposalId, _latestVersion, _voter);
     }
-    lastNonce[_voter] = _nonce;
     if (_vote) {
       _proposalVersion.draftVoting.yesVotes[_voter] = _weight;
     } else {
@@ -816,7 +812,6 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
   /// @param _hash committed hash
   /// @param _voter address of the participant/voter
   /// @param _index index of voting round (0 for votingRound, 1 onwards for interimVotingRound)
-  /// @param _nonce nonce used for this transaction
   /// @return {
   ///   "_success": "if vote was committed successfully"
   /// }
@@ -824,15 +819,13 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     bytes32 _proposalId,
     bytes32 _hash,
     address _voter,
-    uint256 _index,
-    uint256 _nonce
+    uint256 _index
   )
     public
     if_sender_is(CONTRACT_DAO_VOTING)
     returns (bool _success)
   {
     DaoStructs.Proposal _proposal = proposalsById[_proposalId];
-    lastNonce[_voter] = _nonce;
     if (_index == 0) {
       _proposal.votingRound.commits[_voter] = _hash;
       _proposal.votingRound.usedCommits[_hash] = true;

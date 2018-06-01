@@ -409,101 +409,117 @@ const modifyProposals = async function (contracts, addressOf) {
 const draftVoting = async function (contracts, addressOf) {
   await contracts.daoVoting.voteOnDraft(
     proposalIds.firstProposal,
+    moreVersions.firstProposal.versionTwo,
     true,
-    bN(++lastNonces.badgeHolder1),
+    // bN(++lastNonces.badgeHolder1),
     { from: addressOf.badgeHolder1 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.firstProposal,
+    moreVersions.firstProposal.versionTwo,
     true,
-    bN(++lastNonces.badgeHolder2),
+    // bN(++lastNonces.badgeHolder2),
     { from: addressOf.badgeHolder2 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.firstProposal,
+    moreVersions.firstProposal.versionTwo,
     true,
-    bN(++lastNonces.badgeHolder3),
+    // bN(++lastNonces.badgeHolder3),
     { from: addressOf.badgeHolder3 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.firstProposal,
+    moreVersions.firstProposal.versionTwo,
     true,
-    bN(++lastNonces.badgeHolder4),
+    // bN(++lastNonces.badgeHolder4),
     { from: addressOf.badgeHolder4 },
   );
 
   await contracts.daoVoting.voteOnDraft(
     proposalIds.secondProposal,
+    moreVersions.secondProposal.versionTwo,
     false,
-    bN(++lastNonces.badgeHolder1),
+    // bN(++lastNonces.badgeHolder1),
     { from: addressOf.badgeHolder1 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.secondProposal,
+    moreVersions.secondProposal.versionTwo,
     false,
-    bN(++lastNonces.badgeHolder2),
+    // bN(++lastNonces.badgeHolder2),
     { from: addressOf.badgeHolder2 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.secondProposal,
+    moreVersions.secondProposal.versionTwo,
     false,
-    bN(++lastNonces.badgeHolder3),
+    // bN(++lastNonces.badgeHolder3),
     { from: addressOf.badgeHolder3 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.secondProposal,
+    moreVersions.secondProposal.versionTwo,
     false,
-    bN(++lastNonces.badgeHolder4),
+    // bN(++lastNonces.badgeHolder4),
     { from: addressOf.badgeHolder4 },
   );
 
   await contracts.daoVoting.voteOnDraft(
     proposalIds.thirdProposal,
+    moreVersions.thirdProposal.versionTwo,
     true,
-    bN(++lastNonces.badgeHolder1),
+    // bN(++lastNonces.badgeHolder1),
     { from: addressOf.badgeHolder1 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.thirdProposal,
+    moreVersions.thirdProposal.versionTwo,
     false,
-    bN(++lastNonces.badgeHolder2),
+    // bN(++lastNonces.badgeHolder2),
     { from: addressOf.badgeHolder2 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.thirdProposal,
+    moreVersions.thirdProposal.versionTwo,
     true,
-    bN(++lastNonces.badgeHolder3),
+    // bN(++lastNonces.badgeHolder3),
     { from: addressOf.badgeHolder3 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.thirdProposal,
+    moreVersions.thirdProposal.versionTwo,
     true,
-    bN(++lastNonces.badgeHolder4),
+    // bN(++lastNonces.badgeHolder4),
     { from: addressOf.badgeHolder4 },
   );
 
   await contracts.daoVoting.voteOnDraft(
     proposalIds.fourthProposal,
+    proposalIds.fourthProposal,
     false,
-    bN(++lastNonces.badgeHolder1),
+    // bN(++lastNonces.badgeHolder1),
     { from: addressOf.badgeHolder1 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.fourthProposal,
+    proposalIds.fourthProposal,
     true,
-    bN(++lastNonces.badgeHolder2),
+    // bN(++lastNonces.badgeHolder2),
     { from: addressOf.badgeHolder2 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.fourthProposal,
+    proposalIds.fourthProposal,
     true,
-    bN(++lastNonces.badgeHolder3),
+    // bN(++lastNonces.badgeHolder3),
     { from: addressOf.badgeHolder3 },
   );
   await contracts.daoVoting.voteOnDraft(
     proposalIds.fourthProposal,
+    proposalIds.fourthProposal,
     true,
-    bN(++lastNonces.badgeHolder4),
+    // bN(++lastNonces.badgeHolder4),
     { from: addressOf.badgeHolder4 },
   );
 };
@@ -557,61 +573,61 @@ const votingCommitRound = async function (contracts, addressOf) {
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.badgeHolder1,
-    bN(++lastNonces.badgeHolder1),
+    // bN(++lastNonces.badgeHolder1),
     { from: addressOf.badgeHolder1 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.badgeHolder2,
-    bN(++lastNonces.badgeHolder2),
+    // bN(++lastNonces.badgeHolder2),
     { from: addressOf.badgeHolder2 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.badgeHolder3,
-    bN(++lastNonces.badgeHolder3),
+    // bN(++lastNonces.badgeHolder3),
     { from: addressOf.badgeHolder3 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.badgeHolder4,
-    bN(++lastNonces.badgeHolder4),
+    // bN(++lastNonces.badgeHolder4),
     { from: addressOf.badgeHolder4 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.dgdHolder1,
-    bN(++lastNonces.dgdHolder1),
+    // bN(++lastNonces.dgdHolder1),
     { from: addressOf.dgdHolder1 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.dgdHolder2,
-    bN(++lastNonces.dgdHolder2),
+    // bN(++lastNonces.dgdHolder2),
     { from: addressOf.dgdHolder2 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.dgdHolder3,
-    bN(++lastNonces.dgdHolder3),
+    // bN(++lastNonces.dgdHolder3),
     { from: addressOf.dgdHolder3 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.dgdHolder4,
-    bN(++lastNonces.dgdHolder4),
+    // bN(++lastNonces.dgdHolder4),
     { from: addressOf.dgdHolder4 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.dgdHolder5,
-    bN(++lastNonces.dgdHolder5),
+    // bN(++lastNonces.dgdHolder5),
     { from: addressOf.dgdHolder5 },
   );
   await contracts.daoVoting.commitVoteOnProposal(
     proposalIds.firstProposal,
     votingCommits.firstProposal.dgdHolder6,
-    bN(++lastNonces.dgdHolder6),
+    // bN(++lastNonces.dgdHolder6),
     { from: addressOf.dgdHolder6 },
   );
   return votes;

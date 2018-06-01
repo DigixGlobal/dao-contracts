@@ -11,24 +11,22 @@ contract DaoVoting is DaoCommon, Claimable {
 
   function voteOnDraft(
       bytes32 _proposalId,
-      bool _voteYes,
-      uint256 _nonce
+      bytes32 _proposalVersion,
+      bool _voteYes
   )
       public
       if_main_phase()
       if_badge_participant()
       returns (bool _success)
   {
+      require(_proposalVersion == daoStorage().getLastProposalVersion(_proposalId));
       address _badgeHolder = msg.sender;
       uint256 _badgeStake = daoStakeStorage().readUserLockedBadge(_badgeHolder);
-
-      // _nonce should be greater than the last used nonce by this address
-      require(daoStorage().readLastNonce(msg.sender) < _nonce);
 
       bool _voted;
       (_voted,,) = daoStorage().readDraftVote(_proposalId, _badgeHolder);
 
-      require(daoStorage().addDraftVote(_proposalId, _badgeHolder, _voteYes, _badgeStake, _nonce));
+      require(daoStorage().addDraftVote(_proposalId, _badgeHolder, _voteYes, _badgeStake));
 
       if (_voted == false) {
         daoQuarterPoint().add(_badgeHolder, get_uint_config(QUARTER_POINT_DRAFT_VOTE), currentQuarterIndex(), true);
@@ -39,18 +37,16 @@ contract DaoVoting is DaoCommon, Claimable {
 
   function commitVoteOnProposal(
       bytes32 _proposalId,
-      bytes32 _commitHash,
-      uint256 _nonce
+      bytes32 _commitHash
   )
       public
       if_commit_phase(_proposalId)
       is_proposal_state(_proposalId, PROPOSAL_STATE_VETTED)
-      if_valid_nonce(_nonce)
       if_participant()
       returns (bool _success)
   {
       require(daoStorage().isCommitUsed(_proposalId, 0, _commitHash) == false);
-      daoStorage().commitVote(_proposalId, _commitHash, msg.sender, 0, _nonce);
+      daoStorage().commitVote(_proposalId, _commitHash, msg.sender, 0);
       _success = true;
   }
 
@@ -75,17 +71,15 @@ contract DaoVoting is DaoCommon, Claimable {
 
   function commitVoteOnSpecialProposal(
       bytes32 _proposalId,
-      bytes32 _commitHash,
-      uint256 _nonce
+      bytes32 _commitHash
   )
       public
       if_commit_phase_special(_proposalId)
-      if_valid_nonce_special(_nonce)
       if_participant()
       returns (bool _success)
   {
       require(daoSpecialStorage().isCommitUsed(_proposalId, _commitHash) == false);
-      daoSpecialStorage().commitVote(_proposalId, _commitHash, msg.sender, _nonce);
+      daoSpecialStorage().commitVote(_proposalId, _commitHash, msg.sender, 0);
       _success = true;
   }
 
@@ -110,18 +104,16 @@ contract DaoVoting is DaoCommon, Claimable {
   function commitVoteOnInterim(
       bytes32 _proposalId,
       uint8 _index,
-      bytes32 _commitHash,
-      uint256 _nonce
+      bytes32 _commitHash
   )
       public
       if_interim_commit_phase(_proposalId, _index)
       is_proposal_state(_proposalId, PROPOSAL_STATE_FUNDED)
-      if_valid_nonce(_nonce)
       if_participant()
       returns (bool _success)
   {
       require(daoStorage().isCommitUsed(_proposalId, _index, _commitHash) == false);
-      daoStorage().commitVote(_proposalId, _commitHash, msg.sender, _index, _nonce);
+      daoStorage().commitVote(_proposalId, _commitHash, msg.sender, _index);
       _success = true;
   }
 

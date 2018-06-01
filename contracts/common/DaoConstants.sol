@@ -92,4 +92,7 @@ contract DaoConstants {
   bytes32 CONFIG_PUNISHMENT_FOR_NOT_LOCKING = "config_punishment_not_locking";
   bytes32 CONFIG_REPUTATION_PER_EXTRA_QP_NUM = "config_rep_per_extra_qp_num";
   bytes32 CONFIG_REPUTATION_PER_EXTRA_QP_DEN = "config_rep_per_extra_qp_den";
+
+  bytes32 CONFIG_PORTION_TO_BADGE_HOLDERS_NUM = "config_bholder_portion_num";
+  bytes32 CONFIG_PORTION_TO_BADGE_HOLDERS_DEN = "config_bholder_portion_den";
 }

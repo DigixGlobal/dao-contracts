@@ -91,7 +91,7 @@ contract DaoCommon is IdentityCommon {
       _;
     }
 
-    modifier if_valid_nonce(uint256 _nonce) {
+    /* modifier if_valid_nonce(uint256 _nonce) {
       require(daoStorage().readLastNonce(msg.sender) < _nonce);
       _;
     }
@@ -99,7 +99,7 @@ contract DaoCommon is IdentityCommon {
     modifier if_valid_nonce_special(uint256 _nonce) {
       require(daoSpecialStorage().readLastNonce(msg.sender) < _nonce);
       _;
-    }
+    } */
 
     modifier if_participant() {
       require(daoInfoService().isParticipant(msg.sender));
