@@ -122,7 +122,7 @@ const max = function (list) {
     if (item > max) max = item;
   }
   return max;
-}
+};
 
 const timeLags = function () {
   return {
@@ -131,27 +131,22 @@ const timeLags = function () {
 };
 
 const sampleBadgeWeights = function (bN) {
-  return {
-    badgeHolder1: bN(10),
-    badgeHolder2: bN(20),
-    badgeHolder3: bN(30),
-    badgeHolder4: bN(44),
-  };
+  return [bN(10), bN(20), bN(30), bN(44)];
 };
 
 const sampleStakeWeights = function (bN) {
-  return {
-    badgeHolder1: bN(55 * (10 ** 18)),
-    badgeHolder2: bN(120 * (10 ** 18)),
-    badgeHolder3: bN(150 * (10 ** 18)),
-    badgeHolder4: bN(175 * (10 ** 18)),
-    dgdHolder1: bN(32 * (10 ** 18)),
-    dgdHolder2: bN(41 * (10 ** 18)),
-    dgdHolder3: bN(40 * (10 ** 18)),
-    dgdHolder4: bN(30 * (10 ** 18)),
-    dgdHolder5: bN(20 * (10 ** 18)),
-    dgdHolder6: bN(46 * (10 ** 18)),
-  };
+  return [
+    bN(55 * (10 ** 18)),
+    bN(120 * (10 ** 18)),
+    bN(150 * (10 ** 18)),
+    bN(175 * (10 ** 18)),
+    bN(32 * (10 ** 18)),
+    bN(41 * (10 ** 18)),
+    bN(40 * (10 ** 18)),
+    bN(30 * (10 ** 18)),
+    bN(20 * (10 ** 18)),
+    bN(46 * (10 ** 18)),
+  ];
 };
 
 const EMPTY_BYTES = '0x0000000000000000000000000000000000000000000000000000000000000000';

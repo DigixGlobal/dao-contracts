@@ -40,16 +40,16 @@ const DaoRewardsManager = artifacts.require('./DaoRewardsManager.sol');
  *               --------------- QUARTER 1 ----------------
  *                      ------ LOCKING PHASE ------
  *  ADDRESS                       DGD TOKENS                  DGD BADGE
- *  addressOf.badgeHolder1        10 * (10 ** 9)              5
- *  addressOf.badgeHolder2        30 * (10 ** 9)              12
- *  addressOf.badgeHolder3        40 * (10 ** 9)              15
- *  addressOf.badgeHolder4        20 * (10 ** 9)              18
- *  addressOf.dgdHolder1          10 * (10 ** 9)              0
- *  addressOf.dgdHolder2          15 * (10 ** 9)              0
- *  addressOf.dgdHolder3          0  * (10 ** 9)              0
- *  addressOf.dgdHolder4          0  * (10 ** 9)              0
- *  addressOf.dgdHolder5          5  * (10 ** 9)              0
- *  addressOf.dgdHolder6          30 * (10 ** 9)              0
+ *  addressOf.badgeHolders[0]        10 * (10 ** 9)              5
+ *  addressOf.badgeHolders[1]        30 * (10 ** 9)              12
+ *  addressOf.badgeHolders[2]        40 * (10 ** 9)              15
+ *  addressOf.badgeHolders[3]        20 * (10 ** 9)              18
+ *  addressOf.dgdHolders[0]          10 * (10 ** 9)              0
+ *  addressOf.dgdHolders[1]          15 * (10 ** 9)              0
+ *  addressOf.dgdHolders[2]          0  * (10 ** 9)              0
+ *  addressOf.dgdHolders[3]          0  * (10 ** 9)              0
+ *  addressOf.dgdHolders[4]          5  * (10 ** 9)              0
+ *  addressOf.dgdHolders[5]          30 * (10 ** 9)              0
  *
  *                      -------- MAIN PHASE -------
  *  ADDRESS                       CONFIG (proposalIds, proposers, ...
@@ -62,64 +62,59 @@ const DaoRewardsManager = artifacts.require('./DaoRewardsManager.sol');
  *
  *                      -------- DRAFT VOTING --------
  *  PROPOSAL                      ADDRESS                     DRAFT_VOTES
- *  firstProposal                 addressof.badgeHolder1      yes
- *  firstProposal                 addressof.badgeHolder2      yes
- *  firstProposal                 addressof.badgeHolder3      yes
- *  firstProposal                 addressof.badgeHolder4      yes
+ *  firstProposal                 addressof.badgeHolders[0]      yes
+ *  firstProposal                 addressof.badgeHolders[1]      yes
+ *  firstProposal                 addressof.badgeHolders[2]      yes
+ *  firstProposal                 addressof.badgeHolders[3]      yes
  *                      ---------------------------
- *  secondProposal                addressof.badgeHolder1      no
- *  secondProposal                addressof.badgeHolder2      no
- *  secondProposal                addressof.badgeHolder3      no
- *  secondProposal                addressof.badgeHolder4      no
+ *  secondProposal                addressof.badgeHolders[0]      no
+ *  secondProposal                addressof.badgeHolders[1]      no
+ *  secondProposal                addressof.badgeHolders[2]      no
+ *  secondProposal                addressof.badgeHolders[3]      no
  *                      ---------------------------
- *  thirdProposal                 addressof.badgeHolder1      yes
- *  thirdProposal                 addressof.badgeHolder2      no
- *  thirdProposal                 addressof.badgeHolder3      yes
- *  thirdProposal                 addressof.badgeHolder4      yes
+ *  thirdProposal                 addressof.badgeHolders[0]      yes
+ *  thirdProposal                 addressof.badgeHolders[1]      no
+ *  thirdProposal                 addressof.badgeHolders[2]      yes
+ *  thirdProposal                 addressof.badgeHolders[3]      yes
  *                      ---------------------------
- *  fourthProposal                addressof.badgeHolder1      no
- *  fourthProposal                addressof.badgeHolder2      yes
- *  fourthProposal                addressof.badgeHolder3      yes
- *  fourthProposal                addressof.badgeHolder4      yes
+ *  fourthProposal                addressof.badgeHolders[0]      no
+ *  fourthProposal                addressof.badgeHolders[1]      yes
+ *  fourthProposal                addressof.badgeHolders[2]      yes
+ *  fourthProposal                addressof.badgeHolders[3]      yes
  *
  *                   ----- LOCK MORE DGDs (MAIN PHASE) -----
  *  ADDRESS                       DGD TOKENS
- *  addressOf.badgeHolder1        10 * (10 ** 9)
- *  addressOf.badgeHolder2        20 * (10 ** 9)
- *  addressOf.badgeHolder3        20 * (10 ** 9)
- *  addressOf.badgeHolder4        55 * (10 ** 9)
- *  addressOf.dgdHolder1          6 * (10 ** 9)
- *  addressOf.dgdHolder2          15 * (10 ** 9)
- *  addressOf.dgdHolder3          10 * (10 ** 9)
- *  addressOf.dgdHolder4          12 * (10 ** 9)
- *  addressOf.dgdHolder5          5 * (10 ** 9)
- *  addressOf.dgdHolder6          10 * (10 ** 9)
+ *  addressOf.badgeHolders[0]        10 * (10 ** 9)
+ *  addressOf.badgeHolders[1]        20 * (10 ** 9)
+ *  addressOf.badgeHolders[2]        20 * (10 ** 9)
+ *  addressOf.badgeHolders[3]        55 * (10 ** 9)
+ *  addressOf.dgdHolders[0]          6 * (10 ** 9)
+ *  addressOf.dgdHolders[1]          15 * (10 ** 9)
+ *  addressOf.dgdHolders[2]          10 * (10 ** 9)
+ *  addressOf.dgdHolders[3]          12 * (10 ** 9)
+ *  addressOf.dgdHolders[4]          5 * (10 ** 9)
+ *  addressOf.dgdHolders[5]          10 * (10 ** 9)
  *
  *                     ------ VOTING ON PROPOSALS ------
  *  PROPOSAL                      ADDRESS                     DRAFT_VOTES
- *  firstProposal                 addressof.badgeHolder1      yes
- *  firstProposal                 addressof.badgeHolder2      yes
- *  firstProposal                 addressof.badgeHolder3      yes
- *  firstProposal                 addressof.badgeHolder4      yes
- *  firstProposal                 addressof.dgdHolder1        yes
- *  firstProposal                 addressof.dgdHolder2        yes
- *  firstProposal                 addressof.dgdHolder3        yes
- *  firstProposal                 addressof.dgdHolder4        yes
- *  firstProposal                 addressof.dgdHolder5        yes
- *  firstProposal                 addressof.dgdHolder6        yes
+ *  firstProposal                 addressof.badgeHolders[0]      yes
+ *  firstProposal                 addressof.badgeHolders[1]      yes
+ *  firstProposal                 addressof.badgeHolders[2]      yes
+ *  firstProposal                 addressof.badgeHolders[3]      yes
+ *  firstProposal                 addressof.dgdHolders[0]        yes
+ *  firstProposal                 addressof.dgdHolders[1]        yes
+ *  firstProposal                 addressof.dgdHolders[2]        yes
+ *  firstProposal                 addressof.dgdHolders[3]        yes
+ *  firstProposal                 addressof.dgdHolders[4]        yes
+ *  firstProposal                 addressof.dgdHolders[5]        yes
  */
 
 const {
   getAccountsAndAddressOf,
   initialTransferTokens,
-  proposalIds,
-  proposers,
-  endorsers,
-  moreVersions,
-  milestoneDurations,
-  milestoneFundings,
-  lastNonces,
-  finalRewards,
+  getTestProposals,
+  BADGE_HOLDER_COUNT,
+  DGD_HOLDER_COUNT,
 } = require('./setup');
 
 const {
@@ -135,6 +130,8 @@ const {
 const {
   getCurrentTimestamp,
   randomBigNumber,
+  indexRange,
+
 } = require('@digix/helpers/lib/helpers');
 
 const bN = web3.toBigNumber;
@@ -144,122 +141,22 @@ const dotenv = require('dotenv');
 let salts;
 let votes;
 let votingCommits;
+let proposals;
+
 
 const assignVotesAndCommits = function (addressOf) {
-  salts = {
-    firstProposal: {
-      badgeHolder1: randomBigNumber(bN),
-      badgeHolder2: randomBigNumber(bN),
-      badgeHolder3: randomBigNumber(bN),
-      badgeHolder4: randomBigNumber(bN),
-      dgdHolder1: randomBigNumber(bN),
-      dgdHolder2: randomBigNumber(bN),
-      dgdHolder3: randomBigNumber(bN),
-      dgdHolder4: randomBigNumber(bN),
-      dgdHolder5: randomBigNumber(bN),
-      dgdHolder6: randomBigNumber(bN),
-    },
-    thirdProposal: {
-      badgeHolder1: randomBigNumber(bN),
-      badgeHolder2: randomBigNumber(bN),
-      badgeHolder3: randomBigNumber(bN),
-      badgeHolder4: randomBigNumber(bN),
-      dgdHolder1: randomBigNumber(bN),
-      dgdHolder2: randomBigNumber(bN),
-      dgdHolder3: randomBigNumber(bN),
-      dgdHolder4: randomBigNumber(bN),
-      dgdHolder5: randomBigNumber(bN),
-      dgdHolder6: randomBigNumber(bN),
-    },
-    fourthProposal: {
-      badgeHolder1: randomBigNumber(bN),
-      badgeHolder2: randomBigNumber(bN),
-      badgeHolder3: randomBigNumber(bN),
-      badgeHolder4: randomBigNumber(bN),
-      dgdHolder1: randomBigNumber(bN),
-      dgdHolder2: randomBigNumber(bN),
-      dgdHolder3: randomBigNumber(bN),
-      dgdHolder4: randomBigNumber(bN),
-      dgdHolder5: randomBigNumber(bN),
-      dgdHolder6: randomBigNumber(bN),
-    }
-  };
-  votes = {
-    firstProposal: {
-      badgeHolder1: true,
-      badgeHolder2: true,
-      badgeHolder3: true,
-      badgeHolder4: true,
-      dgdHolder1: true,
-      dgdHolder2: true,
-      dgdHolder3: true,
-      dgdHolder4: true,
-      dgdHolder5: true,
-      dgdHolder6: true,
-    },
-    thirdProposal: {
-      badgeHolder1: true,
-      badgeHolder2: true,
-      badgeHolder3: true,
-      badgeHolder4: true,
-      dgdHolder1: true,
-      dgdHolder2: true,
-      dgdHolder3: true,
-      dgdHolder4: true,
-      dgdHolder5: true,
-      dgdHolder6: true,
-    },
-    fourthProposal: {
-      badgeHolder1: true,
-      badgeHolder2: true,
-      badgeHolder3: true,
-      badgeHolder4: true,
-      dgdHolder1: true,
-      dgdHolder2: true,
-      dgdHolder3: true,
-      dgdHolder4: true,
-      dgdHolder5: true,
-      dgdHolder6: true,
-    },
-  };
-  votingCommits = {
-    firstProposal: {
-      badgeHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder1}, {t: 'bool', v: votes.firstProposal.badgeHolder1}, {t: 'uint256', v: salts.firstProposal.badgeHolder1}),
-      badgeHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder2}, {t: 'bool', v: votes.firstProposal.badgeHolder2}, {t: 'uint256', v: salts.firstProposal.badgeHolder2}),
-      badgeHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder3}, {t: 'bool', v: votes.firstProposal.badgeHolder3}, {t: 'uint256', v: salts.firstProposal.badgeHolder3}),
-      badgeHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder4}, {t: 'bool', v: votes.firstProposal.badgeHolder4}, {t: 'uint256', v: salts.firstProposal.badgeHolder4}),
-      dgdHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder1}, {t: 'bool', v: votes.firstProposal.dgdHolder1}, {t: 'uint256', v: salts.firstProposal.dgdHolder1}),
-      dgdHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder2}, {t: 'bool', v: votes.firstProposal.dgdHolder2}, {t: 'uint256', v: salts.firstProposal.dgdHolder2}),
-      dgdHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder3}, {t: 'bool', v: votes.firstProposal.dgdHolder3}, {t: 'uint256', v: salts.firstProposal.dgdHolder3}),
-      dgdHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder4}, {t: 'bool', v: votes.firstProposal.dgdHolder4}, {t: 'uint256', v: salts.firstProposal.dgdHolder4}),
-      dgdHolder5: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder5}, {t: 'bool', v: votes.firstProposal.dgdHolder5}, {t: 'uint256', v: salts.firstProposal.dgdHolder5}),
-      dgdHolder6: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder6}, {t: 'bool', v: votes.firstProposal.dgdHolder6}, {t: 'uint256', v: salts.firstProposal.dgdHolder6}),
-    },
-    thirdProposal: {
-      badgeHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder1}, {t: 'bool', v: votes.thirdProposal.badgeHolder1}, {t: 'uint256', v: salts.thirdProposal.badgeHolder1}),
-      badgeHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder2}, {t: 'bool', v: votes.thirdProposal.badgeHolder2}, {t: 'uint256', v: salts.thirdProposal.badgeHolder2}),
-      badgeHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder3}, {t: 'bool', v: votes.thirdProposal.badgeHolder3}, {t: 'uint256', v: salts.thirdProposal.badgeHolder3}),
-      badgeHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder4}, {t: 'bool', v: votes.thirdProposal.badgeHolder4}, {t: 'uint256', v: salts.thirdProposal.badgeHolder4}),
-      dgdHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder1}, {t: 'bool', v: votes.thirdProposal.dgdHolder1}, {t: 'uint256', v: salts.thirdProposal.dgdHolder1}),
-      dgdHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder2}, {t: 'bool', v: votes.thirdProposal.dgdHolder2}, {t: 'uint256', v: salts.thirdProposal.dgdHolder2}),
-      dgdHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder3}, {t: 'bool', v: votes.thirdProposal.dgdHolder3}, {t: 'uint256', v: salts.thirdProposal.dgdHolder3}),
-      dgdHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder4}, {t: 'bool', v: votes.thirdProposal.dgdHolder4}, {t: 'uint256', v: salts.thirdProposal.dgdHolder4}),
-      dgdHolder5: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder5}, {t: 'bool', v: votes.thirdProposal.dgdHolder5}, {t: 'uint256', v: salts.thirdProposal.dgdHolder5}),
-      dgdHolder6: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder6}, {t: 'bool', v: votes.thirdProposal.dgdHolder6}, {t: 'uint256', v: salts.thirdProposal.dgdHolder6}),
-    },
-    fourthProposal: {
-      badgeHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder1}, {t: 'bool', v: votes.fourthProposal.badgeHolder1}, {t: 'uint256', v: salts.fourthProposal.badgeHolder1}),
-      badgeHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder2}, {t: 'bool', v: votes.fourthProposal.badgeHolder2}, {t: 'uint256', v: salts.fourthProposal.badgeHolder2}),
-      badgeHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder3}, {t: 'bool', v: votes.fourthProposal.badgeHolder3}, {t: 'uint256', v: salts.fourthProposal.badgeHolder3}),
-      badgeHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.badgeHolder4}, {t: 'bool', v: votes.fourthProposal.badgeHolder4}, {t: 'uint256', v: salts.fourthProposal.badgeHolder4}),
-      dgdHolder1: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder1}, {t: 'bool', v: votes.fourthProposal.dgdHolder1}, {t: 'uint256', v: salts.fourthProposal.dgdHolder1}),
-      dgdHolder2: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder2}, {t: 'bool', v: votes.fourthProposal.dgdHolder2}, {t: 'uint256', v: salts.fourthProposal.dgdHolder2}),
-      dgdHolder3: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder3}, {t: 'bool', v: votes.fourthProposal.dgdHolder3}, {t: 'uint256', v: salts.fourthProposal.dgdHolder3}),
-      dgdHolder4: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder4}, {t: 'bool', v: votes.fourthProposal.dgdHolder4}, {t: 'uint256', v: salts.fourthProposal.dgdHolder4}),
-      dgdHolder5: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder5}, {t: 'bool', v: votes.fourthProposal.dgdHolder5}, {t: 'uint256', v: salts.fourthProposal.dgdHolder5}),
-      dgdHolder6: web3Utils.soliditySha3({t: 'address', v: addressOf.dgdHolder6}, {t: 'bool', v: votes.fourthProposal.dgdHolder6}, {t: 'uint256', v: salts.fourthProposal.dgdHolder6}),
-    },
-  };
+  salts = indexRange(0, 4).map(() => indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(() => randomBigNumber(bN)));
+  // salts[proposalIndex][participantIndex] = salt
+
+  votes = indexRange(0, 4).map(() => indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(() => true));
+  // votes[proposalIndex][holderIndex] = true/false
+
+  votingCommits = indexRange(0, 4).map(proposalIndex => indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(holderIndex => web3Utils.soliditySha3(
+    { t: 'address', v: addressOf.allParticipants[holderIndex] },
+    { t: 'bool', v: votes[proposalIndex][holderIndex] },
+    { t: 'uint256', v: salts[proposalIndex][holderIndex] },
+  )));
+  // votingCommits[proposalIndex][holderIndex] contains the commit
 };
 
 const setupMockTokens = async function (contracts, addressOf) {
@@ -396,669 +293,219 @@ const waitForRevealPhaseToGetOver = async function (contracts, addressOf, propos
 };
 
 const approveTokens = async function (contracts, addressOf) {
-  await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(20 * (10 ** 9)), { from: addressOf.badgeHolder1 });
-  await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(5), { from: addressOf.badgeHolder1 });
-  await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(50 * (10 ** 9)), { from: addressOf.badgeHolder2 });
-  await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(12), { from: addressOf.badgeHolder2 });
-  await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(60 * (10 ** 9)), { from: addressOf.badgeHolder3 });
-  await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(15), { from: addressOf.badgeHolder3 });
-  await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(75 * (10 ** 9)), { from: addressOf.badgeHolder4 });
-  await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(18), { from: addressOf.badgeHolder4 });
-  await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(16 * (10 ** 9)), { from: addressOf.dgdHolder1 });
-  await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(30 * (10 ** 9)), { from: addressOf.dgdHolder2 });
-  await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10 * (10 ** 9)), { from: addressOf.dgdHolder3 });
-  await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(12 * (10 ** 9)), { from: addressOf.dgdHolder4 });
-  await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10 * (10 ** 9)), { from: addressOf.dgdHolder5 });
-  await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(40 * (10 ** 9)), { from: addressOf.dgdHolder6 });
+  await a.map(indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT), 20, async (index) => {
+    await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(2 ** 255), { from: addressOf.allParticipants[index] });
+    await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(2 ** 255), { from: addressOf.allParticipants[index] });
+  });
 };
 
 const lockStakeAndBadges = async function (contracts, addressOf, phase) {
   if (phase === phases.LOCKING_PHASE) {
     await phaseCorrection(contracts, addressOf, phases.LOCKING_PHASE);
-    await contracts.daoStakeLocking.lockBadge(bN(5), { from: addressOf.badgeHolder1 });
-    await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 9)), { from: addressOf.badgeHolder1 });
+    await contracts.daoStakeLocking.lockBadge(bN(5), { from: addressOf.badgeHolders[0] });
+    await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 9)), { from: addressOf.badgeHolders[0] });
     await phaseCorrection(contracts, addressOf, phases.LOCKING_PHASE);
-    await contracts.daoStakeLocking.lockBadge(bN(12), { from: addressOf.badgeHolder2 });
-    await contracts.daoStakeLocking.lockDGD(bN(30 * (10 ** 9)), { from: addressOf.badgeHolder2 });
+    await contracts.daoStakeLocking.lockBadge(bN(12), { from: addressOf.badgeHolders[1] });
+    await contracts.daoStakeLocking.lockDGD(bN(30 * (10 ** 9)), { from: addressOf.badgeHolders[1] });
     await phaseCorrection(contracts, addressOf, phases.LOCKING_PHASE);
-    await contracts.daoStakeLocking.lockBadge(bN(15), { from: addressOf.badgeHolder3 });
-    await contracts.daoStakeLocking.lockDGD(bN(40 * (10 ** 9)), { from: addressOf.badgeHolder3 });
+    await contracts.daoStakeLocking.lockBadge(bN(15), { from: addressOf.badgeHolders[2] });
+    await contracts.daoStakeLocking.lockDGD(bN(40 * (10 ** 9)), { from: addressOf.badgeHolders[2] });
     await phaseCorrection(contracts, addressOf, phases.LOCKING_PHASE);
-    await contracts.daoStakeLocking.lockBadge(bN(18), { from: addressOf.badgeHolder4 });
-    await contracts.daoStakeLocking.lockDGD(bN(20 * (10 ** 9)), { from: addressOf.badgeHolder4 });
+    await contracts.daoStakeLocking.lockBadge(bN(18), { from: addressOf.badgeHolders[3] });
+    await contracts.daoStakeLocking.lockDGD(bN(20 * (10 ** 9)), { from: addressOf.badgeHolders[3] });
     await phaseCorrection(contracts, addressOf, phases.LOCKING_PHASE);
-    await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 9)), { from: addressOf.dgdHolder1 });
+    await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 9)), { from: addressOf.dgdHolders[0] });
     await phaseCorrection(contracts, addressOf, phases.LOCKING_PHASE);
-    await contracts.daoStakeLocking.lockDGD(bN(15 * (10 ** 9)), { from: addressOf.dgdHolder2 });
+    await contracts.daoStakeLocking.lockDGD(bN(15 * (10 ** 9)), { from: addressOf.dgdHolders[1] });
     await phaseCorrection(contracts, addressOf, phases.LOCKING_PHASE);
-    await contracts.daoStakeLocking.lockDGD(bN(5 * (10 ** 9)), { from: addressOf.dgdHolder5 });
+    await contracts.daoStakeLocking.lockDGD(bN(5 * (10 ** 9)), { from: addressOf.dgdHolders[4] });
     await phaseCorrection(contracts, addressOf, phases.LOCKING_PHASE);
-    await contracts.daoStakeLocking.lockDGD(bN(30 * (10 ** 9)), { from: addressOf.dgdHolder6 });
+    await contracts.daoStakeLocking.lockDGD(bN(30 * (10 ** 9)), { from: addressOf.dgdHolders[5] });
   }
 
   if (phase === phases.MAIN_PHASE) {
     await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE);
-    await contracts.daoStakeLocking.lockDGD(bN(6 * (10 ** 9)), { from: addressOf.dgdHolder1 });
+    await contracts.daoStakeLocking.lockDGD(bN(6 * (10 ** 9)), { from: addressOf.dgdHolders[0] });
     await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE);
-    await contracts.daoStakeLocking.lockDGD(bN(15 * (10 ** 9)), { from: addressOf.dgdHolder2 });
+    await contracts.daoStakeLocking.lockDGD(bN(15 * (10 ** 9)), { from: addressOf.dgdHolders[1] });
     await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE);
-    await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 9)), { from: addressOf.dgdHolder3 });
+    await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 9)), { from: addressOf.dgdHolders[2] });
     await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE);
-    await contracts.daoStakeLocking.lockDGD(bN(12 * (10 ** 9)), { from: addressOf.dgdHolder4 });
+    await contracts.daoStakeLocking.lockDGD(bN(12 * (10 ** 9)), { from: addressOf.dgdHolders[3] });
     await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE);
-    await contracts.daoStakeLocking.lockDGD(bN(5 * (10 ** 9)), { from: addressOf.dgdHolder5 });
+    await contracts.daoStakeLocking.lockDGD(bN(5 * (10 ** 9)), { from: addressOf.dgdHolders[4] });
     await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE);
-    await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 9)), { from: addressOf.dgdHolder6 });
+    await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 9)), { from: addressOf.dgdHolders[5] });
   }
 };
 
 const kycProposers = async function (contracts, addressOf) {
   const expiry = getCurrentTimestamp() + 2628000; // KYC valid for 1 month
-  await contracts.daoIdentity.updateKyc(proposers(addressOf).firstProposal, '', expiry, { from: addressOf.kycadmin });
-  await contracts.daoIdentity.updateKyc(proposers(addressOf).secondProposal, '', expiry, { from: addressOf.kycadmin });
-  await contracts.daoIdentity.updateKyc(proposers(addressOf).thirdProposal, '', expiry, { from: addressOf.kycadmin });
-  await contracts.daoIdentity.updateKyc(proposers(addressOf).fourthProposal, '', expiry, { from: addressOf.kycadmin });
+  await contracts.daoIdentity.updateKyc(proposals[0].proposer, '', expiry, { from: addressOf.kycadmin });
+  await contracts.daoIdentity.updateKyc(proposals[1].proposer, '', expiry, { from: addressOf.kycadmin });
+  await contracts.daoIdentity.updateKyc(proposals[2].proposer, '', expiry, { from: addressOf.kycadmin });
+  await contracts.daoIdentity.updateKyc(proposals[3].proposer, '', expiry, { from: addressOf.kycadmin });
 };
 
 const addAndEndorseProposals = async function (contracts, addressOf) {
-  await contracts.dao.submitPreproposal(
-    proposalIds.firstProposal,
-    milestoneDurations(bN).firstProposal.versionOne,
-    milestoneFundings(bN).firstProposal.versionOne,
-    finalRewards(bN).firstProposal,
-    { from: proposers(addressOf).firstProposal },
-  );
-  await contracts.dao.submitPreproposal(
-    proposalIds.secondProposal,
-    milestoneDurations(bN).secondProposal.versionOne,
-    milestoneFundings(bN).secondProposal.versionOne,
-    finalRewards(bN).secondProposal,
-    { from: proposers(addressOf).secondProposal },
-  );
-  await contracts.dao.submitPreproposal(
-    proposalIds.thirdProposal,
-    milestoneDurations(bN).thirdProposal.versionOne,
-    milestoneFundings(bN).thirdProposal.versionOne,
-    finalRewards(bN).thirdProposal,
-    { from: proposers(addressOf).thirdProposal },
-  );
-  await contracts.dao.submitPreproposal(
-    proposalIds.fourthProposal,
-    milestoneDurations(bN).fourthProposal.versionOne,
-    milestoneFundings(bN).fourthProposal.versionOne,
-    finalRewards(bN).fourthProposal,
-    { from: proposers(addressOf).fourthProposal },
-  );
-  await contracts.dao.endorseProposal(proposalIds.firstProposal, { from: endorsers(addressOf).firstProposal });
-  await contracts.dao.endorseProposal(proposalIds.secondProposal, { from: endorsers(addressOf).secondProposal });
-  await contracts.dao.endorseProposal(proposalIds.thirdProposal, { from: endorsers(addressOf).thirdProposal });
-  await contracts.dao.endorseProposal(proposalIds.fourthProposal, { from: endorsers(addressOf).fourthProposal });
+  await a.map(indexRange(0, 4), 20, async (index) => {
+    await contracts.dao.submitPreproposal(
+      proposals[index].id,
+      proposals[index].versions[0].milestoneDurations,
+      proposals[index].versions[0].milestoneFundings,
+      proposals[index].versions[0].finalReward,
+      { from: proposals[index].proposer },
+    );
+    await contracts.dao.endorseProposal(proposals[index].id, { from: proposals[index].endorser });
+  });
 };
 
 const modifyProposals = async function (contracts, addressOf) {
-  await contracts.dao.modifyProposal(
-    proposalIds.firstProposal,
-    moreVersions.firstProposal.versionTwo,
-    milestoneDurations(bN).firstProposal.versionTwo,
-    milestoneFundings(bN).firstProposal.versionTwo,
-    finalRewards(bN).firstProposal,
-    { from: proposers(addressOf).firstProposal },
-  );
-  await contracts.dao.modifyProposal(
-    proposalIds.secondProposal,
-    moreVersions.secondProposal.versionTwo,
-    milestoneDurations(bN).secondProposal.versionTwo,
-    milestoneFundings(bN).secondProposal.versionTwo,
-    finalRewards(bN).secondProposal,
-    { from: proposers(addressOf).secondProposal },
-  );
-  await contracts.dao.modifyProposal(
-    proposalIds.thirdProposal,
-    moreVersions.thirdProposal.versionTwo,
-    milestoneDurations(bN).thirdProposal.versionTwo,
-    milestoneFundings(bN).thirdProposal.versionTwo,
-    finalRewards(bN).thirdProposal,
-    { from: proposers(addressOf).thirdProposal },
-  );
+  await a.map(indexRange(0, 3), 20, async (index) => {
+    await contracts.dao.modifyProposal(
+      proposals[index].id,
+      proposals[index].versions[1].versionId,
+      proposals[index].versions[1].milestoneDurations,
+      proposals[index].versions[1].milestoneFundings,
+      proposals[index].versions[1].finalReward,
+      { from: proposals[index].proposer },
+    );
+  });
 };
 
 const draftVoting = async function (contracts, addressOf) {
-  await contracts.daoVoting.voteOnDraft(
-    proposalIds.firstProposal,
-    moreVersions.firstProposal.versionTwo,
-    true,
-    { from: addressOf.badgeHolder1 },
-  );
-  await contracts.daoVoting.voteOnDraft(
-    proposalIds.firstProposal,
-    moreVersions.firstProposal.versionTwo,
-    true,
-    { from: addressOf.badgeHolder2 },
-  );
-  await contracts.daoVoting.voteOnDraft(
-    proposalIds.firstProposal,
-    moreVersions.firstProposal.versionTwo,
-    true,
-    { from: addressOf.badgeHolder3 },
-  );
-  await contracts.daoVoting.voteOnDraft(
-    proposalIds.firstProposal,
-    moreVersions.firstProposal.versionTwo,
-    true,
-    { from: addressOf.badgeHolder4 },
-  );
-
-  await contracts.daoVoting.voteOnDraft(
-    proposalIds.secondProposal,
-    moreVersions.secondProposal.versionTwo,
-    false,
-    { from: addressOf.badgeHolder1 },
-  );
-  await contracts.daoVoting.voteOnDraft(
-    proposalIds.secondProposal,
-    moreVersions.secondProposal.versionTwo,
-    false,
-    { from: addressOf.badgeHolder2 },
-  );
-  await contracts.daoVoting.voteOnDraft(
-    proposalIds.secondProposal,
-    moreVersions.secondProposal.versionTwo,
-    false,
-    { from: addressOf.badgeHolder3 },
-  );
-  await contracts.daoVoting.voteOnDraft(
-    proposalIds.secondProposal,
-    moreVersions.secondProposal.versionTwo,
-    false,
-    { from: addressOf.badgeHolder4 },
-  );
-
-  await contracts.daoVoting.voteOnDraft(
-    proposalIds.thirdProposal,
-    moreVersions.thirdProposal.versionTwo,
-    true,
-    { from: addressOf.badgeHolder1 },
-  );
-  await contracts.daoVoting.voteOnDraft(
-    proposalIds.thirdProposal,
-    moreVersions.thirdProposal.versionTwo,
-    false,
-    { from: addressOf.badgeHolder2 },
-  );
-  await contracts.daoVoting.voteOnDraft(
-    proposalIds.thirdProposal,
-    moreVersions.thirdProposal.versionTwo,
-    true,
-    { from: addressOf.badgeHolder3 },
-  );
-  await contracts.daoVoting.voteOnDraft(
-    proposalIds.thirdProposal,
-    moreVersions.thirdProposal.versionTwo,
-    true,
-    { from: addressOf.badgeHolder4 },
-  );
-
-  await contracts.daoVoting.voteOnDraft(
-    proposalIds.fourthProposal,
-    proposalIds.fourthProposal,
-    false,
-    { from: addressOf.badgeHolder1 },
-  );
-  await contracts.daoVoting.voteOnDraft(
-    proposalIds.fourthProposal,
-    proposalIds.fourthProposal,
-    true,
-    { from: addressOf.badgeHolder2 },
-  );
-  await contracts.daoVoting.voteOnDraft(
-    proposalIds.fourthProposal,
-    proposalIds.fourthProposal,
-    true,
-    { from: addressOf.badgeHolder3 },
-  );
-  await contracts.daoVoting.voteOnDraft(
-    proposalIds.fourthProposal,
-    proposalIds.fourthProposal,
-    true,
-    { from: addressOf.badgeHolder4 },
-  );
+  await a.map(indexRange(0, 3), 20, async (proposalIndex) => {
+    // console.log('draft voting for proposal ', proposalIndex);
+    await a.map(indexRange(0, 4), 20, async (badgeHolderIndex) => {
+      // console.log('\tBadge Holder index', badgeHolderIndex);
+      await contracts.daoVoting.voteOnDraft(
+        proposals[proposalIndex].id,
+        proposals[proposalIndex].versions[1].versionId,
+        true,
+        { from: addressOf.badgeHolders[badgeHolderIndex] },
+      );
+      // console.log('\tBadge Holder index', badgeHolderIndex, ' voted');
+    });
+  });
+  // console.log('draft voting for proposal ', 3);
+  await a.map(indexRange(0, 4), 20, async (badgeHolderIndex) => {
+    await contracts.daoVoting.voteOnDraft(
+      proposals[3].id,
+      proposals[3].id,
+      true,
+      { from: addressOf.badgeHolders[badgeHolderIndex] },
+    );
+  });
 };
 
 const claimDraftVotingResult = async function (contracts, addressOf) {
   // first, third and fourth pass
   // second is reverted (coz its failing)
   await contracts.daoVotingClaims.claimDraftVotingResult(
-    proposalIds.firstProposal,
-    { from: addressOf.badgeHolder3 },
+    proposals[0].id,
+    { from: addressOf.badgeHolders[2] },
   );
   await contracts.daoVotingClaims.claimDraftVotingResult(
-    proposalIds.thirdProposal,
-    { from: addressOf.badgeHolder3 },
+    proposals[2].id,
+    { from: addressOf.badgeHolders[2] },
   );
   await contracts.daoVotingClaims.claimDraftVotingResult(
-    proposalIds.fourthProposal,
-    { from: addressOf.badgeHolder3 },
+    proposals[3].id,
+    { from: addressOf.badgeHolders[2] },
   );
 };
 
 const votingCommitRound = async function (contracts, addressOf) {
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.firstProposal,
-    votingCommits.firstProposal.badgeHolder1,
-    { from: addressOf.badgeHolder1 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.firstProposal,
-    votingCommits.firstProposal.badgeHolder2,
-    { from: addressOf.badgeHolder2 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.firstProposal,
-    votingCommits.firstProposal.badgeHolder3,
-    { from: addressOf.badgeHolder3 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.firstProposal,
-    votingCommits.firstProposal.badgeHolder4,
-    { from: addressOf.badgeHolder4 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.firstProposal,
-    votingCommits.firstProposal.dgdHolder1,
-    { from: addressOf.dgdHolder1 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.firstProposal,
-    votingCommits.firstProposal.dgdHolder2,
-    { from: addressOf.dgdHolder2 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.firstProposal,
-    votingCommits.firstProposal.dgdHolder3,
-    { from: addressOf.dgdHolder3 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.firstProposal,
-    votingCommits.firstProposal.dgdHolder4,
-    { from: addressOf.dgdHolder4 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.firstProposal,
-    votingCommits.firstProposal.dgdHolder5,
-    { from: addressOf.dgdHolder5 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.firstProposal,
-    votingCommits.firstProposal.dgdHolder6,
-    { from: addressOf.dgdHolder6 },
-  );
-
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.thirdProposal,
-    votingCommits.thirdProposal.badgeHolder1,
-    { from: addressOf.badgeHolder1 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.thirdProposal,
-    votingCommits.thirdProposal.badgeHolder2,
-    { from: addressOf.badgeHolder2 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.thirdProposal,
-    votingCommits.thirdProposal.badgeHolder3,
-    { from: addressOf.badgeHolder3 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.thirdProposal,
-    votingCommits.thirdProposal.badgeHolder4,
-    { from: addressOf.badgeHolder4 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.thirdProposal,
-    votingCommits.thirdProposal.dgdHolder1,
-    { from: addressOf.dgdHolder1 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.thirdProposal,
-    votingCommits.thirdProposal.dgdHolder2,
-    { from: addressOf.dgdHolder2 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.thirdProposal,
-    votingCommits.thirdProposal.dgdHolder3,
-    { from: addressOf.dgdHolder3 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.thirdProposal,
-    votingCommits.thirdProposal.dgdHolder4,
-    { from: addressOf.dgdHolder4 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.thirdProposal,
-    votingCommits.thirdProposal.dgdHolder5,
-    { from: addressOf.dgdHolder5 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.thirdProposal,
-    votingCommits.thirdProposal.dgdHolder6,
-    { from: addressOf.dgdHolder6 },
-  );
-
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.fourthProposal,
-    votingCommits.fourthProposal.badgeHolder1,
-    { from: addressOf.badgeHolder1 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.fourthProposal,
-    votingCommits.fourthProposal.badgeHolder2,
-    { from: addressOf.badgeHolder2 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.fourthProposal,
-    votingCommits.fourthProposal.badgeHolder3,
-    { from: addressOf.badgeHolder3 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.fourthProposal,
-    votingCommits.fourthProposal.badgeHolder4,
-    { from: addressOf.badgeHolder4 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.fourthProposal,
-    votingCommits.fourthProposal.dgdHolder1,
-    { from: addressOf.dgdHolder1 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.fourthProposal,
-    votingCommits.fourthProposal.dgdHolder2,
-    { from: addressOf.dgdHolder2 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.fourthProposal,
-    votingCommits.fourthProposal.dgdHolder3,
-    { from: addressOf.dgdHolder3 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.fourthProposal,
-    votingCommits.fourthProposal.dgdHolder4,
-    { from: addressOf.dgdHolder4 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.fourthProposal,
-    votingCommits.fourthProposal.dgdHolder5,
-    { from: addressOf.dgdHolder5 },
-  );
-  await contracts.daoVoting.commitVoteOnProposal(
-    proposalIds.fourthProposal,
-    votingCommits.fourthProposal.dgdHolder6,
-    { from: addressOf.dgdHolder6 },
-  );
+  await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
+    if (proposalIndex === 1) return;
+    await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
+      await contracts.daoVoting.commitVoteOnProposal(
+        proposals[proposalIndex].id,
+        votingCommits[proposalIndex][holderIndex],
+        { from: addressOf.allParticipants[holderIndex] },
+      );
+    });
+  });
 };
 
 const votingRevealRound = async function (contracts, addressOf, commits) {
-  await waitForRevealPhase(contracts, addressOf, proposalIds.firstProposal, bN(0));
+  await waitForRevealPhase(contracts, addressOf, proposals[0].id, bN(0));
 
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.firstProposal,
-    commits.votes.firstProposal.badgeHolder1,
-    commits.salts.firstProposal.badgeHolder1,
-    { from: addressOf.badgeHolder1 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.firstProposal,
-    commits.votes.firstProposal.badgeHolder2,
-    commits.salts.firstProposal.badgeHolder2,
-    { from: addressOf.badgeHolder2 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.firstProposal,
-    commits.votes.firstProposal.badgeHolder3,
-    commits.salts.firstProposal.badgeHolder3,
-    { from: addressOf.badgeHolder3 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.firstProposal,
-    commits.votes.firstProposal.badgeHolder4,
-    commits.salts.firstProposal.badgeHolder4,
-    { from: addressOf.badgeHolder4 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.firstProposal,
-    commits.votes.firstProposal.dgdHolder1,
-    commits.salts.firstProposal.dgdHolder1,
-    { from: addressOf.dgdHolder1 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.firstProposal,
-    commits.votes.firstProposal.dgdHolder2,
-    commits.salts.firstProposal.dgdHolder2,
-    { from: addressOf.dgdHolder2 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.firstProposal,
-    commits.votes.firstProposal.dgdHolder3,
-    commits.salts.firstProposal.dgdHolder3,
-    { from: addressOf.dgdHolder3 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.firstProposal,
-    commits.votes.firstProposal.dgdHolder4,
-    commits.salts.firstProposal.dgdHolder4,
-    { from: addressOf.dgdHolder4 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.firstProposal,
-    commits.votes.firstProposal.dgdHolder5,
-    commits.salts.firstProposal.dgdHolder5,
-    { from: addressOf.dgdHolder5 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.firstProposal,
-    commits.votes.firstProposal.dgdHolder6,
-    commits.salts.firstProposal.dgdHolder6,
-    { from: addressOf.dgdHolder6 },
-  );
-
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.thirdProposal,
-    commits.votes.thirdProposal.badgeHolder1,
-    commits.salts.thirdProposal.badgeHolder1,
-    { from: addressOf.badgeHolder1 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.thirdProposal,
-    commits.votes.thirdProposal.badgeHolder2,
-    commits.salts.thirdProposal.badgeHolder2,
-    { from: addressOf.badgeHolder2 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.thirdProposal,
-    commits.votes.thirdProposal.badgeHolder3,
-    commits.salts.thirdProposal.badgeHolder3,
-    { from: addressOf.badgeHolder3 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.thirdProposal,
-    commits.votes.thirdProposal.badgeHolder4,
-    commits.salts.thirdProposal.badgeHolder4,
-    { from: addressOf.badgeHolder4 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.thirdProposal,
-    commits.votes.thirdProposal.dgdHolder1,
-    commits.salts.thirdProposal.dgdHolder1,
-    { from: addressOf.dgdHolder1 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.thirdProposal,
-    commits.votes.thirdProposal.dgdHolder2,
-    commits.salts.thirdProposal.dgdHolder2,
-    { from: addressOf.dgdHolder2 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.thirdProposal,
-    commits.votes.thirdProposal.dgdHolder3,
-    commits.salts.thirdProposal.dgdHolder3,
-    { from: addressOf.dgdHolder3 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.thirdProposal,
-    commits.votes.thirdProposal.dgdHolder4,
-    commits.salts.thirdProposal.dgdHolder4,
-    { from: addressOf.dgdHolder4 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.thirdProposal,
-    commits.votes.thirdProposal.dgdHolder5,
-    commits.salts.thirdProposal.dgdHolder5,
-    { from: addressOf.dgdHolder5 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.thirdProposal,
-    commits.votes.thirdProposal.dgdHolder6,
-    commits.salts.thirdProposal.dgdHolder6,
-    { from: addressOf.dgdHolder6 },
-  );
-
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.fourthProposal,
-    commits.votes.fourthProposal.badgeHolder1,
-    commits.salts.fourthProposal.badgeHolder1,
-    { from: addressOf.badgeHolder1 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.fourthProposal,
-    commits.votes.fourthProposal.badgeHolder2,
-    commits.salts.fourthProposal.badgeHolder2,
-    { from: addressOf.badgeHolder2 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.fourthProposal,
-    commits.votes.fourthProposal.badgeHolder3,
-    commits.salts.fourthProposal.badgeHolder3,
-    { from: addressOf.badgeHolder3 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.fourthProposal,
-    commits.votes.fourthProposal.badgeHolder4,
-    commits.salts.fourthProposal.badgeHolder4,
-    { from: addressOf.badgeHolder4 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.fourthProposal,
-    commits.votes.fourthProposal.dgdHolder1,
-    commits.salts.fourthProposal.dgdHolder1,
-    { from: addressOf.dgdHolder1 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.fourthProposal,
-    commits.votes.fourthProposal.dgdHolder2,
-    commits.salts.fourthProposal.dgdHolder2,
-    { from: addressOf.dgdHolder2 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.fourthProposal,
-    commits.votes.fourthProposal.dgdHolder3,
-    commits.salts.fourthProposal.dgdHolder3,
-    { from: addressOf.dgdHolder3 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.fourthProposal,
-    commits.votes.fourthProposal.dgdHolder4,
-    commits.salts.fourthProposal.dgdHolder4,
-    { from: addressOf.dgdHolder4 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.fourthProposal,
-    commits.votes.fourthProposal.dgdHolder5,
-    commits.salts.fourthProposal.dgdHolder5,
-    { from: addressOf.dgdHolder5 },
-  );
-  await contracts.daoVoting.revealVoteOnProposal(
-    proposalIds.fourthProposal,
-    commits.votes.fourthProposal.dgdHolder6,
-    commits.salts.fourthProposal.dgdHolder6,
-    { from: addressOf.dgdHolder6 },
-  );
+  await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
+    if (proposalIndex === 1) return;
+    await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
+      await contracts.daoVoting.revealVoteOnProposal(
+        proposals[proposalIndex].id,
+        commits.votes[proposalIndex][holderIndex],
+        commits.salts[proposalIndex][holderIndex],
+        { from: addressOf.allParticipants[holderIndex] },
+      );
+    });
+  });
 };
 
 const prlApproveProposals = async function (contracts, addressOf) {
   await contracts.dao.updatePRL(
-    proposalIds.firstProposal,
+    proposals[0].id,
     true,
     { from: addressOf.prl },
   );
   await contracts.dao.updatePRL(
-    proposalIds.secondProposal,
+    proposals[1].id,
     true,
     { from: addressOf.prl },
   );
   await contracts.dao.updatePRL(
-    proposalIds.thirdProposal,
+    proposals[2].id,
     true,
     { from: addressOf.prl },
   );
   await contracts.dao.updatePRL(
-    proposalIds.fourthProposal,
+    proposals[3].id,
     true,
     { from: addressOf.prl },
   );
 };
 
 const claimVotingResult = async function (contracts, addressOf) {
-  await waitForRevealPhaseToGetOver(contracts, addressOf, proposalIds.fourthProposal, bN(0));
+  await waitForRevealPhaseToGetOver(contracts, addressOf, proposals[3].id, bN(0));
   await contracts.daoVotingClaims.claimVotingResult(
-    proposalIds.firstProposal,
-    { from: addressOf.badgeHolder1 },
+    proposals[0].id,
+    { from: addressOf.badgeHolders[0] },
   );
   await contracts.daoVotingClaims.claimVotingResult(
-    proposalIds.thirdProposal,
-    { from: addressOf.badgeHolder3 },
+    proposals[2].id,
+    { from: addressOf.badgeHolders[2] },
   );
   await contracts.daoVotingClaims.claimVotingResult(
-    proposalIds.fourthProposal,
-    { from: addressOf.badgeHolder4 },
+    proposals[3].id,
+    { from: addressOf.badgeHolders[3] },
   );
 };
 
 const claimFunding = async function (contracts, addressOf) {
   await contracts.daoFundingManager.claimEthFunding(
-    proposalIds.firstProposal,
-    { from: proposers(addressOf).firstProposal },
+    proposals[0].id,
+    { from: proposals[0].proposer },
   );
 };
 
 const confirmContinuedParticipation = async function (contracts, addressOf) {
-  await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.badgeHolder1 });
-  await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.badgeHolder2 });
-  await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.badgeHolder3 });
-  await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.badgeHolder4 });
-  await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.dgdHolder1 });
-  await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.dgdHolder2 });
-  await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.dgdHolder3 });
-  await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.dgdHolder4 });
-  await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.dgdHolder5 });
-  await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.dgdHolder6 });
+  await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (index) => {
+    await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.allParticipants[index] });
+  });
 };
 
 const claimDGXs = async function (contracts, addressOf) {
-  await contracts.daoRewardsManager.claimRewards({ from: addressOf.badgeHolder1 });
-  await contracts.daoRewardsManager.claimRewards({ from: addressOf.badgeHolder2 });
-  await contracts.daoRewardsManager.claimRewards({ from: addressOf.badgeHolder3 });
-  await contracts.daoRewardsManager.claimRewards({ from: addressOf.badgeHolder4 });
-  await contracts.daoRewardsManager.claimRewards({ from: addressOf.dgdHolder1 });
-  await contracts.daoRewardsManager.claimRewards({ from: addressOf.dgdHolder2 });
-  await contracts.daoRewardsManager.claimRewards({ from: addressOf.dgdHolder3 });
-  await contracts.daoRewardsManager.claimRewards({ from: addressOf.dgdHolder4 });
-  await contracts.daoRewardsManager.claimRewards({ from: addressOf.dgdHolder5 });
-  await contracts.daoRewardsManager.claimRewards({ from: addressOf.dgdHolder6 });
+  await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (index) => {
+    await contracts.daoRewardsManager.claimRewards({ from: addressOf.allParticipants[index] });
+  });
 };
 
 const interimVotingCommitRound = async function (contracts, addressOf) {
-  const interimRoundVotingTime1 = await contracts.daoStorage.readProposalVotingTime.call(proposalIds.firstProposal, bN(1));
-  const interimRoundVotingTime3 = await contracts.daoStorage.readProposalVotingTime.call(proposalIds.thirdProposal, bN(1));
-  const interimRoundVotingTime4 = await contracts.daoStorage.readProposalVotingTime.call(proposalIds.fourthProposal, bN(1));
+  const interimRoundVotingTime1 = await contracts.daoStorage.readProposalVotingTime.call(proposals[0].id, bN(1));
+  const interimRoundVotingTime3 = await contracts.daoStorage.readProposalVotingTime.call(proposals[2].id, bN(1));
+  const interimRoundVotingTime4 = await contracts.daoStorage.readProposalVotingTime.call(proposals[3].id, bN(1));
   let timeNow = getCurrentTimestamp();
   if (timeNow === interimRoundVotingTime4.toNumber()) {
     await waitFor(1, addressOf);
@@ -1071,269 +518,38 @@ const interimVotingCommitRound = async function (contracts, addressOf) {
   assert.equal(timeNow < (interimRoundVotingTime3.toNumber() + 10), true);
   assert.equal(timeNow < (interimRoundVotingTime4.toNumber() + 10), true);
 
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.firstProposal,
-    bN(1),
-    votingCommits.firstProposal.badgeHolder1,
-    { from: addressOf.badgeHolder1 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.firstProposal,
-    bN(1),
-    votingCommits.firstProposal.badgeHolder2,
-    { from: addressOf.badgeHolder2 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.firstProposal,
-    bN(1),
-    votingCommits.firstProposal.badgeHolder3,
-    { from: addressOf.badgeHolder3 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.firstProposal,
-    bN(1),
-    votingCommits.firstProposal.badgeHolder4,
-    { from: addressOf.badgeHolder4 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.firstProposal,
-    bN(1),
-    votingCommits.firstProposal.dgdHolder1,
-    { from: addressOf.dgdHolder1 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.firstProposal,
-    bN(1),
-    votingCommits.firstProposal.dgdHolder2,
-    { from: addressOf.dgdHolder2 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.firstProposal,
-    bN(1),
-    votingCommits.firstProposal.dgdHolder3,
-    { from: addressOf.dgdHolder3 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.firstProposal,
-    bN(1),
-    votingCommits.firstProposal.dgdHolder4,
-    { from: addressOf.dgdHolder4 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.firstProposal,
-    bN(1),
-    votingCommits.firstProposal.dgdHolder5,
-    { from: addressOf.dgdHolder5 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.firstProposal,
-    bN(1),
-    votingCommits.firstProposal.dgdHolder6,
-    { from: addressOf.dgdHolder6 },
-  );
-
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.thirdProposal,
-    bN(1),
-    votingCommits.thirdProposal.badgeHolder1,
-    { from: addressOf.badgeHolder1 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.thirdProposal,
-    bN(1),
-    votingCommits.thirdProposal.badgeHolder2,
-    { from: addressOf.badgeHolder2 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.thirdProposal,
-    bN(1),
-    votingCommits.thirdProposal.badgeHolder3,
-    { from: addressOf.badgeHolder3 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.thirdProposal,
-    bN(1),
-    votingCommits.thirdProposal.badgeHolder4,
-    { from: addressOf.badgeHolder4 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.thirdProposal,
-    bN(1),
-    votingCommits.thirdProposal.dgdHolder1,
-    { from: addressOf.dgdHolder1 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.thirdProposal,
-    bN(1),
-    votingCommits.thirdProposal.dgdHolder2,
-    { from: addressOf.dgdHolder2 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.thirdProposal,
-    bN(1),
-    votingCommits.thirdProposal.dgdHolder3,
-    { from: addressOf.dgdHolder3 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.thirdProposal,
-    bN(1),
-    votingCommits.thirdProposal.dgdHolder4,
-    { from: addressOf.dgdHolder4 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.thirdProposal,
-    bN(1),
-    votingCommits.thirdProposal.dgdHolder5,
-    { from: addressOf.dgdHolder5 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.thirdProposal,
-    bN(1),
-    votingCommits.thirdProposal.dgdHolder6,
-    { from: addressOf.dgdHolder6 },
-  );
-
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.fourthProposal,
-    bN(1),
-    votingCommits.fourthProposal.badgeHolder1,
-    { from: addressOf.badgeHolder1 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.fourthProposal,
-    bN(1),
-    votingCommits.fourthProposal.badgeHolder2,
-    { from: addressOf.badgeHolder2 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.fourthProposal,
-    bN(1),
-    votingCommits.fourthProposal.badgeHolder3,
-    { from: addressOf.badgeHolder3 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.fourthProposal,
-    bN(1),
-    votingCommits.fourthProposal.badgeHolder4,
-    { from: addressOf.badgeHolder4 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.fourthProposal,
-    bN(1),
-    votingCommits.fourthProposal.dgdHolder1,
-    { from: addressOf.dgdHolder1 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.fourthProposal,
-    bN(1),
-    votingCommits.fourthProposal.dgdHolder2,
-    { from: addressOf.dgdHolder2 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.fourthProposal,
-    bN(1),
-    votingCommits.fourthProposal.dgdHolder3,
-    { from: addressOf.dgdHolder3 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.fourthProposal,
-    bN(1),
-    votingCommits.fourthProposal.dgdHolder4,
-    { from: addressOf.dgdHolder4 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.fourthProposal,
-    bN(1),
-    votingCommits.fourthProposal.dgdHolder5,
-    { from: addressOf.dgdHolder5 },
-  );
-  await contracts.daoVoting.commitVoteOnInterim(
-    proposalIds.fourthProposal,
-    bN(1),
-    votingCommits.fourthProposal.dgdHolder6,
-    { from: addressOf.dgdHolder6 },
-  );
+  await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
+    if (proposalIndex === 1) return;
+    await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
+      await contracts.daoVoting.commitVoteOnInterim(
+        proposals[proposalIndex].id,
+        bN(1),
+        votingCommits[proposalIndex][holderIndex],
+        { from: addressOf.allParticipants[holderIndex] },
+      );
+    });
+  });
 };
 
 const interimVotingRevealRound = async function (contracts, addressOf) {
-  await waitForRevealPhase(contracts, addressOf, proposalIds.firstProposal, bN(1));
-  await contracts.daoVoting.revealVoteOnInterim(
-    proposalIds.firstProposal,
-    bN(1),
-    votes.firstProposal.badgeHolder1,
-    salts.firstProposal.badgeHolder1,
-    { from: addressOf.badgeHolder1 },
-  );
-  await contracts.daoVoting.revealVoteOnInterim(
-    proposalIds.firstProposal,
-    bN(1),
-    votes.firstProposal.badgeHolder2,
-    salts.firstProposal.badgeHolder2,
-    { from: addressOf.badgeHolder2 },
-  );
-  await contracts.daoVoting.revealVoteOnInterim(
-    proposalIds.firstProposal,
-    bN(1),
-    votes.firstProposal.badgeHolder3,
-    salts.firstProposal.badgeHolder3,
-    { from: addressOf.badgeHolder3 },
-  );
-  await contracts.daoVoting.revealVoteOnInterim(
-    proposalIds.firstProposal,
-    bN(1),
-    votes.firstProposal.badgeHolder4,
-    salts.firstProposal.badgeHolder4,
-    { from: addressOf.badgeHolder4 },
-  );
-  await contracts.daoVoting.revealVoteOnInterim(
-    proposalIds.firstProposal,
-    bN(1),
-    votes.firstProposal.dgdHolder1,
-    salts.firstProposal.dgdHolder1,
-    { from: addressOf.dgdHolder1 },
-  );
-  await contracts.daoVoting.revealVoteOnInterim(
-    proposalIds.firstProposal,
-    bN(1),
-    votes.firstProposal.dgdHolder2,
-    salts.firstProposal.dgdHolder2,
-    { from: addressOf.dgdHolder2 },
-  );
-  await contracts.daoVoting.revealVoteOnInterim(
-    proposalIds.firstProposal,
-    bN(1),
-    votes.firstProposal.dgdHolder3,
-    salts.firstProposal.dgdHolder3,
-    { from: addressOf.dgdHolder3 },
-  );
-  await contracts.daoVoting.revealVoteOnInterim(
-    proposalIds.firstProposal,
-    bN(1),
-    votes.firstProposal.dgdHolder4,
-    salts.firstProposal.dgdHolder4,
-    { from: addressOf.dgdHolder4 },
-  );
-  await contracts.daoVoting.revealVoteOnInterim(
-    proposalIds.firstProposal,
-    bN(1),
-    votes.firstProposal.dgdHolder5,
-    salts.firstProposal.dgdHolder5,
-    { from: addressOf.dgdHolder5 },
-  );
-  await contracts.daoVoting.revealVoteOnInterim(
-    proposalIds.firstProposal,
-    bN(1),
-    votes.firstProposal.dgdHolder6,
-    salts.firstProposal.dgdHolder6,
-    { from: addressOf.dgdHolder6 },
-  );
+  await waitForRevealPhase(contracts, addressOf, proposals[0].id, bN(1));
+
+  await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
+    await contracts.daoVoting.revealVoteOnInterim(
+      proposals[0].id,
+      bN(1),
+      votes[0][holderIndex],
+      salts[0][holderIndex],
+      { from: addressOf.allParticipants[holderIndex] },
+    );
+  });
 };
 
 const interimVotingRoundClaim = async function (contracts, addressOf) {
-  await waitForRevealPhaseToGetOver(contracts, addressOf, proposalIds.firstProposal, bN(1));
-  await contracts.daoVotingClaims.claimInterimVotingResult(proposalIds.firstProposal, bN(1), { from: addressOf.dgdHolder1 });
-  await contracts.daoVotingClaims.claimInterimVotingResult(proposalIds.thirdProposal, bN(1), { from: addressOf.dgdHolder2 });
-  await contracts.daoVotingClaims.claimInterimVotingResult(proposalIds.fourthProposal, bN(1), { from: addressOf.dgdHolder3 });
+  await waitForRevealPhaseToGetOver(contracts, addressOf, proposals[0].id, bN(1));
+  await contracts.daoVotingClaims.claimInterimVotingResult(proposals[0].id, bN(1), { from: addressOf.dgdHolders[0] });
+  await contracts.daoVotingClaims.claimInterimVotingResult(proposals[2].id, bN(1), { from: addressOf.dgdHolders[1] });
+  await contracts.daoVotingClaims.claimInterimVotingResult(proposals[3].id, bN(1), { from: addressOf.dgdHolders[2] });
 };
 
 module.exports = async function () {
@@ -1343,6 +559,9 @@ module.exports = async function () {
   await web3.eth.getAccounts(async function (e, accounts) {
     // deploy contracts
     addressOf = getAccountsAndAddressOf(accounts);
+    console.log('addressOf = ', addressOf);
+    proposals = getTestProposals(bN, addressOf);
+
     console.log('got accounts');
     contracts = {};
     libs = {};
@@ -1406,8 +625,8 @@ module.exports = async function () {
     await votingCommitRound(contracts, addressOf);
     console.log('commit voting has been done');
     await votingRevealRound(contracts, addressOf, {
-      votes: votes,
-      salts: salts,
+      votes,
+      salts,
     });
     console.log('revealed the committed votes');
 
@@ -1429,7 +648,7 @@ module.exports = async function () {
     await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
     console.log('updated the rewards for previous quarter (quarterId = 1)');
 
-    console.log('\t\t#### Info of users for last quarter: ')
+    console.log('\t\t#### Info of users for last quarter: ');
     const printStake = async (user, userString) => {
       console.log(`DGDstake of ${userString} = `, await contracts.daoStakeStorage.lockedDGDStake.call(user));
       console.log(`Badge QP of ${userString}= `, await contracts.daoPointsStorage.getQuarterBadgePoint.call(user, bN(1)));
@@ -1438,10 +657,10 @@ module.exports = async function () {
       console.log(`effectiveBadgeBalance of ${userString} = `, await contracts.daoRewardsManager.getUserEffectiveBadgeBalanceLastQuarter.call(user));
       console.log();
     };
-    await printStake(addressOf.badgeHolder1, 'addressOf.badgeHolder1');
-    await printStake(addressOf.badgeHolder2, 'addressOf.badgeHolder2');
-    await printStake(addressOf.badgeHolder3, 'addressOf.badgeHolder3');
-    await printStake(addressOf.badgeHolder4, 'addressOf.badgeHolder4');
+    await printStake(addressOf.badgeHolders[0], 'addressOf.badgeHolders[0]');
+    await printStake(addressOf.badgeHolders[1], 'addressOf.badgeHolders[1]');
+    await printStake(addressOf.badgeHolders[2], 'addressOf.badgeHolders[2]');
+    await printStake(addressOf.badgeHolders[3], 'addressOf.badgeHolders[3]');
 
     // confirm participation for the next quarter
     await confirmContinuedParticipation(contracts, addressOf);
@@ -1456,10 +675,10 @@ module.exports = async function () {
     };
 
 
-    await printPoints(addressOf.badgeHolder1, 'addressOf.badgeHolder1');
-    await printPoints(addressOf.badgeHolder2, 'addressOf.badgeHolder2');
-    await printPoints(addressOf.badgeHolder3, 'addressOf.badgeHolder3');
-    await printPoints(addressOf.badgeHolder4, 'addressOf.badgeHolder4');
+    await printPoints(addressOf.badgeHolders[0], 'addressOf.badgeHolders[0]');
+    await printPoints(addressOf.badgeHolders[1], 'addressOf.badgeHolders[1]');
+    await printPoints(addressOf.badgeHolders[2], 'addressOf.badgeHolders[2]');
+    await printPoints(addressOf.badgeHolders[3], 'addressOf.badgeHolders[3]');
     await claimDGXs(contracts, addressOf);
     console.log('claimed all dgxs');
 

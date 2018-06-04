@@ -5,12 +5,18 @@ const a = require('awaiting');
 const {
   indexRange,
   randomBytes32,
+  randomAddress,
+  randomBigNumber,
 } = require('@digix/helpers/lib/helpers');
 
 const {
   sampleStakeWeights,
   sampleBadgeWeights,
 } = require('./daoHelpers');
+
+const randomBigNumbers = function (bN, count, range) {
+  return indexRange(0, count).map(() => randomBigNumber(bN, range));
+};
 
 // const ContractResolverJson = require('./../build/contracts/ContractResolver.json');
 // const DoublyLinkedListJson = require('./../build/contracts/DoublyLinkedList.json');
@@ -64,6 +70,9 @@ const {
 // const ReputationPoint = artifacts.require('./ReputationPoint.sol');
 // const DaoRewardsManager = artifacts.require('./DaoRewardsManager.sol');
 
+const BADGE_HOLDER_COUNT = 4;
+const DGD_HOLDER_COUNT = 6;
+
 const deployLibraries = async function () {
   const libs = {};
   libs.doublyLinkedList = await DoublyLinkedList.new();
@@ -80,19 +89,11 @@ const getAccountsAndAddressOf = function (accounts) {
     prl: accounts[1],
     kycadmin: accounts[2],
     founderBadgeHolder: accounts[3],
-    badgeHolder1: accounts[4],
-    badgeHolder2: accounts[5],
-    badgeHolder3: accounts[6],
-    badgeHolder4: accounts[7],
-    dgdHolder1: accounts[8],
-    dgdHolder2: accounts[9],
-    dgdHolder3: accounts[10],
-    dgdHolder4: accounts[11],
-    dgdHolder5: accounts[12],
-    dgdHolder6: accounts[13],
-    allBadgeHolders: [accounts[4], accounts[5], accounts[6], accounts[7]],
-    allParticipants: [accounts[4], accounts[5], accounts[6], accounts[7], accounts[8], accounts[9], accounts[10], accounts[11], accounts[12], accounts[13]],
+    badgeHolders: indexRange(4, 4 + BADGE_HOLDER_COUNT).map(id => accounts[id]), // accounts[4] to accounts[7]
+    dgdHolders: indexRange(4 + BADGE_HOLDER_COUNT, 4 + BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(id => accounts[id]), // accounts[8] to accounts[13]
+    allParticipants: indexRange(4, 4 + BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(id => accounts[id]), // accounts[4] to accounts[13]
   };
+  console.log('got getAccountsAndAddressOf');
   return addressOf;
 };
 
@@ -152,129 +153,127 @@ const deployInteractive = async function (libs, contracts, resolver) {
 };
 
 const initialTransferTokens = async function (contracts, addressOf, bN) {
-  await contracts.dgdToken.transfer(addressOf.dgdHolder1, sampleStakeWeights(bN).dgdHolder1);
-  await contracts.dgdToken.transfer(addressOf.dgdHolder2, sampleStakeWeights(bN).dgdHolder2);
-  await contracts.dgdToken.transfer(addressOf.dgdHolder3, sampleStakeWeights(bN).dgdHolder3);
-  await contracts.dgdToken.transfer(addressOf.dgdHolder4, sampleStakeWeights(bN).dgdHolder4);
-  await contracts.dgdToken.transfer(addressOf.dgdHolder5, sampleStakeWeights(bN).dgdHolder5);
-  await contracts.dgdToken.transfer(addressOf.dgdHolder6, sampleStakeWeights(bN).dgdHolder6);
-  await contracts.dgdToken.transfer(addressOf.badgeHolder1, sampleStakeWeights(bN).badgeHolder1);
-  await contracts.dgdToken.transfer(addressOf.badgeHolder2, sampleStakeWeights(bN).badgeHolder2);
-  await contracts.dgdToken.transfer(addressOf.badgeHolder3, sampleStakeWeights(bN).badgeHolder3);
-  await contracts.dgdToken.transfer(addressOf.badgeHolder4, sampleStakeWeights(bN).badgeHolder4);
+  await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (index) => {
+    await contracts.dgdToken.transfer(addressOf.allParticipants[index], sampleStakeWeights(bN)[index]);
+  });
 
-  await contracts.badgeToken.transfer(addressOf.badgeHolder1, sampleBadgeWeights(bN).badgeHolder1);
-  await contracts.badgeToken.transfer(addressOf.badgeHolder2, sampleBadgeWeights(bN).badgeHolder2);
-  await contracts.badgeToken.transfer(addressOf.badgeHolder3, sampleBadgeWeights(bN).badgeHolder3);
-  await contracts.badgeToken.transfer(addressOf.badgeHolder4, sampleBadgeWeights(bN).badgeHolder4);
+  await a.map(indexRange(0, BADGE_HOLDER_COUNT), 20, async (index) => {
+    await contracts.badgeToken.transfer(addressOf.badgeHolders[index], sampleBadgeWeights(bN)[index]);
+  });
 };
 
-const proposalIds = {
-  firstProposal: randomBytes32(),
-  secondProposal: randomBytes32(),
-  thirdProposal: randomBytes32(),
-  fourthProposal: randomBytes32(),
-};
-
-const proposers = function (addressOf) {
+const getProposalStruct = function (bN, proposer, endorser, versions, generateRandom = false) {
+  if (generateRandom) {
+    versions = [];
+    for (let i=0;i<3;i++) {
+      versions.push({
+        versionId: randomAddress,
+        milestoneCount: 3,
+        milestoneFundings: randomBigNumbers(bN, 3, 20),
+        milestoneDurations: randomBigNumbers(bN, 3, 1000),
+        finalReward: randomBigNumber(bN, 20),
+      });
+    }
+  }
   return {
-    firstProposal: addressOf.dgdHolder1,
-    secondProposal: addressOf.dgdHolder2,
-    thirdProposal: addressOf.dgdHolder5,
-    fourthProposal: addressOf.dgdHolder6,
+    id: versions[0].versionId,
+    proposer,
+    endorser,
+    versions,
   };
 };
 
-const endorsers = function (addressOf) {
-  return {
-    firstProposal: addressOf.badgeHolder1,
-    secondProposal: addressOf.badgeHolder2,
-    thirdProposal: addressOf.badgeHolder3,
-    fourthProposal: addressOf.badgeHolder4,
-  };
-};
+const getTestProposals = function (bN, addressOf) {
+  return [
+    getProposalStruct(
+      bN,
+      addressOf.dgdHolders[0],
+      addressOf.badgeHolders[0],
+      [{
+        versionId: randomAddress(),
+        milestoneCount: 3,
+        milestoneFundings: [bN(10 * (10 ** 18)), bN(15 * (10 ** 18)), bN(20 * (10 ** 18))],
+        milestoneDurations: [bN(1000), bN(1500), bN(2000)],
+        finalReward: bN(1 * (10 ** 18)),
+      }, {
+        versionId: randomAddress(),
+        milestoneCount: 3,
+        milestoneFundings: [bN(10 * (10 ** 18)), bN(20 * (10 ** 18)), bN(25 * (10 ** 18))],
+        milestoneDurations: [bN(30), bN(30), bN(20)],
+        finalReward: bN(1 * (10 ** 18)),
+      }, {
+        versionId: randomAddress(),
+        milestoneCount: 3,
+        milestoneFundings: [bN(10 * (10 ** 18)), bN(15 * (10 ** 18)), bN(15 * (10 ** 18)), bN(20 * (10 ** 18))],
+        milestoneDurations: [bN(1000), bN(1500), bN(1500), bN(2000)],
+        finalReward: bN(1 * (10 ** 18)),
+      }],
+    ),
 
-const moreVersions = {
-  firstProposal: {
-    versionTwo: randomBytes32(),
-    versionThree: randomBytes32(),
-  },
-  secondProposal: {
-    versionTwo: randomBytes32(),
-    versionThree: randomBytes32(),
-    versionFour: randomBytes32(),
-  },
-  thirdProposal: {
-    versionTwo: randomBytes32(),
-  },
-};
+    getProposalStruct(
+      bN,
+      addressOf.dgdHolders[1],
+      addressOf.badgeHolders[1],
+      [{
+        versionId: randomAddress(),
+        milestoneCount: 3,
+        milestoneFundings: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
+        milestoneDurations: [bN(500), bN(700), bN(300)],
+        finalReward: bN(1 * (10 ** 18)),
+      }, {
+        versionId: randomAddress(),
+        milestoneCount: 3,
+        milestoneFundings: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
+        milestoneDurations: [bN(20), bN(20), bN(20)],
+        finalReward: bN(1 * (10 ** 18)),
+      }, {
+        versionId: randomAddress(),
+        milestoneCount: 3,
+        milestoneFundings: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
+        milestoneDurations: [bN(500), bN(700), bN(300)],
+        finalReward: bN(1 * (10 ** 18)),
+      }, {
+        versionId: randomAddress(),
+        milestoneCount: 3,
+        milestoneFundings: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
+        milestoneDurations: [bN(500), bN(700), bN(300)],
+        finalReward: bN(1 * (10 ** 18)),
+      }],
+    ),
 
-const milestoneFundings = function (bN) {
-  return {
-    firstProposal: {
-      versionOne: [bN(10 * (10 ** 18)), bN(15 * (10 ** 18)), bN(20 * (10 ** 18))],
-      versionTwo: [bN(10 * (10 ** 18)), bN(20 * (10 ** 18)), bN(25 * (10 ** 18))],
-      versionThree: [bN(10 * (10 ** 18)), bN(15 * (10 ** 18)), bN(15 * (10 ** 18)), bN(20 * (10 ** 18))],
-    },
-    secondProposal: {
-      versionOne: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
-      versionTwo: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
-      versionThree: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
-      versionFour: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
-    },
-    thirdProposal: {
-      versionOne: [bN(20 * (10 ** 18)), bN(30 * (10 ** 18))],
-      versionTwo: [bN(25 * (10 ** 18)), bN(25 * (10 ** 18))],
-    },
-    fourthProposal: {
-      versionOne: [bN(1 * (10 ** 18)), bN(1 * (10 ** 18)), bN(2 * (10 ** 18)), bN(2 * (10 ** 18))],
-    },
-  };
-};
+    getProposalStruct(
+      bN,
+      addressOf.dgdHolders[4],
+      addressOf.badgeHolders[2],
+      [{
+        versionId: randomAddress(),
+        milestoneCount: 2,
+        milestoneFundings: [bN(20 * (10 ** 18)), bN(30 * (10 ** 18))],
+        milestoneDurations: [bN(2000), bN(3000)],
+        finalReward: bN(1 * (10 ** 18)),
+      }, {
+        versionId: randomAddress(),
+        milestoneCount: 2,
+        milestoneFundings: [bN(25 * (10 ** 18)), bN(25 * (10 ** 18))],
+        milestoneDurations: [bN(10), bN(10)],
+        finalReward: bN(1 * (10 ** 18)),
+      }],
+    ),
 
-const milestoneDurations = function (bN) {
-  return {
-    firstProposal: {
-      versionOne: [bN(1000), bN(1500), bN(2000)],
-      versionTwo: [bN(30), bN(30), bN(20)],
-      versionThree: [bN(1000), bN(1500), bN(1500), bN(2000)],
-    },
-    secondProposal: {
-      versionOne: [bN(500), bN(700), bN(300)],
-      versionTwo: [bN(20), bN(20), bN(20)],
-      versionThree: [bN(500), bN(700), bN(300)],
-      versionFour: [bN(500), bN(700), bN(300)],
-    },
-    thirdProposal: {
-      versionOne: [bN(2000), bN(3000)],
-      versionTwo: [bN(10), bN(10)],
-    },
-    fourthProposal: {
-      versionOne: [bN(25), bN(25), bN(25), bN(25)],
-    },
-  };
-};
+    getProposalStruct(
+      bN,
+      addressOf.dgdHolders[5],
+      addressOf.badgeHolders[3],
+      [{
+        versionId: randomAddress(),
+        milestoneCount: 4,
+        milestoneFundings: [bN(1 * (10 ** 18)), bN(1 * (10 ** 18)), bN(2 * (10 ** 18)), bN(2 * (10 ** 18))],
+        milestoneDurations: [bN(25), bN(25), bN(25), bN(25)],
+        finalReward: bN(1 * (10 ** 18)),
+      }],
+    ),
 
-const finalRewards = function (bN) {
-  return {
-    firstProposal: bN(1 * (10 ** 18)),
-    secondProposal: bN(1 * (10 ** 18)),
-    thirdProposal: bN(1 * (10 ** 18)),
-    fourthProposal: bN(1 * (10 ** 18)),
-  };
-};
-
-const lastNonces = {
-  badgeHolder1: 1,
-  badgeHolder2: 1,
-  badgeHolder3: 1,
-  badgeHolder4: 1,
-  dgdHolder1: 1,
-  dgdHolder2: 1,
-  dgdHolder3: 1,
-  dgdHolder4: 1,
-  dgdHolder5: 1,
-  dgdHolder6: 1,
+  ];
 };
 
 module.exports = {
@@ -287,13 +286,8 @@ module.exports = {
   deployServices,
   deployInteractive,
   initialTransferTokens,
-  proposalIds,
-  proposers,
-  moreVersions,
-  milestoneDurations,
-  milestoneFundings,
-  lastNonces,
-  endorsers,
-  finalRewards,
+  getTestProposals,
+  BADGE_HOLDER_COUNT,
+  DGD_HOLDER_COUNT,
   // assignDeployedContracts,
 };

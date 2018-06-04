@@ -1,3 +1,3 @@
 truffle compile
-truffle migrate --network development
+truffle migrate --network development --reset
 truffle exec test/simulateDao.js
