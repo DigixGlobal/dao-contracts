@@ -165,7 +165,7 @@ const initialTransferTokens = async function (contracts, addressOf, bN) {
 const getProposalStruct = function (bN, proposer, endorser, versions, generateRandom = false) {
   if (generateRandom) {
     versions = [];
-    for (let i=0;i<3;i++) {
+    for (let i = 0; i < 3; i++) {
       versions.push({
         versionId: randomAddress,
         milestoneCount: 3,

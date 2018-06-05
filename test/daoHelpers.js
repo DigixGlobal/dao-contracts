@@ -85,7 +85,11 @@ const daoConstantsKeys = function () {
     QUARTER_POINT_DRAFT_VOTE: 'quarter_point_draft_vote',
     QUARTER_POINT_VOTE: 'quarter_point_vote',
     QUARTER_POINT_INTERIM_VOTE: 'quarter_point_interim_vote',
+    QUARTER_POINT_MILESTONE_COMPLETION: 'q_p_milestone_completion',
     CONFIG_MINIMAL_PARTICIPATION_POINT: 'CONFIG_MINIMAL_PARTICIPATION_POINT',
+    CONFIG_MINIMAL_BADGE_PARTICIPATION_POINT: 'CONFIG_MINIMAL_B_QP',
+    SPECIAL_PROPOSAL_COMMIT_PHASE: 'special_proposal_commit_phase',
+    SPECIAL_PROPOSAL_PHASE_TOTAL: 'special_proposal_phase_total',
   };
 };
 

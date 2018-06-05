@@ -83,7 +83,7 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
     uint256 _nonce
   )
     public
-    if_sender_is(CONTRACT_DAO)
+    if_sender_is(CONTRACT_DAO_VOTING)
     returns (bool _success)
   {
     DaoStructs.SpecialProposal _proposal = proposalsById[_proposalId];
@@ -101,7 +101,7 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
 
   function setPass(bytes32 _proposalId, bool _result)
     public
-    if_sender_is(CONTRACT_DAO)
+    if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     returns (bool _success)
   {
     proposalsById[_proposalId].voting.passed = _result;
@@ -110,7 +110,7 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
 
   function setVotingClaim(bytes32 _proposalId, address _claimer)
     public
-    if_sender_is(CONTRACT_DAO)
+    if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
   {
     DaoStructs.SpecialProposal _proposal = proposalsById[_proposalId];
     _proposal.voting.claimer = _claimer;
@@ -143,7 +143,7 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
     uint256 _weight
   )
     public
-    if_sender_is(CONTRACT_DAO)
+    if_sender_is(CONTRACT_DAO_VOTING)
     returns (bool _success)
   {
     DaoStructs.Voting _voting = proposalsById[_proposalId].voting;

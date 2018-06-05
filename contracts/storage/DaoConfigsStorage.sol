@@ -93,7 +93,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
 
   function updateUintConfigs(uint256[] _uintConfigs)
     public
-    if_sender_is(CONTRACT_DAO)
+    if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
   {
     uintConfigs[CONFIG_LOCKING_PHASE_DURATION] = _uintConfigs[0];
     uintConfigs[CONFIG_QUARTER_DURATION] = _uintConfigs[1];
@@ -135,12 +135,63 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
     uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_DEN] = _uintConfigs[37];
     uintConfigs[CONFIG_QUARTER_POINT_SCALING_FACTOR] = _uintConfigs[38];
     uintConfigs[CONFIG_REPUTATION_POINT_SCALING_FACTOR] = _uintConfigs[39];
+    uintConfigs[CONFIG_MINIMAL_BADGE_PARTICIPATION_POINT] = _uintConfigs[40];
+    uintConfigs[CONFIG_BADGE_QUARTER_POINT_SCALING_FACTOR] = _uintConfigs[41];
+    uintConfigs[CONFIG_BADGE_REPUTATION_POINT_SCALING_FACTOR] = _uintConfigs[42];
+    uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM] = _uintConfigs[43];
+    uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_DEN] = _uintConfigs[44];
   }
 
   function readUintConfigs()
     public
-    returns (uint256[] _uintConfigs)
+    returns (uint256[])
   {
-
+    uint256[] memory _uintConfigs = new uint256[](45);
+    _uintConfigs[0] = uintConfigs[CONFIG_LOCKING_PHASE_DURATION];
+    _uintConfigs[1] = uintConfigs[CONFIG_QUARTER_DURATION];
+    _uintConfigs[2] = uintConfigs[CONFIG_VOTING_COMMIT_PHASE];
+    _uintConfigs[3] = uintConfigs[CONFIG_VOTING_PHASE_TOTAL];
+    _uintConfigs[4] = uintConfigs[CONFIG_INTERIM_COMMIT_PHASE];
+    _uintConfigs[5] = uintConfigs[CONFIG_INTERIM_PHASE_TOTAL];
+    _uintConfigs[6] = uintConfigs[CONFIG_DRAFT_QUORUM_FIXED_PORTION_NUMERATOR];
+    _uintConfigs[7] = uintConfigs[CONFIG_DRAFT_QUORUM_FIXED_PORTION_DENOMINATOR];
+    _uintConfigs[8] = uintConfigs[CONFIG_DRAFT_QUORUM_SCALING_FACTOR_NUMERATOR];
+    _uintConfigs[9] = uintConfigs[CONFIG_DRAFT_QUORUM_SCALING_FACTOR_DENOMINATOR];
+    _uintConfigs[10] = uintConfigs[CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR];
+    _uintConfigs[11] = uintConfigs[CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR];
+    _uintConfigs[12] = uintConfigs[CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR];
+    _uintConfigs[13] = uintConfigs[CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR];
+    _uintConfigs[14] = uintConfigs[CONFIG_DRAFT_QUOTA_NUMERATOR];
+    _uintConfigs[15] = uintConfigs[CONFIG_DRAFT_QUOTA_DENOMINATOR];
+    _uintConfigs[16] = uintConfigs[CONFIG_VOTING_QUOTA_NUMERATOR];
+    _uintConfigs[17] = uintConfigs[CONFIG_VOTING_QUOTA_DENOMINATOR];
+    _uintConfigs[18] = uintConfigs[QUARTER_POINT_DRAFT_VOTE];
+    _uintConfigs[19] = uintConfigs[QUARTER_POINT_VOTE];
+    _uintConfigs[20] = uintConfigs[QUARTER_POINT_INTERIM_VOTE];
+    _uintConfigs[21] = uintConfigs[CONFIG_MINIMAL_PARTICIPATION_POINT];
+    _uintConfigs[22] = uintConfigs[QUARTER_POINT_CLAIM_RESULT];
+    _uintConfigs[23] = uintConfigs[QUARTER_POINT_CLAIM_RESULT];
+    _uintConfigs[24] = uintConfigs[QUARTER_POINT_MILESTONE_COMPLETION];
+    _uintConfigs[25] = uintConfigs[REPUTATION_PER_EXTRA_QP];
+    _uintConfigs[26] = uintConfigs[BONUS_REPUTATION_NUMERATOR];
+    _uintConfigs[27] = uintConfigs[BONUS_REPUTATION_DENOMINATOR];
+    _uintConfigs[28] = uintConfigs[SPECIAL_PROPOSAL_COMMIT_PHASE];
+    _uintConfigs[29] = uintConfigs[SPECIAL_PROPOSAL_PHASE_TOTAL];
+    _uintConfigs[30] = uintConfigs[CONFIG_SPECIAL_QUOTA_NUMERATOR];
+    _uintConfigs[31] = uintConfigs[CONFIG_SPECIAL_QUOTA_DENOMINATOR];
+    _uintConfigs[32] = uintConfigs[CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR];
+    _uintConfigs[33] = uintConfigs[CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR];
+    _uintConfigs[34] = uintConfigs[CONFIG_MAXIMUM_REPUTATION_DEDUCTION];
+    _uintConfigs[35] = uintConfigs[CONFIG_PUNISHMENT_FOR_NOT_LOCKING];
+    _uintConfigs[36] = uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_NUM];
+    _uintConfigs[37] = uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_DEN];
+    _uintConfigs[38] = uintConfigs[CONFIG_QUARTER_POINT_SCALING_FACTOR];
+    _uintConfigs[39] = uintConfigs[CONFIG_REPUTATION_POINT_SCALING_FACTOR];
+    _uintConfigs[40] = uintConfigs[CONFIG_MINIMAL_BADGE_PARTICIPATION_POINT];
+    _uintConfigs[41] = uintConfigs[CONFIG_BADGE_QUARTER_POINT_SCALING_FACTOR];
+    _uintConfigs[42] = uintConfigs[CONFIG_BADGE_REPUTATION_POINT_SCALING_FACTOR];
+    _uintConfigs[43] = uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM];
+    _uintConfigs[44] = uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_DEN];
+    return _uintConfigs;
   }
 }
