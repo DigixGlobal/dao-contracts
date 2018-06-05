@@ -9,14 +9,8 @@ const {
 } = require('../setup');
 
 const {
-  daoConstantsKeys,
-  daoConstantsValues,
-} = require('../daoHelpers');
-
-const {
   randomBigNumbers,
   randomBigNumber,
-  randomBytes32s,
   randomAddresses,
 } = require('@digix/helpers/lib/helpers');
 
@@ -24,22 +18,21 @@ const bN = web3.toBigNumber;
 
 contract('DaoFundingStorage', function (accounts) {
   let libs;
-  let resolver;
   let addressOf;
   let contracts;
 
   before(async function () {
     libs = await deployLibraries();
-    resolver = await deployNewContractResolver();
-    addressOf = await getAccountsAndAddressOf(accounts);
     contracts = {};
-    await deployStorage(libs, contracts, resolver, addressOf);
-    await registerInteractive(resolver, addressOf);
+    await deployNewContractResolver(contracts);
+    addressOf = await getAccountsAndAddressOf(accounts);
+    await deployStorage(libs, contracts, contracts.resolver, addressOf);
+    await registerInteractive(contracts.resolver, addressOf);
   });
 
   describe('Initialization', function () {
     it('[contract key]', async function () {
-      assert.deepEqual(await resolver.get_contract.call('s:dao:fundingstorage'), contracts.daoFundingStorage.address);
+      assert.deepEqual(await contracts.resolver.get_contract.call('s:dao:fundingstorage'), contracts.daoFundingStorage.address);
     });
   });
 
@@ -84,7 +77,7 @@ contract('DaoFundingStorage', function (accounts) {
   });
 
   describe('updateClaimableEth', function () {
-    const users = randomAddresses(2)
+    const users = randomAddresses(2);
     const amounts = randomBigNumbers(bN, 2);
     it('[not called from CONTRACT_DAO_FUNDING_MANAGER]: revert', async function () {
       for (let i = 1; i < 20; i++) {

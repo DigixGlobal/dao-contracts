@@ -1,10 +1,7 @@
 const a = require('awaiting');
 
-// const contract = require('truffle-contract');
-
 const {
   indexRange,
-  randomBytes32,
   randomAddress,
   randomBigNumber,
 } = require('@digix/helpers/lib/helpers');
@@ -18,57 +15,31 @@ const randomBigNumbers = function (bN, count, range) {
   return indexRange(0, count).map(() => randomBigNumber(bN, range));
 };
 
-// const ContractResolverJson = require('./../build/contracts/ContractResolver.json');
-// const DoublyLinkedListJson = require('./../build/contracts/DoublyLinkedList.json');
-//
-// const IdentityStorageJson = require('./../build/contracts/IdentityStorage.json');
-// const DaoConfigsStorageJson = require('./../build/contracts/MockDaoConfigsStorage.json');
-// const DaoStakeStorageJson = require('./../build/contracts/DaoStakeStorage.json');
-// const DaoPointsStorageJson = require('./../build/contracts/DaoPointsStorage.json');
-// const DaoStorageJson = require('./../build/contracts/DaoStorage.json');
-// const DaoSpecialStorageJson = require('./../build/contracts/DaoSpecialStorage.json');
-// const DaoFundingStorageJson = require('./../build/contracts/DaoFundingStorage.json');
-// const DaoRewardsStorageJson = require('./../build/contracts/DaoRewardsStorage.json');
-//
-// const DaoInfoServiceJson = require('./../build/contracts/DaoInfoService.json');
-// const DaoListingServiceJson = require('./../build/contracts/DaoListingService.json');
-// const DaoCalculatorServiceJson = require('./../build/contracts/DaoCalculatorService.json');
-//
-// const DaoIdentityJson = require('./../build/contracts/DaoIdentity.json');
-// const DaoJson = require('./../build/contracts/Dao.json');
-// const DaoVotingJson = require('./../build/contracts/DaoVoting.json');
-// const DaoVotingClaimsJson = require('./../build/contracts/DaoVotingClaims.json');
-// const DaoStakeLockingJson = require('./../build/contracts/DaoStakeLocking.json');
-// const DaoFundingManagerJson = require('./../build/contracts/DaoFundingManager.json');
-// const QuarterPointJson = require('./../build/contracts/QuarterPoint.json');
-// const ReputationPointJson = require('./../build/contracts/ReputationPoint.json');
-// const DaoRewardsManagerJson = require('./../build/contracts/DaoRewardsManager.json');
-//
-// const ContractResolver = artifacts.require('./ContractResolver.sol');
-// const DoublyLinkedList = artifacts.require('./DoublyLinkedList.sol');
-//
-// const IdentityStorage = artifacts.require('./IdentityStorage.sol');
-// const DaoConfigsStorage = artifacts.require('./DaoConfigsStorage.sol');
-// const DaoStakeStorage = artifacts.require('./DaoStakeStorage.sol');
-// const DaoPointsStorage = artifacts.require('./DaoPointsStorage.sol');
-// const DaoStorage = artifacts.require('./DaoStorage.sol');
-// const DaoSpecialStorage = artifacts.require('./DaoSpecialStorage.sol');
-// const DaoFundingStorage = artifacts.require('./DaoFundingStorage.sol');
-// const DaoRewardsStorage = artifacts.require('./DaoRewardsStorage.sol');
-//
-// const DaoInfoService = artifacts.require('./DaoInfoService.sol');
-// const DaoListingService = artifacts.require('./DaoListingService.sol');
-// const DaoCalculatorService = artifacts.require('./DaoCalculatorService.sol');
-//
-// const DaoIdentity = artifacts.require('./DaoIdentity.sol');
-// const Dao = artifacts.require('./Dao.sol');
-// const DaoVoting = artifacts.require('./DaoVoting.sol');
-// const DaoVotingClaims = artifacts.require('./DaoVotingClaims.sol');
-// const DaoStakeLocking = artifacts.require('./DaoStakeLocking.sol');
-// const DaoFundingManager = artifacts.require('./DaoFundingManager.sol');
-// const QuarterPoint = artifacts.require('./QuarterPoint.sol');
-// const ReputationPoint = artifacts.require('./ReputationPoint.sol');
-// const DaoRewardsManager = artifacts.require('./DaoRewardsManager.sol');
+const ContractResolver = artifacts.require('./ContractResolver.sol');
+const DoublyLinkedList = artifacts.require('./DoublyLinkedList.sol');
+
+const IdentityStorage = artifacts.require('./IdentityStorage.sol');
+const DaoConfigsStorage = artifacts.require('./DaoConfigsStorage.sol');
+const DaoStakeStorage = artifacts.require('./DaoStakeStorage.sol');
+const DaoPointsStorage = artifacts.require('./DaoPointsStorage.sol');
+const DaoStorage = artifacts.require('./DaoStorage.sol');
+const DaoSpecialStorage = artifacts.require('./DaoSpecialStorage.sol');
+const DaoFundingStorage = artifacts.require('./DaoFundingStorage.sol');
+const DaoRewardsStorage = artifacts.require('./DaoRewardsStorage.sol');
+
+const DaoInfoService = artifacts.require('./DaoInfoService.sol');
+const DaoListingService = artifacts.require('./DaoListingService.sol');
+const DaoCalculatorService = artifacts.require('./DaoCalculatorService.sol');
+
+const DaoIdentity = artifacts.require('./DaoIdentity.sol');
+const Dao = artifacts.require('./Dao.sol');
+const DaoVoting = artifacts.require('./DaoVoting.sol');
+const DaoVotingClaims = artifacts.require('./DaoVotingClaims.sol');
+const DaoStakeLocking = artifacts.require('./DaoStakeLocking.sol');
+const DaoFundingManager = artifacts.require('./DaoFundingManager.sol');
+const QuarterPoint = artifacts.require('./QuarterPoint.sol');
+const ReputationPoint = artifacts.require('./ReputationPoint.sol');
+const DaoRewardsManager = artifacts.require('./DaoRewardsManager.sol');
 
 const BADGE_HOLDER_COUNT = 4;
 const DGD_HOLDER_COUNT = 6;
@@ -125,6 +96,8 @@ const registerInteractive = async function (resolver, addressOf) {
     'c:dao:identity',
     'c:stake:locking',
     'c:dao',
+    'c:dao:voting',
+    'c:dao:voting:claims',
     'c:config:controller',
     'i:quarter:point',
     'i:reputation:point',
@@ -289,5 +262,4 @@ module.exports = {
   getTestProposals,
   BADGE_HOLDER_COUNT,
   DGD_HOLDER_COUNT,
-  // assignDeployedContracts,
 };

@@ -196,12 +196,12 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         _totalEffectiveBadgeLastQuarter = allQuartersInfo[_quarterIndex].totalEffectiveBadgeLastQuarter;
     }
 
-    function readRewardsPoolOfQuarter(uint256 _quarterIndex)
+    function readRewardsPoolOfLastQuarter(uint256 _quarterIndex)
         public
         view
         returns (uint256 _rewardsPool)
     {
-        _rewardsPool = allQuartersInfo[_quarterIndex + 1].dgxRewardsPoolLastQuarter;
+        _rewardsPool = allQuartersInfo[_quarterIndex].dgxRewardsPoolLastQuarter;
     }
 
     function readReputationPointAtQuarter(address _user, uint256 _quarterIndex)

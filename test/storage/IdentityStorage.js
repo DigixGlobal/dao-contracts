@@ -9,10 +9,6 @@ const {
 } = require('../setup');
 
 const {
-  roles,
-} = require('../daoHelpers');
-
-const {
   paddedHex,
   randomAddresses,
   getCurrentTimestamp,
@@ -20,28 +16,23 @@ const {
 
 const bN = web3.toBigNumber;
 
-const callingKeys = [
-  'c:config:controller',
-];
-
 contract('IdentityStorage', function (accounts) {
   let libs;
-  let resolver;
   let addressOf;
   let contracts;
 
   before(async function () {
     libs = await deployLibraries();
-    resolver = await deployNewContractResolver();
-    addressOf = await getAccountsAndAddressOf(accounts);
     contracts = {};
-    await deployStorage(libs, contracts, resolver, addressOf);
-    await registerInteractive(resolver, addressOf);
+    await deployNewContractResolver(contracts);
+    addressOf = await getAccountsAndAddressOf(accounts);
+    await deployStorage(libs, contracts, contracts.resolver, addressOf);
+    await registerInteractive(contracts.resolver, addressOf);
   });
 
   describe('Initialization', function () {
     it('[verify key]', async function () {
-      assert.deepEqual(await resolver.get_contract.call('c:dao:identity:storage'), contracts.identityStorage.address);
+      assert.deepEqual(await contracts.resolver.get_contract.call('c:dao:identity:storage'), contracts.identityStorage.address);
     });
   });
 
@@ -132,7 +123,7 @@ contract('IdentityStorage', function (accounts) {
     });
     it('[remove user]: verify read functions', async function () {
       // add dummy users
-      const dummyUserAddresses = randomAddresses(2)
+      const dummyUserAddresses = randomAddresses(2);
       await contracts.identityStorage.update_add_user_to_group(bN(2), dummyUserAddresses[0], 'dummy_user_1_added');
       await contracts.identityStorage.update_add_user_to_group(bN(2), dummyUserAddresses[1], 'dummy_user_2_added');
 

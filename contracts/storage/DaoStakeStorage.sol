@@ -135,28 +135,6 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
       }
     }
 
-    function addAndReadBadgeWeight(address[] _users)
-      public
-      constant
-      returns (uint256 _weight)
-    {
-      uint256 _n = _users.length;
-      for (uint256 i = 0; i < _n; i++) {
-        _weight += lockedBadge[_users[i]];
-      }
-    }
-
-    function addAndReadDGDWeight(address[] _users)
-      public
-      constant
-      returns (uint256 _weight)
-    {
-      uint256 _n = _users.length;
-      for (uint256 i = 0; i < _n; i++) {
-        _weight += lockedDGDStake[_users[i]];
-      }
-    }
-
     function readFirstBadgeParticipant()
         public
         constant

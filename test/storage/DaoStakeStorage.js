@@ -21,22 +21,21 @@ const bN = web3.toBigNumber;
 
 contract('DaoStakeStorage', function (accounts) {
   let libs;
-  let resolver;
   let addressOf;
   let contracts;
 
   before(async function () {
     libs = await deployLibraries();
-    resolver = await deployNewContractResolver();
-    addressOf = await getAccountsAndAddressOf(accounts);
     contracts = {};
-    await deployStorage(libs, contracts, resolver, addressOf);
-    await registerInteractive(resolver, addressOf);
+    await deployNewContractResolver(contracts);
+    addressOf = await getAccountsAndAddressOf(accounts);
+    await deployStorage(libs, contracts, contracts.resolver, addressOf);
+    await registerInteractive(contracts.resolver, addressOf);
   });
 
   describe('Initialization', function () {
     it('[contract key]', async function () {
-      assert.deepEqual(await resolver.get_contract.call('s:stake'), contracts.daoStakeStorage.address);
+      assert.deepEqual(await contracts.resolver.get_contract.call('s:stake'), contracts.daoStakeStorage.address);
     });
   });
 
@@ -98,158 +97,158 @@ contract('DaoStakeStorage', function (accounts) {
     const lockedBadge = randomBigNumber(bN);
     it('[not called from CONTRACT_DAO_STAKE_LOCKING]: revert', async function () {
       assert(await a.failure(contracts.daoStakeStorage.updateUserBadgeStake.call(
-        addressOf.badgeHolder1,
+        addressOf.badgeHolders[0],
         lockedBadge,
         { from: accounts[2] },
       )));
     });
     it('[valid call]: verify read functions', async function () {
-      await contracts.daoStakeStorage.updateUserBadgeStake(addressOf.badgeHolder1, lockedBadge);
-      assert.deepEqual(await contracts.daoStakeStorage.readUserLockedBadge.call(addressOf.badgeHolder1), lockedBadge);
+      await contracts.daoStakeStorage.updateUserBadgeStake(addressOf.badgeHolders[0], lockedBadge);
+      assert.deepEqual(await contracts.daoStakeStorage.readUserLockedBadge.call(addressOf.badgeHolders[0]), lockedBadge);
     });
   });
 
   describe('addParticipant', function () {
     it('[not called from CONTRACT_DAO_STAKE_LOCKING]: revert', async function () {
       assert(await a.failure(contracts.daoStakeStorage.addParticipant.call(
-        addressOf.dgdHolder1,
+        addressOf.dgdHolders[0],
         { from: accounts[2] },
       )));
     });
     it('[valid call]: verify read functions', async function () {
-      assert.deepEqual(await contracts.daoStakeStorage.isParticipant.call(addressOf.dgdHolder1), false);
-      assert.deepEqual(await contracts.daoStakeStorage.addParticipant.call(addressOf.dgdHolder1), true);
-      await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolder1);
-      assert.deepEqual(await contracts.daoStakeStorage.isParticipant.call(addressOf.dgdHolder1), true);
+      assert.deepEqual(await contracts.daoStakeStorage.isParticipant.call(addressOf.dgdHolders[0]), false);
+      assert.deepEqual(await contracts.daoStakeStorage.addParticipant.call(addressOf.dgdHolders[0]), true);
+      await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolders[0]);
+      assert.deepEqual(await contracts.daoStakeStorage.isParticipant.call(addressOf.dgdHolders[0]), true);
     });
   });
 
   describe('removeParticipant', function () {
     it('[not called from CONTRACT_DAO_STAKE_LOCKING]: revert', async function () {
       assert(await a.failure(contracts.daoStakeStorage.removeParticipant.call(
-        addressOf.dgdHolder1,
+        addressOf.dgdHolders[0],
         { from: accounts[2] },
       )));
     });
     it('[valid call]: verify read functions', async function () {
-      assert.deepEqual(await contracts.daoStakeStorage.removeParticipant.call(addressOf.dgdHolder1), true);
-      await contracts.daoStakeStorage.removeParticipant(addressOf.dgdHolder1);
-      assert.deepEqual(await contracts.daoStakeStorage.isParticipant.call(addressOf.dgdHolder1), false);
+      assert.deepEqual(await contracts.daoStakeStorage.removeParticipant.call(addressOf.dgdHolders[0]), true);
+      await contracts.daoStakeStorage.removeParticipant(addressOf.dgdHolders[0]);
+      assert.deepEqual(await contracts.daoStakeStorage.isParticipant.call(addressOf.dgdHolders[0]), false);
     });
   });
 
   describe('addBadgeParticipant', function () {
     it('[not called from CONTRACT_DAO_STAKE_LOCKING]: revert', async function () {
       assert(await a.failure(contracts.daoStakeStorage.addBadgeParticipant.call(
-        addressOf.badgeHolder1,
+        addressOf.badgeHolders[0],
         { from: accounts[2] },
       )));
     });
     it('[valid call]: verify read functions', async function () {
-      assert.deepEqual(await contracts.daoStakeStorage.isBadgeParticipant.call(addressOf.badgeHolder1), false);
-      assert.deepEqual(await contracts.daoStakeStorage.addBadgeParticipant.call(addressOf.badgeHolder1), true);
-      await contracts.daoStakeStorage.addBadgeParticipant(addressOf.badgeHolder1);
-      assert.deepEqual(await contracts.daoStakeStorage.isBadgeParticipant.call(addressOf.badgeHolder1), true);
+      assert.deepEqual(await contracts.daoStakeStorage.isBadgeParticipant.call(addressOf.badgeHolders[0]), false);
+      assert.deepEqual(await contracts.daoStakeStorage.addBadgeParticipant.call(addressOf.badgeHolders[0]), true);
+      await contracts.daoStakeStorage.addBadgeParticipant(addressOf.badgeHolders[0]);
+      assert.deepEqual(await contracts.daoStakeStorage.isBadgeParticipant.call(addressOf.badgeHolders[0]), true);
     });
   });
 
   describe('removeBadgeParticipant', function () {
     it('[not called from CONTRACT_DAO_STAKE_LOCKING]: revert', async function () {
       assert(await a.failure(contracts.daoStakeStorage.removeBadgeParticipant.call(
-        addressOf.badgeHolder1,
+        addressOf.badgeHolders[0],
         { from: accounts[2] },
       )));
     });
     it('[valid call]: verify read functions', async function () {
-      assert.deepEqual(await contracts.daoStakeStorage.removeBadgeParticipant.call(addressOf.badgeHolder1), true);
-      await contracts.daoStakeStorage.removeBadgeParticipant(addressOf.badgeHolder1);
-      assert.deepEqual(await contracts.daoStakeStorage.isBadgeParticipant.call(addressOf.badgeHolder1), false);
+      assert.deepEqual(await contracts.daoStakeStorage.removeBadgeParticipant.call(addressOf.badgeHolders[0]), true);
+      await contracts.daoStakeStorage.removeBadgeParticipant(addressOf.badgeHolders[0]);
+      assert.deepEqual(await contracts.daoStakeStorage.isBadgeParticipant.call(addressOf.badgeHolders[0]), false);
     });
   });
 
   describe('Read Functions', function () {
     before(async function () {
-      await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolder2);
-      await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolder3);
-      await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolder4);
-      await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolder5);
-      await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolder6);
-      await contracts.daoStakeStorage.addBadgeParticipant(addressOf.badgeHolder2);
-      await contracts.daoStakeStorage.addBadgeParticipant(addressOf.badgeHolder3);
-      await contracts.daoStakeStorage.addBadgeParticipant(addressOf.badgeHolder4);
+      await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolders[1]);
+      await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolders[2]);
+      await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolders[3]);
+      await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolders[4]);
+      await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolders[5]);
+      await contracts.daoStakeStorage.addBadgeParticipant(addressOf.badgeHolders[1]);
+      await contracts.daoStakeStorage.addBadgeParticipant(addressOf.badgeHolders[2]);
+      await contracts.daoStakeStorage.addBadgeParticipant(addressOf.badgeHolders[3]);
     });
     it('[readFirstBadgeParticipant]', async function () {
-      assert.deepEqual(await contracts.daoStakeStorage.readFirstBadgeParticipant.call(), addressOf.badgeHolder2);
-      await contracts.daoStakeStorage.removeBadgeParticipant(addressOf.badgeHolder2);
-      assert.deepEqual(await contracts.daoStakeStorage.readFirstBadgeParticipant.call(), addressOf.badgeHolder3);
+      assert.deepEqual(await contracts.daoStakeStorage.readFirstBadgeParticipant.call(), addressOf.badgeHolders[1]);
+      await contracts.daoStakeStorage.removeBadgeParticipant(addressOf.badgeHolders[1]);
+      assert.deepEqual(await contracts.daoStakeStorage.readFirstBadgeParticipant.call(), addressOf.badgeHolders[2]);
     });
     it('[readLastBadgeParticipant]', async function () {
-      assert.deepEqual(await contracts.daoStakeStorage.readLastBadgeParticipant.call(), addressOf.badgeHolder4);
-      await contracts.daoStakeStorage.addBadgeParticipant(addressOf.badgeHolder2);
-      assert.deepEqual(await contracts.daoStakeStorage.readLastBadgeParticipant.call(), addressOf.badgeHolder2);
+      assert.deepEqual(await contracts.daoStakeStorage.readLastBadgeParticipant.call(), addressOf.badgeHolders[3]);
+      await contracts.daoStakeStorage.addBadgeParticipant(addressOf.badgeHolders[1]);
+      assert.deepEqual(await contracts.daoStakeStorage.readLastBadgeParticipant.call(), addressOf.badgeHolders[1]);
     });
     it('[readNextBadgeParticipant]', async function () {
-      assert.deepEqual(await contracts.daoStakeStorage.readNextBadgeParticipant.call(addressOf.badgeHolder3), addressOf.badgeHolder4);
-      assert.deepEqual(await contracts.daoStakeStorage.readNextBadgeParticipant.call(addressOf.badgeHolder4), addressOf.badgeHolder2);
-      assert.deepEqual(await contracts.daoStakeStorage.readNextBadgeParticipant.call(addressOf.badgeHolder2), EMPTY_ADDRESS);
-      await contracts.daoStakeStorage.removeBadgeParticipant(addressOf.badgeHolder4);
-      assert.deepEqual(await contracts.daoStakeStorage.readNextBadgeParticipant.call(addressOf.badgeHolder3), addressOf.badgeHolder2);
+      assert.deepEqual(await contracts.daoStakeStorage.readNextBadgeParticipant.call(addressOf.badgeHolders[2]), addressOf.badgeHolders[3]);
+      assert.deepEqual(await contracts.daoStakeStorage.readNextBadgeParticipant.call(addressOf.badgeHolders[3]), addressOf.badgeHolders[1]);
+      assert.deepEqual(await contracts.daoStakeStorage.readNextBadgeParticipant.call(addressOf.badgeHolders[1]), EMPTY_ADDRESS);
+      await contracts.daoStakeStorage.removeBadgeParticipant(addressOf.badgeHolders[3]);
+      assert.deepEqual(await contracts.daoStakeStorage.readNextBadgeParticipant.call(addressOf.badgeHolders[2]), addressOf.badgeHolders[1]);
     });
     it('[readPreviousBadgeParticipant]', async function () {
-      await contracts.daoStakeStorage.addBadgeParticipant(addressOf.badgeHolder4);
-      assert.deepEqual(await contracts.daoStakeStorage.readPreviousBadgeParticipant.call(addressOf.badgeHolder3), EMPTY_ADDRESS);
-      assert.deepEqual(await contracts.daoStakeStorage.readPreviousBadgeParticipant.call(addressOf.badgeHolder2), addressOf.badgeHolder3);
-      assert.deepEqual(await contracts.daoStakeStorage.readPreviousBadgeParticipant.call(addressOf.badgeHolder4), addressOf.badgeHolder2);
-      await contracts.daoStakeStorage.removeBadgeParticipant(addressOf.badgeHolder2);
-      assert.deepEqual(await contracts.daoStakeStorage.readPreviousBadgeParticipant.call(addressOf.badgeHolder4), addressOf.badgeHolder3);
+      await contracts.daoStakeStorage.addBadgeParticipant(addressOf.badgeHolders[3]);
+      assert.deepEqual(await contracts.daoStakeStorage.readPreviousBadgeParticipant.call(addressOf.badgeHolders[2]), EMPTY_ADDRESS);
+      assert.deepEqual(await contracts.daoStakeStorage.readPreviousBadgeParticipant.call(addressOf.badgeHolders[1]), addressOf.badgeHolders[2]);
+      assert.deepEqual(await contracts.daoStakeStorage.readPreviousBadgeParticipant.call(addressOf.badgeHolders[3]), addressOf.badgeHolders[1]);
+      await contracts.daoStakeStorage.removeBadgeParticipant(addressOf.badgeHolders[1]);
+      assert.deepEqual(await contracts.daoStakeStorage.readPreviousBadgeParticipant.call(addressOf.badgeHolders[3]), addressOf.badgeHolders[2]);
     });
     it('[readTotalBadgeParticipant]', async function () {
       assert.deepEqual(await contracts.daoStakeStorage.readTotalBadgeParticipant.call(), bN(2));
-      await contracts.daoStakeStorage.addBadgeParticipant(addressOf.badgeHolder1);
+      await contracts.daoStakeStorage.addBadgeParticipant(addressOf.badgeHolders[0]);
       assert.deepEqual(await contracts.daoStakeStorage.readTotalBadgeParticipant.call(), bN(3));
-      await contracts.daoStakeStorage.removeBadgeParticipant(addressOf.badgeHolder4);
-      await contracts.daoStakeStorage.removeBadgeParticipant(addressOf.badgeHolder3);
+      await contracts.daoStakeStorage.removeBadgeParticipant(addressOf.badgeHolders[3]);
+      await contracts.daoStakeStorage.removeBadgeParticipant(addressOf.badgeHolders[2]);
       assert.deepEqual(await contracts.daoStakeStorage.readTotalBadgeParticipant.call(), bN(1));
     });
     it('[readFirstParticipant]', async function () {
-      assert.deepEqual(await contracts.daoStakeStorage.readFirstParticipant.call(), addressOf.dgdHolder2);
-      await contracts.daoStakeStorage.removeParticipant(addressOf.dgdHolder2);
-      assert.deepEqual(await contracts.daoStakeStorage.readFirstParticipant.call(), addressOf.dgdHolder3);
+      assert.deepEqual(await contracts.daoStakeStorage.readFirstParticipant.call(), addressOf.dgdHolders[1]);
+      await contracts.daoStakeStorage.removeParticipant(addressOf.dgdHolders[1]);
+      assert.deepEqual(await contracts.daoStakeStorage.readFirstParticipant.call(), addressOf.dgdHolders[2]);
     });
     it('[readLastParticipant]', async function () {
-      assert.deepEqual(await contracts.daoStakeStorage.readLastParticipant.call(), addressOf.dgdHolder6);
-      await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolder2);
-      assert.deepEqual(await contracts.daoStakeStorage.readLastParticipant.call(), addressOf.dgdHolder2);
+      assert.deepEqual(await contracts.daoStakeStorage.readLastParticipant.call(), addressOf.dgdHolders[5]);
+      await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolders[1]);
+      assert.deepEqual(await contracts.daoStakeStorage.readLastParticipant.call(), addressOf.dgdHolders[1]);
     });
     it('[readNextParticipant]', async function () {
-      assert.deepEqual(await contracts.daoStakeStorage.readNextParticipant.call(addressOf.dgdHolder3), addressOf.dgdHolder4);
-      assert.deepEqual(await contracts.daoStakeStorage.readNextParticipant.call(addressOf.dgdHolder4), addressOf.dgdHolder5);
-      assert.deepEqual(await contracts.daoStakeStorage.readNextParticipant.call(addressOf.dgdHolder5), addressOf.dgdHolder6);
-      assert.deepEqual(await contracts.daoStakeStorage.readNextParticipant.call(addressOf.dgdHolder6), addressOf.dgdHolder2);
-      assert.deepEqual(await contracts.daoStakeStorage.readNextParticipant.call(addressOf.dgdHolder2), EMPTY_ADDRESS);
-      await contracts.daoStakeStorage.removeParticipant(addressOf.dgdHolder5);
-      assert.deepEqual(await contracts.daoStakeStorage.readNextParticipant.call(addressOf.dgdHolder4), addressOf.dgdHolder6);
-      await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolder5);
-      assert.deepEqual(await contracts.daoStakeStorage.readNextParticipant.call(addressOf.dgdHolder2), addressOf.dgdHolder5);
-      assert.deepEqual(await contracts.daoStakeStorage.readNextParticipant.call(addressOf.dgdHolder5), EMPTY_ADDRESS);
+      assert.deepEqual(await contracts.daoStakeStorage.readNextParticipant.call(addressOf.dgdHolders[2]), addressOf.dgdHolders[3]);
+      assert.deepEqual(await contracts.daoStakeStorage.readNextParticipant.call(addressOf.dgdHolders[3]), addressOf.dgdHolders[4]);
+      assert.deepEqual(await contracts.daoStakeStorage.readNextParticipant.call(addressOf.dgdHolders[4]), addressOf.dgdHolders[5]);
+      assert.deepEqual(await contracts.daoStakeStorage.readNextParticipant.call(addressOf.dgdHolders[5]), addressOf.dgdHolders[1]);
+      assert.deepEqual(await contracts.daoStakeStorage.readNextParticipant.call(addressOf.dgdHolders[1]), EMPTY_ADDRESS);
+      await contracts.daoStakeStorage.removeParticipant(addressOf.dgdHolders[4]);
+      assert.deepEqual(await contracts.daoStakeStorage.readNextParticipant.call(addressOf.dgdHolders[3]), addressOf.dgdHolders[5]);
+      await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolders[4]);
+      assert.deepEqual(await contracts.daoStakeStorage.readNextParticipant.call(addressOf.dgdHolders[1]), addressOf.dgdHolders[4]);
+      assert.deepEqual(await contracts.daoStakeStorage.readNextParticipant.call(addressOf.dgdHolders[4]), EMPTY_ADDRESS);
     });
     it('[readPreviousParticipant]', async function () {
-      assert.deepEqual(await contracts.daoStakeStorage.readPreviousParticipant.call(addressOf.dgdHolder5), addressOf.dgdHolder2);
-      assert.deepEqual(await contracts.daoStakeStorage.readPreviousParticipant.call(addressOf.dgdHolder2), addressOf.dgdHolder6);
-      assert.deepEqual(await contracts.daoStakeStorage.readPreviousParticipant.call(addressOf.dgdHolder6), addressOf.dgdHolder4);
-      assert.deepEqual(await contracts.daoStakeStorage.readPreviousParticipant.call(addressOf.dgdHolder4), addressOf.dgdHolder3);
-      assert.deepEqual(await contracts.daoStakeStorage.readPreviousParticipant.call(addressOf.dgdHolder3), EMPTY_ADDRESS);
-      await contracts.daoStakeStorage.removeParticipant(addressOf.dgdHolder4);
-      assert.deepEqual(await contracts.daoStakeStorage.readPreviousParticipant.call(addressOf.dgdHolder6), addressOf.dgdHolder3);
-      await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolder4);
-      assert.deepEqual(await contracts.daoStakeStorage.readPreviousParticipant.call(addressOf.dgdHolder4), addressOf.dgdHolder5);
+      assert.deepEqual(await contracts.daoStakeStorage.readPreviousParticipant.call(addressOf.dgdHolders[4]), addressOf.dgdHolders[1]);
+      assert.deepEqual(await contracts.daoStakeStorage.readPreviousParticipant.call(addressOf.dgdHolders[1]), addressOf.dgdHolders[5]);
+      assert.deepEqual(await contracts.daoStakeStorage.readPreviousParticipant.call(addressOf.dgdHolders[5]), addressOf.dgdHolders[3]);
+      assert.deepEqual(await contracts.daoStakeStorage.readPreviousParticipant.call(addressOf.dgdHolders[3]), addressOf.dgdHolders[2]);
+      assert.deepEqual(await contracts.daoStakeStorage.readPreviousParticipant.call(addressOf.dgdHolders[2]), EMPTY_ADDRESS);
+      await contracts.daoStakeStorage.removeParticipant(addressOf.dgdHolders[3]);
+      assert.deepEqual(await contracts.daoStakeStorage.readPreviousParticipant.call(addressOf.dgdHolders[5]), addressOf.dgdHolders[2]);
+      await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolders[3]);
+      assert.deepEqual(await contracts.daoStakeStorage.readPreviousParticipant.call(addressOf.dgdHolders[3]), addressOf.dgdHolders[4]);
     });
     it('[readTotalParticipant]', async function () {
       assert.deepEqual(await contracts.daoStakeStorage.readTotalParticipant.call(), bN(5));
-      await contracts.daoStakeStorage.removeParticipant(addressOf.dgdHolder5);
-      await contracts.daoStakeStorage.removeParticipant(addressOf.dgdHolder2);
+      await contracts.daoStakeStorage.removeParticipant(addressOf.dgdHolders[4]);
+      await contracts.daoStakeStorage.removeParticipant(addressOf.dgdHolders[1]);
       assert.deepEqual(await contracts.daoStakeStorage.readTotalParticipant.call(), bN(3));
-      await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolder2);
+      await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolders[1]);
       assert.deepEqual(await contracts.daoStakeStorage.readTotalParticipant.call(), bN(4));
     });
   });

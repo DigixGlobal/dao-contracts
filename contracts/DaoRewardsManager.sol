@@ -171,13 +171,13 @@ contract DaoRewardsManager is DaoCommon {
         );
 
         _userClaimableDgx += data.effectiveDGDBalance *
-            daoRewardsStorage().readRewardsPoolOfQuarter(data.lastParticipatedQuarter)
+            daoRewardsStorage().readRewardsPoolOfLastQuarter(data.lastParticipatedQuarter+1)
             * (get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN) - get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_NUM))
             / daoRewardsStorage().readTotalEffectiveDGDLastQuarter(data.lastParticipatedQuarter + 1)
             / get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN);
 
         _userClaimableDgx += data.effectiveBadgeBalance *
-            daoRewardsStorage().readRewardsPoolOfQuarter(data.lastParticipatedQuarter)
+            daoRewardsStorage().readRewardsPoolOfLastQuarter(data.lastParticipatedQuarter+1)
             * get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_NUM)
             / daoRewardsStorage().readTotalEffectiveBadgeLastQuarter(data.lastParticipatedQuarter + 1)
             / get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN);

@@ -41,13 +41,15 @@ contract DaoConstants {
   uint8 ROLES_PRLS = 3;
   uint8 ROLES_KYC_ADMINS = 4;
 
+  uint256 CONFIG_MINIMUM_LOCKED_DGD = 10 ** 9;
+  uint256 QUARTER_DURATION = 90 days;
+
   bytes32 CONFIG_LOCKING_PHASE_DURATION = "locking_phase_duration";
   bytes32 CONFIG_QUARTER_DURATION = "quarter_duration";
   bytes32 CONFIG_VOTING_COMMIT_PHASE = "voting_commit_phase";
   bytes32 CONFIG_VOTING_PHASE_TOTAL = "voting_phase_total";
   bytes32 CONFIG_INTERIM_COMMIT_PHASE = "interim_voting_commit_phase";
   bytes32 CONFIG_INTERIM_PHASE_TOTAL = "interim_voting_phase_total";
-  uint256 CONFIG_MINIMUM_LOCKED_DGD = 10 ** 9;
 
   bytes32 CONFIG_DRAFT_QUORUM_FIXED_PORTION_NUMERATOR = "draft_quorum_fixed_numerator";
   bytes32 CONFIG_DRAFT_QUORUM_FIXED_PORTION_DENOMINATOR = "draft_quorum_fixed_denominator";
@@ -70,8 +72,6 @@ contract DaoConstants {
   bytes32 CONFIG_MINIMAL_BADGE_PARTICIPATION_POINT = "CONFIG_MINIMAL_B_QP";
   bytes32 CONFIG_BADGE_QUARTER_POINT_SCALING_FACTOR = "b_qp_scaling_factor";
   bytes32 CONFIG_BADGE_REPUTATION_POINT_SCALING_FACTOR = "b_rep_point_scaling_factor";
-
-  uint256 QUARTER_DURATION = 90 days;
 
   bytes32 QUARTER_POINT_DRAFT_VOTE = "quarter_point_draft_vote";
   bytes32 QUARTER_POINT_VOTE = "quarter_point_vote";

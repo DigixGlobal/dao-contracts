@@ -17,6 +17,7 @@ const {
   randomBigNumbers,
   randomBytes32s,
   randomAddresses,
+  indexRange,
 } = require('@digix/helpers/lib/helpers');
 
 const bN = web3.toBigNumber;
@@ -28,38 +29,26 @@ const dummyConfigAddresses = randomAddresses(3);
 
 contract('DaoConfigsStorage', function (accounts) {
   let libs;
-  let resolver;
   let addressOf;
   let contracts;
 
   before(async function () {
     libs = await deployLibraries();
-    resolver = await deployNewContractResolver();
-    addressOf = await getAccountsAndAddressOf(accounts);
     contracts = {};
-    await deployStorage(libs, contracts, resolver, addressOf);
-    await registerInteractive(resolver, addressOf);
+    await deployNewContractResolver(contracts);
+    addressOf = await getAccountsAndAddressOf(accounts);
+    await deployStorage(libs, contracts, contracts.resolver, addressOf);
+    await registerInteractive(contracts.resolver, addressOf);
   });
 
   describe('Initialization', function () {
     it('[contract key]', async function () {
-      assert.deepEqual(await resolver.get_contract.call('s:dao:config'), contracts.daoConfigsStorage.address);
+      assert.deepEqual(await contracts.resolver.get_contract.call('s:dao:config'), contracts.daoConfigsStorage.address);
     });
     it('[constructor set values]', async function () {
-      assert.deepEqual(await contracts.daoConfigsStorage.uintConfigs(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION), daoConstantsValues(bN).CONFIG_LOCKING_PHASE_DURATION);
-      assert.deepEqual(await contracts.daoConfigsStorage.uintConfigs(daoConstantsKeys().CONFIG_QUARTER_DURATION), daoConstantsValues(bN).CONFIG_QUARTER_DURATION);
-      assert.deepEqual(await contracts.daoConfigsStorage.uintConfigs(daoConstantsKeys().CONFIG_VOTING_COMMIT_PHASE), daoConstantsValues(bN).CONFIG_VOTING_COMMIT_PHASE);
-      assert.deepEqual(await contracts.daoConfigsStorage.uintConfigs(daoConstantsKeys().CONFIG_VOTING_PHASE_TOTAL), daoConstantsValues(bN).CONFIG_VOTING_PHASE_TOTAL);
-      assert.deepEqual(await contracts.daoConfigsStorage.uintConfigs(daoConstantsKeys().CONFIG_INTERIM_COMMIT_PHASE), daoConstantsValues(bN).CONFIG_INTERIM_COMMIT_PHASE);
-      assert.deepEqual(await contracts.daoConfigsStorage.uintConfigs(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL), daoConstantsValues(bN).CONFIG_INTERIM_PHASE_TOTAL);
-      assert.deepEqual(await contracts.daoConfigsStorage.uintConfigs(daoConstantsKeys().CONFIG_QUORUM_FIXED_PORTION_NUMERATOR), daoConstantsValues(bN).CONFIG_QUORUM_FIXED_PORTION_NUMERATOR);
-      assert.deepEqual(await contracts.daoConfigsStorage.uintConfigs(daoConstantsKeys().CONFIG_QUORUM_FIXED_PORTION_DENOMINATOR), daoConstantsValues(bN).CONFIG_QUORUM_FIXED_PORTION_DENOMINATOR);
-      assert.deepEqual(await contracts.daoConfigsStorage.uintConfigs(daoConstantsKeys().CONFIG_QUORUM_SCALING_FACTOR_NUMERATOR), daoConstantsValues(bN).CONFIG_QUORUM_SCALING_FACTOR_NUMERATOR);
-      assert.deepEqual(await contracts.daoConfigsStorage.uintConfigs(daoConstantsKeys().CONFIG_QUORUM_SCALING_FACTOR_DENOMINATOR), daoConstantsValues(bN).CONFIG_QUORUM_SCALING_FACTOR_DENOMINATOR);
-      assert.deepEqual(await contracts.daoConfigsStorage.uintConfigs(daoConstantsKeys().CONFIG_DRAFT_QUOTA_NUMERATOR), daoConstantsValues(bN).CONFIG_DRAFT_QUOTA_NUMERATOR);
-      assert.deepEqual(await contracts.daoConfigsStorage.uintConfigs(daoConstantsKeys().CONFIG_DRAFT_QUOTA_DENOMINATOR), daoConstantsValues(bN).CONFIG_DRAFT_QUOTA_DENOMINATOR);
-      assert.deepEqual(await contracts.daoConfigsStorage.uintConfigs(daoConstantsKeys().CONFIG_VOTING_QUOTA_NUMERATOR), daoConstantsValues(bN).CONFIG_VOTING_QUOTA_NUMERATOR);
-      assert.deepEqual(await contracts.daoConfigsStorage.uintConfigs(daoConstantsKeys().CONFIG_VOTING_QUOTA_DENOMINATOR), daoConstantsValues(bN).CONFIG_VOTING_QUOTA_DENOMINATOR);
+      for (const k in daoConstantsKeys()) {
+        assert.deepEqual(await contracts.daoConfigsStorage.uintConfigs(daoConstantsKeys()[k]), daoConstantsValues(bN)[k]);
+      }
     });
   });
 
@@ -80,6 +69,34 @@ contract('DaoConfigsStorage', function (accounts) {
     it('[update uint config]: verify public variable', async function () {
       await contracts.daoConfigsStorage.set_uint_config(dummyConfigNames[0], dummyConfigUints[2]);
       assert.deepEqual(await contracts.daoConfigsStorage.uintConfigs(dummyConfigNames[0]), dummyConfigUints[2]);
+    });
+  });
+
+  describe('updateUintConfigs', function () {
+    it('[not called by CONTRACT_DAO_VOTING_CLAIMS]: revert', async function () {
+      const oldConfigs = await contracts.daoConfigsStorage.readUintConfigs.call();
+      // modify CONFIG_VOTING_COMMIT_PHASE (index 2) TO 12
+      oldConfigs[2] = bN(12);
+      for (const i of indexRange(1, 20)) {
+        assert(await a.failure(contracts.daoConfigsStorage.updateUintConfigs.call(
+          oldConfigs,
+          { from: accounts[i] },
+        )));
+      }
+    });
+    it('[valid call]: should be updated', async function () {
+      const oldConfigs = await contracts.daoConfigsStorage.readUintConfigs.call();
+      // modify CONFIG_VOTING_COMMIT_PHASE (index 2) TO 12
+      // modify REPUTATION_PER_EXTRA_QP (index 25) TO 7
+      oldConfigs[2] = bN(13);
+      oldConfigs[25] = bN(7);
+      await contracts.daoConfigsStorage.updateUintConfigs(
+        oldConfigs,
+        { from: accounts[0] },
+      );
+      const newConfigs = await contracts.daoConfigsStorage.readUintConfigs.call();
+      assert.deepEqual(newConfigs[2], bN(13));
+      assert.deepEqual(newConfigs[25], bN(7));
     });
   });
 

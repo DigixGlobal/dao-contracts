@@ -225,19 +225,6 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     }
   }
 
-  /// @notice returns the last used nonce for an address
-  /// @param _voter address of the dao member
-  /// @return {
-  ///   "_lastNonce": ""
-  /// }
-  /* function readLastNonce(address _voter)
-    public
-    constant
-    returns (uint256 _lastNonce)
-  {
-    _lastNonce = lastNonce[_voter];
-  } */
-
   function readDraftVote(bytes32 _proposalId, address _voter)
     public
     constant
@@ -289,18 +276,6 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
       _weight = _voting.yesVotes[_voter];
     } else {
       _weight = _voting.noVotes[_voter];
-    }
-  }
-
-  function isCommitUsed(bytes32 _proposalId, uint256 _index, bytes32 _commit)
-    public
-    constant
-    returns (bool _used)
-  {
-    if (_index == 0) {
-      _used = proposalsById[_proposalId].votingRound.usedCommits[_commit];
-    } else {
-      _used = proposalsById[_proposalId].interimRounds[_index].usedCommits[_commit];
     }
   }
 
