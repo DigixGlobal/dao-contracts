@@ -170,17 +170,21 @@ contract DaoRewardsManager is DaoCommon {
             daoStakeStorage().lockedBadge(_user)
         );
 
-        _userClaimableDgx += data.effectiveDGDBalance *
-            daoRewardsStorage().readRewardsPoolOfLastQuarter(data.lastParticipatedQuarter+1)
-            * (get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN) - get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_NUM))
-            / daoRewardsStorage().readTotalEffectiveDGDLastQuarter(data.lastParticipatedQuarter + 1)
-            / get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN);
+        if (daoRewardsStorage().readTotalEffectiveDGDLastQuarter(data.lastParticipatedQuarter + 1) > 0) {
+          _userClaimableDgx += data.effectiveDGDBalance *
+              daoRewardsStorage().readRewardsPoolOfLastQuarter(data.lastParticipatedQuarter + 1)
+              * (get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN) - get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_NUM))
+              / daoRewardsStorage().readTotalEffectiveDGDLastQuarter(data.lastParticipatedQuarter + 1)
+              / get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN);
+        }
 
-        _userClaimableDgx += data.effectiveBadgeBalance *
-            daoRewardsStorage().readRewardsPoolOfLastQuarter(data.lastParticipatedQuarter+1)
-            * get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_NUM)
-            / daoRewardsStorage().readTotalEffectiveBadgeLastQuarter(data.lastParticipatedQuarter + 1)
-            / get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN);
+        if (daoRewardsStorage().readTotalEffectiveBadgeLastQuarter(data.lastParticipatedQuarter + 1) > 0) {
+          _userClaimableDgx += data.effectiveBadgeBalance *
+              daoRewardsStorage().readRewardsPoolOfLastQuarter(data.lastParticipatedQuarter + 1)
+              * get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_NUM)
+              / daoRewardsStorage().readTotalEffectiveBadgeLastQuarter(data.lastParticipatedQuarter + 1)
+              / get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN);
+        }
 
         // update claimableDGXs. The calculation needs to take into account demurrage since the
         // dgxDistributionDay of the last quarter as well

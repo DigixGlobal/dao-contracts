@@ -19,7 +19,7 @@ const ContractResolver = artifacts.require('./ContractResolver.sol');
 const DoublyLinkedList = artifacts.require('./DoublyLinkedList.sol');
 
 const IdentityStorage = artifacts.require('./IdentityStorage.sol');
-const DaoConfigsStorage = artifacts.require('./DaoConfigsStorage.sol');
+const DaoConfigsStorage = artifacts.require('./MockDaoConfigsStorage.sol');
 const DaoStakeStorage = artifacts.require('./DaoStakeStorage.sol');
 const DaoPointsStorage = artifacts.require('./DaoPointsStorage.sol');
 const DaoStorage = artifacts.require('./DaoStorage.sol');
@@ -64,7 +64,6 @@ const getAccountsAndAddressOf = function (accounts) {
     dgdHolders: indexRange(4 + BADGE_HOLDER_COUNT, 4 + BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(id => accounts[id]), // accounts[8] to accounts[13]
     allParticipants: indexRange(4, 4 + BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(id => accounts[id]), // accounts[4] to accounts[13]
   };
-  console.log('got getAccountsAndAddressOf');
   return addressOf;
 };
 
@@ -110,7 +109,7 @@ const registerInteractive = async function (resolver, addressOf) {
 const deployServices = async function (libs, contracts, resolver) {
   contracts.daoInfoService = await DaoInfoService.new(resolver.address);
   contracts.daoListingService = await DaoListingService.new(resolver.address);
-  contracts.daoCalculatorService = await DaoCalculatorService.new(resolver.address);
+  contracts.daoCalculatorService = await DaoCalculatorService.new(resolver.address, contracts.dgxDemurrageReporter.address);
 };
 
 const deployInteractive = async function (libs, contracts, resolver) {
@@ -122,7 +121,7 @@ const deployInteractive = async function (libs, contracts, resolver) {
   contracts.daoVotingClaims = await DaoVotingClaims.new(resolver.address);
   contracts.daoQuarterPoint = await QuarterPoint.new(resolver.address);
   contracts.daoReputationPoint = await ReputationPoint.new(resolver.address);
-  contracts.daoRewardsManager = await DaoRewardsManager.new(resolver.address);
+  contracts.daoRewardsManager = await DaoRewardsManager.new(resolver.address, contracts.dgxToken.address);
 };
 
 const initialTransferTokens = async function (contracts, addressOf, bN) {

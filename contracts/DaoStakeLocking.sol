@@ -87,7 +87,11 @@ contract DaoStakeLocking is DaoCommon {
         daoStakeStorage().updateUserBadgeStake(msg.sender, _info.userLockedBadges);
         daoStakeStorage().updateTotalLockedBadges(_info.totalLockedBadges + _amount);
 
+        // This has to happen at least once before user can participate in next quarter
+        daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
+
         daoStakeStorage().addBadgeParticipant(msg.sender);
+        daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
         // interaction happens last
         require(ERC20(dgdBadgeToken).transferFrom(msg.sender, address(this), _amount));
         _success = true;
@@ -137,8 +141,13 @@ contract DaoStakeLocking is DaoCommon {
         daoStakeStorage().updateUserBadgeStake(_user, _lockedBadge);
         daoStakeStorage().updateTotalLockedBadges(_totalLockedBadges - _amount);
 
+        // This has to happen at least once before user can participate in next quarter
+        daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
+
         if (_lockedBadge == 0) {
             daoStakeStorage().removeBadgeParticipant(_user);
+        } else {
+            daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
         }
         // interaction happens last
         require(ERC20(dgdBadgeToken).transfer(_user, _amount));

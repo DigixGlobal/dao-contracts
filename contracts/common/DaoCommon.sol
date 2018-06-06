@@ -91,29 +91,21 @@ contract DaoCommon is IdentityCommon {
       _;
     }
 
-    /* modifier if_valid_nonce(uint256 _nonce) {
-      require(daoStorage().readLastNonce(msg.sender) < _nonce);
-      _;
-    }
-
-    modifier if_valid_nonce_special(uint256 _nonce) {
-      require(daoSpecialStorage().readLastNonce(msg.sender) < _nonce);
-      _;
-    } */
-
     modifier if_participant() {
-      require(daoInfoService().isParticipant(msg.sender));
+      require(isParticipant(msg.sender));
       _;
     }
 
     modifier if_badge_participant() {
-      require(daoInfoService().isBadgeParticipant(msg.sender));
+      require(isBadgeParticipant(msg.sender));
       _;
     }
 
     modifier if_dao_member() {
-      require(daoInfoService().isParticipant(msg.sender) ||
-                daoInfoService().isBadgeParticipant(msg.sender));
+      require(
+        isParticipant(msg.sender) ||
+        isBadgeParticipant(msg.sender)
+      );
       _;
     }
 
@@ -267,5 +259,31 @@ contract DaoCommon is IdentityCommon {
         returns (bytes32 _config_value)
     {
         _config_value = daoConfigsStorage().bytesConfigs(_config_key);
+    }
+
+    function isParticipant(address _user)
+        public
+        constant
+        returns (bool _is)
+    {
+        if (
+            (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex()) &&
+            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= CONFIG_MINIMUM_LOCKED_DGD)
+        ) {
+            _is = true;
+        }
+    }
+
+    function isBadgeParticipant(address _user)
+        public
+        constant
+        returns (bool _is)
+    {
+        if (
+            (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex()) &&
+            (daoStakeStorage().readUserLockedBadge(_user) > 0)
+        ) {
+            _is = true;
+        }
     }
 }
