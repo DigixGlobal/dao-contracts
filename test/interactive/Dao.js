@@ -86,19 +86,6 @@ const milestoneDurations = {
   }
 }
 
-const lastNonces = {
-  badgeHolder1: 1,
-  badgeHolder2: 1,
-  badgeHolder3: 1,
-  badgeHolder4: 1,
-  dgdHolder1: 1,
-  dgdHolder2: 1,
-  dgdHolder3: 1,
-  dgdHolder4: 1,
-  dgdHolder5: 1,
-  dgdHolder6: 1
-};
-
 contract('Dao | DaoVoting', function (accounts) {
   let libs;
   let resolver;

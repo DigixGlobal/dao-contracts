@@ -35,15 +35,15 @@ contract('DaoIdentity', function (accounts) {
 
   describe('initialization', function () {
     it('[verify key]', async function () {
-      assert.deepEqual(await contracts.resolver.get_contract('c:dao:identity'), contracts.daoIdentity.address);
+      assert.deepEqual(await contracts.resolver.get_contract('dao:identity'), contracts.daoIdentity.address);
     });
     it('[verify constructor set values]', async function () {
-      assert.deepEqual(await contracts.identityStorage.read_role.call(bN(2)), paddedHex(web3, 'founders'));
-      assert.deepEqual(await contracts.identityStorage.read_role.call(bN(3)), paddedHex(web3, 'prls'));
-      assert.deepEqual(await contracts.identityStorage.read_role.call(bN(4)), paddedHex(web3, 'kycadmins'));
-      const group2 = await contracts.identityStorage.read_group.call(bN(2));
-      const group3 = await contracts.identityStorage.read_group.call(bN(3));
-      const group4 = await contracts.identityStorage.read_group.call(bN(4));
+      assert.deepEqual(await contracts.daoIdentityStorage.read_role.call(bN(2)), paddedHex(web3, 'founders'));
+      assert.deepEqual(await contracts.daoIdentityStorage.read_role.call(bN(3)), paddedHex(web3, 'prls'));
+      assert.deepEqual(await contracts.daoIdentityStorage.read_role.call(bN(4)), paddedHex(web3, 'kycadmins'));
+      const group2 = await contracts.daoIdentityStorage.read_group.call(bN(2));
+      const group3 = await contracts.daoIdentityStorage.read_group.call(bN(3));
+      const group4 = await contracts.daoIdentityStorage.read_group.call(bN(4));
       assert.deepEqual(group2[1], paddedHex(web3, 'founders_group'));
       assert.deepEqual(group3[1], paddedHex(web3, 'prls_group'));
       assert.deepEqual(group4[1], paddedHex(web3, 'kycadmins_group'));
@@ -63,7 +63,7 @@ contract('DaoIdentity', function (accounts) {
     });
     it('[root tries to add group user]: success | verify storage layer', async function () {
       const randomUser = randomAddress();
-      const readGroupBefore = await contracts.identityStorage.read_group.call(bN(2));
+      const readGroupBefore = await contracts.daoIdentityStorage.read_group.call(bN(2));
       assert.ok(await contracts.daoIdentity.addGroupUser.call(
         bN(2),
         randomUser,
@@ -71,9 +71,9 @@ contract('DaoIdentity', function (accounts) {
         { from: addressOf.root },
       ));
       await contracts.daoIdentity.addGroupUser(bN(2), randomUser, 'added to founders', { from: addressOf.root });
-      const readGroupAfter = await contracts.identityStorage.read_group.call(bN(2));
+      const readGroupAfter = await contracts.daoIdentityStorage.read_group.call(bN(2));
       assert.deepEqual(readGroupAfter[3], readGroupBefore[3].plus(bN(1)));
-      const readUser = await contracts.identityStorage.read_user.call(randomUser);
+      const readUser = await contracts.daoIdentityStorage.read_user.call(randomUser);
       assert.deepEqual(readUser[0], bN(2));
       assert.deepEqual(readUser[1], bN(2));
       assert.deepEqual(readUser[2], paddedHex(web3, 'added to founders'));
@@ -102,8 +102,8 @@ contract('DaoIdentity', function (accounts) {
     it('[root removes group user]: success | verify storage layer', async function () {
       await contracts.daoIdentity.removeGroupUser(randomUser1);
       await contracts.daoIdentity.removeGroupUser(randomUser2);
-      const readUser1 = await contracts.identityStorage.read_user.call(randomUser1);
-      const readUser2 = await contracts.identityStorage.read_user.call(randomUser2);
+      const readUser1 = await contracts.daoIdentityStorage.read_user.call(randomUser1);
+      const readUser2 = await contracts.daoIdentityStorage.read_user.call(randomUser2);
       assert.deepEqual(readUser1[0], bN(0));
       assert.deepEqual(readUser1[1], bN(0));
       assert.deepEqual(readUser2[0], bN(0));
@@ -139,10 +139,10 @@ contract('DaoIdentity', function (accounts) {
     it('[called by kycadmin]: success | verify storage layer', async function () {
       await contracts.daoIdentity.updateKyc(randomUser1, 'doc 1', expiry1, { from: addressOf.kycadmin });
       await contracts.daoIdentity.updateKyc(randomUser2, 'doc 2', expiry2, { from: addressOf.kycadmin });
-      assert.deepEqual(await contracts.identityStorage.is_kyc_approved.call(randomUser1), true);
-      assert.deepEqual(await contracts.identityStorage.is_kyc_approved.call(randomUser2), false);
-      const user1 = await contracts.identityStorage.read_kyc_info.call(randomUser1);
-      const user2 = await contracts.identityStorage.read_kyc_info.call(randomUser2);
+      assert.deepEqual(await contracts.daoIdentityStorage.is_kyc_approved.call(randomUser1), true);
+      assert.deepEqual(await contracts.daoIdentityStorage.is_kyc_approved.call(randomUser2), false);
+      const user1 = await contracts.daoIdentityStorage.read_kyc_info.call(randomUser1);
+      const user2 = await contracts.daoIdentityStorage.read_kyc_info.call(randomUser2);
       assert.deepEqual(user1[0], paddedHex(web3, 'doc 1'));
       assert.deepEqual(user2[0], paddedHex(web3, 'doc 2'));
       assert.deepEqual(user1[1], expiry1);
