@@ -16,7 +16,7 @@ const {
 
 const bN = web3.toBigNumber;
 
-contract('IdentityStorage', function (accounts) {
+contract('DaoIdentityStorage', function (accounts) {
   let libs;
   let addressOf;
   let contracts;
@@ -32,32 +32,32 @@ contract('IdentityStorage', function (accounts) {
 
   describe('Initialization', function () {
     it('[verify key]', async function () {
-      assert.deepEqual(await contracts.resolver.get_contract.call('c:dao:identity:storage'), contracts.identityStorage.address);
+      assert.deepEqual(await contracts.resolver.get_contract.call('storage:dao:identity'), contracts.DaoIdentityStorage.address);
     });
   });
 
   describe('create_role', function () {
     it('[not called by CONTRACT_DAO_IDENTITY]: revert', async function () {
-      assert(await a.failure(contracts.identityStorage.create_role.call(
+      assert(await a.failure(contracts.DaoIdentityStorage.create_role.call(
         bN(2),
         'new_role',
         { from: accounts[1] },
       )));
     });
     it('[create role]: verify read functions', async function () {
-      assert.deepEqual(await contracts.identityStorage.create_role.call(bN(2), 'new_role'), true);
-      await contracts.identityStorage.create_role(bN(2), 'new_role');
+      assert.deepEqual(await contracts.DaoIdentityStorage.create_role.call(bN(2), 'new_role'), true);
+      await contracts.DaoIdentityStorage.create_role(bN(2), 'new_role');
 
-      assert.deepEqual(await contracts.identityStorage.read_role.call(bN(2)), paddedHex(web3, 'new_role'));
+      assert.deepEqual(await contracts.DaoIdentityStorage.read_role.call(bN(2)), paddedHex(web3, 'new_role'));
 
-      await contracts.identityStorage.create_role(bN(2), 'new_updated_role');
-      assert.deepEqual(await contracts.identityStorage.read_role.call(bN(2)), paddedHex(web3, 'new_updated_role'));
+      await contracts.DaoIdentityStorage.create_role(bN(2), 'new_updated_role');
+      assert.deepEqual(await contracts.DaoIdentityStorage.read_role.call(bN(2)), paddedHex(web3, 'new_updated_role'));
     });
   });
 
   describe('create_group', function () {
     it('[not called by CONTRACT_DAO_IDENTITY]: revert', async function () {
-      assert(await a.failure(contracts.identityStorage.create_group.call(
+      assert(await a.failure(contracts.DaoIdentityStorage.create_group.call(
         bN(2),
         'group_for_new_role',
         'sample_doc',
@@ -65,15 +65,15 @@ contract('IdentityStorage', function (accounts) {
       )));
     });
     it('[create group]: verify read functions', async function () {
-      const newGroupRes = await contracts.identityStorage.create_group.call(
+      const newGroupRes = await contracts.DaoIdentityStorage.create_group.call(
         bN(2),
         'group_for_new_role',
         'sample_doc',
       );
       assert.deepEqual(newGroupRes[0], true);
-      await contracts.identityStorage.create_group(bN(2), 'group_for_new_role', 'sample_doc');
+      await contracts.DaoIdentityStorage.create_group(bN(2), 'group_for_new_role', 'sample_doc');
 
-      const group2 = await contracts.identityStorage.read_group.call(bN(2));
+      const group2 = await contracts.DaoIdentityStorage.read_group.call(bN(2));
       // group id : 2, group name, doc and members : 0
       assert.deepEqual(group2[0], newGroupRes[1]);
       assert.deepEqual(group2[1], paddedHex(web3, 'group_for_new_role'));
@@ -84,7 +84,7 @@ contract('IdentityStorage', function (accounts) {
 
   describe('update_add_user_to_group', function () {
     it('[not called by CONTRACT_DAO_IDENTITY]: revert', async function () {
-      assert(await a.failure(contracts.identityStorage.update_add_user_to_group.call(
+      assert(await a.failure(contracts.DaoIdentityStorage.update_add_user_to_group.call(
         bN(2),
         addressOf.prl,
         'prl_user_added',
@@ -92,22 +92,22 @@ contract('IdentityStorage', function (accounts) {
       )));
     });
     it('[add users]: verify read functions', async function () {
-      await contracts.identityStorage.create_role(bN(3), 'role_kycadmin');
-      await contracts.identityStorage.create_group(bN(3), 'group_for_kycadmins', 'another_sample_doc');
-      assert.deepEqual(await contracts.identityStorage.update_add_user_to_group.call(
+      await contracts.DaoIdentityStorage.create_role(bN(3), 'role_kycadmin');
+      await contracts.DaoIdentityStorage.create_group(bN(3), 'group_for_kycadmins', 'another_sample_doc');
+      assert.deepEqual(await contracts.DaoIdentityStorage.update_add_user_to_group.call(
         bN(2),
         addressOf.prl,
         'prl_user_added',
       ), true);
-      await contracts.identityStorage.update_add_user_to_group(bN(2), addressOf.prl, 'prl_user_added');
-      await contracts.identityStorage.update_add_user_to_group(bN(3), addressOf.kycadmin, 'kycadmin_added');
+      await contracts.DaoIdentityStorage.update_add_user_to_group(bN(2), addressOf.prl, 'prl_user_added');
+      await contracts.DaoIdentityStorage.update_add_user_to_group(bN(3), addressOf.kycadmin, 'kycadmin_added');
 
       // verify read functions
-      assert.deepEqual(await contracts.identityStorage.read_user_role_id.call(addressOf.prl), bN(2));
-      assert.deepEqual(await contracts.identityStorage.read_user_role_id.call(addressOf.kycadmin), bN(3));
+      assert.deepEqual(await contracts.DaoIdentityStorage.read_user_role_id.call(addressOf.prl), bN(2));
+      assert.deepEqual(await contracts.DaoIdentityStorage.read_user_role_id.call(addressOf.kycadmin), bN(3));
 
-      const prlUser = await contracts.identityStorage.read_user.call(addressOf.prl);
-      const kycadminUser = await contracts.identityStorage.read_user.call(addressOf.kycadmin);
+      const prlUser = await contracts.DaoIdentityStorage.read_user.call(addressOf.prl);
+      const kycadminUser = await contracts.DaoIdentityStorage.read_user.call(addressOf.kycadmin);
       assert.deepEqual(prlUser[0], bN(2));
       assert.deepEqual(prlUser[1], bN(2));
       assert.deepEqual(prlUser[2], paddedHex(web3, 'prl_user_added'));
@@ -119,29 +119,29 @@ contract('IdentityStorage', function (accounts) {
 
   describe('update_remove_group_user', function () {
     it('[not called by CONTRACT_DAO_IDENTITY]: revert', async function () {
-      assert(await a.failure(contracts.identityStorage.update_remove_group_user.call(addressOf.prl, { from: accounts[2] })));
+      assert(await a.failure(contracts.DaoIdentityStorage.update_remove_group_user.call(addressOf.prl, { from: accounts[2] })));
     });
     it('[remove user]: verify read functions', async function () {
       // add dummy users
       const dummyUserAddresses = randomAddresses(2);
-      await contracts.identityStorage.update_add_user_to_group(bN(2), dummyUserAddresses[0], 'dummy_user_1_added');
-      await contracts.identityStorage.update_add_user_to_group(bN(2), dummyUserAddresses[1], 'dummy_user_2_added');
+      await contracts.DaoIdentityStorage.update_add_user_to_group(bN(2), dummyUserAddresses[0], 'dummy_user_1_added');
+      await contracts.DaoIdentityStorage.update_add_user_to_group(bN(2), dummyUserAddresses[1], 'dummy_user_2_added');
 
       // make sure there are 3 users in the group 2
-      const groupInfoBefore = await contracts.identityStorage.read_group.call(bN(2));
+      const groupInfoBefore = await contracts.DaoIdentityStorage.read_group.call(bN(2));
       assert.deepEqual(groupInfoBefore[3], bN(3));
 
       // delete addressOf.prlAddress from group
-      assert.deepEqual(await contracts.identityStorage.update_remove_group_user.call(dummyUserAddresses[0]), true);
-      await contracts.identityStorage.update_remove_group_user(dummyUserAddresses[0]);
+      assert.deepEqual(await contracts.DaoIdentityStorage.update_remove_group_user.call(dummyUserAddresses[0]), true);
+      await contracts.DaoIdentityStorage.update_remove_group_user(dummyUserAddresses[0]);
 
       // read info of addressOf.prl
-      const userInfo = await contracts.identityStorage.read_user.call(dummyUserAddresses[0]);
+      const userInfo = await contracts.DaoIdentityStorage.read_user.call(dummyUserAddresses[0]);
       assert.deepEqual(userInfo[0], bN(0)); // no group is 0
       assert.deepEqual(userInfo[1], bN(0)); // no group, hence no role
 
       // make sure only 2 members in this group now
-      const groupInfoAfter = await contracts.identityStorage.read_group.call(bN(2));
+      const groupInfoAfter = await contracts.DaoIdentityStorage.read_group.call(bN(2));
       assert.deepEqual(groupInfoAfter[3], bN(2));
     });
   });
@@ -149,7 +149,7 @@ contract('IdentityStorage', function (accounts) {
   describe('update_kyc', function () {
     const expiration = bN(getCurrentTimestamp() + 2628000); // 1 month in the future
     it('[not called by CONTRACT_DAO_IDENTITY]: revert', async function () {
-      assert(await a.failure(contracts.identityStorage.update_kyc.call(
+      assert(await a.failure(contracts.DaoIdentityStorage.update_kyc.call(
         addressOf.prl,
         'doc_for_kyc',
         expiration,
@@ -157,10 +157,10 @@ contract('IdentityStorage', function (accounts) {
       )));
     });
     it('[update kyc]: verify read functions', async function () {
-      await contracts.identityStorage.update_kyc(addressOf.prl, 'doc_for_kyc', expiration);
+      await contracts.DaoIdentityStorage.update_kyc(addressOf.prl, 'doc_for_kyc', expiration);
 
       // verify read functions
-      const kycInfo = await contracts.identityStorage.read_kyc_info.call(addressOf.prl);
+      const kycInfo = await contracts.DaoIdentityStorage.read_kyc_info.call(addressOf.prl);
       assert.deepEqual(kycInfo[0], paddedHex(web3, 'doc_for_kyc'));
       assert.deepEqual(kycInfo[1], expiration);
     });
@@ -169,14 +169,14 @@ contract('IdentityStorage', function (accounts) {
   describe('is_kyc_approved', function () {
     const oldExpiration = bN(getCurrentTimestamp() - 1); // 1 second in the past
     it('[is valid]', async function () {
-      assert.deepEqual(await contracts.identityStorage.is_kyc_approved.call(addressOf.prl), true);
+      assert.deepEqual(await contracts.DaoIdentityStorage.is_kyc_approved.call(addressOf.prl), true);
     });
     it('[update, make invalid]: should return false', async function () {
-      await contracts.identityStorage.update_kyc(addressOf.prl, 'another_doc_for_kyc', oldExpiration);
-      const kycInfo = await contracts.identityStorage.read_kyc_info.call(addressOf.prl);
+      await contracts.DaoIdentityStorage.update_kyc(addressOf.prl, 'another_doc_for_kyc', oldExpiration);
+      const kycInfo = await contracts.DaoIdentityStorage.read_kyc_info.call(addressOf.prl);
       assert.deepEqual(kycInfo[0], paddedHex(web3, 'another_doc_for_kyc'));
       assert.deepEqual(kycInfo[1], oldExpiration);
-      assert.deepEqual(await contracts.identityStorage.is_kyc_approved.call(addressOf.prl), false);
+      assert.deepEqual(await contracts.DaoIdentityStorage.is_kyc_approved.call(addressOf.prl), false);
     });
   });
 });

@@ -4,7 +4,7 @@ import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "@digix/cdap/contracts/storage/DirectoryStorage.sol";
 import "../common/DaoConstants.sol";
 
-contract IdentityStorage is ResolverClient, DaoConstants, DirectoryStorage {
+contract DaoIdentityStorage is ResolverClient, DaoConstants, DirectoryStorage {
     struct KycDetails {
         bytes32 doc;
         uint256 id_expiration;
@@ -12,10 +12,10 @@ contract IdentityStorage is ResolverClient, DaoConstants, DirectoryStorage {
 
     mapping (address => KycDetails) kycInfo;
 
-    function IdentityStorage(address _resolver)
+    function DaoIdentityStorage(address _resolver)
         public
     {
-        require(init(CONTRACT_IDENTITY_STORAGE, _resolver));
+        require(init(CONTRACT_STORAGE_DAO_IDENTITY, _resolver));
         require(initialize_directory());
     }
 

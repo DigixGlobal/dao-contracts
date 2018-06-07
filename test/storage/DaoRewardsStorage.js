@@ -34,7 +34,7 @@ contract('DaoRewardsStorage', function (accounts) {
 
   describe('Initialization', function () {
     it('[contract key]', async function () {
-      assert.deepEqual(await contracts.resolver.get_contract.call('s:dao:rewardsstorage'), contracts.daoRewardsStorage.address);
+      assert.deepEqual(await contracts.resolver.get_contract.call('storage:dao:rewards'), contracts.daoRewardsStorage.address);
     });
   });
 

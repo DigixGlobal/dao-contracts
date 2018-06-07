@@ -6,7 +6,7 @@ const MockDgxDemurrageReporter = artifacts.require('./MockDgxDemurrageReporter.s
 const ContractResolver = artifacts.require('ContractResolver.sol');
 const DoublyLinkedList = artifacts.require('DoublyLinkedList.sol');
 
-const IdentityStorage = artifacts.require('IdentityStorage.sol');
+const DaoIdentityStorage = artifacts.require('DaoIdentityStorage.sol');
 const DaoConfigsStorage = artifacts.require('MockDaoConfigsStorage.sol');
 const DaoStakeStorage = artifacts.require('DaoStakeStorage.sol');
 const DaoPointsStorage = artifacts.require('DaoPointsStorage.sol');
@@ -25,8 +25,6 @@ const DaoFundingManager = artifacts.require('DaoFundingManager.sol');
 const Dao = artifacts.require('Dao.sol');
 const DaoVoting = artifacts.require('DaoVoting.sol');
 const DaoVotingClaims = artifacts.require('DaoVotingClaims.sol');
-const QuarterPoint = artifacts.require('QuarterPoint.sol');
-const ReputationPoint = artifacts.require('ReputationPoint.sol');
 const DaoRewardsManager = artifacts.require('DaoRewardsManager.sol');
 
 module.exports = async function (deployer, network) {
@@ -36,13 +34,13 @@ module.exports = async function (deployer, network) {
       return deployer.deploy(DoublyLinkedList);
     })
     .then(() => {
-      deployer.link(DoublyLinkedList, IdentityStorage);
+      deployer.link(DoublyLinkedList, DaoIdentityStorage);
       deployer.link(DoublyLinkedList, DaoStakeStorage);
       deployer.link(DoublyLinkedList, DaoStorage);
       return deployer.link(DoublyLinkedList, DaoSpecialStorage);
     })
     .then(() => {
-      deployer.deploy(IdentityStorage, ContractResolver.address);
+      deployer.deploy(DaoIdentityStorage, ContractResolver.address);
       deployer.deploy(DaoConfigsStorage, ContractResolver.address);
       deployer.deploy(DaoStakeStorage, ContractResolver.address);
       deployer.deploy(DaoPointsStorage, ContractResolver.address);
@@ -63,8 +61,6 @@ module.exports = async function (deployer, network) {
       deployer.deploy(Dao, ContractResolver.address);
       deployer.deploy(DaoVoting, ContractResolver.address);
       deployer.deploy(DaoVotingClaims, ContractResolver.address);
-      deployer.deploy(QuarterPoint, ContractResolver.address);
-      deployer.deploy(ReputationPoint, ContractResolver.address);
       return deployer.deploy(DaoRewardsManager, ContractResolver.address, MockDgx.address);
     })
     .then(() => {

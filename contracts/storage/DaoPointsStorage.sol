@@ -16,33 +16,33 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
   function DaoPointsStorage(address _resolver)
            public
   {
-    require(init(CONTRACT_DAO_POINTS_STORAGE, _resolver));
+    require(init(CONTRACT_STORAGE_DAO_POINTS, _resolver));
   }
 
-  /// @notice add quarter points for a _participant for a _quarterId
-  function addQuarterPoint(address _participant, uint256 _point, uint256 _quarterId)
-           if_sender_is(CONTRACT_INTERACTIVE_QUARTER_POINT)
-           public
-           returns (uint256 _newPoint, uint256 _newTotalPoint)
-  {
-    quarterPoint[_quarterId].totalSupply += _point;
-    quarterPoint[_quarterId].balance[_participant] += _point;
+    /// @notice add quarter points for a _participant for a _quarterId
+    function addQuarterPoint(address _participant, uint256 _point, uint256 _quarterId)
+        if_sender_is_from([CONTRACT_DAO_VOTING, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES])
+        public
+        returns (uint256 _newPoint, uint256 _newTotalPoint)
+    {
+        quarterPoint[_quarterId].totalSupply += _point;
+        quarterPoint[_quarterId].balance[_participant] += _point;
 
-    _newPoint = quarterPoint[_quarterId].balance[_participant];
-    _newTotalPoint = quarterPoint[_quarterId].totalSupply;
-  }
+        _newPoint = quarterPoint[_quarterId].balance[_participant];
+        _newTotalPoint = quarterPoint[_quarterId].totalSupply;
+    }
 
-  function addQuarterBadgePoint(address _participant, uint256 _point, uint256 _quarterId)
-    if_sender_is(CONTRACT_INTERACTIVE_QUARTER_POINT)
-    public
-    returns (uint256 _newPoint, uint256 _newTotalPoint)
-  {
-    quarterBadgePoint[_quarterId].totalSupply += _point;
-    quarterBadgePoint[_quarterId].balance[_participant] += _point;
+    function addQuarterBadgePoint(address _participant, uint256 _point, uint256 _quarterId)
+        if_sender_is_from([CONTRACT_DAO_VOTING, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES])
+        public
+        returns (uint256 _newPoint, uint256 _newTotalPoint)
+    {
+        quarterBadgePoint[_quarterId].totalSupply += _point;
+        quarterBadgePoint[_quarterId].balance[_participant] += _point;
 
-    _newPoint = quarterBadgePoint[_quarterId].balance[_participant];
-    _newTotalPoint = quarterBadgePoint[_quarterId].totalSupply;
-  }
+        _newPoint = quarterBadgePoint[_quarterId].balance[_participant];
+        _newTotalPoint = quarterBadgePoint[_quarterId].totalSupply;
+    }
 
   /// @notice get quarter points for a _participant in a _quarterId
   function getQuarterPoint(address _participant, uint256 _quarterId)
@@ -78,38 +78,38 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
     _totalPoint = quarterBadgePoint[_quarterId].totalSupply;
   }
 
-  /// @notice add reputation points for a _participant
-  function addReputation(address _participant, uint256 _point)
-           if_sender_is(CONTRACT_INTERACTIVE_REPUTATION_POINT)
-           public
-           returns (uint256 _newPoint, uint256 _totalPoint)
-  {
-    reputationPoint.totalSupply += _point;
-    reputationPoint.balance[_participant] += _point;
+    /// @notice add reputation points for a _participant
+    function addReputation(address _participant, uint256 _point)
+        if_sender_is_from([CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_REWARDS_MANAGER, EMPTY_BYTES])
+        public
+        returns (uint256 _newPoint, uint256 _totalPoint)
+    {
+        reputationPoint.totalSupply += _point;
+        reputationPoint.balance[_participant] += _point;
 
-    _newPoint = reputationPoint.balance[_participant];
-    _totalPoint = reputationPoint.totalSupply;
-  }
-
-  /// @notice subtract reputation points for a _participant
-  function subtractReputation(address _participant, uint256 _point)
-           if_sender_is(CONTRACT_INTERACTIVE_REPUTATION_POINT)
-           public
-           returns (uint256 _newPoint, uint256 _totalPoint)
-  {
-    uint256 _toDeduct = _point;
-    if (reputationPoint.balance[_participant] > _point) {
-      reputationPoint.balance[_participant] -= _point;
-    } else {
-      _toDeduct = reputationPoint.balance[_participant];
-      reputationPoint.balance[_participant] = 0;
+        _newPoint = reputationPoint.balance[_participant];
+        _totalPoint = reputationPoint.totalSupply;
     }
 
-    reputationPoint.totalSupply -= _toDeduct;
+    /// @notice subtract reputation points for a _participant
+    function subtractReputation(address _participant, uint256 _point)
+        if_sender_is_from([CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_REWARDS_MANAGER, EMPTY_BYTES])
+        public
+        returns (uint256 _newPoint, uint256 _totalPoint)
+    {
+        uint256 _toDeduct = _point;
+        if (reputationPoint.balance[_participant] > _point) {
+          reputationPoint.balance[_participant] -= _point;
+        } else {
+          _toDeduct = reputationPoint.balance[_participant];
+          reputationPoint.balance[_participant] = 0;
+        }
 
-    _newPoint = reputationPoint.balance[_participant];
-    _totalPoint = reputationPoint.totalSupply;
-  }
+        reputationPoint.totalSupply -= _toDeduct;
+
+        _newPoint = reputationPoint.balance[_participant];
+        _totalPoint = reputationPoint.totalSupply;
+    }
 
   /// @notice get reputation points for a _participant
   function getReputation(address _participant)

@@ -38,7 +38,7 @@ contract DaoRewardsManager is DaoCommon {
       internal
       returns (DaoCalculatorService _contract)
   {
-      _contract = DaoCalculatorService(get_contract(CONTRACT_DAO_CALCULATOR_SERVICE));
+      _contract = DaoCalculatorService(get_contract(CONTRACT_SERVICE_DAO_CALCULATOR));
   }
 
     function claimRewards()
@@ -85,7 +85,7 @@ contract DaoRewardsManager is DaoCommon {
         uint256 _reputationDeduction = (_currentQuarter - 1 - _lastParticipatedQuarter) *
             ( get_uint_config(CONFIG_MAXIMUM_REPUTATION_DEDUCTION) + get_uint_config(CONFIG_PUNISHMENT_FOR_NOT_LOCKING));
         if (_reputationDeduction > 0) {
-          daoReputationPoint().subtract(_user, _reputationDeduction);
+          daoPointsStorage().subtractReputation(_user, _reputationDeduction);
         }
 
         _userRP = daoPointsStorage().getReputation(_user);
@@ -96,14 +96,14 @@ contract DaoRewardsManager is DaoCommon {
                 * get_uint_config(CONFIG_MAXIMUM_REPUTATION_DEDUCTION)
                 / get_uint_config(CONFIG_MINIMAL_PARTICIPATION_POINT);
             if (_reputationDeduction > 0) {
-              daoReputationPoint().subtract(_user, _reputationDeduction);
+              daoPointsStorage().subtractReputation(_user, _reputationDeduction);
             }
         } else {
             uint256 _reputationAddition = (_userQP - get_uint_config(CONFIG_MINIMAL_PARTICIPATION_POINT)) *
                 get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_NUM) /
                 get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_DEN);
             if (_reputationAddition > 0) {
-              daoReputationPoint().add(
+              daoPointsStorage().addReputation(
                 _user,
                 _reputationAddition
               );

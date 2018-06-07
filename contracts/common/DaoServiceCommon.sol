@@ -11,14 +11,14 @@ contract DaoServiceCommon is DaoConstants, ResolverClient {
         internal
         returns (DaoConfigsStorage _contract)
     {
-        _contract = DaoConfigsStorage(get_contract(CONTRACT_DAO_CONFIG_STORAGE));
+        _contract = DaoConfigsStorage(get_contract(CONTRACT_STORAGE_DAO_CONFIG));
     }
 
     function daoStakeStorage() internal returns (DaoStakeStorage _contract) {
-        _contract = DaoStakeStorage(get_contract(CONTRACT_DAO_STAKE_STORAGE));
+        _contract = DaoStakeStorage(get_contract(CONTRACT_STORAGE_DAO_STAKE));
     }
 
     function daoStorage() internal returns (DaoStorage _contract) {
-        _contract = DaoStorage(get_contract(CONTRACT_DAO_STORAGE));
+        _contract = DaoStorage(get_contract(CONTRACT_STORAGE_DAO));
     }
 }

@@ -8,7 +8,7 @@ import "./../common/DaoConstants.sol";
 
 contract DaoListingService is ResolverClient, DaoConstants, AddressIteratorInteractive {
     function DaoListingService(address _resolver) public {
-        require(init(CONTRACT_DAO_LISTING_SERVICE, _resolver));
+        require(init(CONTRACT_SERVICE_DAO_LISTING, _resolver));
     }
 
     function daoStakeStorage()
@@ -16,7 +16,7 @@ contract DaoListingService is ResolverClient, DaoConstants, AddressIteratorInter
       constant
       returns (DaoStakeStorage _contract)
     {
-      _contract = DaoStakeStorage(get_contract(CONTRACT_DAO_STAKE_STORAGE));
+      _contract = DaoStakeStorage(get_contract(CONTRACT_STORAGE_DAO_STAKE));
     }
 
     function listBadgeParticipants(uint256 _count, bool _from_start)

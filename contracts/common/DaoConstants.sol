@@ -8,29 +8,33 @@ contract DaoConstants {
   uint256 PROPOSAL_STATE_VETTED = 3;
   uint256 PROPOSAL_STATE_FUNDED = 4;
 
-  bytes32 CONTRACT_DAO_STAKE_LOCKING = "c:stake:locking";
+  // interactive contracts
   bytes32 CONTRACT_DAO = "c:dao";
-  bytes32 CONTRACT_DAO_VOTING = "c:dao:voting";
-  bytes32 CONTRACT_DAO_VOTING_CLAIMS = "c:dao:voting:claims";
-  bytes32 CONTRACT_DAO_IDENTITY = "c:dao:identity";
-  bytes32 CONTRACT_IDENTITY_STORAGE = "c:dao:identity:storage";
-  bytes32 CONTRACT_DAO_REWARDS_MANAGER = "c:dao:rewards:manager";
-  bytes32 CONTRACT_DAO_POINTS_STORAGE = "c:dao:points:storage";
-  bytes32 CONTRACT_DAO_ROLES = "c:dao:roles";
-  bytes32 CONTRACT_CONFIG_CONTROLLER = "c:config:controller";
-  bytes32 CONTRACT_ROLE_SERVICE = "s:role";
-  bytes32 CONTRACT_DAO_INFO_SERVICE = "s:dao:info";
-  bytes32 CONTRACT_DAO_LISTING_SERVICE = "s:dao:listing";
-  bytes32 CONTRACT_DAO_CALCULATOR_SERVICE = "s:dao:calculator";
-  bytes32 CONTRACT_DAO_STORAGE = "s:dao:storage";
-  bytes32 CONTRACT_DAO_SPECIAL_STORAGE = "s:dao:special:storage";
-  bytes32 CONTRACT_DAO_CONFIG_STORAGE = "s:dao:config";
-  bytes32 CONTRACT_DAO_STAKE_STORAGE = "s:stake";
+  bytes32 CONTRACT_DAO_STAKE_LOCKING = "dao:stake-locking";
+  bytes32 CONTRACT_DAO_VOTING = "dao:voting";
+  bytes32 CONTRACT_DAO_VOTING_CLAIMS = "dao:voting:claims";
+  bytes32 CONTRACT_DAO_IDENTITY = "dao:identity";
+  bytes32 CONTRACT_DAO_REWARDS_MANAGER = "dao:rewards-manager";
+  bytes32 CONTRACT_DAO_ROLES = "dao:roles";
   bytes32 CONTRACT_INTERACTIVE_QUARTER_POINT = "i:quarter:point";
   bytes32 CONTRACT_INTERACTIVE_REPUTATION_POINT = "i:reputation:point";
-  bytes32 CONTRACT_DAO_FUNDING_MANAGER = "i:dao:fundingmanager";
-  bytes32 CONTRACT_DAO_FUNDING_STORAGE = "s:dao:fundingstorage";
-  bytes32 CONTRACT_DAO_REWARDS_STORAGE = "s:dao:rewardsstorage";
+  bytes32 CONTRACT_DAO_FUNDING_MANAGER = "dao:funding-manager";
+
+  // service contracts
+  bytes32 CONTRACT_SERVICE_ROLE = "service:role";
+  bytes32 CONTRACT_SERVICE_DAO_INFO = "service:dao:info";
+  bytes32 CONTRACT_SERVICE_DAO_LISTING = "service:dao:listing";
+  bytes32 CONTRACT_SERVICE_DAO_CALCULATOR = "service:dao:calculator";
+
+  // storage contracts
+  bytes32 CONTRACT_STORAGE_DAO = "storage:dao";
+  bytes32 CONTRACT_STORAGE_DAO_IDENTITY = "storage:dao:identity";
+  bytes32 CONTRACT_STORAGE_DAO_POINTS = "storage:dao:points";
+  bytes32 CONTRACT_STORAGE_DAO_SPECIAL = "storage:dao:special";
+  bytes32 CONTRACT_STORAGE_DAO_CONFIG = "storage:dao:config";
+  bytes32 CONTRACT_STORAGE_DAO_STAKE = "storage:dao:stake";
+  bytes32 CONTRACT_STORAGE_DAO_FUNDING = "storage:dao:funding";
+  bytes32 CONTRACT_STORAGE_DAO_REWARDS = "storage:dao:rewards";
 
   bytes32 CONTRACT_DGD_TOKEN = "t:dgd";
   bytes32 CONTRACT_DGX_TOKEN = "t:dgx";
@@ -41,9 +45,9 @@ contract DaoConstants {
   uint8 ROLES_PRLS = 3;
   uint8 ROLES_KYC_ADMINS = 4;
 
-  uint256 CONFIG_MINIMUM_LOCKED_DGD = 10 ** 9;
   uint256 QUARTER_DURATION = 90 days;
 
+  uint256 CONFIG_MINIMUM_LOCKED_DGD = 10 ** 9;
   bytes32 CONFIG_LOCKING_PHASE_DURATION = "locking_phase_duration";
   bytes32 CONFIG_QUARTER_DURATION = "quarter_duration";
   bytes32 CONFIG_VOTING_COMMIT_PHASE = "voting_commit_phase";
@@ -73,18 +77,17 @@ contract DaoConstants {
   bytes32 CONFIG_BADGE_QUARTER_POINT_SCALING_FACTOR = "b_qp_scaling_factor";
   bytes32 CONFIG_BADGE_REPUTATION_POINT_SCALING_FACTOR = "b_rep_point_scaling_factor";
 
-  bytes32 QUARTER_POINT_DRAFT_VOTE = "quarter_point_draft_vote";
-  bytes32 QUARTER_POINT_VOTE = "quarter_point_vote";
-  bytes32 QUARTER_POINT_INTERIM_VOTE = "quarter_point_interim_vote";
-  bytes32 QUARTER_POINT_CLAIM_RESULT = "quarter_point_claim_result";
-  bytes32 QUARTER_POINT_MILESTONE_COMPLETION = "q_p_milestone_completion";
+  bytes32 CONFIG_QUARTER_POINT_DRAFT_VOTE = "quarter_point_draft_vote";
+  bytes32 CONFIG_QUARTER_POINT_VOTE = "quarter_point_vote";
+  bytes32 CONFIG_QUARTER_POINT_INTERIM_VOTE = "quarter_point_interim_vote";
+  bytes32 CONFIG_QUARTER_POINT_CLAIM_RESULT = "quarter_point_claim_result";
+  bytes32 CONFIG_QUARTER_POINT_MILESTONE_COMPLETION = "q_p_milestone_completion";
 
-  bytes32 REPUTATION_PER_EXTRA_QP = "reputation_per_extra_qp";
-  bytes32 BONUS_REPUTATION_NUMERATOR = "bonus_reputation_numerator";
-  bytes32 BONUS_REPUTATION_DENOMINATOR = "bonus_reputation_denominator";
+  bytes32 CONFIG_BONUS_REPUTATION_NUMERATOR = "bonus_reputation_numerator";
+  bytes32 CONFIG_BONUS_REPUTATION_DENOMINATOR = "bonus_reputation_denominator";
 
-  bytes32 SPECIAL_PROPOSAL_COMMIT_PHASE = "special_proposal_commit_phase";
-  bytes32 SPECIAL_PROPOSAL_PHASE_TOTAL = "special_proposal_phase_total";
+  bytes32 CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE = "special_proposal_commit_phase";
+  bytes32 CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL = "special_proposal_phase_total";
 
   bytes32 CONFIG_SPECIAL_QUOTA_NUMERATOR = "config_special_quota_numerator";
   bytes32 CONFIG_SPECIAL_QUOTA_DENOMINATOR = "config_special_quota_denominator";

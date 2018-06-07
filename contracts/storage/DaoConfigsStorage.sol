@@ -11,7 +11,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
   function DaoConfigsStorage(address _resolver)
       public
   {
-      require(init(CONTRACT_DAO_CONFIG_STORAGE, _resolver));
+      require(init(CONTRACT_STORAGE_DAO_CONFIG, _resolver));
 
       uintConfigs[CONFIG_LOCKING_PHASE_DURATION] = 10 days;
       uintConfigs[CONFIG_QUARTER_DURATION] = 90 days;
@@ -35,18 +35,17 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
       uintConfigs[CONFIG_VOTING_QUOTA_NUMERATOR] = 30;
       uintConfigs[CONFIG_VOTING_QUOTA_DENOMINATOR] = 100;
 
-      uintConfigs[QUARTER_POINT_DRAFT_VOTE] = 1;
-      uintConfigs[QUARTER_POINT_VOTE] = 1;
-      uintConfigs[QUARTER_POINT_INTERIM_VOTE] = 1;
-      uintConfigs[QUARTER_POINT_CLAIM_RESULT] = 1;
-      uintConfigs[QUARTER_POINT_MILESTONE_COMPLETION] = 3;
+      uintConfigs[CONFIG_QUARTER_POINT_DRAFT_VOTE] = 1;
+      uintConfigs[CONFIG_QUARTER_POINT_VOTE] = 1;
+      uintConfigs[CONFIG_QUARTER_POINT_INTERIM_VOTE] = 1;
+      uintConfigs[CONFIG_QUARTER_POINT_CLAIM_RESULT] = 1;
+      uintConfigs[CONFIG_QUARTER_POINT_MILESTONE_COMPLETION] = 3;
 
-      uintConfigs[REPUTATION_PER_EXTRA_QP] = 5;
-      uintConfigs[BONUS_REPUTATION_NUMERATOR] = 20;
-      uintConfigs[BONUS_REPUTATION_DENOMINATOR] = 100;
+      uintConfigs[CONFIG_BONUS_REPUTATION_NUMERATOR] = 20;
+      uintConfigs[CONFIG_BONUS_REPUTATION_DENOMINATOR] = 100;
 
-      uintConfigs[SPECIAL_PROPOSAL_COMMIT_PHASE] = 3 weeks;
-      uintConfigs[SPECIAL_PROPOSAL_PHASE_TOTAL] = 4 weeks;
+      uintConfigs[CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE] = 3 weeks;
+      uintConfigs[CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL] = 4 weeks;
 
       uintConfigs[CONFIG_SPECIAL_QUOTA_NUMERATOR] = 51;
       uintConfigs[CONFIG_SPECIAL_QUOTA_DENOMINATOR] = 100;
@@ -68,27 +67,6 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
 
       uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM] = 5; //5% of DGX to Badge holder voting activity
       uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_DEN] = 100;
-  }
-
-  function set_uint_config(bytes32 _config_name, uint256 _new_value)
-      if_sender_is(CONTRACT_DAO)
-      public
-  {
-      uintConfigs[_config_name] = _new_value;
-  }
-
-  function set_address_config(bytes32 _config_name, address _new_value)
-      if_sender_is(CONTRACT_DAO)
-      public
-  {
-      addressConfigs[_config_name] = _new_value;
-  }
-
-  function set_bytes_config(bytes32 _config_name, bytes32 _new_value)
-      if_sender_is(CONTRACT_DAO)
-      public
-  {
-      bytesConfigs[_config_name] = _new_value;
   }
 
   function updateUintConfigs(uint256[] _uintConfigs)
@@ -113,33 +91,32 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
     uintConfigs[CONFIG_DRAFT_QUOTA_DENOMINATOR] = _uintConfigs[15];
     uintConfigs[CONFIG_VOTING_QUOTA_NUMERATOR] = _uintConfigs[16];
     uintConfigs[CONFIG_VOTING_QUOTA_DENOMINATOR] = _uintConfigs[17];
-    uintConfigs[QUARTER_POINT_DRAFT_VOTE] = _uintConfigs[18];
-    uintConfigs[QUARTER_POINT_VOTE] = _uintConfigs[19];
-    uintConfigs[QUARTER_POINT_INTERIM_VOTE] = _uintConfigs[20];
+    uintConfigs[CONFIG_QUARTER_POINT_DRAFT_VOTE] = _uintConfigs[18];
+    uintConfigs[CONFIG_QUARTER_POINT_VOTE] = _uintConfigs[19];
+    uintConfigs[CONFIG_QUARTER_POINT_INTERIM_VOTE] = _uintConfigs[20];
     uintConfigs[CONFIG_MINIMAL_PARTICIPATION_POINT] = _uintConfigs[21];
-    uintConfigs[QUARTER_POINT_CLAIM_RESULT] = _uintConfigs[22];
-    uintConfigs[QUARTER_POINT_CLAIM_RESULT] = _uintConfigs[23];
-    uintConfigs[QUARTER_POINT_MILESTONE_COMPLETION] = uintConfigs[24];
-    uintConfigs[REPUTATION_PER_EXTRA_QP] = _uintConfigs[25];
-    uintConfigs[BONUS_REPUTATION_NUMERATOR] = _uintConfigs[26];
-    uintConfigs[BONUS_REPUTATION_DENOMINATOR] = _uintConfigs[27];
-    uintConfigs[SPECIAL_PROPOSAL_COMMIT_PHASE] = _uintConfigs[28];
-    uintConfigs[SPECIAL_PROPOSAL_PHASE_TOTAL] = _uintConfigs[29];
-    uintConfigs[CONFIG_SPECIAL_QUOTA_NUMERATOR] = _uintConfigs[30];
-    uintConfigs[CONFIG_SPECIAL_QUOTA_DENOMINATOR] = _uintConfigs[31];
-    uintConfigs[CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR] = _uintConfigs[32];
-    uintConfigs[CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR] = _uintConfigs[33];
-    uintConfigs[CONFIG_MAXIMUM_REPUTATION_DEDUCTION] = _uintConfigs[34];
-    uintConfigs[CONFIG_PUNISHMENT_FOR_NOT_LOCKING] = _uintConfigs[35];
-    uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_NUM] = _uintConfigs[36];
-    uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_DEN] = _uintConfigs[37];
-    uintConfigs[CONFIG_QUARTER_POINT_SCALING_FACTOR] = _uintConfigs[38];
-    uintConfigs[CONFIG_REPUTATION_POINT_SCALING_FACTOR] = _uintConfigs[39];
-    uintConfigs[CONFIG_MINIMAL_BADGE_PARTICIPATION_POINT] = _uintConfigs[40];
-    uintConfigs[CONFIG_BADGE_QUARTER_POINT_SCALING_FACTOR] = _uintConfigs[41];
-    uintConfigs[CONFIG_BADGE_REPUTATION_POINT_SCALING_FACTOR] = _uintConfigs[42];
-    uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM] = _uintConfigs[43];
-    uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_DEN] = _uintConfigs[44];
+    uintConfigs[CONFIG_QUARTER_POINT_CLAIM_RESULT] = _uintConfigs[22];
+    uintConfigs[CONFIG_QUARTER_POINT_CLAIM_RESULT] = _uintConfigs[23];
+    uintConfigs[CONFIG_QUARTER_POINT_MILESTONE_COMPLETION] = uintConfigs[24];
+    uintConfigs[CONFIG_BONUS_REPUTATION_NUMERATOR] = _uintConfigs[25];
+    uintConfigs[CONFIG_BONUS_REPUTATION_DENOMINATOR] = _uintConfigs[26];
+    uintConfigs[CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE] = _uintConfigs[27];
+    uintConfigs[CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL] = _uintConfigs[28];
+    uintConfigs[CONFIG_SPECIAL_QUOTA_NUMERATOR] = _uintConfigs[29];
+    uintConfigs[CONFIG_SPECIAL_QUOTA_DENOMINATOR] = _uintConfigs[30];
+    uintConfigs[CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR] = _uintConfigs[31];
+    uintConfigs[CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR] = _uintConfigs[32];
+    uintConfigs[CONFIG_MAXIMUM_REPUTATION_DEDUCTION] = _uintConfigs[33];
+    uintConfigs[CONFIG_PUNISHMENT_FOR_NOT_LOCKING] = _uintConfigs[34];
+    uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_NUM] = _uintConfigs[35];
+    uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_DEN] = _uintConfigs[36];
+    uintConfigs[CONFIG_QUARTER_POINT_SCALING_FACTOR] = _uintConfigs[37];
+    uintConfigs[CONFIG_REPUTATION_POINT_SCALING_FACTOR] = _uintConfigs[38];
+    uintConfigs[CONFIG_MINIMAL_BADGE_PARTICIPATION_POINT] = _uintConfigs[39];
+    uintConfigs[CONFIG_BADGE_QUARTER_POINT_SCALING_FACTOR] = _uintConfigs[40];
+    uintConfigs[CONFIG_BADGE_REPUTATION_POINT_SCALING_FACTOR] = _uintConfigs[41];
+    uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM] = _uintConfigs[42];
+    uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_DEN] = _uintConfigs[43];
   }
 
   function readUintConfigs()
@@ -165,33 +142,32 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
     _uintConfigs[15] = uintConfigs[CONFIG_DRAFT_QUOTA_DENOMINATOR];
     _uintConfigs[16] = uintConfigs[CONFIG_VOTING_QUOTA_NUMERATOR];
     _uintConfigs[17] = uintConfigs[CONFIG_VOTING_QUOTA_DENOMINATOR];
-    _uintConfigs[18] = uintConfigs[QUARTER_POINT_DRAFT_VOTE];
-    _uintConfigs[19] = uintConfigs[QUARTER_POINT_VOTE];
-    _uintConfigs[20] = uintConfigs[QUARTER_POINT_INTERIM_VOTE];
+    _uintConfigs[18] = uintConfigs[CONFIG_QUARTER_POINT_DRAFT_VOTE];
+    _uintConfigs[19] = uintConfigs[CONFIG_QUARTER_POINT_VOTE];
+    _uintConfigs[20] = uintConfigs[CONFIG_QUARTER_POINT_INTERIM_VOTE];
     _uintConfigs[21] = uintConfigs[CONFIG_MINIMAL_PARTICIPATION_POINT];
-    _uintConfigs[22] = uintConfigs[QUARTER_POINT_CLAIM_RESULT];
-    _uintConfigs[23] = uintConfigs[QUARTER_POINT_CLAIM_RESULT];
-    _uintConfigs[24] = uintConfigs[QUARTER_POINT_MILESTONE_COMPLETION];
-    _uintConfigs[25] = uintConfigs[REPUTATION_PER_EXTRA_QP];
-    _uintConfigs[26] = uintConfigs[BONUS_REPUTATION_NUMERATOR];
-    _uintConfigs[27] = uintConfigs[BONUS_REPUTATION_DENOMINATOR];
-    _uintConfigs[28] = uintConfigs[SPECIAL_PROPOSAL_COMMIT_PHASE];
-    _uintConfigs[29] = uintConfigs[SPECIAL_PROPOSAL_PHASE_TOTAL];
-    _uintConfigs[30] = uintConfigs[CONFIG_SPECIAL_QUOTA_NUMERATOR];
-    _uintConfigs[31] = uintConfigs[CONFIG_SPECIAL_QUOTA_DENOMINATOR];
-    _uintConfigs[32] = uintConfigs[CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR];
-    _uintConfigs[33] = uintConfigs[CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR];
-    _uintConfigs[34] = uintConfigs[CONFIG_MAXIMUM_REPUTATION_DEDUCTION];
-    _uintConfigs[35] = uintConfigs[CONFIG_PUNISHMENT_FOR_NOT_LOCKING];
-    _uintConfigs[36] = uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_NUM];
-    _uintConfigs[37] = uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_DEN];
-    _uintConfigs[38] = uintConfigs[CONFIG_QUARTER_POINT_SCALING_FACTOR];
-    _uintConfigs[39] = uintConfigs[CONFIG_REPUTATION_POINT_SCALING_FACTOR];
-    _uintConfigs[40] = uintConfigs[CONFIG_MINIMAL_BADGE_PARTICIPATION_POINT];
-    _uintConfigs[41] = uintConfigs[CONFIG_BADGE_QUARTER_POINT_SCALING_FACTOR];
-    _uintConfigs[42] = uintConfigs[CONFIG_BADGE_REPUTATION_POINT_SCALING_FACTOR];
-    _uintConfigs[43] = uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM];
-    _uintConfigs[44] = uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_DEN];
+    _uintConfigs[22] = uintConfigs[CONFIG_QUARTER_POINT_CLAIM_RESULT];
+    _uintConfigs[23] = uintConfigs[CONFIG_QUARTER_POINT_CLAIM_RESULT];
+    _uintConfigs[24] = uintConfigs[CONFIG_QUARTER_POINT_MILESTONE_COMPLETION];
+    _uintConfigs[25] = uintConfigs[CONFIG_BONUS_REPUTATION_NUMERATOR];
+    _uintConfigs[26] = uintConfigs[CONFIG_BONUS_REPUTATION_DENOMINATOR];
+    _uintConfigs[27] = uintConfigs[CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE];
+    _uintConfigs[28] = uintConfigs[CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL];
+    _uintConfigs[29] = uintConfigs[CONFIG_SPECIAL_QUOTA_NUMERATOR];
+    _uintConfigs[30] = uintConfigs[CONFIG_SPECIAL_QUOTA_DENOMINATOR];
+    _uintConfigs[31] = uintConfigs[CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR];
+    _uintConfigs[32] = uintConfigs[CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR];
+    _uintConfigs[33] = uintConfigs[CONFIG_MAXIMUM_REPUTATION_DEDUCTION];
+    _uintConfigs[34] = uintConfigs[CONFIG_PUNISHMENT_FOR_NOT_LOCKING];
+    _uintConfigs[35] = uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_NUM];
+    _uintConfigs[36] = uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_DEN];
+    _uintConfigs[37] = uintConfigs[CONFIG_QUARTER_POINT_SCALING_FACTOR];
+    _uintConfigs[38] = uintConfigs[CONFIG_REPUTATION_POINT_SCALING_FACTOR];
+    _uintConfigs[39] = uintConfigs[CONFIG_MINIMAL_BADGE_PARTICIPATION_POINT];
+    _uintConfigs[40] = uintConfigs[CONFIG_BADGE_QUARTER_POINT_SCALING_FACTOR];
+    _uintConfigs[41] = uintConfigs[CONFIG_BADGE_REPUTATION_POINT_SCALING_FACTOR];
+    _uintConfigs[42] = uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM];
+    _uintConfigs[43] = uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_DEN];
     return _uintConfigs;
   }
 }

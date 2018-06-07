@@ -248,8 +248,8 @@ contract('Dao | DaoVoting', function (accounts) {
       // kyc approve dgdHolder2 for 1 month
       const expiration = getCurrentTimestamp() + (60 * 60 * 24 * 30)
       await contracts.daoIdentity.updateKyc(addressOf.dgdHolder2, randomBytes32(), bN(expiration), { from: addressOf.kycadmin });
-      assert.deepEqual(await contracts.identityStorage.is_kyc_approved.call(addressOf.dgdHolder2), true);
-      assert.deepEqual(await contracts.identityStorage.is_kyc_approved.call(addressOf.dgdHolder4), false);
+      assert.deepEqual(await contracts.DaoIdentityStorage.is_kyc_approved.call(addressOf.dgdHolder2), true);
+      assert.deepEqual(await contracts.DaoIdentityStorage.is_kyc_approved.call(addressOf.dgdHolder4), false);
     });
     it('[not main phase]: revert', async function () {
       await phaseCorrection(phases.LOCKING_PHASE);
@@ -415,7 +415,7 @@ contract('Dao | DaoVoting', function (accounts) {
     });
     it('[if not proposer]: revert', async function () {
       assert.deepEqual(await contracts.daoStakeStorage.isParticipant.call(addressOf.dgdHolder2), true);
-      assert.deepEqual(await contracts.identityStorage.is_kyc_approved.call(addressOf.dgdHolder2), true);
+      assert.deepEqual(await contracts.DaoIdentityStorage.is_kyc_approved.call(addressOf.dgdHolder2), true);
       assert.deepEqual(await contracts.daoStorage.readProposalState.call(proposalIds[1]), proposalStates(bN).PROPOSAL_STATE_INITIAL);
       assert.deepEqual(milestoneDurations.secondProposal.versionTwo.length, milestoneFundings.secondProposal.versionTwo.length);
       await phaseCorrection(phases.MAIN_PHASE);
@@ -614,11 +614,12 @@ contract('Dao | DaoVoting', function (accounts) {
       assert.deepEqual(count[0], bN(5)); // for
       assert.deepEqual(count[1], bN(1)); // against
 
+      const currentQuarterIndex = await contracts.dao.currentQuarterIndex.call();
       // read quarter points
-      assert.deepEqual(await contracts.daoQuarterPoint.balanceOf.call(addressOf.badgeHolder1), daoConstantsValues(bN).QUARTER_POINT_DRAFT_VOTE);
-      assert.deepEqual(await contracts.daoQuarterPoint.balanceOf.call(addressOf.badgeHolder2), daoConstantsValues(bN).QUARTER_POINT_DRAFT_VOTE);
-      assert.deepEqual(await contracts.daoQuarterPoint.balanceOf.call(addressOf.badgeHolder3), daoConstantsValues(bN).QUARTER_POINT_DRAFT_VOTE);
-      assert.deepEqual(await contracts.daoQuarterPoint.balanceOf.call(addressOf.badgeHolder4), bN(0));
+      assert.deepEqual(await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.badgeHolder1, currentQuarterIndex), daoConstantsValues(bN).CONFIG_QUARTER_POINT_DRAFT_VOTE);
+      assert.deepEqual(await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.badgeHolder2, currentQuarterIndex), daoConstantsValues(bN).CONFIG_QUARTER_POINT_DRAFT_VOTE);
+      assert.deepEqual(await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.badgeHolder3, currentQuarterIndex), daoConstantsValues(bN).CONFIG_QUARTER_POINT_DRAFT_VOTE);
+      assert.deepEqual(await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.badgeHolder4, currentQuarterIndex), bN(0));
     });
     it('[modify votes]: success | verify read functions', async function () {
       await phaseCorrection(phases.MAIN_PHASE);
@@ -652,9 +653,10 @@ contract('Dao | DaoVoting', function (accounts) {
       assert.deepEqual(count[0], bN(4)); // for
       assert.deepEqual(count[1], bN(2)); // against
 
+      const currentQuarterIndex = await contracts.dao.currentQuarterIndex.call();
       // read quarter points : don't change for badgeHolders 1 and 2
-      assert.deepEqual(await contracts.daoQuarterPoint.balanceOf.call(addressOf.badgeHolder1), daoConstantsValues(bN).QUARTER_POINT_DRAFT_VOTE);
-      assert.deepEqual(await contracts.daoQuarterPoint.balanceOf.call(addressOf.badgeHolder2), daoConstantsValues(bN).QUARTER_POINT_DRAFT_VOTE);
+      assert.deepEqual(await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.badgeHolder1, currentQuarterIndex), daoConstantsValues(bN).CONFIG_QUARTER_POINT_DRAFT_VOTE);
+      assert.deepEqual(await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.badgeHolder2, currentQuarterIndex), daoConstantsValues(bN).CONFIG_QUARTER_POINT_DRAFT_VOTE);
     });
     it('[re-using nonce]: revert', async function () {
       await phaseCorrection(phases.MAIN_PHASE);

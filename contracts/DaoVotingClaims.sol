@@ -10,12 +10,14 @@ contract DaoVotingClaims is DaoCommon, Claimable {
   using DaoStructs for DaoStructs.VotingCount;
   using DaoStructs for DaoStructs.MilestoneInfo;
   using DaoStructs for DaoStructs.Users;
+  uint256[] public uintLogs;
+  address[] public addressLogs;
 
   function daoCalculatorService()
       internal
       returns (DaoCalculatorService _contract)
   {
-      _contract = DaoCalculatorService(get_contract(CONTRACT_DAO_CALCULATOR_SERVICE));
+      _contract = DaoCalculatorService(get_contract(CONTRACT_SERVICE_DAO_CALCULATOR));
   }
 
   function daoFundingManager()
@@ -55,7 +57,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
       daoStorage().setProposalDraftPass(_proposalId, true);
       daoStorage().setProposalVotingTime(_proposalId, 0, calculateNextVotingTime(0, false));
       daoStorage().setDraftVotingClaim(_proposalId, msg.sender);
-      daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex(), false);
+      daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex());
   }
 
   function claimVotingResult(bytes32 _proposalId)
@@ -74,7 +76,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
       _passed = true;
       daoStorage().setProposalPass(_proposalId, 0, _passed);
       daoStorage().setVotingClaim(_proposalId, 0, msg.sender); // 0 for voting, interim starts from 1
-      daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex(), false);
+      daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex());
 
       // set deadline of milestone 1 (set startTime for next interim voting round)
       DaoStructs.MilestoneInfo memory _info;
@@ -102,12 +104,12 @@ contract DaoVotingClaims is DaoCommon, Claimable {
       }
       daoStorage().setProposalPass(_proposalId, _index, _passed);
       daoStorage().setVotingClaim(_proposalId, _index, msg.sender);
-      daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex(), false);
+      daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex());
 
       DaoStructs.Users memory _bonusVoters;
       if (_passed) {
         // give quarter points to proposer for finishing the milestone
-        daoQuarterPoint().add(daoStorage().readProposalProposer(_proposalId), get_uint_config(QUARTER_POINT_MILESTONE_COMPLETION), currentQuarterIndex(), false);
+        daoPointsStorage().addQuarterPoint(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_QUARTER_POINT_MILESTONE_COMPLETION), currentQuarterIndex());
 
         // give bonus points for all those who
         // voted YES in the previous round
@@ -149,7 +151,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     }
     daoSpecialStorage().setPass(_proposalId, _passed);
     daoSpecialStorage().setVotingClaim(_proposalId, msg.sender);
-    daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex(), false);
+    daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex());
     if (_passed) {
       setConfigs(_proposalId);
     }
@@ -158,12 +160,17 @@ contract DaoVotingClaims is DaoCommon, Claimable {
   function addBonusReputation(address[] _voters, uint256 _n)
       private
   {
-      uint256 _qp = get_uint_config(QUARTER_POINT_VOTE);
-      uint256 _rate = get_uint_config(BONUS_REPUTATION_NUMERATOR);
-      uint256 _base = get_uint_config(BONUS_REPUTATION_DENOMINATOR);
-      uint256 _p = get_uint_config(REPUTATION_PER_EXTRA_QP);
+      uintLogs.push(_n);
+      uint256 _qp = get_uint_config(CONFIG_QUARTER_POINT_VOTE);
+      uint256 _rate = get_uint_config(CONFIG_BONUS_REPUTATION_NUMERATOR);
+      uint256 _base = get_uint_config(CONFIG_BONUS_REPUTATION_DENOMINATOR);
+
+      uint256 _bonus = (_qp * _rate * get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_NUM))
+          /_base
+          / get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_DEN);
+
       for (uint256 i = 0; i < _n; i++) {
-          daoReputationPoint().add(_voters[i], (_qp * _rate * _p)/_base);
+          daoPointsStorage().addReputation(_voters[i], _bonus);
       }
   }
 

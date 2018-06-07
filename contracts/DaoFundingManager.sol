@@ -13,7 +13,7 @@ contract DaoFundingManager is DaoCommon {
         if_prl_approved(_proposalId)
         returns (bool _success)
     {
-        uint256 _value = daoFundingStorage().readClaimableEth(msg.sender);
+        uint256 _value = daoFundingStorage().claimableEth(msg.sender);
         daoFundingStorage().updateClaimableEth(msg.sender, 0);
         daoFundingStorage().withdrawEth(_value);
         msg.sender.transfer(_value);

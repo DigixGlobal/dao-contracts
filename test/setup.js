@@ -15,31 +15,29 @@ const randomBigNumbers = function (bN, count, range) {
   return indexRange(0, count).map(() => randomBigNumber(bN, range));
 };
 
-const ContractResolver = artifacts.require('./ContractResolver.sol');
-const DoublyLinkedList = artifacts.require('./DoublyLinkedList.sol');
+const ContractResolver = process.env.SIMULATION ? 0 : artifacts.require('./ContractResolver.sol');
+const DoublyLinkedList = process.env.SIMULATION ? 0 : artifacts.require('./DoublyLinkedList.sol');
 
-const IdentityStorage = artifacts.require('./IdentityStorage.sol');
-const DaoConfigsStorage = artifacts.require('./MockDaoConfigsStorage.sol');
-const DaoStakeStorage = artifacts.require('./DaoStakeStorage.sol');
-const DaoPointsStorage = artifacts.require('./DaoPointsStorage.sol');
-const DaoStorage = artifacts.require('./DaoStorage.sol');
-const DaoSpecialStorage = artifacts.require('./DaoSpecialStorage.sol');
-const DaoFundingStorage = artifacts.require('./DaoFundingStorage.sol');
-const DaoRewardsStorage = artifacts.require('./DaoRewardsStorage.sol');
+const DaoIdentityStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoIdentityStorage.sol');
+const DaoConfigsStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoConfigsStorage.sol');
+const DaoStakeStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoStakeStorage.sol');
+const DaoPointsStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoPointsStorage.sol');
+const DaoStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoStorage.sol');
+const DaoSpecialStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoSpecialStorage.sol');
+const DaoFundingStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoFundingStorage.sol');
+const DaoRewardsStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoRewardsStorage.sol');
 
-const DaoInfoService = artifacts.require('./DaoInfoService.sol');
-const DaoListingService = artifacts.require('./DaoListingService.sol');
-const DaoCalculatorService = artifacts.require('./DaoCalculatorService.sol');
+const DaoInfoService = process.env.SIMULATION ? 0 : artifacts.require('./DaoInfoService.sol');
+const DaoListingService = process.env.SIMULATION ? 0 : artifacts.require('./DaoListingService.sol');
+const DaoCalculatorService = process.env.SIMULATION ? 0 : artifacts.require('./DaoCalculatorService.sol');
 
-const DaoIdentity = artifacts.require('./DaoIdentity.sol');
-const Dao = artifacts.require('./Dao.sol');
-const DaoVoting = artifacts.require('./DaoVoting.sol');
-const DaoVotingClaims = artifacts.require('./DaoVotingClaims.sol');
-const DaoStakeLocking = artifacts.require('./DaoStakeLocking.sol');
-const DaoFundingManager = artifacts.require('./DaoFundingManager.sol');
-const QuarterPoint = artifacts.require('./QuarterPoint.sol');
-const ReputationPoint = artifacts.require('./ReputationPoint.sol');
-const DaoRewardsManager = artifacts.require('./DaoRewardsManager.sol');
+const DaoIdentity = process.env.SIMULATION ? 0 : artifacts.require('./DaoIdentity.sol');
+const Dao = process.env.SIMULATION ? 0 : artifacts.require('./Dao.sol');
+const DaoVoting = process.env.SIMULATION ? 0 : artifacts.require('./DaoVoting.sol');
+const DaoVotingClaims = process.env.SIMULATION ? 0 : artifacts.require('./DaoVotingClaims.sol');
+const DaoStakeLocking = process.env.SIMULATION ? 0 : artifacts.require('./DaoStakeLocking.sol');
+const DaoFundingManager = process.env.SIMULATION ? 0 : artifacts.require('./DaoFundingManager.sol');
+const DaoRewardsManager = process.env.SIMULATION ? 0 : artifacts.require('./DaoRewardsManager.sol');
 
 const BADGE_HOLDER_COUNT = 4;
 const DGD_HOLDER_COUNT = 6;
@@ -76,8 +74,8 @@ const getAllParticipantAddresses = function (accounts) {
 };
 
 const deployStorage = async function (libs, contracts, resolver) {
-  IdentityStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
-  contracts.identityStorage = await IdentityStorage.new(resolver.address);
+  DaoIdentityStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
+  contracts.DaoIdentityStorage = await DaoIdentityStorage.new(resolver.address);
   contracts.daoConfigsStorage = await DaoConfigsStorage.new(resolver.address);
   DaoStakeStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
   contracts.daoStakeStorage = await DaoStakeStorage.new(resolver.address);
@@ -92,16 +90,16 @@ const deployStorage = async function (libs, contracts, resolver) {
 
 const registerInteractive = async function (resolver, addressOf) {
   const callingKeys = [
-    'c:dao:identity',
-    'c:stake:locking',
+    'dao:identity',
+    'dao:stake-locking',
     'c:dao',
-    'c:dao:voting',
-    'c:dao:voting:claims',
-    'c:config:controller',
+    'dao:voting',
+    'dao:voting:claims',
+    // 'c:config:controller',
     'i:quarter:point',
     'i:reputation:point',
-    'i:dao:fundingmanager',
-    'c:dao:rewards:manager',
+    'dao:funding-manager',
+    'dao:rewards-manager',
   ];
   await a.map(callingKeys, 10, key => resolver.register_contract(key, addressOf.root));
 };
@@ -119,8 +117,6 @@ const deployInteractive = async function (libs, contracts, resolver) {
   contracts.dao = await Dao.new(resolver.address);
   contracts.daoVoting = await DaoVoting.new(resolver.address);
   contracts.daoVotingClaims = await DaoVotingClaims.new(resolver.address);
-  contracts.daoQuarterPoint = await QuarterPoint.new(resolver.address);
-  contracts.daoReputationPoint = await ReputationPoint.new(resolver.address);
   contracts.daoRewardsManager = await DaoRewardsManager.new(resolver.address, contracts.dgxToken.address);
 };
 

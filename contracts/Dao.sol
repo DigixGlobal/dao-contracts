@@ -109,7 +109,7 @@ contract Dao is DaoCommon, Claimable {
       if_main_phase()
       returns (bool _success)
     {
-      require(getTimeFromNextLockingPhase(now) > get_uint_config(SPECIAL_PROPOSAL_PHASE_TOTAL));
+      require(getTimeFromNextLockingPhase(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
       address _proposer = msg.sender;
       daoSpecialStorage().addSpecialProposal(
         _doc,

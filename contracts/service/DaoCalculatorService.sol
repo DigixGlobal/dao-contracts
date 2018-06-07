@@ -13,7 +13,7 @@ contract DaoCalculatorService is DaoCommon {
     function DaoCalculatorService(address _resolver, address _dgxDemurrageCalculatorAddress)
       public
     {
-      require(init(CONTRACT_DAO_CALCULATOR_SERVICE, _resolver));
+      require(init(CONTRACT_SERVICE_DAO_CALCULATOR, _resolver));
       dgxDemurrageCalculatorAddress = _dgxDemurrageCalculatorAddress;
     }
 

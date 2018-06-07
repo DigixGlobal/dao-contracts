@@ -11,7 +11,7 @@ const MockDgxDemurrageReporter = artifacts.require('./MockDgxDemurrageReporter.s
 const ContractResolver = artifacts.require('./ContractResolver.sol');
 const DoublyLinkedList = artifacts.require('./DoublyLinkedList.sol');
 
-const IdentityStorage = artifacts.require('./IdentityStorage.sol');
+const DaoIdentityStorage = artifacts.require('./DaoIdentityStorage.sol');
 const DaoConfigsStorage = artifacts.require('./MockDaoConfigsStorage.sol');
 const DaoStakeStorage = artifacts.require('./DaoStakeStorage.sol');
 const DaoPointsStorage = artifacts.require('./DaoPointsStorage.sol');
@@ -30,8 +30,6 @@ const DaoVoting = artifacts.require('./DaoVoting.sol');
 const DaoVotingClaims = artifacts.require('./DaoVotingClaims.sol');
 const DaoStakeLocking = artifacts.require('./DaoStakeLocking.sol');
 const DaoFundingManager = artifacts.require('./DaoFundingManager.sol');
-const QuarterPoint = artifacts.require('./QuarterPoint.sol');
-const ReputationPoint = artifacts.require('./ReputationPoint.sol');
 const DaoRewardsManager = artifacts.require('./DaoRewardsManager.sol');
 
 /*
@@ -176,7 +174,7 @@ const assignDeployedContracts = async function (contracts, libs) {
   contracts.resolver = await ContractResolver.deployed();
   libs.doublyLinkedList = await DoublyLinkedList.deployed();
 
-  contracts.identityStorage = await IdentityStorage.deployed();
+  contracts.daoIdentityStorage = await DaoIdentityStorage.deployed();
   contracts.daoConfigsStorage = await DaoConfigsStorage.deployed();
   contracts.daoStakeStorage = await DaoStakeStorage.deployed();
   contracts.daoPointsStorage = await DaoPointsStorage.deployed();
@@ -195,8 +193,6 @@ const assignDeployedContracts = async function (contracts, libs) {
   contracts.dao = await Dao.deployed();
   contracts.daoVoting = await DaoVoting.deployed();
   contracts.daoVotingClaims = await DaoVotingClaims.deployed();
-  contracts.daoQuarterPoint = await QuarterPoint.deployed();
-  contracts.daoReputationPoint = await ReputationPoint.deployed();
   contracts.daoRewardsManager = await DaoRewardsManager.deployed();
 };
 
@@ -207,8 +203,8 @@ const setDummyConfig = async function (contracts) {
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTING_PHASE_TOTAL, bN(20));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_INTERIM_COMMIT_PHASE, bN(10));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL, bN(20));
-  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().SPECIAL_PROPOSAL_COMMIT_PHASE, bN(10));
-  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().SPECIAL_PROPOSAL_PHASE_TOTAL, bN(20));
+  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE, bN(10));
+  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL, bN(20));
 };
 
 const initDao = async function (contracts, addressOf) {
@@ -503,6 +499,7 @@ const interimVotingCommitRound = async function (contracts, addressOf) {
 
 const interimVotingRevealRound = async function (contracts, addressOf) {
   await waitForRevealPhase(contracts, addressOf, proposals[0].id, bN(1));
+  console.log('Proposal being revealed = ', proposals[0].id);
 
   await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
     await contracts.daoVoting.revealVoteOnInterim(
@@ -534,6 +531,7 @@ const interimCommitRound = async function (contracts, addressOf, proposalIndex, 
 };
 
 const interimRevealRound = async function (contracts, addressOf, proposalIndex, index) {
+  console.log('Proposal being revealed = ', proposals[proposalIndex].id);
   await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
     await contracts.daoVoting.revealVoteOnInterim(
       proposals[proposalIndex].id,

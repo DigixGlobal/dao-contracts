@@ -17,7 +17,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
     DoublyLinkedList.Address allBadgeParticipants;
 
     function DaoStakeStorage(address _resolver) public {
-        require(init(CONTRACT_DAO_STAKE_STORAGE, _resolver));
+        require(init(CONTRACT_STORAGE_DAO_STAKE, _resolver));
     }
 
     function updateTotalLockedDGDStake(uint256 _totalLockedDGDStake)

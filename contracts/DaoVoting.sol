@@ -29,7 +29,7 @@ contract DaoVoting is DaoCommon, Claimable {
       require(daoStorage().addDraftVote(_proposalId, _badgeHolder, _voteYes, _badgeStake));
 
       if (_voted == false) {
-        daoQuarterPoint().add(_badgeHolder, get_uint_config(QUARTER_POINT_DRAFT_VOTE), currentQuarterIndex(), true);
+        daoPointsStorage().addQuarterBadgePoint(_badgeHolder, get_uint_config(CONFIG_QUARTER_POINT_DRAFT_VOTE), currentQuarterIndex());
       }
 
       _success = true;
@@ -64,7 +64,7 @@ contract DaoVoting is DaoCommon, Claimable {
       daoStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().readUserEffectiveDGDStake(msg.sender), 0);
 
       // give quarter point
-      daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_VOTE), currentQuarterIndex(), false);
+      daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_VOTE), currentQuarterIndex());
   }
 
   function commitVoteOnSpecialProposal(
@@ -94,7 +94,7 @@ contract DaoVoting is DaoCommon, Claimable {
       daoSpecialStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().readUserEffectiveDGDStake(msg.sender));
 
       // give quarter point
-      daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_VOTE), currentQuarterIndex(), false);
+      daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_VOTE), currentQuarterIndex());
   }
 
   function commitVoteOnInterim(
@@ -128,6 +128,6 @@ contract DaoVoting is DaoCommon, Claimable {
       daoStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().readUserEffectiveDGDStake(msg.sender), _index);
 
       // give quarter point
-      daoQuarterPoint().add(msg.sender, get_uint_config(QUARTER_POINT_INTERIM_VOTE), currentQuarterIndex(), false);
+      daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_INTERIM_VOTE), currentQuarterIndex());
   }
 }

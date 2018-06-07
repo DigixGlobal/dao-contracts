@@ -1,7 +1,7 @@
 pragma solidity ^0.4.19;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
-import "./../storage/IdentityStorage.sol";
+import "./../storage/DaoIdentityStorage.sol";
 import "./DaoConstants.sol";
 
 contract IdentityCommon is ResolverClient, DaoConstants {
@@ -29,8 +29,8 @@ contract IdentityCommon is ResolverClient, DaoConstants {
   function identity_storage()
     internal
     constant
-    returns (IdentityStorage _contract)
+    returns (DaoIdentityStorage _contract)
   {
-    _contract = IdentityStorage(get_contract(CONTRACT_IDENTITY_STORAGE));
+    _contract = DaoIdentityStorage(get_contract(CONTRACT_STORAGE_DAO_IDENTITY));
   }
 }

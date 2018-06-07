@@ -35,12 +35,12 @@ contract('DaoPointsStorage', function (accounts) {
 
   describe('Initialization', function () {
     it('[contract key]', async function () {
-      assert.deepEqual(await contracts.resolver.get_contract.call('c:dao:points:storage'), contracts.daoPointsStorage.address);
+      assert.deepEqual(await contracts.resolver.get_contract.call('storage:dao:points'), contracts.daoPointsStorage.address);
     });
   });
 
   describe('addQuarterPoint', function () {
-    it('[not called by INTERACTIVE]: revert', async function () {
+    it('[not called by CONTRACT_DAO_VOTING or CONTRACT_DAO_VOTING_CLAIMS]: revert', async function () {
       assert(await a.failure(contracts.daoPointsStorage.addQuarterPoint.call(
         addressOf.dgdHolders[0],
         someQuarterPoints[0],
@@ -119,7 +119,7 @@ contract('DaoPointsStorage', function (accounts) {
   });
 
   describe('addQuarterBadgePoint', function () {
-    it('[not called by INTERACTIVE]: revert', async function () {
+    it('[not called by CONTRACT_DAO_VOTING or CONTRACT_DAO_VOTING_CLAIMS]: revert', async function () {
       assert(await a.failure(contracts.daoPointsStorage.addQuarterBadgePoint.call(
         addressOf.dgdHolders[0],
         someQuarterBadgePoints[0],
@@ -198,7 +198,7 @@ contract('DaoPointsStorage', function (accounts) {
   });
 
   describe('addReputation', function () {
-    it('[not called by INTERACTIVE]: revert', async function () {
+    it('[not called by CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_REWARDS_MANAGER]: revert', async function () {
       assert(await a.failure(contracts.daoPointsStorage.addReputation.call(
         addressOf.dgdHolders[0],
         someReputationPoints[0],
@@ -219,7 +219,7 @@ contract('DaoPointsStorage', function (accounts) {
   });
 
   describe('subtractReputation', function () {
-    it('[not called by INTERACTIVE]: revert', async function () {
+    it('[not called by CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_REWARDS_MANAGER]: revert', async function () {
       assert(await a.failure(contracts.daoPointsStorage.subtractReputation.call(
         addressOf.dgdHolders[0],
         bN(20),

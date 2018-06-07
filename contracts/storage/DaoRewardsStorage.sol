@@ -18,7 +18,7 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
     function DaoRewardsStorage(address _resolver)
            public
     {
-        require(init(CONTRACT_DAO_REWARDS_STORAGE, _resolver));
+        require(init(CONTRACT_STORAGE_DAO_REWARDS, _resolver));
     }
 
     function updateQuarterInfo(

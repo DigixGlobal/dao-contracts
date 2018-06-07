@@ -1,6 +1,6 @@
 pragma solidity ^0.4.19;
 
-import "./storage/IdentityStorage.sol";
+import "./storage/DaoIdentityStorage.sol";
 import "./common/IdentityCommon.sol";
 
 contract DaoIdentity is IdentityCommon {

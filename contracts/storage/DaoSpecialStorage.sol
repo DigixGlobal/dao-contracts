@@ -14,7 +14,7 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
   mapping (bytes32 => DaoStructs.SpecialProposal) proposalsById;
 
   function DaoSpecialStorage(address _resolver) public {
-      require(init(CONTRACT_DAO_SPECIAL_STORAGE, _resolver));
+      require(init(CONTRACT_STORAGE_DAO_SPECIAL, _resolver));
   }
 
   function addSpecialProposal(

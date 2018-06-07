@@ -30,7 +30,7 @@ contract DaoStakeLocking is DaoCommon {
         internal
         returns (DaoCalculatorService _contract)
     {
-        _contract = DaoCalculatorService(get_contract(CONTRACT_DAO_CALCULATOR_SERVICE));
+        _contract = DaoCalculatorService(get_contract(CONTRACT_SERVICE_DAO_CALCULATOR));
     }
 
     function daoRewardsManager()

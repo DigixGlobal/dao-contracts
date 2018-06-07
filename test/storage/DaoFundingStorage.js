@@ -32,7 +32,7 @@ contract('DaoFundingStorage', function (accounts) {
 
   describe('Initialization', function () {
     it('[contract key]', async function () {
-      assert.deepEqual(await contracts.resolver.get_contract.call('s:dao:fundingstorage'), contracts.daoFundingStorage.address);
+      assert.deepEqual(await contracts.resolver.get_contract.call('storage:dao:funding'), contracts.daoFundingStorage.address);
     });
   });
 
@@ -95,8 +95,8 @@ contract('DaoFundingStorage', function (accounts) {
       ));
       await contracts.daoFundingStorage.updateClaimableEth(users[0], amounts[0]);
       await contracts.daoFundingStorage.updateClaimableEth(users[1], amounts[1]);
-      assert.deepEqual(await contracts.daoFundingStorage.readClaimableEth.call(users[0]), amounts[0]);
-      assert.deepEqual(await contracts.daoFundingStorage.readClaimableEth.call(users[1]), amounts[1]);
+      assert.deepEqual(await contracts.daoFundingStorage.claimableEth.call(users[0]), amounts[0]);
+      assert.deepEqual(await contracts.daoFundingStorage.claimableEth.call(users[1]), amounts[1]);
     });
   });
 });

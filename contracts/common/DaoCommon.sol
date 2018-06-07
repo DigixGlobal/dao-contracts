@@ -11,8 +11,6 @@ import "./../storage/DaoSpecialStorage.sol";
 import "./../storage/DaoPointsStorage.sol";
 import "./../storage/DaoFundingStorage.sol";
 import "./../storage/DaoRewardsStorage.sol";
-import "./../interactive/QuarterPoint.sol";
-import "./../interactive/ReputationPoint.sol";
 
 contract DaoCommon is IdentityCommon {
     modifier daoIsValid() {
@@ -142,22 +140,22 @@ contract DaoCommon is IdentityCommon {
     modifier if_after_reveal_phase_special(bytes32 _proposalId) {
       uint256 _start = daoSpecialStorage().readVotingTime(_proposalId);
       require(_start > 0);
-      require(now - _start > get_uint_config(SPECIAL_PROPOSAL_PHASE_TOTAL));
+      require(now - _start > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
       _;
     }
 
     modifier if_commit_phase_special(bytes32 _proposalId) {
         uint256 _start = daoSpecialStorage().readVotingTime(_proposalId);
         require(_start > 0);
-        require(now - _start < get_uint_config(SPECIAL_PROPOSAL_COMMIT_PHASE));
+        require(now - _start < get_uint_config(CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE));
         _;
     }
 
     modifier if_reveal_phase_special(bytes32 _proposalId) {
       uint256 _start = daoSpecialStorage().readVotingTime(_proposalId);
       require(_start > 0);
-      require(now - _start < get_uint_config(SPECIAL_PROPOSAL_PHASE_TOTAL));
-      require(now - _start > get_uint_config(SPECIAL_PROPOSAL_COMMIT_PHASE));
+      require(now - _start < get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
+      require(now - _start > get_uint_config(CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE));
       _;
     }
 
@@ -188,53 +186,45 @@ contract DaoCommon is IdentityCommon {
         internal
         returns (DaoInfoService _contract)
     {
-        _contract = DaoInfoService(get_contract(CONTRACT_DAO_INFO_SERVICE));
+        _contract = DaoInfoService(get_contract(CONTRACT_SERVICE_DAO_INFO));
     }
 
     function daoListingService()
         internal
         returns (DaoListingService _contract)
     {
-        _contract = DaoListingService(get_contract(CONTRACT_DAO_LISTING_SERVICE));
+        _contract = DaoListingService(get_contract(CONTRACT_SERVICE_DAO_LISTING));
     }
 
     function daoConfigsStorage()
         internal
         returns (DaoConfigsStorage _contract)
     {
-        _contract = DaoConfigsStorage(get_contract(CONTRACT_DAO_CONFIG_STORAGE));
+        _contract = DaoConfigsStorage(get_contract(CONTRACT_STORAGE_DAO_CONFIG));
     }
 
     function daoStakeStorage() internal returns (DaoStakeStorage _contract) {
-        _contract = DaoStakeStorage(get_contract(CONTRACT_DAO_STAKE_STORAGE));
+        _contract = DaoStakeStorage(get_contract(CONTRACT_STORAGE_DAO_STAKE));
     }
 
     function daoStorage() internal returns (DaoStorage _contract) {
-        _contract = DaoStorage(get_contract(CONTRACT_DAO_STORAGE));
+        _contract = DaoStorage(get_contract(CONTRACT_STORAGE_DAO));
     }
 
     function daoSpecialStorage() internal returns (DaoSpecialStorage _contract) {
-        _contract = DaoSpecialStorage(get_contract(CONTRACT_DAO_SPECIAL_STORAGE));
+        _contract = DaoSpecialStorage(get_contract(CONTRACT_STORAGE_DAO_SPECIAL));
     }
 
     function daoPointsStorage() internal returns (DaoPointsStorage _contract) {
-        _contract = DaoPointsStorage(get_contract(CONTRACT_DAO_POINTS_STORAGE));
+        _contract = DaoPointsStorage(get_contract(CONTRACT_STORAGE_DAO_POINTS));
     }
 
     function daoFundingStorage() internal returns (DaoFundingStorage _contract) {
-        _contract = DaoFundingStorage(get_contract(CONTRACT_DAO_FUNDING_STORAGE));
+        _contract = DaoFundingStorage(get_contract(CONTRACT_STORAGE_DAO_FUNDING));
     }
 
     function daoRewardsStorage() internal returns (DaoRewardsStorage _contract) {
-        _contract = DaoRewardsStorage(get_contract(CONTRACT_DAO_REWARDS_STORAGE));
-    }
-
-    function daoQuarterPoint() internal returns (QuarterPoint _contract) {
-        _contract = QuarterPoint(get_contract(CONTRACT_INTERACTIVE_QUARTER_POINT));
-    }
-
-    function daoReputationPoint() internal returns (ReputationPoint _contract) {
-        _contract = ReputationPoint(get_contract(CONTRACT_INTERACTIVE_REPUTATION_POINT));
+        _contract = DaoRewardsStorage(get_contract(CONTRACT_STORAGE_DAO_REWARDS));
     }
 
     function get_uint_config(bytes32 _config_key)
