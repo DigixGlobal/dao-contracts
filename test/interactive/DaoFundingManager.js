@@ -1,19 +1,19 @@
 const a = require('awaiting');
 
 const DaoFundingManager = artifacts.require('./DaoFundingManager.sol');
+const MockDaoFundingManager = artifacts.require('./MockDaoFundingManager.sol');
 
 const {
   deployLibraries,
   deployNewContractResolver,
   getAccountsAndAddressOf,
   deployStorage,
-  deployServices,
-  deployInteractive,
 } = require('../setup');
 
 const {
   randomAddress,
   randomBytes32,
+  indexRange,
 } = require('@digix/helpers/lib/helpers');
 
 const bN = web3.toBigNumber;
@@ -21,25 +21,22 @@ const bN = web3.toBigNumber;
 const doc = randomBytes32();
 const durations = [bN(35), bN(45), bN(55)];
 const fundings = [bN(100 * (10 ** 18)), bN(200), bN(50)];
+const finalReward = bN(1 * (10 ** 18));
 
 contract('DaoFundingManager', function (accounts) {
   let libs;
-  let resolver;
   let contracts;
   let addressOf;
-  let proposer;
 
   before(async function () {
     libs = await deployLibraries();
-    resolver = await deployNewContractResolver();
-    addressOf = await getAccountsAndAddressOf(accounts);
-    proposer = addressOf.dgdHolder3;
     contracts = {};
-    await deployStorage(libs, contracts, resolver, addressOf);
-    await deployServices(libs, contracts, resolver, addressOf);
-    contracts.daoFundingManager = await DaoFundingManager.new(resolver.address);
-    await resolver.register_contract('c:config:controller', addressOf.root);
-    await resolver.register_contract('c:dao', addressOf.root);
+    await deployNewContractResolver(contracts);
+    addressOf = await getAccountsAndAddressOf(accounts);
+    await deployStorage(libs, contracts, contracts.resolver, addressOf);
+    contracts.daoFundingManager = await DaoFundingManager.new(contracts.resolver.address);
+    await contracts.resolver.register_contract('c:dao:voting:claims', addressOf.root);
+    await contracts.resolver.register_contract('c:dao', addressOf.root);
     await fundDao();
   });
 
@@ -56,7 +53,7 @@ contract('DaoFundingManager', function (accounts) {
     it('[not called from CONTRACT_DAO]: revert', async function () {
       for (let i = 1; i < 20; i++) {
         assert(await a.failure(contracts.daoFundingManager.allocateEth.call(
-          proposer,
+          addressOf.dgdHolders[2],
           fundings[0],
           { from: accounts[i] },
         )));
@@ -64,27 +61,27 @@ contract('DaoFundingManager', function (accounts) {
     });
     it('[valid call]: success | read functions', async function () {
       assert.ok(await contracts.daoFundingManager.allocateEth.call(
-        proposer,
+        addressOf.dgdHolders[2],
         fundings[0],
       ));
-      await contracts.daoFundingManager.allocateEth(proposer, fundings[0]);
-      assert.deepEqual(await contracts.daoFundingStorage.readClaimableEth.call(proposer), fundings[0]);
+      await contracts.daoFundingManager.allocateEth(addressOf.dgdHolders[2], fundings[0]);
+      assert.deepEqual(await contracts.daoFundingStorage.readClaimableEth.call(addressOf.dgdHolders[2]), fundings[0]);
     });
   });
 
   describe('claimEthFunding', function () {
     before(async function () {
       // create dummy proposals
-      await contracts.daoStorage.addProposal(doc, proposer, durations, fundings);
+      await contracts.daoStorage.addProposal(doc, addressOf.dgdHolders[2], durations, fundings, finalReward);
     });
     it('[proposal is not prl approved]: revert', async function () {
       assert.deepEqual(await contracts.daoStorage.readProposalPRL.call(doc), false);
       assert(await a.failure(contracts.daoFundingManager.claimEthFunding.call(
         doc,
-        { from: proposer },
+        { from: addressOf.dgdHolders[2] },
       )));
     });
-    it('[not called by proposer]: revert', async function () {
+    it('[not called by addressOf.dgdHolders[2]]: revert', async function () {
       // approve prl
       await contracts.daoStorage.updateProposalPRL(doc, true);
       assert.deepEqual(await contracts.daoStorage.readProposalPRL.call(doc), true);
@@ -94,23 +91,56 @@ contract('DaoFundingManager', function (accounts) {
       )));
     });
     it('[valid claim]: success | read functions', async function () {
-      const ethBalanceProposerBefore = await web3.eth.getBalance(proposer);
+      const ethBalanceProposerBefore = await web3.eth.getBalance(addressOf.dgdHolders[2]);
       const ethBalanceFundingManagerBefore = await web3.eth.getBalance(contracts.daoFundingManager.address);
-      const claim = await contracts.daoFundingStorage.readClaimableEth.call(proposer);
-      const tx = await contracts.daoFundingManager.claimEthFunding(doc, { from: proposer, gasPrice: web3.toWei(20, 'gwei') });
-      const gasUsed = tx.receipt.gasUsed;
+      const claim = await contracts.daoFundingStorage.readClaimableEth.call(addressOf.dgdHolders[2]);
+      const ethInDaoBefore = await contracts.daoFundingStorage.ethInDao.call();
+      const tx = await contracts.daoFundingManager.claimEthFunding(doc, { from: addressOf.dgdHolders[2], gasPrice: web3.toWei(20, 'gwei') });
+      const { gasUsed } = tx.receipt;
       const gasPrice = bN(web3.toWei(20, 'gwei'));
       const totalWeiUsed = bN(gasUsed).times(bN(gasPrice));
       const aaa = await web3.eth.getBalance(contracts.daoFundingManager.address);
-      const bbb = await web3.eth.getBalance(proposer);
-      assert.deepEqual(await contracts.daoFundingStorage.readClaimableEth.call(proposer), bN(0));
+      const bbb = await web3.eth.getBalance(addressOf.dgdHolders[2]);
+      assert.deepEqual(await contracts.daoFundingStorage.readClaimableEth.call(addressOf.dgdHolders[2]), bN(0));
       assert.deepEqual(aaa, ethBalanceFundingManagerBefore.minus(claim));
       assert.deepEqual(bbb, ethBalanceProposerBefore.plus(claim).minus(totalWeiUsed));
+      const ethInDaoAfter = await contracts.daoFundingStorage.ethInDao.call();
+      assert.deepEqual(ethInDaoBefore, ethInDaoAfter.plus(claim));
     });
   });
 
-  // TODO
   describe('moveFundsToNewDao', function () {
-
+    let newDaoFundingManager;
+    before(async function () {
+      // deploy another funding manager for, say, DAO 2.0
+      newDaoFundingManager = await MockDaoFundingManager.new(contracts.daoFundingManager.address);
+    });
+    it('[not called by CONTRACT_DAO]: revert', async function () {
+      for (const i of indexRange(1, 20)) {
+        assert(await a.failure(contracts.daoFundingManager.moveFundsToNewDao.call(
+          newDaoFundingManager.address,
+          { from: accounts[i] },
+        )));
+      }
+    });
+    it('[valid call]: check balances', async function () {
+      const balanceInitialOld = await web3.eth.getBalance(contracts.daoFundingManager.address);
+      const balanceInitialNew = await web3.eth.getBalance(newDaoFundingManager.address);
+      assert.deepEqual(balanceInitialNew, bN(0));
+      await contracts.daoFundingManager.moveFundsToNewDao(newDaoFundingManager.address, { from: addressOf.root });
+      await newDaoFundingManager.updateEthInDao();
+      const balanceNowOld = await web3.eth.getBalance(contracts.daoFundingManager.address);
+      const balanceNowNew = await web3.eth.getBalance(newDaoFundingManager.address);
+      assert.deepEqual(await contracts.daoFundingStorage.ethInDao.call(), bN(0));
+      assert.deepEqual(await newDaoFundingManager.ethInDao.call(), balanceNowNew);
+      assert.deepEqual(balanceNowOld, bN(0));
+      assert.deepEqual(balanceNowNew, balanceInitialOld);
+    });
+    it('[can receive ether from other people also]', async function () {
+      const balanceBefore = await web3.eth.getBalance(newDaoFundingManager.address);
+      const sentValue = web3.toWei(40, 'ether');
+      await newDaoFundingManager.manuallyFundDao({ from: addressOf.root, value: sentValue });
+      assert.deepEqual(await newDaoFundingManager.ethInDao.call(), balanceBefore.plus(sentValue));
+    });
   });
 });

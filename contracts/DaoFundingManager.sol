@@ -15,6 +15,7 @@ contract DaoFundingManager is DaoCommon {
     {
         uint256 _value = daoFundingStorage().readClaimableEth(msg.sender);
         daoFundingStorage().updateClaimableEth(msg.sender, 0);
+        daoFundingStorage().withdrawEth(_value);
         msg.sender.transfer(_value);
         _success = true;
     }
@@ -39,5 +40,4 @@ contract DaoFundingManager is DaoCommon {
     function () payable public {
         daoFundingStorage().addEth(msg.value);
     }
-
 }
