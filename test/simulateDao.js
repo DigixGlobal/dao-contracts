@@ -111,6 +111,13 @@ const {
   getAccountsAndAddressOf,
   initialTransferTokens,
   getTestProposals,
+  assignVotesAndCommits,
+  initDao,
+  setDummyConfig,
+  phaseCorrection,
+  waitForRevealPhase,
+  waitForRevealPhaseToGetOver,
+  waitFor,
   BADGE_HOLDER_COUNT,
   DGD_HOLDER_COUNT,
 } = require('./setup');
@@ -141,20 +148,6 @@ let votes;
 let votingCommits;
 let proposals;
 
-const assignVotesAndCommits = function (addressOf) {
-  salts = indexRange(0, 4).map(() => indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(() => randomBigNumber(bN)));
-  // salts[proposalIndex][participantIndex] = salt
-
-  votes = indexRange(0, 4).map(() => indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(() => true));
-  // votes[proposalIndex][holderIndex] = true/false
-
-  votingCommits = indexRange(0, 4).map(proposalIndex => indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(holderIndex => web3Utils.soliditySha3(
-    { t: 'address', v: addressOf.allParticipants[holderIndex] },
-    { t: 'bool', v: votes[proposalIndex][holderIndex] },
-    { t: 'uint256', v: salts[proposalIndex][holderIndex] },
-  )));
-  // votingCommits[proposalIndex][holderIndex] contains the commit
-};
 
 const setupMockTokens = async function (contracts, addressOf) {
   dotenv.config();
@@ -196,98 +189,7 @@ const assignDeployedContracts = async function (contracts, libs) {
   contracts.daoRewardsManager = await DaoRewardsManager.deployed();
 };
 
-const setDummyConfig = async function (contracts) {
-  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION, bN(10));
-  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_QUARTER_DURATION, bN(60));
-  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTING_COMMIT_PHASE, bN(10));
-  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTING_PHASE_TOTAL, bN(20));
-  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_INTERIM_COMMIT_PHASE, bN(10));
-  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL, bN(20));
-  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE, bN(10));
-  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL, bN(20));
-};
 
-const initDao = async function (contracts, addressOf) {
-  await contracts.daoIdentity.addGroupUser(bN(2), addressOf.founderBadgeHolder, '', { from: addressOf.root });
-  await contracts.daoIdentity.addGroupUser(bN(3), addressOf.prl, '', { from: addressOf.root });
-  await contracts.daoIdentity.addGroupUser(bN(4), addressOf.kycadmin, '', { from: addressOf.root });
-  await contracts.dao.setStartOfFirstQuarter(getCurrentTimestamp(), { from: addressOf.founderBadgeHolder });
-  await web3.eth.sendTransaction({
-    from: addressOf.root,
-    to: contracts.daoFundingManager.address,
-    value: web3.toWei(1000, 'ether'),
-  });
-};
-
-const waitFor = async function (timeToWait, addressOf) {
-  const timeThen = getCurrentTimestamp();
-  async function wait() {
-    await web3.eth.sendTransaction({ from: addressOf.root, to: addressOf.prl, value: web3.toWei(0.0001, 'ether') });
-    if ((getCurrentTimestamp() - timeThen) > timeToWait) return;
-    await wait();
-  }
-  await wait();
-};
-
-/**
- * Wait for time to pass, end in the phaseToEndIn phase
- * @param phaseToEndIn   : The phase in which to land (phases.LOCKING_PHASE or phases.MAIN_PHASE)
- * @param quarterToEndIn : The quarter in which to land (quarter.QUARTER_1 or phases.QUARTER_2)
- */
-const phaseCorrection = async function (contracts, addressOf, phaseToEndIn, quarterToEndIn) {
-  const startOfDao = await contracts.daoStorage.startOfFirstQuarter.call();
-  const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
-  const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
-  const currentPhase = getPhase(
-    getCurrentTimestamp(),
-    startOfDao.toNumber(),
-    lockingPhaseDuration.toNumber(),
-    quarterDuration.toNumber(),
-  );
-  if (currentPhase !== phaseToEndIn) {
-    const timeToNextPhase = getTimeToNextPhase(
-      getCurrentTimestamp(),
-      startOfDao.toNumber(),
-      lockingPhaseDuration.toNumber(),
-      quarterDuration.toNumber(),
-    );
-    console.log('\t\twaiting for next phase...');
-    await waitFor(timeToNextPhase, addressOf);
-    if (quarterToEndIn !== undefined) {
-      assertQuarter(
-        getCurrentTimestamp(),
-        startOfDao.toNumber(),
-        lockingPhaseDuration.toNumber(),
-        quarterDuration.toNumber(),
-        quarterToEndIn,
-      );
-    }
-  }
-};
-
-const waitForRevealPhase = async function (contracts, addressOf, proposalId, index) {
-  const votingStartTime = await contracts.daoStorage.readProposalVotingTime.call(proposalId, index);
-  let timeToWaitFor;
-  if (index === bN(0)) {
-    timeToWaitFor = (await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_VOTING_COMMIT_PHASE)).toNumber() - (getCurrentTimestamp() - votingStartTime.toNumber());
-  } else {
-    timeToWaitFor = (await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_COMMIT_PHASE)).toNumber() - (getCurrentTimestamp() - votingStartTime.toNumber());
-  }
-  console.log('will wait for ', timeToWaitFor, ' seconds');
-  await waitFor(timeToWaitFor, addressOf);
-};
-
-const waitForRevealPhaseToGetOver = async function (contracts, addressOf, proposalId, index) {
-  const votingStartTime = await contracts.daoStorage.readProposalVotingTime.call(proposalId, index);
-  let timeToWaitFor;
-  if (index === bN(0)) {
-    timeToWaitFor = (await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_VOTING_PHASE_TOTAL)).toNumber() - (getCurrentTimestamp() - votingStartTime.toNumber());
-  } else {
-    timeToWaitFor = (await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL)).toNumber() - (getCurrentTimestamp() - votingStartTime.toNumber());
-  }
-  console.log('will wait for ', timeToWaitFor, ' seconds');
-  await waitFor(timeToWaitFor, addressOf);
-};
 
 const approveTokens = async function (contracts, addressOf) {
   await a.map(indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT), 20, async (index) => {
@@ -422,7 +324,7 @@ const votingCommitRound = async function (contracts, addressOf) {
 };
 
 const votingRevealRound = async function (contracts, addressOf, commits) {
-  await waitForRevealPhase(contracts, addressOf, proposals[0].id, bN(0));
+  await waitForRevealPhase(contracts, addressOf, proposals[0].id, bN(0), bN, web3);
 
   await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
     if (proposalIndex === 1) return;
@@ -448,7 +350,7 @@ const prlApproveProposals = async function (contracts, addressOf) {
 };
 
 const claimVotingResult = async function (contracts, addressOf) {
-  await waitForRevealPhaseToGetOver(contracts, addressOf, proposals[3].id, bN(0));
+  await waitForRevealPhaseToGetOver(contracts, addressOf, proposals[3].id, bN(0), bN, web3);
   await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
     if (proposalIndex === 1) return;
     await contracts.daoVotingClaims.claimVotingResult(
@@ -481,7 +383,7 @@ const interimVotingCommitRound = async function (contracts, addressOf) {
   const interimRoundVotingTime4 = await contracts.daoStorage.readProposalVotingTime.call(proposals[3].id, bN(1));
   const timeNow = getCurrentTimestamp();
   if (timeNow === interimRoundVotingTime4.toNumber()) {
-    await waitFor(1, addressOf);
+    await waitFor(1, addressOf, web3);
   }
 
   await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
@@ -498,7 +400,7 @@ const interimVotingCommitRound = async function (contracts, addressOf) {
 };
 
 const interimVotingRevealRound = async function (contracts, addressOf) {
-  await waitForRevealPhase(contracts, addressOf, proposals[0].id, bN(1));
+  await waitForRevealPhase(contracts, addressOf, proposals[0].id, bN(1), bN, web3);
   console.log('Proposal being revealed = ', proposals[0].id);
 
   await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
@@ -562,7 +464,7 @@ const specialProposalVoting = async function (contracts, addressOf, specialPropo
   });
   console.log('committed votes on special proposal');
 
-  await waitFor(10, addressOf); // 10 seconds of commit phase
+  await waitFor(10, addressOf, web3); // 10 seconds of commit phase
 
   await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
     await contracts.daoVoting.revealVoteOnSpecialProposal(
@@ -574,7 +476,7 @@ const specialProposalVoting = async function (contracts, addressOf, specialPropo
   });
   console.log('revealed votes on special proposal');
 
-  await waitFor(10, addressOf); // 10 seconds of reveal phase
+  await waitFor(10, addressOf, web3); // 10 seconds of reveal phase
   await contracts.daoVotingClaims.claimSpecialProposalVotingResult(specialProposalId, { from: addressOf.dgdHolders[4] });
 };
 
@@ -591,7 +493,7 @@ module.exports = async function () {
     console.log('got accounts');
     contracts = {};
     libs = {};
-    assignVotesAndCommits(addressOf);
+    ({ salts, votes, votingCommits } = assignVotesAndCommits(addressOf, bN));
 
     // get deployed mock tokens
     await setupMockTokens(contracts, addressOf);
@@ -601,11 +503,11 @@ module.exports = async function () {
     console.log('got the deployed contracts');
 
     // set dummy config for testing
-    await setDummyConfig(contracts, addressOf);
+    await setDummyConfig(contracts, bN);
     console.log('setup dummy config');
 
     // start dao and fund dao
-    await initDao(contracts, addressOf);
+    await initDao(contracts, addressOf, bN, web3);
     console.log('setup and funded dao');
 
     // lock tokens and badges for locking phase of this quarter
@@ -615,39 +517,39 @@ module.exports = async function () {
     console.log('locked dgds and badges in locking phase');
 
     // create some proposals in the main phase, assert that its the same quarter
-    await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);
+    await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1, web3);
     await kycProposers(contracts, addressOf);
     console.log('kyc approved proposers');
     await addAndEndorseProposals(contracts);
     console.log('added and endorsed proposals');
 
     // modify those proposals slightly, assert that its the same quarter
-    await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);
+    await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1, web3);
     await modifyProposals(contracts);
     console.log('modified proposals');
 
     // conduct the draft voting, assert that its the same quarter
-    await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);
+    await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1, web3);
     await draftVoting(contracts, addressOf);
     console.log('done with draft voting round');
 
     // its main phase, lock more tokens
-    await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);
+    await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1, web3);
     await lockStakeAndBadges(contracts, addressOf, phases.MAIN_PHASE);
     console.log('locked more dgds in main phase');
 
     // claim the voting, assert that its the same quarter
-    await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);
+    await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1, web3);
     await claimDraftVotingResult(contracts, addressOf);
     console.log('claimed draft voting result');
 
     // PRL approves these proposals
-    await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);
+    await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1, web3);
     await prlApproveProposals(contracts, addressOf);
     console.log('prl approved the proposals');
 
     // first voting round
-    await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);
+    await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1, web3);
     await votingCommitRound(contracts, addressOf);
     console.log('commit voting has been done');
     await votingRevealRound(contracts, addressOf, { v: votes, s: salts });
@@ -662,7 +564,7 @@ module.exports = async function () {
     console.log('ETH funding has been claimed by the proposer');
 
     // wait for the quarter to end
-    await phaseCorrection(contracts, addressOf, phases.LOCKING_PHASE, quarters.QUARTER_2);
+    await phaseCorrection(contracts, addressOf, phases.LOCKING_PHASE, quarters.QUARTER_2, web3);
     console.log('in the second quarter (quarterId = 2), locking phase');
 
     // call the global rewards calculation
@@ -705,7 +607,7 @@ module.exports = async function () {
     await claimDGXs(contracts, addressOf);
     console.log('claimed all dgxs');
 
-    await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_2);
+    await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_2, web3);
     console.log('in the second quarter (quarterId = 2), main phase');
 
     // create some fake proposals to draft vote on
@@ -732,14 +634,14 @@ module.exports = async function () {
     await interimVotingRevealRound(contracts, addressOf);
     console.log('done with interim voting reveal round');
 
-    await waitForRevealPhaseToGetOver(contracts, addressOf, proposals[0].id, bN(1));
+    await waitForRevealPhaseToGetOver(contracts, addressOf, proposals[0].id, bN(1), bN, web3);
     await interimVotingRoundClaim(contracts, addressOf);
     console.log('done with claiming interim round voting');
 
     await claimFunding(contracts);
     console.log('claimed funding after interim voting phase');
 
-    await phaseCorrection(contracts, addressOf, phases.LOCKING_PHASE, quarters.QUARTER_3);
+    await phaseCorrection(contracts, addressOf, phases.LOCKING_PHASE, quarters.QUARTER_3, web3);
     console.log('in the third quarter (quarterId = 3), locking phase');
 
     await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(25 * (10 ** 9)));
@@ -750,16 +652,16 @@ module.exports = async function () {
     await confirmContinuedParticipation(contracts, addressOf);
     console.log('confirmed participation of all members');
 
-    await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_3);
+    await phaseCorrection(contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_3, web3);
     console.log('in the main phase, now going for interim voting after last milestone');
 
     await interimCommitRound(contracts, addressOf, 0, bN(2));
     console.log('last section');
-    await waitForRevealPhase(contracts, addressOf, proposals[0].id, bN(2));
+    await waitForRevealPhase(contracts, addressOf, proposals[0].id, bN(2), bN, web3);
     console.log('last section');
     await interimRevealRound(contracts, addressOf, 0, bN(2));
     console.log('last section');
-    await waitForRevealPhaseToGetOver(contracts, addressOf, proposals[0].id, bN(2));
+    await waitForRevealPhaseToGetOver(contracts, addressOf, proposals[0].id, bN(2), bN, web3);
     console.log('last section');
     await claimFinalReward(contracts, addressOf, proposals[0].id, proposals[0].proposer);
     console.log('last section');

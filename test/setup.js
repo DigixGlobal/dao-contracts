@@ -4,12 +4,24 @@ const {
   indexRange,
   randomAddress,
   randomBigNumber,
+  getCurrentTimestamp,
 } = require('@digix/helpers/lib/helpers');
+
+const {
+} = require('./daoHelpers');
 
 const {
   sampleStakeWeights,
   sampleBadgeWeights,
+  daoConstantsKeys,
+  phases,
+  quarters,
+  assertQuarter,
+  getTimeToNextPhase,
+  getPhase,
 } = require('./daoHelpers');
+
+const web3Utils = require('web3-utils');
 
 const randomBigNumbers = function (bN, count, range) {
   return indexRange(0, count).map(() => randomBigNumber(bN, range));
@@ -242,6 +254,115 @@ const getTestProposals = function (bN, addressOf) {
   ];
 };
 
+const assignVotesAndCommits = function (addressOf, bN) {
+  const salts = indexRange(0, 4).map(() => indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(() => randomBigNumber(bN)));
+  // salts[proposalIndex][participantIndex] = salt
+
+  const votes = indexRange(0, 4).map(() => indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(() => true));
+  // votes[proposalIndex][holderIndex] = true/false
+
+  const votingCommits = indexRange(0, 4).map(proposalIndex => indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(holderIndex => web3Utils.soliditySha3(
+    { t: 'address', v: addressOf.allParticipants[holderIndex] },
+    { t: 'bool', v: votes[proposalIndex][holderIndex] },
+    { t: 'uint256', v: salts[proposalIndex][holderIndex] },
+  )));
+  // votingCommits[proposalIndex][holderIndex] contains the commit
+  return { salts, votes, votingCommits };
+};
+
+const setDummyConfig = async function (contracts, bN) {
+  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION, bN(10));
+  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_QUARTER_DURATION, bN(60));
+  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTING_COMMIT_PHASE, bN(10));
+  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTING_PHASE_TOTAL, bN(20));
+  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_INTERIM_COMMIT_PHASE, bN(10));
+  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL, bN(20));
+  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE, bN(10));
+  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL, bN(20));
+};
+
+const initDao = async function (contracts, addressOf, bN, web3) {
+  await contracts.daoIdentity.addGroupUser(bN(2), addressOf.founderBadgeHolder, '', { from: addressOf.root });
+  await contracts.daoIdentity.addGroupUser(bN(3), addressOf.prl, '', { from: addressOf.root });
+  await contracts.daoIdentity.addGroupUser(bN(4), addressOf.kycadmin, '', { from: addressOf.root });
+  await contracts.dao.setStartOfFirstQuarter(getCurrentTimestamp(), { from: addressOf.founderBadgeHolder });
+  await web3.eth.sendTransaction({
+    from: addressOf.root,
+    to: contracts.daoFundingManager.address,
+    value: web3.toWei(1000, 'ether'),
+  });
+};
+
+const waitFor = async function (timeToWait, addressOf, web3) {
+  const timeThen = getCurrentTimestamp();
+  async function wait() {
+    await web3.eth.sendTransaction({ from: addressOf.root, to: addressOf.prl, value: web3.toWei(0.0001, 'ether') });
+    if ((getCurrentTimestamp() - timeThen) > timeToWait) return;
+    await wait();
+  }
+  await wait();
+};
+
+/**
+ * Wait for time to pass, end in the phaseToEndIn phase
+ * @param phaseToEndIn   : The phase in which to land (phases.LOCKING_PHASE or phases.MAIN_PHASE)
+ * @param quarterToEndIn : The quarter in which to land (quarter.QUARTER_1 or phases.QUARTER_2)
+ */
+const phaseCorrection = async function (contracts, addressOf, phaseToEndIn, quarterToEndIn, web3) {
+  const startOfDao = await contracts.daoStorage.startOfFirstQuarter.call();
+  const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
+  const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
+  const currentPhase = getPhase(
+    getCurrentTimestamp(),
+    startOfDao.toNumber(),
+    lockingPhaseDuration.toNumber(),
+    quarterDuration.toNumber(),
+  );
+  if (currentPhase !== phaseToEndIn) {
+    const timeToNextPhase = getTimeToNextPhase(
+      getCurrentTimestamp(),
+      startOfDao.toNumber(),
+      lockingPhaseDuration.toNumber(),
+      quarterDuration.toNumber(),
+    );
+    console.log('\t\twaiting for next phase...');
+    await waitFor(timeToNextPhase, addressOf, web3);
+    if (quarterToEndIn !== undefined) {
+      assertQuarter(
+        getCurrentTimestamp(),
+        startOfDao.toNumber(),
+        lockingPhaseDuration.toNumber(),
+        quarterDuration.toNumber(),
+        quarterToEndIn,
+      );
+    }
+  }
+};
+
+const waitForRevealPhase = async function (contracts, addressOf, proposalId, index, bN, web3) {
+  const votingStartTime = await contracts.daoStorage.readProposalVotingTime.call(proposalId, index);
+  let timeToWaitFor;
+  if (index === bN(0)) {
+    timeToWaitFor = (await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_VOTING_COMMIT_PHASE)).toNumber() - (getCurrentTimestamp() - votingStartTime.toNumber());
+  } else {
+    timeToWaitFor = (await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_COMMIT_PHASE)).toNumber() - (getCurrentTimestamp() - votingStartTime.toNumber());
+  }
+  console.log('will wait for ', timeToWaitFor, ' seconds');
+  await waitFor(timeToWaitFor, addressOf, web3);
+};
+
+const waitForRevealPhaseToGetOver = async function (contracts, addressOf, proposalId, index, bN, web3) {
+  const votingStartTime = await contracts.daoStorage.readProposalVotingTime.call(proposalId, index);
+  let timeToWaitFor;
+  if (index === bN(0)) {
+    timeToWaitFor = (await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_VOTING_PHASE_TOTAL)).toNumber() - (getCurrentTimestamp() - votingStartTime.toNumber());
+  } else {
+    timeToWaitFor = (await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL)).toNumber() - (getCurrentTimestamp() - votingStartTime.toNumber());
+  }
+  console.log('will wait for ', timeToWaitFor, ' seconds');
+  await waitFor(timeToWaitFor, addressOf, web3);
+};
+
 module.exports = {
   deployLibraries,
   deployNewContractResolver,
@@ -252,7 +373,14 @@ module.exports = {
   deployServices,
   deployInteractive,
   initialTransferTokens,
+  waitFor,
+  waitForRevealPhase,
+  waitForRevealPhaseToGetOver,
   getTestProposals,
+  phaseCorrection,
+  initDao,
+  assignVotesAndCommits,
+  setDummyConfig,
   BADGE_HOLDER_COUNT,
   DGD_HOLDER_COUNT,
 };
