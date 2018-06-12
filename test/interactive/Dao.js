@@ -37,56 +37,7 @@ const {
 
 const bN = web3.toBigNumber;
 
-const proposalIds = randomBytes32s(4);
-const proposers = randomAddresses(4);
-const moreVersions = {
-  firstProposal: randomBytes32s(2),
-  secondProposal: randomBytes32s(3),
-  thirdProposal: randomBytes32s(1),
-  fourthProposal: [proposalIds[3]]
-}
-const milestoneFundings = {
-  firstProposal: {
-    versionOne  : [bN(10 * (10 ** 18)), bN(15 * (10 ** 18)), bN(20 * (10 ** 18))],
-    versionTwo  : [bN(10 * (10 ** 18)), bN(20 * (10 ** 18)), bN(25 * (10 ** 18))],
-    versionThree: [bN(10 * (10 ** 18)), bN(15 * (10 ** 18)), bN(15 * (10 ** 18)), bN(20 * (10 ** 18))]
-  },
-  secondProposal: {
-    versionOne  : [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
-    versionTwo  : [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
-    versionThree: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
-    versionFour : [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))]
-  },
-  thirdProposal: {
-    versionOne  : [bN(20 * (10 ** 18)), bN(30 * (10 ** 18))],
-    versionTwo  : [bN(25 * (10 ** 18)), bN(25 * (10 ** 18))]
-  },
-  fourthProposal: {
-    versionOne  : [bN(1 * (10 ** 18)), bN(1 * (10 ** 18)), bN(2 * (10 ** 18)), bN(2 * (10 ** 18))]
-  }
-}
-const milestoneDurations = {
-  firstProposal: {
-    versionOne  : [bN(1000), bN(1500), bN(2000)],
-    versionTwo  : [bN(1000), bN(2000), bN(2500)],
-    versionThree: [bN(1000), bN(1500), bN(1500), bN(2000)]
-  },
-  secondProposal: {
-    versionOne  : [bN(500), bN(700), bN(300)],
-    versionTwo  : [bN(500), bN(700), bN(300)],
-    versionThree: [bN(500), bN(700), bN(300)],
-    versionFour : [bN(500), bN(700), bN(300)]
-  },
-  thirdProposal: {
-    versionOne  : [bN(2000), bN(3000)],
-    versionTwo  : [bN(2500), bN(2500)]
-  },
-  fourthProposal: {
-    versionOne  : [bN(100), bN(100), bN(200), bN(200)]
-  }
-}
-
-contract('Dao | DaoVoting', function (accounts) {
+contract('Dao', function (accounts) {
   let libs;
   let resolver;
   let contracts;
@@ -95,13 +46,12 @@ contract('Dao | DaoVoting', function (accounts) {
 
   before(async function () {
     libs = await deployLibraries();
-    resolver = await deployNewContractResolver();
-    addressOf = await getAccountsAndAddressOf(accounts);
     contracts = {};
-    await deployStorage(libs, contracts, resolver, addressOf);
-    // await resolver.register_contract('c:dao', addressOf.root);
-    // await contracts.daoStorage.setStartOfFirstQuarter(getCurrentTimestamp());
-    await deployServices(libs, contracts, resolver, addressOf);
+    await deployNewContractResolver(contracts);
+    addressOf = await getAccountsAndAddressOf(accounts);
+    await deployStorage(libs, contracts, contracts.resolver, addressOf);
+    await deployServices(libs, contracts, resolver);
+
     contracts.dgdToken = await MockDGD.at(process.env.DGD_ADDRESS);
     contracts.badgeToken = await MockBadge.at(process.env.DGD_BADGE_ADDRESS);
     await deployInteractive(libs, contracts, resolver, addressOf);

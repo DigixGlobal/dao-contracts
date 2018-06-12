@@ -1,18 +1,8 @@
 const a = require('awaiting');
 
-const MockDGD = artifacts.require('./MockDGD.sol');
-const MockBadge = artifacts.require('./MockBadge.sol');
-const MockDgxDemurrageReporter = artifacts.require('./MockDgxDemurrageReporter.sol');
-const MockDgx = artifacts.require('./MockDgx.sol');
-const MockDgxStorage = artifacts.require('./MockDgxStorage.sol');
-
 const {
-  deployLibraries,
-  deployNewContractResolver,
-  getAccountsAndAddressOf,
-  deployStorage,
-  deployServices,
-  deployInteractive,
+  deployFreshDao,
+  waitFor,
 } = require('../setup');
 
 const {
@@ -35,30 +25,14 @@ const {
 const bN = web3.toBigNumber;
 
 contract('DaoStakeLocking', function (accounts) {
-  let libs;
-  let contracts;
-  let addressOf;
+  const libs = {};
+  const contracts = {};
+  const addressOf = {};
 
   before(async function () {
-    libs = await deployLibraries();
-    contracts = {};
-    await deployNewContractResolver(contracts);
-    addressOf = await getAccountsAndAddressOf(accounts);
-    contracts.dgdToken = await MockDGD.new();
-    contracts.badgeToken = await MockBadge.new();
-    contracts.dgxStorage = await MockDgxStorage.new();
-    contracts.dgxToken = await MockDgx.new(contracts.dgxStorage.address, addressOf.feesadmin);
-    await contracts.dgxStorage.setInteractive(contracts.dgxToken.address);
-    contracts.dgxDemurrageReporter = await MockDgxDemurrageReporter.new(contracts.dgxToken.address);
-    await deployStorage(libs, contracts, contracts.resolver);
-    await deployServices(libs, contracts, contracts.resolver);
-    await deployInteractive(libs, contracts, contracts.resolver);
-    await contracts.daoIdentity.addGroupUser(bN(2), addressOf.founderBadgeHolder, '');
-    await contracts.dao.setStartOfFirstQuarter(getCurrentTimestamp(), { from: addressOf.founderBadgeHolder });
-    await initialTransferTokens();
-
+    await deployFreshDao(libs, contracts, addressOf, accounts, bN);
     assert.deepEqual(timeIsRecent(await contracts.daoStorage.startOfFirstQuarter.call()), true);
-    await setDummyConfig();
+    await initialTransferTokens(contracts, addressOf, bN);
   });
 
   const initialTransferTokens = async function () {
@@ -68,24 +42,6 @@ contract('DaoStakeLocking', function (accounts) {
     await a.map(indexRange(0, 4), 20, async (index) => {
       await contracts.badgeToken.transfer(addressOf.badgeHolders[index], sampleBadgeWeights(bN)[index]);
     });
-  };
-
-  const setDummyConfig = async function () {
-    // set locking phase to be 10 seconds
-    // set quarter phase to be 20 seconds
-    // for testing purpose
-    await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION, bN(10));
-    await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_QUARTER_DURATION, bN(20));
-  };
-
-  const waitFor = async function (timeToWait) {
-    const timeThen = getCurrentTimestamp();
-    async function wait() {
-      await web3.eth.sendTransaction({ from: accounts[0], to: accounts[19], value: web3.toWei(0.0001, 'ether') });
-      if ((getCurrentTimestamp() - timeThen) > timeToWait) return;
-      await wait();
-    }
-    await wait();
   };
 
   /**
@@ -105,7 +61,7 @@ contract('DaoStakeLocking', function (accounts) {
     if (currentPhase !== phaseToEndIn) {
       const timeToNextPhase = getTimeToNextPhase(getCurrentTimestamp(), startOfDao.toNumber(), lockingPhaseDuration.toNumber(), quarterDuration.toNumber());
       console.log('       waiting for next phase...');
-      await waitFor(timeToNextPhase);
+      await waitFor(timeToNextPhase, addressOf, web3);
     }
   };
 
@@ -184,19 +140,19 @@ contract('DaoStakeLocking', function (accounts) {
       const initialStake2 = await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.badgeHolders[2]);
       const totalLockedDGDStake = await contracts.daoStakeStorage.totalLockedDGDStake.call();
       await phaseCorrection(phases.MAIN_PHASE);
-      await waitFor(2);
-      const timeToNextPhase1 = getTimeToNextPhase(getCurrentTimestamp(), startOfDao.toNumber(), 10, 20);
+      await waitFor(2, addressOf, web3);
+      const timeToNextPhase1 = getTimeToNextPhase(getCurrentTimestamp(), startOfDao.toNumber(), 10, 60);
       await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 18)), { from: addressOf.badgeHolders[1] });
       const stakeNow1 = await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.badgeHolders[1]);
 
-      await waitFor(2);
-      const timeToNextPhase2 = getTimeToNextPhase(getCurrentTimestamp(), startOfDao.toNumber(), 10, 20);
+      await waitFor(2, addressOf, web3);
+      const timeToNextPhase2 = getTimeToNextPhase(getCurrentTimestamp(), startOfDao.toNumber(), 10, 60);
       await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 18)), { from: addressOf.badgeHolders[2] });
       const stakeNow2 = await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.badgeHolders[2]);
 
       const sentAmount = 10 * (10 ** 18);
-      const added1 = bN(Math.floor((sentAmount * timeToNextPhase1) / 10));
-      const added2 = bN(Math.floor((sentAmount * timeToNextPhase2) / 10));
+      const added1 = bN(Math.floor((sentAmount * timeToNextPhase1) / 50));
+      const added2 = bN(Math.floor((sentAmount * timeToNextPhase2) / 50));
       assert.deepEqual(stakeNow1.minus(initialStake1), added1);
       assert.deepEqual(stakeNow2.minus(initialStake2), added2);
       assert.deepEqual(await contracts.daoStakeStorage.totalLockedDGDStake.call(), totalLockedDGDStake.plus(added1).plus(added2));
@@ -455,9 +411,9 @@ contract('DaoStakeLocking', function (accounts) {
   describe('withdrawDGD (additional scenario)', function () {
     before(async function () {
       await phaseCorrection(phases.LOCKING_PHASE);
-      await waitFor(1);
+      await waitFor(1, addressOf, web3);
       await phaseCorrection(phases.MAIN_PHASE);
-      await waitFor(1);
+      await waitFor(1, addressOf, web3);
       await phaseCorrection(phases.LOCKING_PHASE);
     });
     it('unlock dgds that were staked 2 quarters ago and never continued participation', async function () {

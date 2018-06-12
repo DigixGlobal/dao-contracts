@@ -76,38 +76,30 @@ contract DaoRewardsManager is DaoCommon {
 
         calculateUserRewardsLastQuarter(_user);
 
-        // update reputationPoint for this quarter
-        uint256 _userQP = daoPointsStorage().getQuarterPoint(_user, _currentQuarter - 1);
-        uint256 _userRP = daoPointsStorage().getReputation(_user);
-
-        // first, deduct RP for non participating quarters:
         uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(_user);
-        uint256 _reputationDeduction = (_currentQuarter - 1 - _lastParticipatedQuarter) *
-            ( get_uint_config(CONFIG_MAXIMUM_REPUTATION_DEDUCTION) + get_uint_config(CONFIG_PUNISHMENT_FOR_NOT_LOCKING));
-        if (_reputationDeduction > 0) {
-          daoPointsStorage().subtractReputation(_user, _reputationDeduction);
-        }
+        uint256 _userQP = daoPointsStorage().getQuarterPoint(_user, _lastParticipatedQuarter);
+        uint256 _reputationDeduction;
 
-        _userRP = daoPointsStorage().getReputation(_user);
-
-        // now, we add/deduct RP based on _userQP;
+        // now, we add/deduct RP based on _userQP of lastParticipatedQuarter;
         if (_userQP < get_uint_config(CONFIG_MINIMAL_PARTICIPATION_POINT)) {
             _reputationDeduction = (get_uint_config(CONFIG_MINIMAL_PARTICIPATION_POINT) - _userQP)
                 * get_uint_config(CONFIG_MAXIMUM_REPUTATION_DEDUCTION)
                 / get_uint_config(CONFIG_MINIMAL_PARTICIPATION_POINT);
-            if (_reputationDeduction > 0) {
-              daoPointsStorage().subtractReputation(_user, _reputationDeduction);
-            }
+            daoPointsStorage().subtractReputation(_user, _reputationDeduction);
         } else {
             uint256 _reputationAddition = (_userQP - get_uint_config(CONFIG_MINIMAL_PARTICIPATION_POINT)) *
                 get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_NUM) /
                 get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_DEN);
-            if (_reputationAddition > 0) {
-              daoPointsStorage().addReputation(
-                _user,
-                _reputationAddition
-              );
-            }
+            daoPointsStorage().addReputation(_user, _reputationAddition);
+        }
+
+        uint256 _userRP = daoPointsStorage().getReputation(_user);
+
+        // now, deduct RP for non participating quarters:
+        _reputationDeduction = (_currentQuarter - 1 - _lastParticipatedQuarter) *
+        ( get_uint_config(CONFIG_MAXIMUM_REPUTATION_DEDUCTION) + get_uint_config(CONFIG_PUNISHMENT_FOR_NOT_LOCKING));
+        if (_reputationDeduction > 0) {
+          daoPointsStorage().subtractReputation(_user, _reputationDeduction);
         }
     }
 

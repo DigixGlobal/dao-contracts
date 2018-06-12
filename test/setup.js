@@ -51,11 +51,16 @@ const DaoStakeLocking = process.env.SIMULATION ? 0 : artifacts.require('./DaoSta
 const DaoFundingManager = process.env.SIMULATION ? 0 : artifacts.require('./DaoFundingManager.sol');
 const DaoRewardsManager = process.env.SIMULATION ? 0 : artifacts.require('./DaoRewardsManager.sol');
 
+const MockDGD = process.env.SIMULATION ? 0 : artifacts.require('./MockDGD.sol');
+const MockBadge = process.env.SIMULATION ? 0 : artifacts.require('./MockBadge.sol');
+const MockDgxDemurrageReporter = process.env.SIMULATION ? 0 : artifacts.require('./MockDgxDemurrageReporter.sol');
+const MockDgx = process.env.SIMULATION ? 0 : artifacts.require('./MockDgx.sol');
+const MockDgxStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDgxStorage.sol');
+
 const BADGE_HOLDER_COUNT = 4;
 const DGD_HOLDER_COUNT = 6;
 
-const deployLibraries = async function () {
-  const libs = {};
+const deployLibraries = async function (libs) {
   libs.doublyLinkedList = await DoublyLinkedList.new();
   return libs;
 };
@@ -64,8 +69,8 @@ const deployNewContractResolver = async function (contracts) {
   contracts.resolver = await ContractResolver.new();
 };
 
-const getAccountsAndAddressOf = function (accounts) {
-  const addressOf = {
+const getAccountsAndAddressOf = function (accounts, addressOf) {
+  const addressOfTemp = {
     root: accounts[0],
     prl: accounts[1],
     kycadmin: accounts[2],
@@ -74,7 +79,7 @@ const getAccountsAndAddressOf = function (accounts) {
     dgdHolders: indexRange(4 + BADGE_HOLDER_COUNT, 4 + BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(id => accounts[id]), // accounts[8] to accounts[13]
     allParticipants: indexRange(4, 4 + BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(id => accounts[id]), // accounts[4] to accounts[13]
   };
-  return addressOf;
+  for (const key in addressOfTemp) addressOf[key] = addressOfTemp[key];
 };
 
 const getAllParticipantAddresses = function (accounts) {
@@ -363,6 +368,24 @@ const waitForRevealPhaseToGetOver = async function (contracts, addressOf, propos
   await waitFor(timeToWaitFor, addressOf, web3);
 };
 
+const deployFreshDao = async (libs, contracts, addressOf, accounts, bN) => {
+  await deployLibraries(libs);
+  await deployNewContractResolver(contracts);
+  await getAccountsAndAddressOf(accounts, addressOf);
+  contracts.dgdToken = await MockDGD.new();
+  contracts.badgeToken = await MockBadge.new();
+  contracts.dgxStorage = await MockDgxStorage.new();
+  contracts.dgxToken = await MockDgx.new(contracts.dgxStorage.address, addressOf.feesadmin);
+  await contracts.dgxStorage.setInteractive(contracts.dgxToken.address);
+  contracts.dgxDemurrageReporter = await MockDgxDemurrageReporter.new(contracts.dgxToken.address);
+  await deployStorage(libs, contracts, contracts.resolver);
+  await deployServices(libs, contracts, contracts.resolver);
+  await deployInteractive(libs, contracts, contracts.resolver);
+  await contracts.daoIdentity.addGroupUser(bN(2), addressOf.founderBadgeHolder, '');
+  await contracts.dao.setStartOfFirstQuarter(getCurrentTimestamp(), { from: addressOf.founderBadgeHolder });
+  await setDummyConfig(contracts, bN);
+};
+
 module.exports = {
   deployLibraries,
   deployNewContractResolver,
@@ -381,6 +404,7 @@ module.exports = {
   initDao,
   assignVotesAndCommits,
   setDummyConfig,
+  deployFreshDao,
   BADGE_HOLDER_COUNT,
   DGD_HOLDER_COUNT,
 };

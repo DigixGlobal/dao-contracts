@@ -189,8 +189,6 @@ const assignDeployedContracts = async function (contracts, libs) {
   contracts.daoRewardsManager = await DaoRewardsManager.deployed();
 };
 
-
-
 const approveTokens = async function (contracts, addressOf) {
   await a.map(indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT), 20, async (index) => {
     await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(2 ** 255), { from: addressOf.allParticipants[index] });
@@ -481,18 +479,16 @@ const specialProposalVoting = async function (contracts, addressOf, specialPropo
 };
 
 module.exports = async function () {
-  let addressOf;
-  let contracts;
-  let libs;
+  const addressOf = {};
+  const contracts = {};
+  const libs = {};
   await web3.eth.getAccounts(async function (e, accounts) {
     // deploy contracts
-    addressOf = getAccountsAndAddressOf(accounts);
+    getAccountsAndAddressOf(accounts, addressOf);
     console.log('addressOf = ', addressOf);
     proposals = getTestProposals(bN, addressOf);
 
     console.log('got accounts');
-    contracts = {};
-    libs = {};
     ({ salts, votes, votingCommits } = assignVotesAndCommits(addressOf, bN));
 
     // get deployed mock tokens
