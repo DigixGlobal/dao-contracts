@@ -37,7 +37,7 @@ const DaoPointsStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoPo
 const DaoStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoStorage.sol');
 const DaoSpecialStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoSpecialStorage.sol');
 const DaoFundingStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoFundingStorage.sol');
-const DaoRewardsStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoRewardsStorage.sol');
+const DaoRewardsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoRewardsStorage.sol');
 
 const DaoInfoService = process.env.SIMULATION ? 0 : artifacts.require('./DaoInfoService.sol');
 const DaoListingService = process.env.SIMULATION ? 0 : artifacts.require('./DaoListingService.sol');
@@ -112,7 +112,6 @@ const registerInteractive = async function (resolver, addressOf) {
     'c:dao',
     'dao:voting',
     'dao:voting:claims',
-    // 'c:config:controller',
     'dao:funding-manager',
     'dao:rewards-manager',
   ];
