@@ -25,10 +25,12 @@ contract('DaoIdentity', function (accounts) {
   let addressOf;
 
   before(async function () {
-    libs = await deployLibraries();
+    libs = {};
     contracts = {};
+    addressOf = {};
+    await deployLibraries(libs);
     await deployNewContractResolver(contracts);
-    addressOf = await getAccountsAndAddressOf(accounts);
+    await getAccountsAndAddressOf(accounts, addressOf);
     await deployStorage(libs, contracts, contracts.resolver, addressOf);
     contracts.daoIdentity = await DaoIdentity.new(contracts.resolver.address);
   });

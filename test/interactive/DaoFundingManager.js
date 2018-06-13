@@ -29,10 +29,12 @@ contract('DaoFundingManager', function (accounts) {
   let addressOf;
 
   before(async function () {
-    libs = await deployLibraries();
     contracts = {};
+    libs = {};
+    addressOf = {};
+    await deployLibraries(libs);
     await deployNewContractResolver(contracts);
-    addressOf = await getAccountsAndAddressOf(accounts);
+    await getAccountsAndAddressOf(accounts, addressOf);
     await deployStorage(libs, contracts, contracts.resolver, addressOf);
     contracts.daoFundingManager = await DaoFundingManager.new(contracts.resolver.address);
     await contracts.resolver.register_contract('dao:voting:claims', addressOf.root);
