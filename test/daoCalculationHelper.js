@@ -51,6 +51,7 @@ const calculateReputation = function (
   _currentQuarter,
   _lastParticipatedQuarter,
   _lastQuarterThatRewardsWasUpdated,
+  _lastQuarterThatReputationWasUpdated,
   _maxReputationDeduction,
   _punishmentForNotLocking,
   _minimalParticipationPoint,
@@ -70,14 +71,20 @@ const calculateReputation = function (
   _currentReputation = _currentReputation.toNumber();
   _quarterPoint = _quarterPoint.toNumber();
 
-  if (_quarterPoint < _minimalParticipationPoint) {
-    _currentReputation -= Math.floor(((_minimalParticipationPoint - _quarterPoint) * _maxReputationDeduction) / _minimalParticipationPoint);
-  } else {
-    _currentReputation += Math.floor(((_quarterPoint - _minimalParticipationPoint) * _reputationPerExtraNum) / _reputationPerExtraDen);
+  if (_currentQuarter <= _lastParticipatedQuarter) {
+    return _currentReputation;
   }
 
-  const _fineForNotLocking = (_currentQuarter - 1 - _lastParticipatedQuarter) * (_maxReputationDeduction + _punishmentForNotLocking);
-  _currentReputation = _fineForNotLocking > _currentReputation ? 0 : (_currentReputation - _fineForNotLocking);
+  if (_lastParticipatedQuarter > _lastQuarterThatReputationWasUpdated) {
+    if (_quarterPoint < _minimalParticipationPoint) {
+      _currentReputation -= Math.floor(((_minimalParticipationPoint - _quarterPoint) * _maxReputationDeduction) / _minimalParticipationPoint);
+    } else {
+      _currentReputation += Math.floor(((_quarterPoint - _minimalParticipationPoint) * _reputationPerExtraNum) / _reputationPerExtraDen);
+    }
+  } else {
+    const _fineForNotLocking = (_currentQuarter - 1 - _lastParticipatedQuarter) * (_maxReputationDeduction + _punishmentForNotLocking);
+    _currentReputation = _fineForNotLocking > _currentReputation ? 0 : (_currentReputation - _fineForNotLocking);
+  }
   return _currentReputation;
 };
 
@@ -88,7 +95,13 @@ const calculateDgxDemurrage = function (
   _demurrageBase,
   _demurrageRate,
 ) {
-  const _demurrageFees = (_rewardsBefore * ((_dgxDistributionDay1 - _dgxDistributionDay2) / SECONDS_IN_A_DAY) *
+  _rewardsBefore = _rewardsBefore.toNumber();
+  _dgxDistributionDay1 = _dgxDistributionDay1.toNumber();
+  _dgxDistributionDay2 = _dgxDistributionDay2.toNumber();
+  _demurrageBase = _demurrageBase.toNumber();
+  _demurrageRate = _demurrageRate.toNumber();
+
+  const _demurrageFees = (_rewardsBefore * Math.floor((_dgxDistributionDay1 - _dgxDistributionDay2) / SECONDS_IN_A_DAY) *
                          _demurrageRate) / _demurrageBase;
   return Math.floor(_demurrageFees);
 };

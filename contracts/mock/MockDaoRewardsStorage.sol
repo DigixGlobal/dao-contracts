@@ -16,4 +16,10 @@ contract MockDaoRewardsStorage is DaoRewardsStorage {
     {
         lastQuarterThatRewardsWasUpdated[_user] = _quarterIndex;
     }
+
+    function mock_set_dgx_distribution_day(uint256 _quarterIndex, uint256 _dgxDistributionDay)
+        public
+    {
+        allQuartersInfo[_quarterIndex].dgxDistributionDay = _dgxDistributionDay;
+    }
 }

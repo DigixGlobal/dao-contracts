@@ -28,6 +28,7 @@ const {
   calculateUserEffectiveBalance,
   calculateDgxRewards,
   calculateReputation,
+  calculateDgxDemurrage,
 } = require('../daoCalculationHelper');
 
 const {
@@ -189,7 +190,6 @@ contract('DaoRewardsManager', function (accounts) {
       await contracts.daoStakeStorage.updateTotalLockedDGDStake(bN(65 * (10 ** 18)));
       await a.map(indexRange(0, 5), 20, async (i) => {
         await contracts.daoRewardsStorage.mock_set_last_participated_quarter(addressOf.dgdHolders[i], bN(1));
-        await contracts.daoRewardsStorage.mock_set_last_quarter_that_rewards_was_updated(addressOf.dgdHolders[i], bN(0));
       });
     });
     it('[Q1]: nothing happens when called in locking phase, main phase', async function () {
@@ -225,7 +225,6 @@ contract('DaoRewardsManager', function (accounts) {
       // PART 1
       const currentQuarter = bN(2);
       const lastParticipatedQuarter = bN(1);
-      const lastQuarterThatRewardsWasUpdated = bN(0);
       const pointsBefore = await readReputationPoints();
       const rewardsBefore = await readClaimableDgx();
 
@@ -257,8 +256,9 @@ contract('DaoRewardsManager', function (accounts) {
         ) + rewardsBefore[i].toNumber());
         calculatedReputation.push(calculateReputation(
           currentQuarter,
-          lastParticipatedQuarter,
-          lastQuarterThatRewardsWasUpdated,
+          await contracts.daoRewardsStorage.lastParticipatedQuarter.call(addressOf.dgdHolders[i]),
+          await contracts.daoRewardsStorage.lastQuarterThatRewardsWasUpdated.call(addressOf.dgdHolders[i]),
+          await contracts.daoRewardsStorage.lastQuarterThatReputationWasUpdated.call(addressOf.dgdHolders[i]),
           daoConstantsValues(bN).CONFIG_MAXIMUM_REPUTATION_DEDUCTION,
           daoConstantsValues(bN).CONFIG_PUNISHMENT_FOR_NOT_LOCKING,
           daoConstantsValues(bN).CONFIG_MINIMAL_PARTICIPATION_POINT,
@@ -281,9 +281,10 @@ contract('DaoRewardsManager', function (accounts) {
         assert.deepEqual(rewardsAfter[i], bN(calculatedRewards[i]));
       });
     });
-    it('[Q4]', async function () {
+    it('[Q3 and Q4]', async function () {
       const pointsBefore = await readReputationPoints();
       await contracts.daoRewardsStorage.mock_set_last_participated_quarter(addressOf.dgdHolders[4], bN(1));
+      await contracts.daoPointsStorage.addQuarterPoint(addressOf.dgdHolders[4], bN(5), bN(3));
       await phaseCorrection(phases.MAIN_PHASE);
       await phaseCorrection(phases.LOCKING_PHASE); // now q3
       await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(10 * (10 ** 9)));
@@ -297,7 +298,10 @@ contract('DaoRewardsManager', function (accounts) {
       await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(15 * (10 ** 9)));
       await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
 
-      await contracts.daoPointsStorage.addQuarterPoint(addressOf.dgdHolders[4], bN(5), bN(3));
+      const lastParticipatedQuarter = await contracts.daoRewardsStorage.lastParticipatedQuarter.call(addressOf.dgdHolders[4]);
+      const lastQuarterThatRewardsWasUpdated = await contracts.daoRewardsStorage.lastQuarterThatRewardsWasUpdated.call(addressOf.dgdHolders[4]);
+      const lastQuarterThatReputationWasUpdated = await contracts.daoRewardsStorage.lastQuarterThatReputationWasUpdated.call(addressOf.dgdHolders[4]);
+
       await contracts.daoRewardsManager.updateRewardsBeforeNewQuarter(addressOf.dgdHolders[4]);
 
       const pointsAfter = await readReputationPoints();
@@ -313,7 +317,10 @@ contract('DaoRewardsManager', function (accounts) {
       assert.deepEqual(
         pointsAfter[4].toNumber(),
         calculateReputation(
-          bN(4), bN(3), bN(1),
+          bN(4),
+          lastParticipatedQuarter,
+          lastQuarterThatRewardsWasUpdated,
+          lastQuarterThatReputationWasUpdated,
           daoConstantsValues(bN).CONFIG_MAXIMUM_REPUTATION_DEDUCTION,
           daoConstantsValues(bN).CONFIG_PUNISHMENT_FOR_NOT_LOCKING,
           daoConstantsValues(bN).CONFIG_MINIMAL_PARTICIPATION_POINT,
@@ -324,19 +331,113 @@ contract('DaoRewardsManager', function (accounts) {
         ),
       );
     });
+    it('[Q5 | demurrage testing]: the claimable dgx should be demurraged', async function () {
+      // give some dummy quarter points for q4
+      await contracts.daoPointsStorage.addQuarterPoint(addressOf.dgdHolders[2], bN(1), bN(4));
+      await contracts.daoPointsStorage.addQuarterPoint(addressOf.dgdHolders[3], bN(10), bN(4));
+      await contracts.daoPointsStorage.addQuarterPoint(addressOf.dgdHolders[4], bN(5), bN(4));
+      await contracts.daoRewardsStorage.mock_set_last_participated_quarter(addressOf.dgdHolders[2], bN(4));
+      await contracts.daoRewardsStorage.mock_set_last_participated_quarter(addressOf.dgdHolders[3], bN(4));
+      await contracts.daoRewardsStorage.mock_set_last_participated_quarter(addressOf.dgdHolders[4], bN(4));
+
+      const rewardsBefore = await readClaimableDgx();
+      // const pointsBefore = await readReputationPoints();
+      await phaseCorrection(phases.MAIN_PHASE);
+      await phaseCorrection(phases.LOCKING_PHASE);
+      await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(25 * (10 ** 9)));
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
+      const calculatedRewards = [];
+      const pointsCalculated = [];
+      const effectiveDGDBalance = [];
+      for (const i of indexRange(2, 5)) {
+        effectiveDGDBalance[i] = bN(calculateUserEffectiveBalance(
+          daoConstantsValues(bN).CONFIG_MINIMAL_PARTICIPATION_POINT,
+          daoConstantsValues(bN).CONFIG_QUARTER_POINT_SCALING_FACTOR,
+          daoConstantsValues(bN).CONFIG_REPUTATION_POINT_SCALING_FACTOR,
+          await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.dgdHolders[i], bN(4)),
+          await contracts.daoPointsStorage.getReputation.call(addressOf.dgdHolders[i]),
+          await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.dgdHolders[i]),
+        ));
+      }
+      const threeDaysAgoInSeconds = bN(getCurrentTimestamp()).minus(bN(3 * 24 * 60 * 60));
+      const tenDaysAgoInSeconds = bN(getCurrentTimestamp()).minus(bN(10 * 24 * 60 * 60));
+      await contracts.daoRewardsStorage.mock_set_dgx_distribution_day(bN(4), threeDaysAgoInSeconds);
+      await contracts.daoRewardsStorage.mock_set_dgx_distribution_day(bN(3), tenDaysAgoInSeconds);
+      // demurrage should be charged for the 5 days gap between these distribution days
+      const demurrageConfig = await contracts.dgxToken.showDemurrageConfigs.call();
+      for (const i of indexRange(2, 5)) {
+        calculatedRewards[i] = rewardsBefore[i].minus(bN(calculateDgxDemurrage(
+          rewardsBefore[i],
+          await contracts.daoRewardsStorage.readDgxDistributionDay.call(bN(5)),
+          await contracts.daoRewardsStorage.readDgxDistributionDay.call(bN(4)),
+          demurrageConfig[0],
+          demurrageConfig[1],
+        ))).plus(bN(calculateDgxRewards(
+          effectiveDGDBalance[i],
+          await contracts.daoStakeStorage.readUserLockedBadge.call(addressOf.dgdHolders[i]),
+          daoConstantsValues(bN).CONFIG_PORTION_TO_BADGE_HOLDERS_NUM,
+          daoConstantsValues(bN).CONFIG_PORTION_TO_BADGE_HOLDERS_DEN,
+          await contracts.daoRewardsStorage.readRewardsPoolOfLastQuarter.call(bN(5)),
+          await contracts.daoRewardsStorage.readTotalEffectiveDGDLastQuarter.call(bN(5)),
+          bN(0),
+        )));
+
+        pointsCalculated[i] = calculateReputation(
+          bN(5),
+          await contracts.daoRewardsStorage.lastParticipatedQuarter.call(addressOf.dgdHolders[i]),
+          await contracts.daoRewardsStorage.lastQuarterThatRewardsWasUpdated.call(addressOf.dgdHolders[i]),
+          await contracts.daoRewardsStorage.lastQuarterThatReputationWasUpdated.call(addressOf.dgdHolders[i]),
+          daoConstantsValues(bN).CONFIG_MAXIMUM_REPUTATION_DEDUCTION,
+          daoConstantsValues(bN).CONFIG_PUNISHMENT_FOR_NOT_LOCKING,
+          daoConstantsValues(bN).CONFIG_MINIMAL_PARTICIPATION_POINT,
+          daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_NUM,
+          daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_DEN,
+          await contracts.daoPointsStorage.getReputation.call(addressOf.dgdHolders[i]),
+          await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.dgdHolders[i], bN(4)),
+        );
+      }
+
+      // set last participated quarter to be q4
+      await a.map(indexRange(2, 5), 20, async (i) => {
+        await contracts.daoRewardsStorage.mock_set_last_participated_quarter(addressOf.dgdHolders[i], bN(4));
+        await contracts.daoRewardsStorage.mock_set_last_quarter_that_rewards_was_updated(addressOf.dgdHolders[i], bN(3));
+      });
+      await a.map(indexRange(2, 5), 20, async (i) => {
+        await contracts.daoRewardsManager.updateRewardsBeforeNewQuarter(addressOf.dgdHolders[i]);
+      });
+      const rewardsAfter = await readClaimableDgx();
+      const pointsAfter = await readReputationPoints();
+
+      for (const i of indexRange(2, 5)) {
+        assert.deepEqual(rewardsAfter[i], calculatedRewards[i]);
+        assert.deepEqual(pointsAfter[i], bN(pointsCalculated[i]));
+      }
+    });
   });
 
   // TODO:
   // situtations where demurrage is charged
   describe('claimRewards', function () {
+    before(async function () {
+      await contracts.daoRewardsManager.claimRewards({ from: addressOf.dgdHolders[3] });
+    });
     it('[claimable dgx = 0]: revert', async function () {
       assert(await a.failure(contracts.daoRewardsManager.claimRewards.call({ from: addressOf.dgdHolders[3] })));
     });
     it('[claimable dgx > 0]: success', async function () {
+      // the rewards were calculated 3 days ago (CHECK Q5 test case above)
       const initialUserBalance = await contracts.dgxToken.balanceOf.call(addressOf.dgdHolders[0]);
       const initialDgxWithContract = await contracts.dgxToken.balanceOf.call(contracts.daoRewardsManager.address);
       const userClaimableDgx = await contracts.daoRewardsStorage.claimableDGXs.call(addressOf.dgdHolders[0]);
       const totalDGXsClaimed = await contracts.daoRewardsStorage.totalDGXsClaimed.call();
+      const demurrageConfigs = await contracts.dgxToken.showDemurrageConfigs.call();
+      const demurrageFees = calculateDgxDemurrage(
+        userClaimableDgx,
+        bN(getCurrentTimestamp()),
+        await contracts.daoRewardsStorage.readDgxDistributionDay.call(await contracts.daoRewardsStorage.lastQuarterThatRewardsWasUpdated.call(addressOf.dgdHolders[0])),
+        demurrageConfigs[0],
+        demurrageConfigs[1],
+      );
       await contracts.daoRewardsManager.claimRewards({ from: addressOf.dgdHolders[0] });
       const finalUserBalance = await contracts.dgxToken.balanceOf.call(addressOf.dgdHolders[0]);
       const finalDgxWithContract = await contracts.dgxToken.balanceOf.call(contracts.daoRewardsManager.address);
@@ -347,7 +448,7 @@ contract('DaoRewardsManager', function (accounts) {
       assert.deepEqual(finalDgxWithContract, initialDgxWithContract.minus(userClaimableDgx));
       const transferConfig = await contracts.dgxStorage.read_transfer_config.call();
       const estimatedTransferFees = calculateTransferFees(userClaimableDgx.toNumber(), transferConfig[1].toNumber(), transferConfig[2].toNumber());
-      assert.deepEqual(finalUserBalance, initialUserBalance.plus(userClaimableDgx).minus(bN(estimatedTransferFees)));
+      assert.deepEqual(finalUserBalance, initialUserBalance.plus(userClaimableDgx).minus(bN(estimatedTransferFees)).minus(demurrageFees));
     });
   });
 

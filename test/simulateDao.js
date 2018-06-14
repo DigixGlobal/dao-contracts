@@ -1,5 +1,4 @@
 const a = require('awaiting');
-const assert = require('assert');
 const web3Utils = require('web3-utils');
 
 const MockDGD = artifacts.require('./MockDGD.sol');
