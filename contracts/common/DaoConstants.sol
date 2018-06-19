@@ -108,4 +108,7 @@ contract DaoConstants {
   bytes32 CONFIG_PORTION_TO_BADGE_HOLDERS_DEN = "config_bholder_portion_den";
 
   bytes32 CONFIG_DRAFT_VOTING_PHASE = "config_draft_voting_phase";
+
+
+  bytes32 CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE = "config_rp_boost_per_badge";
 }

@@ -76,8 +76,7 @@ contract Dao is DaoCommon, Claimable {
         bytes32 _docIpfsHash,
         uint256[] _milestonesDurations,
         uint256[] _milestonesFundings,
-        uint256 _finalReward,
-        bool _isFinalVersion
+        uint256 _finalReward
     )
         public
         if_main_phase()
@@ -91,12 +90,20 @@ contract Dao is DaoCommon, Claimable {
         require(_currentState == PROPOSAL_STATE_PREPROPOSAL ||
           _currentState == PROPOSAL_STATE_INITIAL);
         require(identity_storage().is_kyc_approved(msg.sender));
-        require(daoStorage().editProposal(_proposalId, _docIpfsHash, _milestonesDurations, _milestonesFundings, _finalReward, _isFinalVersion));
+        require(daoStorage().editProposal(_proposalId, _docIpfsHash, _milestonesDurations, _milestonesFundings, _finalReward));
         daoStorage().updateProposalPRL(_proposalId, false);
-        if (_isFinalVersion) {
-          daoStorage().setPropoalDraftVotingTime(_proposalId, now);
-        }
         _success = true;
+    }
+
+    function finalizeProposal(bytes32 _proposalId)
+        public
+        if_main_phase()
+        if_participant()
+        if_editable(_proposalId)
+    {
+        require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
+        daoStorage().finalizeProposal(_proposalId);
+        daoStorage().setProposalDraftVotingTime(_proposalId, now);
     }
 
     // @notice Function to endorse a pre-proposal (can be called only by DAO Moderator)

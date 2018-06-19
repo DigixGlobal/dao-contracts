@@ -11,21 +11,25 @@ import "./DaoRewardsManager.sol";
 contract DaoStakeLocking is DaoCommon {
 
     address public dgdToken;
-    /* address public dgdBadgeToken; */
+    address public dgdBadgeToken;
 
     struct StakeInformation {
         uint256 userActualLockedDGD;
         uint256 userLockedDGDStake;
         uint256 totalLockedDGDStake;
-
-        /* uint256 userLockedBadges; */
-        /* uint256 totalLockedBadges; */
     }
 
-    function DaoStakeLocking(address _resolver, address _dgdToken) public {
+    function redeemBadge() public {
+        require(!daoStakeStorage().redeemedBadge(msg.sender));
+        daoStakeStorage().redeemBadge(msg.sender);
+        daoPointsStorage().addReputation(msg.sender, get_uint_config(CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE));
+        require(ERC20(dgdBadgeToken).transferFrom(msg.sender, address(this), 1));
+    }
+
+    function DaoStakeLocking(address _resolver, address _dgdToken, address _dgdBadgeToken) public {
         require(init(CONTRACT_DAO_STAKE_LOCKING, _resolver));
         dgdToken = _dgdToken;
-        /* dgdBadgeToken = _dgdBadgeToken; */
+        dgdBadgeToken = _dgdBadgeToken;
     }
 
     function daoCalculatorService()

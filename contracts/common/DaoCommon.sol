@@ -41,57 +41,57 @@ contract DaoCommon is IdentityCommon {
     modifier if_commit_phase(bytes32 _proposalId) {
         uint256 _start = daoStorage().readProposalVotingTime(_proposalId, 0);
         require(_start > 0);
-        require(now > _start);
+        require(now >= _start);
         require(now - _start < get_uint_config(CONFIG_VOTING_COMMIT_PHASE));
         _;
     }
 
     modifier if_reveal_phase(bytes32 _proposalId) {
-        uint256 _start = daoStorage().readProposalVotingTime(_proposalId, 0);
-        require(_start > 0);
-        require(now > _start);
-        require(now - _start < get_uint_config(CONFIG_VOTING_PHASE_TOTAL));
-        require(now - _start > get_uint_config(CONFIG_VOTING_COMMIT_PHASE));
-        _;
+      uint256 _start = daoStorage().readProposalVotingTime(_proposalId, 0);
+      require(_start > 0);
+      require(now >= _start);
+      require(now - _start < get_uint_config(CONFIG_VOTING_PHASE_TOTAL));
+      require(now - _start >= get_uint_config(CONFIG_VOTING_COMMIT_PHASE));
+      _;
     }
 
     modifier if_after_reveal_phase(bytes32 _proposalId) {
-        uint256 _start = daoStorage().readProposalVotingTime(_proposalId, 0);
-        require(_start > 0);
-        require(now > _start);
-        require(now - _start > get_uint_config(CONFIG_VOTING_PHASE_TOTAL));
-        _;
+      uint256 _start = daoStorage().readProposalVotingTime(_proposalId, 0);
+      require(_start > 0);
+      require(now >= _start);
+      require(now - _start >= get_uint_config(CONFIG_VOTING_PHASE_TOTAL));
+      _;
     }
 
     modifier if_interim_commit_phase(bytes32 _proposalId, uint8 _index) {
         uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
         require(_start > 0);
-        require(now > _start);
+        require(now >= _start);
         require(now - _start < get_uint_config(CONFIG_INTERIM_COMMIT_PHASE));
         _;
     }
 
     modifier if_interim_reveal_phase(bytes32 _proposalId, uint256 _index) {
-        uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
-        require(_start > 0);
-        require(now > _start);
-        require(now - _start < get_uint_config(CONFIG_INTERIM_PHASE_TOTAL));
-        require(now - _start > get_uint_config(CONFIG_INTERIM_COMMIT_PHASE));
-        _;
+      uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
+      require(_start > 0);
+      require(now >= _start);
+      require(now - _start < get_uint_config(CONFIG_INTERIM_PHASE_TOTAL));
+      require(now - _start >= get_uint_config(CONFIG_INTERIM_COMMIT_PHASE));
+      _;
     }
 
     modifier if_after_interim_reveal_phase(bytes32 _proposalId, uint256 _index) {
-        uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
-        require(_start > 0);
-        require(now > _start);
-        require(now - _start > get_uint_config(CONFIG_INTERIM_PHASE_TOTAL));
-        _;
+      uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
+      require(_start > 0);
+      require(now >= _start);
+      require(now - _start >= get_uint_config(CONFIG_INTERIM_PHASE_TOTAL));
+      _;
     }
 
     modifier if_draft_voting_phase(bytes32 _proposalId) {
         uint256 _start = daoStorage().readProposalDraftVotingTime(_proposalId);
         require(_start > 0);
-        require(now > _start);
+        require(now >= _start);
         require(now - _start < get_uint_config(CONFIG_DRAFT_VOTING_PHASE));
         _;
     }
@@ -175,10 +175,10 @@ contract DaoCommon is IdentityCommon {
     }
 
     modifier if_after_reveal_phase_special(bytes32 _proposalId) {
-        uint256 _start = daoSpecialStorage().readVotingTime(_proposalId);
-        require(_start > 0);
-        require(now - _start > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
-        _;
+      uint256 _start = daoSpecialStorage().readVotingTime(_proposalId);
+      require(_start > 0);
+      require(now - _start >= get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
+      _;
     }
 
     modifier if_commit_phase_special(bytes32 _proposalId) {
@@ -192,7 +192,7 @@ contract DaoCommon is IdentityCommon {
         uint256 _start = daoSpecialStorage().readVotingTime(_proposalId);
         require(_start > 0);
         require(now - _start < get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
-        require(now - _start > get_uint_config(CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE));
+        require(now - _start >= get_uint_config(CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE));
         _;
     }
 
@@ -203,6 +203,7 @@ contract DaoCommon is IdentityCommon {
         }
         require(size == 0);
         _;
+
     }
 
     function currentQuarterIndex() internal returns(uint256 _quarterIndex) {

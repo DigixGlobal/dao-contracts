@@ -658,8 +658,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     bytes32 _newDoc,
     uint256[] _newMilestoneDurations,
     uint256[] _newMilestoneFundings,
-    uint256 _finalReward,
-    bool _isFinalVersion
+    uint256 _finalReward
   )
     public
     if_sender_is(CONTRACT_DAO)
@@ -673,11 +672,15 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     _proposal.proposalVersions[_newDoc].milestoneDurations = _newMilestoneDurations;
     _proposal.proposalVersions[_newDoc].milestoneFundings = _newMilestoneFundings;
     _proposal.proposalVersions[_newDoc].finalReward = _finalReward;
-    if (_isFinalVersion) {
-      _proposal.finalVersion = _newDoc;
-    }
     _proposal.prlValid = false;
     _success = true;
+  }
+
+  function finalizeProposal(bytes32 _proposalId)
+      public
+      if_sender_is(CONTRACT_DAO)
+  {
+      proposalsById[_proposalId].finalVersion = getLastProposalVersion(_proposalId);
   }
 
   /// @notice add an endorser for a pre-proposal
@@ -737,7 +740,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     _success = true;
   }
 
-  function setPropoalDraftVotingTime(
+  function setProposalDraftVotingTime(
     bytes32 _proposalId,
     uint256 _time
   )

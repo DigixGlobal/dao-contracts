@@ -107,6 +107,8 @@ const daoConstantsKeys = function () {
     CONFIG_REPUTATION_PER_EXTRA_QP_DEN: 'config_rep_per_extra_qp_den',
     CONFIG_PORTION_TO_BADGE_HOLDERS_NUM: 'config_bholder_portion_num',
     CONFIG_PORTION_TO_BADGE_HOLDERS_DEN: 'config_bholder_portion_den',
+    CONFIG_DRAFT_VOTING_PHASE: 'config_draft_voting_phase',
+    CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE: 'config_rp_boost_per_badge',
   };
 };
 

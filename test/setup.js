@@ -33,7 +33,7 @@ const DoublyLinkedList = process.env.SIMULATION ? 0 : artifacts.require('./Doubl
 const DaoIdentityStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoIdentityStorage.sol');
 const DaoConfigsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoConfigsStorage.sol');
 const DaoStakeStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoStakeStorage.sol');
-const DaoPointsStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoPointsStorage.sol');
+const DaoPointsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoPointsStorage.sol');
 const DaoStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoStorage.sol');
 const DaoSpecialStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoSpecialStorage.sol');
 const DaoFundingStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoFundingStorage.sol');
@@ -283,6 +283,7 @@ const setDummyConfig = async function (contracts, bN) {
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL, bN(20));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE, bN(10));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL, bN(20));
+  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_DRAFT_VOTING_PHASE, bN(5));
 };
 
 const initDao = async function (contracts, addressOf, bN, web3) {
@@ -312,7 +313,7 @@ const waitFor = async function (timeToWait, addressOf, web3) {
  * @param phaseToEndIn   : The phase in which to land (phases.LOCKING_PHASE or phases.MAIN_PHASE)
  * @param quarterToEndIn : The quarter in which to land (quarter.QUARTER_1 or phases.QUARTER_2)
  */
-const phaseCorrection = async function (contracts, addressOf, phaseToEndIn, quarterToEndIn, web3) {
+const phaseCorrection = async function (web3, contracts, addressOf, phaseToEndIn, quarterToEndIn) {
   const startOfDao = await contracts.daoStorage.startOfFirstQuarter.call();
   const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
   const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
@@ -367,7 +368,7 @@ const waitForRevealPhaseToGetOver = async function (contracts, addressOf, propos
   await waitFor(timeToWaitFor, addressOf, web3);
 };
 
-const deployFreshDao = async (libs, contracts, addressOf, accounts, bN) => {
+const deployFreshDao = async (libs, contracts, addressOf, accounts, bN, web3) => {
   await deployLibraries(libs);
   await deployNewContractResolver(contracts);
   await getAccountsAndAddressOf(accounts, addressOf);
@@ -383,9 +384,117 @@ const deployFreshDao = async (libs, contracts, addressOf, accounts, bN) => {
   await contracts.daoIdentity.addGroupUser(bN(2), addressOf.founderBadgeHolder, '');
   await contracts.dao.setStartOfFirstQuarter(getCurrentTimestamp(), { from: addressOf.founderBadgeHolder });
   await setDummyConfig(contracts, bN);
+  await fundDao(web3, accounts, contracts);
+  console.log('\tDeployed fresh DAO');
+};
+
+const fundDao = async function (web3, accounts, contracts) {
+  await web3.eth.sendTransaction({
+    from: accounts[0],
+    to: contracts.daoFundingManager.address,
+    value: web3.toWei(1000, 'ether'),
+  });
+};
+
+const lockDGDs = async (web3, contracts, bN, participants) => {
+  await a.map(participants, 20, async (participant) => {
+    await contracts.daoStakeLocking.lockDGD(participant.dgdToLock, { from: participant.address });
+  });
+};
+
+const redeemBadges = async (web3, contracts, bN, participants) => {
+  await a.map(participants, 20, async (participant) => {
+    if (participant.redeemingBadge) {
+      await contracts.daoStakeLocking.redeemBadge({ from: participant.address });
+    }
+  });
+};
+
+const fundUserAndApproveForStakeLocking = async (web3, contracts, bN, participants) => {
+  const ENOUGH_DGD = bN(1000e9);
+  const ENOUGH_BADGE = bN(5);
+  await a.map(participants, 20, async (participant) => {
+    await contracts.dgdToken.transfer(participant.address, ENOUGH_DGD);
+    console.log('sent dgd to participant ', participant.address);
+    await contracts.badgeToken.transfer(participant.address, ENOUGH_BADGE);
+    console.log('sent badge to participant ', participant.address);
+    await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(2 ** 255), { from: participant.address });
+    console.log('approved dgd for participant ', participant.address);
+    await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(2 ** 255), { from: participant.address });
+    console.log('approved badge for participant ', participant.address);
+  });
+};
+
+// This function will setup the participants state exactly as specified, before the first quarter mainphase starts
+const setupParticipantsStates = async (web3, contracts, addressOf, bN, participants) => {
+  if (!participants) {
+    participants = [
+      {
+        address: addressOf.badgeHolders[0],
+        dgdToLock: bN(100e9),
+        startingReputation: bN(1000),
+        quarterPointFirstQuarter: bN(50),
+        quarterModeratorPointFirstQuarter: bN(5),
+      },
+      {
+        address: addressOf.dgdHolders[0],
+        dgdToLock: bN(20e9),
+        startingReputation: bN(10),
+        quarterPointFirstQuarter: bN(30),
+        quarterModeratorPointFirstQuarter: bN(0),
+      },
+      {
+        address: addressOf.dgdHolders[1],
+        dgdToLock: bN(10e9),
+        startingReputation: bN(0),
+        quarterPointFirstQuarter: bN(20),
+        quarterModeratorPointFirstQuarter: bN(0),
+      },
+    ];
+  }
+  // const participantCount = participants.length;
+  await fundUserAndApproveForStakeLocking(web3, contracts, bN, participants);
+  await lockDGDs(web3, contracts, bN, participants);
+
+  await a.map(participants, 20, async (participant) => {
+    await contracts.daoPointsStorage.setQP(participant.address, participant.quarterPointFirstQuarter, bN(1));
+    await contracts.daoPointsStorage.setRP(participant.address, participant.startingReputation);
+    await contracts.daoPointsStorage.setModeratorQP(participant.address, participant.quarterModeratorPointFirstQuarter);
+  });
+  console.log('\tInitialized participants stakes and points for first quarter, waiting until main phase');
+  await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
+};
+
+const addProposal = async function (contracts, proposal) {
+  console.log('adding proposal ', proposal.id);
+  await contracts.dao.submitPreproposal(
+    proposal.id,
+    proposal.versions[0].milestoneDurations,
+    proposal.versions[0].milestoneFundings,
+    proposal.versions[0].finalReward,
+    { from: proposal.proposer },
+  );
+};
+
+const endorseProposal = async function (contracts, proposal) {
+  console.log('endorsing proposal ', proposal.id);
+  await contracts.dao.endorseProposal(proposal.id, { from: proposal.endorser });
+};
+
+const modifyProposal = async function (contracts, proposal, nextVersion) {
+  await contracts.dao.modifyProposal(
+    proposal.id,
+    proposal.versions[nextVersion].versionId,
+    proposal.versions[nextVersion].milestoneDurations,
+    proposal.versions[nextVersion].milestoneFundings,
+    proposal.versions[nextVersion].finalReward,
+    { from: proposal.proposer },
+  );
 };
 
 module.exports = {
+  addProposal,
+  endorseProposal,
   deployLibraries,
   deployNewContractResolver,
   getAccountsAndAddressOf,
@@ -400,7 +509,12 @@ module.exports = {
   waitForRevealPhaseToGetOver,
   getTestProposals,
   phaseCorrection,
+  modifyProposal,
+  setupParticipantsStates,
   initDao,
+  redeemBadges,
+  fundUserAndApproveForStakeLocking,
+  lockDGDs,
   assignVotesAndCommits,
   setDummyConfig,
   deployFreshDao,

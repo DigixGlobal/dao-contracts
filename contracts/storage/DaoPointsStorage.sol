@@ -80,7 +80,7 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
 
     /// @notice add reputation points for a _participant
     function addReputation(address _participant, uint256 _point)
-        if_sender_is_from([CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_REWARDS_MANAGER, EMPTY_BYTES])
+        if_sender_is_from([CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_REWARDS_MANAGER, CONTRACT_DAO_STAKE_LOCKING])
         public
         returns (uint256 _newPoint, uint256 _totalPoint)
     {
