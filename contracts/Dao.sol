@@ -4,6 +4,8 @@ import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
 import "./common/DaoCommon.sol";
 import "./DaoFundingManager.sol";
 
+// @title Interactive DAO contract for creating/modifying/endorsing proposals
+// @author Digix Holdings
 contract Dao is DaoCommon, Claimable {
 
     function Dao(address _resolver) public {
@@ -17,6 +19,9 @@ contract Dao is DaoCommon, Claimable {
         _contract = DaoFundingManager(get_contract(CONTRACT_DAO_FUNDING_MANAGER));
     }
 
+    // @notice Migrate this DAO to a new DAO contract
+    // @param _newDaoFundingManager Address of the new DaoFundingManager contract
+    // @param _newDaoContract Address of the new DAO contract
     function migrateToNewDao(
         address _newDaoFundingManager,
         address _newDaoContract
@@ -28,10 +33,18 @@ contract Dao is DaoCommon, Claimable {
         daoFundingManager().moveFundsToNewDao(_newDaoFundingManager);
     }
 
+    // @notice Call this function to mark the start of the DAO's first quarter
+    // @param _start Start time of the first quarter in the DAO
     function setStartOfFirstQuarter(uint256 _start) public if_founder() {
         daoStorage().setStartOfFirstQuarter(_start);
     }
 
+    // @notice Submit a new preliminary idea / Pre-proposal
+    // @param _docIpfsHash Hash of the IPFS doc containing details of proposal
+    // @param _milestonesDurations Array of durations of the proposal milestones (in seconds)
+    // @param _milestonesFundings Array of fundings of the proposal milestones (in wei)
+    // @param _finalReward Final reward asked by proposer at successful completion of all milestones of proposal
+    // @return Whether pre-proposal was successfully created
     function submitPreproposal(
         bytes32 _docIpfsHash,
         uint256[] _milestonesDurations,
@@ -50,6 +63,14 @@ contract Dao is DaoCommon, Claimable {
         _success = true;
     }
 
+    // @notice Modify a proposal (this can be done only before setting the final version)
+    // @param _proposalId Proposal ID (hash of IPFS doc of the first version of the proposal)
+    // @param _docIpfsHash Hash of IPFS doc of the modified version of the proposal
+    // @param _milestonesDurations Array of durations of the modified version of the proposal (in seconds)
+    // @param _milestonesFundings Array of fundings of the modified version of the proposal (in wei)
+    // @param _finalReward Final reward on successful completion of all milestones of the modified version of proposal (in wei)
+    // @param _isFinalVersion Boolean value if this is the final version of the proposal or not
+    // @return Whether the proposal was modified successfully
     function modifyProposal(
         bytes32 _proposalId,
         bytes32 _docIpfsHash,
@@ -78,6 +99,9 @@ contract Dao is DaoCommon, Claimable {
         _success = true;
     }
 
+    // @notice Function to endorse a pre-proposal (can be called only by DAO Moderator)
+    // @param _proposalId ID of the proposal (hash of IPFS doc of the first version of the proposal)
+    // @return Whether the proposal was endorsed successfully or not
     function endorseProposal(bytes32 _proposalId)
         public
         if_main_phase()
@@ -85,15 +109,15 @@ contract Dao is DaoCommon, Claimable {
         returns (bool _success)
     {
         address _endorser = msg.sender;
-
-        // proposal must be a preproposal
         require(daoStorage().readProposalState(_proposalId) == PROPOSAL_STATE_PREPROPOSAL);
-
-        // update storage layer
         require(daoStorage().updateProposalEndorse(_proposalId, _endorser));
         _success = true;
     }
 
+    // @notice Function to update the PRL (regulatory status) status of a proposal
+    // @param _proposalId ID of the proposal
+    // @param _valid Boolean, whether the proposal is PRL valid or not
+    // @return _success Boolean, whether the PRL status was updated successfully
     function updatePRL(bytes32 _proposalId, bool _valid)
         public
         if_prl()
@@ -103,26 +127,32 @@ contract Dao is DaoCommon, Claimable {
         _success = true;
     }
 
+    // @notice Function to create a Special Proposal (can only be created by the founders)
+    // @param _doc hash of the IPFS doc of the special proposal details
+    // @param _uintConfigs Array of the new UINT256 configs
+    // @param _addressConfigs Array of the new Address configs
+    // @param _bytesConfigs Array of the new Bytes32 configs
+    // @return _success true if created special successfully
     function createSpecialProposal(
-      bytes32 _doc,
-      uint256[] _uintConfigs,
-      address[] _addressConfigs,
-      bytes32[] _bytesConfigs
+        bytes32 _doc,
+        uint256[] _uintConfigs,
+        address[] _addressConfigs,
+        bytes32[] _bytesConfigs
     )
-      public
-      if_founder()
-      if_main_phase()
-      returns (bool _success)
+        public
+        if_founder()
+        if_main_phase()
+        returns (bool _success)
     {
-      require(getTimeFromNextLockingPhase(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
-      address _proposer = msg.sender;
-      daoSpecialStorage().addSpecialProposal(
-        _doc,
-        _proposer,
-        _uintConfigs,
-        _addressConfigs,
-        _bytesConfigs
-      );
-      _success = true;
+        require(getTimeFromNextLockingPhase(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
+        address _proposer = msg.sender;
+        daoSpecialStorage().addSpecialProposal(
+            _doc,
+            _proposer,
+            _uintConfigs,
+            _addressConfigs,
+            _bytesConfigs
+        );
+        _success = true;
     }
 }

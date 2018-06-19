@@ -6,6 +6,8 @@ import "./common/DaoCommon.sol";
 import "./service/DaoCalculatorService.sol";
 import "./DaoRewardsManager.sol";
 
+// @title Contract to handle staking/withdrawing of DGDs for participation in DAO
+// @author Digix Holdings
 contract DaoStakeLocking is DaoCommon {
 
     address public dgdToken;
@@ -40,12 +42,13 @@ contract DaoStakeLocking is DaoCommon {
         _contract = DaoRewardsManager(get_contract(CONTRACT_DAO_REWARDS_MANAGER));
     }
 
-    //TODO: Handle all the weird cases like:
-    // - had partial DGD stake last quarter, then lock this quarter in the middle
-    // - had partial DGD stake last quarter, then just confirmContinuedParticipation the locking phase
-
+    // @notice Function to lock DGD tokens to participate in the DAO
+    // @dev Users must `approve` the DaoStakeLocking contract to transfer DGDs from them
+    // @param _amount Number of DGDs to lock
+    // @return _success Boolean, true if the locking process is successful, false otherwise
     function lockDGD(uint256 _amount)
         public
+        if_not_contract(msg.sender)
         returns (bool _success)
     {
         StakeInformation memory _info = getStakeInformation(msg.sender);
@@ -103,6 +106,9 @@ contract DaoStakeLocking is DaoCommon {
         _success = true;
     } */
 
+    // @notice Function to withdraw DGD tokens from this contract (can only be withdrawn in the locking phase of quarter)
+    // @param _amount Number of DGD tokens to withdraw
+    // @return _success Boolean, true if the withdrawal was successful, revert otherwise
     function withdrawDGD(uint256 _amount)
         public
         if_locking_phase()
@@ -119,7 +125,6 @@ contract DaoStakeLocking is DaoCommon {
         // This has to happen at least once before user can participate in next quarter
         daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
 
-        //TODO: make CONFIG_MINIMUM_LOCKED_DGD into a uint_config
         if (_newInfo.userActualLockedDGD < CONFIG_MINIMUM_LOCKED_DGD) {
             daoStakeStorage().removeParticipant(msg.sender);
             if (daoStakeStorage().isInModeratorsList(msg.sender)) {
@@ -164,21 +169,19 @@ contract DaoStakeLocking is DaoCommon {
         _success = true;
     } */
 
-    // this is for someone who doesnt change his DGDStake for the next quarter to confirm that he's participating
-    // this can be done in the middle of the quarter as well
+    // @notice Function to be called by someone who doesnt change their DGDStake for the next quarter to confirm that they're participating
+    // @dev This can be done in the middle of the quarter as well
     function confirmContinuedParticipation()
         public
     {
         StakeInformation memory _info = getStakeInformation(msg.sender);
-
-        // This has to happen at least once before user can participate in next quarter
         daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
-
         refreshDGDStake(msg.sender, _info, true);
-
         daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
     }
 
+    // @notice Function to see if it is locking phase
+    // @return _success Boolean, true if it is locking phase, revert otherwise
     function isLockingPhase()
         public
         if_locking_phase()
@@ -187,6 +190,8 @@ contract DaoStakeLocking is DaoCommon {
         _success = true;
     }
 
+    // @notice Function to see if it is main phase
+    // @return _success Boolean, true if it is main phase, revert otherwise
     function isMainPhase()
         public
         if_main_phase()
@@ -195,7 +200,6 @@ contract DaoStakeLocking is DaoCommon {
         _success = true;
     }
 
-    // refresh the current lockedDGDStake, in case the user locked DGD in the middle of the previous quarter
     function refreshDGDStake(address _user, StakeInformation _infoBefore, bool _saveToStorage)
         internal
         returns (StakeInformation _infoAfter)

@@ -1,12 +1,17 @@
 pragma solidity ^0.4.19;
 import "./common/DaoCommon.sol";
 
+// @title Contract to manage DAO funds
+// @author Digix Holdings
 contract DaoFundingManager is DaoCommon {
 
     function DaoFundingManager(address _resolver) public {
         require(init(CONTRACT_DAO_FUNDING_MANAGER, _resolver));
     }
 
+    // @notice Call function to claim ETH allocated by DAO (transferred to caller)
+    // @param _proposalId
+    // @return _success Boolean, true if claim successful, revert otherwise
     function claimEthFunding(bytes32 _proposalId)
         public
         if_from_proposer(_proposalId)
@@ -20,13 +25,18 @@ contract DaoFundingManager is DaoCommon {
         _success = true;
     }
 
-    function allocateEth(address _proposer, uint256 _value)
+    // @notice Function to allocate ETH to a user address
+    // @param _to Ethereum address of the receiver of ETH
+    // @param _value Amount to be allocated (in wei)
+    function allocateEth(address _to, uint256 _value)
         public
         if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
-        daoFundingStorage().updateClaimableEth(_proposer, _value);
+        daoFundingStorage().updateClaimableEth(_to, _value);
     }
 
+    // @notice Function to move funds to a new DAO
+    // @param _destinationForDaoFunds Ethereum contract address of the new DaoFundingManager
     function moveFundsToNewDao(address _destinationForDaoFunds)
         if_sender_is(CONTRACT_DAO)
         public
@@ -36,7 +46,7 @@ contract DaoFundingManager is DaoCommon {
         _destinationForDaoFunds.transfer(_remainingBalance);
     }
 
-    // receive ETH from the Crowdsale contract
+    // @notice Payable function to receive ETH funds from DigixDAO crowdsale contract
     function () payable public {
         daoFundingStorage().addEth(msg.value);
     }
