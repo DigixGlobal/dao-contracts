@@ -19,17 +19,17 @@ contract DaoListingService is ResolverClient, DaoConstants, AddressIteratorInter
       _contract = DaoStakeStorage(get_contract(CONTRACT_STORAGE_DAO_STAKE));
     }
 
-    function listBadgeParticipants(uint256 _count, bool _from_start)
+    function listModerators(uint256 _count, bool _from_start)
         public
         constant
         returns (address[] _badgeParticipants)
     {
         _badgeParticipants = list_addresses(
             _count,
-            daoStakeStorage().readFirstBadgeParticipant,
-            daoStakeStorage().readLastBadgeParticipant,
-            daoStakeStorage().readNextBadgeParticipant,
-            daoStakeStorage().readPreviousBadgeParticipant,
+            daoStakeStorage().readFirstModerator,
+            daoStakeStorage().readLastModerator,
+            daoStakeStorage().readNextModerator,
+            daoStakeStorage().readPreviousModerator,
             _from_start
         );
     }

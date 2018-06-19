@@ -11,7 +11,7 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
   }
   Token reputationPoint;
   mapping (uint256 => Token) quarterPoint;
-  mapping (uint256 => Token) quarterBadgePoint;
+  mapping (uint256 => Token) quarterModeratorPoint;
 
   function DaoPointsStorage(address _resolver)
            public
@@ -32,16 +32,16 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
         _newTotalPoint = quarterPoint[_quarterId].totalSupply;
     }
 
-    function addQuarterBadgePoint(address _participant, uint256 _point, uint256 _quarterId)
+    function addQuarterModeratorPoint(address _participant, uint256 _point, uint256 _quarterId)
         if_sender_is_from([CONTRACT_DAO_VOTING, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES])
         public
         returns (uint256 _newPoint, uint256 _newTotalPoint)
     {
-        quarterBadgePoint[_quarterId].totalSupply += _point;
-        quarterBadgePoint[_quarterId].balance[_participant] += _point;
+        quarterModeratorPoint[_quarterId].totalSupply += _point;
+        quarterModeratorPoint[_quarterId].balance[_participant] += _point;
 
-        _newPoint = quarterBadgePoint[_quarterId].balance[_participant];
-        _newTotalPoint = quarterBadgePoint[_quarterId].totalSupply;
+        _newPoint = quarterModeratorPoint[_quarterId].balance[_participant];
+        _newTotalPoint = quarterModeratorPoint[_quarterId].totalSupply;
     }
 
   /// @notice get quarter points for a _participant in a _quarterId
@@ -53,12 +53,12 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
     _point = quarterPoint[_quarterId].balance[_participant];
   }
 
-  function getQuarterBadgePoint(address _participant, uint256 _quarterId)
+  function getQuarterModeratorPoint(address _participant, uint256 _quarterId)
     public
     view
     returns (uint256 _point)
   {
-    _point = quarterBadgePoint[_quarterId].balance[_participant];
+    _point = quarterModeratorPoint[_quarterId].balance[_participant];
   }
 
   /// @notice get total quarter points for a particular _quarterId
@@ -70,12 +70,12 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
     _totalPoint = quarterPoint[_quarterId].totalSupply;
   }
 
-  function getTotalQuarterBadgePoint(uint256 _quarterId)
+  function getTotalQuarterModeratorPoint(uint256 _quarterId)
     public
     view
     returns (uint256 _totalPoint)
   {
-    _totalPoint = quarterBadgePoint[_quarterId].totalSupply;
+    _totalPoint = quarterModeratorPoint[_quarterId].totalSupply;
   }
 
     /// @notice add reputation points for a _participant

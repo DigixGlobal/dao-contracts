@@ -32,7 +32,7 @@ contract DaoCalculatorService is DaoCommon {
         //TODO: implement this function
         (,_ethAsked) = daoStorage().readProposalFunding(_proposalId);
         _minQuorum = calculateMinQuorum(
-            daoStakeStorage().totalLockedBadges(),
+            daoStakeStorage().totalModeratorLockedDGDStake(),
             get_uint_config(CONFIG_DRAFT_QUORUM_FIXED_PORTION_NUMERATOR),
             get_uint_config(CONFIG_DRAFT_QUORUM_FIXED_PORTION_DENOMINATOR),
             get_uint_config(CONFIG_DRAFT_QUORUM_SCALING_FACTOR_NUMERATOR),

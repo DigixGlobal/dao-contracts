@@ -67,6 +67,8 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
 
       uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM] = 5; //5% of DGX to Badge holder voting activity
       uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_DEN] = 100;
+
+      uintConfigs[CONFIG_DRAFT_VOTING_PHASE] = 2 weeks;
   }
 
   function updateUintConfigs(uint256[] _uintConfigs)
@@ -117,6 +119,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
     uintConfigs[CONFIG_BADGE_REPUTATION_POINT_SCALING_FACTOR] = _uintConfigs[41];
     uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM] = _uintConfigs[42];
     uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_DEN] = _uintConfigs[43];
+    uintConfigs[CONFIG_DRAFT_VOTING_PHASE] = _uintConfigs[44];
   }
 
   function readUintConfigs()
@@ -168,6 +171,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
     _uintConfigs[41] = uintConfigs[CONFIG_BADGE_REPUTATION_POINT_SCALING_FACTOR];
     _uintConfigs[42] = uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM];
     _uintConfigs[43] = uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_DEN];
+    _uintConfigs[44] = uintConfigs[CONFIG_DRAFT_VOTING_PHASE];
     return _uintConfigs;
   }
 }

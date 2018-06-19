@@ -42,11 +42,11 @@ contract DaoVotingClaims is DaoCommon, Claimable {
       public
       if_main_phase()
       if_draft_not_claimed(_proposalId)
-      if_dao_member()
+      if_from_proposer(_proposalId)
       returns (bool _passed)
   {
       //TODO use the real total number of badgeHolders instead of 10000
-      address[] memory _allBadgeHolders = daoListingService().listBadgeParticipants(10000, true);
+      address[] memory _allBadgeHolders = daoListingService().listParticipants(10000, true);
 
       DaoStructs.VotingCount memory _count;
       (_count.forCount, _count.againstCount, _count.quorum) = daoStorage().readDraftVotingCount(_proposalId, _allBadgeHolders);
@@ -56,8 +56,8 @@ contract DaoVotingClaims is DaoCommon, Claimable {
       _passed = true;
       daoStorage().setProposalDraftPass(_proposalId, true);
       daoStorage().setProposalVotingTime(_proposalId, 0, calculateNextVotingTime(0, false));
-      daoStorage().setDraftVotingClaim(_proposalId, msg.sender);
-      daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex());
+      daoStorage().setDraftVotingClaim(_proposalId, true);
+      /* daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex()); */
   }
 
   function claimVotingResult(bytes32 _proposalId)
@@ -65,7 +65,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
       if_main_phase()
       if_not_claimed(_proposalId, 0)
       if_after_reveal_phase(_proposalId)
-      if_dao_member()
+      if_from_proposer(_proposalId)
       returns (bool _passed)
   {
       address[] memory _allStakeHolders = daoListingService().listParticipants(10000, true);
@@ -75,8 +75,8 @@ contract DaoVotingClaims is DaoCommon, Claimable {
       require(daoCalculatorService().votingQuotaPass(_count.forCount, _count.againstCount));
       _passed = true;
       daoStorage().setProposalPass(_proposalId, 0, _passed);
-      daoStorage().setVotingClaim(_proposalId, 0, msg.sender); // 0 for voting, interim starts from 1
-      daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex());
+      daoStorage().setVotingClaim(_proposalId, 0, true); // 0 for voting, interim starts from 1
+      /* daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex()); */
 
       // set deadline of milestone 1 (set startTime for next interim voting round)
       DaoStructs.MilestoneInfo memory _info;
@@ -92,21 +92,23 @@ contract DaoVotingClaims is DaoCommon, Claimable {
       if_main_phase()
       if_not_claimed(_proposalId, _index)
       if_after_interim_reveal_phase(_proposalId, _index)
-      if_dao_member()
       returns (bool _passed)
   {
+      require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
       address[] memory _allStakeHolders = daoListingService().listParticipants(10000, true);
       DaoStructs.VotingCount memory _count;
+      DaoStructs.Users memory _bonusVoters;
       (_count.forCount, _count.againstCount, _count.quorum) = daoStorage().readVotingCount(_proposalId, _index, _allStakeHolders);
-      if ((_count.quorum > daoCalculatorService().minimumVotingQuorum(_proposalId, _index)) ||
+      if ((_count.quorum > daoCalculatorService().minimumVotingQuorum(_proposalId, _index)) &&
             (daoCalculatorService().votingQuotaPass(_count.forCount, _count.againstCount))) {
         _passed = true;
+      } else {
+        _passed = false;
       }
       daoStorage().setProposalPass(_proposalId, _index, _passed);
-      daoStorage().setVotingClaim(_proposalId, _index, msg.sender);
-      daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex());
+      daoStorage().setVotingClaim(_proposalId, _index, true);
+      /* daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex()); */
 
-      DaoStructs.Users memory _bonusVoters;
       if (_passed) {
         // give quarter points to proposer for finishing the milestone
         daoPointsStorage().addQuarterPoint(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_QUARTER_POINT_MILESTONE_COMPLETION), currentQuarterIndex());
@@ -131,13 +133,14 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         // voted NO in the previous round
         (_bonusVoters.users, _bonusVoters.usersLength) = daoStorage().readVotingRoundVotes(_proposalId, _index-1, _allStakeHolders, false);
       }
+
       if (_bonusVoters.usersLength > 0) addBonusReputation(_bonusVoters.users, _bonusVoters.usersLength);
   }
 
   function claimSpecialProposalVotingResult(bytes32 _proposalId)
     public
     if_main_phase()
-    if_dao_member()
+    if_from_special_proposer(_proposalId)
     if_not_claimed_special(_proposalId)
     if_after_reveal_phase_special(_proposalId)
     returns (bool _passed)
@@ -145,13 +148,13 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     address[] memory _allStakeHolders = daoListingService().listParticipants(10000, true);
     DaoStructs.VotingCount memory _count;
     (_count.forCount, _count.againstCount, _count.quorum) = daoSpecialStorage().readVotingCount(_proposalId, _allStakeHolders);
-    if ((_count.quorum > daoCalculatorService().minimumVotingQuorumForSpecial()) ||
+    if ((_count.quorum > daoCalculatorService().minimumVotingQuorumForSpecial()) &&
           (daoCalculatorService().votingQuotaForSpecialPass(_count.forCount, _count.againstCount))) {
       _passed = true;
     }
     daoSpecialStorage().setPass(_proposalId, _passed);
-    daoSpecialStorage().setVotingClaim(_proposalId, msg.sender);
-    daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex());
+    daoSpecialStorage().setVotingClaim(_proposalId, true);
+    /* daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_CLAIM_RESULT), currentQuarterIndex()); */
     if (_passed) {
       setConfigs(_proposalId);
     }

@@ -48,6 +48,9 @@ contract DaoConstants {
   uint256 QUARTER_DURATION = 90 days;
 
   uint256 CONFIG_MINIMUM_LOCKED_DGD = 10 ** 9;
+  uint256 CONFIG_MINIMUM_DGD_FOR_MODERATOR = 10 * (10 ** 9);
+  uint256 CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR = 100;
+
   bytes32 CONFIG_LOCKING_PHASE_DURATION = "locking_phase_duration";
   bytes32 CONFIG_QUARTER_DURATION = "quarter_duration";
   bytes32 CONFIG_VOTING_COMMIT_PHASE = "voting_commit_phase";
@@ -103,4 +106,6 @@ contract DaoConstants {
 
   bytes32 CONFIG_PORTION_TO_BADGE_HOLDERS_NUM = "config_bholder_portion_num";
   bytes32 CONFIG_PORTION_TO_BADGE_HOLDERS_DEN = "config_bholder_portion_den";
+
+  bytes32 CONFIG_DRAFT_VOTING_PHASE = "config_draft_voting_phase";
 }

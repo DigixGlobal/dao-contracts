@@ -10,11 +10,12 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     mapping (address => uint256) public lockedDGDStake;
     mapping (address => uint256) public actualLockedDGD;
-    mapping (address => uint256) public lockedBadge;
+    /* mapping (address => uint256) public lockedBadge; */
     uint256 public totalLockedDGDStake;
-    uint256 public totalLockedBadges;
+    uint256 public totalModeratorLockedDGDStake;
+    /* uint256 public totalLockedBadges; */
     DoublyLinkedList.Address allParticipants;
-    DoublyLinkedList.Address allBadgeParticipants;
+    DoublyLinkedList.Address allModerators;
 
     function DaoStakeStorage(address _resolver) public {
         require(init(CONTRACT_STORAGE_DAO_STAKE, _resolver));
@@ -27,11 +28,11 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
         totalLockedDGDStake = _totalLockedDGDStake;
     }
 
-    function updateTotalLockedBadges(uint256 _totalLockedBadges)
+    function updateTotalModeratorLockedDGDs(uint256 _totalLockedDGDStake)
         if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         public
     {
-        totalLockedBadges = _totalLockedBadges;
+        totalModeratorLockedDGDStake = _totalLockedDGDStake;
     }
 
     function updateUserDGDStake(address _user, uint256 _actualLockedDGD, uint256 _lockedDGDStake)
@@ -42,12 +43,12 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
         lockedDGDStake[_user] = _lockedDGDStake;
     }
 
-    function updateUserBadgeStake(address _user, uint256 _lockedBadge)
+    /* function updateUserBadgeStake(address _user, uint256 _lockedBadge)
         if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         public
     {
         lockedBadge[_user] = _lockedBadge;
-    }
+    } */
 
     function readUserDGDStake(address _user)
         public
@@ -69,13 +70,13 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
         _stake = lockedDGDStake[_user];
     }
 
-    function readUserLockedBadge(address _user)
+    /* function readUserLockedBadge(address _user)
         public
         constant
         returns (uint256 _lockedBadge)
     {
         _lockedBadge = lockedBadge[_user];
-    }
+    } */
 
     function addParticipant(address _user)
         public
@@ -93,23 +94,23 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
         _success = allParticipants.remove_item(_user);
     }
 
-    function addBadgeParticipant(address _user)
+    function addModerator(address _user)
         public
         if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         returns (bool _success)
     {
-        _success = allBadgeParticipants.append(_user);
+        _success = allModerators.append(_user);
     }
 
-    function removeBadgeParticipant(address _user)
+    function removeModerator(address _user)
         public
         if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         returns (bool _success)
     {
-        _success = allBadgeParticipants.remove_item(_user);
+        _success = allModerators.remove_item(_user);
     }
 
-    function isParticipant(address _user)
+    /* function isParticipant(address _user)
       public
       constant
       returns (bool _is)
@@ -120,14 +121,14 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
       } else {
         _is = true;
       }
-    }
+    } */
 
-    function isBadgeParticipant(address _user)
+    function isInModeratorsList(address _user)
       public
       constant
       returns (bool _is)
     {
-      uint256 _index = allBadgeParticipants.find(_user);
+      uint256 _index = allModerators.find(_user);
       if (_index == 0) {
         _is = false;
       } else {
@@ -135,44 +136,44 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
       }
     }
 
-    function readFirstBadgeParticipant()
+    function readFirstModerator()
         public
         constant
         returns (address _item)
     {
-        _item = read_first_from_addresses(allBadgeParticipants);
+        _item = read_first_from_addresses(allModerators);
     }
 
-    function readLastBadgeParticipant()
+    function readLastModerator()
         public
         constant
         returns (address _item)
     {
-        _item = read_last_from_addresses(allBadgeParticipants);
+        _item = read_last_from_addresses(allModerators);
     }
 
-    function readNextBadgeParticipant(address _current_item)
+    function readNextModerator(address _current_item)
         public
         constant
         returns (address _item)
     {
-        _item = read_next_from_addresses(allBadgeParticipants, _current_item);
+        _item = read_next_from_addresses(allModerators, _current_item);
     }
 
-    function readPreviousBadgeParticipant(address _current_item)
+    function readPreviousModerator(address _current_item)
         public
         constant
         returns (address _item)
     {
-        _item = read_previous_from_addresses(allBadgeParticipants, _current_item);
+        _item = read_previous_from_addresses(allModerators, _current_item);
     }
 
-    function readTotalBadgeParticipant()
+    function readTotalModerators()
         public
         constant
         returns (uint256 _total_count)
     {
-        _total_count = read_total_addresses(allBadgeParticipants);
+        _total_count = read_total_addresses(allModerators);
     }
 
     function readFirstParticipant()

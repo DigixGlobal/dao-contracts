@@ -183,9 +183,9 @@ contract DaoRewardsManager is DaoCommon {
             data.qInfo.badgeMinimalParticipationPoint,
             data.qInfo.badgeQuarterPointScalingFactor,
             data.qInfo.badgeReputationPointScalingFactor,
-            daoPointsStorage().getQuarterBadgePoint(_user, data.lastParticipatedQuarter),
+            daoPointsStorage().getQuarterModeratorPoint(_user, data.lastParticipatedQuarter),
             daoPointsStorage().getReputation(_user),
-            daoStakeStorage().lockedBadge(_user)
+            daoStakeStorage().lockedDGDStake(_user)
         );
 
         if (daoRewardsStorage().readTotalEffectiveDGDLastQuarter(data.lastParticipatedQuarter + 1) > 0) {
@@ -234,8 +234,8 @@ contract DaoRewardsManager is DaoCommon {
         );
         info.totalEffectiveDGDLastQuarter = sumEffectiveBalance(info, false);
 
-        info.userCount = daoStakeStorage().readTotalBadgeParticipant();
-        info.users = daoListingService().listBadgeParticipants(
+        info.userCount = daoStakeStorage().readTotalModerators();
+        info.users = daoListingService().listModerators(
             info.userCount,
             true
         );
@@ -285,9 +285,9 @@ contract DaoRewardsManager is DaoCommon {
                     info.qInfo.badgeMinimalParticipationPoint,
                     info.qInfo.badgeQuarterPointScalingFactor,
                     info.qInfo.badgeReputationPointScalingFactor,
-                    daoPointsStorage().getQuarterBadgePoint(info.currentUser, info.previousQuarter),
+                    daoPointsStorage().getQuarterModeratorPoint(info.currentUser, info.previousQuarter),
                     daoPointsStorage().getReputation(info.currentUser),
-                    daoStakeStorage().lockedBadge(info.currentUser)
+                    daoStakeStorage().lockedDGDStake(info.currentUser)
                 );
             } else {
                 _sumOfEffectiveBalance += daoCalculatorService().calculateUserEffectiveBalance(
@@ -330,9 +330,9 @@ contract DaoRewardsManager is DaoCommon {
             info.qInfo.badgeMinimalParticipationPoint,
             info.qInfo.badgeQuarterPointScalingFactor,
             info.qInfo.badgeReputationPointScalingFactor,
-            daoPointsStorage().getQuarterBadgePoint(_user, info.previousQuarter),
+            daoPointsStorage().getQuarterModeratorPoint(_user, info.previousQuarter),
             daoPointsStorage().getReputation(_user),
-            daoStakeStorage().lockedBadge(_user)
+            daoStakeStorage().lockedDGDStake(_user)
         );
     }
 

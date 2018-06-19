@@ -32,13 +32,14 @@ library DaoStructs {
     uint256 totalYesVotes;
     uint256 totalNoVotes;
     bool passed;
-    address claimer;
+    /* address claimer; */
+    bool claimed;
   }
 
   struct ProposalVersion {
     bytes32 docIpfsHash;
     uint256 created;
-    Voting draftVoting;
+    /* Voting draftVoting; */
     uint256 milestoneCount;
     uint256[] milestoneDurations;
     uint256[] milestoneFundings;
@@ -53,9 +54,11 @@ library DaoStructs {
     uint256 timeCreated;
     DoublyLinkedList.Bytes proposalVersionDocs;
     mapping (bytes32 => ProposalVersion) proposalVersions;
+    Voting draftVoting;
     Voting votingRound;
     mapping (uint256 => Voting) interimRounds;
     bool prlValid;
+    bytes32 finalVersion;
   }
 
   struct SpecialProposal {

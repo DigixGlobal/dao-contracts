@@ -37,6 +37,22 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
     proposalsById[_proposalId].voting.startTime = now;
   }
 
+  /* function readProposal(bytes32 _proposalId)
+    public
+    returns (
+
+    )
+  {
+
+  } */
+
+  function readProposalProposer(bytes32 _proposalId)
+    public
+    returns (address _proposer)
+  {
+    _proposer = proposalsById[_proposalId].proposer;
+  }
+
   function readConfigs(bytes32 _proposalId)
     public
     returns (
@@ -108,19 +124,19 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
     _success = true;
   }
 
-  function setVotingClaim(bytes32 _proposalId, address _claimer)
+  function setVotingClaim(bytes32 _proposalId, bool _claimed)
     public
     if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
   {
     DaoStructs.SpecialProposal _proposal = proposalsById[_proposalId];
-    _proposal.voting.claimer = _claimer;
+    _proposal.voting.claimed = _claimed;
   }
 
-  function getClaimer(bytes32 _proposalId)
+  function isClaimed(bytes32 _proposalId)
     public
-    returns (address _claimer)
+    returns (bool _claimed)
   {
-    _claimer = proposalsById[_proposalId].voting.claimer;
+    _claimed = proposalsById[_proposalId].voting.claimed;
   }
 
   function readVote(bytes32 _proposalId, address _voter)

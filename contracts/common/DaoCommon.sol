@@ -33,6 +33,7 @@ contract DaoCommon is IdentityCommon {
     modifier if_commit_phase(bytes32 _proposalId) {
         uint256 _start = daoStorage().readProposalVotingTime(_proposalId, 0);
         require(_start > 0);
+        require(now > _start);
         require(now - _start < get_uint_config(CONFIG_VOTING_COMMIT_PHASE));
         _;
     }
@@ -40,6 +41,7 @@ contract DaoCommon is IdentityCommon {
     modifier if_reveal_phase(bytes32 _proposalId) {
       uint256 _start = daoStorage().readProposalVotingTime(_proposalId, 0);
       require(_start > 0);
+      require(now > _start);
       require(now - _start < get_uint_config(CONFIG_VOTING_PHASE_TOTAL));
       require(now - _start > get_uint_config(CONFIG_VOTING_COMMIT_PHASE));
       _;
@@ -48,6 +50,7 @@ contract DaoCommon is IdentityCommon {
     modifier if_after_reveal_phase(bytes32 _proposalId) {
       uint256 _start = daoStorage().readProposalVotingTime(_proposalId, 0);
       require(_start > 0);
+      require(now > _start);
       require(now - _start > get_uint_config(CONFIG_VOTING_PHASE_TOTAL));
       _;
     }
@@ -55,6 +58,7 @@ contract DaoCommon is IdentityCommon {
     modifier if_interim_commit_phase(bytes32 _proposalId, uint8 _index) {
         uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
         require(_start > 0);
+        require(now > _start);
         require(now - _start < get_uint_config(CONFIG_INTERIM_COMMIT_PHASE));
         _;
     }
@@ -62,6 +66,7 @@ contract DaoCommon is IdentityCommon {
     modifier if_interim_reveal_phase(bytes32 _proposalId, uint256 _index) {
       uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
       require(_start > 0);
+      require(now > _start);
       require(now - _start < get_uint_config(CONFIG_INTERIM_PHASE_TOTAL));
       require(now - _start > get_uint_config(CONFIG_INTERIM_COMMIT_PHASE));
       _;
@@ -70,12 +75,26 @@ contract DaoCommon is IdentityCommon {
     modifier if_after_interim_reveal_phase(bytes32 _proposalId, uint256 _index) {
       uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
       require(_start > 0);
+      require(now > _start);
       require(now - _start > get_uint_config(CONFIG_INTERIM_PHASE_TOTAL));
       _;
     }
 
+    modifier if_draft_voting_phase(bytes32 _proposalId) {
+        uint256 _start = daoStorage().readProposalDraftVotingTime(_proposalId);
+        require(_start > 0);
+        require(now > _start);
+        require(now - _start < get_uint_config(CONFIG_DRAFT_VOTING_PHASE));
+        _;
+    }
+
     modifier if_from_proposer(bytes32 _proposalId) {
         require(msg.sender == daoStorage().readProposalProposer(_proposalId));
+        _;
+    }
+
+    modifier if_from_special_proposer(bytes32 _specialProposalId) {
+        require(msg.sender == daoSpecialStorage().readProposalProposer(_specialProposalId));
         _;
     }
 
@@ -94,17 +113,27 @@ contract DaoCommon is IdentityCommon {
       _;
     }
 
-    modifier if_badge_participant() {
-      require(isBadgeParticipant(msg.sender));
+    modifier if_moderator() {
+      require(isModerator(msg.sender));
       _;
     }
 
     modifier if_dao_member() {
       require(
         isParticipant(msg.sender) ||
-        isBadgeParticipant(msg.sender)
+        isModerator(msg.sender)
       );
       _;
+    }
+
+    modifier if_editable(bytes32 _proposalId) {
+        require(daoStorage().readFinalVersion(_proposalId) == EMPTY_BYTES);
+        _;
+    }
+
+    modifier if_final_version(bytes32 _proposalId, bytes32 _proposalVersion) {
+        require(daoStorage().readFinalVersion(_proposalId) == _proposalVersion);
+        _;
     }
 
     modifier if_valid_milestones(uint256 a, uint256 b) {
@@ -113,17 +142,17 @@ contract DaoCommon is IdentityCommon {
     }
 
     modifier if_draft_not_claimed(bytes32 _proposalId) {
-      require(daoStorage().getDraftClaimer(_proposalId) == EMPTY_ADDRESS);
+      require(daoStorage().isDraftClaimed(_proposalId) == false);
       _;
     }
 
     modifier if_not_claimed(bytes32 _proposalId, uint256 _index) {
-      require(daoStorage().getClaimer(_proposalId, _index) == EMPTY_ADDRESS);
+      require(daoStorage().isClaimed(_proposalId, _index) == false);
       _;
     }
 
     modifier if_not_claimed_special(bytes32 _proposalId) {
-      require(daoSpecialStorage().getClaimer(_proposalId) == EMPTY_ADDRESS);
+      require(daoSpecialStorage().isClaimed(_proposalId) == false);
       _;
     }
 
@@ -264,14 +293,15 @@ contract DaoCommon is IdentityCommon {
         }
     }
 
-    function isBadgeParticipant(address _user)
+    function isModerator(address _user)
         public
         constant
         returns (bool _is)
     {
         if (
             (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex()) &&
-            (daoStakeStorage().readUserLockedBadge(_user) > 0)
+            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= CONFIG_MINIMUM_DGD_FOR_MODERATOR) &&
+            (daoPointsStorage().getReputation(_user) >= CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR)
         ) {
             _is = true;
         }

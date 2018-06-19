@@ -102,6 +102,14 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     _proposer = proposalsById[_proposalId].proposer;
   }
 
+  function readFinalVersion(bytes32 _proposalId)
+    public
+    constant
+    returns (bytes32 _finalVersion)
+  {
+    _finalVersion = proposalsById[_proposalId].finalVersion;
+  }
+
   function readProposalPRL(bytes32 _proposalId)
     public
     constant
@@ -115,8 +123,9 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     constant
     returns (bool _result)
   {
-    bytes32 _latestVersion = read_last_from_bytesarray(proposalsById[_proposalId].proposalVersionDocs);
-    _result = proposalsById[_proposalId].proposalVersions[_latestVersion].draftVoting.passed;
+    /* bytes32 _latestVersion = read_last_from_bytesarray(proposalsById[_proposalId].proposalVersionDocs); */
+    /* _result = proposalsById[_proposalId].proposalVersions[_latestVersion].draftVoting.passed; */
+    _result = proposalsById[_proposalId].draftVoting.passed;
   }
 
   function readProposalVotingResult(bytes32 _proposalId, uint256 _index)
@@ -136,8 +145,9 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     constant
     returns (uint256 _start)
   {
-    bytes32 _latestVersion = read_last_from_bytesarray(proposalsById[_proposalId].proposalVersionDocs);
-    _start = proposalsById[_proposalId].proposalVersions[_latestVersion].draftVoting.startTime;
+    /* bytes32 _latestVersion = read_last_from_bytesarray(proposalsById[_proposalId].proposalVersionDocs); */
+    /* _start = proposalsById[_proposalId].proposalVersions[_latestVersion].draftVoting.startTime; */
+    _start = proposalsById[_proposalId].draftVoting.startTime;
   }
 
   function readProposalVotingTime(bytes32 _proposalId, uint256 _index)
@@ -157,8 +167,9 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     constant
     returns (uint256 _for, uint256 _against, uint256 _quorum)
   {
-    bytes32 _latestVersion = read_last_from_bytesarray(proposalsById[_proposalId].proposalVersionDocs);
-    DaoStructs.Voting _voting = proposalsById[_proposalId].proposalVersions[_latestVersion].draftVoting;
+    /* bytes32 _latestVersion = read_last_from_bytesarray(proposalsById[_proposalId].proposalVersionDocs); */
+    /* DaoStructs.Voting _voting = proposalsById[_proposalId].proposalVersions[_latestVersion].draftVoting; */
+    DaoStructs.Voting _voting = proposalsById[_proposalId].draftVoting;
     uint256 _n = _allUsers.length;
     for (uint256 i = 0; i < _n; i++) {
       if (_voting.yesVotes[_allUsers[i]] > 0)
@@ -230,8 +241,9 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     constant
     returns (bool _voted, bool _vote, uint256 _weight)
   {
-    bytes32 _latestVersion = getLastProposalVersion(_proposalId);
-    DaoStructs.Voting _draftVoting = proposalsById[_proposalId].proposalVersions[_latestVersion].draftVoting;
+    /* bytes32 _latestVersion = getLastProposalVersion(_proposalId); */
+    /* DaoStructs.Voting _draftVoting = proposalsById[_proposalId].proposalVersions[_latestVersion].draftVoting; */
+    DaoStructs.Voting _draftVoting = proposalsById[_proposalId].draftVoting;
     if (_draftVoting.yesVotes[_voter] > 0) {
       _voted = true;
       _vote = true;
@@ -430,8 +442,9 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     constant
     returns (uint256[] memory _fundings, uint256 _totalFunding)
   {
-    bytes32 _latestVersion = read_last_from_bytesarray(proposalsById[_proposalId].proposalVersionDocs);
-    _fundings = proposalsById[_proposalId].proposalVersions[_latestVersion].milestoneFundings;
+    /* bytes32 _latestVersion = read_last_from_bytesarray(proposalsById[_proposalId].proposalVersionDocs); */
+    bytes32 _finalVersion = proposalsById[_proposalId].finalVersion;
+    _fundings = proposalsById[_proposalId].proposalVersions[_finalVersion].milestoneFundings;
     uint256 _n = _fundings.length;
     for (uint256 i = 0; i < _n; i++) {
       _totalFunding += _fundings[i];
@@ -444,16 +457,17 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     returns (uint256 _milestoneId, uint256 _duration, uint256 _funding, uint256 _finalReward)
   {
     require(_index >= 0);
-    bytes32 _latestVersion = getLastProposalVersion(_proposalId);
-    if (_index < proposalsById[_proposalId].proposalVersions[_latestVersion].milestoneDurations.length) {
+    /* bytes32 _latestVersion = getLastProposalVersion(_proposalId); */
+    bytes32 _finalVersion = proposalsById[_proposalId].finalVersion;
+    if (_index < proposalsById[_proposalId].proposalVersions[_finalVersion].milestoneDurations.length) {
       _milestoneId = _index;
-      _duration = proposalsById[_proposalId].proposalVersions[_latestVersion].milestoneDurations[_index];
-      _funding = proposalsById[_proposalId].proposalVersions[_latestVersion].milestoneFundings[_index];
+      _duration = proposalsById[_proposalId].proposalVersions[_finalVersion].milestoneDurations[_index];
+      _funding = proposalsById[_proposalId].proposalVersions[_finalVersion].milestoneFundings[_index];
     } else {
       _milestoneId = 0;
       _duration = 0;
       _funding = 0;
-      _finalReward = proposalsById[_proposalId].proposalVersions[_latestVersion].finalReward;
+      _finalReward = proposalsById[_proposalId].proposalVersions[_finalVersion].finalReward;
     }
   }
 
@@ -462,8 +476,9 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     constant
     returns (uint256[] memory _durations, uint256 _totalDuration)
   {
-    bytes32 _latestVersion = read_last_from_bytesarray(proposalsById[_proposalId].proposalVersionDocs);
-    _durations = proposalsById[_proposalId].proposalVersions[_latestVersion].milestoneFundings;
+    /* bytes32 _latestVersion = read_last_from_bytesarray(proposalsById[_proposalId].proposalVersionDocs); */
+    bytes32 _finalVersion = proposalsById[_proposalId].finalVersion;
+    _durations = proposalsById[_proposalId].proposalVersions[_finalVersion].milestoneFundings;
     uint256 _n = _durations.length;
     for (uint256 i = 0; i < _n; i++) {
       _totalDuration += _durations[i];
@@ -534,7 +549,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
                        );
   }
 
-  function getDraftClaimer(bytes32 _proposalId)
+  /* function getDraftClaimer(bytes32 _proposalId)
     public
     returns (address _claimer)
   {
@@ -551,26 +566,43 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     } else {
       _claimer = proposalsById[_proposalId].interimRounds[_index].claimer;
     }
+  } */
+
+  function isDraftClaimed(bytes32 _proposalId)
+    public
+    returns (bool _claimed)
+  {
+    /* bytes32 _latestVersion = getLastProposalVersion(_proposalId); */
+    _claimed = proposalsById[_proposalId].draftVoting.claimed;
+  }
+
+  function isClaimed(bytes32 _proposalId, uint256 _index)
+    public
+    returns (bool _claimed)
+  {
+    if (_index == 0) {
+      _claimed = proposalsById[_proposalId].votingRound.claimed;
+    } else {
+      _claimed = proposalsById[_proposalId].interimRounds[_index].claimed;
+    }
   }
 
   ///////////////////////////// PRIVATE FUNCTIONS /////////////////////////////
 
   /// @notice nullify vote of a voter during draft voting
   /// @param _proposalId proposal ID
-  /// @param _version latest version of proposal, on which draft voting is done
   /// @param _voter address of the voter
   function nullifyVote(
     bytes32 _proposalId,
-    bytes32 _version,
     address _voter
   )
     private
   {
-    DaoStructs.ProposalVersion storage _proposalVersion = proposalsById[_proposalId].proposalVersions[_version];
-    if (_proposalVersion.draftVoting.yesVotes[_voter] > 0) {
-      _proposalVersion.draftVoting.yesVotes[_voter] = 0;
-    } else if (_proposalVersion.draftVoting.noVotes[_voter] > 0) {
-      _proposalVersion.draftVoting.noVotes[_voter] = 0;
+    DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
+    if (_proposal.draftVoting.yesVotes[_voter] > 0) {
+      _proposal.draftVoting.yesVotes[_voter] = 0;
+    } else if (_proposal.draftVoting.noVotes[_voter] > 0) {
+      _proposal.draftVoting.noVotes[_voter] = 0;
     } else {
       return;
     }
@@ -626,7 +658,8 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     bytes32 _newDoc,
     uint256[] _newMilestoneDurations,
     uint256[] _newMilestoneFundings,
-    uint256 _finalReward
+    uint256 _finalReward,
+    bool _isFinalVersion
   )
     public
     if_sender_is(CONTRACT_DAO)
@@ -640,6 +673,9 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     _proposal.proposalVersions[_newDoc].milestoneDurations = _newMilestoneDurations;
     _proposal.proposalVersions[_newDoc].milestoneFundings = _newMilestoneFundings;
     _proposal.proposalVersions[_newDoc].finalReward = _finalReward;
+    if (_isFinalVersion) {
+      _proposal.finalVersion = _newDoc;
+    }
     _proposal.prlValid = false;
     _success = true;
   }
@@ -663,8 +699,8 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     _proposal.currentState = PROPOSAL_STATE_INITIAL;
     proposalsByState[PROPOSAL_STATE_PREPROPOSAL].remove_item(_proposalId);
     proposalsByState[PROPOSAL_STATE_INITIAL].append(_proposalId);
-    bytes32 _latestVersion = read_last_from_bytesarray(_proposal.proposalVersionDocs);
-    _proposal.proposalVersions[_latestVersion].draftVoting.startTime = now;
+    /* bytes32 _latestVersion = read_last_from_bytesarray(_proposal.proposalVersionDocs); */
+    /* _proposal.proposalVersions[_latestVersion].draftVoting.startTime = now; */
     _success = true;
   }
 
@@ -673,8 +709,8 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     returns (bool _success)
   {
-    bytes32 _latestVersion = read_last_from_bytesarray(proposalsById[_proposalId].proposalVersionDocs);
-    proposalsById[_proposalId].proposalVersions[_latestVersion].draftVoting.passed = _result;
+    /* bytes32 _latestVersion = read_last_from_bytesarray(proposalsById[_proposalId].proposalVersionDocs); */
+    proposalsById[_proposalId].draftVoting.passed = _result;
     if (_result) {
       proposalsByState[PROPOSAL_STATE_INITIAL].remove_item(_proposalId);
       proposalsByState[PROPOSAL_STATE_VETTED].append(_proposalId);
@@ -701,6 +737,16 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     _success = true;
   }
 
+  function setPropoalDraftVotingTime(
+    bytes32 _proposalId,
+    uint256 _time
+  )
+    public
+    if_sender_is(CONTRACT_DAO)
+  {
+    proposalsById[_proposalId].draftVoting.startTime = _time;
+  }
+
   function setProposalVotingTime(
     bytes32 _proposalId,
     uint256 _index,
@@ -716,23 +762,24 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     }
   }
 
-  function setDraftVotingClaim(bytes32 _proposalId, address _claimer)
+  function setDraftVotingClaim(bytes32 _proposalId, bool _claimed)
     public
     if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
   {
-    bytes32 _latestVersion = getLastProposalVersion(_proposalId);
-    proposalsById[_proposalId].proposalVersions[_latestVersion].draftVoting.claimer = _claimer;
+    /* bytes32 _latestVersion = getLastProposalVersion(_proposalId); */
+    /* proposalsById[_proposalId].proposalVersions[_latestVersion].draftVoting.claimer = _claimer; */
+    proposalsById[_proposalId].draftVoting.claimed = _claimed;
   }
 
-  function setVotingClaim(bytes32 _proposalId, uint256 _index, address _claimer)
+  function setVotingClaim(bytes32 _proposalId, uint256 _index, bool _claimed)
     public
     if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
   {
     DaoStructs.Proposal _proposal = proposalsById[_proposalId];
     if (_index == 0) {
-      _proposal.votingRound.claimer = _claimer;
+      _proposal.votingRound.claimed = _claimed;
     } else {
-      _proposal.interimRounds[_index].claimer = _claimer;
+      _proposal.interimRounds[_index].claimed = _claimed;
     }
   }
 
@@ -768,16 +815,16 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     returns (bool _success)
   {
     DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
-    bytes32 _latestVersion = read_last_from_bytesarray(_proposal.proposalVersionDocs);
-    DaoStructs.ProposalVersion storage _proposalVersion = _proposal.proposalVersions[_latestVersion];
-    if ((_proposalVersion.draftVoting.yesVotes[_voter] > 0) ||
-          (_proposalVersion.draftVoting.noVotes[_voter] > 0)) {
-      nullifyVote(_proposalId, _latestVersion, _voter);
+    /* bytes32 _latestVersion = read_last_from_bytesarray(_proposal.proposalVersionDocs); */
+    /* DaoStructs.ProposalVersion storage _proposalVersion = _proposal.proposalVersions[_latestVersion]; */
+    if ((_proposal.draftVoting.yesVotes[_voter] > 0) ||
+          (_proposal.draftVoting.noVotes[_voter] > 0)) {
+      nullifyVote(_proposalId, _voter);
     }
     if (_vote) {
-      _proposalVersion.draftVoting.yesVotes[_voter] = _weight;
+      _proposal.draftVoting.yesVotes[_voter] = _weight;
     } else {
-      _proposalVersion.draftVoting.noVotes[_voter] = _weight;
+      _proposal.draftVoting.noVotes[_voter] = _weight;
     }
     _success = true;
   }

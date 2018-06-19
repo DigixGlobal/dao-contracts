@@ -55,11 +55,13 @@ contract Dao is DaoCommon, Claimable {
         bytes32 _docIpfsHash,
         uint256[] _milestonesDurations,
         uint256[] _milestonesFundings,
-        uint256 _finalReward
+        uint256 _finalReward,
+        bool _isFinalVersion
     )
         public
         if_main_phase()
         if_participant()
+        if_editable(_proposalId)
         if_valid_milestones(_milestonesDurations.length, _milestonesFundings.length)
         returns (bool _success)
     {
@@ -68,15 +70,18 @@ contract Dao is DaoCommon, Claimable {
         require(_currentState == PROPOSAL_STATE_PREPROPOSAL ||
           _currentState == PROPOSAL_STATE_INITIAL);
         require(identity_storage().is_kyc_approved(msg.sender));
-        require(daoStorage().editProposal(_proposalId, _docIpfsHash, _milestonesDurations, _milestonesFundings, _finalReward));
+        require(daoStorage().editProposal(_proposalId, _docIpfsHash, _milestonesDurations, _milestonesFundings, _finalReward, _isFinalVersion));
         daoStorage().updateProposalPRL(_proposalId, false);
+        if (_isFinalVersion) {
+          daoStorage().setPropoalDraftVotingTime(_proposalId, now);
+        }
         _success = true;
     }
 
     function endorseProposal(bytes32 _proposalId)
         public
         if_main_phase()
-        if_badge_participant()
+        if_moderator()
         returns (bool _success)
     {
         address _endorser = msg.sender;
