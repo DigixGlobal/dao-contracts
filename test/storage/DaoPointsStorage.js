@@ -25,10 +25,12 @@ contract('DaoPointsStorage', function (accounts) {
   let contracts;
 
   before(async function () {
-    libs = await deployLibraries();
     contracts = {};
+    libs = {};
+    addressOf = {};
+    await deployLibraries(libs);
     await deployNewContractResolver(contracts);
-    addressOf = await getAccountsAndAddressOf(accounts);
+    await getAccountsAndAddressOf(accounts, addressOf);
     await deployStorage(libs, contracts, contracts.resolver, addressOf);
     await registerInteractive(contracts.resolver, addressOf);
   });
@@ -118,9 +120,9 @@ contract('DaoPointsStorage', function (accounts) {
     });
   });
 
-  describe('addQuarterBadgePoint', function () {
+  describe('addQuarterModeratorPoint', function () {
     it('[not called by CONTRACT_DAO_VOTING or CONTRACT_DAO_VOTING_CLAIMS]: revert', async function () {
-      assert(await a.failure(contracts.daoPointsStorage.addQuarterBadgePoint.call(
+      assert(await a.failure(contracts.daoPointsStorage.addQuarterModeratorPoint.call(
         addressOf.dgdHolders[0],
         someQuarterBadgePoints[0],
         { from: accounts[1] },
@@ -128,58 +130,58 @@ contract('DaoPointsStorage', function (accounts) {
     });
     it('[add quarter points]: verify balance and total supply', async function () {
       const quarterId = bN(1);
-      await contracts.daoPointsStorage.addQuarterBadgePoint(addressOf.dgdHolders[0], someQuarterBadgePoints[0], quarterId);
-      await contracts.daoPointsStorage.addQuarterBadgePoint(addressOf.dgdHolders[1], someQuarterBadgePoints[1], quarterId);
-      await contracts.daoPointsStorage.addQuarterBadgePoint(addressOf.dgdHolders[0], someQuarterBadgePoints[2], quarterId);
+      await contracts.daoPointsStorage.addQuarterModeratorPoint(addressOf.dgdHolders[0], someQuarterBadgePoints[0], quarterId);
+      await contracts.daoPointsStorage.addQuarterModeratorPoint(addressOf.dgdHolders[1], someQuarterBadgePoints[1], quarterId);
+      await contracts.daoPointsStorage.addQuarterModeratorPoint(addressOf.dgdHolders[0], someQuarterBadgePoints[2], quarterId);
 
       // check balance and total supply
       assert.deepEqual(
-        await contracts.daoPointsStorage.getQuarterBadgePoint.call(addressOf.dgdHolders[0], quarterId),
+        await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.dgdHolders[0], quarterId),
         someQuarterBadgePoints[0].plus(someQuarterBadgePoints[2]),
       );
       assert.deepEqual(
-        await contracts.daoPointsStorage.getQuarterBadgePoint.call(addressOf.dgdHolders[1], quarterId),
+        await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.dgdHolders[1], quarterId),
         someQuarterBadgePoints[1],
       );
       assert.deepEqual(
-        await contracts.daoPointsStorage.getTotalQuarterBadgePoint.call(quarterId),
+        await contracts.daoPointsStorage.getTotalQuarterModeratorPoint.call(quarterId),
         someQuarterBadgePoints[0].plus(someQuarterBadgePoints[1]).plus(someQuarterBadgePoints[2]),
       );
     });
     it('[multiple quarters]: verify balance and total supply', async function () {
       const quarterTwo = bN(2);
       const quarterThree = bN(3);
-      await contracts.daoPointsStorage.addQuarterBadgePoint(addressOf.dgdHolders[2], someQuarterBadgePoints[3], quarterTwo);
-      await contracts.daoPointsStorage.addQuarterBadgePoint(addressOf.dgdHolders[1], someQuarterBadgePoints[4], quarterTwo);
-      await contracts.daoPointsStorage.addQuarterBadgePoint(addressOf.dgdHolders[1], someQuarterBadgePoints[5], quarterTwo);
-      await contracts.daoPointsStorage.addQuarterBadgePoint(addressOf.dgdHolders[0], someQuarterBadgePoints[6], quarterTwo);
-      await contracts.daoPointsStorage.addQuarterBadgePoint(addressOf.dgdHolders[2], someQuarterBadgePoints[7], quarterTwo);
-      await contracts.daoPointsStorage.addQuarterBadgePoint(addressOf.dgdHolders[0], someQuarterBadgePoints[8], quarterTwo);
-      await contracts.daoPointsStorage.addQuarterBadgePoint(addressOf.dgdHolders[2], someQuarterBadgePoints[9], quarterThree);
+      await contracts.daoPointsStorage.addQuarterModeratorPoint(addressOf.dgdHolders[2], someQuarterBadgePoints[3], quarterTwo);
+      await contracts.daoPointsStorage.addQuarterModeratorPoint(addressOf.dgdHolders[1], someQuarterBadgePoints[4], quarterTwo);
+      await contracts.daoPointsStorage.addQuarterModeratorPoint(addressOf.dgdHolders[1], someQuarterBadgePoints[5], quarterTwo);
+      await contracts.daoPointsStorage.addQuarterModeratorPoint(addressOf.dgdHolders[0], someQuarterBadgePoints[6], quarterTwo);
+      await contracts.daoPointsStorage.addQuarterModeratorPoint(addressOf.dgdHolders[2], someQuarterBadgePoints[7], quarterTwo);
+      await contracts.daoPointsStorage.addQuarterModeratorPoint(addressOf.dgdHolders[0], someQuarterBadgePoints[8], quarterTwo);
+      await contracts.daoPointsStorage.addQuarterModeratorPoint(addressOf.dgdHolders[2], someQuarterBadgePoints[9], quarterThree);
 
       assert.deepEqual(
-        await contracts.daoPointsStorage.getQuarterBadgePoint.call(addressOf.dgdHolders[0], quarterTwo),
+        await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.dgdHolders[0], quarterTwo),
         someQuarterBadgePoints[6].plus(someQuarterBadgePoints[8]),
       );
       assert.deepEqual(
-        await contracts.daoPointsStorage.getQuarterBadgePoint.call(addressOf.dgdHolders[1], quarterTwo),
+        await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.dgdHolders[1], quarterTwo),
         someQuarterBadgePoints[4].plus(someQuarterBadgePoints[5]),
       );
       assert.deepEqual(
-        await contracts.daoPointsStorage.getQuarterBadgePoint.call(addressOf.dgdHolders[2], quarterTwo),
+        await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.dgdHolders[2], quarterTwo),
         someQuarterBadgePoints[3].plus(someQuarterBadgePoints[7]),
       );
 
       assert.deepEqual(
-        await contracts.daoPointsStorage.getQuarterBadgePoint.call(addressOf.dgdHolders[0], quarterThree),
+        await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.dgdHolders[0], quarterThree),
         bN(0),
       );
       assert.deepEqual(
-        await contracts.daoPointsStorage.getQuarterBadgePoint.call(addressOf.dgdHolders[1], quarterThree),
+        await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.dgdHolders[1], quarterThree),
         bN(0),
       );
       assert.deepEqual(
-        await contracts.daoPointsStorage.getQuarterBadgePoint.call(addressOf.dgdHolders[2], quarterThree),
+        await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.dgdHolders[2], quarterThree),
         someQuarterBadgePoints[9],
       );
 
@@ -187,11 +189,11 @@ contract('DaoPointsStorage', function (accounts) {
         .plus(someQuarterBadgePoints[6]).plus(someQuarterBadgePoints[7])
         .plus(someQuarterBadgePoints[8]);
       assert.deepEqual(
-        await contracts.daoPointsStorage.getTotalQuarterBadgePoint.call(quarterTwo),
+        await contracts.daoPointsStorage.getTotalQuarterModeratorPoint.call(quarterTwo),
         totalSupplyQuarterTwo,
       );
       assert.deepEqual(
-        await contracts.daoPointsStorage.getTotalQuarterBadgePoint.call(quarterThree),
+        await contracts.daoPointsStorage.getTotalQuarterModeratorPoint.call(quarterThree),
         someQuarterBadgePoints[9],
       );
     });

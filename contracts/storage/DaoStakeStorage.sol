@@ -86,7 +86,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
         _lockedBadge = lockedBadge[_user];
     } */
 
-    function addParticipant(address _user)
+    function addToParticipantList(address _user)
         public
         if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         returns (bool _success)
@@ -94,7 +94,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
         _success = allParticipants.append(_user);
     }
 
-    function removeParticipant(address _user)
+    function removeFromParticipantList(address _user)
         public
         if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         returns (bool _success)
@@ -102,7 +102,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
         _success = allParticipants.remove_item(_user);
     }
 
-    function addModerator(address _user)
+    function addToModeratorList(address _user)
         public
         if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         returns (bool _success)
@@ -110,7 +110,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
         _success = allModerators.append(_user);
     }
 
-    function removeModerator(address _user)
+    function removeFromModeratorList(address _user)
         public
         if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         returns (bool _success)
@@ -118,7 +118,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
         _success = allModerators.remove_item(_user);
     }
 
-    /* function isParticipant(address _user)
+    function isInParticipantList(address _user)
       public
       constant
       returns (bool _is)
@@ -129,7 +129,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
       } else {
         _is = true;
       }
-    } */
+    }
 
     function isInModeratorsList(address _user)
       public

@@ -8,10 +8,6 @@ const {
   registerInteractive,
 } = require('../setup');
 
-// const {
-//   EMPTY_ADDRESS,
-// } = require('../daoHelpers');
-
 const {
   getCurrentTimestamp,
 } = require('@digix/helpers/lib/helpers');
@@ -24,10 +20,12 @@ contract('DaoRewardsStorage', function (accounts) {
   let contracts;
 
   before(async function () {
-    libs = await deployLibraries();
     contracts = {};
+    libs = {};
+    addressOf = {};
+    await deployLibraries(libs);
     await deployNewContractResolver(contracts);
-    addressOf = await getAccountsAndAddressOf(accounts);
+    await getAccountsAndAddressOf(accounts, addressOf);
     await deployStorage(libs, contracts, contracts.resolver, addressOf);
     await registerInteractive(contracts.resolver, addressOf);
   });
@@ -362,6 +360,27 @@ contract('DaoRewardsStorage', function (accounts) {
       const lastQuarter = bN(2);
       for (let i = 1; i < 20; i++) {
         assert(await a.failure(contracts.daoRewardsStorage.updateLastQuarterThatRewardsWasUpdated.call(
+          addressOf.dgdHolders[2],
+          lastQuarter,
+          { from: accounts[i] },
+        )));
+      }
+    });
+  });
+
+  describe('updateLastQuarterThatReputationWasUpdated', function () {
+    it('[valid call]: verify read function', async function () {
+      const lastQuarter = bN(2);
+      await contracts.daoRewardsStorage.updateLastQuarterThatReputationWasUpdated(addressOf.dgdHolders[1], lastQuarter.minus(bN(1)));
+      await contracts.daoRewardsStorage.updateLastQuarterThatReputationWasUpdated(addressOf.dgdHolders[1], lastQuarter);
+      await contracts.daoRewardsStorage.updateLastQuarterThatReputationWasUpdated(addressOf.dgdHolders[2], lastQuarter.plus(bN(1)));
+      assert.deepEqual(await contracts.daoRewardsStorage.lastQuarterThatReputationWasUpdated.call(addressOf.dgdHolders[1]), lastQuarter);
+      assert.deepEqual(await contracts.daoRewardsStorage.lastQuarterThatReputationWasUpdated.call(addressOf.dgdHolders[2]), lastQuarter.plus(bN(1)));
+    });
+    it('[not called by DAO_REWARDS_MANAGER]: revert', async function () {
+      const lastQuarter = bN(2);
+      for (let i = 1; i < 20; i++) {
+        assert(await a.failure(contracts.daoRewardsStorage.updateLastQuarterThatReputationWasUpdated.call(
           addressOf.dgdHolders[2],
           lastQuarter,
           { from: accounts[i] },

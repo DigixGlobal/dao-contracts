@@ -9,18 +9,28 @@ contract DaoFundingManager is DaoCommon {
         require(init(CONTRACT_DAO_FUNDING_MANAGER, _resolver));
     }
 
+    modifier valid_withdraw_amount(uint256 _value) {
+        require(_value > 0);
+        require(_value <= daoFundingStorage().claimableEth(msg.sender));
+        _;
+    }
+
     // @notice Call function to claim ETH allocated by DAO (transferred to caller)
-    // @param _proposalId
+    // @param _proposalId ID of the proposal
+    // @param _index Index of the proposal voting round
+    // @param _value Eth to be withdrawn by user (in wei)
     // @return _success Boolean, true if claim successful, revert otherwise
-    function claimEthFunding(bytes32 _proposalId)
+    function claimEthFunding(bytes32 _proposalId, uint256 _index, uint256 _value)
         public
         if_from_proposer(_proposalId)
-        if_prl_approved(_proposalId)
+        if_prl_approved(_proposalId, _index)
+        valid_withdraw_amount(_value)
         returns (bool _success)
     {
-        uint256 _value = daoFundingStorage().claimableEth(msg.sender);
-        daoFundingStorage().updateClaimableEth(msg.sender, 0);
+        // TODO: Add SafeMath
+        daoFundingStorage().updateClaimableEth(msg.sender, daoFundingStorage().claimableEth(msg.sender) - _value);
         daoFundingStorage().withdrawEth(_value);
+
         msg.sender.transfer(_value);
         _success = true;
     }
@@ -32,6 +42,8 @@ contract DaoFundingManager is DaoCommon {
         public
         if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
+        // TODO: Add SafeMath
+        _value = _value + daoFundingStorage().claimableEth(_to);
         daoFundingStorage().updateClaimableEth(_to, _value);
     }
 

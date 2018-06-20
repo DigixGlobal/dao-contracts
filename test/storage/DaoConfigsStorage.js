@@ -33,10 +33,12 @@ contract('DaoConfigsStorage', function (accounts) {
   let contracts;
 
   before(async function () {
-    libs = await deployLibraries();
     contracts = {};
+    libs = {};
+    addressOf = {};
+    await deployLibraries(libs);
     await deployNewContractResolver(contracts);
-    addressOf = await getAccountsAndAddressOf(accounts);
+    await getAccountsAndAddressOf(accounts, addressOf);
     await deployStorage(libs, contracts, contracts.resolver, addressOf);
     await registerInteractive(contracts.resolver, addressOf);
   });

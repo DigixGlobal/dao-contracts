@@ -94,7 +94,7 @@ contract DaoVoting is DaoCommon, Claimable {
         if_participant()
         returns (bool _success)
     {
-        daoSpecialStorage().commitVote(_proposalId, _commitHash, msg.sender, 0);
+        daoSpecialStorage().commitVote(_proposalId, _commitHash, msg.sender);
         _success = true;
     }
 

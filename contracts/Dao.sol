@@ -91,7 +91,6 @@ contract Dao is DaoCommon, Claimable {
           _currentState == PROPOSAL_STATE_INITIAL);
         require(identity_storage().is_kyc_approved(msg.sender));
         require(daoStorage().editProposal(_proposalId, _docIpfsHash, _milestonesDurations, _milestonesFundings, _finalReward));
-        daoStorage().updateProposalPRL(_proposalId, false);
         _success = true;
     }
 
@@ -123,14 +122,15 @@ contract Dao is DaoCommon, Claimable {
 
     // @notice Function to update the PRL (regulatory status) status of a proposal
     // @param _proposalId ID of the proposal
+    // @param _index Index of the voting round
     // @param _valid Boolean, whether the proposal is PRL valid or not
     // @return _success Boolean, whether the PRL status was updated successfully
-    function updatePRL(bytes32 _proposalId, bool _valid)
+    function updatePRL(bytes32 _proposalId, uint256 _index, bool _valid)
         public
         if_prl()
         returns (bool _success)
     {
-        daoStorage().updateProposalPRL(_proposalId, _valid);
+        daoStorage().updateProposalPRL(_proposalId, _index, _valid);
         _success = true;
     }
 
@@ -160,6 +160,24 @@ contract Dao is DaoCommon, Claimable {
             _addressConfigs,
             _bytesConfigs
         );
+        _success = true;
+    }
+
+    // @notice Function to set start of voting round for special proposal
+    // @param _proposalId ID of the special proposal
+    // @param _time start time of voting round (time stamp in seconds)
+    // @return _success Boolean, true if voting time was set successfully
+    function startSpecialProposalVoting(
+        bytes32 _proposalId,
+        uint256 _time
+    )
+        public
+        if_main_phase()
+        returns (bool _success)
+    {
+        require(daoSpecialStorage().readProposalProposer(_proposalId) == msg.sender);
+        require(daoSpecialStorage().readVotingTime(_proposalId) == 0);
+        daoSpecialStorage().setVotingTime(_proposalId, _time);
         _success = true;
     }
 }

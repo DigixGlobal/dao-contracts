@@ -34,17 +34,22 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
     proposalsById[_proposalId].uintConfigs = _uintConfigs;
     proposalsById[_proposalId].addressConfigs = _addressConfigs;
     proposalsById[_proposalId].bytesConfigs = _bytesConfigs;
-    proposalsById[_proposalId].voting.startTime = now;
   }
 
-  /* function readProposal(bytes32 _proposalId)
+  function readProposal(bytes32 _proposalId)
     public
     returns (
-
+      bytes32 _id,
+      address _proposer,
+      uint256 _timeCreated,
+      uint256 _timeVotingStarted
     )
   {
-
-  } */
+    _id = proposalsById[_proposalId].proposalId;
+    _proposer = proposalsById[_proposalId].proposer;
+    _timeCreated = proposalsById[_proposalId].timeCreated;
+    _timeVotingStarted = proposalsById[_proposalId].voting.startTime;
+  }
 
   function readProposalProposer(bytes32 _proposalId)
     public
@@ -95,8 +100,7 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
   function commitVote(
     bytes32 _proposalId,
     bytes32 _hash,
-    address _voter,
-    uint256 _nonce
+    address _voter
   )
     public
     if_sender_is(CONTRACT_DAO_VOTING)
@@ -113,6 +117,20 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
     returns (bytes32 _commitHash)
   {
     _commitHash = proposalsById[_proposalId].voting.commits[_voter];
+  }
+
+  function setVotingTime(bytes32 _proposalId, uint256 _time)
+    public
+    if_sender_is(CONTRACT_DAO)
+  {
+    proposalsById[_proposalId].voting.startTime = _time;
+  }
+
+  function readVotingResult(bytes32 _proposalId)
+    public
+    returns (bool _result)
+  {
+    _result = proposalsById[_proposalId].voting.passed;
   }
 
   function setPass(bytes32 _proposalId, bool _result)
@@ -142,13 +160,15 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
   function readVote(bytes32 _proposalId, address _voter)
     public
     constant
-    returns (uint256 _weight)
+    returns (bool _vote, uint256 _weight)
   {
     DaoStructs.Voting _voting = proposalsById[_proposalId].voting;
     if (_voting.yesVotes[_voter] > 0) {
       _weight = _voting.yesVotes[_voter];
+      _vote = true;
     } else {
       _weight = _voting.noVotes[_voter];
+      _vote = false;
     }
   }
 

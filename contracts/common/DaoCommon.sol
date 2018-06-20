@@ -111,8 +111,8 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_prl_approved(bytes32 _proposalId) {
-        require(daoStorage().readProposalPRL(_proposalId) == true);
+    modifier if_prl_approved(bytes32 _proposalId, uint256 _index) {
+        require(daoStorage().readProposalPRL(_proposalId, _index) == true);
         _;
     }
 
@@ -170,7 +170,9 @@ contract DaoCommon is IdentityCommon {
     }
 
     modifier has_not_revealed_special(bytes32 _proposalId) {
-        require(daoSpecialStorage().readVote(_proposalId, msg.sender) == uint(0));
+        uint256 _weight;
+        (,_weight) = daoSpecialStorage().readVote(_proposalId, msg.sender);
+        require(_weight == uint(0));
         _;
     }
 

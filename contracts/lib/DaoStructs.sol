@@ -34,6 +34,7 @@ library DaoStructs {
         bool passed;
         /* address claimer; */
         bool claimed;
+        bool prlValid;
     }
 
     struct ProposalVersion {
@@ -57,7 +58,7 @@ library DaoStructs {
         Voting draftVoting;
         Voting votingRound;
         mapping (uint256 => Voting) interimRounds;
-        bool prlValid;
+        /* bool prlValid; */
         bytes32 finalVersion;
     }
 
