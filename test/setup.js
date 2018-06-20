@@ -92,7 +92,7 @@ const printProposalDetails = async (contracts, proposal) => {
   console.log('\t\tnVersions: ', proposalDetails[5]);
   console.log('\t\tlatestVersionDoc: ', proposalDetails[6]);
   console.log('\t\tfinalVersion: ', await contracts.daoStorage.readFinalVersion.call(proposal.id));
-  console.log('\t\tprlValid: ', await contracts.daoStorage.readProposalPRL.call(proposal.id));
+  // console.log('\t\tprlValid: ', await contracts.daoStorage.readProposalPRL.call(proposal.id));
 };
 
 const getAllParticipantAddresses = function (accounts) {

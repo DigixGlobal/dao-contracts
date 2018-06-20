@@ -280,10 +280,11 @@ const votingRevealRound = async function (contracts, addressOf, commits) {
   });
 };
 
-const prlApproveProposals = async function (contracts, addressOf) {
+const prlApproveProposals = async function (contracts, index, addressOf) {
   await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
     await contracts.dao.updatePRL(
       proposals[proposalIndex].id,
+      index,
       true,
       { from: addressOf.prl },
     );
@@ -301,9 +302,12 @@ const claimVotingResult = async function (contracts, addressOf) {
   });
 };
 
-const claimFunding = async function (contracts) {
+const claimFunding = async function (contracts, index) {
+  const value = index < proposals[0].versions[1].milestoneCount ? proposals[0].versions[1].milestoneFundings[index] : proposals[0].versions[1].finalReward;
   await contracts.daoFundingManager.claimEthFunding(
     proposals[0].id,
+    bN(index),
+    value,
     { from: proposals[0].proposer },
   );
 };
@@ -387,11 +391,14 @@ const interimRevealRound = async function (contracts, addressOf, proposalIndex, 
   });
 };
 
-const claimFinalReward = async function (contracts, addressOf, proposalId, proposer) {
+const claimFinalReward = async function (contracts, addressOf, proposalId, proposer, index) {
   console.log(`proposer is ${proposer}, proposalId = ${proposalId}`);
   console.log('claimable Eth of proposer = ', await contracts.daoFundingStorage.claimableEth.call(proposer));
+  const value = index >= proposals[0].versions[1].milestoneCount ? proposals[0].versions[1].finalReward : proposals[0].versions[1].milestoneFundings[index];
   await contracts.daoFundingManager.claimEthFunding(
     proposalId,
+    bN(index),
+    value,
     { from: proposer },
   );
 };
@@ -557,7 +564,7 @@ module.exports = async function () {
 
     // PRL approves these proposals
     await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);
-    await prlApproveProposals(contracts, addressOf);
+    await prlApproveProposals(contracts, bN(0), addressOf); // approve first milestone prl
     console.log('prl approved the proposals');
 
     // first voting round
@@ -572,7 +579,7 @@ module.exports = async function () {
     console.log('claimed voting result');
 
     // proposers claim the funding for first milestone
-    await claimFunding(contracts);
+    await claimFunding(contracts, 0);
     console.log('ETH funding has been claimed by the proposer');
 
     // wait for the quarter to end
@@ -634,7 +641,9 @@ module.exports = async function () {
     await interimVotingRoundClaim(contracts);
     console.log('done with claiming interim round voting');
 
-    await claimFunding(contracts);
+    prlApproveProposals(contracts, bN(1), addressOf); // approve second milestone funding
+
+    await claimFunding(contracts, 1);
     console.log('claimed funding after interim voting phase');
 
     await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE, quarters.QUARTER_3, web3);
@@ -664,12 +673,12 @@ module.exports = async function () {
 
     console.log('before claimFinalReward');
     await printProposalDetails(contracts, proposals[0]);
-    // const tx = await contracts.daoFundingManager.claimEthFunding(
-    //   proposals[0].id,
-    //   { from: proposals[0].proposer },
-    // );
-    // console.log('tx  = ', tx);
-    await claimFinalReward(contracts, addressOf, proposals[0].id, proposals[0].proposer);
+
+    await contracts.dao.updatePRL(proposals[0].id, bN(2), true, { from: addressOf.prl });
+
+    console.log('claiming final rewards...');
+    await claimFinalReward(contracts, addressOf, proposals[0].id, proposals[0].proposer, 2);
+    console.log('claimed final rewards');
 
     // special proposal section
     const uintConfigs = await contracts.daoConfigsStorage.readUintConfigs.call();
@@ -695,6 +704,8 @@ module.exports = async function () {
     );
     console.log('created special proposal');
     // vote on special proposal everybody
+    await contracts.dao.startSpecialProposalVoting(specialProposalId, getCurrentTimestamp(), { from: addressOf.founderBadgeHolder });
+    await waitFor(2, addressOf, web3); // wait for a couple of seconds
     await specialProposalVoting(contracts, addressOf, specialProposalId);
     const uintConfigs2 = await contracts.daoConfigsStorage.readUintConfigs.call();
     console.log('-------------------------------------------------------------');
