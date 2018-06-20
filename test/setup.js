@@ -5,6 +5,7 @@ const {
   randomAddress,
   randomBigNumber,
   getCurrentTimestamp,
+  randomBytes32,
 } = require('@digix/helpers/lib/helpers');
 
 const {
@@ -82,6 +83,18 @@ const getAccountsAndAddressOf = function (accounts, addressOf) {
   for (const key in addressOfTemp) addressOf[key] = addressOfTemp[key];
 };
 
+const printProposalDetails = async (contracts, proposal) => {
+  console.log('\tPrinting details for proposal ', proposal.id);
+  const proposalDetails = await contracts.daoStorage.readProposal(proposal.id);
+  console.log('\t\tProposer: ', proposalDetails[1]);
+  console.log('\t\tEndorser: ', proposalDetails[2]);
+  console.log('\t\tState: ', proposalDetails[3]);
+  console.log('\t\tnVersions: ', proposalDetails[5]);
+  console.log('\t\tlatestVersionDoc: ', proposalDetails[6]);
+  console.log('\t\tfinalVersion: ', await contracts.daoStorage.readFinalVersion.call(proposal.id));
+  console.log('\t\tprlValid: ', await contracts.daoStorage.readProposalPRL.call(proposal.id));
+};
+
 const getAllParticipantAddresses = function (accounts) {
   const addresses = [];
   for (const i of indexRange(3, 14)) {
@@ -149,7 +162,7 @@ const getProposalStruct = function (bN, proposer, endorser, versions, generateRa
     versions = [];
     for (let i = 0; i < 3; i++) {
       versions.push({
-        versionId: randomAddress,
+        versionId: randomBytes32(),
         milestoneCount: 3,
         milestoneFundings: randomBigNumbers(bN, 3, 20),
         milestoneDurations: randomBigNumbers(bN, 3, 1000),
@@ -172,19 +185,19 @@ const getTestProposals = function (bN, addressOf) {
       addressOf.dgdHolders[0],
       addressOf.badgeHolders[0],
       [{
-        versionId: randomAddress(),
+        versionId: randomBytes32(),
         milestoneCount: 3,
         milestoneFundings: [bN(10 * (10 ** 18)), bN(15 * (10 ** 18)), bN(20 * (10 ** 18))],
         milestoneDurations: [bN(1000), bN(1500), bN(2000)],
         finalReward: bN(1 * (10 ** 18)),
       }, {
-        versionId: randomAddress(),
+        versionId: randomBytes32(),
         milestoneCount: 3,
         milestoneFundings: [bN(10 * (10 ** 18)), bN(20 * (10 ** 18)), bN(25 * (10 ** 18))],
         milestoneDurations: [bN(30), bN(30), bN(20)],
         finalReward: bN(1 * (10 ** 18)),
       }, {
-        versionId: randomAddress(),
+        versionId: randomBytes32(),
         milestoneCount: 3,
         milestoneFundings: [bN(10 * (10 ** 18)), bN(15 * (10 ** 18)), bN(15 * (10 ** 18)), bN(20 * (10 ** 18))],
         milestoneDurations: [bN(1000), bN(1500), bN(1500), bN(2000)],
@@ -518,6 +531,7 @@ module.exports = {
   assignVotesAndCommits,
   setDummyConfig,
   deployFreshDao,
+  printProposalDetails,
   BADGE_HOLDER_COUNT,
   DGD_HOLDER_COUNT,
 };

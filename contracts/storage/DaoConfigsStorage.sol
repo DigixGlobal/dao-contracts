@@ -128,7 +128,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
     public
     returns (uint256[])
   {
-    uint256[] memory _uintConfigs = new uint256[](45);
+    uint256[] memory _uintConfigs = new uint256[](46);
     _uintConfigs[0] = uintConfigs[CONFIG_LOCKING_PHASE_DURATION];
     _uintConfigs[1] = uintConfigs[CONFIG_QUARTER_DURATION];
     _uintConfigs[2] = uintConfigs[CONFIG_VOTING_COMMIT_PHASE];
