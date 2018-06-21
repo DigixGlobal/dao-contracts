@@ -51,13 +51,6 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
         lockedDGDStake[_user] = _lockedDGDStake;
     }
 
-    /* function updateUserBadgeStake(address _user, uint256 _lockedBadge)
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
-        public
-    {
-        lockedBadge[_user] = _lockedBadge;
-    } */
-
     function readUserDGDStake(address _user)
         public
         constant
@@ -77,14 +70,6 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
     {
         _stake = lockedDGDStake[_user];
     }
-
-    /* function readUserLockedBadge(address _user)
-        public
-        constant
-        returns (uint256 _lockedBadge)
-    {
-        _lockedBadge = lockedBadge[_user];
-    } */
 
     function addToParticipantList(address _user)
         public
@@ -119,29 +104,29 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
     }
 
     function isInParticipantList(address _user)
-      public
-      constant
-      returns (bool _is)
+        public
+        constant
+        returns (bool _is)
     {
-      uint256 _index = allParticipants.find(_user);
-      if (_index == 0) {
-        _is = false;
-      } else {
-        _is = true;
-      }
+        uint256 _index = allParticipants.find(_user);
+        if (_index == 0) {
+            _is = false;
+        } else {
+            _is = true;
+        }
     }
 
     function isInModeratorsList(address _user)
-      public
-      constant
-      returns (bool _is)
+        public
+        constant
+        returns (bool _is)
     {
-      uint256 _index = allModerators.find(_user);
-      if (_index == 0) {
-        _is = false;
-      } else {
-        _is = true;
-      }
+        uint256 _index = allModerators.find(_user);
+        if (_index == 0) {
+            _is = false;
+        } else {
+            _is = true;
+        }
     }
 
     function readFirstModerator()
