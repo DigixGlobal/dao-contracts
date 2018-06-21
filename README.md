@@ -66,10 +66,10 @@ We welcome pull requests from developers. We highly recommend interested
 developers to go through the [Technical Specification](https://give-me-the-same-url-as-above).
 
 #### Smart Contract Architecture
-###### Contract Resolver
+##### Contract Resolver
 All contracts implement the [Resolver Client](https://github.com/DigixGlobal/cacp-contracts/blob/dao/contracts/ResolverClient.sol) contract, and are securely fetched from one [Contract Resolver](https://github.com/DigixGlobal/cacp-contracts/blob/dao/contracts/ContractResolver.sol).
 
-###### Storage Layer
+##### Storage Layer
 The Storage layer contracts interact with Ethereum's persistent storage. They can only be used publicly to read from `public` functions. All the functions that can update the state variables can only be called from specific DigixDAO smart contracts, for example, [this](https://github.com/DigixGlobal/dao-contracts/blob/dev/contracts/storage/DaoStorage.sol#L596) and [this](https://github.com/DigixGlobal/dao-contracts/blob/dev/contracts/storage/DaoFundingStorage.sol#L17). We try to include as less as possible logic in contracts under this layer. The storage layer contracts are:
 * DaoStorage (proposals)
 * DaoSpecialStorage (Special proposals)
@@ -80,7 +80,7 @@ The Storage layer contracts interact with Ethereum's persistent storage. They ca
 * DaoIdentityStorage (KYC information)
 * DaoConfigsStorage (configuration for DigixDAO)
 
-###### Interactive Layer
+##### Interactive Layer
 The Interactive layer contracts can be called publicly. They contain DigixDAO's logic. DigixDAO's logic is segregated into multiple parts, namely:
 * <strong>DaoFundingManager</strong>
   * Handles incoming and outgoing DAO funds
@@ -104,7 +104,10 @@ The Interactive layer contracts can be called publicly. They contain DigixDAO's 
   * Handles the logic related to DigixDAO Directory (role and group management)
   * Writes to DaoIdentityStorage storage layer contract
 
-###### Modifiers
+##### Modifiers
 Conditional checks and authorizing `msg.sender` is done in the [DaoCommon.sol](https://github.com/DigixGlobal/dao-contracts/blob/dev/contracts/common/DaoCommon.sol) contract.
 
-## Join us
+## Join us on
+* [Discord channel](https://discord.gg/mBdKTjY)
+* [Reddit](https://www.reddit.com/r/digix/)
+* [Twitter](https://twitter.com/digixglobal)
