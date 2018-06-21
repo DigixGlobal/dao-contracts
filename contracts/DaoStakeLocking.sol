@@ -69,20 +69,15 @@ contract DaoStakeLocking is DaoCommon {
 
         daoStakeStorage().updateUserDGDStake(msg.sender, _newInfo.userActualLockedDGD, _newInfo.userLockedDGDStake);
         daoStakeStorage().updateTotalLockedDGDStake(_newInfo.totalLockedDGDStake);
+        refreshModeratorStatus(msg.sender, _newInfo);
 
         // This has to happen at least once before user can participate in next quarter
         daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
 
         //TODO: there might be a case when user locked in very small amount A that is less than Minimum locked DGD?
         // then, lock again in the middle of the quarter. This will not take into account that A was staked in earlier
-        if (_newInfo.userActualLockedDGD >= CONFIG_MINIMUM_LOCKED_DGD) {
+        if (_newInfo.userLockedDGDStake >= CONFIG_MINIMUM_LOCKED_DGD) {
             daoStakeStorage().addToParticipantList(msg.sender);
-            if (daoPointsStorage().getReputation(msg.sender) >= CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR &&
-                daoStakeStorage().isInModeratorsList(msg.sender) == false) {
-                // add moderator
-                daoStakeStorage().addToModeratorList(msg.sender);
-                daoStakeStorage().updateTotalModeratorLockedDGDs(daoStakeStorage().totalModeratorLockedDGDStake() + _additionalStake);
-            }
             daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
         }
 
@@ -90,28 +85,6 @@ contract DaoStakeLocking is DaoCommon {
         require(ERC20(dgdToken).transferFrom(msg.sender, address(this), _amount));
         _success = true;
     }
-
-    /* function lockBadge(uint256 _amount)
-        public
-        if_locking_phase()
-        returns (bool _success)
-    {
-        StakeInformation memory _info = getStakeInformation(msg.sender);
-
-        require(_amount > 0);
-        _info.userLockedBadges += _amount;
-        daoStakeStorage().updateUserBadgeStake(msg.sender, _info.userLockedBadges);
-        daoStakeStorage().updateTotalLockedBadges(_info.totalLockedBadges + _amount);
-
-        // This has to happen at least once before user can participate in next quarter
-        daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
-
-        daoStakeStorage().addBadgeParticipant(msg.sender);
-        daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
-        // interaction happens last
-        require(ERC20(dgdBadgeToken).transferFrom(msg.sender, address(this), _amount));
-        _success = true;
-    } */
 
     // @notice Function to withdraw DGD tokens from this contract (can only be withdrawn in the locking phase of quarter)
     // @param _amount Number of DGD tokens to withdraw
@@ -129,15 +102,12 @@ contract DaoStakeLocking is DaoCommon {
         _newInfo.userLockedDGDStake -= _amount;
         _newInfo.totalLockedDGDStake -= _amount;
 
+        refreshModeratorStatus(msg.sender, _newInfo);
         // This has to happen at least once before user can participate in next quarter
         daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
 
-        if (_newInfo.userActualLockedDGD < CONFIG_MINIMUM_LOCKED_DGD) {
+        if (_newInfo.userLockedDGDStake < CONFIG_MINIMUM_LOCKED_DGD) {
             daoStakeStorage().removeFromParticipantList(msg.sender);
-            if (daoStakeStorage().isInModeratorsList(msg.sender)) {
-                daoStakeStorage().removeFromModeratorList(msg.sender);
-                daoStakeStorage().updateTotalModeratorLockedDGDs(daoStakeStorage().totalModeratorLockedDGDStake() - _amount);
-            }
         } else {
             daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
         }
@@ -149,33 +119,6 @@ contract DaoStakeLocking is DaoCommon {
         _success = true;
     }
 
-    /* function withdrawBadge(uint256 _amount)
-        public
-        if_locking_phase()
-        returns (bool _success)
-    {
-        address _user = msg.sender;
-        uint256 _lockedBadge = daoStakeStorage().readUserLockedBadge(_user);
-        uint256 _totalLockedBadges = daoStakeStorage().totalLockedBadges();
-
-        require(_lockedBadge >= _amount);
-        _lockedBadge -= _amount;
-        daoStakeStorage().updateUserBadgeStake(_user, _lockedBadge);
-        daoStakeStorage().updateTotalLockedBadges(_totalLockedBadges - _amount);
-
-        // This has to happen at least once before user can participate in next quarter
-        daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
-
-        if (_lockedBadge == 0) {
-            daoStakeStorage().removeBadgeParticipant(_user);
-        } else {
-            daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
-        }
-        // interaction happens last
-        require(ERC20(dgdBadgeToken).transfer(_user, _amount));
-        _success = true;
-    } */
-
     // @notice Function to be called by someone who doesnt change their DGDStake for the next quarter to confirm that they're participating
     // @dev This can be done in the middle of the quarter as well
     function confirmContinuedParticipation()
@@ -183,7 +126,8 @@ contract DaoStakeLocking is DaoCommon {
     {
         StakeInformation memory _info = getStakeInformation(msg.sender);
         daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
-        refreshDGDStake(msg.sender, _info, true);
+        StakeInformation memory _infoAfter = refreshDGDStake(msg.sender, _info, true);
+        refreshModeratorStatus(msg.sender, _infoAfter);
         daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
     }
 
@@ -207,6 +151,8 @@ contract DaoStakeLocking is DaoCommon {
         _success = true;
     }
 
+    // @notice This function refreshes the DGD stake of a user before continuing participation next quarter
+    // has no difference if called in the lastParticipatedQuarter
     function refreshDGDStake(address _user, StakeInformation _infoBefore, bool _saveToStorage)
         internal
         returns (StakeInformation _infoAfter)
@@ -223,23 +169,29 @@ contract DaoStakeLocking is DaoCommon {
             if (_saveToStorage) {
                 daoStakeStorage().updateUserDGDStake(_user, _infoAfter.userActualLockedDGD, _infoAfter.userLockedDGDStake);
                 daoStakeStorage().updateTotalLockedDGDStake(_infoAfter.totalLockedDGDStake);
-
-                // add to moderator list if conditions satisfied
-                if (daoStakeStorage().isInModeratorsList(_user) == false) {
-                  if (_infoAfter.userLockedDGDStake >= CONFIG_MINIMUM_DGD_FOR_MODERATOR &&
-                      daoPointsStorage().getReputation(_user) >= CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR) {
-                      daoStakeStorage().addToModeratorList(_user);
-                      daoStakeStorage().updateTotalModeratorLockedDGDs(daoStakeStorage().totalModeratorLockedDGDStake() + _infoAfter.totalLockedDGDStake);
-                  }
-                } else { // remove from moderator list if conditions not satisfied
-                  if (_infoAfter.userLockedDGDStake < CONFIG_MINIMUM_DGD_FOR_MODERATOR ||
-                      daoPointsStorage().getReputation(_user) < CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR) {
-                      daoStakeStorage().removeFromModeratorList(_user);
-                      daoStakeStorage().updateTotalModeratorLockedDGDs(daoStakeStorage().totalModeratorLockedDGDStake() - _infoAfter.totalLockedDGDStake);
-                  }
-                }
             }
         }
+    }
+
+    // @notice This function refreshes the Moderator status of a user
+    // this takes the refreshed StakeInformation from refreshDGDStake as input
+    function refreshModeratorStatus(address _user, StakeInformation _info)
+        internal
+    {
+      // add to moderator list if conditions satisfied
+      if (daoStakeStorage().isInModeratorsList(_user) == false) {
+        if (_info.userLockedDGDStake >= CONFIG_MINIMUM_DGD_FOR_MODERATOR &&
+            daoPointsStorage().getReputation(_user) >= CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR) {
+            daoStakeStorage().addToModeratorList(_user);
+            daoStakeStorage().updateTotalModeratorLockedDGDs(daoStakeStorage().totalModeratorLockedDGDStake() + _info.totalLockedDGDStake);
+        }
+      } else { // remove from moderator list if conditions not satisfied
+        if (_info.userLockedDGDStake < CONFIG_MINIMUM_DGD_FOR_MODERATOR ||
+            daoPointsStorage().getReputation(_user) < CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR) {
+            daoStakeStorage().removeFromModeratorList(_user);
+            daoStakeStorage().updateTotalModeratorLockedDGDs(daoStakeStorage().totalModeratorLockedDGDStake() - _info.totalLockedDGDStake);
+        }
+      }
     }
 
     function getStakeInformation(address _user)
@@ -248,7 +200,5 @@ contract DaoStakeLocking is DaoCommon {
     {
         (_info.userActualLockedDGD, _info.userLockedDGDStake) = daoStakeStorage().readUserDGDStake(_user);
         _info.totalLockedDGDStake = daoStakeStorage().totalLockedDGDStake();
-        /* _info.userLockedBadges = daoStakeStorage().readUserLockedBadge(_user); */
-        /* _info.totalLockedBadges = daoStakeStorage().totalLockedBadges(); */
     }
 }

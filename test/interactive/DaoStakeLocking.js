@@ -17,7 +17,6 @@ const {
   randomBigNumber,
   getCurrentTimestamp,
   timeIsRecent,
-  // indexRange,
 } = require('@digix/helpers/lib/helpers');
 
 const bN = web3.toBigNumber;
@@ -31,6 +30,25 @@ contract('DaoStakeLocking', function (accounts) {
     await deployFreshDao(libs, contracts, addressOf, accounts, bN, web3);
     assert.deepEqual(timeIsRecent(await contracts.daoStorage.startOfFirstQuarter.call()), true);
     await initialTransferTokens(contracts, addressOf, bN);
+  });
+
+  describe('redeemBadge', function () {
+    it('[not approved DGDBadge]: revert', async function () {
+      assert(await a.failure(contracts.daoStakeLocking.redeemBadge.call({ from: addressOf.badgeHolders[2] })));
+    });
+    it('[redeem badge when own more than 1 badges and all have been approved]: only 1 accepted, check reputation', async function () {
+      // badgeHolders[2]
+      const balanceBefore = await contracts.badgeToken.balanceOf.call(addressOf.badgeHolders[2]);
+      const repBefore = await contracts.daoPointsStorage.getReputation.call(addressOf.badgeHolders[2]);
+      await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(3), { from: addressOf.badgeHolders[2] });
+      await contracts.daoStakeLocking.redeemBadge({ from: addressOf.badgeHolders[2] });
+      const balanceAfter = await contracts.badgeToken.balanceOf.call(addressOf.badgeHolders[2]);
+      assert.deepEqual(balanceAfter, balanceBefore.minus(bN(1)));
+      assert.deepEqual(await contracts.daoPointsStorage.getReputation.call(addressOf.badgeHolders[2]), repBefore.plus(bN(1000)));
+    });
+    it('[redeem badges from same address again]: revert', async function () {
+      assert(await a.failure(contracts.daoStakeLocking.redeemBadge.call({ from: addressOf.badgeHolders[2] })));
+    });
   });
 
   describe('lockDGD | confirmContinuedParticipation', function () {
@@ -102,6 +120,27 @@ contract('DaoStakeLocking', function (accounts) {
       await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10 * (10 ** 18)), { from: addressOf.dgdHolders[3] });
       await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 18)), { from: addressOf.dgdHolders[3] });
     });
+    it('[locking amount equal to CONFIG_MINIMUM_DGD_FOR_MODERATOR, reputation less than CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR]', async function () {
+      // consider addressOf.badgeHolders[3]
+      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(100 * (10 ** 18)), { from: addressOf.badgeHolders[3] });
+      await contracts.daoPointsStorage.setRP(addressOf.badgeHolders[3], bN(99));
+      await contracts.daoStakeLocking.lockDGD(bN(100 * (10 ** 18)), { from: addressOf.badgeHolders[3] });
+      assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[3]), false);
+    });
+    it('[increased reputation to CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR, now try to confirmContinuedParticipation]', async function () {
+      await contracts.daoPointsStorage.setRP(addressOf.badgeHolders[3], bN(100));
+      await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.badgeHolders[3] });
+      assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[3]), true);
+      // this user now has no Quarter points, so in the next quarter, 20 RP will be deducted
+      // effectively, this user will not be a moderator when he confirms continue participation
+    });
+    it('[locking amount greater than CONFIG_MINIMUM_DGD_FOR_MODERATOR, reputation equal to CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR]', async function () {
+      // consider addressOf.badgeHolders[2]
+      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(101 * (10 ** 18)), { from: addressOf.badgeHolders[2] });
+      await contracts.daoPointsStorage.setRP(addressOf.badgeHolders[2], bN(101));
+      await contracts.daoStakeLocking.lockDGD(bN(101 * (10 ** 18)), { from: addressOf.badgeHolders[2] });
+      assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[2]), true);
+    });
     it('[lock during main phase]: verify actual stake', async function () {
       const startOfDao = await contracts.daoStorage.startOfFirstQuarter.call();
       const initialStake1 = await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.badgeHolders[1]);
@@ -115,6 +154,7 @@ contract('DaoStakeLocking', function (accounts) {
 
       await waitFor(2, addressOf, web3);
       const timeToNextPhase2 = getTimeToNextPhase(getCurrentTimestamp(), startOfDao.toNumber(), 10, 60);
+      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10 * (10 ** 18)), { from: addressOf.badgeHolders[2] });
       await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 18)), { from: addressOf.badgeHolders[2] });
       const stakeNow2 = await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.badgeHolders[2]);
 
@@ -130,6 +170,14 @@ contract('DaoStakeLocking', function (accounts) {
       // we will then try to withdraw all the amount
       await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10 * (10 ** 18)), { from: addressOf.dgdHolders[4] });
       await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 18)), { from: addressOf.dgdHolders[4] });
+    });
+    it('[lock 100 dgd during main phase, confirmContinuedParticipation in the next locking phase should give moderator status]', async function () {
+      // addressOf.badgeHolders[1]
+      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(100 * (10 ** 18)), { from: addressOf.badgeHolders[1] });
+      await contracts.daoPointsStorage.setRP(addressOf.badgeHolders[1], bN(200));
+
+      await contracts.daoStakeLocking.lockDGD(bN(100 * (10 ** 18)), { from: addressOf.badgeHolders[1] });
+      assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[1]), false);
     });
     it('[confirmContinuedParticipation during the same main phase]: nothing really happens', async function () {
       // person in consideration is addressOf.badgeHolders[1] and addressOf.badgeHolders[2]
@@ -153,90 +201,17 @@ contract('DaoStakeLocking', function (accounts) {
     });
   });
 
-  describe('lockBadge | confirmContinuedParticipation', function () {
-    before(async function () {
-      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
-      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
-    });
-    it('[confirmContinuedParticipation during the next locking phase]: the partial DGD Stake is now total', async function () {
-      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
-      const initialStake1 = await contracts.daoStakeStorage.readUserDGDStake.call(addressOf.badgeHolders[1]);
-      const initialStake2 = await contracts.daoStakeStorage.readUserDGDStake.call(addressOf.badgeHolders[2]);
-      assert.notDeepEqual(initialStake1[0], initialStake1[1]);
-      assert.notDeepEqual(initialStake2[0], initialStake2[1]);
-      await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.badgeHolders[1] });
-      await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.badgeHolders[2] });
-      await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.dgdHolders[1] });
-      const nowStake1 = await contracts.daoStakeStorage.readUserDGDStake.call(addressOf.badgeHolders[1]);
-      const nowStake2 = await contracts.daoStakeStorage.readUserDGDStake.call(addressOf.badgeHolders[2]);
-      assert.deepEqual(nowStake1[0], nowStake1[1]);
-      assert.deepEqual(nowStake2[0], nowStake2[1]);
-      assert.deepEqual(nowStake1[0], initialStake1[0]);
-      assert.deepEqual(nowStake2[0], initialStake2[0]);
-      assert.deepEqual(await contracts.daoRewardsStorage.lastParticipatedQuarter.call(addressOf.badgeHolders[1]), bN(2));
-      assert.deepEqual(await contracts.daoRewardsStorage.lastParticipatedQuarter.call(addressOf.badgeHolders[2]), bN(2));
-      assert.deepEqual(await contracts.daoRewardsStorage.lastQuarterThatRewardsWasUpdated.call(addressOf.badgeHolders[1]), bN(1));
-      assert.deepEqual(await contracts.daoRewardsStorage.lastQuarterThatRewardsWasUpdated.call(addressOf.badgeHolders[2]), bN(1));
-      // so the effective dgd stake is now increased, and lastParticipatedQuarter as well as lastQuarterThatRewardsWasUpdated is updated
-    });
-    it('[locking phase, amount = 0]: revert', async function () {
-      assert(await a.failure(contracts.daoStakeLocking.lockBadge.call(
-        bN(0),
-        { from: addressOf.badgeHolders[2] },
-      )));
-    });
-    it('[locking phase, not approved transfer, amount > 0]: revert', async function () {
-      assert(await a.failure(contracts.daoStakeLocking.lockBadge.call(
-        bN(1),
-        { from: addressOf.badgeHolders[2] },
-      )));
-    });
-    it('[locking phase, amount > 0]: add badge participant', async function () {
-      assert.deepEqual(await contracts.daoStakeLocking.isBadgeParticipant.call(addressOf.badgeHolders[0]), false);
-      const initialBalance = await contracts.badgeToken.balanceOf.call(addressOf.badgeHolders[0]);
-      const initialContractBalance = await contracts.badgeToken.balanceOf.call(contracts.daoStakeLocking.address);
-      const initialLockedBadges = await contracts.daoStakeStorage.readUserLockedBadge.call(addressOf.badgeHolders[0]);
-      const initialTotalLockedBadges = await contracts.daoStakeStorage.totalLockedBadges.call();
-      assert.isAtLeast(initialBalance.toNumber(), 1);
-      const amount = bN(1);
-      await contracts.badgeToken.approve(contracts.daoStakeLocking.address, amount, { from: addressOf.badgeHolders[0] });
-      assert.deepEqual(await contracts.daoStakeLocking.isLockingPhase.call(), true);
-      assert.deepEqual(await contracts.daoStakeLocking.lockBadge.call(
-        amount,
-        { from: addressOf.badgeHolders[0] },
-      ), true);
-      await contracts.daoStakeLocking.lockBadge(amount, { from: addressOf.badgeHolders[0] });
-      assert.deepEqual(await contracts.daoStakeStorage.readUserLockedBadge.call(addressOf.badgeHolders[0]), initialLockedBadges.plus(amount));
-      assert.deepEqual(await contracts.daoStakeStorage.totalLockedBadges.call(), initialTotalLockedBadges.plus(amount));
-      assert.deepEqual(await contracts.badgeToken.balanceOf.call(addressOf.badgeHolders[0]), initialBalance.minus(amount));
-      assert.deepEqual(await contracts.badgeToken.balanceOf.call(contracts.daoStakeLocking.address), initialContractBalance.plus(amount));
-      assert.deepEqual(await contracts.daoStakeLocking.isBadgeParticipant.call(addressOf.badgeHolders[0]), true);
-
-      // lock some more badges
-      await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(2), { from: addressOf.badgeHolders[0] });
-      await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(2), { from: addressOf.badgeHolders[1] });
-      await contracts.daoStakeLocking.lockBadge(bN(2), { from: addressOf.badgeHolders[0] });
-      await contracts.daoStakeLocking.lockBadge(bN(2), { from: addressOf.badgeHolders[1] });
-    });
-    it('[after locking phase has ended, valid amount]: revert', async function () {
-      await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
-      assert.deepEqual(await contracts.daoStakeLocking.isMainPhase.call(), true);
-
-      // continue
-      assert.isAtLeast((await contracts.badgeToken.balanceOf.call(addressOf.badgeHolders[1])).toNumber(), 1);
-      await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(1), { from: addressOf.badgeHolders[1] });
-
-      assert(await a.failure(contracts.daoStakeLocking.lockBadge.call(
-        bN(1),
-        { from: addressOf.badgeHolders[1] },
-      )));
-    });
-  });
-
   describe('withdrawDGD', function () {
     before(async function () {
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
       await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
+    });
+    it('[confirmContinuedParticipation]: badgeHolders[1] --> moderator, badgeHolders[3] --> no moderator', async function () {
+      await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.badgeHolders[1] });
+      assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[1]), true);
+
+      await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.badgeHolders[3] });
+      assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[3]), false);
     });
     it('[withdraw more than locked amount]: revert', async function () {
       // dgdHolder2 is the user in context
@@ -309,69 +284,6 @@ contract('DaoStakeLocking', function (accounts) {
       assert(await a.failure(contracts.daoStakeLocking.withdrawDGD.call(
         withdrawAmount,
         { from: addressOf.dgdHolders[0] },
-      )));
-    });
-  });
-
-  describe('withdrawBadge', function () {
-    before(async function () {
-      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
-    });
-    it('[withdraw more than locked amount]: revert', async function () {
-      assert.deepEqual(await contracts.daoStakeLocking.isLockingPhase.call(), true);
-
-      const lockedBadges = await contracts.daoStakeStorage.readUserLockedBadge.call(addressOf.badgeHolders[0]);
-      const withdrawAmount = lockedBadges.plus(bN(1));
-      assert(await a.failure(contracts.daoStakeLocking.withdrawBadge.call(
-        withdrawAmount,
-        { from: addressOf.badgeHolders[0] },
-      )));
-    });
-    it('[withdraw less than locked amount, still badge participant]: success, verify read functions', async function () {
-      const lockedBadges = await contracts.daoStakeStorage.readUserLockedBadge.call(addressOf.badgeHolders[0]);
-      assert.isAtLeast(lockedBadges.toNumber(), 2);
-      const withdrawAmount = lockedBadges.minus(bN(1));
-      // values before withdrawal
-      const balanceBefore = await contracts.badgeToken.balanceOf.call(addressOf.badgeHolders[0]);
-      const totalLockedBadgesBefore = await contracts.daoStakeStorage.totalLockedBadges.call();
-
-      assert.deepEqual(await contracts.daoStakeLocking.withdrawBadge.call(
-        withdrawAmount,
-        { from: addressOf.badgeHolders[0] },
-      ), true);
-      await contracts.daoStakeLocking.withdrawBadge(withdrawAmount, { from: addressOf.badgeHolders[0] });
-
-      // make sure still a participant
-      assert.deepEqual(await contracts.daoStakeLocking.isBadgeParticipant.call(addressOf.badgeHolders[0]), true);
-      assert.deepEqual(await contracts.badgeToken.balanceOf.call(addressOf.badgeHolders[0]), balanceBefore.plus(withdrawAmount));
-      assert.deepEqual(await contracts.daoStakeStorage.totalLockedBadges.call(), totalLockedBadgesBefore.minus(withdrawAmount));
-    });
-    it('[withdraw all badges, now should no more be a badge participant]: success, verify read functions', async function () {
-      const lockedBadges = await contracts.daoStakeStorage.readUserLockedBadge.call(addressOf.badgeHolders[0]);
-      assert.deepEqual(await contracts.daoStakeLocking.withdrawBadge.call(
-        lockedBadges,
-        { from: addressOf.badgeHolders[0] },
-      ), true);
-      await contracts.daoStakeLocking.withdrawBadge(lockedBadges, { from: addressOf.badgeHolders[0] });
-
-      // no more a badge participant
-      assert.deepEqual(await contracts.daoStakeLocking.isBadgeParticipant.call(addressOf.badgeHolders[0]), false);
-    });
-    it('[withdraw during the main phase]: revert', async function () {
-      // badgeHolder2 trying to withdraw
-      assert.deepEqual(await contracts.daoStakeLocking.withdrawBadge.call(
-        bN(1),
-        { from: addressOf.badgeHolders[1] },
-      ), true);
-
-      // wait for main phase
-      await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
-      assert.deepEqual(await contracts.daoStakeLocking.isMainPhase.call(), true);
-
-      // badgeHolder2 trying to withdraw, should fail
-      assert(await a.failure(contracts.daoStakeLocking.withdrawBadge.call(
-        bN(1),
-        { from: addressOf.badgeHolders[1] },
       )));
     });
   });

@@ -11,7 +11,7 @@ const proposalStates = function (bN) {
 
 const configs = function (bN) {
   return {
-    CONFIG_MINIMUM_LOCKED_DGD: bN(10 ** 9),
+    CONFIG_MINIMUM_LOCKED_DGD: bN(10 ** 18),
   };
 };
 
