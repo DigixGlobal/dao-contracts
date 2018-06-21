@@ -9,12 +9,6 @@ contract DaoFundingManager is DaoCommon {
         require(init(CONTRACT_DAO_FUNDING_MANAGER, _resolver));
     }
 
-    modifier valid_withdraw_amount(uint256 _value) {
-        require(_value > 0);
-        require(_value <= daoFundingStorage().claimableEth(msg.sender));
-        _;
-    }
-
     // @notice Call function to claim ETH allocated by DAO (transferred to caller)
     // @param _proposalId ID of the proposal
     // @param _index Index of the proposal voting round
@@ -24,7 +18,7 @@ contract DaoFundingManager is DaoCommon {
         public
         if_from_proposer(_proposalId)
         if_prl_approved(_proposalId, _index)
-        valid_withdraw_amount(_value)
+        valid_withdraw_amount(_proposalId, _index, _value)
         returns (bool _success)
     {
         // TODO: Add SafeMath

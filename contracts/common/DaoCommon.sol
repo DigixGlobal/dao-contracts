@@ -116,6 +116,15 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
+    modifier valid_withdraw_amount(bytes32 _proposalId, uint256 _index, uint256 _value) {
+        require(_value > 0);
+        require(_value <= daoFundingStorage().claimableEth(msg.sender));
+        uint256 _funding;
+        (,,_funding,) = daoStorage().readProposalMilestone(_proposalId, _index);
+        require(_value <= _funding);
+        _;
+    }
+
     modifier if_participant() {
         require(isParticipant(msg.sender));
         _;
