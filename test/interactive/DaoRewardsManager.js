@@ -185,7 +185,7 @@ contract('DaoRewardsManager', function (accounts) {
       const stake = [bN(5 * (10 ** 18)), bN(10 * (10 ** 18)), bN(20 * (10 ** 18)), bN(20 * (10 ** 18)), bN(10 * (10 ** 18))];
       for (const i of indexRange(0, 5)) {
         await contracts.daoStakeStorage.updateUserDGDStake(addressOf.dgdHolders[i], stake[i], stake[i]);
-        await contracts.daoStakeStorage.addParticipant(addressOf.dgdHolders[i]);
+        await contracts.daoStakeStorage.addToParticipantList(addressOf.dgdHolders[i]);
       }
       await contracts.daoStakeStorage.updateTotalLockedDGDStake(bN(65 * (10 ** 18)));
       await a.map(indexRange(0, 5), 20, async (i) => {
@@ -374,7 +374,7 @@ contract('DaoRewardsManager', function (accounts) {
           demurrageConfig[1],
         ))).plus(bN(calculateDgxRewards(
           effectiveDGDBalance[i],
-          await contracts.daoStakeStorage.readUserLockedBadge.call(addressOf.dgdHolders[i]),
+          await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.dgdHolders[i]),
           daoConstantsValues(bN).CONFIG_PORTION_TO_BADGE_HOLDERS_NUM,
           daoConstantsValues(bN).CONFIG_PORTION_TO_BADGE_HOLDERS_DEN,
           await contracts.daoRewardsStorage.readRewardsPoolOfLastQuarter.call(bN(5)),
