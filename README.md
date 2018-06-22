@@ -1,6 +1,9 @@
 # DigixDAO
 This repository contains the Ethereum Smart contracts for DigixDAO.
 
+![Travis](https://img.shields.io/travis/DigixGlobal/dao-contracts.svg)
+[![Discord chat](https://img.shields.io/badge/discord-join%20chat%20%E2%86%92-brightgreen.svg?style=flat)](https://discord.gg/mBdKTjY)
+
 ## Getting Started
 #### Installing Pre-requisites
 The following are the key dependencies for setting-up/testing DigixDAO:
