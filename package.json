@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "bash scripts/unit-test.sh"
   },
   "repository": {
     "type": "git",
@@ -40,6 +40,7 @@
     "dijix-pdf": "0.0.8",
     "dotenv": "5.0.1",
     "eth-gas-reporter": "^0.1.1",
+    "ganache-cli": "6.1.0",
     "ethereumjs-testrpc": "^3.9.2",
     "openzeppelin-solidity": "1.9.0",
     "web3-utils": "^1.0.0-beta.34"
