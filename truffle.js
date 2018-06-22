@@ -2,7 +2,9 @@ const LightWalletProvider = require('@digix/truffle-lightwallet-provider');
 
 const { KEYSTORE, PASSWORD } = process.env;
 
-if (!KEYSTORE || !PASSWORD) { throw new Error('You must export KEYSTORE and PASSWORD (see truffle.js)'); }
+if (!process.env.TRAVIS_BUILD) {
+  if (!KEYSTORE || !PASSWORD) { throw new Error('You must export KEYSTORE and PASSWORD (see truffle.js)'); }
+}
 
 module.exports = {
   networks: {
@@ -27,7 +29,7 @@ module.exports = {
         // debug: true,
       }),
       gas: 6850000,
-      gasPrice: 20 * 10 ** 9,
+      gasPrice: 20 * (10 ** 9),
       network_id: '4',
     },
     mainnet: {
@@ -55,9 +57,9 @@ module.exports = {
     },
     development: {
       host: 'localhost',
-      port: 6545,
+      port: 8545,
       network_id: '*',
-      gas: 7850000,
+      gas: 10850000,
     },
   },
   solc: {

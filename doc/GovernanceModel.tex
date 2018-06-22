@@ -1,0 +1,438 @@
+\documentclass[11pt,a4paper,titlepage]{article}
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lipsum}
+
+\usepackage{amsmath, amssymb, amsfonts, amsthm, fouriernc, mathtools}
+
+\usepackage{microtype} %improves the spacing between words and letters
+
+\usepackage{graphicx}
+\graphicspath{ {./pics/} {./eps/}}
+\usepackage{epsfig}
+\usepackage{epstopdf}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% COLOR DEFINITIONS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[svgnames]{xcolor} % Enabling mixing colors and color's call by 'svgnames'
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{MyColor1}{rgb}{0.2,0.4,0.6} %mix personal color
+\newcommand{\textb}{\color{Black} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\blue}{\color{MyColor1} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\blueb}{\color{MyColor1} \usefont{OT1}{lmss}{b}{n}}
+\newcommand{\red}{\color{LightCoral} \usefont{OT1}{lmss}{m}{n}}
+\newcommand{\green}{\color{Turquoise} \usefont{OT1}{lmss}{m}{n}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\usepackage{titlesec}
+\usepackage{sectsty}
+%%%%%%%%%%%%%%%%%%%%%%%%
+%set section/subsections HEADINGS font and color
+\sectionfont{\color{MyColor1}}  % sets colour of sections
+\subsectionfont{\color{MyColor1}}  % sets colour of sections
+
+%set section enumerator to arabic number (see footnotes markings alternatives)
+\renewcommand\thesection{\arabic{section}.} %define sections numbering
+\renewcommand\thesubsection{\thesection\arabic{subsection}} %subsec.num.
+
+%define new section style
+\newcommand{\mysection}{
+\titleformat{\section} [runin] {\usefont{OT1}{lmss}{b}{n}\color{MyColor1}}
+{\thesection} {3pt} {} }
+
+\makeatletter
+\let\reftagform@=\tagform@
+\def\tagform@#1{\maketag@@@{(\ignorespaces\textcolor{red}{#1}\unskip\@@italiccorr)}}
+\renewcommand{\eqref}[1]{\textup{\reftagform@{\ref{#1}}}}
+\makeatother
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+
+\title{\blueb DigixDAO 1.0 Governance Model [Draft]}
+\author{Digix Global}
+\date{22 June, 2018}
+
+\usepackage[ampersand]{easylist}
+
+\def\code#1{\texttt{#1}}
+
+\begin{document}
+\maketitle
+
+\section{Overview}{
+	DigixDAO 1.0 refers to the first iteration of DigixDAO that will be deployed as a set of smart contracts on the Ethereum 's mainnet. This document decribes how the governance model in DigixDAO 1.0 works.
+}
+
+\section{Roles in DigixDAO}{
+	\subsection{The roles} {
+		There are 4 types of roles in DigixDAO 1.0 governance model:
+		\begin{itemize}
+			\item $Participants$: DGD holders who lock up more than a minimum amount of $minimumDgdToParticipate$ DGDs in the quarter.
+			\item $Moderators$: $participants$ who:
+			\begin{itemize}
+				\item Lock up more than a minimum amount of $minimumDgdToModerate$ DGDs in the quarter
+				\item Has a minimum $Reputation Point$ of $minimumRpToModerate$ ($Reputation Points$ will be discussed later)
+			\end{itemize}
+			\item $Founders$: addresses controlled by the Digix team
+			\item $Policy and Regulatory Legal Department$ members ($PRLs$): addresses who can be set/unset by the $Founders$, and are in charge of stopping proposals due to policy, regulatory or legal reasons.
+		Note that these roles are not mutually exclusive. For example, a $moderator$ is always a $participant$ at the same time.
+		\end{itemize}
+		The exact responsibilities of the roles will be discussed in more details in subsequent sections.
+	}
+	\subsection{Reputation Point redemption for DigixDAO Badges}{
+		\begin{itemize}
+			\item A DigixDAO Badge holder can redeem a DigixDAO Badge to get exactly $minimumRpToModerate$ $Reputation Points$, making him/her eligible to be a $moderator$ right away (provided that he/she also lock in at least $minimumDgdToModerate$)
+			\item Only one DigixDAO Badge can be redeemed for a specific address. This is to prevent a case where multiple Badges can be redeemed for the same address, making the $Reputation Point$ of the address so big that it can remain as a $moderator$ for a long time without contributing to DigixDAO governance.
+		\end{itemize}
+	}
+}
+
+\section{DAO's timeline}{
+	DigixDAO operates in terms of quarters, which last for exactly 90 days, from $t=0$ to $t=90$ ($t=90.0..01$ is considered the next quarter).
+	From $t=0$ to $t=10$ is the $Locking Phase$, where:
+	\begin{itemize}
+		\item DGD holders who have not locked their DGDs can lock up their DGDs in a contract to become a $participant$ in DigixDAO governance for that quarter. 
+		\item $Participants$ in the previous quarter can:
+		\begin{itemize}
+			\item Withdraw some or all of their DGD balance that was locked in the previous quarter
+			\item Just keep the DGD balance unchanged or top-up some more DGDs
+		\end{itemize}
+		\item At the end of this phase, each $participant$ is deemed to have a $Locked DGD Stake$ which is exactly equal to the amount of DGDs locked in this phase.
+	\end{itemize}
+	From $t=10$ to $t=90$ is the $Main Phase$, where:
+	\begin{itemize}
+		\item Locked DGDs cannot be withdrawn
+		\item All the governance activities will take place
+		\item DGD holders can also lock more DGDs during this phase, at time $t$. However, the addition to $Locked DGD Stake$ will be weighted accordingly to the time remaining in the quarter compared to the full duration of 80 days
+		\begin{align*}
+			Locked DGD Stake = Locked DGD Stake + Additional DGDs \times \frac{90-t}{80}
+		\end{align*}
+	\end{itemize}
+}
+
+
+\section{Proposals}{
+	\subsection{Details of a proposal}{
+	The proposal should include the following details:
+	\begin{itemize}
+		\item A title
+		\item A description
+		\item Any other supporting documents
+		\item The number of milestones and details for each milestone:
+		\begin{itemize}
+			\item How long the milestone is
+			\item The amount of funding in Ethers (ETH) needed for the milestone
+			\item Some forms of Key Performance Indicators (KPIs). These are off-chain measures to help the community evaluate the success of the milestone.
+		\end{itemize}
+		\item A final reward, in terms of ETH, for the $proposer$ if he/she completes all the milestones.
+	\end{itemize}
+	}
+	
+	\subsection{Phases in the lifetime of a proposal}{
+		\subsubsection{Endorsement Phase}{
+			\begin{itemize}
+				\item Any $participant$ who is interested in starting proposals need to pass know-your-customer (KYC) check first.
+				\item Any kyc-approved $participant$ can start a proposal, which has an initial status as a $pre-proposal$. The $participant$ will then be referred to as the $proposer$.
+				\item The $proposer$ needs to start a new thread on the DAO Forum to introduce their $pre-proposal$
+				\item Any $participant$ can comment on the DAO Forum's thread to talk about the $pre-proposal$
+				\item Any $moderator$ can endorse the $pre-proposal$, making it an $Draft Proposal$ and takes it to the $Draft Phase$
+			\end{itemize}
+		}
+		\subsubsection{Draft Phase}{
+			\begin{itemize}
+				\item $Participants$ can comment on the DAO Forum’s proposal thread to suggest improvements/modifications to the $Draft Proposal$
+				\item The $proposer$ is free to update the details of the $Draft Proposal$ by adding a new version of the proposal details.
+				\item The history of all the proposal versions is publicly viewable.
+				\item When the $proposer$ thinks his $Draft Proposal$ is ready for voting, he/she can choose to finalize it, moving it to the $Draft Voting Phase$
+				\item There is a maximum duration of tentatively 2 quarters that a proposal can remain in the $Draft Phase$. After that, they will be deemed inactive and discarded.
+			\end{itemize}
+		}
+		\subsubsection{Draft Voting Phase}{
+			\begin{itemize}
+				\item Lasts for 14 days (is subject to change)
+				\item The $proposer$ can no longer modify the proposal from this phase onwards
+				\item Only $moderator$ can vote in this phase (either "yes" or "no"). Votes are publicly viewable.
+				\item $moderators$ can change their vote any time for the duration of the $Draft Voting Phase$
+				\item The $DraftProposal$ is considered passed and becomes a $Finalized Proposal$ if and when:
+				\begin{itemize}
+					\item The $quorum$ (or number of votes registered) is greater than or equal to a $Minimum Draft Quorum$ (which is determined by the Minimum quorum size formula in section $6.3$)
+					\item The $quota$ (or the ratio of the number of "yes" votes to the $quorum$) is greater than or equal to a $Minimum Draft Quota$ (which is just a constant)
+				\end{itemize}
+			\end{itemize}
+		}
+		\subsubsection{Voting Phase}{
+			\begin{itemize}
+				\item Lasts for 30 days (is subject to change)
+				\item All $participants$ can vote in this phase (either "yes" or "no")
+				\item The voting follows the commmit-reveal scheme, which is explained in section $6.1$
+				\item The $Finalized Proposal$ is considered passed when:
+				\begin{itemize}
+					\item The $quorum$ (or total amount of DGD stake of people who voted) is greater than or equal to a $Minimum Voting Quorum$ (which is determined by the Minimum quorum size formula in section $6.3$)				
+					\item The $quota$ (or the ratio of the DGD stake in the "yes" votes to the $quorum$) is greater than or equal to a $Minimum Voting Quota$ (which is just a constant)
+				\end{itemize}
+				\item if the voting passed and the $PRL$ has approved the proposal, the funding for the first milestone is released
+			\end{itemize}
+		}
+		\subsubsection{Milestone Delivery Phase}{
+			\begin{itemize}
+				\item After getting funded for the milestone, the $proposer$ is supposed to work on delivering on his milestone within the duration that he/she has specified in the proposal details
+				\item The $proposer$ and all $participants$ can still communicate through the DAO Forum
+				\item The $proposer$ can choose to prematurely end this phase if he/she thinks that it is already completed and up for voting for the next milestone's funding.
+			\end{itemize}
+		}
+		\subsubsection{Interim Voting Phase}{
+			\begin{itemize}
+				\item Starts right after every milestone's deadline (or when the milestone is prematurely ended by the $proposer$), and lasts for 20 days (is subject to change)
+				\item All $participants$ can vote in this phase (either "yes" or "no"), on whether to release the next funding for the proposal.
+				\item The voting follows the commmit-reveal scheme, which is explained in section $6.1$
+				\item The voting is considered passed when:
+				\begin{itemize}
+					\item The $quorum$ (or total amount of DGD stake of people who voted) is greater than or equal to a $Minimum Interim Voting Quorum$ (which is determined by the Minimum quorum size formula in section $6.3$)				
+					\item The $quota$ (or the ratio of the DGD stake in the "yes" votes to the $quorum$) is greater than or equal to a $Minimum Interim Voting Quota$ (which is just a constant)
+				\end{itemize}
+				\item If the vote passed and the $PRL$ has approved the proposal, the funding for the next milestone is released
+				\item There is also an Interim Voting Phase after the last milestone has ended, and it is to decide whether the $proposer$ has completed everything and should receive the $Final Reward$ that was specified in the proposal details.
+			\end{itemize}
+		}
+	}
+	\subsection{The Policy, Regulatory and Legal Department}{
+		\begin{itemize}
+			\item The Policy, Regulatory and Legal Department ($PRL$) can either pause or stop the funding of proposals due to policy, regulatory or legal reasons.
+			\item The $PRLs$ can choose to unpause the funding of a paused proposal at a later time.
+			\item Stopped proposals cannot be unpaused and will be deemed as over.
+			\item The opinion of the $PRLs$ must be updated at least once before any funding round.
+		\end{itemize}
+	}
+}
+
+\section{Special Proposals}{
+	\begin{itemize}
+		\item This is a special class of proposals that can only be started by the $founders$.
+		\item This proposal can either:
+		\begin{itemize}
+			\item Propose changes to all the parameters used in the governance model.
+			\begin{itemize}
+				\item There will only be one voting phase, which lasts for 4 weeks: 3 weeks for committing votes and 1 week for revealing votes.
+				\item Minimum quorum needed will be 70\% of the total $LockedDGDStake$ and the minimum quota will be 60\%. These numbers are tentative and are subject to change.
+			\end{itemize}
+			\item Propose to dissolve DigixDAO
+			\begin{itemize}
+				\item There will only be one voting phase, which lasts for 8 weeks: 5 weeks for committing votes and 3 weeks for revealing votes.
+				\item Minimum quorum needed will be 80\% of the total $LockedDGDStake$ and the minimum quota will be 70\%. These numbers are tentative and are subject to change.
+			\end{itemize}
+		\end{itemize} 
+	\end{itemize}	
+}
+
+\section{Voting mechanics}{
+	\subsection{Voting power} {
+		In all voting rounds, the voting power is always exactly the same as the $Locked DGD Stake$ of the $participant$ (or $moderator$)
+	}
+	\subsection{Commit-reveal voting scheme}{
+		\begin{itemize}
+			\item In the commit period:
+			\begin{itemize}
+				\item $participants$ can commit their "yes" or "no" together with a random word $CommitSecret$
+				\item The votes remain secret to all the other $participants$. As such, no one can tell whether there have been more "yes" or "no" votes during the commit period
+				\item $participants$ can change their vote by committing again.
+			\end{itemize}
+			\item In the reveal period:
+			\begin{itemize}
+				\item $participants$ who voted need to provide the $CommitSecret$ to reveal their committed vote.
+				\item only the last commited vote can be revealed
+			\end{itemize}
+			\item Only votes which are successfully revealed are counted.
+		\end{itemize}
+	}
+
+	\subsection{Minimum quorum size formula}{
+		Except for $Special Proposal$ voting, the minimum quorum (in terms of DGD Stake) for all voting rounds  follow this formula( although the parameters for each voting phase might be different):
+		\begin{align*}
+			Minimum Quorum =
+			TotalStake \times \Bigg(x\% + \frac{ETH Asked By Proposal}{ETH in DAO} \times Scaling Factor \Bigg)
+		\end{align*}
+		\begin{itemize}
+			\item The $TotalStake$ is the sum of every $participant$'s $Locked DGD Stake$ in the quarter
+			\item The $x\%$ portion is fixed for all proposals. It is the absolute minimum percentage of $Locked DGD Stake$ that need to vote on any proposal for the voting to be valid.
+			\item $ETH Asked By Proposal$ is the amount of ETH that the voting round is concerned with
+			\begin{itemize}
+				\item If it is a $Draft Voting Phase$, this is the total amount of ETHs asked in all the milestones
+				\item If it is a $Voting Phase$ or $Interim Voting Phase$, this is the amount of ETHs asked for the next milestone.
+			\end{itemize}
+			\item The second portion is directly proportional to the $ETH Asked By Proposal$, relative to the ETH holding of the DAO. This importance of the portion is adjusted by the $Scaling Factor$
+		\end{itemize}
+		This formula achieves the following effects we desire:
+		\begin{itemize}
+			\item A proposal who asks for $n$ ETHs in quarter 100 will need a bigger quorum size (in terms of percentage of all $Locked DGD Stake$) than a proposal who asks for exactly $n$ ETHs in quarter 1, because the remaining ETH in DAO is less.
+			\item Even if a proposal asks for very minimal funding, it will still need at least a quorum size of $x\%$ of the total $Locked DGD Stake$.
+		\end{itemize}
+	}
+}
+
+\section{Point System}{
+	There are three classes of points in DigixDAO 1.0: $Quarter Points$, $Moderator Quarter Points$ and $Reputation Points$. \begin{itemize}
+		\item These points are awarded to $participants$ depending on their contribution to DigixDAO
+		\item The points are non-transferrable and tied to the address of the $participant$.
+	\end{itemize} 
+	\subsection{Quarter Points (QP)}{
+		\begin{itemize}
+			\item $Quarter Points$ are a direct measure of the participation of a $participant$ in a specific quarter
+			\item $Quarter Points$ will be awarded when:
+			\begin{itemize}
+				\item A $participant$ votes in any voting round
+				\item A $proposer$ successfully gets his proposal past any voting round
+			\end{itemize}
+			\item The $Quarter Points$ will be reset to 0 at the beginning of a new quarter.
+		\end{itemize}
+	}
+	\subsection{Moderator Quarter Points (Moderator QP)}{
+		\begin{itemize}
+			\item $Moderator Quarter Points$ are a direct measure of the moderating activity of a $moderator$ in a specific quarter
+			\item $Moderator Quarter Points$ will be awarded when a $moderator$ votes in a $Draft Voting Phase$
+			\item The $Moderator Quarter Points$ will be reset to 0 at the beginning of a new quarter.
+		\end{itemize}
+	}
+	\subsection{Reputation Points (RP)}{
+		\begin{itemize}
+			\item $Reputation Points$ are a cumulative measure of how actively a $participant$ has contributed to the governance across quarters
+			\item At the end of each quarter, a $participant$ gains or loses $Reputation Point$:
+			\begin{itemize}
+				\item If his/her $Quarter Point$ is less than a $Minimal QP$ threshold:
+				\begin{align*}
+					change In RP = -\frac{Minimal QP - QP}{Minimal QP} \times MaxRPDeduction
+				\end{align*}
+				\begin{itemize}
+					\item $MinimalQP$ is basically the amount of $QuarterPoints$ that we expect most $participants$ should get, by doing some minimal voting activity.
+					\item $MaxRPDeduction$ is the amount of $Reputation Point$ that would be deducted if a $participant$ has 0 $QuarterPoint$ for the quarter.
+				\end{itemize}
+				\item If his/her $Quarter Point$ is more than or equal to the $Minimal QP$ threshold:
+				\begin{align*}
+					changeInRP = (QP-MinimalQP) \times RPperExtraQP
+				\end{align*}
+				\begin{itemize}
+					\item $RPperExtraQP$ is the amount of $ReputationPoint$ awared per one extra $QuarterPoint$
+				\end{itemize}
+				\item If a DGD holder does not participate in a quarter, his/her $Reputation Point$ will be deducted a fixed amount:
+				\begin{align*}
+					changeInRP = MaxRPDeduction + ExtraPunishmentForNotLocking
+				\end{align*}
+				\begin{itemize}
+					\item $ExtraPunishmentForNotLocking$ is the extra $ReputationPoint$ deduction when a DGD holder does not lock his DGDs, on top of the deduction due to zero contribution to DigixDAO governance
+				\end{itemize}
+			\end{itemize}
+
+			\item $Participants$ also receive a minimal bonus in $Reputation Points$ if their voting in the $n^\text{th}$ voting round turns out to be consistent with the result of the $(n+1)^\text{th}$ voting round.
+			\begin{itemize}
+				\item A vote will get a bonus if:
+				\begin{itemize}
+					\item It is a "yes" vote for a proposal P in a certain voting round; The voting round passes; proposal P goes through the milestome; AND the next voting round also passes.
+					\item It is a "no" vote for a proposal P in a certain voting round; The voting round passes; proposal P goes through the milestome; AND the next voting round does not pass.
+				\end{itemize}
+				\item The bonus $Reputation Point$ is:
+				\begin{align}
+					QPforOneVote \times p\% \times RPperExtraQP
+				\end{align}
+				\begin{itemize}
+					\item Basically, p\% bonus is awarded, in terms of $Reputation Point$. This number is tentatively very small (like 1\%)
+				\end{itemize}
+				\item This scheme is to counter "lazy voting" and incentivize more careful consideration when it comes to voting.
+			\end{itemize}
+		\end{itemize}
+	}
+	
+}
+
+\section{Reward System}{
+	The DGX fees collected by the DAO every quarter will be divided into a $Moderator Reward Pool$ of $k\%$ and a $Participant Reward Pool$ of $(100-k)\%$.
+	\subsection{Participant Reward Pool}{
+		After every quarter, a $Rewardable DGD Balance$ (or $rewardableBal$) is calculated for every $participant$. The DGX rewards in the $ParticipantRewardPool$ are distributed proportionally to the $Rewardable DGD Balance$.\\
+		This is how $Rewardable DGD Balance$ is calculated:
+		\begin{enumerate}
+			\item Get the $participant$'s $Base DGD Balance$ (or $base$):
+			\begin{itemize}
+				\item if $Quarter Point >= MinimalQP$:
+				\begin{align*}
+					base = LockedDGDStake
+				\end{align*}
+				\item else:
+				\begin{align*}
+					base = \frac{QP}{MinimalQP} \times LockedDGDStake
+				\end{align*}
+			\end{itemize}
+			\item "Buff" the $base$ based on excess $QuarterPoints$ and $ReputationPoints$ to get the $Rewardable DGD Balance$:
+			\begin{align*}
+				rewardableBal = base \times \Bigg( 1+\frac{QP-MinimalQP}{QPScalingFactor} \Bigg) \times \Bigg(1+\frac{RP}{RPScalingFactor} \Bigg)
+			\end{align*}
+			\begin{itemize}
+				\item The $QPScalingFactor$ and $RPScalingFactor$ are to adjust how much $QuarterPoint$ and $ReputationPoint$ would "buff" the user's $RewardableDGDBalance$ relative to his actual $BaseDGDBalance$
+				\item These "buffs" would be configured to be a small percentage, such that the primary factor determining a $participant$'s DGX rewards is still his/her $LockedDGDStake$
+			\end{itemize}
+		\end{enumerate}
+	}
+	\subsection{Moderator Reward Pool}{
+		After every quarter, a $Moderator Rewardable DGD Balance$ (or $modRewardableBal$) is calculated for every $moderator$. The DGX rewards in the $ModeratorRewardPool$ are distributed proportionally to the $Moderator Rewardable DGD Balance$.\\
+		This is how $Moderator Rewardable DGD Balance$ is calculated:
+		\begin{enumerate}
+			\item Get the $moderator$'s $Base DGD Balance$ (or $base$) as described in the previous section
+			\item "Buff" the $base$ based on $ModeratorQuarterPoints$ and $ReputationPoints$ to get the $Moderator Rewardable DGD Balance$:
+			\begin{align*}
+			modRewardableBal = base \times \Bigg( 1+\frac{ModeratorQP}{ModQPScalingFactor} \Bigg) \times \Bigg(1+\frac{RP}{ModRPScalingFactor} \Bigg)
+			\end{align*}
+		\end{enumerate}
+	}
+}
+
+\section{DigixDAO 1.0's Parameters}{
+	There are multiple parameters involved in DigixDAO's governance model. The values of these parameters would greatly determine how well the model will work. The Digix team will carefully consider the initial set of parameters to be used as the default parameters. After that, Special Proposals could be made to propose changes to the parameters.\\
+	\\
+	There are, however, two important parameters that would be decided by a carbon vote by DGD holders, before DigixDAO 1.0 is deployed:
+	\begin{itemize}
+		\item The value of $k\%$ for the $ModeratorRewardPool$
+		\item $MinimumDGDToModerate$, or the minimum amount of DGD Stake needed to qualify as a $moderator$
+	\end{itemize}
+	The other parameters include:
+	\begin{itemize}
+		\item Locking phase duration (tentatively 10 days)
+		\item $Draft Voting Phase$ duration (tentatively 14 days)
+		\item $Voting Phase$ duration (tentatively 4 weeks)
+		\item $Voting Phase$'s commit period duration (tentatively 3 weeks)
+		\item $Interim Voting Phase$ duration (tentatively 20 days)
+		\item $Interim Voting Phase$'s commit period duration (tentatively 13 days)
+		\item $x\%$ for $Draft Voting Phase$'s minimum quorum size
+		\item $ScalingFactor$ for $Draft Voting Phase$'s minimum quorum size
+		\item $x\%$ for $Voting Phase$'s minimum quorum size
+		\item $ScalingFactor$ for $Voting Phase$'s minimum quorum size
+		\item $x\%$ for $Voting Phase$'s minimum quorum size
+		\item $ScalingFactor$ for $Voting Phase$ and $Interim Voting Phase$'s minimum quorum size
+		\item $quota$ for $Draft Voting Phase$
+		\item $quota$ for $Voting Phase$ and $Interim Voting Phase$
+		\item Amount of $ModeratorQuarterPoint$ for a vote in $Draft Voting Phase$
+		\item Amount of $QuarterPoint$ for a vote in $Voting Phase$
+		\item Amount of $QuarterPoint$ for a vote in $Interim Voting Phase$
+		\item Amount of $QuarterPoint$ for the $proposer$ for getting past through a milestone voting.
+		\item $p\%$ bonus in $ReputationPoint$ for the vote as mentioned in section $7.3$
+		\item Duration for $Special Proposals$ to change configs (tentatively 4 weeks)
+		\item Duration for commit round of $Special Proposals$ to change configs (tentatively 3 weeks)
+		\item Duration for $Special Proposals$ to dissolve DigixDAO (tentatively 8 weeks)
+		\item Duration for commit round of $Special Proposals$ to dissolve DigixDAO (tentatively 5 weeks)
+		\item $Minimum Quorum$ for $Special Proposals$ to change configs (tentatively 70\%)
+		\item $Quota$ for $Special Proposals$ to change configs (tentatively 60\%)
+		\item $Minimum Quorum$ for $Special Proposals$ to dissolve DigixDAO (tentatively 80\%)
+		\item $Quota$ for $Special Proposals$ to dissolve DigixDAO (tentatively 70\%)
+		\item $MaxRPDeduction$
+		\item $ExtraPunishmentForNotLocking$
+		\item $RPperExtraQP$
+		\item $MinimalQP$
+		\item $QPScalingFactor$
+		\item $RPScalingFactor$
+		\item $ModQPScalingFactor$
+		\item $ModRPScalingFactor$
+		\item $minimumRpToModerate$
+		\item Maximum duration for $Draft Phase$ (tentatively 2 quarters)
+	\end{itemize}
+}
+\end{document}

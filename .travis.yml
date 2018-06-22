@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "8"
+cache:
+  directories:
+    - node_modules
+env:
+  - TRAVIS_BUILD=true
+before_script:
+  - npm i truffle
+  - truffle version
+script:
+  - npm run test
