@@ -11,3 +11,4 @@ before_script:
   - truffle version
 script:
   - npm run test
+  - npm run test:simulate

@@ -129,21 +129,15 @@ const {
 } = require('./setup');
 
 const {
-  daoConstantsKeys,
   phases,
   quarters,
-  assertQuarter,
-  getTimeToNextPhase,
-  getPhase,
 } = require('./daoHelpers');
 
 const {
   getCurrentTimestamp,
-  randomBigNumber,
   indexRange,
   randomBytes32,
   randomBigNumbers,
-  paddedHex,
 } = require('@digix/helpers/lib/helpers');
 
 const bN = web3.toBigNumber;
