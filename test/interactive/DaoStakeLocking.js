@@ -53,8 +53,8 @@ contract('DaoStakeLocking', function (accounts) {
 
   describe('lockDGD | confirmContinuedParticipation', function () {
     before(async function () {
-      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10 * (10 ** 18)), { from: addressOf.badgeHolders[1] });
-      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10 * (10 ** 18)), { from: addressOf.badgeHolders[2] });
+      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10 * (10 ** 9)), { from: addressOf.badgeHolders[1] });
+      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10 * (10 ** 9)), { from: addressOf.badgeHolders[2] });
     });
     it('[amount = 0]: revert', async function () {
       assert(await a.failure(contracts.daoStakeLocking.lockDGD.call(
@@ -117,14 +117,14 @@ contract('DaoStakeLocking', function (accounts) {
       // addressOf.dgdHolders[3] also locks some DGDs
       // he/she never confirmContinuedParticipation in the next 2-3 quarters
       // we will then try to withdraw all the amount
-      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10 * (10 ** 18)), { from: addressOf.dgdHolders[3] });
-      await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 18)), { from: addressOf.dgdHolders[3] });
+      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10 * (10 ** 9)), { from: addressOf.dgdHolders[3] });
+      await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 9)), { from: addressOf.dgdHolders[3] });
     });
     it('[locking amount equal to CONFIG_MINIMUM_DGD_FOR_MODERATOR, reputation less than CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR]', async function () {
       // consider addressOf.badgeHolders[3]
-      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(100 * (10 ** 18)), { from: addressOf.badgeHolders[3] });
+      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(100 * (10 ** 9)), { from: addressOf.badgeHolders[3] });
       await contracts.daoPointsStorage.setRP(addressOf.badgeHolders[3], bN(99));
-      await contracts.daoStakeLocking.lockDGD(bN(100 * (10 ** 18)), { from: addressOf.badgeHolders[3] });
+      await contracts.daoStakeLocking.lockDGD(bN(100 * (10 ** 9)), { from: addressOf.badgeHolders[3] });
       assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[3]), false);
     });
     it('[increased reputation to CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR, now try to confirmContinuedParticipation]', async function () {
@@ -136,9 +136,9 @@ contract('DaoStakeLocking', function (accounts) {
     });
     it('[locking amount greater than CONFIG_MINIMUM_DGD_FOR_MODERATOR, reputation equal to CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR]', async function () {
       // consider addressOf.badgeHolders[2]
-      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(101 * (10 ** 18)), { from: addressOf.badgeHolders[2] });
+      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(101 * (10 ** 9)), { from: addressOf.badgeHolders[2] });
       await contracts.daoPointsStorage.setRP(addressOf.badgeHolders[2], bN(101));
-      await contracts.daoStakeLocking.lockDGD(bN(101 * (10 ** 18)), { from: addressOf.badgeHolders[2] });
+      await contracts.daoStakeLocking.lockDGD(bN(101 * (10 ** 9)), { from: addressOf.badgeHolders[2] });
       assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[2]), true);
     });
     it('[lock during main phase]: verify actual stake', async function () {
@@ -149,16 +149,16 @@ contract('DaoStakeLocking', function (accounts) {
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
       await waitFor(2, addressOf, web3);
       const timeToNextPhase1 = getTimeToNextPhase(getCurrentTimestamp(), startOfDao.toNumber(), 10, 60);
-      await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 18)), { from: addressOf.badgeHolders[1] });
+      await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 9)), { from: addressOf.badgeHolders[1] });
       const stakeNow1 = await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.badgeHolders[1]);
 
       await waitFor(2, addressOf, web3);
       const timeToNextPhase2 = getTimeToNextPhase(getCurrentTimestamp(), startOfDao.toNumber(), 10, 60);
-      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10 * (10 ** 18)), { from: addressOf.badgeHolders[2] });
-      await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 18)), { from: addressOf.badgeHolders[2] });
+      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10 * (10 ** 9)), { from: addressOf.badgeHolders[2] });
+      await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 9)), { from: addressOf.badgeHolders[2] });
       const stakeNow2 = await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.badgeHolders[2]);
 
-      const sentAmount = 10 * (10 ** 18);
+      const sentAmount = 10 * (10 ** 9);
       const added1 = bN(Math.floor((sentAmount * timeToNextPhase1) / 50));
       const added2 = bN(Math.floor((sentAmount * timeToNextPhase2) / 50));
       assert.deepEqual(stakeNow1.minus(initialStake1), added1);
@@ -168,15 +168,15 @@ contract('DaoStakeLocking', function (accounts) {
       // addressOf.dgdHolders[4] also locks some DGDs
       // he/she never confirmContinuedParticipation in the next 2-3 quarters
       // we will then try to withdraw all the amount
-      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10 * (10 ** 18)), { from: addressOf.dgdHolders[4] });
-      await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 18)), { from: addressOf.dgdHolders[4] });
+      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10 * (10 ** 9)), { from: addressOf.dgdHolders[4] });
+      await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 9)), { from: addressOf.dgdHolders[4] });
     });
     it('[lock 100 dgd during main phase, confirmContinuedParticipation in the next locking phase should give moderator status]', async function () {
       // addressOf.badgeHolders[1]
-      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(100 * (10 ** 18)), { from: addressOf.badgeHolders[1] });
+      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(100 * (10 ** 9)), { from: addressOf.badgeHolders[1] });
       await contracts.daoPointsStorage.setRP(addressOf.badgeHolders[1], bN(200));
 
-      await contracts.daoStakeLocking.lockDGD(bN(100 * (10 ** 18)), { from: addressOf.badgeHolders[1] });
+      await contracts.daoStakeLocking.lockDGD(bN(100 * (10 ** 9)), { from: addressOf.badgeHolders[1] });
       assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[1]), false);
     });
     it('[confirmContinuedParticipation during the same main phase]: nothing really happens', async function () {

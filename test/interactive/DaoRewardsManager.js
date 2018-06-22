@@ -182,12 +182,12 @@ contract('DaoRewardsManager', function (accounts) {
     before(async function () {
       await resetDeployment(bN(1));
       // lock some tokens
-      const stake = [bN(5 * (10 ** 18)), bN(10 * (10 ** 18)), bN(20 * (10 ** 18)), bN(20 * (10 ** 18)), bN(10 * (10 ** 18))];
+      const stake = [bN(5 * (10 ** 9)), bN(10 * (10 ** 9)), bN(20 * (10 ** 9)), bN(20 * (10 ** 9)), bN(10 * (10 ** 9))];
       for (const i of indexRange(0, 5)) {
         await contracts.daoStakeStorage.updateUserDGDStake(addressOf.dgdHolders[i], stake[i], stake[i]);
         await contracts.daoStakeStorage.addToParticipantList(addressOf.dgdHolders[i]);
       }
-      await contracts.daoStakeStorage.updateTotalLockedDGDStake(bN(65 * (10 ** 18)));
+      await contracts.daoStakeStorage.updateTotalLockedDGDStake(bN(65 * (10 ** 9)));
       await a.map(indexRange(0, 5), 20, async (i) => {
         await contracts.daoRewardsStorage.mock_set_last_participated_quarter(addressOf.dgdHolders[i], bN(1));
       });

@@ -11,7 +11,7 @@ const proposalStates = function (bN) {
 
 const configs = function (bN) {
   return {
-    CONFIG_MINIMUM_LOCKED_DGD: bN(10 ** 18),
+    CONFIG_MINIMUM_LOCKED_DGD: bN(10 ** 9),
   };
 };
 
@@ -182,16 +182,16 @@ const sampleBadgeWeights = function (bN) {
 
 const sampleStakeWeights = function (bN) {
   return [
-    bN(55 * (10 ** 18)),
-    bN(120 * (10 ** 18)),
-    bN(150 * (10 ** 18)),
-    bN(175 * (10 ** 18)),
-    bN(32 * (10 ** 18)),
-    bN(41 * (10 ** 18)),
-    bN(40 * (10 ** 18)),
-    bN(30 * (10 ** 18)),
-    bN(20 * (10 ** 18)),
-    bN(46 * (10 ** 18)),
+    bN(55 * (10 ** 9)),
+    bN(120 * (10 ** 9)),
+    bN(150 * (10 ** 9)),
+    bN(175 * (10 ** 9)),
+    bN(32 * (10 ** 9)),
+    bN(41 * (10 ** 9)),
+    bN(40 * (10 ** 9)),
+    bN(30 * (10 ** 9)),
+    bN(20 * (10 ** 9)),
+    bN(46 * (10 ** 9)),
   ];
 };
 

@@ -237,6 +237,12 @@ const draftVoting = async function (contracts, addressOf, proposals) {
 const claimDraftVotingResult = async function (contracts) {
   // first, third and fourth pass
   // second is reverted (coz its failing)
+  // console.log(await contracts.daoVoting)
+  const mods = await contracts.daoListingService.listModerators.call(await contracts.daoStakeStorage.readTotalModerators.call(), true);
+  console.log(await contracts.daoStorage.readDraftVotingCount.call(proposals[0].id, mods));
+  console.log(await contracts.daoStakeStorage.totalModeratorLockedDGDStake.call());
+  console.log(await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[0].id));
+  console.log(mods);
   await contracts.daoVotingClaims.claimDraftVotingResult(
     proposals[0].id,
     { from: proposals[0].proposer },
@@ -457,46 +463,46 @@ module.exports = async function () {
       {
         address: addressOf.badgeHolders[0],
         redeemingBadge: true,
-        dgdToLock: bN(11e9),
+        dgdToLock: bN(110e9),
       },
       {
         address: addressOf.badgeHolders[1],
         redeemingBadge: true,
-        dgdToLock: bN(20e9),
+        dgdToLock: bN(200e9),
       },
       {
         address: addressOf.badgeHolders[2],
         redeemingBadge: true,
-        dgdToLock: bN(20e9),
+        dgdToLock: bN(200e9),
       },
       {
         address: addressOf.badgeHolders[3],
         redeemingBadge: true,
-        dgdToLock: bN(55e9),
+        dgdToLock: bN(550e9),
       },
       {
         address: addressOf.dgdHolders[0],
-        dgdToLock: bN(6e9),
+        dgdToLock: bN(60e9),
       },
       {
         address: addressOf.dgdHolders[1],
-        dgdToLock: bN(15e9),
+        dgdToLock: bN(150e9),
       },
       {
         address: addressOf.dgdHolders[2],
-        dgdToLock: bN(10e9),
+        dgdToLock: bN(100e9),
       },
       {
         address: addressOf.dgdHolders[3],
-        dgdToLock: bN(12e9),
+        dgdToLock: bN(120e9),
       },
       {
         address: addressOf.dgdHolders[4],
-        dgdToLock: bN(5e9),
+        dgdToLock: bN(50e9),
       },
       {
         address: addressOf.dgdHolders[5],
-        dgdToLock: bN(10e9),
+        dgdToLock: bN(100e9),
       },
     ];
 
@@ -554,7 +560,7 @@ module.exports = async function () {
 
     // until here
     await waitFor(((await contracts.daoStorage.readProposalDraftVotingTime.call(proposals[3].id)).toNumber()
-      + 5) - getCurrentTimestamp(), addressOf, web3);
+      + 6) - getCurrentTimestamp(), addressOf, web3);
 
 
     // claim the voting, assert that its the same quarter
