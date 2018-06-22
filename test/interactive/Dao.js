@@ -35,9 +35,9 @@ contract('Dao', function (accounts) {
   // let allUsers;
 
   before(async function () {
-    await deployFreshDao(libs, contracts, addressOf, accounts, bN, web3);
-    await setupParticipantsStates(web3, contracts, addressOf, bN);
-    console.log('Done setting up DAO');
+    // await deployFreshDao(libs, contracts, addressOf, accounts, bN, web3);
+    // await setupParticipantsStates(web3, contracts, addressOf, bN);
+    // console.log('Done setting up DAO');
   });
 
   describe('setStartOfFirstQuarter', function () {
