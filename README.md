@@ -62,11 +62,11 @@ should be a good place to start with. Here are the posts on our Governance model
 * [Governance update #3](https://medium.com/@Digix/digixdao-governance-model-update-3-2202cd117d24)
 * [Governance update #4](https://medium.com/@Digix/digixdao-governance-model-update-4-2f92798242bd)
 
-To dive in deeper, you can read the detailed Technical Specification of DigixDAO [here](https://give-me-some-url).
+To dive in deeper, you can read the detailed DigixDAO Governance Model [here](doc/GovernanceModel.pdf).
 
 ## Contributing
 We welcome pull requests from developers. We highly recommend interested
-developers to go through the [Technical Specification](https://give-me-the-same-url-as-above).
+developers to go through the [DigixDAO Governance Model](doc/GovernanceModel.pdf).
 
 #### Smart Contract Architecture
 ##### Contract Resolver
