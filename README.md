@@ -62,7 +62,7 @@ should be a good place to start with. Here are the posts on our Governance model
 * [Governance update #3](https://medium.com/@Digix/digixdao-governance-model-update-3-2202cd117d24)
 * [Governance update #4](https://medium.com/@Digix/digixdao-governance-model-update-4-2f92798242bd)
 
-To dive in deeper, you can read the detailed DigixDAO Governance Model [here](doc/GovernanceModel.pdf).
+Since the posting of the articles, some parts in the governance model has changed. You can read the [Governance Model paper](doc/GovernanceModel.pdf) to study the latest governance model.
 
 ## Contributing
 We welcome pull requests from developers. We highly recommend interested
@@ -70,7 +70,7 @@ developers to go through the [DigixDAO Governance Model](doc/GovernanceModel.pdf
 
 #### Smart Contract Architecture
 ##### Contract Resolver
-All contracts implement the [Resolver Client](https://github.com/DigixGlobal/cacp-contracts/blob/dao/contracts/ResolverClient.sol) contract, and are securely fetched from one [Contract Resolver](https://github.com/DigixGlobal/cacp-contracts/blob/dao/contracts/ContractResolver.sol).
+Most contracts implement the [Resolver Client](https://github.com/DigixGlobal/cacp-contracts/blob/dao/contracts/ResolverClient.sol) contract, whose addresses are securely fetched from one [Contract Resolver](https://github.com/DigixGlobal/cacp-contracts/blob/dao/contracts/ContractResolver.sol).
 
 ##### Storage Layer
 The Storage layer contracts interact with Ethereum's persistent storage. They can only be used publicly to read from `public` functions. All the functions that can update the state variables can only be called from specific DigixDAO smart contracts, for example, [this](https://github.com/DigixGlobal/dao-contracts/blob/dev/contracts/storage/DaoStorage.sol#L596) and [this](https://github.com/DigixGlobal/dao-contracts/blob/dev/contracts/storage/DaoFundingStorage.sol#L17). We try to include as less as possible logic in contracts under this layer. The storage layer contracts are:
