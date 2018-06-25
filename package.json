@@ -23,7 +23,6 @@
   "dependencies": {
     "@digix/cacp-contracts-dao": "^1.0.3",
     "@digix/cdap": "^0.1.0",
-    "@digix/doxity": "^0.5.2",
     "@digix/helpers": "^1.0.0",
     "@digix/lite-dgx-contract": "1.0.1",
     "@digix/multi-hash": "0.0.2",
@@ -40,7 +39,6 @@
     "dijix-image": "0.0.10",
     "dijix-pdf": "0.0.8",
     "dotenv": "5.0.1",
-    "eth-gas-reporter": "^0.1.1",
     "ganache-cli": "6.1.0",
     "ethereumjs-testrpc": "^3.9.2",
     "openzeppelin-solidity": "1.9.0",
