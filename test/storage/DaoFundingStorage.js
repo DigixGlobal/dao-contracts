@@ -61,7 +61,7 @@ contract('DaoFundingStorage', function (accounts) {
   describe('withdrawEth', function () {
     it('[not called from CONTRACT_DAO_FUNDING_MANAGER]: revert', async function () {
       const amount = bN(100);
-      assert.isAtLeast((await contracts.daoFundingStorage.ethInDao.call()).toNumber(), amount);
+      assert.isAtLeast((await contracts.daoFundingStorage.ethInDao.call()).toNumber(), amount.toNumber());
       for (let i = 1; i < 20; i++) {
         assert(await a.failure(contracts.daoFundingStorage.withdrawEth.call(
           amount,
