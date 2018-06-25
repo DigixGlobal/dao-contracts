@@ -6,6 +6,8 @@ cache:
     - node_modules
 env:
   - TRAVIS_BUILD=true
+before_install:
+  - sudo apt-get install libgif-dev
 before_script:
   - npm i truffle
   - truffle version
