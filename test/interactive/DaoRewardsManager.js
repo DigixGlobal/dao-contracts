@@ -78,36 +78,36 @@ contract('DaoRewardsManager', function (accounts) {
     await contracts.daoPointsStorage.addQuarterPoint(addressOf.dgdHolders[4], bN(10), quarterIndex);
   };
 
-  const printPoints = function (pointsBefore, pointsAfter, calculatedReputation) {
-    console.log('------ reputation points (before) ------');
-    for (const i of indexRange(0, 5)) {
-      console.log('dgdHolders[', i, '] : ', pointsBefore[i]);
-    }
-    console.log('------ reputation points (after) ------');
-    for (const i of indexRange(0, 5)) {
-      console.log('dgdHolders[', i, '] : ', pointsAfter[i]);
-    }
-    console.log('------ reputation points (calculated) ------');
-    for (const i of indexRange(0, 5)) {
-      console.log('dgdHolders[', i, '] : ', calculatedReputation[i]);
-    }
-    console.log('');
-  };
-  const printRewards = function (rewardsBefore, rewardsAfter, calculatedRewards) {
-    console.log('------ dgx rewards (before) ------');
-    for (const i of indexRange(0, 5)) {
-      console.log('dgdHolders[', i, '] : ', rewardsBefore[i]);
-    }
-    console.log('------ dgx rewards (after) ------');
-    for (const i of indexRange(0, 5)) {
-      console.log('dgdHolders[', i, '] : ', rewardsAfter[i]);
-    }
-    console.log('------ dgx rewards (calculated) ------');
-    for (const i of indexRange(0, 5)) {
-      console.log('dgdHolders[', i, '] : ', calculatedRewards[i]);
-    }
-    console.log('');
-  };
+  // const printPoints = function (pointsBefore, pointsAfter, calculatedReputation) {
+  //   console.log('------ reputation points (before) ------');
+  //   for (const i of indexRange(0, 5)) {
+  //     console.log('dgdHolders[', i, '] : ', pointsBefore[i]);
+  //   }
+  //   console.log('------ reputation points (after) ------');
+  //   for (const i of indexRange(0, 5)) {
+  //     console.log('dgdHolders[', i, '] : ', pointsAfter[i]);
+  //   }
+  //   console.log('------ reputation points (calculated) ------');
+  //   for (const i of indexRange(0, 5)) {
+  //     console.log('dgdHolders[', i, '] : ', calculatedReputation[i]);
+  //   }
+  //   console.log('');
+  // };
+  // const printRewards = function (rewardsBefore, rewardsAfter, calculatedRewards) {
+  //   console.log('------ dgx rewards (before) ------');
+  //   for (const i of indexRange(0, 5)) {
+  //     console.log('dgdHolders[', i, '] : ', rewardsBefore[i]);
+  //   }
+  //   console.log('------ dgx rewards (after) ------');
+  //   for (const i of indexRange(0, 5)) {
+  //     console.log('dgdHolders[', i, '] : ', rewardsAfter[i]);
+  //   }
+  //   console.log('------ dgx rewards (calculated) ------');
+  //   for (const i of indexRange(0, 5)) {
+  //     console.log('dgdHolders[', i, '] : ', calculatedRewards[i]);
+  //   }
+  //   console.log('');
+  // };
 
   const setDummyConfig = async function () {
     // set locking phase to be 10 seconds

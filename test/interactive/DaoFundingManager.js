@@ -11,7 +11,6 @@ const {
 } = require('../setup');
 
 const {
-  randomAddress,
   randomBytes32,
   indexRange,
 } = require('@digix/helpers/lib/helpers');

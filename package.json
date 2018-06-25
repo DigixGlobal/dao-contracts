@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "bash scripts/unit-test.sh",
-    "test:simulate": "bash scripts/simulate-dao.sh"
+    "test:simulate": "bash scripts/simulate-dao.sh",
+    "lint": "./node_modules/.bin/eslint test/"
   },
   "repository": {
     "type": "git",

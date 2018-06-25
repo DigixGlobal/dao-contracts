@@ -1,37 +1,37 @@
-const a = require('awaiting');
+// const a = require('awaiting');
 
 // const MockDGD = artifacts.require('./MockDGD.sol');
 // const MockBadge = artifacts.require('./MockBadge.sol');
 
-const {
-  deployFreshDao,
-  setupParticipantsStates,
-  phaseCorrection,
-} = require('../setup');
+// const {
+//   deployFreshDao,
+//   setupParticipantsStates,
+//   phaseCorrection,
+// } = require('../setup');
 
-const {
-  daoConstantsValues,
-  phases,
-  proposalStates,
-  EMPTY_BYTES,
-  EMPTY_ADDRESS,
-} = require('../daoHelpers');
+// const {
+//   daoConstantsValues,
+//   phases,
+//   proposalStates,
+//   EMPTY_BYTES,
+//   EMPTY_ADDRESS,
+// } = require('../daoHelpers');
 
-const {
-  randomBigNumber,
-  getCurrentTimestamp,
-  timeIsRecent,
-  randomBytes32,
-  randomBytes32s,
-  randomAddresses,
-} = require('@digix/helpers/lib/helpers');
+// const {
+//   randomBigNumber,
+//   getCurrentTimestamp,
+//   timeIsRecent,
+//   randomBytes32,
+//   randomBytes32s,
+//   randomAddresses,
+// } = require('@digix/helpers/lib/helpers');
 
-const bN = web3.toBigNumber;
+// const bN = web3.toBigNumber;
 
-contract('Dao', function (accounts) {
-  const libs = {};
-  const contracts = {};
-  const addressOf = {};
+contract('Dao', function () {
+  // const libs = {};
+  // const contracts = {};
+  // const addressOf = {};
   // let allUsers;
 
   before(async function () {
@@ -789,5 +789,4 @@ contract('Dao', function (accounts) {
   //   });
   //
   // });
-
 });

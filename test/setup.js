@@ -9,14 +9,10 @@ const {
 } = require('@digix/helpers/lib/helpers');
 
 const {
-} = require('./daoHelpers');
-
-const {
   sampleStakeWeights,
   sampleBadgeWeights,
   daoConstantsKeys,
   phases,
-  quarters,
   assertQuarter,
   getTimeToNextPhase,
   getPhase,
