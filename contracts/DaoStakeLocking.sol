@@ -155,16 +155,17 @@ contract DaoStakeLocking is DaoCommon {
     // has no difference if called in the lastParticipatedQuarter
     function refreshDGDStake(address _user, StakeInformation _infoBefore, bool _saveToStorage)
         internal
-        returns (StakeInformation _infoAfter)
+        returns (StakeInformation memory _infoAfter)
     {
-        _infoAfter = _infoBefore;
+        _infoAfter.userLockedDGDStake = _infoBefore.userLockedDGDStake;
+        _infoAfter.userActualLockedDGD = _infoBefore.userActualLockedDGD;
+        _infoAfter.totalLockedDGDStake = _infoBefore.totalLockedDGDStake;
 
         // only need to refresh if this is the first refresh in this new quarter;
         uint256 _currentQuarter = currentQuarterIndex();
         if (daoRewardsStorage().lastParticipatedQuarter(_user) < _currentQuarter) {
             _infoAfter.userLockedDGDStake = daoCalculatorService().calculateAdditionalLockedDGDStake(_infoBefore.userActualLockedDGD);
 
-            //TODO: double check that _infoBefore still retains the previous value of userLockedDGDStake
             _infoAfter.totalLockedDGDStake += _infoAfter.userLockedDGDStake - _infoBefore.userLockedDGDStake;
             if (_saveToStorage) {
                 daoStakeStorage().updateUserDGDStake(_user, _infoAfter.userActualLockedDGD, _infoAfter.userLockedDGDStake);
@@ -175,23 +176,28 @@ contract DaoStakeLocking is DaoCommon {
 
     // @notice This function refreshes the Moderator status of a user
     // this takes the refreshed StakeInformation from refreshDGDStake as input
-    function refreshModeratorStatus(address _user, StakeInformation _info, StakeInformation _infoAfter)
+    function refreshModeratorStatus(address _user, StakeInformation _infoBefore, StakeInformation _infoAfter)
         internal
     {
-      // add to moderator list if conditions satisfied
-      if (daoStakeStorage().isInModeratorsList(_user) == false) {
-        if (_infoAfter.userLockedDGDStake >= CONFIG_MINIMUM_DGD_FOR_MODERATOR &&
-            daoPointsStorage().getReputation(_user) >= CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR) {
-            daoStakeStorage().addToModeratorList(_user);
-            daoStakeStorage().updateTotalModeratorLockedDGDs(daoStakeStorage().totalModeratorLockedDGDStake() + _infoAfter.totalLockedDGDStake - _info.totalLockedDGDStake);
+        // remove from moderator list if conditions not satisfied
+        if (daoStakeStorage().isInModeratorsList(_user) == true) {
+
+            if (_infoAfter.userLockedDGDStake < CONFIG_MINIMUM_DGD_FOR_MODERATOR ||
+                daoPointsStorage().getReputation(_user) < CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR) {
+
+                    daoStakeStorage().removeFromModeratorList(_user);
+                    daoStakeStorage().updateTotalModeratorLockedDGDs(daoStakeStorage().totalModeratorLockedDGDStake() - _infoBefore.userLockedDGDStake);
+            } else { // update if everything is the same (but may not have locked in locking phase, so actual !== effective)
+                daoStakeStorage().updateTotalModeratorLockedDGDs(daoStakeStorage().totalModeratorLockedDGDStake() - _infoBefore.userLockedDGDStake + _infoAfter.userLockedDGDStake);
+            }
+        } else { // add to moderator list if conditions satisfied
+            if (_infoAfter.userLockedDGDStake >= CONFIG_MINIMUM_DGD_FOR_MODERATOR &&
+                daoPointsStorage().getReputation(_user) >= CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR) {
+
+                    daoStakeStorage().addToModeratorList(_user);
+                    daoStakeStorage().updateTotalModeratorLockedDGDs(daoStakeStorage().totalModeratorLockedDGDStake() + _infoAfter.userLockedDGDStake);
+            }
         }
-      } else { // remove from moderator list if conditions not satisfied
-        if (_infoAfter.userLockedDGDStake < CONFIG_MINIMUM_DGD_FOR_MODERATOR ||
-            daoPointsStorage().getReputation(_user) < CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR) {
-            daoStakeStorage().removeFromModeratorList(_user);
-            daoStakeStorage().updateTotalModeratorLockedDGDs(daoStakeStorage().totalModeratorLockedDGDStake() - _info.totalLockedDGDStake + _infoAfter.totalLockedDGDStake);
-        }
-      }
     }
 
     function getStakeInformation(address _user)

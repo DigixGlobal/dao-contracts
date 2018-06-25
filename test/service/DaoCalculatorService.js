@@ -1,4 +1,4 @@
-const a = require('awaiting');
+// const a = require('awaiting');
 
 const MockDGD = artifacts.require('./MockDGD.sol');
 const MockBadge = artifacts.require('./MockBadge.sol');
@@ -13,7 +13,7 @@ const {
   deployNewContractResolver,
   getAccountsAndAddressOf,
   deployStorage,
-  registerInteractive,
+  // registerInteractive,
   deployServices,
   deployInteractive,
 } = require('../setup');
@@ -40,48 +40,48 @@ const moreVersions = {
   firstProposal: randomBytes32s(2),
   secondProposal: randomBytes32s(3),
   thirdProposal: randomBytes32s(1),
-  fourthProposal: [proposalIds[3]]
-}
+  fourthProposal: [proposalIds[3]],
+};
 const milestoneFundings = {
   firstProposal: {
-    versionOne  : [bN(10 * (10 ** 18)), bN(15 * (10 ** 18)), bN(20 * (10 ** 18))],
-    versionTwo  : [bN(10 * (10 ** 18)), bN(20 * (10 ** 18)), bN(25 * (10 ** 18))],
-    versionThree: [bN(10 * (10 ** 18)), bN(15 * (10 ** 18)), bN(15 * (10 ** 18)), bN(20 * (10 ** 18))]
+    versionOne: [bN(10 * (10 ** 18)), bN(15 * (10 ** 18)), bN(20 * (10 ** 18))],
+    versionTwo: [bN(10 * (10 ** 18)), bN(20 * (10 ** 18)), bN(25 * (10 ** 18))],
+    versionThree: [bN(10 * (10 ** 18)), bN(15 * (10 ** 18)), bN(15 * (10 ** 18)), bN(20 * (10 ** 18))],
   },
   secondProposal: {
-    versionOne  : [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
-    versionTwo  : [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
+    versionOne: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
+    versionTwo: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
     versionThree: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
-    versionFour : [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))]
+    versionFour: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
   },
   thirdProposal: {
-    versionOne  : [bN(20 * (10 ** 18)), bN(30 * (10 ** 18))],
-    versionTwo  : [bN(25 * (10 ** 18)), bN(25 * (10 ** 18))]
+    versionOne: [bN(20 * (10 ** 18)), bN(30 * (10 ** 18))],
+    versionTwo: [bN(25 * (10 ** 18)), bN(25 * (10 ** 18))],
   },
   fourthProposal: {
-    versionOne  : [bN(1 * (10 ** 18)), bN(1 * (10 ** 18)), bN(2 * (10 ** 18)), bN(2 * (10 ** 18))]
-  }
-}
+    versionOne: [bN(1 * (10 ** 18)), bN(1 * (10 ** 18)), bN(2 * (10 ** 18)), bN(2 * (10 ** 18))],
+  },
+};
 const milestoneDurations = {
   firstProposal: {
-    versionOne  : [bN(1000), bN(1500), bN(2000)],
-    versionTwo  : [bN(1000), bN(2000), bN(2500)],
-    versionThree: [bN(1000), bN(1500), bN(1500), bN(2000)]
+    versionOne: [bN(1000), bN(1500), bN(2000)],
+    versionTwo: [bN(1000), bN(2000), bN(2500)],
+    versionThree: [bN(1000), bN(1500), bN(1500), bN(2000)],
   },
   secondProposal: {
-    versionOne  : [bN(500), bN(700), bN(300)],
-    versionTwo  : [bN(500), bN(700), bN(300)],
+    versionOne: [bN(500), bN(700), bN(300)],
+    versionTwo: [bN(500), bN(700), bN(300)],
     versionThree: [bN(500), bN(700), bN(300)],
-    versionFour : [bN(500), bN(700), bN(300)]
+    versionFour: [bN(500), bN(700), bN(300)],
   },
   thirdProposal: {
-    versionOne  : [bN(2000), bN(3000)],
-    versionTwo  : [bN(2500), bN(2500)]
+    versionOne: [bN(2000), bN(3000)],
+    versionTwo: [bN(2500), bN(2500)],
   },
   fourthProposal: {
-    versionOne  : [bN(100), bN(100), bN(200), bN(200)]
-  }
-}
+    versionOne: [bN(100), bN(100), bN(200), bN(200)],
+  },
+};
 
 contract('DaoCalculatorService', function (accounts) {
   let libs;
@@ -125,7 +125,6 @@ contract('DaoCalculatorService', function (accounts) {
 
   const waitFor = async function (timeToWait) {
     const timeThen = getCurrentTimestamp();
-    const blockNumberThen = web3.eth.blockNumber;
     async function wait() {
       await web3.eth.sendTransaction({ from: accounts[0], to: accounts[19], value: web3.toWei(0.0001, 'ether') });
       if ((getCurrentTimestamp() - timeThen) > timeToWait) return;
@@ -149,7 +148,7 @@ contract('DaoCalculatorService', function (accounts) {
       lockingPhaseDuration.toNumber(),
       quarterDuration.toNumber(),
     );
-    if (currentPhase != phaseToEndIn) {
+    if (currentPhase !== phaseToEndIn) {
       const timeToNextPhase = getTimeToNextPhase(getCurrentTimestamp(), startOfDao.toNumber(), lockingPhaseDuration.toNumber(), quarterDuration.toNumber());
       await waitFor(timeToNextPhase);
     }
@@ -229,37 +228,51 @@ contract('DaoCalculatorService', function (accounts) {
 
   const createDummyDaoData = async function () {
     // create and edit proposals (only 1 edit for proposal 1)
-    await contracts.daoStorage.addProposal(proposalIds[0],
+    await contracts.daoStorage.addProposal(
+      proposalIds[0],
       proposers[0], milestoneDurations.firstProposal.versionOne,
-      milestoneFundings.firstProposal.versionOne);
-    await contracts.daoStorage.editProposal(proposalIds[0],
+      milestoneFundings.firstProposal.versionOne,
+    );
+    await contracts.daoStorage.editProposal(
+      proposalIds[0],
       moreVersions.firstProposal[0], milestoneDurations.firstProposal.versionTwo,
-      milestoneFundings.firstProposal.versionTwo);
-
-    await contracts.daoStorage.addProposal(proposalIds[1],
+      milestoneFundings.firstProposal.versionTwo,
+    );
+    await contracts.daoStorage.addProposal(
+      proposalIds[1],
       proposers[1], milestoneDurations.secondProposal.versionOne,
-      milestoneFundings.secondProposal.versionOne);
-    await contracts.daoStorage.editProposal(proposalIds[1],
+      milestoneFundings.secondProposal.versionOne,
+    );
+    await contracts.daoStorage.editProposal(
+      proposalIds[1],
       moreVersions.secondProposal[0], milestoneDurations.secondProposal.versionTwo,
-      milestoneFundings.secondProposal.versionTwo);
-    await contracts.daoStorage.editProposal(proposalIds[1],
+      milestoneFundings.secondProposal.versionTwo,
+    );
+    await contracts.daoStorage.editProposal(
+      proposalIds[1],
       moreVersions.secondProposal[1], milestoneDurations.secondProposal.versionThree,
-      milestoneFundings.secondProposal.versionThree);
-    await contracts.daoStorage.editProposal(proposalIds[1],
+      milestoneFundings.secondProposal.versionThree,
+    );
+    await contracts.daoStorage.editProposal(
+      proposalIds[1],
       moreVersions.secondProposal[2], milestoneDurations.secondProposal.versionFour,
-      milestoneFundings.secondProposal.versionFour);
-
-    await contracts.daoStorage.addProposal(proposalIds[2],
+      milestoneFundings.secondProposal.versionFour,
+    );
+    await contracts.daoStorage.addProposal(
+      proposalIds[2],
       proposers[2], milestoneDurations.thirdProposal.versionOne,
-      milestoneFundings.thirdProposal.versionOne);
-    await contracts.daoStorage.editProposal(proposalIds[2],
+      milestoneFundings.thirdProposal.versionOne,
+    );
+    await contracts.daoStorage.editProposal(
+      proposalIds[2],
       moreVersions.thirdProposal[0], milestoneDurations.thirdProposal.versionTwo,
-      milestoneFundings.thirdProposal.versionTwo);
-
-    await contracts.daoStorage.addProposal(proposalIds[3],
+      milestoneFundings.thirdProposal.versionTwo,
+    );
+    await contracts.daoStorage.addProposal(
+      proposalIds[3],
       proposers[3], milestoneDurations.fourthProposal.versionOne,
-      milestoneFundings.fourthProposal.versionOne);
-
+      milestoneFundings.fourthProposal.versionOne,
+    );
     // endorse proposals
     await contracts.daoStorage.updateProposalEndorse(proposalIds[0], addressOf.badgeHolder1);
     await contracts.daoStorage.updateProposalEndorse(proposalIds[1], addressOf.badgeHolder2);
@@ -271,7 +284,7 @@ contract('DaoCalculatorService', function (accounts) {
     it('[draft quorum]', async function () {
       // proposal 1
       const quorumFromService = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposalIds[0]);
-      const tx1 = await contracts.daoCalculatorService.minimumDraftQuorum(proposalIds[0]);
+      await contracts.daoCalculatorService.minimumDraftQuorum(proposalIds[0]);
       const quorumFromHelper = calculateMinQuorum(
         30,
         (daoConstantsValues(bN).CONFIG_DRAFT_QUORUM_FIXED_PORTION_NUMERATOR).toNumber(),
@@ -284,9 +297,11 @@ contract('DaoCalculatorService', function (accounts) {
       assert.deepEqual(quorumFromService.toNumber(), quorumFromHelper);
 
       // add another version of proposal 1
-      await contracts.daoStorage.editProposal(proposalIds[0],
+      await contracts.daoStorage.editProposal(
+        proposalIds[0],
         moreVersions.firstProposal[1], milestoneDurations.firstProposal.versionThree,
-        milestoneFundings.firstProposal.versionThree);
+        milestoneFundings.firstProposal.versionThree,
+      );
       // stake more badges
       await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(2), { from: addressOf.badgeHolder4 });
       await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(2), { from: addressOf.badgeHolder3 });
@@ -297,7 +312,7 @@ contract('DaoCalculatorService', function (accounts) {
       await contracts.daoStakeLocking.lockBadge(bN(2), { from: addressOf.badgeHolder3 });
 
       const quorumFromService2 = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposalIds[0]);
-      const tx2 = await contracts.daoCalculatorService.minimumDraftQuorum(proposalIds[0]);
+      await contracts.daoCalculatorService.minimumDraftQuorum(proposalIds[0]);
       const quorumFromHelper2 = calculateMinQuorum(
         34,
         (daoConstantsValues(bN).CONFIG_DRAFT_QUORUM_FIXED_PORTION_NUMERATOR).toNumber(),
@@ -315,7 +330,7 @@ contract('DaoCalculatorService', function (accounts) {
     it('milestone 1', async function () {
       // check for milestone 1
       const quorumFromService = await contracts.daoCalculatorService.minimumVotingQuorum.call(proposalIds[0], bN(0));
-      const tx1 = await contracts.daoCalculatorService.minimumVotingQuorum(proposalIds[0], bN(0));
+      await contracts.daoCalculatorService.minimumVotingQuorum(proposalIds[0], bN(0));
       const quorumFromHelper = calculateMinQuorum(
         374,
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR).toNumber(),
@@ -330,7 +345,7 @@ contract('DaoCalculatorService', function (accounts) {
     it('milestone 2', async function () {
       // check for milestone 2
       const quorumFromService2 = await contracts.daoCalculatorService.minimumVotingQuorum.call(proposalIds[0], bN(1));
-      const tx2 = await contracts.daoCalculatorService.minimumVotingQuorum(proposalIds[0], bN(1));
+      await contracts.daoCalculatorService.minimumVotingQuorum(proposalIds[0], bN(1));
       const quorumFromHelper2 = calculateMinQuorum(
         374,
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR).toNumber(),
@@ -345,7 +360,7 @@ contract('DaoCalculatorService', function (accounts) {
     it('milestone 3', async function () {
       // check for milestone 3
       const quorumFromService3 = await contracts.daoCalculatorService.minimumVotingQuorum.call(proposalIds[0], bN(2));
-      const tx3 = await contracts.daoCalculatorService.minimumVotingQuorum(proposalIds[0], bN(2));
+      await contracts.daoCalculatorService.minimumVotingQuorum(proposalIds[0], bN(2));
       const quorumFromHelper3 = calculateMinQuorum(
         374,
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR).toNumber(),
@@ -358,7 +373,6 @@ contract('DaoCalculatorService', function (accounts) {
       assert.deepEqual(quorumFromService3.toNumber(), quorumFromHelper3);
     });
     it('milestone 4', async function () {
-
       // stake more DGDs
       await phaseCorrection(phases.LOCKING_PHASE);
       await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10), { from: addressOf.dgdHolder2 });
@@ -368,7 +382,7 @@ contract('DaoCalculatorService', function (accounts) {
 
       // check for milestone 4
       const quorumFromService4 = await contracts.daoCalculatorService.minimumVotingQuorum.call(proposalIds[0], bN(3));
-      const tx4 = await contracts.daoCalculatorService.minimumVotingQuorum(proposalIds[0], bN(3));
+      await contracts.daoCalculatorService.minimumVotingQuorum(proposalIds[0], bN(3));
       const quorumFromHelper4 = calculateMinQuorum(
         392,
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR).toNumber(),
@@ -379,7 +393,7 @@ contract('DaoCalculatorService', function (accounts) {
         1000 * (10 ** 18),
       );
       assert.deepEqual(quorumFromService4.toNumber(), quorumFromHelper4);
-    })
+    });
   });
 
   describe('draftQuotaPass', function () {
