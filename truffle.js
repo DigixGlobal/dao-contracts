@@ -67,11 +67,4 @@ module.exports = {
       enabled: false,
     },
   },
-  mocha: process.env.REPORT_GAS ? {
-    reporter: 'eth-gas-reporter',
-    reporterOptions: {
-      currency: 'USD',
-      gasPrice: 21,
-    },
-  } : {},
 };
