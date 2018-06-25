@@ -182,7 +182,7 @@ const sampleBadgeWeights = function (bN) {
 
 const sampleStakeWeights = function (bN) {
   return [
-    bN(55 * (10 ** 9)),
+    bN(255 * (10 ** 9)),
     bN(120 * (10 ** 9)),
     bN(150 * (10 ** 9)),
     bN(175 * (10 ** 9)),
@@ -191,7 +191,7 @@ const sampleStakeWeights = function (bN) {
     bN(40 * (10 ** 9)),
     bN(30 * (10 ** 9)),
     bN(20 * (10 ** 9)),
-    bN(46 * (10 ** 9)),
+    bN(180 * (10 ** 9)),
   ];
 };
 

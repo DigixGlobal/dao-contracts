@@ -122,24 +122,28 @@ contract('DaoStakeLocking', function (accounts) {
     });
     it('[locking amount equal to CONFIG_MINIMUM_DGD_FOR_MODERATOR, reputation less than CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR]', async function () {
       // consider addressOf.badgeHolders[3]
-      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(100 * (10 ** 9)), { from: addressOf.badgeHolders[3] });
+      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(110 * (10 ** 9)), { from: addressOf.badgeHolders[3] });
       await contracts.daoPointsStorage.setRP(addressOf.badgeHolders[3], bN(99));
-      await contracts.daoStakeLocking.lockDGD(bN(100 * (10 ** 9)), { from: addressOf.badgeHolders[3] });
+      await contracts.daoStakeLocking.lockDGD(bN(110 * (10 ** 9)), { from: addressOf.badgeHolders[3] });
       assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[3]), false);
+      assert.deepEqual(await contracts.daoStakeStorage.totalModeratorLockedDGDStake.call(), bN(0));
     });
     it('[increased reputation to CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR, now try to confirmContinuedParticipation]', async function () {
       await contracts.daoPointsStorage.setRP(addressOf.badgeHolders[3], bN(100));
       await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.badgeHolders[3] });
       assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[3]), true);
+      assert.deepEqual(await contracts.daoStakeStorage.totalModeratorLockedDGDStake.call(), bN(110 * (10 ** 9)));
       // this user now has no Quarter points, so in the next quarter, 20 RP will be deducted
       // effectively, this user will not be a moderator when he confirms continue participation
     });
     it('[locking amount greater than CONFIG_MINIMUM_DGD_FOR_MODERATOR, reputation equal to CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR]', async function () {
       // consider addressOf.badgeHolders[2]
+      const initial = await contracts.daoStakeStorage.totalModeratorLockedDGDStake.call();
       await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(101 * (10 ** 9)), { from: addressOf.badgeHolders[2] });
       await contracts.daoPointsStorage.setRP(addressOf.badgeHolders[2], bN(101));
       await contracts.daoStakeLocking.lockDGD(bN(101 * (10 ** 9)), { from: addressOf.badgeHolders[2] });
       assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[2]), true);
+      assert.deepEqual(await contracts.daoStakeStorage.totalModeratorLockedDGDStake.call(), initial.plus(bN(101 * (10 ** 9))));
     });
     it('[lock during main phase]: verify actual stake', async function () {
       const startOfDao = await contracts.daoStorage.startOfFirstQuarter.call();
@@ -179,6 +183,18 @@ contract('DaoStakeLocking', function (accounts) {
       await contracts.daoStakeLocking.lockDGD(bN(100 * (10 ** 9)), { from: addressOf.badgeHolders[1] });
       assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[1]), false);
     });
+    it('[moderator with 250 DGDs (effective != total, effective > 100)]: added as moderator, check totalModeratorLockedDGDStake when withdraws next locking phase', async function () {
+      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(250 * (10 ** 9)), { from: addressOf.badgeHolders[0] });
+      await contracts.daoPointsStorage.setRP(addressOf.badgeHolders[0], bN(101));
+      await contracts.daoStakeLocking.lockDGD(bN(250 * (10 ** 9)), { from: addressOf.badgeHolders[0] });
+      assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[0]), true);
+    });
+    it('[dgdHolders[5] locking > 100 dgds (main phase), confirms continue participation next locking]: see how the totalModeratorLockedDGDStake increases', async function () {
+      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(180 * (10 ** 9)), { from: addressOf.dgdHolders[5] });
+      await contracts.daoPointsStorage.setRP(addressOf.dgdHolders[5], 200);
+      await contracts.daoStakeLocking.lockDGD(bN(180 * (10 ** 9)), { from: addressOf.dgdHolders[5] });
+      assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.dgdHolders[5]), true);
+    });
     it('[confirmContinuedParticipation during the same main phase]: nothing really happens', async function () {
       // person in consideration is addressOf.badgeHolders[1] and addressOf.badgeHolders[2]
       const initialStake1 = await contracts.daoStakeStorage.readUserDGDStake.call(addressOf.badgeHolders[1]);
@@ -207,11 +223,42 @@ contract('DaoStakeLocking', function (accounts) {
       await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
     });
     it('[confirmContinuedParticipation]: badgeHolders[1] --> moderator, badgeHolders[3] --> no moderator', async function () {
+      const initial = await contracts.daoStakeStorage.totalModeratorLockedDGDStake.call();
       await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.badgeHolders[1] });
       assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[1]), true);
+      assert.deepEqual(await contracts.daoStakeStorage.totalModeratorLockedDGDStake.call(), initial.plus(bN(110 * (10 ** 9))));
 
+      const middle = await contracts.daoStakeStorage.totalModeratorLockedDGDStake.call();
       await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.badgeHolders[3] });
       assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[3]), false);
+      assert.deepEqual(await contracts.daoStakeStorage.totalModeratorLockedDGDStake.call(), middle.minus(bN(110 * (10 ** 9))));
+    });
+    it('[badgeHolders[0] now withdraws all 250 DGDs]: totalModeratorLockedDGDStake should only change by effective DGDs (which is < 250 DGDs)', async function () {
+      const stake = await contracts.daoStakeStorage.readUserDGDStake.call(addressOf.badgeHolders[0]);
+      const effectiveStake = stake[1];
+      const totalActualStake = stake[0];
+      const initial = await contracts.daoStakeStorage.totalModeratorLockedDGDStake.call();
+      assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[0]), true);
+      await contracts.daoStakeLocking.withdrawDGD(totalActualStake, { from: addressOf.badgeHolders[0] });
+      assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[0]), false);
+      const stakeAfter = await contracts.daoStakeStorage.readUserDGDStake.call(addressOf.badgeHolders[0]);
+      assert.deepEqual(stakeAfter[1], bN(0));
+      assert.deepEqual(stakeAfter[0], bN(0));
+      assert.deepEqual(await contracts.daoStakeStorage.totalModeratorLockedDGDStake.call(), initial.minus(effectiveStake));
+    });
+    it('[dgdHolders[5] now confirms participation]: totalModeratorLockedDGDStake should go up', async function () {
+      const userStakeBefore = await contracts.daoStakeStorage.readUserDGDStake.call(addressOf.dgdHolders[5]);
+      const stakeDiffDueToMainPhaseStaking = userStakeBefore[0].minus(userStakeBefore[1]);
+      const totalModeratorLockedDGDStakeBefore = await contracts.daoStakeStorage.totalModeratorLockedDGDStake.call();
+
+      await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.dgdHolders[5] });
+
+      const userStakeAfter = await contracts.daoStakeStorage.readUserDGDStake.call(addressOf.dgdHolders[5]);
+      const totalModeratorLockedDGDStakeAfter = await contracts.daoStakeStorage.totalModeratorLockedDGDStake.call();
+
+      assert.deepEqual(totalModeratorLockedDGDStakeAfter, totalModeratorLockedDGDStakeBefore.plus(stakeDiffDueToMainPhaseStaking));
+      assert.deepEqual(userStakeAfter[0], userStakeBefore[0]);
+      assert.deepEqual(userStakeAfter[0], userStakeAfter[1]);
     });
     it('[withdraw more than locked amount]: revert', async function () {
       // dgdHolder2 is the user in context

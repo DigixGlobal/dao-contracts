@@ -8,14 +8,30 @@ import "../common/DaoConstants.sol";
 contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage {
     using DoublyLinkedList for DoublyLinkedList.Address;
 
+    // This is the DGD stake of a user (one that is considered in the DAO)
     mapping (address => uint256) public lockedDGDStake;
+
+    // This is the actual number of DGDs locked by user
+    // may be more than the lockedDGDStake
+    // in case they locked during the main phase
     mapping (address => uint256) public actualLockedDGD;
-    /* mapping (address => uint256) public lockedBadge; */
+
+    // The total locked DGDs in the DAO (summation of lockedDGDStake)
     uint256 public totalLockedDGDStake;
+
+    // The total locked DGDs by moderators
     uint256 public totalModeratorLockedDGDStake;
-    /* uint256 public totalLockedBadges; */
+
+    // The list of participants in DAO
+    // actual participants will be subset of this list
     DoublyLinkedList.Address allParticipants;
+
+    // The list of moderators in DAO
+    // actual moderators will be subset of this list
     DoublyLinkedList.Address allModerators;
+
+    // Boolean to mark if an address has redeemed
+    // reputation points for their DGD Badge
     mapping (address => bool) public redeemedBadge;
 
     function DaoStakeStorage(address _resolver) public {
