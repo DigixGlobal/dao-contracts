@@ -280,16 +280,16 @@ const votingRevealRound = async function (contracts, addressOf, commits) {
   });
 };
 
-const prlApproveProposals = async function (contracts, index, addressOf) {
-  await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
-    await contracts.dao.updatePRL(
-      proposals[proposalIndex].id,
-      index,
-      true,
-      { from: addressOf.prl },
-    );
-  });
-};
+// const prlApproveProposals = async function (contracts, index, addressOf) {
+//   await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
+//     await contracts.dao.updatePRL(
+//       proposals[proposalIndex].id,
+//       index,
+//       true,
+//       { from: addressOf.prl },
+//     );
+//   });
+// };
 
 const claimVotingResult = async function (contracts, addressOf) {
   await waitForRevealPhaseToGetOver(contracts, addressOf, proposals[3].id, bN(0), bN, web3);
@@ -564,8 +564,8 @@ module.exports = async function () {
 
     // PRL approves these proposals
     await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);
-    await prlApproveProposals(contracts, bN(0), addressOf); // approve first milestone prl
-    console.log('prl approved the proposals');
+    // await prlApproveProposals(contracts, bN(0), addressOf); // approve first milestone prl
+    // console.log('prl approved the proposals');
 
     // first voting round
     await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);
@@ -641,7 +641,7 @@ module.exports = async function () {
     await interimVotingRoundClaim(contracts);
     console.log('done with claiming interim round voting');
 
-    prlApproveProposals(contracts, bN(1), addressOf); // approve second milestone funding
+    // prlApproveProposals(contracts, bN(1), addressOf); // approve second milestone funding
 
     await claimFunding(contracts, 1);
     console.log('claimed funding after interim voting phase');
@@ -674,7 +674,7 @@ module.exports = async function () {
     console.log('before claimFinalReward');
     await printProposalDetails(contracts, proposals[0]);
 
-    await contracts.dao.updatePRL(proposals[0].id, bN(2), true, { from: addressOf.prl });
+    // await contracts.dao.updatePRL(proposals[0].id, bN(2), true, { from: addressOf.prl });
 
     console.log('claiming final rewards...');
     await claimFinalReward(contracts, addressOf, proposals[0].id, proposals[0].proposer, 2);

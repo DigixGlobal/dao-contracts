@@ -12,8 +12,6 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     using DaoStructs for DaoStructs.VotingCount;
     using DaoStructs for DaoStructs.MilestoneInfo;
     using DaoStructs for DaoStructs.Users;
-    uint256[] public uintLogs;
-    address[] public addressLogs;
 
     function daoCalculatorService()
         internal
@@ -173,7 +171,6 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     function addBonusReputation(address[] _voters, uint256 _n)
         private
     {
-        uintLogs.push(_n);
         uint256 _qp = get_uint_config(CONFIG_QUARTER_POINT_VOTE);
         uint256 _rate = get_uint_config(CONFIG_BONUS_REPUTATION_NUMERATOR);
         uint256 _base = get_uint_config(CONFIG_BONUS_REPUTATION_DENOMINATOR);

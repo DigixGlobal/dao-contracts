@@ -111,8 +111,22 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
+    // 1 and only 1 param must be true
+    modifier if_valid_prl_action(bool _stop, bool _pause, bool _unpause) {
+        if (_stop) {
+            require(!_pause && !_unpause);
+        } else if (_pause) {
+            require(!_stop && !_unpause);
+        } else if (_unpause) {
+            require(!_stop && !_pause);
+        } else {
+            require(false);
+        }
+        _;
+    }
+
     modifier if_prl_approved(bytes32 _proposalId, uint256 _index) {
-        require(daoStorage().readProposalPRL(_proposalId, _index) == true);
+        require(daoStorage().readProposalPRL(_proposalId) == true);
         _;
     }
 

@@ -8,6 +8,10 @@ contract DaoConstants {
   uint256 PROPOSAL_STATE_VETTED = 3;
   uint256 PROPOSAL_STATE_FUNDED = 4;
 
+  uint256 PRL_ACTION_STOP = 404;
+  uint256 PRL_ACTION_PAUSE = 500;
+  uint256 PRL_ACTION_UNPAUSE = 202;
+
   // interactive contracts
   bytes32 CONTRACT_DAO = "c:dao";
   bytes32 CONTRACT_DAO_STAKE_LOCKING = "dao:stake-locking";

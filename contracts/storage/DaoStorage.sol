@@ -107,16 +107,41 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         _finalVersion = proposalsById[_proposalId].finalVersion;
     }
 
-    function readProposalPRL(bytes32 _proposalId, uint256 _index)
+    // This is to use while checking for fund release to proposer
+    function readProposalPRL(bytes32 _proposalId)
         public
         constant
         returns (bool _valid)
     {
-        if (_index == 0) {
-            _valid = proposalsById[_proposalId].votingRound.prlValid;
+        DaoStructs.PrlAction[] _pastActions = proposalsById[_proposalId].prlActions;
+        if (_pastActions.length > 0) {
+            if (_pastActions[_pastActions.length - 1].actionId == PRL_ACTION_UNPAUSE) {
+                _valid = true;
+            }
         } else {
-            _valid = proposalsById[_proposalId].interimRounds[_index].prlValid;
+            _valid = true;
         }
+    }
+
+    function readTotalPrlActions(bytes32 _proposalId)
+        public
+        constant
+        returns (uint256 _length)
+    {
+        DaoStructs.PrlAction[] memory _actions = proposalsById[_proposalId].prlActions;
+        _length = _actions.length;
+    }
+
+    function readPrlAction(bytes32 _proposalId, uint256 _index)
+        public
+        constant
+        returns (uint256 _actionId, uint256 _time, bytes32 _doc)
+    {
+        DaoStructs.PrlAction[] _actions = proposalsById[_proposalId].prlActions;
+        require(_index < _actions.length);
+        _actionId = _actions[_index].actionId;
+        _time = _actions[_index].at;
+        _doc = _actions[_index].doc;
     }
 
     function readProposalDraftVotingResult(bytes32 _proposalId)
@@ -747,21 +772,35 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
 
     /// @notice update the PRL status of the voting in a proposal
     /// @param _proposalId Proposal ID
-    /// @param _index Index of the voting round
-    /// @param _valid PRL validity, true if legal, false if illegal
+    /// @param _stop PRL action, true if stop the proposal (deemed illegal)
+    /// @param _pause PRL action, true if pause the proposal (in doubt)
+    /// @param _unpause PRL action, true if unpausing an already paused proposal
+    /// @param _doc IPFS doc hash of the details regarding this PRL action
+    /// @param _time timestamp when PRL action was taken
     function updateProposalPRL(
         bytes32 _proposalId,
-        uint256 _index,
-        bool _valid
+        bool _stop,
+        bool _pause,
+        bool _unpause,
+        bytes32 _doc,
+        uint256 _time
     )
         public
         if_sender_is(CONTRACT_DAO)
     {
-        if (_index == 0) {
-            proposalsById[_proposalId].votingRound.prlValid = _valid;
+        DaoStructs.PrlAction prlAction;
+        prlAction.at = _time;
+        prlAction.doc = _doc;
+        if (_stop) {
+            prlAction.actionId = PRL_ACTION_STOP;
+        } else if (_pause) {
+            prlAction.actionId = PRL_ACTION_PAUSE;
+        } else if (_unpause) {
+            prlAction.actionId = PRL_ACTION_UNPAUSE;
         } else {
-            proposalsById[_proposalId].interimRounds[_index].prlValid = _valid;
+            return;
         }
+        proposalsById[_proposalId].prlActions.push(prlAction);
     }
 
     /// @notice add/update draft vote for an initial proposal

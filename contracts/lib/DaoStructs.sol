@@ -23,6 +23,12 @@ library DaoStructs {
         uint256 usersLength;
     }
 
+    struct PrlAction {
+        uint256 at;
+        bytes32 doc;
+        uint256 actionId;
+    }
+
     struct Voting {
         uint256 startTime;
         mapping (bytes32 => bool) usedCommits;
@@ -32,15 +38,12 @@ library DaoStructs {
         uint256 totalYesVotes;
         uint256 totalNoVotes;
         bool passed;
-        /* address claimer; */
         bool claimed;
-        bool prlValid;
     }
 
     struct ProposalVersion {
         bytes32 docIpfsHash;
         uint256 created;
-        /* Voting draftVoting; */
         uint256 milestoneCount;
         uint256[] milestoneDurations;
         uint256[] milestoneFundings;
@@ -58,8 +61,8 @@ library DaoStructs {
         Voting draftVoting;
         Voting votingRound;
         mapping (uint256 => Voting) interimRounds;
-        /* bool prlValid; */
         bytes32 finalVersion;
+        PrlAction[] prlActions;
     }
 
     struct SpecialProposal {

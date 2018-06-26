@@ -122,16 +122,57 @@ contract Dao is DaoCommon, Claimable {
 
     // @notice Function to update the PRL (regulatory status) status of a proposal
     // @param _proposalId ID of the proposal
-    // @param _index Index of the voting round
-    // @param _valid Boolean, whether the proposal is PRL valid or not
+    // @param _stop Boolean, true if proposal is to be stopped ASAP
+    // @param _pause Boolean, true if proposal is to be paused for now
+    // @param _unpause Boolean, true if an already paused proposal is to be unpaused
+    // @param _doc hash of IPFS uploaded document, containing details of PRL Action
     // @return _success Boolean, whether the PRL status was updated successfully
-    function updatePRL(bytes32 _proposalId, uint256 _index, bool _valid)
+    function updatePRL(
+        bytes32 _proposalId,
+        bool _stop,
+        bool _pause,
+        bool _unpause,
+        bytes32 _doc
+    )
         public
         if_prl()
+        if_valid_prl_action(_stop, _pause, _unpause)
         returns (bool _success)
     {
-        daoStorage().updateProposalPRL(_proposalId, _index, _valid);
+        checkPrlConditions(_proposalId, _pause, _unpause);
+        daoStorage().updateProposalPRL(_proposalId, _stop, _pause, _unpause, _doc, now);
         _success = true;
+    }
+
+    function checkPrlConditions(bytes32 _proposalId, bool _pause, bool _unpause)
+        internal
+    {
+        uint256 _noOfActions = daoStorage().readTotalPrlActions(_proposalId);
+        if (_noOfActions > 0) {
+            DaoStructs.PrlAction memory _lastAction;
+            (
+                _lastAction.actionId,
+                _lastAction.at,
+                _lastAction.doc
+            ) = daoStorage().readPrlAction(_proposalId, _noOfActions - 1);
+
+            // if pausing, the last action should should have been unpause or nothing
+            if (_pause) {
+                require(_lastAction.actionId == PRL_ACTION_UNPAUSE);
+            }
+            // if unpausing, the last action should have been pausing
+            if (_unpause) {
+                require(_lastAction.actionId == PRL_ACTION_PAUSE);
+                handleUnpauseProposal(_proposalId, _lastAction.at);
+            }
+        }
+    }
+
+    // TODO
+    function handleUnpauseProposal(bytes32 _proposalId, uint256 _lastPausedAt)
+        internal
+    {
+        uint256 _pausedFor = now - _lastPausedAt;
     }
 
     // @notice Function to create a Special Proposal (can only be created by the founders)
