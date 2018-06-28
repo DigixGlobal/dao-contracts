@@ -2,7 +2,6 @@ const a = require('awaiting');
 
 const {
   indexRange,
-  randomAddress,
   randomBigNumber,
   getCurrentTimestamp,
   randomBytes32,
