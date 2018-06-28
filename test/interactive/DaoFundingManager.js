@@ -13,6 +13,7 @@ const {
 const {
   randomBytes32,
   indexRange,
+  getCurrentTimestamp,
 } = require('@digix/helpers/lib/helpers');
 
 const bN = web3.toBigNumber;
@@ -80,18 +81,19 @@ contract('DaoFundingManager', function (accounts) {
       await contracts.daoStorage.finalizeProposal(doc);
     });
     it('[proposal is not prl approved]: revert', async function () {
-      assert.deepEqual(await contracts.daoStorage.readProposalPRL.call(doc, bN(0)), false);
+      await contracts.daoStorage.updateProposalPRL(doc, bN(2), randomBytes32(), bN(getCurrentTimestamp()));
+      assert.deepEqual(await contracts.daoStorage.readProposalPRL.call(doc), false);
       assert(await a.failure(contracts.daoFundingManager.claimEthFunding.call(
         doc,
         bN(0),
         fundings[0],
         { from: addressOf.dgdHolders[2] },
       )));
+      // unpause again
+      await contracts.daoStorage.updateProposalPRL(doc, bN(3), randomBytes32(), bN(getCurrentTimestamp()));
     });
     it('[not called by addressOf.dgdHolders[2]]: revert', async function () {
-      // approve prl
-      await contracts.daoStorage.updateProposalPRL(doc, bN(0), true);
-      assert.deepEqual(await contracts.daoStorage.readProposalPRL.call(doc, bN(0)), true);
+      assert.deepEqual(await contracts.daoStorage.readProposalPRL.call(doc), true);
       assert(await a.failure(contracts.daoFundingManager.claimEthFunding.call(
         doc,
         bN(0),
