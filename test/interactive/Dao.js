@@ -167,7 +167,6 @@ contract('Dao', function (accounts) {
       assert.deepEqual(timeIsRecent(readProposal[4], 10), true);
       assert.deepEqual(readProposal[5], bN(1));
       assert.deepEqual(readProposal[6], proposals[0].id);
-      assert.deepEqual(await contracts.daoStorage.readProposalPRL.call(proposals[0].id, bN(0)), false);
     });
     it('[not main phase]: revert', async function () {
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
@@ -210,7 +209,7 @@ contract('Dao', function (accounts) {
       ), true);
       await contracts.dao.endorseProposal(proposals[1].id, { from: addressOf.badgeHolders[0] });
 
-      assert.deepEqual(await contracts.daoStorage.readProposalState.call(proposals[1].id), proposalStates(bN).PROPOSAL_STATE_INITIAL);
+      assert.deepEqual(await contracts.daoStorage.readProposalState.call(proposals[1].id), proposalStates(bN).PROPOSAL_STATE_DRAFT);
       assert.deepEqual((await contracts.daoStorage.readProposal.call(proposals[1].id))[2], addressOf.badgeHolders[0]);
     });
     it('[if proposal has already been endorsed]: revert', async function () {
@@ -251,7 +250,7 @@ contract('Dao', function (accounts) {
     it('[if not proposer]: revert', async function () {
       assert.deepEqual(await contracts.daoStakeStorage.isInParticipantList.call(addressOf.dgdHolders[1]), true);
       assert.deepEqual(await contracts.daoIdentityStorage.is_kyc_approved.call(addressOf.dgdHolders[1]), true);
-      assert.deepEqual(await contracts.daoStorage.readProposalState.call(proposals[0].id), proposalStates(bN).PROPOSAL_STATE_INITIAL);
+      assert.deepEqual(await contracts.daoStorage.readProposalState.call(proposals[0].id), proposalStates(bN).PROPOSAL_STATE_DRAFT);
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
       assert.notEqual(await contracts.daoStorage.readProposalProposer.call(proposals[0].id), addressOf.dgdHolders[1]);
       assert(await a.failure(contracts.dao.modifyProposal.call(
@@ -324,8 +323,6 @@ contract('Dao', function (accounts) {
       assert.deepEqual(readProposalVersion[2], proposals[1].versions[1].milestoneDurations);
       assert.deepEqual(readProposalVersion[3], proposals[1].versions[1].milestoneFundings);
       assert.deepEqual(readProposalVersion[4], proposals[1].versions[1].finalReward);
-      // PRL should be false once updated
-      assert.deepEqual(await contracts.daoStorage.readProposalPRL.call(proposals[1].id, bN(0)), false);
       // latest version should be the updated one
       assert.deepEqual(await contracts.daoStorage.getLastProposalVersion.call(proposals[1].id), proposals[1].versions[1].versionId);
       const readProposal = await contracts.daoStorage.readProposal.call(proposals[1].id);
