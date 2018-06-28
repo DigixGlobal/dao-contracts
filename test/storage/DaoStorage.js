@@ -217,7 +217,7 @@ contract('DaoStorage', function (accounts) {
     });
     it('[endorse proposal]: verify read functions', async function () {
       assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL), doc);
-      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_INITIAL), EMPTY_BYTES);
+      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_DRAFT), EMPTY_BYTES);
 
       assert.deepEqual(await contracts.daoStorage.updateProposalEndorse.call(
         doc,
@@ -226,8 +226,8 @@ contract('DaoStorage', function (accounts) {
       await contracts.daoStorage.updateProposalEndorse(doc, endorser);
 
       assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL), EMPTY_BYTES);
-      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_INITIAL), doc);
-      assert.deepEqual(await contracts.daoStorage.readProposalState.call(doc), proposalStates(bN).PROPOSAL_STATE_INITIAL);
+      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_DRAFT), doc);
+      assert.deepEqual(await contracts.daoStorage.readProposalState.call(doc), proposalStates(bN).PROPOSAL_STATE_DRAFT);
     });
   });
 
@@ -257,29 +257,29 @@ contract('DaoStorage', function (accounts) {
     });
     it('getFirstProposalInState', async function () {
       assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL), someDocs[2]);
-      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_INITIAL), doc);
-      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_VETTED), someDocs[0]);
-      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_FUNDED), EMPTY_BYTES);
+      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_DRAFT), doc);
+      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_MODERATED), someDocs[0]);
+      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_ONGOING), EMPTY_BYTES);
     });
     it('getLastProposalInState', async function () {
       assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL), someDocs[3]);
-      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_INITIAL), someDocs[1]);
-      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_VETTED), someDocs[0]);
-      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_FUNDED), EMPTY_BYTES);
+      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_DRAFT), someDocs[1]);
+      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_MODERATED), someDocs[0]);
+      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_ONGOING), EMPTY_BYTES);
     });
     it('getNextProposalInState', async function () {
       assert.deepEqual(await contracts.daoStorage.getNextProposalInState.call(proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL, someDocs[2]), someDocs[3]);
       assert.deepEqual(await contracts.daoStorage.getNextProposalInState.call(proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL, someDocs[3]), EMPTY_BYTES);
-      assert.deepEqual(await contracts.daoStorage.getNextProposalInState.call(proposalStates(bN).PROPOSAL_STATE_INITIAL, doc), someDocs[1]);
-      assert.deepEqual(await contracts.daoStorage.getNextProposalInState.call(proposalStates(bN).PROPOSAL_STATE_INITIAL, someDocs[1]), EMPTY_BYTES);
-      assert.deepEqual(await contracts.daoStorage.getNextProposalInState.call(proposalStates(bN).PROPOSAL_STATE_VETTED, someDocs[0]), EMPTY_BYTES);
+      assert.deepEqual(await contracts.daoStorage.getNextProposalInState.call(proposalStates(bN).PROPOSAL_STATE_DRAFT, doc), someDocs[1]);
+      assert.deepEqual(await contracts.daoStorage.getNextProposalInState.call(proposalStates(bN).PROPOSAL_STATE_DRAFT, someDocs[1]), EMPTY_BYTES);
+      assert.deepEqual(await contracts.daoStorage.getNextProposalInState.call(proposalStates(bN).PROPOSAL_STATE_MODERATED, someDocs[0]), EMPTY_BYTES);
     });
     it('getPreviousProposalInState', async function () {
       assert.deepEqual(await contracts.daoStorage.getPreviousProposalInState.call(proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL, someDocs[2]), EMPTY_BYTES);
       assert.deepEqual(await contracts.daoStorage.getPreviousProposalInState.call(proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL, someDocs[3]), someDocs[2]);
-      assert.deepEqual(await contracts.daoStorage.getPreviousProposalInState.call(proposalStates(bN).PROPOSAL_STATE_INITIAL, doc), EMPTY_BYTES);
-      assert.deepEqual(await contracts.daoStorage.getPreviousProposalInState.call(proposalStates(bN).PROPOSAL_STATE_INITIAL, someDocs[1]), doc);
-      assert.deepEqual(await contracts.daoStorage.getPreviousProposalInState.call(proposalStates(bN).PROPOSAL_STATE_VETTED, someDocs[0]), EMPTY_BYTES);
+      assert.deepEqual(await contracts.daoStorage.getPreviousProposalInState.call(proposalStates(bN).PROPOSAL_STATE_DRAFT, doc), EMPTY_BYTES);
+      assert.deepEqual(await contracts.daoStorage.getPreviousProposalInState.call(proposalStates(bN).PROPOSAL_STATE_DRAFT, someDocs[1]), doc);
+      assert.deepEqual(await contracts.daoStorage.getPreviousProposalInState.call(proposalStates(bN).PROPOSAL_STATE_MODERATED, someDocs[0]), EMPTY_BYTES);
     });
   });
 
@@ -371,7 +371,7 @@ contract('DaoStorage', function (accounts) {
   });
 
   describe('setProposalDraftPass', function () {
-    // proposal 1, i.e. `doc` is in PROPOSAL_STATE_INITIAL state
+    // proposal 1, i.e. `doc` is in PROPOSAL_STATE_DRAFT state
     // draft pass it
     it('[not called by CONTRACT_DAO_VOTING_CLAIMS]: revert', async function () {
       assert(await a.failure(contracts.daoStorage.setProposalDraftPass.call(
@@ -388,8 +388,8 @@ contract('DaoStorage', function (accounts) {
       await contracts.daoStorage.setProposalDraftPass(doc, true);
 
       // read state of doc
-      assert.deepEqual(await contracts.daoStorage.readProposalState.call(doc), proposalStates(bN).PROPOSAL_STATE_VETTED);
-      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_VETTED), doc);
+      assert.deepEqual(await contracts.daoStorage.readProposalState.call(doc), proposalStates(bN).PROPOSAL_STATE_MODERATED);
+      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_MODERATED), doc);
       // read draft voting result
       assert.deepEqual(await contracts.daoStorage.readProposalDraftVotingResult.call(doc), true);
     });
@@ -540,8 +540,8 @@ contract('DaoStorage', function (accounts) {
       ), true);
       await contracts.daoStorage.setProposalPass(doc, bN(0), true);
       // verify state of the proposal
-      assert.deepEqual(await contracts.daoStorage.readProposalState.call(doc), proposalStates(bN).PROPOSAL_STATE_FUNDED);
-      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_FUNDED), doc);
+      assert.deepEqual(await contracts.daoStorage.readProposalState.call(doc), proposalStates(bN).PROPOSAL_STATE_ONGOING);
+      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_ONGOING), doc);
       // verify if proposal voting is passed
       assert.deepEqual(await contracts.daoStorage.readProposalVotingResult.call(doc, bN(0)), true);
     });

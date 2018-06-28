@@ -3,6 +3,7 @@ pragma solidity ^0.4.23;
 import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
 import "./common/DaoCommon.sol";
 import "./DaoFundingManager.sol";
+import "./DaoVotingClaims.sol";
 
 // @title Interactive DAO contract for creating/modifying/endorsing proposals
 // @author Digix Holdings
@@ -17,6 +18,13 @@ contract Dao is DaoCommon, Claimable {
         returns (DaoFundingManager _contract)
     {
         _contract = DaoFundingManager(get_contract(CONTRACT_DAO_FUNDING_MANAGER));
+    }
+
+    function daoVotingClaims()
+        internal
+        returns (DaoVotingClaims _contract)
+    {
+        _contract = DaoVotingClaims(get_contract(CONTRACT_DAO_VOTING_CLAIMS));
     }
 
     // @notice Migrate this DAO to a new DAO contract
@@ -88,7 +96,7 @@ contract Dao is DaoCommon, Claimable {
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
         uint256 _currentState = daoStorage().readProposalState(_proposalId);
         require(_currentState == PROPOSAL_STATE_PREPROPOSAL ||
-          _currentState == PROPOSAL_STATE_INITIAL);
+          _currentState == PROPOSAL_STATE_DRAFT);
         require(identity_storage().is_kyc_approved(msg.sender));
         require(daoStorage().editProposal(_proposalId, _docIpfsHash, _milestonesDurations, _milestonesFundings, _finalReward));
         _success = true;
@@ -112,67 +120,67 @@ contract Dao is DaoCommon, Claimable {
         public
         if_main_phase()
         if_moderator()
+        is_proposal_state(_proposalId, PROPOSAL_STATE_PREPROPOSAL)
         returns (bool _success)
     {
         address _endorser = msg.sender;
-        require(daoStorage().readProposalState(_proposalId) == PROPOSAL_STATE_PREPROPOSAL);
         require(daoStorage().updateProposalEndorse(_proposalId, _endorser));
         _success = true;
     }
 
     // @notice Function to update the PRL (regulatory status) status of a proposal
     // @param _proposalId ID of the proposal
-    // @param _stop Boolean, true if proposal is to be stopped ASAP
-    // @param _pause Boolean, true if proposal is to be paused for now
-    // @param _unpause Boolean, true if an already paused proposal is to be unpaused
     // @param _doc hash of IPFS uploaded document, containing details of PRL Action
     // @return _success Boolean, whether the PRL status was updated successfully
     function updatePRL(
         bytes32 _proposalId,
-        bool _stop,
-        bool _pause,
-        bool _unpause,
+        uint8 _action,
         bytes32 _doc
     )
         public
         if_prl()
-        if_valid_prl_action(_stop, _pause, _unpause)
         returns (bool _success)
     {
-        checkPrlConditions(_proposalId, _pause, _unpause);
-        daoStorage().updateProposalPRL(_proposalId, _stop, _pause, _unpause, _doc, now);
-        _success = true;
-    }
+        require(_action == PRL_ACTION_STOP || _action == PRL_ACTION_PAUSE || _action == PRL_ACTION_UNPAUSE);
+        if (_action == PRL_ACTION_UNPAUSE) {
+            //if the last action was pause, and it happened before a release of funding
+            // then we need to push back the milestone, and set the startTime of the voting accordingly.
+            uint256 _prlActionCount = daoStorage().readTotalPrlActions(_proposalId);
+            if (_prlActionCount > 0) {
+              uint256 _lastAction;
+              uint256 _lastActionTime;
+              (_lastAction, _lastActionTime, ) = daoStorage().readPrlAction(_proposalId, _prlActionCount - 1);
 
-    function checkPrlConditions(bytes32 _proposalId, bool _pause, bool _unpause)
-        internal
-    {
-        uint256 _noOfActions = daoStorage().readTotalPrlActions(_proposalId);
-        if (_noOfActions > 0) {
-            DaoStructs.PrlAction memory _lastAction;
-            (
-                _lastAction.actionId,
-                _lastAction.at,
-                _lastAction.doc
-            ) = daoStorage().readPrlAction(_proposalId, _noOfActions - 1);
+              // find out the last voting round that has just happened
+              // hence, it is also the index of the current milestone
+              uint256 _lastVotingRound = 0;
+              while (true) {
+                uint256 _nextMilestoneStartOfNextVotingRound = daoStorage().readProposalNextMilestoneStart(_proposalId, _lastVotingRound + 1);
+                if (_nextMilestoneStartOfNextVotingRound == 0 || _nextMilestoneStartOfNextVotingRound > now) { break; }
+                _lastVotingRound += 1;
+              }
 
-            // if pausing, the last action should should have been unpause or nothing
-            if (_pause) {
-                require(_lastAction.actionId == PRL_ACTION_UNPAUSE);
-            }
-            // if unpausing, the last action should have been pausing
-            if (_unpause) {
-                require(_lastAction.actionId == PRL_ACTION_PAUSE);
-                handleUnpauseProposal(_proposalId, _lastAction.at);
+              // if it's before even the start of the first milestone: no need to do anything
+              if (now < daoStorage().readProposalNextMilestoneStart(_proposalId, 0)) {
+                return true;
+              }
+
+              // update the startOfNextMilestone and setTimelineForNextMilestone() accordingly if we just deplayed the proposal
+              if (_lastAction == PRL_ACTION_PAUSE && _lastActionTime < daoStorage().readProposalNextMilestoneStart(_proposalId, _lastVotingRound)) {
+
+                daoStorage().setProposalNextMilestoneStart(_proposalId, _lastVotingRound, now);
+
+                daoVotingClaims().setTimelineForNextMilestone(
+                    _proposalId,
+                    _lastVotingRound + 1,
+                    daoStorage().readProposalMilestoneDuration(_proposalId, _lastVotingRound),
+                    now
+                );
+              }
             }
         }
-    }
-
-    // TODO
-    function handleUnpauseProposal(bytes32 _proposalId, uint256 _lastPausedAt)
-        internal
-    {
-        uint256 _pausedFor = now - _lastPausedAt;
+        daoStorage().updateProposalPRL(_proposalId, _action, _doc, now);
+        _success = true;
     }
 
     // @notice Function to create a Special Proposal (can only be created by the founders)
@@ -192,7 +200,7 @@ contract Dao is DaoCommon, Claimable {
         if_main_phase()
         returns (bool _success)
     {
-        require(getTimeFromNextLockingPhase(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
+        require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
         address _proposer = msg.sender;
         daoSpecialStorage().addSpecialProposal(
             _doc,

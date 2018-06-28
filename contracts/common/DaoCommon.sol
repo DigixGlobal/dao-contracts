@@ -38,61 +38,37 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_commit_phase(bytes32 _proposalId) {
-        uint256 _start = daoStorage().readProposalVotingTime(_proposalId, 0);
-        require(_start > 0);
-        require(now >= _start);
-        require(now - _start < get_uint_config(CONFIG_VOTING_COMMIT_PHASE));
+    modifier if_commit_phase(bytes32 _proposalId, uint8 _index) {
+        require_in_phase(
+            daoStorage().readProposalVotingTime(_proposalId, _index),
+            0,
+            get_uint_config(_index == 0 ? CONFIG_VOTING_COMMIT_PHASE : CONFIG_INTERIM_COMMIT_PHASE)
+        );
         _;
     }
 
-    modifier if_reveal_phase(bytes32 _proposalId) {
-      uint256 _start = daoStorage().readProposalVotingTime(_proposalId, 0);
-      require(_start > 0);
-      require(now >= _start);
-      require(now - _start < get_uint_config(CONFIG_VOTING_PHASE_TOTAL));
-      require(now - _start >= get_uint_config(CONFIG_VOTING_COMMIT_PHASE));
+    modifier if_reveal_phase(bytes32 _proposalId, uint256 _index) {
+      require_in_phase(
+          daoStorage().readProposalVotingTime(_proposalId, _index),
+          get_uint_config(_index == 0 ? CONFIG_VOTING_COMMIT_PHASE : CONFIG_INTERIM_COMMIT_PHASE),
+          get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL)
+      );
       _;
     }
 
-    modifier if_after_reveal_phase(bytes32 _proposalId) {
-      uint256 _start = daoStorage().readProposalVotingTime(_proposalId, 0);
-      require(_start > 0);
-      require(now >= _start);
-      require(now - _start >= get_uint_config(CONFIG_VOTING_PHASE_TOTAL));
-      _;
-    }
-
-    modifier if_interim_commit_phase(bytes32 _proposalId, uint8 _index) {
-        uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
-        require(_start > 0);
-        require(now >= _start);
-        require(now - _start < get_uint_config(CONFIG_INTERIM_COMMIT_PHASE));
-        _;
-    }
-
-    modifier if_interim_reveal_phase(bytes32 _proposalId, uint256 _index) {
+    modifier if_after_proposal_reveal_phase(bytes32 _proposalId, uint256 _index) {
       uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
       require(_start > 0);
-      require(now >= _start);
-      require(now - _start < get_uint_config(CONFIG_INTERIM_PHASE_TOTAL));
-      require(now - _start >= get_uint_config(CONFIG_INTERIM_COMMIT_PHASE));
-      _;
-    }
-
-    modifier if_after_interim_reveal_phase(bytes32 _proposalId, uint256 _index) {
-      uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
-      require(_start > 0);
-      require(now >= _start);
-      require(now - _start >= get_uint_config(CONFIG_INTERIM_PHASE_TOTAL));
+      require(now >= _start + get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL));
       _;
     }
 
     modifier if_draft_voting_phase(bytes32 _proposalId) {
-        uint256 _start = daoStorage().readProposalDraftVotingTime(_proposalId);
-        require(_start > 0);
-        require(now >= _start);
-        require(now - _start < get_uint_config(CONFIG_DRAFT_VOTING_PHASE));
+        require_in_phase(
+            daoStorage().readProposalDraftVotingTime(_proposalId),
+            0,
+            get_uint_config(CONFIG_DRAFT_VOTING_PHASE)
+        );
         _;
     }
 
@@ -108,20 +84,6 @@ contract DaoCommon is IdentityCommon {
 
     modifier is_proposal_state(bytes32 _proposalId, uint256 _STATE) {
         require(daoStorage().readProposalState(_proposalId) == _STATE);
-        _;
-    }
-
-    // 1 and only 1 param must be true
-    modifier if_valid_prl_action(bool _stop, bool _pause, bool _unpause) {
-        if (_stop) {
-            require(!_pause && !_unpause);
-        } else if (_pause) {
-            require(!_stop && !_unpause);
-        } else if (_unpause) {
-            require(!_stop && !_pause);
-        } else {
-            require(false);
-        }
         _;
     }
 
@@ -206,18 +168,21 @@ contract DaoCommon is IdentityCommon {
       _;
     }
 
-    modifier if_commit_phase_special(bytes32 _proposalId) {
-        uint256 _start = daoSpecialStorage().readVotingTime(_proposalId);
-        require(_start > 0);
-        require(now - _start < get_uint_config(CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE));
+    modifier if_commmit_phase_special(bytes32 _proposalId) {
+        require_in_phase(
+            daoSpecialStorage().readVotingTime(_proposalId),
+            0,
+            get_uint_config(CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE)
+        );
         _;
     }
 
     modifier if_reveal_phase_special(bytes32 _proposalId) {
-        uint256 _start = daoSpecialStorage().readVotingTime(_proposalId);
-        require(_start > 0);
-        require(now - _start < get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
-        require(now - _start >= get_uint_config(CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE));
+        require_in_phase(
+            daoSpecialStorage().readVotingTime(_proposalId),
+            get_uint_config(CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE),
+            get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL)
+        );
         _;
     }
 
@@ -229,6 +194,12 @@ contract DaoCommon is IdentityCommon {
         require(size == 0);
         _;
 
+    }
+
+    function require_in_phase(uint256 _startingPoint, uint256 _relativePhaseStart, uint256 _relativePhaseEnd) {
+        require(_startingPoint > 0);
+        require(now < _startingPoint + _relativePhaseEnd);
+        require(now >= _startingPoint + _relativePhaseStart);
     }
 
     function currentQuarterIndex() internal returns(uint256 _quarterIndex) {
@@ -249,8 +220,8 @@ contract DaoCommon is IdentityCommon {
         _currentT = timeInQuarter(now);
     }
 
-    function getTimeFromNextLockingPhase(uint256 _time) internal returns(uint256 _timeToGo) {
-        _timeToGo = get_uint_config(CONFIG_QUARTER_DURATION) - timeInQuarter(_time);
+    function getTimeLeftInQuarter(uint256 _time) internal returns(uint256 _timeLeftInQuarter) {
+        _timeLeftInQuarter = get_uint_config(CONFIG_QUARTER_DURATION) - timeInQuarter(_time);
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 

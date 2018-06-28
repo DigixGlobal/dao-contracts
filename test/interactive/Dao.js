@@ -223,7 +223,7 @@ contract('Dao', function () {
   //     ), true);
   //     await contracts.dao.endorseProposal(proposalIds[1], { from: addressOf.badgeHolder2 });
   //
-  //     assert.deepEqual(await contracts.daoStorage.readProposalState.call(proposalIds[1]), proposalStates(bN).PROPOSAL_STATE_INITIAL);
+  //     assert.deepEqual(await contracts.daoStorage.readProposalState.call(proposalIds[1]), proposalStates(bN).PROPOSAL_STATE_DRAFT);
   //     assert.deepEqual((await contracts.daoStorage.readProposal.call(proposalIds[1]))[2], addressOf.badgeHolder2);
   //     assert.deepEqual(timeIsRecent(await contracts.daoStorage.readProposalDraftVotingTime.call(proposalIds[1])), true);
   //   });
@@ -269,7 +269,7 @@ contract('Dao', function () {
   //   it('[if not proposer]: revert', async function () {
   //     assert.deepEqual(await contracts.daoStakeStorage.isParticipant.call(addressOf.dgdHolder2), true);
   //     assert.deepEqual(await contracts.DaoIdentityStorage.is_kyc_approved.call(addressOf.dgdHolder2), true);
-  //     assert.deepEqual(await contracts.daoStorage.readProposalState.call(proposalIds[1]), proposalStates(bN).PROPOSAL_STATE_INITIAL);
+  //     assert.deepEqual(await contracts.daoStorage.readProposalState.call(proposalIds[1]), proposalStates(bN).PROPOSAL_STATE_DRAFT);
   //     assert.deepEqual(milestoneDurations.secondProposal.versionTwo.length, milestoneFundings.secondProposal.versionTwo.length);
   //     await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
   //     assert(await a.failure(contracts.dao.modifyProposal.call(

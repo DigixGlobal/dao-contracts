@@ -16,6 +16,7 @@ library DaoStructs {
         uint256 duration;
         uint256 funding;
         uint256 finalReward;
+        uint256 milestoneStart;
     }
 
     struct Users {
@@ -35,10 +36,13 @@ library DaoStructs {
         mapping (address => bytes32) commits;
         mapping (address => uint256) yesVotes;
         mapping (address => uint256) noVotes;
-        uint256 totalYesVotes;
-        uint256 totalNoVotes;
         bool passed;
         bool claimed;
+
+        // this is normally startTime + duration of the voting
+        // however, it can be delayed due to the PRL pausing
+        uint256 startOfNextMilestone;
+
     }
 
     struct ProposalVersion {
@@ -59,8 +63,8 @@ library DaoStructs {
         DoublyLinkedList.Bytes proposalVersionDocs;
         mapping (bytes32 => ProposalVersion) proposalVersions;
         Voting draftVoting;
-        Voting votingRound;
-        mapping (uint256 => Voting) interimRounds;
+        mapping (uint256 => Voting) votingRounds;
+        bool isPaused;
         bytes32 finalVersion;
         PrlAction[] prlActions;
     }

@@ -113,14 +113,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         constant
         returns (bool _valid)
     {
-        DaoStructs.PrlAction[] _pastActions = proposalsById[_proposalId].prlActions;
-        if (_pastActions.length > 0) {
-            if (_pastActions[_pastActions.length - 1].actionId == PRL_ACTION_UNPAUSE) {
-                _valid = true;
-            }
-        } else {
-            _valid = true;
-        }
+        _valid = !proposalsById[_proposalId].isPaused;
     }
 
     function readTotalPrlActions(bytes32 _proposalId)
@@ -130,6 +123,14 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     {
         DaoStructs.PrlAction[] memory _actions = proposalsById[_proposalId].prlActions;
         _length = _actions.length;
+    }
+
+    function isProposalPaused(bytes32 _proposalId)
+        public
+        constant
+        returns (bool _isPaused)
+    {
+        _isPaused = proposalsById[_proposalId].isPaused;
     }
 
     function readPrlAction(bytes32 _proposalId, uint256 _index)
@@ -157,11 +158,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         constant
         returns (bool _result)
     {
-        if (_index == 0) {
-            _result = proposalsById[_proposalId].votingRound.passed;
-        } else {
-            _result = proposalsById[_proposalId].interimRounds[_index].passed;
-        }
+        _result = proposalsById[_proposalId].votingRounds[_index].passed;
     }
 
     function readProposalDraftVotingTime(bytes32 _proposalId)
@@ -177,11 +174,15 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         constant
         returns (uint256 _start)
     {
-        if (_index == 0) {
-            _start = proposalsById[_proposalId].votingRound.startTime;
-        } else {
-            _start = proposalsById[_proposalId].interimRounds[_index].startTime;
-        }
+        _start = proposalsById[_proposalId].votingRounds[_index].startTime;
+    }
+
+    function readProposalNextMilestoneStart(bytes32 _proposalId, uint256 _index)
+        public
+        constant
+        returns (uint256 _start)
+    {
+        _start = proposalsById[_proposalId].votingRounds[_index].startOfNextMilestone;
     }
 
     function readDraftVotingCount(bytes32 _proposalId, address[] memory _allUsers)
@@ -206,12 +207,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         constant
         returns (uint256 _for, uint256 _against, uint256 _quorum)
     {
-        DaoStructs.Voting storage _voting;
-        if (_index == 0) {
-            _voting = proposalsById[_proposalId].votingRound;
-        } else {
-            _voting = proposalsById[_proposalId].interimRounds[_index];
-        }
+        DaoStructs.Voting storage _voting = proposalsById[_proposalId].votingRounds[_index];
         uint256 _n = _allUsers.length;
         for (uint256 i = 0; i < _n; i++) {
             if (_voting.yesVotes[_allUsers[i]] > 0) {
@@ -227,12 +223,8 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         public
         returns (address[] memory _voters, uint256 _length)
     {
-        DaoStructs.Voting storage _voting;
-        if (_index == 0) {
-            _voting = proposalsById[_proposalId].votingRound;
-        } else {
-            _voting = proposalsById[_proposalId].interimRounds[_index];
-        }
+        DaoStructs.Voting storage _voting = proposalsById[_proposalId].votingRounds[_index];
+
         uint256 _n = _allUsers.length;
         uint256 i;
         _length = 0;
@@ -282,11 +274,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         constant
         returns (bytes32 _commitHash)
     {
-        if (_index == 0) {
-            _commitHash = proposalsById[_proposalId].votingRound.commits[_voter];
-        } else {
-            _commitHash = proposalsById[_proposalId].interimRounds[_index].commits[_voter];
-        }
+        _commitHash = proposalsById[_proposalId].votingRounds[_index].commits[_voter];
     }
 
     function readVote(bytes32 _proposalId, uint256 _index, address _voter)
@@ -295,11 +283,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         returns (uint256 _weight)
     {
         DaoStructs.Voting _voting;
-        if (_index == 0) {
-            _voting = proposalsById[_proposalId].votingRound;
-        } else {
-            _voting = proposalsById[_proposalId].interimRounds[_index];
-        }
+        _voting = proposalsById[_proposalId].votingRounds[_index];
         if (_voting.yesVotes[_voter] > 0) {
             _weight = _voting.yesVotes[_voter];
         } else {
@@ -482,6 +466,14 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         }
     }
 
+    function readProposalMilestoneDuration(bytes32 _proposalId, uint256 _index)
+        public
+        constant
+        returns (uint256 _duration)
+    {
+        (,_duration,,) = readProposalMilestone(_proposalId, _index);
+    }
+
     function readProposalDuration(bytes32 _proposalId)
         public
         constant
@@ -570,33 +562,10 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         public
         returns (bool _claimed)
     {
-        if (_index == 0) {
-            _claimed = proposalsById[_proposalId].votingRound.claimed;
-        } else {
-            _claimed = proposalsById[_proposalId].interimRounds[_index].claimed;
-        }
+        _claimed = proposalsById[_proposalId].votingRounds[_index].claimed;
     }
 
     ///////////////////////////// PRIVATE FUNCTIONS /////////////////////////////
-
-    /// @notice nullify vote of a voter during draft voting
-    /// @param _proposalId proposal ID
-    /// @param _voter address of the voter
-    function nullifyVote(
-        bytes32 _proposalId,
-        address _voter
-    )
-        private
-    {
-        DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
-        if (_proposal.draftVoting.yesVotes[_voter] > 0) {
-            _proposal.draftVoting.yesVotes[_voter] = 0;
-        } else if (_proposal.draftVoting.noVotes[_voter] > 0) {
-            _proposal.draftVoting.noVotes[_voter] = 0;
-        } else {
-            return;
-        }
-    }
 
     ////////////////////////////// WRITE FUNCTIONS //////////////////////////////
 
@@ -688,9 +657,9 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     {
         DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
         _proposal.endorser = _endorser;
-        _proposal.currentState = PROPOSAL_STATE_INITIAL;
+        _proposal.currentState = PROPOSAL_STATE_DRAFT;
         proposalsByState[PROPOSAL_STATE_PREPROPOSAL].remove_item(_proposalId);
-        proposalsByState[PROPOSAL_STATE_INITIAL].append(_proposalId);
+        proposalsByState[PROPOSAL_STATE_DRAFT].append(_proposalId);
         _success = true;
     }
 
@@ -701,9 +670,9 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     {
         proposalsById[_proposalId].draftVoting.passed = _result;
         if (_result) {
-            proposalsByState[PROPOSAL_STATE_INITIAL].remove_item(_proposalId);
-            proposalsByState[PROPOSAL_STATE_VETTED].append(_proposalId);
-            proposalsById[_proposalId].currentState = PROPOSAL_STATE_VETTED;
+            proposalsByState[PROPOSAL_STATE_DRAFT].remove_item(_proposalId);
+            proposalsByState[PROPOSAL_STATE_MODERATED].append(_proposalId);
+            proposalsById[_proposalId].currentState = PROPOSAL_STATE_MODERATED;
         }
         _success = true;
     }
@@ -713,16 +682,12 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
         returns (bool _success)
     {
-        if (_index == 0) {
-            proposalsById[_proposalId].votingRound.passed = _result;
-            if (_result) {
-                proposalsByState[PROPOSAL_STATE_VETTED].remove_item(_proposalId);
-                proposalsByState[PROPOSAL_STATE_FUNDED].append(_proposalId);
-                proposalsById[_proposalId].currentState = PROPOSAL_STATE_FUNDED;
-            }
-        } else {
-            proposalsById[_proposalId].interimRounds[_index].passed = _result;
+        if (_index == 0 && _result) {
+            proposalsByState[PROPOSAL_STATE_MODERATED].remove_item(_proposalId);
+            proposalsByState[PROPOSAL_STATE_ONGOING].append(_proposalId);
+            proposalsById[_proposalId].currentState = PROPOSAL_STATE_ONGOING;
         }
+        proposalsById[_proposalId].votingRounds[_index].passed = _result;
         _success = true;
     }
 
@@ -744,11 +709,18 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         public
         if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
-        if (_index == 0) {
-            proposalsById[_proposalId].votingRound.startTime = _time;
-        } else {
-            proposalsById[_proposalId].interimRounds[_index].startTime = _time;
-        }
+        proposalsById[_proposalId].votingRounds[_index].startTime = _time;
+    }
+
+    function setProposalNextMilestoneStart(
+        bytes32 _proposalId,
+        uint256 _index,
+        uint256 _time
+    )
+        public
+        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
+    {
+        proposalsById[_proposalId].votingRounds[_index].startOfNextMilestone = _time;
     }
 
     function setDraftVotingClaim(bytes32 _proposalId, bool _claimed)
@@ -763,25 +735,16 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
         DaoStructs.Proposal _proposal = proposalsById[_proposalId];
-        if (_index == 0) {
-            _proposal.votingRound.claimed = _claimed;
-        } else {
-            _proposal.interimRounds[_index].claimed = _claimed;
-        }
+        _proposal.votingRounds[_index].claimed = _claimed;
     }
 
     /// @notice update the PRL status of the voting in a proposal
     /// @param _proposalId Proposal ID
-    /// @param _stop PRL action, true if stop the proposal (deemed illegal)
-    /// @param _pause PRL action, true if pause the proposal (in doubt)
-    /// @param _unpause PRL action, true if unpausing an already paused proposal
     /// @param _doc IPFS doc hash of the details regarding this PRL action
     /// @param _time timestamp when PRL action was taken
     function updateProposalPRL(
         bytes32 _proposalId,
-        bool _stop,
-        bool _pause,
-        bool _unpause,
+        uint8 _action,
         bytes32 _doc,
         uint256 _time
     )
@@ -791,16 +754,20 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         DaoStructs.PrlAction prlAction;
         prlAction.at = _time;
         prlAction.doc = _doc;
-        if (_stop) {
-            prlAction.actionId = PRL_ACTION_STOP;
-        } else if (_pause) {
-            prlAction.actionId = PRL_ACTION_PAUSE;
-        } else if (_unpause) {
-            prlAction.actionId = PRL_ACTION_UNPAUSE;
-        } else {
-            return;
-        }
+        prlAction.actionId = _action;
         proposalsById[_proposalId].prlActions.push(prlAction);
+
+        if (_action == PRL_ACTION_PAUSE) {
+          proposalsById[_proposalId].isPaused = true;
+        } else if (_action == PRL_ACTION_UNPAUSE) {
+          proposalsById[_proposalId].isPaused = false;
+        } else { // STOP
+          proposalsById[_proposalId].isPaused = true;
+          uint256 _currentState = proposalsById[_proposalId].currentState;
+          proposalsByState[_currentState].remove_item(_proposalId);
+          proposalsByState[PROPOSAL_STATE_CLOSED].append(_proposalId);
+          proposalsById[_proposalId].currentState = PROPOSAL_STATE_CLOSED;
+        }
     }
 
     /// @notice add/update draft vote for an initial proposal
@@ -822,10 +789,8 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         returns (bool _success)
     {
         DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
-        if ((_proposal.draftVoting.yesVotes[_voter] > 0) ||
-            (_proposal.draftVoting.noVotes[_voter] > 0)) {
-            nullifyVote(_proposalId, _voter);
-        }
+        _proposal.draftVoting.yesVotes[_voter] = 0;
+        _proposal.draftVoting.noVotes[_voter] = 0;
         if (_vote) {
             _proposal.draftVoting.yesVotes[_voter] = _weight;
         } else {
@@ -838,7 +803,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     /// @param _proposalId Proposal ID
     /// @param _hash committed hash
     /// @param _voter address of the participant/voter
-    /// @param _index index of voting round (0 for votingRound, 1 onwards for interimVotingRound)
+    /// @param _index index of voting round (0 for votingRRound, 1 onwards for interimvotingRound)
     /// @return {
     ///   "_success": "if vote was committed successfully"
     /// }
@@ -853,11 +818,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         returns (bool _success)
     {
         DaoStructs.Proposal _proposal = proposalsById[_proposalId];
-        if (_index == 0) {
-            _proposal.votingRound.commits[_voter] = _hash;
-        } else {
-            _proposal.interimRounds[_index].commits[_voter] = _hash;
-        }
+        _proposal.votingRounds[_index].commits[_voter] = _hash;
         _success = true;
     }
 
@@ -881,12 +842,8 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         if_sender_is(CONTRACT_DAO_VOTING)
         returns (bool _success)
     {
-        DaoStructs.Voting _voting;
-        if (_index == 0) {
-            _voting = proposalsById[_proposalId].votingRound;
-        } else {
-            _voting = proposalsById[_proposalId].interimRounds[_index];
-        }
+        DaoStructs.Voting _voting = proposalsById[_proposalId].votingRounds[_index];
+
         if (_vote) {
             _voting.yesVotes[_voter] = _weight;
         } else {

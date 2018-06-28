@@ -3,9 +3,9 @@ const assert = require('assert');
 const proposalStates = function (bN) {
   return {
     PROPOSAL_STATE_PREPROPOSAL: bN(1),
-    PROPOSAL_STATE_INITIAL: bN(2),
-    PROPOSAL_STATE_VETTED: bN(3),
-    PROPOSAL_STATE_FUNDED: bN(4),
+    PROPOSAL_STATE_DRAFT: bN(2),
+    PROPOSAL_STATE_MODERATED: bN(3),
+    PROPOSAL_STATE_ONGOING: bN(4),
   };
 };
 

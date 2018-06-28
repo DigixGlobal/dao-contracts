@@ -43,44 +43,6 @@ contract DaoVoting is DaoCommon, Claimable {
         _success = true;
     }
 
-    // @notice Function to commit a vote on proposal (Voting Round)
-    // @param _proposalId ID of the proposal
-    // @param _commitHash Hash of the vote to commit (hash = SHA3(address(pub_address), bool(vote), uint256(random_number)))
-    // @return _success Boolean, true if vote was committed successfully
-    function commitVoteOnProposal(
-        bytes32 _proposalId,
-        bytes32 _commitHash
-    )
-        public
-        if_commit_phase(_proposalId)
-        is_proposal_state(_proposalId, PROPOSAL_STATE_VETTED)
-        if_participant()
-        returns (bool _success)
-    {
-        daoStorage().commitVote(_proposalId, _commitHash, msg.sender, 0);
-        _success = true;
-    }
-
-    // @notice Function to reveal a committed vote on proposal (Voting Round)
-    // @param _proposalId ID of the proposal
-    // @param _vote Boolean, true if voted for, false if voted against
-    // @param _salt Random Number used to commit vote
-    function revealVoteOnProposal(
-        bytes32 _proposalId,
-        bool _vote,
-        uint256 _salt
-    )
-        public
-        if_reveal_phase(_proposalId)
-        is_proposal_state(_proposalId, PROPOSAL_STATE_VETTED)
-        has_not_revealed(_proposalId, 0)
-        if_participant()
-    {
-        require(keccak256(msg.sender, _vote, _salt) == daoStorage().readCommitVote(_proposalId, 0, msg.sender));
-        daoStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().readUserEffectiveDGDStake(msg.sender), 0);
-        daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_VOTE), currentQuarterIndex());
-    }
-
     // @notice Function to commit a vote on special proposal
     // @param _proposalId ID of the proposal
     // @param _commitHash Hash of the vote to commit (hash = SHA3(address(pub_address), bool(vote), uint256(random_number)))
@@ -90,7 +52,7 @@ contract DaoVoting is DaoCommon, Claimable {
         bytes32 _commitHash
     )
         public
-        if_commit_phase_special(_proposalId)
+        if_commmit_phase_special(_proposalId)
         if_participant()
         returns (bool _success)
     {
@@ -117,19 +79,18 @@ contract DaoVoting is DaoCommon, Claimable {
         daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_VOTE), currentQuarterIndex());
     }
 
-    // @notice Function to commit a vote on proposal (Interim Voting Round)
+    // @notice Function to commit a vote on proposal (Voting Round)
     // @param _proposalId ID of the proposal
-    // @param _index Index of the Interim Voting Round
+    // @param _index Index of the Voting Round
     // @param _commitHash Hash of the vote to commit (hash = SHA3(address(pub_address), bool(vote), uint256(random_number)))
     // @return _success Boolean, true if vote was committed successfully
-    function commitVoteOnInterim(
+    function commitVoteOnProposal(
         bytes32 _proposalId,
         uint8 _index,
         bytes32 _commitHash
     )
         public
-        if_interim_commit_phase(_proposalId, _index)
-        is_proposal_state(_proposalId, PROPOSAL_STATE_FUNDED)
+        if_commit_phase(_proposalId, _index)
         if_participant()
         returns (bool _success)
     {
@@ -137,25 +98,28 @@ contract DaoVoting is DaoCommon, Claimable {
         _success = true;
     }
 
-    // @notice Function to reveal a committed vote on proposal (Interim Voting Round)
+    // @notice Function to reveal a committed vote on proposal (Voting Round)
     // @param _proposalId ID of the proposal
-    // @param _index Index of the Interim Voting Round
+    // @param _index Index of the Voting Round
     // @param _vote Boolean, true if voted for, false if voted against
     // @param _salt Random Number used to commit vote
-    function revealVoteOnInterim(
+    function revealVoteOnProposal(
         bytes32 _proposalId,
         uint8 _index,
         bool _vote,
         uint256 _salt
     )
         public
-        if_interim_reveal_phase(_proposalId, _index)
-        is_proposal_state(_proposalId, PROPOSAL_STATE_FUNDED)
+        if_reveal_phase(_proposalId, _index)
         has_not_revealed(_proposalId, _index)
         if_participant()
     {
         require(keccak256(msg.sender, _vote, _salt) == daoStorage().readCommitVote(_proposalId, _index, msg.sender));
         daoStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().readUserEffectiveDGDStake(msg.sender), _index);
-        daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_INTERIM_VOTE), currentQuarterIndex());
+        daoPointsStorage().addQuarterPoint(
+            msg.sender,
+            get_uint_config(_index == 0 ? CONFIG_QUARTER_POINT_VOTE : CONFIG_QUARTER_POINT_INTERIM_VOTE),
+            currentQuarterIndex()
+        );
     }
 }
