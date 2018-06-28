@@ -134,7 +134,7 @@ contract Dao is DaoCommon, Claimable {
     // @return _success Boolean, whether the PRL status was updated successfully
     function updatePRL(
         bytes32 _proposalId,
-        uint8 _action,
+        uint256 _action,
         bytes32 _doc
     )
         public

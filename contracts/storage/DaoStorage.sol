@@ -744,14 +744,14 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     /// @param _time timestamp when PRL action was taken
     function updateProposalPRL(
         bytes32 _proposalId,
-        uint8 _action,
+        uint256 _action,
         bytes32 _doc,
         uint256 _time
     )
         public
         if_sender_is(CONTRACT_DAO)
     {
-        DaoStructs.PrlAction prlAction;
+        DaoStructs.PrlAction memory prlAction;
         prlAction.at = _time;
         prlAction.doc = _doc;
         prlAction.actionId = _action;

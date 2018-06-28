@@ -6,6 +6,7 @@ const proposalStates = function (bN) {
     PROPOSAL_STATE_DRAFT: bN(2),
     PROPOSAL_STATE_MODERATED: bN(3),
     PROPOSAL_STATE_ONGOING: bN(4),
+    PROPOSAL_STATE_CLOSED: bN(5),
   };
 };
 
