@@ -134,6 +134,15 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
+    modifier if_funding_possible(uint256[] _fundings) {
+        uint256 _total = 0;
+        for (uint256 i = 0; i < _fundings.length; i++) {
+            _total += _fundings[i];
+        }
+        require(_total <= daoFundingStorage().ethInDao());
+        _;
+    }
+
     modifier if_draft_not_claimed(bytes32 _proposalId) {
         require(daoStorage().isDraftClaimed(_proposalId) == false);
         _;

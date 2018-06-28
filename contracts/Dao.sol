@@ -37,6 +37,7 @@ contract Dao is DaoCommon, Claimable {
         public
         onlyOwner()
     {
+        require(daoStorage().isReplacedByNewDao() == false);
         daoStorage().updateForDaoMigration(_newDaoFundingManager, _newDaoContract);
         daoFundingManager().moveFundsToNewDao(_newDaoFundingManager);
     }
@@ -62,6 +63,7 @@ contract Dao is DaoCommon, Claimable {
         public
         if_main_phase()
         if_participant()
+        if_funding_possible(_milestonesFundings)
         if_valid_milestones(_milestonesDurations.length, _milestonesFundings.length)
         returns (bool _success)
     {
@@ -109,6 +111,7 @@ contract Dao is DaoCommon, Claimable {
         if_editable(_proposalId)
     {
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
+        require(identity_storage().is_kyc_approved(msg.sender));
         daoStorage().finalizeProposal(_proposalId);
         daoStorage().setProposalDraftVotingTime(_proposalId, now);
     }
@@ -200,7 +203,6 @@ contract Dao is DaoCommon, Claimable {
         if_main_phase()
         returns (bool _success)
     {
-        require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
         address _proposer = msg.sender;
         daoSpecialStorage().addSpecialProposal(
             _doc,
@@ -214,11 +216,9 @@ contract Dao is DaoCommon, Claimable {
 
     // @notice Function to set start of voting round for special proposal
     // @param _proposalId ID of the special proposal
-    // @param _time start time of voting round (time stamp in seconds)
     // @return _success Boolean, true if voting time was set successfully
     function startSpecialProposalVoting(
-        bytes32 _proposalId,
-        uint256 _time
+        bytes32 _proposalId
     )
         public
         if_main_phase()
@@ -226,7 +226,8 @@ contract Dao is DaoCommon, Claimable {
     {
         require(daoSpecialStorage().readProposalProposer(_proposalId) == msg.sender);
         require(daoSpecialStorage().readVotingTime(_proposalId) == 0);
-        daoSpecialStorage().setVotingTime(_proposalId, _time);
+        require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
+        daoSpecialStorage().setVotingTime(_proposalId, now);
         _success = true;
     }
 }

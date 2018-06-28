@@ -206,25 +206,25 @@ const getTestProposals = function (bN, addressOf) {
       addressOf.dgdHolders[1],
       addressOf.badgeHolders[1],
       [{
-        versionId: randomAddress(),
+        versionId: randomBytes32(),
         milestoneCount: 3,
         milestoneFundings: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
         milestoneDurations: [bN(500), bN(700), bN(300)],
         finalReward: bN(1 * (10 ** 18)),
       }, {
-        versionId: randomAddress(),
+        versionId: randomBytes32(),
         milestoneCount: 3,
         milestoneFundings: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
         milestoneDurations: [bN(20), bN(20), bN(20)],
         finalReward: bN(1 * (10 ** 18)),
       }, {
-        versionId: randomAddress(),
+        versionId: randomBytes32(),
         milestoneCount: 3,
         milestoneFundings: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
         milestoneDurations: [bN(500), bN(700), bN(300)],
         finalReward: bN(1 * (10 ** 18)),
       }, {
-        versionId: randomAddress(),
+        versionId: randomBytes32(),
         milestoneCount: 3,
         milestoneFundings: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
         milestoneDurations: [bN(500), bN(700), bN(300)],
@@ -237,13 +237,13 @@ const getTestProposals = function (bN, addressOf) {
       addressOf.dgdHolders[4],
       addressOf.badgeHolders[2],
       [{
-        versionId: randomAddress(),
+        versionId: randomBytes32(),
         milestoneCount: 2,
         milestoneFundings: [bN(20 * (10 ** 18)), bN(30 * (10 ** 18))],
         milestoneDurations: [bN(2000), bN(3000)],
         finalReward: bN(1 * (10 ** 18)),
       }, {
-        versionId: randomAddress(),
+        versionId: randomBytes32(),
         milestoneCount: 2,
         milestoneFundings: [bN(25 * (10 ** 18)), bN(25 * (10 ** 18))],
         milestoneDurations: [bN(10), bN(10)],
@@ -256,7 +256,7 @@ const getTestProposals = function (bN, addressOf) {
       addressOf.dgdHolders[5],
       addressOf.badgeHolders[3],
       [{
-        versionId: randomAddress(),
+        versionId: randomBytes32(),
         milestoneCount: 4,
         milestoneFundings: [bN(1 * (10 ** 18)), bN(1 * (10 ** 18)), bN(2 * (10 ** 18)), bN(2 * (10 ** 18))],
         milestoneDurations: [bN(25), bN(25), bN(25), bN(25)],
@@ -405,6 +405,12 @@ const fundDao = async function (web3, accounts, contracts) {
   });
 };
 
+const withdrawDGDs = async (web3, contracts, bN, participants) => {
+  await a.map(participants, 20, async (participant) => {
+    await contracts.daoStakeLocking.withdrawDGD(participant.dgdToLock, { from: participant.address });
+  });
+};
+
 const lockDGDs = async (web3, contracts, bN, participants) => {
   await a.map(participants, 20, async (participant) => {
     await contracts.daoStakeLocking.lockDGD(participant.dgdToLock, { from: participant.address });
@@ -424,53 +430,91 @@ const fundUserAndApproveForStakeLocking = async (web3, contracts, bN, participan
   const ENOUGH_BADGE = bN(5);
   await a.map(participants, 20, async (participant) => {
     await contracts.dgdToken.transfer(participant.address, ENOUGH_DGD);
-    console.log('sent dgd to participant ', participant.address);
+    // console.log('sent dgd to participant ', participant.address);
     await contracts.badgeToken.transfer(participant.address, ENOUGH_BADGE);
-    console.log('sent badge to participant ', participant.address);
+    // console.log('sent badge to participant ', participant.address);
     await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(2 ** 255), { from: participant.address });
-    console.log('approved dgd for participant ', participant.address);
+    // console.log('approved dgd for participant ', participant.address);
     await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(2 ** 255), { from: participant.address });
-    console.log('approved badge for participant ', participant.address);
+    // console.log('approved badge for participant ', participant.address);
+  });
+};
+
+const getParticipants = (addressOf, bN) => {
+  const participants = [
+    {
+      address: addressOf.badgeHolders[0],
+      dgdToLock: bN(100e9),
+      startingReputation: bN(1000),
+      quarterPointFirstQuarter: bN(50),
+      quarterModeratorPointFirstQuarter: bN(5),
+      kycInfo: {
+        doc: 'till 2 months',
+        expiry: bN(getCurrentTimestamp() + (3600 * 24 * 30 * 2)),
+      },
+    },
+    {
+      address: addressOf.badgeHolders[1],
+      dgdToLock: bN(110e9),
+      startingReputation: bN(800),
+      quarterPointFirstQuarter: bN(50),
+      quarterModeratorPointFirstQuarter: bN(5),
+      kycInfo: {
+        doc: 'till 2 months',
+        expiry: bN(getCurrentTimestamp() + (3600 * 24 * 30 * 2)),
+      },
+    },
+    {
+      address: addressOf.dgdHolders[0],
+      dgdToLock: bN(20e9),
+      startingReputation: bN(10),
+      quarterPointFirstQuarter: bN(30),
+      quarterModeratorPointFirstQuarter: bN(0),
+      kycInfo: {
+        doc: 'till 1 month',
+        expiry: bN(getCurrentTimestamp() + (3600 * 24 * 30)),
+      },
+    },
+    {
+      address: addressOf.dgdHolders[1],
+      dgdToLock: bN(10e9),
+      startingReputation: bN(0),
+      quarterPointFirstQuarter: bN(20),
+      quarterModeratorPointFirstQuarter: bN(0),
+      kycInfo: {
+        doc: 'till 1 month',
+        expiry: bN(getCurrentTimestamp() + (3600 * 24 * 30)),
+      },
+    },
+  ];
+  return participants;
+};
+
+const updateKyc = async function (contracts, addressOf, participants) {
+  await a.map(participants, 20, async (participant) => {
+    await contracts.daoIdentity.updateKyc(
+      participant.address,
+      participant.kycInfo.doc,
+      participant.kycInfo.expiry,
+      { from: addressOf.kycadmin },
+    );
   });
 };
 
 // This function will setup the participants state exactly as specified, before the first quarter mainphase starts
 const setupParticipantsStates = async (web3, contracts, addressOf, bN, participants) => {
   if (!participants) {
-    participants = [
-      {
-        address: addressOf.badgeHolders[0],
-        dgdToLock: bN(100e9),
-        startingReputation: bN(1000),
-        quarterPointFirstQuarter: bN(50),
-        quarterModeratorPointFirstQuarter: bN(5),
-      },
-      {
-        address: addressOf.dgdHolders[0],
-        dgdToLock: bN(20e9),
-        startingReputation: bN(10),
-        quarterPointFirstQuarter: bN(30),
-        quarterModeratorPointFirstQuarter: bN(0),
-      },
-      {
-        address: addressOf.dgdHolders[1],
-        dgdToLock: bN(10e9),
-        startingReputation: bN(0),
-        quarterPointFirstQuarter: bN(20),
-        quarterModeratorPointFirstQuarter: bN(0),
-      },
-    ];
+    participants = getParticipants(addressOf, bN);
   }
-  // const participantCount = participants.length;
   await fundUserAndApproveForStakeLocking(web3, contracts, bN, participants);
   await lockDGDs(web3, contracts, bN, participants);
 
   await a.map(participants, 20, async (participant) => {
     await contracts.daoPointsStorage.setQP(participant.address, participant.quarterPointFirstQuarter, bN(1));
     await contracts.daoPointsStorage.setRP(participant.address, participant.startingReputation);
-    await contracts.daoPointsStorage.setModeratorQP(participant.address, participant.quarterModeratorPointFirstQuarter);
+    await contracts.daoPointsStorage.setModeratorQP(participant.address, participant.quarterModeratorPointFirstQuarter, bN(1));
   });
-  console.log('\tInitialized participants stakes and points for first quarter, waiting until main phase');
+  // console.log('\tInitialized participants stakes and points for first quarter, waiting until main phase');
   await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
 };
 
@@ -524,10 +568,13 @@ module.exports = {
   redeemBadges,
   fundUserAndApproveForStakeLocking,
   lockDGDs,
+  getParticipants,
+  withdrawDGDs,
   assignVotesAndCommits,
   setDummyConfig,
   deployFreshDao,
   printProposalDetails,
+  updateKyc,
   BADGE_HOLDER_COUNT,
   DGD_HOLDER_COUNT,
 };
