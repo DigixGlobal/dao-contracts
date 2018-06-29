@@ -707,7 +707,7 @@ module.exports = async function () {
     );
     console.log('created special proposal');
     // vote on special proposal everybody
-    await contracts.dao.startSpecialProposalVoting(specialProposalId, getCurrentTimestamp(), { from: addressOf.founderBadgeHolder });
+    await contracts.dao.startSpecialProposalVoting(specialProposalId, { from: addressOf.founderBadgeHolder });
     await waitFor(2, addressOf, web3); // wait for a couple of seconds
     await specialProposalVoting(contracts, addressOf, specialProposalId);
     const uintConfigs2 = await contracts.daoConfigsStorage.readUintConfigs.call();

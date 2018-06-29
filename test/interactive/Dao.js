@@ -225,7 +225,7 @@ contract('Dao', function (accounts) {
       assert.deepEqual(await contracts.daoStakeLocking.isLockingPhase.call(), true);
       assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[0]), true);
       const rep = await contracts.daoPointsStorage.getReputation.call(addressOf.badgeHolders[0]);
-      assert.isAtLeast(rep.toNumber(), bN(100));
+      assert.isAtLeast(rep.toNumber(), 100);
       assert.deepEqual(await contracts.daoRewardsStorage.lastParticipatedQuarter.call(addressOf.badgeHolders[0]), bN(2));
       assert(await a.failure(contracts.dao.endorseProposal.call(
         proposals[1].id,
