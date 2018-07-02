@@ -112,6 +112,8 @@ contract Dao is DaoCommon, Claimable {
     {
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
         require(identity_storage().is_kyc_approved(msg.sender));
+        require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_DRAFT_VOTING_PHASE));
+        require(daoStorage().readProposalEndorser(_proposalId) != EMPTY_ADDRESS);
         daoStorage().finalizeProposal(_proposalId);
         daoStorage().setProposalDraftVotingTime(_proposalId, now);
     }

@@ -233,8 +233,8 @@ const getTestProposals = function (bN, addressOf) {
 
     getProposalStruct(
       bN,
-      addressOf.dgdHolders[4],
-      addressOf.badgeHolders[2],
+      addressOf.dgdHolders[1],
+      addressOf.badgeHolders[0],
       [{
         versionId: randomBytes32(),
         milestoneCount: 2,
@@ -252,8 +252,8 @@ const getTestProposals = function (bN, addressOf) {
 
     getProposalStruct(
       bN,
-      addressOf.dgdHolders[5],
-      addressOf.badgeHolders[3],
+      addressOf.dgdHolders[0],
+      addressOf.badgeHolders[1],
       [{
         versionId: randomBytes32(),
         milestoneCount: 4,
@@ -262,7 +262,6 @@ const getTestProposals = function (bN, addressOf) {
         finalReward: bN(1 * (10 ** 18)),
       }],
     ),
-
   ];
 };
 
@@ -443,7 +442,7 @@ const getParticipants = (addressOf, bN) => {
   const participants = [
     {
       address: addressOf.badgeHolders[0],
-      dgdToLock: bN(100e9),
+      dgdToLock: bN(120e9),
       startingReputation: bN(1000),
       quarterPointFirstQuarter: bN(50),
       quarterModeratorPointFirstQuarter: bN(5),
@@ -506,13 +505,13 @@ const setupParticipantsStates = async (web3, contracts, addressOf, bN, participa
     participants = getParticipants(addressOf, bN);
   }
   await fundUserAndApproveForStakeLocking(web3, contracts, bN, participants);
-  await lockDGDs(web3, contracts, bN, participants);
-
   await a.map(participants, 20, async (participant) => {
     await contracts.daoPointsStorage.setQP(participant.address, participant.quarterPointFirstQuarter, bN(1));
     await contracts.daoPointsStorage.setRP(participant.address, participant.startingReputation);
     await contracts.daoPointsStorage.setModeratorQP(participant.address, participant.quarterModeratorPointFirstQuarter, bN(1));
   });
+  await lockDGDs(web3, contracts, bN, participants);
+
   // console.log('\tInitialized participants stakes and points for first quarter, waiting until main phase');
   await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
 };
