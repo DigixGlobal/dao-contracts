@@ -705,6 +705,14 @@ contract('Dao', function (accounts) {
 
       assert.deepEqual(await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[0], currentQuarterIndex), qpBefore0);
       assert.deepEqual(await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[1], currentQuarterIndex), qpBefore1);
+
+      // now vote back true so that proposals[0] can pass
+      await contracts.daoVoting.voteOnDraft(
+        proposals[0].id,
+        proposals[0].versions[1].versionId,
+        true,
+        { from: addressOf.badgeHolders[0] },
+      );
     });
     it('[vote after draft voting phase is over]: revert', async function () {
       const draftVotingDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_DRAFT_VOTING_PHASE);
@@ -722,43 +730,129 @@ contract('Dao', function (accounts) {
     });
   });
 
-  // // TODO
-  // describe('claimDraftVotingResult', function () {
-  //   before(async function () {
-  //
-  //   });
-  //   it('[if locking phase]: revert', async function () {
-  //
-  //   });
-  //   it('[if non-dao member claims]: revert', async function () {
-  //
-  //   });
-  //   it('[if quorum is not met]: revert', async function () {
-  //
-  //   });
-  //   it('[if quota is not met]: revert', async function () {
-  //
-  //   });
-  //   it('[valid claim]: verify read functions', async function () {
-  //     // draft voting result set
-  //
-  //     // voting time is set
-  //
-  //     // claimer is set
-  //
-  //     // quarter point awarded to claimer
-  //   });
-  //   it('[if less than VOTING_PHASE time left, the voting should be pushed to the start of MAIN_PHASE]: verify', async function () {
-  //
-  //   });
-  //   it('[claim a voting already claimed]: revert', async function () {
-  //
-  //   });
-  //   after(async function () {
-  //
-  //   });
-  // });
-  //
+  describe('claimDraftVotingResult', function () {
+    before(async function () {
+      // need moderators to confirm participation in this quarter
+      await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.badgeHolders[0] });
+      await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.badgeHolders[1] });
+      await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.dgdHolders[0] });
+      await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.dgdHolders[1] });
+    });
+    it('[if locking phase]: revert', async function () {
+      const voteCount0 = await contracts.daoStorage.readDraftVotingCount.call(proposals[0].id, addressOf.allParticipants);
+      const minimumDraftQuorum = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[0].id);
+      assert.isAtLeast(voteCount0[2].toNumber(), minimumDraftQuorum.toNumber());
+      assert.deepEqual(await contracts.daoCalculatorService.draftQuotaPass.call(voteCount0[0], voteCount0[1]), true);
+      assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[0].id, { from: proposals[0].proposer })));
+    });
+    it('[if non-proposer claims]: revert', async function () {
+      await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
+
+      // proposals[0].proposer == addressOf.dgdHolders[0]
+      assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[0].id, { from: addressOf.badgeHolders[0] })));
+      assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[0].id, { from: addressOf.badgeHolders[1] })));
+      assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[0].id, { from: addressOf.dgdHolders[1] })));
+    });
+    it('[if voting before draft voting phase ends | quorum is not met]: revert', async function () {
+      // add proposals
+      await addProposal(contracts, proposals[2]);
+      await addProposal(contracts, proposals[3]);
+      await endorseProposal(contracts, proposals[2]);
+      await endorseProposal(contracts, proposals[3]);
+      await contracts.dao.finalizeProposal(proposals[2].id, { from: proposals[2].proposer });
+      await contracts.dao.finalizeProposal(proposals[3].id, { from: proposals[3].proposer });
+
+      // draft vote on them
+      // proposals[2] => quorum pass, quota fails
+      // proposals[3] => quorum fails
+      await contracts.daoVoting.voteOnDraft(
+        proposals[2].id,
+        proposals[2].versions[0].versionId,
+        true,
+        { from: addressOf.badgeHolders[0] },
+      );
+      await contracts.daoVoting.voteOnDraft(
+        proposals[2].id,
+        proposals[2].versions[0].versionId,
+        true,
+        { from: addressOf.badgeHolders[1] },
+      );
+
+      // proposals[2] should pass, but its not yet end of draft voting phase
+      assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[2].id, { from: proposals[2].proposer })));
+
+      // now change the votes
+      await contracts.daoVoting.voteOnDraft(
+        proposals[2].id,
+        proposals[2].versions[0].versionId,
+        false,
+        { from: addressOf.badgeHolders[0] },
+      );
+      await contracts.daoVoting.voteOnDraft(
+        proposals[2].id,
+        proposals[2].versions[0].versionId,
+        false,
+        { from: addressOf.badgeHolders[1] },
+      );
+
+      // wait for draft voting phase to get over
+      const draftVotingDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_DRAFT_VOTING_PHASE);
+      await waitFor(draftVotingDuration.toNumber(), addressOf, web3);
+
+      const voteCount3 = await contracts.daoStorage.readDraftVotingCount.call(proposals[3].id, addressOf.allParticipants);
+      const minimumDraftQuorum = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[3].id);
+      assert.isBelow(voteCount3[2].toNumber(), minimumDraftQuorum.toNumber());
+      assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[3].id, { from: proposals[3].proposer })));
+    });
+    it('[if quota is not met]: revert', async function () {
+      const voteCount2 = await contracts.daoStorage.readDraftVotingCount.call(proposals[2].id, addressOf.allParticipants);
+      const minimumDraftQuorum = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[2].id);
+      assert.isAtLeast(voteCount2[2].toNumber(), minimumDraftQuorum.toNumber());
+      assert.deepEqual(await contracts.daoCalculatorService.draftQuotaPass.call(voteCount2[0], voteCount2[1]), false);
+      assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[2].id, { from: proposals[2].proposer })));
+    });
+    it('[valid claim, quorum quota both passed]: verify read functions', async function () {
+      const voteCount0 = await contracts.daoStorage.readDraftVotingCount.call(proposals[0].id, addressOf.allParticipants);
+      const minimumDraftQuorum = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[2].id);
+      assert.isAtLeast(voteCount0[2].toNumber(), minimumDraftQuorum.toNumber());
+      assert.deepEqual(await contracts.daoCalculatorService.draftQuotaPass.call(voteCount0[0], voteCount0[1]), true);
+      assert.deepEqual(await contracts.daoStorage.readProposalDraftVotingResult.call(proposals[0].id), false);
+
+      // conditions met, claim the draft voting results
+      assert.deepEqual(await contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[0].id, { from: proposals[0].proposer }), true);
+      await contracts.daoVotingClaims.claimDraftVotingResult(proposals[0].id, { from: proposals[0].proposer });
+
+      // draft voting result set
+      assert.deepEqual(await contracts.daoStorage.readProposalDraftVotingResult.call(proposals[0].id), true);
+
+      // voting time is set
+      const draftVotingStart = await contracts.daoStorage.readProposalDraftVotingTime.call(proposals[0].id);
+      const draftVotingDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_DRAFT_VOTING_PHASE);
+      const timeNow = draftVotingStart.toNumber() + draftVotingDuration.toNumber();
+      const startOfDao = await contracts.daoStorage.startOfFirstQuarter.call();
+      const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
+      const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
+      const timeToLockingPhase = getTimeToNextPhase(timeNow, startOfDao.toNumber(), lockingPhaseDuration.toNumber(), quarterDuration.toNumber());
+      const votingRoundDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_VOTING_PHASE_TOTAL);
+      let idealVotingTime;
+      if (timeToLockingPhase < votingRoundDuration.toNumber()) {
+        idealVotingTime = timeNow + timeToLockingPhase + lockingPhaseDuration.toNumber();
+      } else {
+        idealVotingTime = timeNow;
+      }
+      assert.deepEqual(await contracts.daoStorage.readProposalVotingTime.call(proposals[0].id, bN(0)), bN(idealVotingTime));
+
+      // claimer is set
+      assert.deepEqual(await contracts.daoStorage.isDraftClaimed.call(proposals[0].id), true);
+    });
+    it('[claim a voting already claimed]: revert', async function () {
+      assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult(
+        proposals[0].id,
+        { from: proposals[0].proposer },
+      )));
+    });
+  });
+
   // // TODO
   // describe('commitVoteOnProposal', function () {
   //   before(async function () {

@@ -107,6 +107,14 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         _finalVersion = proposalsById[_proposalId].finalVersion;
     }
 
+    function readProposalEndorser(bytes32 _proposalId)
+        public
+        constant
+        returns (address _endorser)
+    {
+        _endorser = proposalsById[_proposalId].endorser;
+    }
+
     // This is to use while checking for fund release to proposer
     function readProposalPRL(bytes32 _proposalId)
         public

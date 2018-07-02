@@ -233,8 +233,8 @@ const getTestProposals = function (bN, addressOf) {
 
     getProposalStruct(
       bN,
-      addressOf.dgdHolders[4],
-      addressOf.badgeHolders[2],
+      addressOf.dgdHolders[1],
+      addressOf.badgeHolders[0],
       [{
         versionId: randomBytes32(),
         milestoneCount: 2,
@@ -252,8 +252,8 @@ const getTestProposals = function (bN, addressOf) {
 
     getProposalStruct(
       bN,
-      addressOf.dgdHolders[5],
-      addressOf.badgeHolders[3],
+      addressOf.dgdHolders[0],
+      addressOf.badgeHolders[1],
       [{
         versionId: randomBytes32(),
         milestoneCount: 4,
@@ -262,7 +262,6 @@ const getTestProposals = function (bN, addressOf) {
         finalReward: bN(1 * (10 ** 18)),
       }],
     ),
-
   ];
 };
 
