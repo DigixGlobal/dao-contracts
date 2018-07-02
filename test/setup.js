@@ -30,7 +30,7 @@ const DaoIdentityStorage = process.env.SIMULATION ? 0 : artifacts.require('./Dao
 const DaoConfigsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoConfigsStorage.sol');
 const DaoStakeStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoStakeStorage.sol');
 const DaoPointsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoPointsStorage.sol');
-const DaoStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoStorage.sol');
+const DaoStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoStorage.sol');
 const DaoSpecialStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoSpecialStorage.sol');
 const DaoFundingStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoFundingStorage.sol');
 const DaoRewardsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoRewardsStorage.sol');
@@ -87,7 +87,6 @@ const printProposalDetails = async (contracts, proposal) => {
   console.log('\t\tnVersions: ', proposalDetails[5]);
   console.log('\t\tlatestVersionDoc: ', proposalDetails[6]);
   console.log('\t\tfinalVersion: ', await contracts.daoStorage.readFinalVersion.call(proposal.id));
-  // console.log('\t\tprlValid: ', await contracts.daoStorage.readProposalPRL.call(proposal.id));
 };
 
 const getAllParticipantAddresses = function (accounts) {
@@ -108,6 +107,7 @@ const deployStorage = async function (libs, contracts, resolver) {
   DaoStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
   DaoSpecialStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
   contracts.daoStorage = await DaoStorage.new(resolver.address);
+  console.log('daoStorage tx = ', contracts.daoStorage);
   contracts.daoSpecialStorage = await DaoSpecialStorage.new(resolver.address);
   contracts.daoFundingStorage = await DaoFundingStorage.new(resolver.address);
   contracts.daoRewardsStorage = await DaoRewardsStorage.new(resolver.address);
