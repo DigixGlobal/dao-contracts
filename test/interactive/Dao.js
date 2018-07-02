@@ -853,37 +853,58 @@ contract('Dao', function (accounts) {
     });
   });
 
-  // // TODO
-  // describe('commitVoteOnProposal', function () {
-  //   before(async function () {
-  //
-  //   });
-  //   it('[if not voting commit phase]: revert', async function () {
-  //
-  //   });
-  //   it('[if invalid proposal state for voting round]: revert', async function () {
-  //
-  //   });
-  //   it('[if called by non-participant]: revert', async function () {
-  //
-  //   });
-  //   it('[valid commit vote]: verify read functions', async function () {
-  //
-  //   });
-  //   it('[re-using nonce for commiting vote]: revert', async function () {
-  //
-  //   });
-  //   it('[update commit vote valid]: verify read functions', async function () {
-  //
-  //   });
-  //   it('[copying existing commit]: revert', async function () {
-  //
-  //   });
-  //   after(async function () {
-  //
-  //   });
-  // });
-  //
+  // TODO
+  describe('commitVoteOnProposal', function () {
+    before(async function () {
+      await resetBeforeEach();
+      await contracts.daoStorage.mock_put_proposal_as(
+        proposals[0].id,
+        bN(0),
+        false,
+        proposals[0].proposer,
+        proposals[0].endorser,
+        proposals[0].versions[0].milestoneDurations,
+        proposals[0].versions[0].milestoneFundings,
+        proposals[0].versions[0].finalReward,
+      );
+      await contracts.daoStorage.mock_put_proposal_as(
+        proposals[1].id,
+        bN(0),
+        false,
+        proposals[1].proposer,
+        proposals[1].endorser,
+        proposals[1].versions[0].milestoneDurations,
+        proposals[1].versions[0].milestoneFundings,
+        proposals[1].versions[0].finalReward,
+      );
+      console.log('ok put proposals');
+    });
+    it('[if not voting commit phase]: revert', async function () {
+
+    });
+    it('[if invalid proposal state for voting round]: revert', async function () {
+
+    });
+    it('[if called by non-participant]: revert', async function () {
+
+    });
+    it('[valid commit vote]: verify read functions', async function () {
+
+    });
+    it('[re-using nonce for commiting vote]: revert', async function () {
+
+    });
+    it('[update commit vote valid]: verify read functions', async function () {
+
+    });
+    it('[copying existing commit]: revert', async function () {
+
+    });
+    after(async function () {
+
+    });
+  });
+
   // // TODO
   // describe('revealVoteOnProposal', function () {
   //   before(async function () {
