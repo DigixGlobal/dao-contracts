@@ -6,6 +6,25 @@ contract MockDaoStorage is DaoStorage {
     using DoublyLinkedList for DoublyLinkedList.Bytes;
 
     function MockDaoStorage(address _resolver) public DaoStorage(_resolver) {}
+    /* string test = "ef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b c";
+    string test2 = "ef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b c";
+    string test3 = "ef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b c";
+    string test4 = "ef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b c";
+    string test5 = "ef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b c";
+    string test6 = "ef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b c";
+    string test7 = "ef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b c";
+    string test8 = "ef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b c";
+    string test9 = "ef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b c";
+    string test10 = "ef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b c";
+    string test11 = "ef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b c";
+    string test12 = "ef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b c";
+    string test13 = "ef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b c";
+    string test14 = "ef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b c";
+    string test15 = "ef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b c";
+    string test16 = "ef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b c";
+    string test17 = "ef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b c";
+    string test18 = "ef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b c";
+    string test19 = "ef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b cef23fwjeic 23 nfhwer823yfbsd9cvub24wevubw7v2 3c72y3cb 23fg27cn2793cx n297b c"; */
 
     /**
     @notice Function to mock add new proposal in pre-defined state
@@ -33,7 +52,28 @@ contract MockDaoStorage is DaoStorage {
     {
         allProposals.append(_proposalId);
         proposalsById[_proposalId].proposalId = _proposalId;
-        proposalsById[_proposalId].proposer = _proposer;
+        /* proposalsById[_proposalId].proposalId = _proposalId;
+        proposalsById[_proposalId].proposalId = _proposalId;
+        proposalsById[_proposalId].proposalId = _proposalId;
+        proposalsById[_proposalId].proposalId = _proposalId;
+        proposalsById[_proposalId].proposalId = _proposalId;
+        proposalsById[_proposalId].proposalId = _proposalId;
+        proposalsById[_proposalId].proposalId = _proposalId;
+        proposalsById[_proposalId].proposalId = _proposalId;
+        proposalsById[_proposalId].proposalId = _proposalId;
+        proposalsById[_proposalId].proposalId = _proposalId;
+        proposalsById[_proposalId].proposalId = _proposalId;
+        proposalsById[_proposalId].proposalId = _proposalId;
+        proposalsById[_proposalId].proposalId = _proposalId;
+        proposalsById[_proposalId].proposalId = _proposalId;
+        proposalsById[_proposalId].proposalId = _proposalId;
+        proposalsById[_proposalId].proposalId = _proposalId;
+        proposalsById[_proposalId].proposalId = _proposalId;
+        proposalsById[_proposalId].proposalId = _proposalId;
+        proposalsById[_proposalId].proposalId = _proposalId; */
+
+
+        /* proposalsById[_proposalId].proposer = _proposer;
         proposalsById[_proposalId].timeCreated = now - (1 minutes);
         proposalsById[_proposalId].proposalVersionDocs.append(_proposalId);
         proposalsById[_proposalId].proposalVersions[_proposalId].docIpfsHash = _proposalId;
@@ -57,9 +97,6 @@ contract MockDaoStorage is DaoStorage {
                 proposalsById[_proposalId].currentState = PROPOSAL_STATE_ONGOING;
             }
             proposalsById[_proposalId].votingRounds[_roundIndex].startTime = now;
-        }
-        put_proposal(_proposalId, _proposer, _endorser);
-        put_proposal_version(_proposalId, _milestonesDurations, _milestonesFundings, _finalReward);
-        put_proposal_state(_proposalId, _roundIndex, _isDraftPhase);
+        } */
     }
 }

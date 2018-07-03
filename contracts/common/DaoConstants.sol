@@ -14,15 +14,13 @@ contract DaoConstants {
   uint256 PRL_ACTION_UNPAUSE = 3;
 
   // interactive contracts
-  bytes32 CONTRACT_DAO = "c:dao";
+  bytes32 CONTRACT_DAO = "dao";
   bytes32 CONTRACT_DAO_STAKE_LOCKING = "dao:stake-locking";
   bytes32 CONTRACT_DAO_VOTING = "dao:voting";
   bytes32 CONTRACT_DAO_VOTING_CLAIMS = "dao:voting:claims";
   bytes32 CONTRACT_DAO_IDENTITY = "dao:identity";
   bytes32 CONTRACT_DAO_REWARDS_MANAGER = "dao:rewards-manager";
   bytes32 CONTRACT_DAO_ROLES = "dao:roles";
-  bytes32 CONTRACT_INTERACTIVE_QUARTER_POINT = "i:quarter:point";
-  bytes32 CONTRACT_INTERACTIVE_REPUTATION_POINT = "i:reputation:point";
   bytes32 CONTRACT_DAO_FUNDING_MANAGER = "dao:funding-manager";
 
   // service contracts

@@ -30,7 +30,7 @@ const DaoIdentityStorage = process.env.SIMULATION ? 0 : artifacts.require('./Dao
 const DaoConfigsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoConfigsStorage.sol');
 const DaoStakeStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoStakeStorage.sol');
 const DaoPointsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoPointsStorage.sol');
-const DaoStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoStorage.sol');
+const DaoStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoStorage.sol');
 const DaoSpecialStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoSpecialStorage.sol');
 const DaoFundingStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoFundingStorage.sol');
 const DaoRewardsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoRewardsStorage.sol');
@@ -108,6 +108,7 @@ const deployStorage = async function (libs, contracts, resolver) {
   DaoSpecialStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
   contracts.daoStorage = await DaoStorage.new(resolver.address);
   console.log('daoStorage tx = ', contracts.daoStorage);
+  console.log('tx = ', await web3.eth.getTransactionReceipt(contracts.daoStorage.transactionHash));
   contracts.daoSpecialStorage = await DaoSpecialStorage.new(resolver.address);
   contracts.daoFundingStorage = await DaoFundingStorage.new(resolver.address);
   contracts.daoRewardsStorage = await DaoRewardsStorage.new(resolver.address);
@@ -117,7 +118,7 @@ const registerInteractive = async function (resolver, addressOf) {
   const callingKeys = [
     'dao:identity',
     'dao:stake-locking',
-    'c:dao',
+    'dao',
     'dao:voting',
     'dao:voting:claims',
     'dao:funding-manager',

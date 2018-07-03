@@ -37,9 +37,9 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         if_sender_is(CONTRACT_DAO)
         public
     {
-      isReplacedByNewDao = true;
-      newDaoContract = _newDaoContract;
-      newDaoFundingManager = _newDaoFundingManager;
+        isReplacedByNewDao = true;
+        newDaoContract = _newDaoContract;
+        newDaoFundingManager = _newDaoFundingManager;
     }
 
     /////////////////////////////// READ FUNCTIONS //////////////////////////////
@@ -53,7 +53,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     ///   "_state": "",
     ///   "_timeCreated": "",
     ///   "_nVersions": "",
-    ///   "_latestVersionDoc": ""
+    ///   "_finalVersion": ""
     /// }
     function readProposal(bytes32 _proposalId)
         public
@@ -65,7 +65,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
             uint256 _state,
             uint256 _timeCreated,
             uint256 _nVersions,
-            bytes32 _latestVersionDoc
+            bytes32 _finalVersion
         )
     {
         DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
@@ -75,7 +75,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         _state = _proposal.currentState;
         _timeCreated = _proposal.timeCreated;
         _nVersions = read_total_bytesarray(_proposal.proposalVersionDocs);
-        _latestVersionDoc = read_last_from_bytesarray(_proposal.proposalVersionDocs);
+        _finalVersion = _proposal.finalVersion;
     }
 
     /// @notice returns the current state of a proposal
@@ -129,8 +129,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         constant
         returns (uint256 _length)
     {
-        DaoStructs.PrlAction[] memory _actions = proposalsById[_proposalId].prlActions;
-        _length = _actions.length;
+        _length = proposalsById[_proposalId].prlActions.length;
     }
 
     function isProposalPaused(bytes32 _proposalId)
@@ -198,16 +197,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         constant
         returns (uint256 _for, uint256 _against, uint256 _quorum)
     {
-        DaoStructs.Voting _voting = proposalsById[_proposalId].draftVoting;
-        uint256 _n = _allUsers.length;
-        for (uint256 i = 0; i < _n; i++) {
-            if (_voting.yesVotes[_allUsers[i]] > 0) {
-                _for += _voting.yesVotes[_allUsers[i]];
-            } else if (_voting.noVotes[_allUsers[i]] > 0) {
-                _against += _voting.noVotes[_allUsers[i]];
-            }
-        }
-        _quorum = _for + _against;
+        return countVotes(proposalsById[_proposalId].draftVoting, _allUsers);
     }
 
     function readVotingCount(bytes32 _proposalId, uint256 _index, address[] _allUsers)
@@ -215,7 +205,14 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         constant
         returns (uint256 _for, uint256 _against, uint256 _quorum)
     {
-        DaoStructs.Voting storage _voting = proposalsById[_proposalId].votingRounds[_index];
+        return countVotes(proposalsById[_proposalId].votingRounds[_index], _allUsers);
+    }
+
+    function countVotes(DaoStructs.Voting storage _voting, address[] memory _allUsers)
+        internal
+        constant
+        returns (uint256 _for, uint256 _against, uint256 _quorum)
+    {
         uint256 _n = _allUsers.length;
         for (uint256 i = 0; i < _n; i++) {
             if (_voting.yesVotes[_allUsers[i]] > 0) {

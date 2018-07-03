@@ -62,7 +62,7 @@ contract('DaoRewardsManager', function (accounts) {
     await contracts.resolver.register_contract('dao:stake-locking', addressOf.root);
     await contracts.resolver.register_contract('dao:voting:claims', addressOf.root);
     await contracts.resolver.register_contract('dao:voting', addressOf.root);
-    await contracts.resolver.register_contract('c:dao', addressOf.root);
+    await contracts.resolver.register_contract('dao', addressOf.root);
     contracts.daoIdentity = await DaoIdentity.new(contracts.resolver.address);
     await contracts.daoIdentity.addGroupUser(bN(2), addressOf.founderBadgeHolder, '');
     await contracts.daoStorage.setStartOfFirstQuarter(getCurrentTimestamp());

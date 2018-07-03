@@ -38,7 +38,7 @@ contract('DaoFundingManager', function (accounts) {
     await deployStorage(libs, contracts, contracts.resolver, addressOf);
     contracts.daoFundingManager = await DaoFundingManager.new(contracts.resolver.address);
     await contracts.resolver.register_contract('dao:voting:claims', addressOf.root);
-    await contracts.resolver.register_contract('c:dao', addressOf.root);
+    await contracts.resolver.register_contract('dao', addressOf.root);
     await fundDao();
   });
 
