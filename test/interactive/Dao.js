@@ -203,7 +203,9 @@ contract('Dao', function (accounts) {
       )));
     });
     it('[valid inputs]: success | verify read functions', async function () {
-      assert.deepEqual(await contracts.daoStorage.readProposalState.call(proposals[1].id), proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL);
+      const readProposal = await contracts.daoStorage.readProposal.call(proposals[1].id);
+      const state = readProposal[3];
+      assert.deepEqual(state, proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL);
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
       assert.deepEqual(await contracts.dao.endorseProposal.call(
         proposals[1].id,
@@ -211,8 +213,11 @@ contract('Dao', function (accounts) {
       ), true);
       await contracts.dao.endorseProposal(proposals[1].id, { from: addressOf.badgeHolders[0] });
 
-      assert.deepEqual(await contracts.daoStorage.readProposalState.call(proposals[1].id), proposalStates(bN).PROPOSAL_STATE_DRAFT);
-      assert.deepEqual((await contracts.daoStorage.readProposal.call(proposals[1].id))[2], addressOf.badgeHolders[0]);
+      const readProposalAfter = await contracts.daoStorage.readProposal.call(proposals[1].id);
+      const endorser = readProposalAfter[2];
+      const stateAfter = readProposalAfter[3];
+      assert.deepEqual(stateAfter, proposalStates(bN).PROPOSAL_STATE_DRAFT);
+      assert.deepEqual(endorser, addressOf.badgeHolders[0]);
     });
     it('[if proposal has already been endorsed]: revert', async function () {
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
@@ -252,7 +257,7 @@ contract('Dao', function (accounts) {
     it('[if not proposer]: revert', async function () {
       assert.deepEqual(await contracts.daoStakeStorage.isInParticipantList.call(addressOf.dgdHolders[1]), true);
       assert.deepEqual(await contracts.daoIdentityStorage.is_kyc_approved.call(addressOf.dgdHolders[1]), true);
-      assert.deepEqual(await contracts.daoStorage.readProposalState.call(proposals[0].id), proposalStates(bN).PROPOSAL_STATE_DRAFT);
+      assert.deepEqual((await contracts.daoStorage.readProposal.call(proposals[0].id))[3], proposalStates(bN).PROPOSAL_STATE_DRAFT);
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
       assert.notEqual(await contracts.daoStorage.readProposalProposer.call(proposals[0].id), addressOf.dgdHolders[1]);
       assert(await a.failure(contracts.dao.modifyProposal.call(
@@ -395,7 +400,7 @@ contract('Dao', function (accounts) {
       )));
     });
     it('[valid finalize proposal]', async function () {
-      const finalVersionBefore = await contracts.daoStorage.readFinalVersion.call(proposals[0].id);
+      const finalVersionBefore = (await contracts.daoStorage.readProposal.call(proposals[0].id))[7];
       const latestVersion = await contracts.daoStorage.getLastProposalVersion.call(proposals[0].id);
       await contracts.daoIdentity.updateKyc(
         proposals[0].proposer,
@@ -404,7 +409,7 @@ contract('Dao', function (accounts) {
         { from: addressOf.kycadmin },
       );
       await contracts.dao.finalizeProposal(proposals[0].id, { from: proposals[0].proposer });
-      const finalVersionAfter = await contracts.daoStorage.readFinalVersion.call(proposals[0].id);
+      const finalVersionAfter = (await contracts.daoStorage.readProposal.call(proposals[0].id))[7];
       assert.deepEqual(latestVersion, proposals[0].versions[1].versionId);
       assert.deepEqual(finalVersionBefore, EMPTY_BYTES);
       assert.deepEqual(finalVersionAfter, latestVersion);
@@ -416,7 +421,7 @@ contract('Dao', function (accounts) {
       )));
     });
     it('[if not enough time left in the main phase]: revert', async function () {
-      const startOfDao = await contracts.daoStorage.startOfFirstQuarter.call();
+      const startOfDao = await contracts.daoUpgradableStorage.startOfFirstQuarter.call();
       const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
       const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
       const draftVotingDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_DRAFT_VOTING_PHASE);
@@ -466,9 +471,9 @@ contract('Dao', function (accounts) {
         newDaoContract,
         { from: addressOf.root },
       );
-      assert.deepEqual(await contracts.daoStorage.isReplacedByNewDao.call(), true);
-      assert.deepEqual(await contracts.daoStorage.newDaoContract.call(), newDaoContract);
-      assert.deepEqual(await contracts.daoStorage.newDaoFundingManager.call(), newDaoFundingManager.address);
+      assert.deepEqual(await contracts.daoUpgradableStorage.isReplacedByNewDao.call(), true);
+      assert.deepEqual(await contracts.daoUpgradableStorage.newDaoContract.call(), newDaoContract);
+      assert.deepEqual(await contracts.daoUpgradableStorage.newDaoFundingManager.call(), newDaoFundingManager.address);
       assert.deepEqual(await web3.eth.getBalance(contracts.daoFundingManager.address), bN(0));
       assert.deepEqual(await web3.eth.getBalance(newDaoFundingManager.address), fundsBefore);
     });
@@ -535,7 +540,7 @@ contract('Dao', function (accounts) {
       await contracts.dao.createSpecialProposal(doc, uintConfigs, [], [], { from: addressOf.founderBadgeHolder });
     });
     it('[if not enough time in main phase for voting to be done]: revert', async function () {
-      const startOfDao = await contracts.daoStorage.startOfFirstQuarter.call();
+      const startOfDao = await contracts.daoUpgradableStorage.startOfFirstQuarter.call();
       const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
       const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
       const specialVotingDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL);
@@ -829,7 +834,7 @@ contract('Dao', function (accounts) {
       const draftVotingStart = await contracts.daoStorage.readProposalDraftVotingTime.call(proposals[0].id);
       const draftVotingDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_DRAFT_VOTING_PHASE);
       const timeNow = draftVotingStart.toNumber() + draftVotingDuration.toNumber();
-      const startOfDao = await contracts.daoStorage.startOfFirstQuarter.call();
+      const startOfDao = await contracts.daoUpgradableStorage.startOfFirstQuarter.call();
       const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
       const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
       const timeToLockingPhase = getTimeToNextPhase(timeNow, startOfDao.toNumber(), lockingPhaseDuration.toNumber(), quarterDuration.toNumber());
@@ -879,30 +884,30 @@ contract('Dao', function (accounts) {
       );
       console.log('ok put proposals');
     });
-    it('[if not voting commit phase]: revert', async function () {
-
-    });
-    it('[if invalid proposal state for voting round]: revert', async function () {
-
-    });
-    it('[if called by non-participant]: revert', async function () {
-
-    });
-    it('[valid commit vote]: verify read functions', async function () {
-
-    });
-    it('[re-using nonce for commiting vote]: revert', async function () {
-
-    });
-    it('[update commit vote valid]: verify read functions', async function () {
-
-    });
-    it('[copying existing commit]: revert', async function () {
-
-    });
-    after(async function () {
-
-    });
+    // it('[if not voting commit phase]: revert', async function () {
+    //
+    // });
+    // it('[if invalid proposal state for voting round]: revert', async function () {
+    //
+    // });
+    // it('[if called by non-participant]: revert', async function () {
+    //
+    // });
+    // it('[valid commit vote]: verify read functions', async function () {
+    //
+    // });
+    // it('[re-using nonce for commiting vote]: revert', async function () {
+    //
+    // });
+    // it('[update commit vote valid]: verify read functions', async function () {
+    //
+    // });
+    // it('[copying existing commit]: revert', async function () {
+    //
+    // });
+    // after(async function () {
+    //
+    // });
   });
 
   // // TODO

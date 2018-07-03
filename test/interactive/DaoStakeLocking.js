@@ -28,7 +28,7 @@ contract('DaoStakeLocking', function (accounts) {
 
   before(async function () {
     await deployFreshDao(libs, contracts, addressOf, accounts, bN, web3);
-    assert.deepEqual(timeIsRecent(await contracts.daoStorage.startOfFirstQuarter.call()), true);
+    assert.deepEqual(timeIsRecent(await contracts.daoUpgradableStorage.startOfFirstQuarter.call()), true);
     await initialTransferTokens(contracts, addressOf, bN);
   });
 
@@ -146,7 +146,7 @@ contract('DaoStakeLocking', function (accounts) {
       assert.deepEqual(await contracts.daoStakeStorage.totalModeratorLockedDGDStake.call(), initial.plus(bN(101 * (10 ** 9))));
     });
     it('[lock during main phase]: verify actual stake', async function () {
-      const startOfDao = await contracts.daoStorage.startOfFirstQuarter.call();
+      const startOfDao = await contracts.daoUpgradableStorage.startOfFirstQuarter.call();
       const initialStake1 = await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.badgeHolders[1]);
       const initialStake2 = await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.badgeHolders[2]);
       const totalLockedDGDStake = await contracts.daoStakeStorage.totalLockedDGDStake.call();

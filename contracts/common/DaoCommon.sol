@@ -7,6 +7,7 @@ import "./../common/IdentityCommon.sol";
 import "./../storage/DaoConfigsStorage.sol";
 import "./../storage/DaoStakeStorage.sol";
 import "./../storage/DaoStorage.sol";
+import "./../storage/DaoUpgradableStorage.sol";
 import "./../storage/DaoSpecialStorage.sol";
 import "./../storage/DaoPointsStorage.sol";
 import "./../storage/DaoFundingStorage.sol";
@@ -14,18 +15,18 @@ import "./../storage/DaoRewardsStorage.sol";
 
 contract DaoCommon is IdentityCommon {
     modifier daoIsValid() {
-        require(!daoStorage().isReplacedByNewDao());
+        require(!daoUpgradableStorage().isReplacedByNewDao());
         _;
     }
 
     modifier if_locking_phase() {
-        require(!daoStorage().isReplacedByNewDao());
+        require(!daoUpgradableStorage().isReplacedByNewDao());
         require(currentTInQuarter() < get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
         _;
     }
 
     modifier if_main_phase() {
-        require(!daoStorage().isReplacedByNewDao());
+        require(!daoUpgradableStorage().isReplacedByNewDao());
         require(currentTInQuarter() >= get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
         _;
     }
@@ -83,12 +84,16 @@ contract DaoCommon is IdentityCommon {
     }
 
     modifier is_proposal_state(bytes32 _proposalId, uint256 _STATE) {
-        require(daoStorage().readProposalState(_proposalId) == _STATE);
+        uint256 _currentState;
+        (,,,_currentState,,,,,) = daoStorage().readProposal(_proposalId);
+        require(_currentState == _STATE);
         _;
     }
 
-    modifier if_prl_approved(bytes32 _proposalId, uint256 _index) {
-        require(daoStorage().readProposalPRL(_proposalId) == true);
+    modifier if_prl_approved(bytes32 _proposalId) {
+        bool _isPaused;
+        (,,,,,,,,_isPaused) = daoStorage().readProposal(_proposalId);
+        require(_isPaused == false);
         _;
     }
 
@@ -120,12 +125,16 @@ contract DaoCommon is IdentityCommon {
     }
 
     modifier if_editable(bytes32 _proposalId) {
-        require(daoStorage().readFinalVersion(_proposalId) == EMPTY_BYTES);
+        bytes32 _finalVersion;
+        (,,,,,,,_finalVersion,) = daoStorage().readProposal(_proposalId);
+        require(_finalVersion == EMPTY_BYTES);
         _;
     }
 
     modifier if_final_version(bytes32 _proposalId, bytes32 _proposalVersion) {
-        require(daoStorage().readFinalVersion(_proposalId) == _proposalVersion);
+        bytes32 _finalVersion;
+        (,,,,,,,_finalVersion,) = daoStorage().readProposal(_proposalId);
+        require(_finalVersion == _proposalVersion);
         _;
     }
 
@@ -217,12 +226,12 @@ contract DaoCommon is IdentityCommon {
     }
 
     function getQuarterIndex(uint256 _time) internal returns (uint256 _index) {
-        _index = ((_time - daoStorage().startOfFirstQuarter()) / get_uint_config(CONFIG_QUARTER_DURATION)) + 1;
+        _index = ((_time - daoUpgradableStorage().startOfFirstQuarter()) / get_uint_config(CONFIG_QUARTER_DURATION)) + 1;
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
     function timeInQuarter(uint256 _time) internal returns (uint256 _timeInQuarter) {
-        _timeInQuarter = (_time - daoStorage().startOfFirstQuarter()) % get_uint_config(CONFIG_QUARTER_DURATION);
+        _timeInQuarter = (_time - daoUpgradableStorage().startOfFirstQuarter()) % get_uint_config(CONFIG_QUARTER_DURATION);
     }
 
     function currentTInQuarter() internal returns(uint256 _currentT) {
@@ -261,6 +270,10 @@ contract DaoCommon is IdentityCommon {
 
     function daoStorage() internal returns (DaoStorage _contract) {
         _contract = DaoStorage(get_contract(CONTRACT_STORAGE_DAO));
+    }
+
+    function daoUpgradableStorage() internal returns (DaoUpgradableStorage _contract) {
+        _contract = DaoUpgradableStorage(get_contract(CONTRACT_STORAGE_DAO_UPGRADABLE));
     }
 
     function daoSpecialStorage() internal returns (DaoSpecialStorage _contract) {

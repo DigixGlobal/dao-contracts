@@ -10,6 +10,14 @@ const proposalStates = function (bN) {
   };
 };
 
+const prlActions = function (bN) {
+  return {
+    PRL_ACTION_STOP: bN(1),
+    PRL_ACTION_PAUSE: bN(2),
+    PRL_ACTION_UNPAUSE: bN(3),
+  };
+};
+
 const configs = function (bN) {
   return {
     CONFIG_MINIMUM_LOCKED_DGD: bN(10 ** 9),
@@ -214,6 +222,7 @@ module.exports = {
   getTimeToNextPhase,
   assertQuarter,
   max,
+  prlActions,
   EMPTY_BYTES,
   EMPTY_ADDRESS,
 };

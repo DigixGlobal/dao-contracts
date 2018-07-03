@@ -31,6 +31,7 @@ contract DaoConstants {
 
   // storage contracts
   bytes32 CONTRACT_STORAGE_DAO = "storage:dao";
+  bytes32 CONTRACT_STORAGE_DAO_UPGRADABLE = "storage:dao:upgradable";
   bytes32 CONTRACT_STORAGE_DAO_IDENTITY = "storage:dao:identity";
   bytes32 CONTRACT_STORAGE_DAO_POINTS = "storage:dao:points";
   bytes32 CONTRACT_STORAGE_DAO_SPECIAL = "storage:dao:special";

@@ -65,7 +65,7 @@ contract('DaoRewardsManager', function (accounts) {
     await contracts.resolver.register_contract('dao', addressOf.root);
     contracts.daoIdentity = await DaoIdentity.new(contracts.resolver.address);
     await contracts.daoIdentity.addGroupUser(bN(2), addressOf.founderBadgeHolder, '');
-    await contracts.daoStorage.setStartOfFirstQuarter(getCurrentTimestamp());
+    await contracts.daoUpgradableStorage.setStartOfFirstQuarter(getCurrentTimestamp());
     await setDummyConfig();
     // bootstrap with points
     await a.map(indexRange(0, 5), 20, async (i) => {
@@ -133,7 +133,7 @@ contract('DaoRewardsManager', function (accounts) {
    * @param phaseToEndIn : The phase in which to land (phases.LOCKING_PHASE or phases.MAIN_PHASE)
    */
   const phaseCorrection = async function (phaseToEndIn) {
-    const startOfDao = await contracts.daoStorage.startOfFirstQuarter.call();
+    const startOfDao = await contracts.daoUpgradableStorage.startOfFirstQuarter.call();
     const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
     const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
     const currentPhase = getPhase(

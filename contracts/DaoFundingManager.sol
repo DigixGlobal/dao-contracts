@@ -17,7 +17,7 @@ contract DaoFundingManager is DaoCommon {
     function claimEthFunding(bytes32 _proposalId, uint256 _index, uint256 _value)
         public
         if_from_proposer(_proposalId)
-        if_prl_approved(_proposalId, _index)
+        if_prl_approved(_proposalId)
         valid_withdraw_amount(_proposalId, _index, _value)
         returns (bool _success)
     {

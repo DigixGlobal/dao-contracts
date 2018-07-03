@@ -37,15 +37,15 @@ contract Dao is DaoCommon, Claimable {
         public
         onlyOwner()
     {
-        require(daoStorage().isReplacedByNewDao() == false);
-        daoStorage().updateForDaoMigration(_newDaoFundingManager, _newDaoContract);
+        require(daoUpgradableStorage().isReplacedByNewDao() == false);
+        daoUpgradableStorage().updateForDaoMigration(_newDaoFundingManager, _newDaoContract);
         daoFundingManager().moveFundsToNewDao(_newDaoFundingManager);
     }
 
     // @notice Call this function to mark the start of the DAO's first quarter
     // @param _start Start time of the first quarter in the DAO
     function setStartOfFirstQuarter(uint256 _start) public if_founder() {
-        daoStorage().setStartOfFirstQuarter(_start);
+        daoUpgradableStorage().setStartOfFirstQuarter(_start);
     }
 
     // @notice Submit a new preliminary idea / Pre-proposal
@@ -96,7 +96,8 @@ contract Dao is DaoCommon, Claimable {
         returns (bool _success)
     {
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
-        uint256 _currentState = daoStorage().readProposalState(_proposalId);
+        uint256 _currentState;
+        (,,,_currentState,,,,,) = daoStorage().readProposal(_proposalId);
         require(_currentState == PROPOSAL_STATE_PREPROPOSAL ||
           _currentState == PROPOSAL_STATE_DRAFT);
         require(identity_storage().is_kyc_approved(msg.sender));
@@ -113,7 +114,9 @@ contract Dao is DaoCommon, Claimable {
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
         require(identity_storage().is_kyc_approved(msg.sender));
         require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_DRAFT_VOTING_PHASE));
-        require(daoStorage().readProposalEndorser(_proposalId) != EMPTY_ADDRESS);
+        address _endorser;
+        (,,_endorser,,,,,,) = daoStorage().readProposal(_proposalId);
+        require(_endorser != EMPTY_ADDRESS);
         daoStorage().finalizeProposal(_proposalId);
         daoStorage().setProposalDraftVotingTime(_proposalId, now);
     }

@@ -12,34 +12,12 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     using DaoStructs for DaoStructs.Proposal;
     using DaoStructs for DaoStructs.ProposalVersion;
 
-    bool public isReplacedByNewDao;
-    address public newDaoContract;
-    address public newDaoFundingManager;
-
     DoublyLinkedList.Bytes allProposals;
     mapping (bytes32 => DaoStructs.Proposal) proposalsById;
     mapping (uint256 => DoublyLinkedList.Bytes) proposalsByState;
-    uint256 public startOfFirstQuarter;
 
     function DaoStorage(address _resolver) public {
         require(init(CONTRACT_STORAGE_DAO, _resolver));
-    }
-
-    function setStartOfFirstQuarter(uint256 _start)
-        if_sender_is(CONTRACT_DAO)
-        public
-    {
-        require(startOfFirstQuarter == 0);
-        startOfFirstQuarter = _start;
-    }
-
-    function updateForDaoMigration(address _newDaoFundingManager, address _newDaoContract)
-        if_sender_is(CONTRACT_DAO)
-        public
-    {
-        isReplacedByNewDao = true;
-        newDaoContract = _newDaoContract;
-        newDaoFundingManager = _newDaoFundingManager;
     }
 
     /////////////////////////////// READ FUNCTIONS //////////////////////////////
@@ -65,7 +43,9 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
             uint256 _state,
             uint256 _timeCreated,
             uint256 _nVersions,
-            bytes32 _finalVersion
+            bytes32 _latestVersionDoc,
+            bytes32 _finalVersion,
+            bool _paused
         )
     {
         DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
@@ -75,20 +55,9 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         _state = _proposal.currentState;
         _timeCreated = _proposal.timeCreated;
         _nVersions = read_total_bytesarray(_proposal.proposalVersionDocs);
+        _latestVersionDoc = read_last_from_bytesarray(_proposal.proposalVersionDocs);
         _finalVersion = _proposal.finalVersion;
-    }
-
-    /// @notice returns the current state of a proposal
-    /// @param _proposalId proposal ID
-    /// @return {
-    ///   "_stateId": ""
-    /// }
-    function readProposalState(bytes32 _proposalId)
-        public
-        constant
-        returns (uint256 _stateId)
-    {
-        _stateId = proposalsById[_proposalId].currentState;
+        _paused = _proposal.isPaused;
     }
 
     function readProposalProposer(bytes32 _proposalId)
@@ -99,45 +68,12 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         _proposer = proposalsById[_proposalId].proposer;
     }
 
-    function readFinalVersion(bytes32 _proposalId)
-        public
-        constant
-        returns (bytes32 _finalVersion)
-    {
-        _finalVersion = proposalsById[_proposalId].finalVersion;
-    }
-
-    function readProposalEndorser(bytes32 _proposalId)
-        public
-        constant
-        returns (address _endorser)
-    {
-        _endorser = proposalsById[_proposalId].endorser;
-    }
-
-    // This is to use while checking for fund release to proposer
-    function readProposalPRL(bytes32 _proposalId)
-        public
-        constant
-        returns (bool _valid)
-    {
-        _valid = !proposalsById[_proposalId].isPaused;
-    }
-
     function readTotalPrlActions(bytes32 _proposalId)
         public
         constant
         returns (uint256 _length)
     {
         _length = proposalsById[_proposalId].prlActions.length;
-    }
-
-    function isProposalPaused(bytes32 _proposalId)
-        public
-        constant
-        returns (bool _isPaused)
-    {
-        _isPaused = proposalsById[_proposalId].isPaused;
     }
 
     function readPrlAction(bytes32 _proposalId, uint256 _index)

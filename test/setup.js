@@ -30,7 +30,8 @@ const DaoIdentityStorage = process.env.SIMULATION ? 0 : artifacts.require('./Dao
 const DaoConfigsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoConfigsStorage.sol');
 const DaoStakeStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoStakeStorage.sol');
 const DaoPointsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoPointsStorage.sol');
-const DaoStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoStorage.sol');
+const DaoStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoStorage.sol');
+const DaoUpgradableStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoUpgradableStorage.sol');
 const DaoSpecialStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoSpecialStorage.sol');
 const DaoFundingStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoFundingStorage.sol');
 const DaoRewardsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoRewardsStorage.sol');
@@ -86,7 +87,7 @@ const printProposalDetails = async (contracts, proposal) => {
   console.log('\t\tState: ', proposalDetails[3]);
   console.log('\t\tnVersions: ', proposalDetails[5]);
   console.log('\t\tlatestVersionDoc: ', proposalDetails[6]);
-  console.log('\t\tfinalVersion: ', await contracts.daoStorage.readFinalVersion.call(proposal.id));
+  console.log('\t\tfinalVersion: ', proposalDetails[7]);
 };
 
 const getAllParticipantAddresses = function (accounts) {
@@ -106,9 +107,9 @@ const deployStorage = async function (libs, contracts, resolver) {
   contracts.daoPointsStorage = await DaoPointsStorage.new(resolver.address);
   DaoStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
   DaoSpecialStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
+  contracts.daoUpgradableStorage = await DaoUpgradableStorage.new(resolver.address);
   contracts.daoStorage = await DaoStorage.new(resolver.address);
-  console.log('daoStorage tx = ', contracts.daoStorage);
-  console.log('tx = ', await web3.eth.getTransactionReceipt(contracts.daoStorage.transactionHash));
+  // console.log('tx = ', await web3.eth.getTransactionReceipt(contracts.daoStorage.transactionHash));
   contracts.daoSpecialStorage = await DaoSpecialStorage.new(resolver.address);
   contracts.daoFundingStorage = await DaoFundingStorage.new(resolver.address);
   contracts.daoRewardsStorage = await DaoRewardsStorage.new(resolver.address);
@@ -322,7 +323,7 @@ const waitFor = async function (timeToWait, addressOf, web3) {
  * @param quarterToEndIn : The quarter in which to land (quarter.QUARTER_1 or phases.QUARTER_2)
  */
 const phaseCorrection = async function (web3, contracts, addressOf, phaseToEndIn, quarterToEndIn) {
-  const startOfDao = await contracts.daoStorage.startOfFirstQuarter.call();
+  const startOfDao = await contracts.daoUpgradableStorage.startOfFirstQuarter.call();
   const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
   const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
   const currentPhase = getPhase(

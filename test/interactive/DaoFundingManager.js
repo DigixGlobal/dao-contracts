@@ -82,7 +82,9 @@ contract('DaoFundingManager', function (accounts) {
     });
     it('[proposal is not prl approved]: revert', async function () {
       await contracts.daoStorage.updateProposalPRL(doc, bN(2), randomBytes32(), bN(getCurrentTimestamp()));
-      assert.deepEqual(await contracts.daoStorage.readProposalPRL.call(doc), false);
+      const readProposal = await contracts.daoStorage.readProposal.call(doc);
+      const isPaused = readProposal[8];
+      assert.deepEqual(isPaused, true);
       assert(await a.failure(contracts.daoFundingManager.claimEthFunding.call(
         doc,
         bN(0),
@@ -93,7 +95,9 @@ contract('DaoFundingManager', function (accounts) {
       await contracts.daoStorage.updateProposalPRL(doc, bN(3), randomBytes32(), bN(getCurrentTimestamp()));
     });
     it('[not called by addressOf.dgdHolders[2]]: revert', async function () {
-      assert.deepEqual(await contracts.daoStorage.readProposalPRL.call(doc), true);
+      const readProposal = await contracts.daoStorage.readProposal.call(doc);
+      const isPaused = readProposal[8];
+      assert.deepEqual(isPaused, false);
       assert(await a.failure(contracts.daoFundingManager.claimEthFunding.call(
         doc,
         bN(0),
