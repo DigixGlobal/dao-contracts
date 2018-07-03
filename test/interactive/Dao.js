@@ -14,6 +14,7 @@ const {
   updateKyc,
   waitFor,
   modifyProposal,
+  assignVotesAndCommits,
 } = require('../setup');
 
 const {
@@ -36,6 +37,7 @@ const {
 } = require('@digix/helpers/lib/helpers');
 
 const bN = web3.toBigNumber;
+const web3Utils = require('web3-utils');
 
 contract('Dao', function (accounts) {
   const libs = {};
@@ -858,10 +860,12 @@ contract('Dao', function (accounts) {
     });
   });
 
-  // TODO
   describe('commitVoteOnProposal', function () {
+    let votesAndCommits;
+    let startTime;
     before(async function () {
       await resetBeforeEach();
+      // in the voting phase
       await contracts.daoStorage.mock_put_proposal_as(
         proposals[0].id,
         bN(0),
@@ -872,6 +876,8 @@ contract('Dao', function (accounts) {
         proposals[0].versions[0].milestoneFundings,
         proposals[0].versions[0].finalReward,
       );
+      startTime = getCurrentTimestamp();
+      // in the voting phase
       await contracts.daoStorage.mock_put_proposal_as(
         proposals[1].id,
         bN(0),
@@ -882,64 +888,243 @@ contract('Dao', function (accounts) {
         proposals[1].versions[0].milestoneFundings,
         proposals[1].versions[0].finalReward,
       );
-      console.log('ok put proposals');
+      // in the draft phase
+      await contracts.daoStorage.mock_put_proposal_as(
+        proposals[2].id,
+        bN(0),
+        true,
+        proposals[2].proposer,
+        proposals[2].endorser,
+        proposals[2].versions[0].milestoneDurations,
+        proposals[2].versions[0].milestoneFundings,
+        proposals[2].versions[0].finalReward,
+      );
+      votesAndCommits = assignVotesAndCommits(addressOf, bN);
     });
-    // it('[if not voting commit phase]: revert', async function () {
-    //
-    // });
-    // it('[if invalid proposal state for voting round]: revert', async function () {
-    //
-    // });
-    // it('[if called by non-participant]: revert', async function () {
-    //
-    // });
-    // it('[valid commit vote]: verify read functions', async function () {
-    //
-    // });
-    // it('[re-using nonce for commiting vote]: revert', async function () {
-    //
-    // });
-    // it('[update commit vote valid]: verify read functions', async function () {
-    //
-    // });
-    // it('[copying existing commit]: revert', async function () {
-    //
-    // });
-    // after(async function () {
-    //
-    // });
+    it('[if invalid proposal state for voting round]: revert', async function () {
+      assert.deepEqual(await contracts.daoStakeStorage.isInParticipantList.call(addressOf.allParticipants[0]), true);
+      assert(await a.failure(contracts.daoVoting.commitVoteOnProposal(
+        proposals[2].id,
+        bN(0),
+        votesAndCommits.votingCommits[2][0],
+        { from: addressOf.allParticipants[0] },
+      )));
+    });
+    it('[if called by non-participant]: revert', async function () {
+      assert.deepEqual(await contracts.daoStakeStorage.isInParticipantList.call(addressOf.allParticipants[2]), false);
+      assert(await a.failure(contracts.daoVoting.commitVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        votesAndCommits.votingCommits[0][2],
+        { from: addressOf.allParticipants[2] },
+      )));
+    });
+    it('[valid commit vote]: verify read functions', async function () {
+      await contracts.daoVoting.commitVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        votesAndCommits.votingCommits[0][0],
+        { from: addressOf.allParticipants[0] },
+      );
+      await contracts.daoVoting.commitVoteOnProposal(
+        proposals[1].id,
+        bN(0),
+        votesAndCommits.votingCommits[1][1],
+        { from: addressOf.allParticipants[1] },
+      );
+      assert.deepEqual(await contracts.daoStorage.readCommitVote.call(proposals[0].id, bN(0), addressOf.allParticipants[0]), votesAndCommits.votingCommits[0][0]);
+      assert.deepEqual(await contracts.daoStorage.readCommitVote.call(proposals[1].id, bN(0), addressOf.allParticipants[1]), votesAndCommits.votingCommits[1][1]);
+    });
+    it('[update commit vote valid]: verify read functions', async function () {
+      const randomSaltPrime = randomBigNumber(bN);
+      const commitPrime = web3Utils.soliditySha3(
+        { t: 'address', v: addressOf.allParticipants[0] },
+        { t: 'bool', v: false },
+        { t: 'uint256', v: randomSaltPrime },
+      );
+      await contracts.daoVoting.commitVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        commitPrime,
+        { from: addressOf.allParticipants[0] },
+      );
+      assert.deepEqual(await contracts.daoStorage.readCommitVote.call(proposals[0].id, bN(0), addressOf.allParticipants[0]), commitPrime);
+    });
+    it('[if not voting commit phase]: revert', async function () {
+      // wait for commit phase to get over
+      const commitPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_VOTING_COMMIT_PHASE);
+      const timeToWaitFor = commitPhaseDuration.toNumber() - (getCurrentTimestamp() - startTime);
+      await waitFor(timeToWaitFor, addressOf, web3);
+      assert.deepEqual(await contracts.daoStakeStorage.isInParticipantList.call(addressOf.allParticipants[4]), true);
+      assert(await a.failure(contracts.daoVoting.commitVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        votesAndCommits.votingCommits[0][4],
+        { from: addressOf.allParticipants[4] },
+      )));
+    });
   });
 
-  // // TODO
-  // describe('revealVoteOnProposal', function () {
-  //   before(async function () {
-  //
-  //   });
-  //   it('[if not the voting reveal phase]: revert', async function () {
-  //
-  //   });
-  //   it('[if proposal state is not valid]: revert', async function () {
-  //
-  //   });
-  //   it('[if non-participant calls]: revert', async function () {
-  //
-  //   });
-  //   it('[revealed vote cannot verify last commit]: revert', async function () {
-  //
-  //   });
-  //   it('[reveal successfully]: verify read functions', async function () {
-  //     // read vote
-  //
-  //     // check quarter point
-  //   });
-  //   it('[revealing vote again]: revert', async function () {
-  //
-  //   });
-  //   after(async function () {
-  //
-  //   });
-  // });
-  //
+  describe('revealVoteOnProposal', function () {
+    let votesAndCommits;
+    let startTime;
+    before(async function () {
+      await resetBeforeEach();
+      // in the voting phase
+      await contracts.daoStorage.mock_put_proposal_as(
+        proposals[0].id,
+        bN(0),
+        false,
+        proposals[0].proposer,
+        proposals[0].endorser,
+        proposals[0].versions[0].milestoneDurations,
+        proposals[0].versions[0].milestoneFundings,
+        proposals[0].versions[0].finalReward,
+      );
+      startTime = getCurrentTimestamp();
+      // in the voting phase
+      await contracts.daoStorage.mock_put_proposal_as(
+        proposals[1].id,
+        bN(0),
+        false,
+        proposals[1].proposer,
+        proposals[1].endorser,
+        proposals[1].versions[0].milestoneDurations,
+        proposals[1].versions[0].milestoneFundings,
+        proposals[1].versions[0].finalReward,
+      );
+      // in the draft phase
+      await contracts.daoStorage.mock_put_proposal_as(
+        proposals[2].id,
+        bN(0),
+        true,
+        proposals[2].proposer,
+        proposals[2].endorser,
+        proposals[2].versions[0].milestoneDurations,
+        proposals[2].versions[0].milestoneFundings,
+        proposals[2].versions[0].finalReward,
+      );
+      votesAndCommits = assignVotesAndCommits(addressOf, bN);
+      await contracts.daoVoting.commitVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        votesAndCommits.votingCommits[0][0],
+        { from: addressOf.allParticipants[0] },
+      );
+      await contracts.daoVoting.commitVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        votesAndCommits.votingCommits[0][1],
+        { from: addressOf.allParticipants[1] },
+      );
+      await contracts.daoVoting.commitVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        votesAndCommits.votingCommits[0][4],
+        { from: addressOf.allParticipants[4] },
+      );
+    });
+    it('[if not the voting reveal phase]: revert', async function () {
+      // before the reveal phase begins, reveal the correct vote
+      assert(await a.failure(contracts.daoVoting.revealVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        votesAndCommits.votes[0][0],
+        votesAndCommits.salts[0][0],
+        { from: addressOf.allParticipants[0] },
+      )));
+      assert(await a.failure(contracts.daoVoting.revealVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        votesAndCommits.votes[0][1],
+        votesAndCommits.salts[0][1],
+        { from: addressOf.allParticipants[1] },
+      )));
+    });
+    it('[if non-participant calls]: revert', async function () {
+      // now wait for the phase to be over
+      const commitPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_VOTING_COMMIT_PHASE);
+      const timeToWaitFor = commitPhaseDuration.toNumber() - (getCurrentTimestamp() - startTime);
+      await waitFor(timeToWaitFor + 2, addressOf, web3);
+
+      // mock remove user as participant
+      await contracts.daoRewardsStorage.mock_set_last_participated_quarter(addressOf.allParticipants[1], bN(0));
+      assert(await a.failure(contracts.daoVoting.revealVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        votesAndCommits.votes[0][1],
+        votesAndCommits.salts[0][1],
+        { from: addressOf.allParticipants[1] },
+      )));
+    });
+    it('[revealed vote cannot verify last commit]: revert', async function () {
+      // add back the user
+      await contracts.daoRewardsStorage.mock_set_last_participated_quarter(addressOf.allParticipants[1], bN(1));
+      // reveal the wrong vote
+      assert(await a.failure(contracts.daoVoting.revealVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        !votesAndCommits.votes[0][1],
+        votesAndCommits.salts[0][1],
+        { from: addressOf.allParticipants[1] },
+      )));
+
+      // reveal the wrong salt
+      assert(await a.failure(contracts.daoVoting.revealVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        votesAndCommits.votes[0][1],
+        randomBigNumber(bN),
+        { from: addressOf.allParticipants[1] },
+      )));
+    });
+    it('[reveal successfully]: verify read functions', async function () {
+      // read info before
+      const quarterIndex = bN(1);
+      const qpBefore0 = await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.allParticipants[0], quarterIndex);
+      const qpBefore1 = await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.allParticipants[1], quarterIndex);
+
+      // reveal correctly
+      await contracts.daoVoting.revealVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        votesAndCommits.votes[0][1],
+        votesAndCommits.salts[0][1],
+        { from: addressOf.allParticipants[1] },
+      );
+      await contracts.daoVoting.revealVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        votesAndCommits.votes[0][0],
+        votesAndCommits.salts[0][0],
+        { from: addressOf.allParticipants[0] },
+      );
+
+      // read vote
+      const participants = getParticipants(addressOf, bN);
+      const readVote0 = await contracts.daoStorage.readVote.call(proposals[0].id, bN(0), addressOf.allParticipants[0]);
+      const readVote1 = await contracts.daoStorage.readVote.call(proposals[0].id, bN(0), addressOf.allParticipants[1]);
+      assert.deepEqual(readVote0[0], votesAndCommits.votes[0][0]);
+      assert.deepEqual(readVote1[0], votesAndCommits.votes[0][1]);
+      assert.deepEqual(readVote0[1], participants[0].dgdToLock);
+      assert.deepEqual(readVote1[1], participants[1].dgdToLock);
+
+      // check quarter point
+      const additionQP = daoConstantsValues(bN).CONFIG_QUARTER_POINT_VOTE;
+      assert.deepEqual(await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.allParticipants[0], quarterIndex), qpBefore0.plus(additionQP));
+      assert.deepEqual(await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.allParticipants[1], quarterIndex), qpBefore1.plus(additionQP));
+    });
+    it('[revealing vote again]: revert', async function () {
+      assert(await a.failure(contracts.daoVoting.revealVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        votesAndCommits.votes[0][0],
+        votesAndCommits.salts[0][0],
+        { from: addressOf.allParticipants[0] },
+      )));
+    });
+  });
+
   // // TODO
   // describe('claimVotingResult', function () {
   //   before(async function () {

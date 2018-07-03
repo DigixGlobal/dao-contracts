@@ -168,7 +168,9 @@ contract DaoCommon is IdentityCommon {
     }
 
     modifier has_not_revealed(bytes32 _proposalId, uint256 _index) {
-        require(daoStorage().readVote(_proposalId, _index, msg.sender) == uint(0));
+        uint256 _weight;
+        (,_weight) = daoStorage().readVote(_proposalId, _index, msg.sender);
+        require(_weight == uint(0));
         _;
     }
 

@@ -221,14 +221,16 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     function readVote(bytes32 _proposalId, uint256 _index, address _voter)
         public
         constant
-        returns (uint256 _weight)
+        returns (bool _vote, uint256 _weight)
     {
         DaoStructs.Voting _voting;
         _voting = proposalsById[_proposalId].votingRounds[_index];
         if (_voting.yesVotes[_voter] > 0) {
             _weight = _voting.yesVotes[_voter];
+            _vote = true;
         } else {
             _weight = _voting.noVotes[_voter];
+            _vote = false;
         }
     }
 
