@@ -31,6 +31,8 @@ const DaoConfigsStorage = process.env.SIMULATION ? 0 : artifacts.require('./Mock
 const DaoStakeStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoStakeStorage.sol');
 const DaoPointsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoPointsStorage.sol');
 const DaoStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoStorage.sol');
+
+const DaoStructs = process.env.SIMULATION ? 0 : artifacts.require('./DaoStructs.sol');
 const DaoUpgradableStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoUpgradableStorage.sol');
 const DaoSpecialStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoSpecialStorage.sol');
 const DaoFundingStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoFundingStorage.sol');
@@ -59,6 +61,8 @@ const DGD_HOLDER_COUNT = 6;
 
 const deployLibraries = async function (libs) {
   libs.doublyLinkedList = await DoublyLinkedList.new();
+  await DaoStructs.link('DoublyLinkedList', libs.doublyLinkedList.address);
+  libs.daoStructs = await DaoStructs.new();
   return libs;
 };
 
@@ -106,10 +110,12 @@ const deployStorage = async function (libs, contracts, resolver) {
   contracts.daoStakeStorage = await DaoStakeStorage.new(resolver.address);
   contracts.daoPointsStorage = await DaoPointsStorage.new(resolver.address);
   DaoStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
+  DaoStorage.link('DaoStructs', libs.daoStructs.address);
   DaoSpecialStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
+  DaoSpecialStorage.link('DaoStructs', libs.doublyLinkedList.address);
   contracts.daoUpgradableStorage = await DaoUpgradableStorage.new(resolver.address);
   contracts.daoStorage = await DaoStorage.new(resolver.address);
-  // console.log('tx = ', await web3.eth.getTransactionReceipt(contracts.daoStorage.transactionHash));
+  console.log('tx = ', await web3.eth.getTransactionReceipt(contracts.daoStorage.transactionHash));
   contracts.daoSpecialStorage = await DaoSpecialStorage.new(resolver.address);
   contracts.daoFundingStorage = await DaoFundingStorage.new(resolver.address);
   contracts.daoRewardsStorage = await DaoRewardsStorage.new(resolver.address);

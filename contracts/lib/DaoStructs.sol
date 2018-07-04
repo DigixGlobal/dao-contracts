@@ -5,25 +5,6 @@ import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
 library DaoStructs {
     using DoublyLinkedList for DoublyLinkedList.Bytes;
 
-    struct VotingCount {
-        uint256 forCount;
-        uint256 againstCount;
-        uint256 quorum;
-    }
-
-    struct MilestoneInfo {
-        uint256 index;
-        uint256 duration;
-        uint256 funding;
-        uint256 finalReward;
-        uint256 milestoneStart;
-    }
-
-    struct Users {
-        address[] users;
-        uint256 usersLength;
-    }
-
     struct PrlAction {
         uint256 at;
         bytes32 doc;
@@ -67,6 +48,124 @@ library DaoStructs {
         bool isPaused;
         bytes32 finalVersion;
         PrlAction[] prlActions;
+    }
+
+    function countVotes(Voting storage _voting, address[] memory _allUsers)
+        constant
+        returns (uint256 _for, uint256 _against, uint256 _quorum)
+    {
+        uint256 _n = _allUsers.length;
+        for (uint256 i = 0; i < _n; i++) {
+            if (_voting.yesVotes[_allUsers[i]] > 0) {
+                _for += _voting.yesVotes[_allUsers[i]];
+            } else if (_voting.noVotes[_allUsers[i]] > 0) {
+                _against += _voting.noVotes[_allUsers[i]];
+            }
+        }
+        _quorum = _for + _against;
+    }
+
+    function listVotes(Voting storage _voting, address[] _allUsers, bool _vote)
+        constant
+        returns (address[] memory _voters, uint256 _length)
+    {
+        uint256 _n = _allUsers.length;
+        uint256 i;
+        _length = 0;
+        _voters = new address[](_n);
+        if (_vote == true) {
+            for (i = 0; i < _n; i++) {
+                if (_voting.yesVotes[_allUsers[i]] > 0) {
+                    _voters[_length] = _allUsers[i];
+                    _length++;
+                }
+            }
+        } else {
+            for (i = 0; i < _n; i++) {
+                if (_voting.noVotes[_allUsers[i]] > 0) {
+                    _voters[_length] = _allUsers[i];
+                    _length++;
+                }
+            }
+        }
+    }
+
+    function readVote(Voting storage _voting, address _voter)
+        public
+        constant
+        returns (bool _vote, uint256 _weight)
+    {
+        if (_voting.yesVotes[_voter] > 0) {
+            _weight = _voting.yesVotes[_voter];
+            _vote = true;
+        } else {
+            _weight = _voting.noVotes[_voter];
+            _vote = false;
+        }
+    }
+
+    function revealVote(
+        Voting storage _voting,
+        address _voter,
+        bool _vote,
+        uint256 _weight
+    ) public {
+        if (_vote) {
+            _voting.yesVotes[_voter] = _weight;
+        } else {
+            _voting.noVotes[_voter] = _weight;
+        }
+    }
+
+
+
+    function readVersion(ProposalVersion storage _version)
+        public
+        constant
+        returns (
+            bytes32 _doc,
+            uint256 _created,
+            uint256[] _milestoneDurations,
+            uint256[] _milestoneFundings,
+            uint256 _finalReward
+        )
+    {
+        _doc = _version.docIpfsHash;
+        _created = _version.created;
+        _milestoneDurations = _version.milestoneDurations;
+        _milestoneFundings = _version.milestoneFundings;
+        _finalReward = _version.finalReward;
+    }
+
+    function readProposalMilestone(Proposal storage _proposal, uint256 _milestoneIndex)
+        public
+        constant
+        returns (uint256 _milestoneId, uint256 _duration, uint256 _funding, uint256 _finalReward)
+    {
+        require(_milestoneIndex >= 0);
+        bytes32 _finalVersion = _proposal.finalVersion;
+        if (_milestoneIndex < _proposal.proposalVersions[_finalVersion].milestoneDurations.length) {
+            _milestoneId = _milestoneIndex;
+            _duration = _proposal.proposalVersions[_finalVersion].milestoneDurations[_milestoneIndex];
+            _funding = _proposal.proposalVersions[_finalVersion].milestoneFundings[_milestoneIndex];
+        }
+        _finalReward = _proposal.proposalVersions[_finalVersion].finalReward;
+    }
+
+    function addProposalVersion(
+        Proposal storage _proposal,
+        bytes32 _newDoc,
+        uint256[] _newMilestoneDurations,
+        uint256[] _newMilestoneFundings,
+        uint256 _finalReward
+    ) public {
+        _proposal.proposalVersionDocs.append(_newDoc);
+        _proposal.proposalVersions[_newDoc].docIpfsHash = _newDoc;
+        _proposal.proposalVersions[_newDoc].created = now;
+        _proposal.proposalVersions[_newDoc].milestoneCount = _newMilestoneFundings.length;
+        _proposal.proposalVersions[_newDoc].milestoneDurations = _newMilestoneDurations;
+        _proposal.proposalVersions[_newDoc].milestoneFundings = _newMilestoneFundings;
+        _proposal.proposalVersions[_newDoc].finalReward = _finalReward;
     }
 
     struct SpecialProposal {

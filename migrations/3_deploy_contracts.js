@@ -5,6 +5,7 @@ const MockDgxDemurrageReporter = artifacts.require('./MockDgxDemurrageReporter.s
 
 const ContractResolver = artifacts.require('ContractResolver.sol');
 const DoublyLinkedList = artifacts.require('DoublyLinkedList.sol');
+const DaoStructs = artifacts.require('DaoStructs.sol');
 
 const DaoIdentityStorage = artifacts.require('DaoIdentityStorage.sol');
 const DaoConfigsStorage = artifacts.require('MockDaoConfigsStorage.sol');
@@ -35,9 +36,17 @@ module.exports = async function (deployer, network) {
       return deployer.deploy(DoublyLinkedList);
     })
     .then(() => {
+      return deployer.link(DoublyLinkedList, DaoStructs);
+    })
+    .then(() => {
+      return deployer.deploy(DaoStructs);
+    })
+    .then(() => {
       deployer.link(DoublyLinkedList, DaoIdentityStorage);
       deployer.link(DoublyLinkedList, DaoStakeStorage);
       deployer.link(DoublyLinkedList, DaoStorage);
+      deployer.link(DaoStructs, DaoStorage);
+      deployer.link(DaoStructs, DaoSpecialStorage);
       return deployer.link(DoublyLinkedList, DaoSpecialStorage);
     })
     .then(() => {
