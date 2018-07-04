@@ -308,14 +308,6 @@ contract('Dao', function (accounts) {
     });
     it('[valid]: success | verify read functions', async function () {
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
-      assert.deepEqual(await contracts.dao.modifyProposal.call(
-        proposals[1].id,
-        proposals[1].versions[1].versionId,
-        proposals[1].versions[1].milestoneDurations,
-        proposals[1].versions[1].milestoneFundings,
-        proposals[1].versions[1].finalReward,
-        { from: addressOf.dgdHolders[1] },
-      ), true);
       await contracts.dao.modifyProposal(
         proposals[1].id,
         proposals[1].versions[1].versionId,
@@ -641,18 +633,18 @@ contract('Dao', function (accounts) {
       const readDraftVote10 = await contracts.daoStorage.readDraftVote.call(proposals[1].id, addressOf.badgeHolders[0]);
       const readDraftVote11 = await contracts.daoStorage.readDraftVote.call(proposals[1].id, addressOf.badgeHolders[1]);
       const participants = getParticipants(addressOf, bN);
+
       assert.deepEqual(readDraftVote00[0], true);
-      assert.deepEqual(readDraftVote00[1], true);
-      assert.deepEqual(readDraftVote00[2], participants[0].dgdToLock);
+      assert.deepEqual(readDraftVote00[1], participants[0].dgdToLock);
+
       assert.deepEqual(readDraftVote01[0], true);
-      assert.deepEqual(readDraftVote01[1], true);
-      assert.deepEqual(readDraftVote01[2], participants[1].dgdToLock);
-      assert.deepEqual(readDraftVote10[0], true);
-      assert.deepEqual(readDraftVote10[1], false);
-      assert.deepEqual(readDraftVote10[2], participants[0].dgdToLock);
-      assert.deepEqual(readDraftVote11[0], true);
-      assert.deepEqual(readDraftVote11[1], false);
-      assert.deepEqual(readDraftVote11[2], participants[1].dgdToLock);
+      assert.deepEqual(readDraftVote01[1], participants[1].dgdToLock);
+
+      assert.deepEqual(readDraftVote10[0], false);
+      assert.deepEqual(readDraftVote10[1], participants[0].dgdToLock);
+
+      assert.deepEqual(readDraftVote11[0], false);
+      assert.deepEqual(readDraftVote11[1], participants[1].dgdToLock);
 
       // read draft voting count
       const count0 = await contracts.daoStorage.readDraftVotingCount.call(proposals[0].id, addressOf.allParticipants);
@@ -694,10 +686,10 @@ contract('Dao', function (accounts) {
       // read draft vote
       const readDraftVote0 = await contracts.daoStorage.readDraftVote.call(proposals[0].id, addressOf.badgeHolders[0]);
       const readDraftVote1 = await contracts.daoStorage.readDraftVote.call(proposals[1].id, addressOf.badgeHolders[1]);
-      assert.deepEqual(readDraftVote0[0], true);
-      assert.deepEqual(readDraftVote0[1], false);
+
+      assert.deepEqual(readDraftVote0[0], false);
+
       assert.deepEqual(readDraftVote1[0], true);
-      assert.deepEqual(readDraftVote1[1], true);
 
       // read draft voting count
       const participants = getParticipants(addressOf, bN);

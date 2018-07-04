@@ -69,7 +69,7 @@ contract Dao is DaoCommon, Claimable {
     {
         address _proposer = msg.sender;
         require(identity_storage().is_kyc_approved(_proposer));
-        require(daoStorage().addProposal(_docIpfsHash, _proposer, _milestonesDurations, _milestonesFundings, _finalReward));
+        daoStorage().addProposal(_docIpfsHash, _proposer, _milestonesDurations, _milestonesFundings, _finalReward);
         _success = true;
     }
 
@@ -101,7 +101,7 @@ contract Dao is DaoCommon, Claimable {
         require(_currentState == PROPOSAL_STATE_PREPROPOSAL ||
           _currentState == PROPOSAL_STATE_DRAFT);
         require(identity_storage().is_kyc_approved(msg.sender));
-        require(daoStorage().editProposal(_proposalId, _docIpfsHash, _milestonesDurations, _milestonesFundings, _finalReward));
+        daoStorage().editProposal(_proposalId, _docIpfsHash, _milestonesDurations, _milestonesFundings, _finalReward);
         _success = true;
     }
 
@@ -132,7 +132,7 @@ contract Dao is DaoCommon, Claimable {
         returns (bool _success)
     {
         address _endorser = msg.sender;
-        require(daoStorage().updateProposalEndorse(_proposalId, _endorser));
+        daoStorage().updateProposalEndorse(_proposalId, _endorser);
         _success = true;
     }
 

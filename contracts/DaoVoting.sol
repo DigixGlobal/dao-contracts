@@ -31,12 +31,12 @@ contract DaoVoting is DaoCommon, Claimable {
         address _moderator = msg.sender;
         uint256 _moderatorStake = daoStakeStorage().readUserEffectiveDGDStake(_moderator);
 
-        bool _voted;
-        (_voted,,) = daoStorage().readDraftVote(_proposalId, _moderator);
+        uint256 _voteWeight;
+        (,_voteWeight) = daoStorage().readDraftVote(_proposalId, _moderator);
 
-        require(daoStorage().addDraftVote(_proposalId, _moderator, _voteYes, _moderatorStake));
+        daoStorage().addDraftVote(_proposalId, _moderator, _voteYes, _moderatorStake);
 
-        if (_voted == false) {
+        if (_voteWeight == 0) { // just voted the first time
             daoPointsStorage().addQuarterModeratorPoint(_moderator, get_uint_config(CONFIG_QUARTER_POINT_DRAFT_VOTE), currentQuarterIndex());
         }
 

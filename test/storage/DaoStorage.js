@@ -575,8 +575,8 @@ contract('DaoStorage', function (accounts) {
       assert.equal(yesVotes[1].toNumber(), 2);
       assert.equal(noVotes[1].toNumber(), 1);
 
-      assert.deepEqual(await contracts.daoStorage.readVote.call(doc, bN(0), addressOf.badgeHolders[0]), stakeWeightOf[0]);
-      assert.deepEqual(await contracts.daoStorage.readVote.call(doc, bN(0), addressOf.dgdHolders[0]), stakeWeightOf[4]);
+      assert.deepEqual((await contracts.daoStorage.readVote.call(doc, bN(0), addressOf.badgeHolders[0]))[1], stakeWeightOf[0]);
+      assert.deepEqual((await contracts.daoStorage.readVote.call(doc, bN(0), addressOf.dgdHolders[0]))[1], stakeWeightOf[4]);
     });
   });
 
