@@ -29,7 +29,7 @@ contract DaoCalculatorService is DaoCommon {
 
     function minimumDraftQuorum(bytes32 _proposalId) public returns (uint256 _minQuorum) {
         uint256 _ethAsked;
-        //TODO: implement this function
+        
         (,_ethAsked) = daoStorage().readProposalFunding(_proposalId);
         _minQuorum = calculateMinQuorum(
             daoStakeStorage().totalModeratorLockedDGDStake(),
