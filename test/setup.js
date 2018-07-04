@@ -112,10 +112,10 @@ const deployStorage = async function (libs, contracts, resolver) {
   DaoStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
   DaoStorage.link('DaoStructs', libs.daoStructs.address);
   DaoSpecialStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
-  DaoSpecialStorage.link('DaoStructs', libs.doublyLinkedList.address);
+  DaoSpecialStorage.link('DaoStructs', libs.daoStructs.address);
   contracts.daoUpgradableStorage = await DaoUpgradableStorage.new(resolver.address);
   contracts.daoStorage = await DaoStorage.new(resolver.address);
-  console.log('tx = ', await web3.eth.getTransactionReceipt(contracts.daoStorage.transactionHash));
+  // console.log('tx = ', await web3.eth.getTransactionReceipt(contracts.daoStorage.transactionHash));
   contracts.daoSpecialStorage = await DaoSpecialStorage.new(resolver.address);
   contracts.daoFundingStorage = await DaoFundingStorage.new(resolver.address);
   contracts.daoRewardsStorage = await DaoRewardsStorage.new(resolver.address);

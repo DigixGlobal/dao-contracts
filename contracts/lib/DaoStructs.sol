@@ -51,6 +51,7 @@ library DaoStructs {
     }
 
     function countVotes(Voting storage _voting, address[] memory _allUsers)
+        public
         constant
         returns (uint256 _for, uint256 _against, uint256 _quorum)
     {
@@ -66,6 +67,7 @@ library DaoStructs {
     }
 
     function listVotes(Voting storage _voting, address[] _allUsers, bool _vote)
+        public
         constant
         returns (address[] memory _voters, uint256 _length)
     {
@@ -109,15 +111,15 @@ library DaoStructs {
         address _voter,
         bool _vote,
         uint256 _weight
-    ) public {
+    )
+        public
+    {
         if (_vote) {
             _voting.yesVotes[_voter] = _weight;
         } else {
             _voting.noVotes[_voter] = _weight;
         }
     }
-
-
 
     function readVersion(ProposalVersion storage _version)
         public
@@ -158,7 +160,9 @@ library DaoStructs {
         uint256[] _newMilestoneDurations,
         uint256[] _newMilestoneFundings,
         uint256 _finalReward
-    ) public {
+    )
+        public
+    {
         _proposal.proposalVersionDocs.append(_newDoc);
         _proposal.proposalVersions[_newDoc].docIpfsHash = _newDoc;
         _proposal.proposalVersions[_newDoc].created = now;

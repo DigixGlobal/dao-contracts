@@ -1,7 +1,5 @@
 pragma solidity ^0.4.23;
 
-import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
-
 library DaoIntermediateStructs {
 
     struct VotingCount {
