@@ -71,6 +71,14 @@ const getTimeToNextPhase = function (timeNow, startOfDao, lockingPhaseDuration, 
   return timeToNextPhase;
 };
 
+const getTimeLeftInQuarter = function (timeNow, startOfDao, quarterDuration) {
+  return (quarterDuration - getTimeInQuarter(timeNow, startOfDao, quarterDuration));
+};
+
+const getTimeInQuarter = function (timeNow, startOfDao, quarterDuration) {
+  return ((timeNow - startOfDao) % quarterDuration);
+};
+
 const daoConstantsKeys = function () {
   return {
     CONFIG_LOCKING_PHASE_DURATION: 'locking_phase_duration',
@@ -146,7 +154,7 @@ const daoConstantsValues = function (bN) {
     CONFIG_QUARTER_POINT_INTERIM_VOTE: bN(1),
     CONFIG_QUARTER_POINT_CLAIM_RESULT: bN(1),
     CONFIG_QUARTER_POINT_MILESTONE_COMPLETION: bN(3),
-    CONFIG_BONUS_REPUTATION_NUMERATOR: bN(20),
+    CONFIG_BONUS_REPUTATION_NUMERATOR: bN(200),
     CONFIG_BONUS_REPUTATION_DENOMINATOR: bN(100),
     CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE: bN(1814400),
     CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL: bN(2419200),
@@ -223,6 +231,8 @@ module.exports = {
   assertQuarter,
   max,
   prlActions,
+  getTimeInQuarter,
+  getTimeLeftInQuarter,
   EMPTY_BYTES,
   EMPTY_ADDRESS,
 };

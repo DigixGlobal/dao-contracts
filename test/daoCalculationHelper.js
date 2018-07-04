@@ -130,6 +130,23 @@ const calculateDgxRewards = function (
   return _rewards;
 };
 
+const getBonusReputation = function (
+  _quarterPointPerVote,
+  _bonusReputationNumerator,
+  _bonusReputationDenominator,
+  _reputationPerExtraNum,
+  _reputationPerExtraDen,
+) {
+  _quarterPointPerVote = _quarterPointPerVote.toNumber();
+  _bonusReputationNumerator = _bonusReputationNumerator.toNumber();
+  _bonusReputationDenominator = _bonusReputationDenominator.toNumber();
+  _reputationPerExtraNum = _reputationPerExtraNum.toNumber();
+  _reputationPerExtraDen = _reputationPerExtraDen.toNumber();
+
+  return Math.floor((_quarterPointPerVote * _bonusReputationNumerator * _reputationPerExtraNum) /
+    (_reputationPerExtraDen * _bonusReputationDenominator));
+};
+
 module.exports = {
   calculateMinQuorum,
   calculateQuota,
@@ -137,5 +154,6 @@ module.exports = {
   calculateDgxDemurrage,
   calculateDgxRewards,
   calculateReputation,
+  getBonusReputation,
   SECONDS_IN_A_DAY,
 };

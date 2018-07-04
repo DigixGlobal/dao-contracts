@@ -41,7 +41,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_QUARTER_POINT_CLAIM_RESULT] = 1;
         uintConfigs[CONFIG_QUARTER_POINT_MILESTONE_COMPLETION] = 3;
 
-        uintConfigs[CONFIG_BONUS_REPUTATION_NUMERATOR] = 20;
+        uintConfigs[CONFIG_BONUS_REPUTATION_NUMERATOR] = 200;
         uintConfigs[CONFIG_BONUS_REPUTATION_DENOMINATOR] = 100;
 
         uintConfigs[CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE] = 3 weeks;

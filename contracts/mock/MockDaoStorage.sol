@@ -59,4 +59,44 @@ contract MockDaoStorage is DaoStorage {
             proposalsById[_proposalId].votingRounds[_roundIndex].startTime = now;
         }
     }
+
+    /**
+    @notice Mock function to add fake votes in the past for a proposal
+    @dev This will never be available in the deployment, only for test purposes
+    @param _proposalId ID of the proposal
+    @param _roundIndex Index of the voting round
+    @param _isDraftPhase Boolean, whether updating the votes for draft phase or not
+    @param _voters Array of addresses of the voters
+    @param _votes Boolean array of the votes (for or against)
+    @param _weights Uint array of the voting weights
+    @param _length Length of the above arrays (number of voters)
+    @param _startOfNextMilestone Start of the next milestone after this round of voting
+    */
+    function mock_put_past_votes(
+        bytes32 _proposalId,
+        uint256 _roundIndex,
+        bool _isDraftPhase,
+        address[] _voters,
+        bool[] _votes,
+        uint256[] _weights,
+        uint256 _length,
+        uint256 _startOfNextMilestone
+    )
+        public
+    {
+        DaoStructs.Voting storage _voting;
+        if (_isDraftPhase) {
+            _voting = proposalsById[_proposalId].draftVoting;
+        } else {
+            _voting = proposalsById[_proposalId].votingRounds[_roundIndex];
+            _voting.startOfNextMilestone = _startOfNextMilestone;
+        }
+        for (uint256 i = 0; i < _length; i++) {
+            if (_votes[i] == true) {
+                _voting.yesVotes[_voters[i]] = _weights[i];
+            } else {
+                _voting.noVotes[_voters[i]] = _weights[i];
+            }
+        }
+    }
 }
