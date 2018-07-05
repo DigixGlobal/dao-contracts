@@ -70,6 +70,8 @@ contract DaoConstants {
   bytes32 CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR = "vote_quorum_fixed_denominator";
   bytes32 CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR = "vote_quorum_sfactor_numerator";
   bytes32 CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR = "vote_quorum_sfactor_denominator";
+  bytes32 CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR = "final_reward_sfactor_numerator";
+  bytes32 CONFIG_FINAL_REWARD_SCALING_FACTOR_DENOMINATOR = "final_reward_sfactor_denominator";
 
   bytes32 CONFIG_DRAFT_QUOTA_NUMERATOR = "draft_quota_numerator";
   bytes32 CONFIG_DRAFT_QUOTA_DENOMINATOR = "draft_quota_denominator";
@@ -112,7 +114,6 @@ contract DaoConstants {
   bytes32 CONFIG_PORTION_TO_BADGE_HOLDERS_DEN = "config_bholder_portion_den";
 
   bytes32 CONFIG_DRAFT_VOTING_PHASE = "config_draft_voting_phase";
-
 
   bytes32 CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE = "config_rp_boost_per_badge";
 }

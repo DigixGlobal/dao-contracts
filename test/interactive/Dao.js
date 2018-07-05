@@ -1191,9 +1191,10 @@ contract('Dao', function (accounts) {
   });
 
   describe('claimVotingResult', function () {
+    let participants;
     beforeEach(async function () {
       await resetBeforeEach();
-      const participants = getParticipants(addressOf, bN);
+      participants = getParticipants(addressOf, bN);
       /**
         proposals[0] in interim voting round
         allParticipants[0], [1] vote for, [4], [5] vote against during voting round
@@ -1267,17 +1268,29 @@ contract('Dao', function (accounts) {
       );
 
       /**
-        TODO:
         proposals[2] in voting round
         quota is not satisfied although quorum is met
       */
-
-      /**
-        TODO:
-        proposals[3] completed last milestone
-        final interim round to release finalReward
-        everybody votes true, allParticipants[3] voted false in previous round
-      */
+      await contracts.daoStorage.mock_put_proposal_as(
+        proposals[2].id,
+        bN(0),
+        false,
+        proposals[2].proposer,
+        proposals[2].endorser,
+        proposals[2].versions[0].milestoneDurations,
+        proposals[2].versions[0].milestoneFundings,
+        proposals[2].versions[0].finalReward,
+      );
+      await contracts.daoStorage.mock_put_past_votes(
+        proposals[2].id,
+        bN(0),
+        false,
+        [addressOf.allParticipants[0], addressOf.allParticipants[1], addressOf.allParticipants[4], addressOf.allParticipants[5]],
+        [false, false, false, true],
+        [participants[0].dgdToLock, participants[1].dgdToLock, participants[2].dgdToLock, participants[3].dgdToLock],
+        bN(4),
+        bN(getCurrentTimestamp()),
+      );
     });
     it('[if claiming before reveal phase ends]: revert', async function () {
       assert(await a.failure(contracts.daoVotingClaims.claimProposalVotingResult(
@@ -1306,9 +1319,26 @@ contract('Dao', function (accounts) {
         )));
       });
     });
-    // TODO:
-    it('[if quota is not met]: revert', async function () {
+    it('[voting round - if quota is not met]: returns false', async function () {
+      // now wait for the interim phase to get over
+      const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);
+      await waitFor(interimVotingPhaseDuration.toNumber() + 1, addressOf, web3);
 
+      assert.deepEqual(await contracts.daoStorage.isClaimed.call(proposals[2].id, bN(0)), false);
+
+      assert.deepEqual(await contracts.daoVotingClaims.claimProposalVotingResult.call(
+        proposals[2].id,
+        bN(0),
+        { from: proposals[2].proposer },
+      ), false);
+      await contracts.daoVotingClaims.claimProposalVotingResult(
+        proposals[2].id,
+        bN(0),
+        { from: proposals[2].proposer },
+      );
+
+      assert.deepEqual(await contracts.daoFundingStorage.claimableEth.call(proposals[2].proposer), bN(0));
+      assert.deepEqual(await contracts.daoStorage.isClaimed.call(proposals[2].id, bN(0)), true);
     });
     it('[valid claim]: verify read functions', async function () {
       // now wait for the interim phase to get over
@@ -1406,9 +1436,57 @@ contract('Dao', function (accounts) {
       assert.deepEqual(await contracts.daoPointsStorage.getReputation.call(addressOf.allParticipants[0]), qpBefore0.plus(bN(bonusRP)));
       assert.deepEqual(await contracts.daoPointsStorage.getReputation.call(addressOf.allParticipants[1]), qpBefore1.plus(bN(bonusRP)));
     });
-    // TODO:
     it('[final interim round, release final reward]', async function () {
+      /**
+        proposals[3] completed last milestone
+        final interim round to release finalReward
+        everybody votes true, allParticipants[3] voted false in previous round
+      */
+      await contracts.daoStorage.mock_put_proposal_as(
+        proposals[3].id,
+        bN(4),
+        false,
+        proposals[3].proposer,
+        proposals[3].endorser,
+        proposals[3].versions[0].milestoneDurations,
+        proposals[3].versions[0].milestoneFundings,
+        proposals[3].versions[0].finalReward,
+      );
+      await contracts.daoStorage.mock_put_past_votes(
+        proposals[3].id,
+        bN(3),
+        false,
+        [addressOf.allParticipants[0], addressOf.allParticipants[1], addressOf.allParticipants[4], addressOf.allParticipants[5]],
+        [true, true, true, false],
+        [participants[0].dgdToLock, participants[1].dgdToLock, participants[2].dgdToLock, participants[3].dgdToLock],
+        bN(4),
+        bN(getCurrentTimestamp() - 25),
+      );
+      await contracts.daoStorage.mock_put_past_votes(
+        proposals[3].id,
+        bN(4),
+        false,
+        [addressOf.allParticipants[0], addressOf.allParticipants[1], addressOf.allParticipants[4], addressOf.allParticipants[5]],
+        [true, true, true, false],
+        [participants[0].dgdToLock, participants[1].dgdToLock, participants[2].dgdToLock, participants[3].dgdToLock],
+        bN(4),
+        bN(getCurrentTimestamp()),
+      );
 
+      const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);
+      await waitFor(interimVotingPhaseDuration.toNumber() + 1, addressOf, web3);
+
+      const claimableEthBefore = await contracts.daoFundingStorage.claimableEth.call(proposals[3].proposer);
+      const qpBefore = await contracts.daoPointsStorage.getQuarterPoint.call(proposals[3].proposer, bN(1));
+
+      await contracts.daoVotingClaims.claimProposalVotingResult(
+        proposals[3].id,
+        bN(4),
+        { from: proposals[3].proposer },
+      );
+
+      assert(await contracts.daoFundingStorage.claimableEth.call(proposals[3].proposer), claimableEthBefore.plus(proposals[3].versions[0].finalReward));
+      assert(await contracts.daoPointsStorage.getQuarterPoint.call(proposals[3].proposer, bN(1)), qpBefore.plus(daoConstantsValues(bN).CONFIG_QUARTER_POINT_MILESTONE_COMPLETION));
     });
     it('[re-claim same voting round]: revert', async function () {
       const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);

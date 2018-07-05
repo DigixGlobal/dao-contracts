@@ -96,7 +96,6 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             (daoCalculatorService().votingQuotaPass(_count.forCount, _count.againstCount))) {
             _passed = true;
             daoStorage().setProposalPass(_proposalId, _index, _passed);
-            daoStorage().setVotingClaim(_proposalId, _index, true);
 
             // set deadline for next milestone (set startTime for next  voting round)
             DaoIntermediateStructs.MilestoneInfo memory _info;
@@ -116,6 +115,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             _passed = false;
         }
 
+        daoStorage().setVotingClaim(_proposalId, _index, true);
         if (_index == 0) return _passed;
 
         DaoIntermediateStructs.Users memory _bonusVoters;

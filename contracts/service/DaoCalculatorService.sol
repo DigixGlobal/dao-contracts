@@ -29,8 +29,8 @@ contract DaoCalculatorService is DaoCommon {
 
     function minimumDraftQuorum(bytes32 _proposalId) public returns (uint256 _minQuorum) {
         uint256 _ethAsked;
-        
-        (,_ethAsked) = daoStorage().readProposalFunding(_proposalId);
+
+        (,,_ethAsked) = daoStorage().readProposalFunding(_proposalId);
         _minQuorum = calculateMinQuorum(
             daoStakeStorage().totalModeratorLockedDGDStake(),
             get_uint_config(CONFIG_DRAFT_QUORUM_FIXED_PORTION_NUMERATOR),
@@ -55,24 +55,35 @@ contract DaoCalculatorService is DaoCommon {
         public
         returns (uint256 _minQuorum)
     {
-      uint256[] memory _ethAskedPerMilestone;
-      //TODO: implement this function
-      (_ethAskedPerMilestone,) = daoStorage().readProposalFunding(_proposalId);
-      _minQuorum = calculateMinQuorum(
-          daoStakeStorage().totalLockedDGDStake(),
-          get_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR),
-          get_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR),
-          get_uint_config(CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR),
-          get_uint_config(CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR),
-          _ethAskedPerMilestone[_milestone_id]
-      );
+        uint256[] memory _ethAskedPerMilestone;
+        uint256 _finalReward;
+        (_ethAskedPerMilestone,_finalReward,) = daoStorage().readProposalFunding(_proposalId);
+        require(_milestone_id <= _ethAskedPerMilestone.length);
+        if (_milestone_id == _ethAskedPerMilestone.length) {
+            _minQuorum = calculateMinQuorum(
+                daoStakeStorage().totalLockedDGDStake(),
+                get_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR),
+                get_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR),
+                get_uint_config(CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR),
+                get_uint_config(CONFIG_FINAL_REWARD_SCALING_FACTOR_DENOMINATOR),
+                _finalReward
+            );
+        } else {
+            _minQuorum = calculateMinQuorum(
+                daoStakeStorage().totalLockedDGDStake(),
+                get_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR),
+                get_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR),
+                get_uint_config(CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR),
+                get_uint_config(CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR),
+                _ethAskedPerMilestone[_milestone_id]
+            );
+        }
     }
 
     function minimumVotingQuorumForSpecial()
         public
         returns (uint256 _minQuorum)
     {
-      //TODO: implement this function
       _minQuorum = get_uint_config(CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR) *
                      daoStakeStorage().totalLockedDGDStake() /
                      get_uint_config(CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR);

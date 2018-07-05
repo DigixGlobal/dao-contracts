@@ -70,6 +70,9 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
 
         uintConfigs[CONFIG_DRAFT_VOTING_PHASE] = 2 weeks;
         uintConfigs[CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE] = 1000;
+
+        uintConfigs[CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR] = 30;
+        uintConfigs[CONFIG_FINAL_REWARD_SCALING_FACTOR_DENOMINATOR] = 100;
     }
 
     function updateUintConfigs(uint256[] _uintConfigs)
@@ -121,13 +124,15 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_DEN] = _uintConfigs[42];
         uintConfigs[CONFIG_DRAFT_VOTING_PHASE] = _uintConfigs[43];
         uintConfigs[CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE] = _uintConfigs[44];
+        uintConfigs[CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR] = _uintConfigs[45];
+        uintConfigs[CONFIG_FINAL_REWARD_SCALING_FACTOR_DENOMINATOR] = _uintConfigs[46];
     }
 
     function readUintConfigs()
         public
         returns (uint256[])
     {
-        uint256[] memory _uintConfigs = new uint256[](45);
+        uint256[] memory _uintConfigs = new uint256[](47);
         _uintConfigs[0] = uintConfigs[CONFIG_LOCKING_PHASE_DURATION];
         _uintConfigs[1] = uintConfigs[CONFIG_QUARTER_DURATION];
         _uintConfigs[2] = uintConfigs[CONFIG_VOTING_COMMIT_PHASE];
@@ -173,6 +178,8 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         _uintConfigs[42] = uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_DEN];
         _uintConfigs[43] = uintConfigs[CONFIG_DRAFT_VOTING_PHASE];
         _uintConfigs[44] = uintConfigs[CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE];
+        _uintConfigs[45] = uintConfigs[CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR];
+        _uintConfigs[46] = uintConfigs[CONFIG_FINAL_REWARD_SCALING_FACTOR_DENOMINATOR];
         return _uintConfigs;
     }
 }

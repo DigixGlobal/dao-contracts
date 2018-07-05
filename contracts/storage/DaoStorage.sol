@@ -321,7 +321,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     function readProposalFunding(bytes32 _proposalId)
         public
         constant
-        returns (uint256[] memory _fundings, uint256 _totalFunding)
+        returns (uint256[] memory _fundings, uint256 _finalReward, uint256 _totalFunding)
     {
         bytes32 _finalVersion = proposalsById[_proposalId].finalVersion;
         _fundings = proposalsById[_proposalId].proposalVersions[_finalVersion].milestoneFundings;
@@ -329,6 +329,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         for (uint256 i = 0; i < _n; i++) {
             _totalFunding += _fundings[i];
         }
+        _finalReward = proposalsById[_proposalId].proposalVersions[_finalVersion].finalReward;
     }
 
     function readProposalMilestone(bytes32 _proposalId, uint256 _index)

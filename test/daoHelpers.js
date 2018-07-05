@@ -126,6 +126,8 @@ const daoConstantsKeys = function () {
     CONFIG_PORTION_TO_BADGE_HOLDERS_DEN: 'config_bholder_portion_den',
     CONFIG_DRAFT_VOTING_PHASE: 'config_draft_voting_phase',
     CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE: 'config_rp_boost_per_badge',
+    CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR: 'final_reward_sfactor_numerator',
+    CONFIG_FINAL_REWARD_SCALING_FACTOR_DENOMINATOR: 'final_reward_sfactor_denominator',
   };
 };
 
@@ -176,6 +178,8 @@ const daoConstantsValues = function (bN) {
     CONFIG_PORTION_TO_BADGE_HOLDERS_DEN: bN(100),
     CONFIG_DRAFT_VOTING_PHASE: bN(1209600),
     CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE: bN(1000),
+    CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR: bN(30),
+    CONFIG_FINAL_REWARD_SCALING_FACTOR_DENOMINATOR: bN(100),
   };
 };
 
