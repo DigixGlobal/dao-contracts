@@ -5,18 +5,23 @@ const {
   waitFor,
   phaseCorrection,
   initialTransferTokens,
+  setupParticipantsStates,
+  getParticipants,
+  updateKyc,
 } = require('../setup');
 
 const {
   configs,
   phases,
   getTimeToNextPhase,
+  sampleStakeWeights,
 } = require('../daoHelpers');
 
 const {
   randomBigNumber,
   getCurrentTimestamp,
   timeIsRecent,
+  randomBytes32,
 } = require('@digix/helpers/lib/helpers');
 
 const bN = web3.toBigNumber;
@@ -31,6 +36,14 @@ contract('DaoStakeLocking', function (accounts) {
     assert.deepEqual(timeIsRecent(await contracts.daoUpgradableStorage.startOfFirstQuarter.call()), true);
     await initialTransferTokens(contracts, addressOf, bN);
   });
+
+  const resetBeforeEach = async function () {
+    await deployFreshDao(libs, contracts, addressOf, accounts, bN, web3);
+    await setupParticipantsStates(web3, contracts, addressOf, bN);
+    await contracts.daoIdentity.addGroupUser(bN(3), addressOf.prl, randomBytes32());
+    await contracts.daoIdentity.addGroupUser(bN(4), addressOf.kycadmin, randomBytes32());
+    await updateKyc(contracts, addressOf, getParticipants(addressOf, bN));
+  };
 
   describe('redeemBadge', function () {
     it('[not approved DGDBadge]: revert', async function () {
@@ -342,12 +355,38 @@ contract('DaoStakeLocking', function (accounts) {
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
       await waitFor(1, addressOf, web3);
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
     });
     it('unlock dgds that were staked 2 quarters ago and never continued participation', async function () {
       const stake3 = await contracts.daoStakeStorage.readUserDGDStake.call(addressOf.dgdHolders[3]);
       const stake4 = await contracts.daoStakeStorage.readUserDGDStake.call(addressOf.dgdHolders[4]);
       await contracts.daoStakeLocking.withdrawDGD(stake3[0], { from: addressOf.dgdHolders[3] });
       await contracts.daoStakeLocking.withdrawDGD(stake4[0], { from: addressOf.dgdHolders[4] });
+    });
+  });
+
+  describe('other scenarios', function () {
+    beforeEach(async function () {
+      await resetBeforeEach();
+    });
+    it('[activity before global rewards are calculated in quarter 2 locking phase]: revert all', async function () {
+      const participants = getParticipants(addressOf, bN);
+      await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
+      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+
+      // try to withdraw DGDs before global rewards are updated
+      assert(await a.failure(contracts.daoStakeLocking.withdrawDGD(
+        participants[0].dgdToLock,
+        { from: participants[0].address },
+      )));
+
+      // try to lock DGDs
+      await contracts.dgdToken.transfer(addressOf.allParticipants[2], sampleStakeWeights(bN)[2]);
+      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(2 ** 255), { from: addressOf.allParticipants[2] });
+      assert(await a.failure(contracts.daoStakeLocking.lockDGD(sampleStakeWeights(bN)[2], { from: addressOf.allParticipants[2] })));
+
+      // try to continue participation
+      assert(await a.failure(contracts.daoStakeLocking.confirmContinuedParticipation({ from: participants[1].address })));
     });
   });
 });

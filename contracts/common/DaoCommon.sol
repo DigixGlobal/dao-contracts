@@ -213,7 +213,13 @@ contract DaoCommon is IdentityCommon {
         }
         require(size == 0);
         _;
+    }
 
+    modifier if_global_rewards_set(uint256 _quarterIndex) {
+        if (_quarterIndex > 1) {
+            require(daoRewardsStorage().readDgxDistributionDay(_quarterIndex) > 0);
+        }
+        _;
     }
 
     function require_in_phase(uint256 _startingPoint, uint256 _relativePhaseStart, uint256 _relativePhaseEnd) {
