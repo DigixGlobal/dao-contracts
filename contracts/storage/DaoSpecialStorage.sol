@@ -4,6 +4,7 @@ import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../common/DaoConstants.sol";
 import "../lib/DaoStructs.sol";
+import "./DaoWhitelistingStorage.sol";
 
 contract DaoSpecialStorage is ResolverClient, DaoConstants {
     using DoublyLinkedList for DoublyLinkedList.Bytes;
@@ -15,6 +16,34 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
 
     function DaoSpecialStorage(address _resolver) public {
         require(init(CONTRACT_STORAGE_DAO_SPECIAL, _resolver));
+    }
+
+    function daoWhitelistingStorage() internal returns (DaoWhitelistingStorage _contract) {
+        _contract = DaoWhitelistingStorage(get_contract(CONTRACT_STORAGE_DAO_WHITELISTING));
+    }
+
+    function isContract(address _address)
+        internal
+        returns (bool)
+    {
+        uint size;
+        assembly {
+            size := extcodesize(_address)
+        }
+        if (size > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    function isWhitelisted(address _address)
+        internal
+        returns (bool)
+    {
+        if (isContract(_address)) {
+            require(daoWhitelistingStorage().whitelist(_address));
+        }
+        return true;
     }
 
     function addSpecialProposal(
@@ -103,6 +132,7 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
         constant
         returns (bytes32 _commitHash)
     {
+        require(isWhitelisted(msg.sender));
         _commitHash = proposalsById[_proposalId].voting.commits[_voter];
     }
 
@@ -147,6 +177,7 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
         constant
         returns (bool _vote, uint256 _weight)
     {
+        require(isWhitelisted(msg.sender));
         return proposalsById[_proposalId].voting.readVote(_voter);
     }
 

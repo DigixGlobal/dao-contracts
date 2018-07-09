@@ -14,18 +14,10 @@ const {
 } = require('../daoHelpers');
 
 const {
-  // randomBigNumbers,
-  // randomBytes32s,
-  // randomAddresses,
   indexRange,
 } = require('@digix/helpers/lib/helpers');
 
 const bN = web3.toBigNumber;
-
-// const dummyConfigNames = randomBytes32s(9);
-// const dummyConfigUints = randomBigNumbers(bN, 3);
-// const dummyConfigBytes = randomBytes32s(3);
-// const dummyConfigAddresses = randomAddresses(3);
 
 contract('DaoConfigsStorage', function (accounts) {
   let libs;

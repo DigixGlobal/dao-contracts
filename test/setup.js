@@ -31,6 +31,7 @@ const DaoConfigsStorage = process.env.SIMULATION ? 0 : artifacts.require('./Mock
 const DaoStakeStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoStakeStorage.sol');
 const DaoPointsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoPointsStorage.sol');
 const DaoStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoStorage.sol');
+const DaoWhitelistingStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoWhitelistingStorage.sol');
 
 const DaoStructs = process.env.SIMULATION ? 0 : artifacts.require('./DaoStructs.sol');
 const DaoUpgradableStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoUpgradableStorage.sol');
@@ -49,6 +50,7 @@ const DaoVotingClaims = process.env.SIMULATION ? 0 : artifacts.require('./DaoVot
 const DaoStakeLocking = process.env.SIMULATION ? 0 : artifacts.require('./DaoStakeLocking.sol');
 const DaoFundingManager = process.env.SIMULATION ? 0 : artifacts.require('./DaoFundingManager.sol');
 const DaoRewardsManager = process.env.SIMULATION ? 0 : artifacts.require('./DaoRewardsManager.sol');
+const DaoWhitelisting = process.env.SIMULATION ? 0 : artifacts.require('./DaoWhitelisting.sol');
 
 const MockDGD = process.env.SIMULATION ? 0 : artifacts.require('./MockDGD.sol');
 const MockBadge = process.env.SIMULATION ? 0 : artifacts.require('./MockBadge.sol');
@@ -104,6 +106,7 @@ const getAllParticipantAddresses = function (accounts) {
 
 const deployStorage = async function (libs, contracts, resolver) {
   DaoIdentityStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
+  contracts.daoWhitelistingStorage = await DaoWhitelistingStorage.new(resolver.address);
   contracts.daoIdentityStorage = await DaoIdentityStorage.new(resolver.address);
   contracts.daoConfigsStorage = await DaoConfigsStorage.new(resolver.address);
   DaoStakeStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
@@ -130,6 +133,7 @@ const registerInteractive = async function (resolver, addressOf) {
     'dao:voting:claims',
     'dao:funding-manager',
     'dao:rewards-manager',
+    'dao:whitelisting',
   ];
   await a.map(callingKeys, 10, key => resolver.register_contract(key, addressOf.root));
 };
@@ -148,6 +152,17 @@ const deployInteractive = async function (libs, contracts, resolver) {
   contracts.daoVoting = await DaoVoting.new(resolver.address);
   contracts.daoVotingClaims = await DaoVotingClaims.new(resolver.address);
   contracts.daoRewardsManager = await DaoRewardsManager.new(resolver.address, contracts.dgxToken.address);
+  contracts.daoWhitelisting = await DaoWhitelisting.new(resolver.address, [
+    contracts.daoStakeLocking.address,
+    contracts.daoIdentity.address,
+    contracts.daoFundingManager.address,
+    contracts.dao.address,
+    contracts.daoVoting.address,
+    contracts.daoVotingClaims.address,
+    contracts.daoCalculatorService.address,
+    contracts.daoListingService.address,
+    contracts.daoInfoService.address,
+  ]);
 };
 
 const initialTransferTokens = async function (contracts, addressOf, bN) {

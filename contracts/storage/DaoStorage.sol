@@ -5,6 +5,7 @@ import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../common/DaoConstants.sol";
 import "../lib/DaoStructs.sol";
+import "./DaoWhitelistingStorage.sol";
 
 contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
     using DoublyLinkedList for DoublyLinkedList.Bytes;
@@ -18,6 +19,34 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
 
     function DaoStorage(address _resolver) public {
         require(init(CONTRACT_STORAGE_DAO, _resolver));
+    }
+
+    function daoWhitelistingStorage() internal returns (DaoWhitelistingStorage _contract) {
+        _contract = DaoWhitelistingStorage(get_contract(CONTRACT_STORAGE_DAO_WHITELISTING));
+    }
+
+    function isContract(address _address)
+        internal
+        returns (bool)
+    {
+        uint size;
+        assembly {
+            size := extcodesize(_address)
+        }
+        if (size > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    function isWhitelisted(address _address)
+        internal
+        returns (bool)
+    {
+        if (isContract(_address)) {
+            require(daoWhitelistingStorage().whitelist(_address));
+        }
+        return true;
     }
 
     /////////////////////////////// READ FUNCTIONS //////////////////////////////
@@ -146,8 +175,10 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
 
     function readVotingRoundVotes(bytes32 _proposalId, uint256 _index, address[] _allUsers, bool _vote)
         public
+        constant
         returns (address[] memory _voters, uint256 _length)
     {
+        require(isWhitelisted(msg.sender));
         return proposalsById[_proposalId].votingRounds[_index].listVotes(_allUsers, _vote);
     }
 
@@ -156,6 +187,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         constant
         returns (bool _vote, uint256 _weight)
     {
+        require(isWhitelisted(msg.sender));
         return proposalsById[_proposalId].draftVoting.readVote(_voter);
     }
 
@@ -170,6 +202,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         constant
         returns (bytes32 _commitHash)
     {
+        require(isWhitelisted(msg.sender));
         _commitHash = proposalsById[_proposalId].votingRounds[_index].commits[_voter];
     }
 
@@ -178,6 +211,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         constant
         returns (bool _vote, uint256 _weight)
     {
+        require(isWhitelisted(msg.sender));
         return proposalsById[_proposalId].votingRounds[_index].readVote(_voter);
     }
 

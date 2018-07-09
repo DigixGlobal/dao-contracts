@@ -191,6 +191,7 @@ contract('Dao', function (accounts) {
     after(async function () {
       assert.deepEqual(await contracts.daoStakeLocking.isLockingPhase.call(), true);
       // withdraw stakes
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
       await withdrawDGDs(web3, contracts, bN, getParticipants(addressOf, bN));
     });
   });
@@ -236,6 +237,7 @@ contract('Dao', function (accounts) {
     });
     it('[if locking phase]: revert', async function () {
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
       await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.badgeHolders[0] });
       assert.deepEqual(await contracts.daoStakeLocking.isLockingPhase.call(), true);
       assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[0]), true);
@@ -250,6 +252,7 @@ contract('Dao', function (accounts) {
     after(async function () {
       // withdraw stakes
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
       await withdrawDGDs(web3, contracts, bN, getParticipants(addressOf, bN));
     });
   });
@@ -360,6 +363,7 @@ contract('Dao', function (accounts) {
     });
     after(async function () {
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
       await withdrawDGDs(web3, contracts, bN, getParticipants(addressOf, bN));
     });
   });
@@ -443,6 +447,7 @@ contract('Dao', function (accounts) {
     });
     after(async function () {
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
       await withdrawDGDs(web3, contracts, bN, getParticipants(addressOf, bN));
     });
   });
@@ -732,6 +737,7 @@ contract('Dao', function (accounts) {
     });
     after(async function () {
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
     });
   });
 
@@ -1506,4 +1512,20 @@ contract('Dao', function (accounts) {
       )));
     });
   });
+
+  // describe('updatePRL', function () {
+  //   beforeEach(async function () {
+  //     await resetBeforeEach();
+  //   });
+  //   it('[non-prl calls function]: revert', async function () {
+  //
+  //   });
+  //   it('[if action is not stop/pause/unpause]: revert', async function () {
+  //
+  //   });
+  //   it('[pause a proposal in voting phase]: continue voting, cannot claim eth from funding manager', async function () {
+  //
+  //   });
+  //   it('[pause an on-goin proposal in 1st milestone, unpause later]: milestone start should be updated')
+  // });
 });

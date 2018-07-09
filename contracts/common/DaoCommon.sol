@@ -12,6 +12,7 @@ import "./../storage/DaoSpecialStorage.sol";
 import "./../storage/DaoPointsStorage.sol";
 import "./../storage/DaoFundingStorage.sol";
 import "./../storage/DaoRewardsStorage.sol";
+import "./../storage/DaoWhitelistingStorage.sol";
 
 contract DaoCommon is IdentityCommon {
     modifier daoIsValid() {
@@ -298,6 +299,10 @@ contract DaoCommon is IdentityCommon {
 
     function daoRewardsStorage() internal returns (DaoRewardsStorage _contract) {
         _contract = DaoRewardsStorage(get_contract(CONTRACT_STORAGE_DAO_REWARDS));
+    }
+
+    function daoWhitelistingStorage() internal returns (DaoWhitelistingStorage _contract) {
+        _contract = DaoWhitelistingStorage(get_contract(CONTRACT_STORAGE_DAO_WHITELISTING));
     }
 
     function get_uint_config(bytes32 _config_key)

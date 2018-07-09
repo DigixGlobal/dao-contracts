@@ -22,6 +22,7 @@ contract DaoConstants {
   bytes32 CONTRACT_DAO_REWARDS_MANAGER = "dao:rewards-manager";
   bytes32 CONTRACT_DAO_ROLES = "dao:roles";
   bytes32 CONTRACT_DAO_FUNDING_MANAGER = "dao:funding-manager";
+  bytes32 CONTRACT_DAO_WHITELISTING = "dao:whitelisting";
 
   // service contracts
   bytes32 CONTRACT_SERVICE_ROLE = "service:role";
@@ -39,6 +40,7 @@ contract DaoConstants {
   bytes32 CONTRACT_STORAGE_DAO_STAKE = "storage:dao:stake";
   bytes32 CONTRACT_STORAGE_DAO_FUNDING = "storage:dao:funding";
   bytes32 CONTRACT_STORAGE_DAO_REWARDS = "storage:dao:rewards";
+  bytes32 CONTRACT_STORAGE_DAO_WHITELISTING = "storage:dao:whitelisting";
 
   bytes32 CONTRACT_DGD_TOKEN = "t:dgd";
   bytes32 CONTRACT_DGX_TOKEN = "t:dgx";
