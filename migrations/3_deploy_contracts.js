@@ -12,7 +12,7 @@ const DaoConfigsStorage = artifacts.require('MockDaoConfigsStorage.sol');
 const DaoStakeStorage = artifacts.require('DaoStakeStorage.sol');
 const DaoPointsStorage = artifacts.require('DaoPointsStorage.sol');
 const DaoStorage = artifacts.require('DaoStorage.sol');
-const DaoUpgradableStorage = artifacts.require('DaoUpgradableStorage.sol');
+const DaoUpgradeStorage = artifacts.require('DaoUpgradeStorage.sol');
 const DaoSpecialStorage = artifacts.require('DaoSpecialStorage.sol');
 const DaoFundingStorage = artifacts.require('DaoFundingStorage.sol');
 const DaoRewardsStorage = artifacts.require('DaoRewardsStorage.sol');
@@ -55,7 +55,7 @@ module.exports = async function (deployer, network) {
       deployer.deploy(DaoStakeStorage, ContractResolver.address);
       deployer.deploy(DaoPointsStorage, ContractResolver.address);
       deployer.deploy(DaoStorage, ContractResolver.address);
-      deployer.deploy(DaoUpgradableStorage, ContractResolver.address);
+      deployer.deploy(DaoUpgradeStorage, ContractResolver.address);
       deployer.deploy(DaoSpecialStorage, ContractResolver.address);
       deployer.deploy(DaoFundingStorage, ContractResolver.address);
       deployer.deploy(DaoWhitelistingStorage, ContractResolver.address);

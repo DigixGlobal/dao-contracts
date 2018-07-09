@@ -6,7 +6,7 @@ import "./../common/IdentityCommon.sol";
 import "./../storage/DaoConfigsStorage.sol";
 import "./../storage/DaoStakeStorage.sol";
 import "./../storage/DaoStorage.sol";
-import "./../storage/DaoUpgradableStorage.sol";
+import "./../storage/DaoUpgradeStorage.sol";
 import "./../storage/DaoSpecialStorage.sol";
 import "./../storage/DaoPointsStorage.sol";
 import "./../storage/DaoFundingStorage.sol";
@@ -15,18 +15,18 @@ import "./../storage/DaoWhitelistingStorage.sol";
 
 contract DaoCommon is IdentityCommon {
     modifier daoIsValid() {
-        require(!daoUpgradableStorage().isReplacedByNewDao());
+        require(!daoUpgradeStorage().isReplacedByNewDao());
         _;
     }
 
     modifier if_locking_phase() {
-        require(!daoUpgradableStorage().isReplacedByNewDao());
+        require(!daoUpgradeStorage().isReplacedByNewDao());
         require(currentTInQuarter() < get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
         _;
     }
 
     modifier if_main_phase() {
-        require(!daoUpgradableStorage().isReplacedByNewDao());
+        require(!daoUpgradeStorage().isReplacedByNewDao());
         require(currentTInQuarter() >= get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
         _;
     }
@@ -234,12 +234,12 @@ contract DaoCommon is IdentityCommon {
     }
 
     function getQuarterIndex(uint256 _time) internal returns (uint256 _index) {
-        _index = ((_time - daoUpgradableStorage().startOfFirstQuarter()) / get_uint_config(CONFIG_QUARTER_DURATION)) + 1;
+        _index = ((_time - daoUpgradeStorage().startOfFirstQuarter()) / get_uint_config(CONFIG_QUARTER_DURATION)) + 1;
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
     function timeInQuarter(uint256 _time) internal returns (uint256 _timeInQuarter) {
-        _timeInQuarter = (_time - daoUpgradableStorage().startOfFirstQuarter()) % get_uint_config(CONFIG_QUARTER_DURATION);
+        _timeInQuarter = (_time - daoUpgradeStorage().startOfFirstQuarter()) % get_uint_config(CONFIG_QUARTER_DURATION);
     }
 
     function currentTInQuarter() internal returns(uint256 _currentT) {
@@ -273,8 +273,8 @@ contract DaoCommon is IdentityCommon {
         _contract = DaoStorage(get_contract(CONTRACT_STORAGE_DAO));
     }
 
-    function daoUpgradableStorage() internal returns (DaoUpgradableStorage _contract) {
-        _contract = DaoUpgradableStorage(get_contract(CONTRACT_STORAGE_DAO_UPGRADABLE));
+    function daoUpgradeStorage() internal returns (DaoUpgradeStorage _contract) {
+        _contract = DaoUpgradeStorage(get_contract(CONTRACT_STORAGE_DAO_UPGRADABLE));
     }
 
     function daoSpecialStorage() internal returns (DaoSpecialStorage _contract) {

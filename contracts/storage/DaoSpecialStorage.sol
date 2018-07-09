@@ -1,12 +1,11 @@
 pragma solidity ^0.4.23;
 
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
-import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
-import "../common/DaoConstants.sol";
+import "../common/DaoStorageCommon.sol";
 import "../lib/DaoStructs.sol";
 import "./DaoWhitelistingStorage.sol";
 
-contract DaoSpecialStorage is ResolverClient, DaoConstants {
+contract DaoSpecialStorage is DaoStorageCommon {
     using DoublyLinkedList for DoublyLinkedList.Bytes;
     using DaoStructs for DaoStructs.SpecialProposal;
     using DaoStructs for DaoStructs.Voting;
@@ -16,34 +15,6 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
 
     function DaoSpecialStorage(address _resolver) public {
         require(init(CONTRACT_STORAGE_DAO_SPECIAL, _resolver));
-    }
-
-    function daoWhitelistingStorage() internal returns (DaoWhitelistingStorage _contract) {
-        _contract = DaoWhitelistingStorage(get_contract(CONTRACT_STORAGE_DAO_WHITELISTING));
-    }
-
-    function isContract(address _address)
-        internal
-        returns (bool)
-    {
-        uint size;
-        assembly {
-            size := extcodesize(_address)
-        }
-        if (size > 0) {
-            return true;
-        }
-        return false;
-    }
-
-    function isWhitelisted(address _address)
-        internal
-        returns (bool)
-    {
-        if (isContract(_address)) {
-            require(daoWhitelistingStorage().whitelist(_address));
-        }
-        return true;
     }
 
     function addSpecialProposal(

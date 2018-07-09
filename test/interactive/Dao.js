@@ -425,7 +425,7 @@ contract('Dao', function (accounts) {
       )));
     });
     it('[if not enough time left in the main phase]: revert', async function () {
-      const startOfDao = await contracts.daoUpgradableStorage.startOfFirstQuarter.call();
+      const startOfDao = await contracts.daoUpgradeStorage.startOfFirstQuarter.call();
       const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
       const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
       const draftVotingDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_DRAFT_VOTING_PHASE);
@@ -476,9 +476,9 @@ contract('Dao', function (accounts) {
         newDaoContract,
         { from: addressOf.root },
       );
-      assert.deepEqual(await contracts.daoUpgradableStorage.isReplacedByNewDao.call(), true);
-      assert.deepEqual(await contracts.daoUpgradableStorage.newDaoContract.call(), newDaoContract);
-      assert.deepEqual(await contracts.daoUpgradableStorage.newDaoFundingManager.call(), newDaoFundingManager.address);
+      assert.deepEqual(await contracts.daoUpgradeStorage.isReplacedByNewDao.call(), true);
+      assert.deepEqual(await contracts.daoUpgradeStorage.newDaoContract.call(), newDaoContract);
+      assert.deepEqual(await contracts.daoUpgradeStorage.newDaoFundingManager.call(), newDaoFundingManager.address);
       assert.deepEqual(await web3.eth.getBalance(contracts.daoFundingManager.address), bN(0));
       assert.deepEqual(await web3.eth.getBalance(newDaoFundingManager.address), fundsBefore);
     });
@@ -545,7 +545,7 @@ contract('Dao', function (accounts) {
       await contracts.dao.createSpecialProposal(doc, uintConfigs, [], [], { from: addressOf.founderBadgeHolder });
     });
     it('[if not enough time in main phase for voting to be done]: revert', async function () {
-      const startOfDao = await contracts.daoUpgradableStorage.startOfFirstQuarter.call();
+      const startOfDao = await contracts.daoUpgradeStorage.startOfFirstQuarter.call();
       const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
       const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
       const specialVotingDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL);
@@ -840,7 +840,7 @@ contract('Dao', function (accounts) {
       const draftVotingStart = await contracts.daoStorage.readProposalDraftVotingTime.call(proposals[0].id);
       const draftVotingDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_DRAFT_VOTING_PHASE);
       const timeNow = draftVotingStart.toNumber() + draftVotingDuration.toNumber();
-      const startOfDao = await contracts.daoUpgradableStorage.startOfFirstQuarter.call();
+      const startOfDao = await contracts.daoUpgradeStorage.startOfFirstQuarter.call();
       const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
       const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
       const timeToLockingPhase = getTimeToNextPhase(timeNow, startOfDao.toNumber(), lockingPhaseDuration.toNumber(), quarterDuration.toNumber());
@@ -1370,7 +1370,7 @@ contract('Dao', function (accounts) {
 
       // next interim voting time is set
       const nextInterimVotingTime = await contracts.daoStorage.readProposalVotingTime.call(proposals[0].id, bN(2));
-      const startOfDao = await contracts.daoUpgradableStorage.startOfFirstQuarter.call();
+      const startOfDao = await contracts.daoUpgradeStorage.startOfFirstQuarter.call();
       const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
       const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
       const nextMilestoneDuration = proposals[0].versions[0].milestoneDurations[1];
@@ -1416,7 +1416,7 @@ contract('Dao', function (accounts) {
 
       // next interim voting time is set
       const nextInterimVotingTime = await contracts.daoStorage.readProposalVotingTime.call(proposals[1].id, bN(2));
-      const startOfDao = await contracts.daoUpgradableStorage.startOfFirstQuarter.call();
+      const startOfDao = await contracts.daoUpgradeStorage.startOfFirstQuarter.call();
       const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
       const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
       const nextMilestoneDuration = proposals[1].versions[0].milestoneDurations[1];

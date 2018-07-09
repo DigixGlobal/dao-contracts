@@ -25,8 +25,8 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
         public
         returns (uint256 _newPoint, uint256 _newTotalPoint)
     {
-        quarterPoint[_quarterId].totalSupply += _point;
-        quarterPoint[_quarterId].balance[_participant] += _point;
+        quarterPoint[_quarterId].totalSupply = quarterPoint[_quarterId].totalSupply.add(_point);
+        quarterPoint[_quarterId].balance[_participant] = quarterPoint[_quarterId].balance[_participant].add(_point);
 
         _newPoint = quarterPoint[_quarterId].balance[_participant];
         _newTotalPoint = quarterPoint[_quarterId].totalSupply;
@@ -37,8 +37,8 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
         public
         returns (uint256 _newPoint, uint256 _newTotalPoint)
     {
-        quarterModeratorPoint[_quarterId].totalSupply += _point;
-        quarterModeratorPoint[_quarterId].balance[_participant] += _point;
+        quarterModeratorPoint[_quarterId].totalSupply = quarterModeratorPoint[_quarterId].totalSupply.add(_point);
+        quarterModeratorPoint[_quarterId].balance[_participant] = quarterModeratorPoint[_quarterId].balance[_participant].add(_point);
 
         _newPoint = quarterModeratorPoint[_quarterId].balance[_participant];
         _newTotalPoint = quarterModeratorPoint[_quarterId].totalSupply;
@@ -84,8 +84,8 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
         public
         returns (uint256 _newPoint, uint256 _totalPoint)
     {
-        reputationPoint.totalSupply += _point;
-        reputationPoint.balance[_participant] += _point;
+        reputationPoint.totalSupply = reputationPoint.totalSupply.add(_point);
+        reputationPoint.balance[_participant] = reputationPoint.balance[_participant].add(_point);
 
         _newPoint = reputationPoint.balance[_participant];
         _totalPoint = reputationPoint.totalSupply;
@@ -99,13 +99,13 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
     {
         uint256 _toDeduct = _point;
         if (reputationPoint.balance[_participant] > _point) {
-            reputationPoint.balance[_participant] -= _point;
+            reputationPoint.balance[_participant] = reputationPoint.balance[_participant].sub(_point);
         } else {
             _toDeduct = reputationPoint.balance[_participant];
             reputationPoint.balance[_participant] = 0;
         }
 
-        reputationPoint.totalSupply -= _toDeduct;
+        reputationPoint.totalSupply = reputationPoint.totalSupply.sub(_toDeduct);
 
         _newPoint = reputationPoint.balance[_participant];
         _totalPoint = reputationPoint.totalSupply;

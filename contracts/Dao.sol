@@ -37,15 +37,15 @@ contract Dao is DaoCommon, Claimable {
         public
         onlyOwner()
     {
-        require(daoUpgradableStorage().isReplacedByNewDao() == false);
-        daoUpgradableStorage().updateForDaoMigration(_newDaoFundingManager, _newDaoContract);
+        require(daoUpgradeStorage().isReplacedByNewDao() == false);
+        daoUpgradeStorage().updateForDaoMigration(_newDaoFundingManager, _newDaoContract);
         daoFundingManager().moveFundsToNewDao(_newDaoFundingManager);
     }
 
     // @notice Call this function to mark the start of the DAO's first quarter
     // @param _start Start time of the first quarter in the DAO
     function setStartOfFirstQuarter(uint256 _start) public if_founder() {
-        daoUpgradableStorage().setStartOfFirstQuarter(_start);
+        daoUpgradeStorage().setStartOfFirstQuarter(_start);
     }
 
     // @notice Submit a new preliminary idea / Pre-proposal

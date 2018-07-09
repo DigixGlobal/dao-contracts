@@ -99,7 +99,7 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         if_sender_is(CONTRACT_DAO_REWARDS_MANAGER)
         public
     {
-        totalDGXsClaimed += _dgxClaimed;
+        totalDGXsClaimed = totalDGXsClaimed.add(_dgxClaimed);
     }
 
     function readQuarterInfo(uint256 _quarterIndex)

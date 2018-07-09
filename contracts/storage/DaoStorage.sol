@@ -2,12 +2,11 @@ pragma solidity ^0.4.19;
 
 import "@digix/solidity-collections/contracts/abstract/BytesIteratorStorage.sol";
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
-import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
-import "../common/DaoConstants.sol";
+import "../common/DaoStorageCommon.sol";
 import "../lib/DaoStructs.sol";
 import "./DaoWhitelistingStorage.sol";
 
-contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
+contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     using DoublyLinkedList for DoublyLinkedList.Bytes;
     using DaoStructs for DaoStructs.Voting;
     using DaoStructs for DaoStructs.Proposal;
@@ -19,34 +18,6 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
 
     function DaoStorage(address _resolver) public {
         require(init(CONTRACT_STORAGE_DAO, _resolver));
-    }
-
-    function daoWhitelistingStorage() internal returns (DaoWhitelistingStorage _contract) {
-        _contract = DaoWhitelistingStorage(get_contract(CONTRACT_STORAGE_DAO_WHITELISTING));
-    }
-
-    function isContract(address _address)
-        internal
-        returns (bool)
-    {
-        uint size;
-        assembly {
-            size := extcodesize(_address)
-        }
-        if (size > 0) {
-            return true;
-        }
-        return false;
-    }
-
-    function isWhitelisted(address _address)
-        internal
-        returns (bool)
-    {
-        if (isContract(_address)) {
-            require(daoWhitelistingStorage().whitelist(_address));
-        }
-        return true;
     }
 
     /////////////////////////////// READ FUNCTIONS //////////////////////////////
@@ -361,7 +332,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         _fundings = proposalsById[_proposalId].proposalVersions[_finalVersion].milestoneFundings;
         uint256 _n = _fundings.length;
         for (uint256 i = 0; i < _n; i++) {
-            _totalFunding += _fundings[i];
+            _totalFunding = _totalFunding.add(_fundings[i]);
         }
         _finalReward = proposalsById[_proposalId].proposalVersions[_finalVersion].finalReward;
     }
@@ -391,7 +362,7 @@ contract DaoStorage is ResolverClient, DaoConstants, BytesIteratorStorage {
         _durations = proposalsById[_proposalId].proposalVersions[_finalVersion].milestoneFundings;
         uint256 _n = _durations.length;
         for (uint256 i = 0; i < _n; i++) {
-            _totalDuration += _durations[i];
+            _totalDuration = _totalDuration.add(_durations[i]);
         }
     }
 

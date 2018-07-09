@@ -34,7 +34,7 @@ const DaoStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoStor
 const DaoWhitelistingStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoWhitelistingStorage.sol');
 
 const DaoStructs = process.env.SIMULATION ? 0 : artifacts.require('./DaoStructs.sol');
-const DaoUpgradableStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoUpgradableStorage.sol');
+const DaoUpgradeStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoUpgradeStorage.sol');
 const DaoSpecialStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoSpecialStorage.sol');
 const DaoFundingStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoFundingStorage.sol');
 const DaoRewardsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoRewardsStorage.sol');
@@ -115,9 +115,9 @@ const deployStorage = async function (libs, contracts, resolver) {
   DaoStorage.link('DaoStructs', libs.daoStructs.address);
   DaoSpecialStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
   DaoSpecialStorage.link('DaoStructs', libs.daoStructs.address);
-  contracts.daoUpgradableStorage = await DaoUpgradableStorage.new(resolver.address);
+  contracts.daoUpgradeStorage = await DaoUpgradeStorage.new(resolver.address);
   contracts.daoStorage = await DaoStorage.new(resolver.address);
-  // console.log('tx = ', await web3.eth.getTransactionReceipt(contracts.daoStorage.transactionHash));
+  console.log('tx = ', await web3.eth.getTransactionReceipt(contracts.daoStorage.transactionHash));
   contracts.daoSpecialStorage = await DaoSpecialStorage.new(resolver.address);
   contracts.daoFundingStorage = await DaoFundingStorage.new(resolver.address);
   contracts.daoRewardsStorage = await DaoRewardsStorage.new(resolver.address);
@@ -341,7 +341,7 @@ const waitFor = async function (timeToWait, addressOf, web3) {
  * @param quarterToEndIn : The quarter in which to land (quarter.QUARTER_1 or phases.QUARTER_2)
  */
 const phaseCorrection = async function (web3, contracts, addressOf, phaseToEndIn, quarterToEndIn) {
-  const startOfDao = await contracts.daoUpgradableStorage.startOfFirstQuarter.call();
+  const startOfDao = await contracts.daoUpgradeStorage.startOfFirstQuarter.call();
   const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
   const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
   const currentPhase = getPhase(
