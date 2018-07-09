@@ -20,7 +20,6 @@ const DaoSpecialStorage = artifacts.require('./DaoSpecialStorage.sol');
 const DaoFundingStorage = artifacts.require('./DaoFundingStorage.sol');
 const DaoRewardsStorage = artifacts.require('./DaoRewardsStorage.sol');
 
-const DaoInfoService = artifacts.require('./DaoInfoService.sol');
 const DaoListingService = artifacts.require('./DaoListingService.sol');
 const DaoCalculatorService = artifacts.require('./DaoCalculatorService.sol');
 
@@ -179,7 +178,6 @@ const assignDeployedContracts = async function (contracts, libs) {
   contracts.daoFundingStorage = await DaoFundingStorage.deployed();
   contracts.daoRewardsStorage = await DaoRewardsStorage.deployed();
 
-  contracts.daoInfoService = await DaoInfoService.deployed();
   contracts.daoListingService = await DaoListingService.deployed();
   contracts.daoCalculatorService = await DaoCalculatorService.deployed();
 
@@ -611,6 +609,7 @@ module.exports = async function () {
     await printStake(addressOf.badgeHolders[3], 'addressOf.badgeHolders[3]');
 
     // confirm participation for the next quarter
+    console.log('Before confirming participation of all members');
     await confirmContinuedParticipation(contracts, addressOf);
     console.log('confirmed participation of all members');
 

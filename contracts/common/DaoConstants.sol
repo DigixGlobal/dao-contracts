@@ -84,9 +84,9 @@ contract DaoConstants {
   bytes32 CONFIG_QUARTER_POINT_SCALING_FACTOR = "quarter_point_scaling_factor";
   bytes32 CONFIG_REPUTATION_POINT_SCALING_FACTOR = "rep_point_scaling_factor";
 
-  bytes32 CONFIG_MINIMAL_BADGE_PARTICIPATION_POINT = "CONFIG_MINIMAL_B_QP";
-  bytes32 CONFIG_BADGE_QUARTER_POINT_SCALING_FACTOR = "b_qp_scaling_factor";
-  bytes32 CONFIG_BADGE_REPUTATION_POINT_SCALING_FACTOR = "b_rep_point_scaling_factor";
+  bytes32 CONFIG_MINIMAL_MODERATOR_QUARTER_POINT = "CONFIG_MINIMAL_B_QP";
+  bytes32 CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR = "b_qp_scaling_factor";
+  bytes32 CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR = "b_rep_point_scaling_factor";
 
   bytes32 CONFIG_QUARTER_POINT_DRAFT_VOTE = "quarter_point_draft_vote";
   bytes32 CONFIG_QUARTER_POINT_VOTE = "quarter_point_vote";
@@ -112,10 +112,15 @@ contract DaoConstants {
   bytes32 CONFIG_REPUTATION_PER_EXTRA_QP_NUM = "config_rep_per_extra_qp_num";
   bytes32 CONFIG_REPUTATION_PER_EXTRA_QP_DEN = "config_rep_per_extra_qp_den";
 
+  bytes32 CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION = "config_max_m_rp_deduction";
+  bytes32 CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM = "config_rep_per_extra_m_qp_num";
+  bytes32 CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN = "config_rep_per_extra_m_qp_den";
+
   bytes32 CONFIG_PORTION_TO_BADGE_HOLDERS_NUM = "config_bholder_portion_num";
   bytes32 CONFIG_PORTION_TO_BADGE_HOLDERS_DEN = "config_bholder_portion_den";
 
   bytes32 CONFIG_DRAFT_VOTING_PHASE = "config_draft_voting_phase";
 
   bytes32 CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE = "config_rp_boost_per_badge";
+
 }

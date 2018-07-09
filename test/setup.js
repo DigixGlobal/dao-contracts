@@ -39,7 +39,6 @@ const DaoSpecialStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoS
 const DaoFundingStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoFundingStorage.sol');
 const DaoRewardsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoRewardsStorage.sol');
 
-const DaoInfoService = process.env.SIMULATION ? 0 : artifacts.require('./DaoInfoService.sol');
 const DaoListingService = process.env.SIMULATION ? 0 : artifacts.require('./DaoListingService.sol');
 const DaoCalculatorService = process.env.SIMULATION ? 0 : artifacts.require('./DaoCalculatorService.sol');
 
@@ -139,7 +138,6 @@ const registerInteractive = async function (resolver, addressOf) {
 };
 
 const deployServices = async function (libs, contracts, resolver) {
-  contracts.daoInfoService = await DaoInfoService.new(resolver.address);
   contracts.daoListingService = await DaoListingService.new(resolver.address);
   contracts.daoCalculatorService = await DaoCalculatorService.new(resolver.address, contracts.dgxDemurrageReporter.address);
 };
@@ -161,7 +159,6 @@ const deployInteractive = async function (libs, contracts, resolver) {
     contracts.daoVotingClaims.address,
     contracts.daoCalculatorService.address,
     contracts.daoListingService.address,
-    contracts.daoInfoService.address,
   ]);
 };
 

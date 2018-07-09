@@ -1,6 +1,5 @@
 const ContractResolver = artifacts.require('ContractResolver.sol');
 
-const DaoInfoService = artifacts.require('DaoInfoService.sol');
 const DaoListingService = artifacts.require('DaoListingService.sol');
 const DaoCalculatorService = artifacts.require('DaoCalculatorService.sol');
 
@@ -26,7 +25,6 @@ module.exports = async function (deployer, network) {
     DaoVotingClaims.address,
     DaoCalculatorService.address,
     DaoListingService.address,
-    DaoInfoService.address,
   ])
     .then(() => {
       console.log('Deployed DaoWhitelisting');

@@ -48,9 +48,9 @@ contract DaoRewardsManager is DaoCommon {
             get_uint_config(CONFIG_QUARTER_POINT_SCALING_FACTOR),
             get_uint_config(CONFIG_REPUTATION_POINT_SCALING_FACTOR),
             0,
-            get_uint_config(CONFIG_MINIMAL_BADGE_PARTICIPATION_POINT),
-            get_uint_config(CONFIG_BADGE_QUARTER_POINT_SCALING_FACTOR),
-            get_uint_config(CONFIG_BADGE_REPUTATION_POINT_SCALING_FACTOR),
+            get_uint_config(CONFIG_MINIMAL_MODERATOR_QUARTER_POINT),
+            get_uint_config(CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR),
+            get_uint_config(CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR),
             0,
             now,
             0,
@@ -118,23 +118,23 @@ contract DaoRewardsManager is DaoCommon {
         }
 
         if (_lastParticipatedQuarter > _lastQuarterThatReputationWasUpdated) {
-            uint256 _userQP = daoPointsStorage().getQuarterPoint(_user, _lastParticipatedQuarter);
+            updateRPfromQP(
+                _user,
+                daoPointsStorage().getQuarterPoint(_user, _lastParticipatedQuarter),
+                get_uint_config(CONFIG_MINIMAL_PARTICIPATION_POINT),
+                get_uint_config(CONFIG_MAXIMUM_REPUTATION_DEDUCTION),
+                get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_NUM),
+                get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_DEN)
+            );
 
-            if (_userQP < get_uint_config(CONFIG_MINIMAL_PARTICIPATION_POINT)) {
-                _reputationDeduction =
-                    (get_uint_config(CONFIG_MINIMAL_PARTICIPATION_POINT) - _userQP)
-                    * get_uint_config(CONFIG_MAXIMUM_REPUTATION_DEDUCTION)
-                    / get_uint_config(CONFIG_MINIMAL_PARTICIPATION_POINT);
-
-                daoPointsStorage().subtractReputation(_user, _reputationDeduction);
-            } else {
-                _reputationAddition =
-                    (_userQP - get_uint_config(CONFIG_MINIMAL_PARTICIPATION_POINT)) *
-                    get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_NUM) /
-                    get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_DEN);
-
-                daoPointsStorage().addReputation(_user, _reputationAddition);
-            }
+            updateRPfromQP(
+                _user,
+                daoPointsStorage().getQuarterModeratorPoint(_user, _lastParticipatedQuarter),
+                get_uint_config(CONFIG_MINIMAL_MODERATOR_QUARTER_POINT),
+                get_uint_config(CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION),
+                get_uint_config(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM),
+                get_uint_config(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN)
+            );
         } else {
             _reputationDeduction =
                 (currentQuarterIndex() - 1 - _lastParticipatedQuarter) *
@@ -143,6 +143,33 @@ contract DaoRewardsManager is DaoCommon {
             daoPointsStorage().subtractReputation(_user, _reputationDeduction);
         }
         daoRewardsStorage().updateLastQuarterThatReputationWasUpdated(_user, _lastParticipatedQuarter);
+    }
+
+    function updateRPfromQP (
+        address _user,
+        uint256 _userQP,
+        uint256 _minimalQP,
+        uint256 _maxRPDeduction,
+        uint256 _rpPerExtraQP_num,
+        uint256 _rpPerExtraQP_den
+    ) internal {
+        uint256 _reputationDeduction;
+        uint256 _reputationAddition;
+        if (_userQP < _minimalQP) {
+            _reputationDeduction =
+                (_minimalQP - _userQP)
+                * _maxRPDeduction
+                / _minimalQP;
+
+            daoPointsStorage().subtractReputation(_user, _reputationDeduction);
+        } else {
+            _reputationAddition =
+                (_userQP - _minimalQP) *
+                _rpPerExtraQP_num /
+                _rpPerExtraQP_den;
+
+            daoPointsStorage().addReputation(_user, _reputationAddition);
+        }
     }
 
     function calculateUserRewardsLastQuarter(address _user)
@@ -225,6 +252,7 @@ contract DaoRewardsManager is DaoCommon {
     function calculateGlobalRewardsBeforeNewQuarter()
         if_founder()
         if_locking_phase()
+        daoIsValid()
         public
     {
         QuarterRewardsInfo memory info;
@@ -262,9 +290,9 @@ contract DaoRewardsManager is DaoCommon {
             get_uint_config(CONFIG_REPUTATION_POINT_SCALING_FACTOR),
             info.totalEffectiveDGDLastQuarter,
 
-            get_uint_config(CONFIG_MINIMAL_BADGE_PARTICIPATION_POINT),
-            get_uint_config(CONFIG_BADGE_QUARTER_POINT_SCALING_FACTOR),
-            get_uint_config(CONFIG_BADGE_REPUTATION_POINT_SCALING_FACTOR),
+            get_uint_config(CONFIG_MINIMAL_MODERATOR_QUARTER_POINT),
+            get_uint_config(CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR),
+            get_uint_config(CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR),
             info.totalEffectiveBadgesLastQuarter,
 
             now,

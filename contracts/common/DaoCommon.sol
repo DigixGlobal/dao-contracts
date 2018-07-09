@@ -1,6 +1,5 @@
 pragma solidity ^0.4.19;
 
-import "./../service/DaoInfoService.sol";
 import "./../service/DaoListingService.sol";
 import "./../common/DaoConstants.sol";
 import "./../common/IdentityCommon.sol";
@@ -250,13 +249,6 @@ contract DaoCommon is IdentityCommon {
     function getTimeLeftInQuarter(uint256 _time) internal returns(uint256 _timeLeftInQuarter) {
         _timeLeftInQuarter = get_uint_config(CONFIG_QUARTER_DURATION) - timeInQuarter(_time);
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
-    }
-
-    function daoInfoService()
-        internal
-        returns (DaoInfoService _contract)
-    {
-        _contract = DaoInfoService(get_contract(CONTRACT_SERVICE_DAO_INFO));
     }
 
     function daoListingService()
