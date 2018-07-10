@@ -127,14 +127,20 @@ contract DaoRewardsManager is DaoCommon {
                 get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_DEN)
             );
 
-            updateRPfromQP(
-                _user,
-                daoPointsStorage().getQuarterModeratorPoint(_user, _lastParticipatedQuarter),
-                get_uint_config(CONFIG_MINIMAL_MODERATOR_QUARTER_POINT),
-                get_uint_config(CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION),
-                get_uint_config(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM),
-                get_uint_config(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN)
-            );
+            // this user is not a Moderator for current quarter
+            // coz this step is done before updating the refreshModerator.
+            // But may have been a Moderator before, and if was moderator in their
+            // lastParticipatedQuarter, we will find them in the DoublyLinkedList.
+            if (daoStakeStorage().isInModeratorsList(_user)) {
+                updateRPfromQP(
+                    _user,
+                    daoPointsStorage().getQuarterModeratorPoint(_user, _lastParticipatedQuarter),
+                    get_uint_config(CONFIG_MINIMAL_MODERATOR_QUARTER_POINT),
+                    get_uint_config(CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION),
+                    get_uint_config(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM),
+                    get_uint_config(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN)
+                );
+            }
         } else {
             _reputationDeduction =
                 (currentQuarterIndex() - 1 - _lastParticipatedQuarter) *

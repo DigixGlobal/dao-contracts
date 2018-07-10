@@ -71,6 +71,13 @@ contract('DaoRewardsManager', function (accounts) {
     await a.map(indexRange(0, 5), 20, async (i) => {
       await contracts.daoPointsStorage.addReputation(addressOf.dgdHolders[i], bN(50));
     });
+    // TODO: add Moderators to this
+    // await contracts.daoPointsStorage.addReputation(addressOf.badgeHolders[0], bN(100));
+    // await contracts.daoPointsStorage.addReputation(addressOf.badgeHolders[1], bN(100));
+    // await contracts.daoPointsStorage.addQuarterModeratorPoint(addressOf.badgeHolders[0], bN(5), quarterIndex);
+    // await contracts.daoPointsStorage.addQuarterModeratorPoint(addressOf.badgeHolders[1], bN(2), quarterIndex);
+    // await contracts.daoPointsStorage.addQuarterPoint(addressOf.badgeHolders[0], bN(8), quarterIndex);
+    // await contracts.daoPointsStorage.addQuarterPoint(addressOf.badgeHolders[1], bN(4), quarterIndex);
     await contracts.daoPointsStorage.addQuarterPoint(addressOf.dgdHolders[0], bN(10), quarterIndex);
     await contracts.daoPointsStorage.addQuarterPoint(addressOf.dgdHolders[1], bN(10), quarterIndex);
     await contracts.daoPointsStorage.addQuarterPoint(addressOf.dgdHolders[2], bN(2), quarterIndex);
@@ -171,6 +178,7 @@ contract('DaoRewardsManager', function (accounts) {
 
   // TODO:
   // situations where demurrage is charged
+  // situations with Moderators
   describe('updateRewardsBeforeNewQuarter', function () {
     /**
      * dgdHolders[0] ------ QP, RP (10, 50) ------- DGD 5  [rep goes up, good rewards]
@@ -264,8 +272,14 @@ contract('DaoRewardsManager', function (accounts) {
           daoConstantsValues(bN).CONFIG_MINIMAL_PARTICIPATION_POINT,
           daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_NUM,
           daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_DEN,
+          daoConstantsValues(bN).CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION,
+          daoConstantsValues(bN).CONFIG_MINIMAL_MODERATOR_QUARTER_POINT,
+          daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM,
+          daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN,
           pointsBefore[i],
           await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.dgdHolders[i], lastParticipatedQuarter),
+          await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.dgdHolders[i], lastParticipatedQuarter),
+          false,
         ));
       }
 
@@ -326,8 +340,14 @@ contract('DaoRewardsManager', function (accounts) {
           daoConstantsValues(bN).CONFIG_MINIMAL_PARTICIPATION_POINT,
           daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_NUM,
           daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_DEN,
+          daoConstantsValues(bN).CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION,
+          daoConstantsValues(bN).CONFIG_MINIMAL_MODERATOR_QUARTER_POINT,
+          daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM,
+          daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN,
           pointsFirst[4],
           bN(5),
+          bN(0),
+          false,
         ),
       );
     });
@@ -392,8 +412,14 @@ contract('DaoRewardsManager', function (accounts) {
           daoConstantsValues(bN).CONFIG_MINIMAL_PARTICIPATION_POINT,
           daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_NUM,
           daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_DEN,
+          daoConstantsValues(bN).CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION,
+          daoConstantsValues(bN).CONFIG_MINIMAL_MODERATOR_QUARTER_POINT,
+          daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM,
+          daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN,
           await contracts.daoPointsStorage.getReputation.call(addressOf.dgdHolders[i]),
           await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.dgdHolders[i], bN(4)),
+          await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.dgdHolders[i], bN(4)),
+          false,
         );
       }
 
@@ -417,6 +443,7 @@ contract('DaoRewardsManager', function (accounts) {
 
   // TODO:
   // situtations where demurrage is charged
+  // situations with Moderators
   describe('claimRewards', function () {
     before(async function () {
       await contracts.daoRewardsManager.claimRewards({ from: addressOf.dgdHolders[3] });
@@ -453,6 +480,7 @@ contract('DaoRewardsManager', function (accounts) {
   });
 
   // TODO:
+  // situations with Moderators
   describe('calculateGlobalRewardsBeforeNewQuarter', function () {
     before(async function () {
       await resetDeployment();

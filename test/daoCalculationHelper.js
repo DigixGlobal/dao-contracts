@@ -57,8 +57,14 @@ const calculateReputation = function (
   _minimalParticipationPoint,
   _reputationPerExtraNum,
   _reputationPerExtraDen,
+  _maxReputationModeratorDeduction,
+  _minimalModeratorParticipationPoint,
+  _reputationPerExtraModeratorNum,
+  _reputationPerExtraModeratorDen,
   _currentReputation,
   _quarterPoint,
+  _quarterModeratorPoint,
+  _isModerator,
 ) {
   _currentQuarter = _currentQuarter.toNumber();
   _lastParticipatedQuarter = _lastParticipatedQuarter.toNumber();
@@ -70,6 +76,11 @@ const calculateReputation = function (
   _reputationPerExtraDen = _reputationPerExtraDen.toNumber();
   _currentReputation = _currentReputation.toNumber();
   _quarterPoint = _quarterPoint.toNumber();
+  _maxReputationModeratorDeduction = _maxReputationModeratorDeduction.toNumber();
+  _minimalModeratorParticipationPoint = _minimalModeratorParticipationPoint.toNumber();
+  _reputationPerExtraModeratorNum = _reputationPerExtraModeratorNum.toNumber();
+  _reputationPerExtraModeratorDen = _reputationPerExtraModeratorDen.toNumber();
+  _quarterModeratorPoint = _quarterModeratorPoint.toNumber();
 
   if (_currentQuarter <= _lastParticipatedQuarter) {
     return _currentReputation;
@@ -80,6 +91,14 @@ const calculateReputation = function (
       _currentReputation -= Math.floor(((_minimalParticipationPoint - _quarterPoint) * _maxReputationDeduction) / _minimalParticipationPoint);
     } else {
       _currentReputation += Math.floor(((_quarterPoint - _minimalParticipationPoint) * _reputationPerExtraNum) / _reputationPerExtraDen);
+    }
+
+    if (_isModerator) {
+      if (_quarterModeratorPoint < _minimalModeratorParticipationPoint) {
+        _currentReputation -= Math.floor(((_minimalModeratorParticipationPoint - _quarterModeratorPoint) * _maxReputationModeratorDeduction) / _minimalModeratorParticipationPoint);
+      } else {
+        _currentReputation += Math.floor(((_quarterModeratorPoint - _minimalModeratorParticipationPoint) * _reputationPerExtraModeratorNum) / _reputationPerExtraModeratorDen);
+      }
     }
   } else {
     const _fineForNotLocking = (_currentQuarter - 1 - _lastParticipatedQuarter) * (_maxReputationDeduction + _punishmentForNotLocking);

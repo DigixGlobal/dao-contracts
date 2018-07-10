@@ -575,7 +575,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _time
     )
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
+        if_sender_is_from([CONTRACT_DAO, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES])
     {
         proposalsById[_proposalId].votingRounds[_index].startOfNextMilestone = _time;
     }

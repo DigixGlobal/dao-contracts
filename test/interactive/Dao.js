@@ -40,6 +40,7 @@ const {
   randomBytes32,
   indexRange,
   randomAddress,
+  paddedHex,
 } = require('@digix/helpers/lib/helpers');
 
 const bN = web3.toBigNumber;
@@ -1513,19 +1514,272 @@ contract('Dao', function (accounts) {
     });
   });
 
-  // describe('updatePRL', function () {
-  //   beforeEach(async function () {
-  //     await resetBeforeEach();
-  //   });
-  //   it('[non-prl calls function]: revert', async function () {
-  //
-  //   });
-  //   it('[if action is not stop/pause/unpause]: revert', async function () {
-  //
-  //   });
-  //   it('[pause a proposal in voting phase]: continue voting, cannot claim eth from funding manager', async function () {
-  //
-  //   });
-  //   it('[pause an on-goin proposal in 1st milestone, unpause later]: milestone start should be updated')
-  // });
+  describe('updatePRL', function () {
+    let participants;
+    beforeEach(async function () {
+      await resetBeforeEach();
+      participants = getParticipants(addressOf, bN);
+      await contracts.daoStorage.mock_put_proposal_as(
+        proposals[0].id,
+        bN(0),
+        false,
+        proposals[0].proposer,
+        proposals[0].endorser,
+        proposals[0].versions[1].milestoneDurations,
+        proposals[0].versions[1].milestoneFundings,
+        proposals[0].versions[1].finalReward,
+      );
+      await contracts.daoStorage.mock_put_past_votes(
+        proposals[0].id,
+        bN(100),
+        true,
+        [participants[0].address, participants[1].address, participants[2].address, participants[3].address],
+        [true, true, true, true],
+        [participants[0].dgdToLock, participants[1].dgdToLock, participants[2].dgdToLock, participants[3].dgdToLock],
+        bN(4),
+        bN(getCurrentTimestamp() + 20),
+      );
+    });
+    it('[non-prl calls function]: revert', async function () {
+      for (const i of indexRange(2, 10)) {
+        assert(await a.failure(contracts.dao.updatePRL(
+          proposals[0].id,
+          bN(1),
+          'some:bytes',
+          { from: accounts[i] },
+        )));
+      }
+    });
+    it('[if action is not stop/pause/unpause]: revert', async function () {
+      // Stop    --> 1,
+      // Pause   --> 2,
+      // Unpause --> 3
+      assert(await a.failure(contracts.dao.updatePRL(
+        proposals[0].id,
+        bN(4),
+        'some:bytes',
+        { from: addressOf.prl },
+      )));
+    });
+    it('[pause a proposal during voting phase]: cannot claim eth | milestone starts at unpause time', async function () {
+      const votesAndCommits = assignVotesAndCommits(addressOf, bN);
+
+      // put some commits
+      await contracts.daoVoting.commitVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        votesAndCommits.votingCommits[0][0],
+        { from: addressOf.allParticipants[0] },
+      );
+      await contracts.daoVoting.commitVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        votesAndCommits.votingCommits[0][1],
+        { from: addressOf.allParticipants[1] },
+      );
+      await contracts.daoVoting.commitVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        votesAndCommits.votingCommits[0][4],
+        { from: addressOf.allParticipants[4] },
+      );
+      // wait for reveal phase
+      await waitFor(11, addressOf, web3);
+      // reveal votes
+      await contracts.daoVoting.revealVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        votesAndCommits.votes[0][0],
+        votesAndCommits.salts[0][0],
+        { from: addressOf.allParticipants[0] },
+      );
+      await contracts.daoVoting.revealVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        votesAndCommits.votes[0][1],
+        votesAndCommits.salts[0][1],
+        { from: addressOf.allParticipants[1] },
+      );
+      await contracts.daoVoting.revealVoteOnProposal(
+        proposals[0].id,
+        bN(0),
+        votesAndCommits.votes[0][4],
+        votesAndCommits.salts[0][4],
+        { from: addressOf.allParticipants[4] },
+      );
+
+      // PRL pauses proposal
+      await contracts.dao.updatePRL(
+        proposals[0].id,
+        bN(2),
+        'pausing:proposal',
+        { from: addressOf.prl },
+      );
+
+      // asserts
+      assert.deepEqual(await contracts.daoStorage.readTotalPrlActions.call(proposals[0].id), bN(1));
+      const action0 = await contracts.daoStorage.readPrlAction.call(proposals[0].id, bN(0));
+      assert.deepEqual(action0[0], bN(2)); // pause
+      assert.deepEqual(timeIsRecent(action0[1], 5), true);
+      assert.deepEqual(action0[2], paddedHex(web3, 'pausing:proposal'));
+
+      // wait for reveal phase to get over
+      await waitFor(11, addressOf, web3);
+
+      // claim the voting result
+      await contracts.daoVotingClaims.claimProposalVotingResult(
+        proposals[0].id,
+        bN(0),
+        { from: proposals[0].proposer },
+      );
+      const nextVotingTimeBefore = await contracts.daoStorage.readProposalVotingTime.call(proposals[0].id, bN(1));
+      assert.deepEqual(nextVotingTimeBefore, bN(0));
+
+      // proposer shouldn't be able to claim eth (since proposal paused)
+      assert(await a.failure(contracts.daoFundingManager.claimEthFunding(
+        proposals[0].id,
+        bN(0),
+        proposals[0].versions[1].milestoneFundings[0],
+        { from: proposals[0].proposer },
+      )));
+
+      // wait for some time before unpausing
+      await waitFor(36, addressOf, web3);
+
+      // unpause proposal
+      await contracts.dao.updatePRL(
+        proposals[0].id,
+        bN(3),
+        'unpausing:proposal',
+        { from: addressOf.prl },
+      );
+      const unpausedAt = getCurrentTimestamp();
+
+      // next interim voting time is set
+      const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);
+      const nextInterimVotingTime = await contracts.daoStorage.readProposalVotingTime.call(proposals[0].id, bN(1));
+      const startOfDao = await contracts.daoUpgradeStorage.startOfFirstQuarter.call();
+      const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
+      const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
+      const nextMilestoneDuration = proposals[0].versions[1].milestoneDurations[0];
+      const startOfThisMilestone = await contracts.daoStorage.readProposalNextMilestoneStart.call(proposals[0].id, bN(0));
+      let nextVotingTime = startOfThisMilestone.toNumber() + nextMilestoneDuration.toNumber();
+      if (getTimeInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber()) < lockingPhaseDuration.toNumber()) {
+        nextVotingTime += (lockingPhaseDuration.toNumber() - getTimeInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber())) + 1;
+      } else if (getTimeLeftInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber()) < interimVotingPhaseDuration.toNumber()) {
+        nextVotingTime += getTimeLeftInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber()) + lockingPhaseDuration.toNumber() + 1;
+      }
+      assert.deepEqual(startOfThisMilestone, bN(unpausedAt));
+      assert.deepEqual(nextInterimVotingTime, bN(nextVotingTime));
+
+      // can now claim ether
+      assert.ok(await contracts.daoFundingManager.claimEthFunding.call(
+        proposals[0].id,
+        bN(0),
+        proposals[0].versions[1].milestoneFundings[0],
+        { from: proposals[0].proposer },
+      ));
+    });
+    it('[pause an ongoing proposal in 1st milestone, unpause later]: milestone start should be updated', async function () {
+      await contracts.daoStorage.mock_put_past_votes(
+        proposals[0].id,
+        bN(0),
+        false,
+        [participants[0].address, participants[1].address, participants[2].address, participants[3].address],
+        [true, true, true, true],
+        [participants[0].dgdToLock, participants[1].dgdToLock, participants[2].dgdToLock, participants[3].dgdToLock],
+        bN(4),
+        bN(getCurrentTimestamp() + 40),
+      );
+      await waitFor(21, addressOf, web3);
+
+      // claiming the funding now
+      await contracts.daoVotingClaims.claimProposalVotingResult(
+        proposals[0].id,
+        bN(0),
+        { from: proposals[0].proposer },
+      );
+      await contracts.daoFundingManager.claimEthFunding(
+        proposals[0].id,
+        bN(0),
+        proposals[0].versions[1].milestoneFundings[0],
+        { from: proposals[0].proposer },
+      );
+      // wait for a little time in the milestone
+      await waitFor(5, addressOf, web3);
+
+      // pause the proposal
+      await contracts.dao.updatePRL(proposals[0].id, bN(2), 'pausing:proposal', { from: addressOf.prl });
+
+      // wait for the voting phase to begin
+      const votingStartsAt = await contracts.daoStorage.readProposalVotingTime.call(proposals[0].id, bN(1));
+      await waitFor((votingStartsAt.toNumber() - getCurrentTimestamp()) + 1, addressOf, web3);
+
+      // commit votes
+      await contracts.daoStorage.mock_put_past_votes(
+        proposals[0].id,
+        bN(1),
+        false,
+        [participants[0].address, participants[1].address, participants[2].address, participants[3].address],
+        [true, true, true, true],
+        [participants[0].dgdToLock, participants[1].dgdToLock, participants[2].dgdToLock, participants[3].dgdToLock],
+        bN(4),
+        bN(getCurrentTimestamp()).plus(proposals[0].versions[1].milestoneDurations[1]).plus(daoConstantsValues(bN).CONFIG_INTERIM_PHASE_TOTAL),
+      );
+
+      // wait for reveal phase to get done
+      await waitFor(21, addressOf, web3);
+      await contracts.daoVotingClaims.claimProposalVotingResult(
+        proposals[0].id,
+        bN(1),
+        { from: proposals[0].proposer },
+      );
+      assert(await a.failure(contracts.daoFundingManager.claimEthFunding(
+        proposals[0].id,
+        bN(1),
+        proposals[0].versions[1].milestoneFundings[1],
+        { from: proposals[0].proposer },
+      )));
+
+      // wait for some time before unpausing proposal
+      await waitFor(13, addressOf, web3);
+
+      // unpause
+      await contracts.dao.updatePRL(proposals[0].id, bN(3), 'unpause:proposal', { from: addressOf.prl });
+      const unpausedAt = getCurrentTimestamp();
+
+      // next interim voting time is set
+      const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);
+      const nextInterimVotingTime = await contracts.daoStorage.readProposalVotingTime.call(proposals[0].id, bN(2));
+      const startOfDao = await contracts.daoUpgradeStorage.startOfFirstQuarter.call();
+      const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
+      const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
+      const nextMilestoneDuration = proposals[0].versions[1].milestoneDurations[1];
+      const startOfThisMilestone = await contracts.daoStorage.readProposalNextMilestoneStart.call(proposals[0].id, bN(1));
+      let nextVotingTime = startOfThisMilestone.toNumber() + nextMilestoneDuration.toNumber();
+      if (getTimeInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber()) < lockingPhaseDuration.toNumber()) {
+        nextVotingTime += (lockingPhaseDuration.toNumber() - getTimeInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber())) + 1;
+      } else if (getTimeLeftInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber()) < interimVotingPhaseDuration.toNumber()) {
+        nextVotingTime += getTimeLeftInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber()) + lockingPhaseDuration.toNumber() + 1;
+      }
+      assert.deepEqual(startOfThisMilestone, bN(unpausedAt));
+      assert.deepEqual(nextInterimVotingTime, bN(nextVotingTime));
+
+      // can claim the funding now
+      assert.ok(await contracts.daoFundingManager.claimEthFunding(
+        proposals[0].id,
+        bN(1),
+        proposals[0].versions[1].milestoneFundings[1],
+        { from: proposals[0].proposer },
+      ));
+    });
+    it('[stop a proposal]', async function () {
+      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_MODERATED), proposals[0].id);
+      await contracts.dao.updatePRL(proposals[0].id, bN(1), 'stop:proposal', { from: addressOf.prl });
+      const readProposal = await contracts.daoStorage.readProposal.call(proposals[0].id);
+      assert.deepEqual(readProposal[3], proposalStates(bN).PROPOSAL_STATE_CLOSED);
+      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_MODERATED), EMPTY_BYTES);
+      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_CLOSED), proposals[0].id);
+    });
+  });
 });

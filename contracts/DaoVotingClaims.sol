@@ -103,7 +103,9 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             _info.milestoneStart = daoStorage().readProposalNextMilestoneStart(_proposalId, _index);
 
             if (_info.duration > 0 && _info.funding > 0) {
-              setTimelineForNextMilestone(_proposalId, _index + 1, _info.duration, _info.milestoneStart);
+              if (isProposalPaused(_proposalId) == false) {
+                setTimelineForNextMilestone(_proposalId, _index + 1, _info.duration, _info.milestoneStart);
+              }
 
               // update claimable funds
               daoFundingManager().allocateEth(daoStorage().readProposalProposer(_proposalId), _info.funding);
@@ -135,29 +137,6 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         if (_bonusVoters.usersLength > 0) addBonusReputation(_bonusVoters.users, _bonusVoters.usersLength);
     }
 
-    // set the voting start time for milestone index _index (starts from 0)
-    // as well as setting the startOfNextMilestone of the voting round of milestone index _index (starts from 0)
-    function setTimelineForNextMilestone(
-        bytes32 _proposalId,
-        uint256 _index,
-        uint256 _milestoneDuration,
-        uint256 _milestoneStart
-    )
-        public
-    {
-      uint256 _votingTime = _milestoneStart + _milestoneDuration;
-      uint256 _timeLeftInQuarter = getTimeLeftInQuarter(_votingTime);
-      uint256 _votingDuration = get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL);
-      if (timeInQuarter(_votingTime) < get_uint_config(CONFIG_LOCKING_PHASE_DURATION)) {
-          _votingTime += get_uint_config(CONFIG_LOCKING_PHASE_DURATION) - timeInQuarter(_votingTime) + 1;
-      } else if (_timeLeftInQuarter < _votingDuration) {
-          _votingTime += _timeLeftInQuarter + get_uint_config(CONFIG_LOCKING_PHASE_DURATION) + 1;
-      }
-
-      daoStorage().setProposalVotingTime(_proposalId, _index, _votingTime);
-      daoStorage().setProposalNextMilestoneStart(_proposalId, _index, _votingTime + _votingDuration);
-    }
-
     // @notice Function to claim the voting result on special proposal
     // @param _proposalId ID of the special proposal
     // @return _passed Boolean, true if voting passed, false if failed
@@ -181,6 +160,41 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         if (_passed) {
             setConfigs(_proposalId);
         }
+    }
+
+    function updateTimelineForNextMilestone(
+        bytes32 _proposalId,
+        uint256 _index,
+        uint256 _milestoneDuration,
+        uint256 _milestoneStart
+    )
+        public
+        if_sender_is(CONTRACT_DAO)
+    {
+        setTimelineForNextMilestone(_proposalId, _index, _milestoneDuration, _milestoneStart);
+    }
+
+    // set the voting start time for milestone index _index (starts from 0)
+    // as well as setting the startOfNextMilestone of the voting round of milestone index _index (starts from 0)
+    function setTimelineForNextMilestone(
+        bytes32 _proposalId,
+        uint256 _index,
+        uint256 _milestoneDuration,
+        uint256 _milestoneStart
+    )
+        internal
+    {
+        uint256 _votingTime = _milestoneStart + _milestoneDuration;
+        uint256 _timeLeftInQuarter = getTimeLeftInQuarter(_votingTime);
+        uint256 _votingDuration = get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL);
+        if (timeInQuarter(_votingTime) < get_uint_config(CONFIG_LOCKING_PHASE_DURATION)) {
+            _votingTime += get_uint_config(CONFIG_LOCKING_PHASE_DURATION) - timeInQuarter(_votingTime) + 1;
+        } else if (_timeLeftInQuarter < _votingDuration) {
+            _votingTime += _timeLeftInQuarter + get_uint_config(CONFIG_LOCKING_PHASE_DURATION) + 1;
+        }
+
+        daoStorage().setProposalVotingTime(_proposalId, _index, _votingTime);
+        daoStorage().setProposalNextMilestoneStart(_proposalId, _index, _votingTime + _votingDuration);
     }
 
     function addBonusReputation(address[] _voters, uint256 _n)

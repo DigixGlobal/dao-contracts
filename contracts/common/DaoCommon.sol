@@ -90,11 +90,10 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_prl_approved(bytes32 _proposalId) {
+    function isProposalPaused(bytes32 _proposalId) internal returns (bool) {
         bool _isPaused;
         (,,,,,,,,_isPaused) = daoStorage().readProposal(_proposalId);
-        require(_isPaused == false);
-        _;
+        return _isPaused;
     }
 
     modifier valid_withdraw_amount(bytes32 _proposalId, uint256 _index, uint256 _value) {

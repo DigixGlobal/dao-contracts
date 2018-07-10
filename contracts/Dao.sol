@@ -178,7 +178,7 @@ contract Dao is DaoCommon, Claimable {
 
                 daoStorage().setProposalNextMilestoneStart(_proposalId, _lastVotingRound, now);
 
-                daoVotingClaims().setTimelineForNextMilestone(
+                daoVotingClaims().updateTimelineForNextMilestone(
                     _proposalId,
                     _lastVotingRound + 1,
                     daoStorage().readProposalMilestoneDuration(_proposalId, _lastVotingRound),

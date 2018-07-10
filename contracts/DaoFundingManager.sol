@@ -17,12 +17,11 @@ contract DaoFundingManager is DaoCommon {
     function claimEthFunding(bytes32 _proposalId, uint256 _index, uint256 _value)
         public
         if_from_proposer(_proposalId)
-        if_prl_approved(_proposalId)
         valid_withdraw_amount(_proposalId, _index, _value)
         returns (bool _success)
     {
-        // TODO: Add SafeMath
-        daoFundingStorage().updateClaimableEth(msg.sender, daoFundingStorage().claimableEth(msg.sender) - _value);
+        require(isProposalPaused(_proposalId) == false);
+        daoFundingStorage().updateClaimableEth(msg.sender, daoFundingStorage().claimableEth(msg.sender).sub(_value));
         daoFundingStorage().withdrawEth(_value);
 
         msg.sender.transfer(_value);
@@ -36,8 +35,7 @@ contract DaoFundingManager is DaoCommon {
         public
         if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
-        // TODO: Add SafeMath
-        _value = _value + daoFundingStorage().claimableEth(_to);
+        _value = _value.add(daoFundingStorage().claimableEth(_to));
         daoFundingStorage().updateClaimableEth(_to, _value);
     }
 
