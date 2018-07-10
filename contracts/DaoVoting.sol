@@ -3,19 +3,19 @@ pragma solidity ^0.4.23;
 import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
 import "./common/DaoCommon.sol";
 
-// @title Contract for all voting operations of DAO
-// @author Digix Holdings
+/// @title Contract for all voting operations of DAO
+/// @author Digix Holdings
 contract DaoVoting is DaoCommon, Claimable {
 
     function DaoVoting(address _resolver) public {
         require(init(CONTRACT_DAO_VOTING, _resolver));
     }
 
-    // @notice Function to vote on draft proposal (only Moderators can vote)
-    // @param _proposalId ID of the proposal
-    // @param _proposalVersion The final version of the proposal (only the final version can be voted on)
-    // @param _voteYes Boolean, true if voting for, false if voting against
-    // @returm _success Boolean, true if vote was cast successfully
+    /// @notice Function to vote on draft proposal (only Moderators can vote)
+    /// @param _proposalId ID of the proposal
+    /// @param _proposalVersion The final version of the proposal (only the final version can be voted on)
+    /// @param _voteYes Boolean, true if voting for, false if voting against
+    /// @return _success Boolean, true if vote was cast successfully
     function voteOnDraft(
         bytes32 _proposalId,
         bytes32 _proposalVersion,
@@ -43,10 +43,10 @@ contract DaoVoting is DaoCommon, Claimable {
         _success = true;
     }
 
-    // @notice Function to commit a vote on special proposal
-    // @param _proposalId ID of the proposal
-    // @param _commitHash Hash of the vote to commit (hash = SHA3(address(pub_address), bool(vote), uint256(random_number)))
-    // @return _success Boolean, true if vote was committed successfully
+    /// @notice Function to commit a vote on special proposal
+    /// @param _proposalId ID of the proposal
+    /// @param _commitHash Hash of the vote to commit (hash = SHA3(address(pub_address), bool(vote), uint256(random_number)))
+    /// @return _success Boolean, true if vote was committed successfully
     function commitVoteOnSpecialProposal(
         bytes32 _proposalId,
         bytes32 _commitHash
@@ -60,14 +60,14 @@ contract DaoVoting is DaoCommon, Claimable {
         _success = true;
     }
 
-    // @notice Function to reveal a committed vote on special proposal
-    // @param _proposalId ID of the proposal
-    // @param _vote Boolean, true if voted for, false if voted against
-    // @param _salt Random Number used to commit vote
+    /// @notice Function to reveal a committed vote on special proposal
+    /// @param _proposalId ID of the proposal
+    /// @param _vote Boolean, true if voted for, false if voted against
+    /// @param _salt Random bytes used to commit vote
     function revealVoteOnSpecialProposal(
         bytes32 _proposalId,
         bool _vote,
-        uint256 _salt
+        bytes32 _salt
     )
         public
         if_reveal_phase_special(_proposalId)
@@ -79,11 +79,11 @@ contract DaoVoting is DaoCommon, Claimable {
         daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_VOTE), currentQuarterIndex());
     }
 
-    // @notice Function to commit a vote on proposal (Voting Round)
-    // @param _proposalId ID of the proposal
-    // @param _index Index of the Voting Round
-    // @param _commitHash Hash of the vote to commit (hash = SHA3(address(pub_address), bool(vote), uint256(random_number)))
-    // @return _success Boolean, true if vote was committed successfully
+    /// @notice Function to commit a vote on proposal (Voting Round)
+    /// @param _proposalId ID of the proposal
+    /// @param _index Index of the Voting Round
+    /// @param _commitHash Hash of the vote to commit (hash = SHA3(address(pub_address), bool(vote), uint256(random_number)))
+    /// @return _success Boolean, true if vote was committed successfully
     function commitVoteOnProposal(
         bytes32 _proposalId,
         uint8 _index,
@@ -98,16 +98,16 @@ contract DaoVoting is DaoCommon, Claimable {
         _success = true;
     }
 
-    // @notice Function to reveal a committed vote on proposal (Voting Round)
-    // @param _proposalId ID of the proposal
-    // @param _index Index of the Voting Round
-    // @param _vote Boolean, true if voted for, false if voted against
-    // @param _salt Random Number used to commit vote
+    /// @notice Function to reveal a committed vote on proposal (Voting Round)
+    /// @param _proposalId ID of the proposal
+    /// @param _index Index of the Voting Round
+    /// @param _vote Boolean, true if voted for, false if voted against
+    /// @param _salt Random bytes used to commit vote
     function revealVoteOnProposal(
         bytes32 _proposalId,
         uint8 _index,
         bool _vote,
-        uint256 _salt
+        bytes32 _salt
     )
         public
         if_reveal_phase(_proposalId, _index)

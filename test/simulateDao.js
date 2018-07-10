@@ -506,7 +506,7 @@ module.exports = async function () {
     proposals = getTestProposals(bN, addressOf);
 
     console.log('got accounts');
-    ({ salts, votes, votingCommits } = assignVotesAndCommits(addressOf, bN));
+    ({ salts, votes, votingCommits } = assignVotesAndCommits(addressOf));
 
     // get deployed mock tokens
     await setupMockTokens(contracts, addressOf);

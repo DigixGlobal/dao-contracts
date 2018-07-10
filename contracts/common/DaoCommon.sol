@@ -90,7 +90,7 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    function isProposalPaused(bytes32 _proposalId) internal returns (bool) {
+    function isProposalPaused(bytes32 _proposalId) public constant returns (bool) {
         bool _isPaused;
         (,,,,,,,,_isPaused) = daoStorage().readProposal(_proposalId);
         return _isPaused;

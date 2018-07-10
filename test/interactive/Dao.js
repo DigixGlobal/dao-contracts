@@ -915,7 +915,7 @@ contract('Dao', function (accounts) {
         proposals[3].versions[0].milestoneFundings,
         proposals[3].versions[0].finalReward,
       );
-      votesAndCommits = assignVotesAndCommits(addressOf, bN);
+      votesAndCommits = assignVotesAndCommits(addressOf);
     });
     it('[if invalid proposal state for voting round]: revert', async function () {
       assert.deepEqual(await contracts.daoStakeStorage.isInParticipantList.call(addressOf.allParticipants[0]), true);
@@ -1044,7 +1044,7 @@ contract('Dao', function (accounts) {
         proposals[3].versions[0].milestoneFundings,
         proposals[3].versions[0].finalReward,
       );
-      votesAndCommits = assignVotesAndCommits(addressOf, bN);
+      votesAndCommits = assignVotesAndCommits(addressOf);
       await contracts.daoVoting.commitVoteOnProposal(
         proposals[0].id,
         bN(0),
@@ -1562,7 +1562,7 @@ contract('Dao', function (accounts) {
       )));
     });
     it('[pause a proposal during voting phase]: cannot claim eth | milestone starts at unpause time', async function () {
-      const votesAndCommits = assignVotesAndCommits(addressOf, bN);
+      const votesAndCommits = assignVotesAndCommits(addressOf);
 
       // put some commits
       await contracts.daoVoting.commitVoteOnProposal(

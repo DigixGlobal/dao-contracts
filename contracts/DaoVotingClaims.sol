@@ -7,8 +7,8 @@ import "./DaoFundingManager.sol";
 import "./DaoRewardsManager.sol";
 import "./lib/DaoIntermediateStructs.sol";
 
-// @title Contract to claim voting results
-// @author Digix Holdings
+/// @title Contract to claim voting results
+/// @author Digix Holdings
 contract DaoVotingClaims is DaoCommon, Claimable {
     using DaoIntermediateStructs for DaoIntermediateStructs.VotingCount;
     using DaoIntermediateStructs for DaoIntermediateStructs.MilestoneInfo;
@@ -39,9 +39,9 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         require(init(CONTRACT_DAO_VOTING_CLAIMS, _resolver));
     }
 
-    // @notice Function to claim the draft voting result (can only be called by the proposal proposer)
-    // @param _proposalId ID of the proposal
-    // @return _passed Boolean, true if the draft voting has passed, reverted otherwise
+    /// @notice Function to claim the draft voting result (can only be called by the proposal proposer)
+    /// @param _proposalId ID of the proposal
+    /// @return _passed Boolean, true if the draft voting has passed, reverted otherwise
     function claimDraftVotingResult(bytes32 _proposalId)
         public
         if_main_phase()
@@ -75,10 +75,10 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     // NOTE: Voting round i-th is before milestone index i-th
 
 
-    // @notice Function to claim the  voting round results (can only be called by the proposer)
-    // @param _proposalId ID of the proposal
-    // @param _index Index of the  voting round
-    // @return _passed Boolean, true if the  voting round passed, false if failed
+    /// @notice Function to claim the  voting round results (can only be called by the proposer)
+    /// @param _proposalId ID of the proposal
+    /// @param _index Index of the  voting round
+    /// @return _passed Boolean, true if the  voting round passed, false if failed
     function claimProposalVotingResult(bytes32 _proposalId, uint256 _index)
         public
         if_main_phase()
@@ -137,9 +137,9 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         if (_bonusVoters.usersLength > 0) addBonusReputation(_bonusVoters.users, _bonusVoters.usersLength);
     }
 
-    // @notice Function to claim the voting result on special proposal
-    // @param _proposalId ID of the special proposal
-    // @return _passed Boolean, true if voting passed, false if failed
+    /// @notice Function to claim the voting result on special proposal
+    /// @param _proposalId ID of the special proposal
+    /// @return _passed Boolean, true if voting passed, false if failed
     function claimSpecialProposalVotingResult(bytes32 _proposalId)
         public
         if_main_phase()

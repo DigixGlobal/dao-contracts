@@ -6,8 +6,8 @@ import "./lib/DaoStructs.sol";
 import "./service/DaoCalculatorService.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
-// @title Contract to manage DGX rewards
-// @author Digix Holdings
+/// @title Contract to manage DGX rewards
+/// @author Digix Holdings
 contract DaoRewardsManager is DaoCommon {
     using MathHelper for MathHelper;
     using DaoStructs for DaoStructs.DaoQuarterInfo;
@@ -34,9 +34,9 @@ contract DaoRewardsManager is DaoCommon {
         address[] users;
     }
 
-    // @notice Constructor (set the quarter info for the first quarter)
-    // @param _resolver Address of the Contract Resolver contract
-    // @param _dgxAddress Address of the Digix Gold Token contract
+    /// @notice Constructor (set the quarter info for the first quarter)
+    /// @param _resolver Address of the Contract Resolver contract
+    /// @param _dgxAddress Address of the Digix Gold Token contract
     function DaoRewardsManager(address _resolver, address _dgxAddress)
         public
     {
@@ -65,8 +65,8 @@ contract DaoRewardsManager is DaoCommon {
         _contract = DaoCalculatorService(get_contract(CONTRACT_SERVICE_DAO_CALCULATOR));
     }
 
-    // @notice Function to claim the DGX rewards allocated to user
-    // @dev Will revert if _claimableDGX <= MINIMUM_TRANSFER_AMOUNT of DGX
+    /// @notice Function to claim the DGX rewards allocated to user
+    /// @dev Will revert if _claimableDGX <= MINIMUM_TRANSFER_AMOUNT of DGX
     function claimRewards()
         public
     {
@@ -91,8 +91,8 @@ contract DaoRewardsManager is DaoCommon {
         ERC20(ADDRESS_DGX_TOKEN).transfer(_user, _claimableDGX);
     }
 
-    // @notice Function to update DGX rewards of user while locking/withdrawing DGDs, or continuing participation for new quarter
-    // @param _user Address of the DAO participant
+    /// @notice Function to update DGX rewards of user while locking/withdrawing DGDs, or continuing participation for new quarter
+    /// @param _user Address of the DAO participant
     function updateRewardsBeforeNewQuarter(address _user)
         public
         if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
@@ -254,7 +254,7 @@ contract DaoRewardsManager is DaoCommon {
         _valid = true;
     }
 
-    // @notice Function called by the founder after transfering the DGX fees into the DAO at the beginning of the quarter
+    /// @notice Function called by the founder after transfering the DGX fees into the DAO at the beginning of the quarter
     function calculateGlobalRewardsBeforeNewQuarter()
         if_founder()
         if_locking_phase()
@@ -343,9 +343,9 @@ contract DaoRewardsManager is DaoCommon {
         }
     }
 
-    // @notice Function to read effective/rewardable balance of user for the previous quarter
-    // @param _user Address of the DAO participant
-    // @return _effectiveDGDBalance Effective/Rewardable Balance of user
+    /// @notice Function to read effective/rewardable balance of user for the previous quarter
+    /// @param _user Address of the DAO participant
+    /// @return _effectiveDGDBalance Effective/Rewardable Balance of user
     function getUserEffectiveDGDBalanceLastQuarter(address _user)
         public
         returns (uint256 _effectiveDGDBalance)
@@ -364,9 +364,9 @@ contract DaoRewardsManager is DaoCommon {
         );
     }
 
-    // @notice Function to read effective/rewardable balance of user in the previous quarter
-    // @param _user Address of the DAO participant
-    // @return _effectiveDGDBalance Effective/Rewardable Balance of user
+    /// @notice Function to read effective/rewardable balance of user in the previous quarter
+    /// @param _user Address of the DAO participant
+    /// @return _effectiveDGDBalance Effective/Rewardable Balance of user
     function getUserEffectiveModeratorBalanceLastQuarter(address _user)
         public
         returns (uint256 _effectiveDGDBalance)

@@ -285,8 +285,8 @@ const getTestProposals = function (bN, addressOf) {
   ];
 };
 
-const assignVotesAndCommits = function (addressOf, bN) {
-  const salts = indexRange(0, 4).map(() => indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(() => randomBigNumber(bN)));
+const assignVotesAndCommits = function (addressOf) {
+  const salts = indexRange(0, 4).map(() => indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(() => randomBytes32()));
   // salts[proposalIndex][participantIndex] = salt
 
   const votes = indexRange(0, 4).map(() => indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(() => true));
@@ -295,7 +295,7 @@ const assignVotesAndCommits = function (addressOf, bN) {
   const votingCommits = indexRange(0, 4).map(proposalIndex => indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(holderIndex => web3Utils.soliditySha3(
     { t: 'address', v: addressOf.allParticipants[holderIndex] },
     { t: 'bool', v: votes[proposalIndex][holderIndex] },
-    { t: 'uint256', v: salts[proposalIndex][holderIndex] },
+    { t: 'bytes32', v: salts[proposalIndex][holderIndex] },
   )));
   // votingCommits[proposalIndex][holderIndex] contains the commit
   return { salts, votes, votingCommits };
