@@ -34,6 +34,26 @@ contract DaoListingService is ResolverClient, DaoConstants, AddressIteratorInter
         );
     }
 
+    function listModeratorsFrom(
+        address _currentModerator,
+        uint256 _count,
+        bool _from_start
+    )
+        public
+        constant
+        returns (address[] _moderators)
+    {
+        _moderators = list_addresses_from(
+            _currentModerator,
+            _count,
+            daoStakeStorage().readFirstModerator,
+            daoStakeStorage().readLastModerator,
+            daoStakeStorage().readNextModerator,
+            daoStakeStorage().readPreviousModerator,
+            _from_start
+        );
+    }
+
     function listParticipants(uint256 _count, bool _from_start)
         public
         constant

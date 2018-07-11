@@ -42,7 +42,10 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     /// @notice Function to claim the draft voting result (can only be called by the proposal proposer)
     /// @param _proposalId ID of the proposal
     /// @return _passed Boolean, true if the draft voting has passed, reverted otherwise
-    function claimDraftVotingResult(bytes32 _proposalId)
+    function claimDraftVotingResult(
+        bytes32 _proposalId,
+        uint256 _count
+    )
         public
         if_main_phase()
         if_draft_not_claimed(_proposalId)
@@ -50,16 +53,61 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         if_from_proposer(_proposalId)
         returns (bool _passed)
     {
-        address[] memory _allModerators = daoListingService().listModerators(daoStakeStorage().readTotalModerators(), true);
+        // get the previously stored intermediary state
+        DaoIntermediateStructs.CountIntermediaryStruct memory _pastCountState;
+        (_pastCountState.countedUntil, _pastCountState.forCount, _pastCountState.againstCount) = daoCountIntermediaryStorage().readIntermediaryState(
+            _proposalId
+        );
 
-        DaoIntermediateStructs.VotingCount memory _count;
-        (_count.forCount, _count.againstCount, _count.quorum) = daoStorage().readDraftVotingCount(_proposalId, _allModerators);
-        require(_count.quorum > daoCalculatorService().minimumDraftQuorum(_proposalId));
-        require(daoCalculatorService().draftQuotaPass(_count.forCount, _count.againstCount));
+        // get first address based on intermediate state
+        address _moderator;
+        if (_pastCountState.countedUntil == EMPTY_ADDRESS) {
+            _moderator = daoStakeStorage().readFirstModerator();
+        } else {
+            _moderator = daoStakeStorage().readNextModerator(_pastCountState.countedUntil);
+        }
 
-        _passed = true;
+        // get moderators
+        address[] memory _moderators = daoListingService().listModeratorsFrom(
+            _moderator,
+            _count,
+            true
+        );
+        _moderator = _moderators[_moderators.length-1];
+
+        // count the votes for these moderators
+        DaoIntermediateStructs.VotingCount memory _voteCount;
+        (_voteCount.forCount, _voteCount.againstCount, _voteCount.quorum) = daoStorage().readDraftVotingCount(_proposalId, _moderators);
+
+        if (_moderator == daoStakeStorage().readLastModerator()) {
+            // this is the last iteration
+            _passed = true;
+            tempFunction(_proposalId, _voteCount);
+
+            // set intermediary states as 0 and EMPTY_ADDRESS
+            daoCountIntermediaryStorage().updateIntermediaryState(
+                _proposalId,
+                EMPTY_ADDRESS,
+                0,
+                0
+            );
+        } else {
+            // update intermediary states
+            daoCountIntermediaryStorage().updateIntermediaryState(
+                _proposalId,
+                _moderator,
+                _voteCount.forCount.add(_pastCountState.forCount),
+                _voteCount.againstCount.add(_pastCountState.againstCount)
+            );
+        }
+    }
+
+    function tempFunction(bytes32 _proposalId, DaoIntermediateStructs.VotingCount _voteCount)
+        private
+    {
+        require(_voteCount.quorum > daoCalculatorService().minimumDraftQuorum(_proposalId));
+        require(daoCalculatorService().draftQuotaPass(_voteCount.forCount, _voteCount.againstCount));
         daoStorage().setProposalDraftPass(_proposalId, true);
-
         // set startTime of first voting round
         // and the start of first milestone.
         setTimelineForNextMilestone(
@@ -68,7 +116,6 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             0,
             daoStorage().readProposalDraftVotingTime(_proposalId).add(get_uint_config(CONFIG_DRAFT_VOTING_PHASE))
         );
-
         daoStorage().setDraftVotingClaim(_proposalId, true);
     }
 

@@ -20,4 +20,10 @@ library DaoIntermediateStructs {
         address[] users;
         uint256 usersLength;
     }
+
+    struct CountIntermediaryStruct {
+        address countedUntil;
+        uint256 forCount;
+        uint256 againstCount;
+    }
 }
