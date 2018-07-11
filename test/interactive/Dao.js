@@ -87,289 +87,289 @@ contract('Dao', function (accounts) {
     });
   });
 
-  // describe('submitPreproposal', function () {
-  //   before(async function () {
-  //     await resetBeforeEach();
-  //   });
-  //   it('[not a participant]: revert', async function () {
-  //     assert.deepEqual(await contracts.daoStakeStorage.isInParticipantList.call(addressOf.dgdHolders[4]), false);
-  //     // console.log('asd');
-  //     // console.log(proposals[0]);
-  //     assert(await a.failure(contracts.dao.submitPreproposal(
-  //       proposals[0].id,
-  //       proposals[0].versions[0].milestoneDurations,
-  //       proposals[0].versions[0].milestoneFundings,
-  //       proposals[0].versions[0].finalReward,
-  //       { from: addressOf.dgdHolders[4] },
-  //     )));
-  //   });
-  //   it('[if milestone durations and fundings not valid]: revert', async function () {
-  //     // fundings and durations are unequal in length: revert
-  //     assert.deepEqual(await contracts.daoStakeStorage.isInParticipantList.call(addressOf.dgdHolders[0]), true);
-  //     assert(await a.failure(contracts.dao.submitPreproposal(
-  //       proposals[0].id,
-  //       [bN(100), bN(120)],
-  //       [bN(3 * (10 ** 18)), bN(4 * (10 ** 18)), bN(5 * (10 ** 18))],
-  //       proposals[0].versions[0].finalReward,
-  //       { from: addressOf.dgdHolders[0] },
-  //     )));
-  //     assert(await a.failure(contracts.dao.submitPreproposal(
-  //       proposals[0].id,
-  //       [bN(100), bN(120), bN(75)],
-  //       [bN(3 * (10 ** 18)), bN(4 * (10 ** 18))],
-  //       proposals[0].versions[0].finalReward,
-  //       { from: addressOf.dgdHolders[0] },
-  //     )));
-  //
-  //     // total funding required crosses the ethInDao: revert
-  //     const ethInDao = await contracts.daoFundingStorage.ethInDao.call();
-  //     const funding1 = ethInDao.minus(bN(10 * (10 ** 18)));
-  //     const funding2 = bN(20 * (10 ** 18));
-  //     assert(await a.failure(contracts.dao.submitPreproposal(
-  //       proposals[0].id,
-  //       [bN(100), bN(120)],
-  //       [funding1, funding2],
-  //       proposals[0].versions[0].finalReward,
-  //       { from: addressOf.dgdHolders[0] },
-  //     )));
-  //   });
-  //   it('[during main phase, participant, but not kyc approved]: revert', async function () {
-  //     await contracts.daoIdentity.updateKyc(
-  //       addressOf.dgdHolders[1],
-  //       'expired',
-  //       bN(getCurrentTimestamp() - (3600)),
-  //       { from: addressOf.kycadmin },
-  //     );
-  //     assert.deepEqual(await contracts.daoStakeStorage.isInParticipantList.call(addressOf.dgdHolders[1]), true);
-  //     assert(await a.failure(contracts.dao.submitPreproposal(
-  //       proposals[0].id,
-  //       proposals[0].versions[0].milestoneDurations,
-  //       proposals[0].versions[0].milestoneFundings,
-  //       proposals[0].versions[0].finalReward,
-  //       { from: addressOf.dgdHolders[1] },
-  //     )));
-  //     // kyc approve dgdHolders[1]
-  //     await contracts.daoIdentity.updateKyc(
-  //       addressOf.dgdHolders[1],
-  //       'valid for 1 month',
-  //       bN(getCurrentTimestamp() + (3600 * 24 * 30)),
-  //       { from: addressOf.kycadmin },
-  //     );
-  //   });
-  //   it('[valid inputs]: success | verify read functions', async function () {
-  //     await contracts.dao.submitPreproposal(
-  //       proposals[0].id,
-  //       proposals[0].versions[0].milestoneDurations,
-  //       proposals[0].versions[0].milestoneFundings,
-  //       proposals[0].versions[0].finalReward,
-  //       { from: addressOf.dgdHolders[0] },
-  //     );
-  //     // add another proposal
-  //     await contracts.dao.submitPreproposal(
-  //       proposals[1].id,
-  //       proposals[1].versions[0].milestoneDurations,
-  //       proposals[1].versions[0].milestoneFundings,
-  //       proposals[1].versions[0].finalReward,
-  //       { from: addressOf.dgdHolders[1] },
-  //     );
-  //     const readProposal = await contracts.daoStorage.readProposal.call(proposals[0].id);
-  //     assert.deepEqual(readProposal[0], proposals[0].id);
-  //     assert.deepEqual(readProposal[1], addressOf.dgdHolders[0]);
-  //     assert.deepEqual(readProposal[2], EMPTY_ADDRESS);
-  //     assert.deepEqual(readProposal[3], proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL);
-  //     assert.deepEqual(timeIsRecent(readProposal[4], 10), true);
-  //     assert.deepEqual(readProposal[5], bN(1));
-  //     assert.deepEqual(readProposal[6], proposals[0].id);
-  //   });
-  //   it('[not main phase]: revert', async function () {
-  //     await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
-  //     assert(await a.failure(contracts.dao.submitPreproposal(
-  //       proposals[1].id,
-  //       proposals[1].versions[0].milestoneDurations,
-  //       proposals[1].versions[0].milestoneFundings,
-  //       proposals[1].versions[0].finalReward,
-  //       { from: addressOf.dgdHolders[0] },
-  //     )));
-  //   });
-  //   after(async function () {
-  //     assert.deepEqual(await contracts.daoStakeLocking.isLockingPhase.call(), true);
-  //     // withdraw stakes
-  //     await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
-  //     await withdrawDGDs(web3, contracts, bN, getParticipants(addressOf, bN));
-  //   });
-  // });
-  //
-  // describe('endorseProposal', function () {
-  //   before(async function () {
-  //     await resetBeforeEach();
-  //     await addProposal(contracts, proposals[0]);
-  //     await addProposal(contracts, proposals[1]);
-  //   });
-  //   it('[if not a badge participant]: revert', async function () {
-  //     await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
-  //     assert.deepEqual(await contracts.daoStakeStorage.isInParticipantList.call(addressOf.dgdHolders[1]), true);
-  //     assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.dgdHolders[1]), false);
-  //     assert(await a.failure(contracts.dao.endorseProposal.call(
-  //       proposals[1].id,
-  //       { from: addressOf.dgdHolders[1] },
-  //     )));
-  //   });
-  //   it('[valid inputs]: success | verify read functions', async function () {
-  //     const readProposal = await contracts.daoStorage.readProposal.call(proposals[1].id);
-  //     const state = readProposal[3];
-  //     assert.deepEqual(state, proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL);
-  //     await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
-  //     assert.deepEqual(await contracts.dao.endorseProposal.call(
-  //       proposals[1].id,
-  //       { from: addressOf.badgeHolders[0] },
-  //     ), true);
-  //     await contracts.dao.endorseProposal(proposals[1].id, { from: addressOf.badgeHolders[0] });
-  //
-  //     const readProposalAfter = await contracts.daoStorage.readProposal.call(proposals[1].id);
-  //     const endorser = readProposalAfter[2];
-  //     const stateAfter = readProposalAfter[3];
-  //     assert.deepEqual(stateAfter, proposalStates(bN).PROPOSAL_STATE_DRAFT);
-  //     assert.deepEqual(endorser, addressOf.badgeHolders[0]);
-  //   });
-  //   it('[if proposal has already been endorsed]: revert', async function () {
-  //     await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
-  //     assert(await a.failure(contracts.dao.endorseProposal.call(
-  //       proposals[1].id,
-  //       { from: addressOf.badgeHolders[0] },
-  //     )));
-  //   });
-  //   it('[if locking phase]: revert', async function () {
-  //     await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
-  //     await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
-  //     await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.badgeHolders[0] });
-  //     assert.deepEqual(await contracts.daoStakeLocking.isLockingPhase.call(), true);
-  //     assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[0]), true);
-  //     const rep = await contracts.daoPointsStorage.getReputation.call(addressOf.badgeHolders[0]);
-  //     assert.isAtLeast(rep.toNumber(), 100);
-  //     assert.deepEqual(await contracts.daoRewardsStorage.lastParticipatedQuarter.call(addressOf.badgeHolders[0]), bN(2));
-  //     assert(await a.failure(contracts.dao.endorseProposal.call(
-  //       proposals[1].id,
-  //       { from: addressOf.badgeHolders[0] },
-  //     )));
-  //   });
-  //   after(async function () {
-  //     // withdraw stakes
-  //     await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
-  //     await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
-  //     await withdrawDGDs(web3, contracts, bN, getParticipants(addressOf, bN));
-  //   });
-  // });
-  //
-  // describe('modifyProposal', async function () {
-  //   before(async function () {
-  //     await resetBeforeEach();
-  //     await addProposal(contracts, proposals[0]);
-  //     await addProposal(contracts, proposals[1]);
-  //     await endorseProposal(contracts, proposals[0]);
-  //     await endorseProposal(contracts, proposals[1]);
-  //   });
-  //   it('[if not proposer]: revert', async function () {
-  //     assert.deepEqual(await contracts.daoStakeStorage.isInParticipantList.call(addressOf.dgdHolders[1]), true);
-  //     assert.deepEqual(await contracts.daoIdentityStorage.is_kyc_approved.call(addressOf.dgdHolders[1]), true);
-  //     assert.deepEqual((await contracts.daoStorage.readProposal.call(proposals[0].id))[3], proposalStates(bN).PROPOSAL_STATE_DRAFT);
-  //     await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
-  //     assert.notEqual(await contracts.daoStorage.readProposalProposer.call(proposals[0].id), addressOf.dgdHolders[1]);
-  //     assert(await a.failure(contracts.dao.modifyProposal.call(
-  //       proposals[0].id,
-  //       proposals[0].versions[1].versionId,
-  //       proposals[0].versions[1].milestoneDurations,
-  //       proposals[0].versions[1].milestoneFundings,
-  //       proposals[0].versions[1].finalReward,
-  //       { from: addressOf.dgdHolders[1] },
-  //     )));
-  //   });
-  //   it('[if proposer, but kyc approval has expired]: revert', async function () {
-  //     // set expired kyc of dgdHolders[0]
-  //     await contracts.daoIdentity.updateKyc(
-  //       addressOf.dgdHolders[0],
-  //       randomBytes32(),
-  //       bN(getCurrentTimestamp() - 60),
-  //       { from: addressOf.kycadmin },
-  //     );
-  //     await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
-  //     assert.deepEqual(await contracts.daoStorage.readProposalProposer.call(proposals[0].id), addressOf.dgdHolders[0]);
-  //     assert(await a.failure(contracts.dao.modifyProposal.call(
-  //       proposals[0].id,
-  //       proposals[0].versions[1].versionId,
-  //       proposals[0].versions[1].milestoneDurations,
-  //       proposals[0].versions[1].milestoneFundings,
-  //       proposals[0].versions[1].finalReward,
-  //       { from: addressOf.dgdHolders[0] },
-  //     )));
-  //     await contracts.daoIdentity.updateKyc(
-  //       addressOf.dgdHolders[0],
-  //       randomBytes32(),
-  //       bN(getCurrentTimestamp() + (3600 * 24 * 30)),
-  //       { from: addressOf.kycadmin },
-  //     );
-  //   });
-  //   it('[if milestone durations and fundings are not valid]: revert', async function () {
-  //     await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
-  //     assert.deepEqual(await contracts.daoStorage.readProposalProposer.call(proposals[1].id), addressOf.dgdHolders[1]);
-  //     assert(await a.failure(contracts.dao.modifyProposal.call(
-  //       proposals[1].id,
-  //       proposals[1].versions[1].versionId,
-  //       [bN(1000), bN(2000)], // length != 3
-  //       proposals[1].versions[1].milestoneFundings,
-  //       proposals[1].versions[1].finalReward,
-  //       { from: addressOf.dgdHolders[1] },
-  //     )));
-  //   });
-  //   it('[valid]: success | verify read functions', async function () {
-  //     await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
-  //     await contracts.dao.modifyProposal(
-  //       proposals[1].id,
-  //       proposals[1].versions[1].versionId,
-  //       proposals[1].versions[1].milestoneDurations,
-  //       proposals[1].versions[1].milestoneFundings,
-  //       proposals[1].versions[1].finalReward,
-  //       { from: addressOf.dgdHolders[1] },
-  //     );
-  //     const readProposalVersion = await contracts.daoStorage.readProposalVersion.call(proposals[1].id, proposals[1].versions[1].versionId);
-  //     assert.deepEqual(readProposalVersion[0], proposals[1].versions[1].versionId);
-  //     assert.deepEqual(timeIsRecent(readProposalVersion[1], 5), true);
-  //     assert.deepEqual(readProposalVersion[2], proposals[1].versions[1].milestoneDurations);
-  //     assert.deepEqual(readProposalVersion[3], proposals[1].versions[1].milestoneFundings);
-  //     assert.deepEqual(readProposalVersion[4], proposals[1].versions[1].finalReward);
-  //     // latest version should be the updated one
-  //     assert.deepEqual(await contracts.daoStorage.getLastProposalVersion.call(proposals[1].id), proposals[1].versions[1].versionId);
-  //     const readProposal = await contracts.daoStorage.readProposal.call(proposals[1].id);
-  //     assert.deepEqual(readProposal[5], bN(2));
-  //   });
-  //   it('[if proposal has already been finalized]: revert', async function () {
-  //     await contracts.dao.finalizeProposal(proposals[1].id, { from: addressOf.dgdHolders[1] });
-  //     assert(await a.failure(contracts.dao.modifyProposal(
-  //       proposals[1].id,
-  //       proposals[1].versions[2].versionId,
-  //       proposals[1].versions[2].milestoneDurations,
-  //       proposals[1].versions[2].milestoneFundings,
-  //       proposals[1].versions[2].finalReward,
-  //       { from: addressOf.dgdHolders[1] },
-  //     )));
-  //   });
-  //   it('[if locking phase]: revert', async function () {
-  //     await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
-  //     assert.deepEqual(await contracts.daoStorage.readProposalProposer.call(proposals[1].id), addressOf.dgdHolders[1]);
-  //     assert(await a.failure(contracts.dao.modifyProposal.call(
-  //       proposals[1],
-  //       proposals[1].versions[2].versionId,
-  //       proposals[1].versions[2].milestoneDurations,
-  //       proposals[1].versions[2].milestoneFundings,
-  //       proposals[1].versions[2].finalReward,
-  //       { from: addressOf.dgdHolders[1] },
-  //     )));
-  //   });
-  //   after(async function () {
-  //     await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
-  //     await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
-  //     await withdrawDGDs(web3, contracts, bN, getParticipants(addressOf, bN));
-  //   });
-  // });
+  describe('submitPreproposal', function () {
+    before(async function () {
+      await resetBeforeEach();
+    });
+    it('[not a participant]: revert', async function () {
+      assert.deepEqual(await contracts.daoStakeStorage.isInParticipantList.call(addressOf.dgdHolders[4]), false);
+      // console.log('asd');
+      // console.log(proposals[0]);
+      assert(await a.failure(contracts.dao.submitPreproposal(
+        proposals[0].id,
+        proposals[0].versions[0].milestoneDurations,
+        proposals[0].versions[0].milestoneFundings,
+        proposals[0].versions[0].finalReward,
+        { from: addressOf.dgdHolders[4] },
+      )));
+    });
+    it('[if milestone durations and fundings not valid]: revert', async function () {
+      // fundings and durations are unequal in length: revert
+      assert.deepEqual(await contracts.daoStakeStorage.isInParticipantList.call(addressOf.dgdHolders[0]), true);
+      assert(await a.failure(contracts.dao.submitPreproposal(
+        proposals[0].id,
+        [bN(100), bN(120)],
+        [bN(3 * (10 ** 18)), bN(4 * (10 ** 18)), bN(5 * (10 ** 18))],
+        proposals[0].versions[0].finalReward,
+        { from: addressOf.dgdHolders[0] },
+      )));
+      assert(await a.failure(contracts.dao.submitPreproposal(
+        proposals[0].id,
+        [bN(100), bN(120), bN(75)],
+        [bN(3 * (10 ** 18)), bN(4 * (10 ** 18))],
+        proposals[0].versions[0].finalReward,
+        { from: addressOf.dgdHolders[0] },
+      )));
+
+      // total funding required crosses the ethInDao: revert
+      const ethInDao = await contracts.daoFundingStorage.ethInDao.call();
+      const funding1 = ethInDao.minus(bN(10 * (10 ** 18)));
+      const funding2 = bN(20 * (10 ** 18));
+      assert(await a.failure(contracts.dao.submitPreproposal(
+        proposals[0].id,
+        [bN(100), bN(120)],
+        [funding1, funding2],
+        proposals[0].versions[0].finalReward,
+        { from: addressOf.dgdHolders[0] },
+      )));
+    });
+    it('[during main phase, participant, but not kyc approved]: revert', async function () {
+      await contracts.daoIdentity.updateKyc(
+        addressOf.dgdHolders[1],
+        'expired',
+        bN(getCurrentTimestamp() - (3600)),
+        { from: addressOf.kycadmin },
+      );
+      assert.deepEqual(await contracts.daoStakeStorage.isInParticipantList.call(addressOf.dgdHolders[1]), true);
+      assert(await a.failure(contracts.dao.submitPreproposal(
+        proposals[0].id,
+        proposals[0].versions[0].milestoneDurations,
+        proposals[0].versions[0].milestoneFundings,
+        proposals[0].versions[0].finalReward,
+        { from: addressOf.dgdHolders[1] },
+      )));
+      // kyc approve dgdHolders[1]
+      await contracts.daoIdentity.updateKyc(
+        addressOf.dgdHolders[1],
+        'valid for 1 month',
+        bN(getCurrentTimestamp() + (3600 * 24 * 30)),
+        { from: addressOf.kycadmin },
+      );
+    });
+    it('[valid inputs]: success | verify read functions', async function () {
+      await contracts.dao.submitPreproposal(
+        proposals[0].id,
+        proposals[0].versions[0].milestoneDurations,
+        proposals[0].versions[0].milestoneFundings,
+        proposals[0].versions[0].finalReward,
+        { from: addressOf.dgdHolders[0] },
+      );
+      // add another proposal
+      await contracts.dao.submitPreproposal(
+        proposals[1].id,
+        proposals[1].versions[0].milestoneDurations,
+        proposals[1].versions[0].milestoneFundings,
+        proposals[1].versions[0].finalReward,
+        { from: addressOf.dgdHolders[1] },
+      );
+      const readProposal = await contracts.daoStorage.readProposal.call(proposals[0].id);
+      assert.deepEqual(readProposal[0], proposals[0].id);
+      assert.deepEqual(readProposal[1], addressOf.dgdHolders[0]);
+      assert.deepEqual(readProposal[2], EMPTY_ADDRESS);
+      assert.deepEqual(readProposal[3], proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL);
+      assert.deepEqual(timeIsRecent(readProposal[4], 10), true);
+      assert.deepEqual(readProposal[5], bN(1));
+      assert.deepEqual(readProposal[6], proposals[0].id);
+    });
+    it('[not main phase]: revert', async function () {
+      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+      assert(await a.failure(contracts.dao.submitPreproposal(
+        proposals[1].id,
+        proposals[1].versions[0].milestoneDurations,
+        proposals[1].versions[0].milestoneFundings,
+        proposals[1].versions[0].finalReward,
+        { from: addressOf.dgdHolders[0] },
+      )));
+    });
+    after(async function () {
+      assert.deepEqual(await contracts.daoStakeLocking.isLockingPhase.call(), true);
+      // withdraw stakes
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
+      await withdrawDGDs(web3, contracts, bN, getParticipants(addressOf, bN));
+    });
+  });
+
+  describe('endorseProposal', function () {
+    before(async function () {
+      await resetBeforeEach();
+      await addProposal(contracts, proposals[0]);
+      await addProposal(contracts, proposals[1]);
+    });
+    it('[if not a badge participant]: revert', async function () {
+      await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
+      assert.deepEqual(await contracts.daoStakeStorage.isInParticipantList.call(addressOf.dgdHolders[1]), true);
+      assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.dgdHolders[1]), false);
+      assert(await a.failure(contracts.dao.endorseProposal.call(
+        proposals[1].id,
+        { from: addressOf.dgdHolders[1] },
+      )));
+    });
+    it('[valid inputs]: success | verify read functions', async function () {
+      const readProposal = await contracts.daoStorage.readProposal.call(proposals[1].id);
+      const state = readProposal[3];
+      assert.deepEqual(state, proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL);
+      await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
+      assert.deepEqual(await contracts.dao.endorseProposal.call(
+        proposals[1].id,
+        { from: addressOf.badgeHolders[0] },
+      ), true);
+      await contracts.dao.endorseProposal(proposals[1].id, { from: addressOf.badgeHolders[0] });
+
+      const readProposalAfter = await contracts.daoStorage.readProposal.call(proposals[1].id);
+      const endorser = readProposalAfter[2];
+      const stateAfter = readProposalAfter[3];
+      assert.deepEqual(stateAfter, proposalStates(bN).PROPOSAL_STATE_DRAFT);
+      assert.deepEqual(endorser, addressOf.badgeHolders[0]);
+    });
+    it('[if proposal has already been endorsed]: revert', async function () {
+      await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
+      assert(await a.failure(contracts.dao.endorseProposal.call(
+        proposals[1].id,
+        { from: addressOf.badgeHolders[0] },
+      )));
+    });
+    it('[if locking phase]: revert', async function () {
+      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
+      await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.badgeHolders[0] });
+      assert.deepEqual(await contracts.daoStakeLocking.isLockingPhase.call(), true);
+      assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[0]), true);
+      const rep = await contracts.daoPointsStorage.getReputation.call(addressOf.badgeHolders[0]);
+      assert.isAtLeast(rep.toNumber(), 100);
+      assert.deepEqual(await contracts.daoRewardsStorage.lastParticipatedQuarter.call(addressOf.badgeHolders[0]), bN(2));
+      assert(await a.failure(contracts.dao.endorseProposal.call(
+        proposals[1].id,
+        { from: addressOf.badgeHolders[0] },
+      )));
+    });
+    after(async function () {
+      // withdraw stakes
+      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
+      await withdrawDGDs(web3, contracts, bN, getParticipants(addressOf, bN));
+    });
+  });
+
+  describe('modifyProposal', async function () {
+    before(async function () {
+      await resetBeforeEach();
+      await addProposal(contracts, proposals[0]);
+      await addProposal(contracts, proposals[1]);
+      await endorseProposal(contracts, proposals[0]);
+      await endorseProposal(contracts, proposals[1]);
+    });
+    it('[if not proposer]: revert', async function () {
+      assert.deepEqual(await contracts.daoStakeStorage.isInParticipantList.call(addressOf.dgdHolders[1]), true);
+      assert.deepEqual(await contracts.daoIdentityStorage.is_kyc_approved.call(addressOf.dgdHolders[1]), true);
+      assert.deepEqual((await contracts.daoStorage.readProposal.call(proposals[0].id))[3], proposalStates(bN).PROPOSAL_STATE_DRAFT);
+      await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
+      assert.notEqual(await contracts.daoStorage.readProposalProposer.call(proposals[0].id), addressOf.dgdHolders[1]);
+      assert(await a.failure(contracts.dao.modifyProposal.call(
+        proposals[0].id,
+        proposals[0].versions[1].versionId,
+        proposals[0].versions[1].milestoneDurations,
+        proposals[0].versions[1].milestoneFundings,
+        proposals[0].versions[1].finalReward,
+        { from: addressOf.dgdHolders[1] },
+      )));
+    });
+    it('[if proposer, but kyc approval has expired]: revert', async function () {
+      // set expired kyc of dgdHolders[0]
+      await contracts.daoIdentity.updateKyc(
+        addressOf.dgdHolders[0],
+        randomBytes32(),
+        bN(getCurrentTimestamp() - 60),
+        { from: addressOf.kycadmin },
+      );
+      await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
+      assert.deepEqual(await contracts.daoStorage.readProposalProposer.call(proposals[0].id), addressOf.dgdHolders[0]);
+      assert(await a.failure(contracts.dao.modifyProposal.call(
+        proposals[0].id,
+        proposals[0].versions[1].versionId,
+        proposals[0].versions[1].milestoneDurations,
+        proposals[0].versions[1].milestoneFundings,
+        proposals[0].versions[1].finalReward,
+        { from: addressOf.dgdHolders[0] },
+      )));
+      await contracts.daoIdentity.updateKyc(
+        addressOf.dgdHolders[0],
+        randomBytes32(),
+        bN(getCurrentTimestamp() + (3600 * 24 * 30)),
+        { from: addressOf.kycadmin },
+      );
+    });
+    it('[if milestone durations and fundings are not valid]: revert', async function () {
+      await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
+      assert.deepEqual(await contracts.daoStorage.readProposalProposer.call(proposals[1].id), addressOf.dgdHolders[1]);
+      assert(await a.failure(contracts.dao.modifyProposal.call(
+        proposals[1].id,
+        proposals[1].versions[1].versionId,
+        [bN(1000), bN(2000)], // length != 3
+        proposals[1].versions[1].milestoneFundings,
+        proposals[1].versions[1].finalReward,
+        { from: addressOf.dgdHolders[1] },
+      )));
+    });
+    it('[valid]: success | verify read functions', async function () {
+      await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
+      await contracts.dao.modifyProposal(
+        proposals[1].id,
+        proposals[1].versions[1].versionId,
+        proposals[1].versions[1].milestoneDurations,
+        proposals[1].versions[1].milestoneFundings,
+        proposals[1].versions[1].finalReward,
+        { from: addressOf.dgdHolders[1] },
+      );
+      const readProposalVersion = await contracts.daoStorage.readProposalVersion.call(proposals[1].id, proposals[1].versions[1].versionId);
+      assert.deepEqual(readProposalVersion[0], proposals[1].versions[1].versionId);
+      assert.deepEqual(timeIsRecent(readProposalVersion[1], 5), true);
+      assert.deepEqual(readProposalVersion[2], proposals[1].versions[1].milestoneDurations);
+      assert.deepEqual(readProposalVersion[3], proposals[1].versions[1].milestoneFundings);
+      assert.deepEqual(readProposalVersion[4], proposals[1].versions[1].finalReward);
+      // latest version should be the updated one
+      assert.deepEqual(await contracts.daoStorage.getLastProposalVersion.call(proposals[1].id), proposals[1].versions[1].versionId);
+      const readProposal = await contracts.daoStorage.readProposal.call(proposals[1].id);
+      assert.deepEqual(readProposal[5], bN(2));
+    });
+    it('[if proposal has already been finalized]: revert', async function () {
+      await contracts.dao.finalizeProposal(proposals[1].id, { from: addressOf.dgdHolders[1] });
+      assert(await a.failure(contracts.dao.modifyProposal(
+        proposals[1].id,
+        proposals[1].versions[2].versionId,
+        proposals[1].versions[2].milestoneDurations,
+        proposals[1].versions[2].milestoneFundings,
+        proposals[1].versions[2].finalReward,
+        { from: addressOf.dgdHolders[1] },
+      )));
+    });
+    it('[if locking phase]: revert', async function () {
+      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+      assert.deepEqual(await contracts.daoStorage.readProposalProposer.call(proposals[1].id), addressOf.dgdHolders[1]);
+      assert(await a.failure(contracts.dao.modifyProposal.call(
+        proposals[1],
+        proposals[1].versions[2].versionId,
+        proposals[1].versions[2].milestoneDurations,
+        proposals[1].versions[2].milestoneFundings,
+        proposals[1].versions[2].finalReward,
+        { from: addressOf.dgdHolders[1] },
+      )));
+    });
+    after(async function () {
+      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
+      await withdrawDGDs(web3, contracts, bN, getParticipants(addressOf, bN));
+    });
+  });
 
   describe('finalizeProposal', function () {
     before(async function () {
@@ -443,6 +443,8 @@ contract('Dao', function (accounts) {
     });
     it('[if proposer is no more a participant]: revert', async function () {
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
+
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
       // proposals[1].proposer is no more a participant since
       // its quarter 2 and proposer has not continued participation
