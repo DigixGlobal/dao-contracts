@@ -9,7 +9,8 @@
   "scripts": {
     "test": "bash scripts/unit-test.sh",
     "test:simulate": "bash scripts/simulate-dao.sh",
-    "lint": "./node_modules/.bin/eslint test/"
+    "lint": "./node_modules/.bin/eslint test/",
+    "ganache": "bash scripts/start_ganache.sh"
   },
   "repository": {
     "type": "git",

@@ -159,7 +159,7 @@ contract Dao is DaoCommon, Claimable {
             if (_prlActionCount > 0) {
               uint256 _lastAction;
               uint256 _lastActionTime;
-              (_lastAction, _lastActionTime, ) = daoStorage().readPrlAction(_proposalId, _prlActionCount - 1);
+              (_lastAction, _lastActionTime, ) = daoStorage().readPrlAction(_proposalId, _prlActionCount.sub(1));
 
               // find out the last voting round that has just happened
               // hence, it is also the index of the current milestone
@@ -167,7 +167,7 @@ contract Dao is DaoCommon, Claimable {
               while (true) {
                 uint256 _nextMilestoneStartOfNextVotingRound = daoStorage().readProposalNextMilestoneStart(_proposalId, _lastVotingRound + 1);
                 if (_nextMilestoneStartOfNextVotingRound == 0 || _nextMilestoneStartOfNextVotingRound > now) { break; }
-                _lastVotingRound += 1;
+                _lastVotingRound = _lastVotingRound.add(1);
               }
 
               // if it's before even the start of the first milestone: no need to do anything
@@ -182,7 +182,7 @@ contract Dao is DaoCommon, Claimable {
 
                 daoVotingClaims().updateTimelineForNextMilestone(
                     _proposalId,
-                    _lastVotingRound + 1,
+                    _lastVotingRound.add(1),
                     daoStorage().readProposalMilestoneDuration(_proposalId, _lastVotingRound),
                     now
                 );

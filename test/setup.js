@@ -117,7 +117,7 @@ const deployStorage = async function (libs, contracts, resolver) {
   DaoSpecialStorage.link('DaoStructs', libs.daoStructs.address);
   contracts.daoUpgradeStorage = await DaoUpgradeStorage.new(resolver.address);
   contracts.daoStorage = await DaoStorage.new(resolver.address);
-  console.log('tx = ', await web3.eth.getTransactionReceipt(contracts.daoStorage.transactionHash));
+  // console.log('tx = ', await web3.eth.getTransactionReceipt(contracts.daoStorage.transactionHash));
   contracts.daoSpecialStorage = await DaoSpecialStorage.new(resolver.address);
   contracts.daoFundingStorage = await DaoFundingStorage.new(resolver.address);
   contracts.daoRewardsStorage = await DaoRewardsStorage.new(resolver.address);
@@ -423,7 +423,39 @@ const fundDao = async function (web3, accounts, contracts) {
   });
 };
 
+const printParticipantDetails = async (bN, contracts, address) => {
+  console.log('Printing details for ', address);
+  console.log('\tClaimable ETHs: ', await contracts.daoFundingStorage.claimableEth.call(address));
+  console.log('\tPoints: ', address);
+  console.log('\t\tQP = ', await contracts.daoPointsStorage.getQuarterPoint.call(address, bN(1)));
+  console.log('\t\tModerator QP = ', await contracts.daoPointsStorage.getQuarterModeratorPoint.call(address, bN(1)));
+  console.log('\t\tRP = ', await contracts.daoPointsStorage.getReputation.call(address));
+  console.log('\tStake: ');
+  console.log('\t\tActual locked DGDs: ', await contracts.daoStakeStorage.actualLockedDGD.call(address));
+  console.log('\t\tLocked DGD Stake: ', await contracts.daoStakeStorage.lockedDGDStake.call(address));
+  console.log('\tRewards: ');
+  console.log('\t\tClaimable DGX  = ', await contracts.daoRewardsStorage.claimableDGXs.call(address));
+  console.log('\t\tLast participated quarter = ', await contracts.daoRewardsStorage.lastParticipatedQuarter.call(address));
+  console.log('\t\tlastQuarterThatRewardsWasUpdated = ', await contracts.daoRewardsStorage.lastQuarterThatRewardsWasUpdated.call(address));
+  console.log('\t\tlastQuarterThatReputationWasUpdated = ', await contracts.daoRewardsStorage.lastQuarterThatReputationWasUpdated.call(address));
+  console.log();
+};
+
+const printDaoDetails = async (bN, contracts) => {
+  console.log('Printing DAO details');
+  const qIndex = await contracts.dao.currentQuarterIndex.call();
+  console.log('\tCurrent Quarter: ', qIndex);
+  console.log('\tDGX distribution day: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex));
+  console.log('\tDGX distribution day last quarter: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex.minus(1)));
+  console.log('\tDGX distribution day last last quarter: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex.minus(2)));
+  // TODO: print more stuff
+};
+
 const withdrawDGDs = async (web3, contracts, bN, participants) => {
+  for (const participant of participants) {
+    console.log('\nAbout to withdraw DGD for ', participant.address);
+    await printParticipantDetails(bN, contracts, participant.address);
+  }
   await a.map(participants, 20, async (participant) => {
     await contracts.daoStakeLocking.withdrawDGD(participant.dgdToLock, { from: participant.address });
   });
@@ -593,6 +625,8 @@ module.exports = {
   deployFreshDao,
   printProposalDetails,
   updateKyc,
+  printDaoDetails,
+  printParticipantDetails,
   BADGE_HOLDER_COUNT,
   DGD_HOLDER_COUNT,
 };

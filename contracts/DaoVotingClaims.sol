@@ -66,7 +66,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             _proposalId,
             0,
             0,
-            daoStorage().readProposalDraftVotingTime(_proposalId) + get_uint_config(CONFIG_DRAFT_VOTING_PHASE)
+            daoStorage().readProposalDraftVotingTime(_proposalId).add(get_uint_config(CONFIG_DRAFT_VOTING_PHASE))
         );
 
         daoStorage().setDraftVotingClaim(_proposalId, true);
@@ -104,7 +104,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
             if (_info.duration > 0 && _info.funding > 0) {
               if (isProposalPaused(_proposalId) == false) {
-                setTimelineForNextMilestone(_proposalId, _index + 1, _info.duration, _info.milestoneStart);
+                setTimelineForNextMilestone(_proposalId, _index.add(1), _info.duration, _info.milestoneStart);
               }
 
               // update claimable funds
@@ -127,11 +127,11 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
             // give bonus points for all those who
             // voted YES in the previous round
-            (_bonusVoters.users, _bonusVoters.usersLength) = daoStorage().readVotingRoundVotes(_proposalId, _index-1, _allStakeHolders, true);
+            (_bonusVoters.users, _bonusVoters.usersLength) = daoStorage().readVotingRoundVotes(_proposalId, _index.sub(1), _allStakeHolders, true);
         } else {
             // give bonus points for all those who
             // voted NO in the previous round
-            (_bonusVoters.users, _bonusVoters.usersLength) = daoStorage().readVotingRoundVotes(_proposalId, _index-1, _allStakeHolders, false);
+            (_bonusVoters.users, _bonusVoters.usersLength) = daoStorage().readVotingRoundVotes(_proposalId, _index.sub(1), _allStakeHolders, false);
         }
 
         if (_bonusVoters.usersLength > 0) addBonusReputation(_bonusVoters.users, _bonusVoters.usersLength);
@@ -188,13 +188,17 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         uint256 _timeLeftInQuarter = getTimeLeftInQuarter(_votingTime);
         uint256 _votingDuration = get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL);
         if (timeInQuarter(_votingTime) < get_uint_config(CONFIG_LOCKING_PHASE_DURATION)) {
-            _votingTime += get_uint_config(CONFIG_LOCKING_PHASE_DURATION) - timeInQuarter(_votingTime) + 1;
+            _votingTime = _votingTime.add(
+                get_uint_config(CONFIG_LOCKING_PHASE_DURATION).sub(timeInQuarter(_votingTime)).add(1)
+            );
         } else if (_timeLeftInQuarter < _votingDuration) {
-            _votingTime += _timeLeftInQuarter + get_uint_config(CONFIG_LOCKING_PHASE_DURATION) + 1;
+            _votingTime = _votingTime.add(
+                _timeLeftInQuarter.add(get_uint_config(CONFIG_LOCKING_PHASE_DURATION)).add(1)
+            );
         }
 
         daoStorage().setProposalVotingTime(_proposalId, _index, _votingTime);
-        daoStorage().setProposalNextMilestoneStart(_proposalId, _index, _votingTime + _votingDuration);
+        daoStorage().setProposalNextMilestoneStart(_proposalId, _index, _votingTime.add(_votingDuration));
     }
 
     function addBonusReputation(address[] _voters, uint256 _n)
@@ -204,8 +208,10 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         uint256 _rate = get_uint_config(CONFIG_BONUS_REPUTATION_NUMERATOR);
         uint256 _base = get_uint_config(CONFIG_BONUS_REPUTATION_DENOMINATOR);
 
-        uint256 _bonus = (_qp * _rate * get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_NUM))
-            / (_base * get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_DEN));
+        uint256 _bonus = _qp.mul(_rate).mul(get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_NUM))
+            .div(
+                _base.mul(get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_DEN))
+            );
 
         for (uint256 i = 0; i < _n; i++) {
             daoPointsStorage().addReputation(_voters[i], _bonus);

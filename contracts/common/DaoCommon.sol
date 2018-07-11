@@ -20,9 +20,12 @@ contract DaoCommon is IdentityCommon {
     }
 
     modifier if_locking_phase() {
-        require(!daoUpgradeStorage().isReplacedByNewDao());
-        require(currentTInQuarter() < get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
+        require(is_locking_phase());
         _;
+    }
+
+    function is_locking_phase() returns (bool) {
+         return currentTInQuarter() < get_uint_config(CONFIG_LOCKING_PHASE_DURATION);
     }
 
     modifier if_main_phase() {
@@ -227,7 +230,7 @@ contract DaoCommon is IdentityCommon {
         require(now >= _startingPoint + _relativePhaseStart);
     }
 
-    function currentQuarterIndex() internal returns(uint256 _quarterIndex) {
+    function currentQuarterIndex() public returns(uint256 _quarterIndex) {
         _quarterIndex = getQuarterIndex(now);
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }

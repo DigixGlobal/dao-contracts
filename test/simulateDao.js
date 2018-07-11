@@ -665,8 +665,10 @@ module.exports = async function () {
     console.log('in the main phase, now going for interim voting after last milestone');
 
     await interimCommitRound(contracts, addressOf, 0, bN(2));
+    console.log('interim commit round is done');
     await waitForRevealPhase(contracts, addressOf, proposals[0].id, bN(2), bN, web3);
     await interimRevealRound(contracts, addressOf, 0, bN(2));
+    console.log('interim reveal is done');
     await waitForRevealPhaseToGetOver(contracts, addressOf, proposals[0].id, bN(2), bN, web3);
 
     console.log('[before claiming result] claimable Eth of proposer = ', await contracts.daoFundingStorage.claimableEth.call(proposals[0].proposer));

@@ -63,10 +63,10 @@ contract DaoStakeLocking is DaoCommon {
         StakeInformation memory _newInfo = refreshDGDStake(msg.sender, _info, false);
 
         require(_amount > 0);
-        _newInfo.userActualLockedDGD += _amount;
+        _newInfo.userActualLockedDGD = _newInfo.userActualLockedDGD.add(_amount);
         uint256 _additionalStake = daoCalculatorService().calculateAdditionalLockedDGDStake(_amount);
-        _newInfo.userLockedDGDStake += _additionalStake;
-        _newInfo.totalLockedDGDStake += _additionalStake;
+        _newInfo.userLockedDGDStake = _newInfo.userLockedDGDStake.add(_additionalStake);
+        _newInfo.totalLockedDGDStake = _newInfo.totalLockedDGDStake.add(_additionalStake);
 
         daoStakeStorage().updateUserDGDStake(msg.sender, _newInfo.userActualLockedDGD, _newInfo.userLockedDGDStake);
         daoStakeStorage().updateTotalLockedDGDStake(_newInfo.totalLockedDGDStake);
@@ -92,17 +92,17 @@ contract DaoStakeLocking is DaoCommon {
     /// @return _success Boolean, true if the withdrawal was successful, revert otherwise
     function withdrawDGD(uint256 _amount)
         public
-        if_locking_phase()
         if_global_rewards_set(currentQuarterIndex())
         returns (bool _success)
     {
+        require(is_locking_phase() || daoUpgradeStorage().isReplacedByNewDao());
         StakeInformation memory _info = getStakeInformation(msg.sender);
         StakeInformation memory _newInfo = refreshDGDStake(msg.sender, _info, false);
 
         require(_info.userActualLockedDGD >= _amount);
-        _newInfo.userActualLockedDGD -= _amount;
-        _newInfo.userLockedDGDStake -= _amount;
-        _newInfo.totalLockedDGDStake -= _amount;
+        _newInfo.userActualLockedDGD = _newInfo.userActualLockedDGD.sub(_amount);
+        _newInfo.userLockedDGDStake = _newInfo.userLockedDGDStake.sub(_amount);
+        _newInfo.totalLockedDGDStake = _newInfo.totalLockedDGDStake.sub(_amount);
 
         refreshModeratorStatus(msg.sender, _info, _newInfo);
         // This has to happen at least once before user can participate in next quarter
@@ -169,7 +169,9 @@ contract DaoStakeLocking is DaoCommon {
         if (daoRewardsStorage().lastParticipatedQuarter(_user) < _currentQuarter) {
             _infoAfter.userLockedDGDStake = daoCalculatorService().calculateAdditionalLockedDGDStake(_infoBefore.userActualLockedDGD);
 
-            _infoAfter.totalLockedDGDStake += _infoAfter.userLockedDGDStake - _infoBefore.userLockedDGDStake;
+            _infoAfter.totalLockedDGDStake = _infoAfter.totalLockedDGDStake.add(
+                _infoAfter.userLockedDGDStake.sub(_infoBefore.userLockedDGDStake)
+            );
             if (_saveToStorage) {
                 daoStakeStorage().updateUserDGDStake(_user, _infoAfter.userActualLockedDGD, _infoAfter.userLockedDGDStake);
                 daoStakeStorage().updateTotalLockedDGDStake(_infoAfter.totalLockedDGDStake);
@@ -189,16 +191,22 @@ contract DaoStakeLocking is DaoCommon {
                 daoPointsStorage().getReputation(_user) < CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR) {
 
                     daoStakeStorage().removeFromModeratorList(_user);
-                    daoStakeStorage().updateTotalModeratorLockedDGDs(daoStakeStorage().totalModeratorLockedDGDStake() - _infoBefore.userLockedDGDStake);
+                    daoStakeStorage().updateTotalModeratorLockedDGDs(
+                        daoStakeStorage().totalModeratorLockedDGDStake().sub(_infoBefore.userLockedDGDStake)
+                    );
             } else { // update if everything is the same (but may not have locked in locking phase, so actual !== effective)
-                daoStakeStorage().updateTotalModeratorLockedDGDs(daoStakeStorage().totalModeratorLockedDGDStake() - _infoBefore.userLockedDGDStake + _infoAfter.userLockedDGDStake);
+                daoStakeStorage().updateTotalModeratorLockedDGDs(
+                    daoStakeStorage().totalModeratorLockedDGDStake().sub(_infoBefore.userLockedDGDStake).add(_infoAfter.userLockedDGDStake)
+                );
             }
         } else { // add to moderator list if conditions satisfied
             if (_infoAfter.userLockedDGDStake >= CONFIG_MINIMUM_DGD_FOR_MODERATOR &&
                 daoPointsStorage().getReputation(_user) >= CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR) {
 
                     daoStakeStorage().addToModeratorList(_user);
-                    daoStakeStorage().updateTotalModeratorLockedDGDs(daoStakeStorage().totalModeratorLockedDGDStake() + _infoAfter.userLockedDGDStake);
+                    daoStakeStorage().updateTotalModeratorLockedDGDs(
+                        daoStakeStorage().totalModeratorLockedDGDStake().add(_infoAfter.userLockedDGDStake)
+                    );
             }
         }
     }
