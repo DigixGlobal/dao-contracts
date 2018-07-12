@@ -198,4 +198,13 @@ library DaoStructs {
         uint256 sumRewardsFromBeginning;
         mapping (address => uint256) reputationPoint;
     }
+
+    struct IntermediateResults {
+        address countedUntil;
+        uint256 currentForCount;
+        uint256 currentAgainstCount;
+        uint256 currentQuorum;
+
+        uint256 currentSumOfEffectiveBalance;
+    }
 }

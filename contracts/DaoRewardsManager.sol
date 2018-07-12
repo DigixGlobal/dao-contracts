@@ -11,6 +11,8 @@ import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 contract DaoRewardsManager is DaoCommon {
     using MathHelper for MathHelper;
     using DaoStructs for DaoStructs.DaoQuarterInfo;
+    using DaoStructs for DaoStructs.IntermediateResults;
+    bytes32 public testBytes;
 
     address public ADDRESS_DGX_TOKEN;
 
@@ -25,6 +27,8 @@ contract DaoRewardsManager is DaoCommon {
     struct QuarterRewardsInfo {
         uint256 previousQuarter;
         uint256 totalEffectiveDGDLastQuarter;
+        bool doneCalculatingEffectiveBalance;
+        bool doneCalculatingModeratorEffectiveBalance;
         uint256 totalEffectiveBadgesLastQuarter;
         uint256 dgxRewardsPoolLastQuarter;
         DaoStructs.DaoQuarterInfo qInfo;
@@ -301,40 +305,45 @@ contract DaoRewardsManager is DaoCommon {
     }
 
     /// @notice Function called by the founder after transfering the DGX fees into the DAO at the beginning of the quarter
-    function calculateGlobalRewardsBeforeNewQuarter()
+    function calculateGlobalRewardsBeforeNewQuarter(uint256 _operations)
         if_founder()
         if_locking_phase()
         daoIsValid()
         public
+        returns (bool _done)
     {
         QuarterRewardsInfo memory info;
         info.previousQuarter = currentQuarterIndex().sub(1);
         require(info.previousQuarter > 0); // throw if this is the first quarter
-
-        // go through every participants, calculate their EffectiveDGD balance
-        // and add up to get totalEffectiveDGDLastQuarter
         info.qInfo = readQuarterInfo(info.previousQuarter);
-        info.userCount = daoStakeStorage().readTotalParticipant();
-        info.users = daoListingService().listParticipants(
-            info.userCount,
-            true
-        );
-        info.totalEffectiveDGDLastQuarter = sumEffectiveBalance(info, false);
 
-        info.userCount = daoStakeStorage().readTotalModerators();
-        info.users = daoListingService().listModerators(
-            info.userCount,
-            true
-        );
-        info.totalEffectiveBadgesLastQuarter = sumEffectiveBalance(info, true);
+        DaoStructs.IntermediateResults memory interResults;
+        (
+            interResults.countedUntil,,,,
+            info.totalEffectiveDGDLastQuarter
+        ) = intermediateResultsStorage().getIntermediateResults(keccak256("Quarter Effective DGD ", info.previousQuarter));
+        testBytes = keccak256("Quarter Effective DGD ", info.previousQuarter);
+        _operations = sumEffectiveBalance(info, false, _operations, interResults);
+        if (!info.doneCalculatingEffectiveBalance) { return false; }
 
+        (
+            interResults.countedUntil,,,,
+            info.totalEffectiveBadgesLastQuarter
+        ) = intermediateResultsStorage().getIntermediateResults(keccak256("Quarter Mod Effective DGD ", info.previousQuarter));
+        sumEffectiveBalance(info, true, _operations, interResults);
+        if (!info.doneCalculatingModeratorEffectiveBalance) { return false; }
+
+        // save the quarter Info
+        processGlobalRewardsUpdate(info);
+    }
+
+    function processGlobalRewardsUpdate(QuarterRewardsInfo memory info) internal {
         // calculate how much DGX rewards we got for this quarter
         info.dgxRewardsPoolLastQuarter =
             ERC20(ADDRESS_DGX_TOKEN).balanceOf(address(this))
             .add(daoRewardsStorage().totalDGXsClaimed())
             .sub(info.qInfo.sumRewardsFromBeginning);
 
-        // save the quarter Info
         daoRewardsStorage().updateQuarterInfo(
             info.previousQuarter.add(1),
             get_uint_config(CONFIG_MINIMAL_PARTICIPATION_POINT),
@@ -355,11 +364,32 @@ contract DaoRewardsManager is DaoCommon {
 
     function sumEffectiveBalance (
         QuarterRewardsInfo memory info,
-        bool _badgeCalculation
+        bool _badgeCalculation,
+        uint256 _operations,
+        DaoStructs.IntermediateResults memory _interResults
     )
         internal
-        returns (uint256 _sumOfEffectiveBalance)
+        returns (uint _operationsLeft)
     {
+        if (_interResults.countedUntil == EMPTY_ADDRESS) {
+            info.users = _badgeCalculation ?
+                daoListingService().listModerators(_operations, true)
+                : daoListingService().listParticipants(_operations, true);
+        } else {
+            info.users = _badgeCalculation ?
+                daoListingService().listModeratorsFrom(_interResults.countedUntil, _operations, true)
+                : daoListingService().listParticipantsFrom(_interResults.countedUntil, _operations, true);
+
+            // if no more operations left or the address is the already the last, no need to do;
+            if (_operations == 0 || info.users.length == 0) {
+                info.doneCalculatingEffectiveBalance = true;
+                return 0;
+            }
+        }
+
+        address _lastAddress;
+        _lastAddress = info.users[info.users.length - 1];
+
         info.userCount = info.users.length;
         for (info.i=0;info.i<info.userCount;info.i++) {
             info.currentUser = info.users[info.i];
@@ -368,7 +398,7 @@ contract DaoRewardsManager is DaoCommon {
                 continue;
             }
             if (_badgeCalculation) {
-                _sumOfEffectiveBalance = _sumOfEffectiveBalance.add(daoCalculatorService().calculateUserEffectiveBalance(
+                info.totalEffectiveBadgesLastQuarter = info.totalEffectiveBadgesLastQuarter.add(daoCalculatorService().calculateUserEffectiveBalance(
                     info.qInfo.badgeMinimalParticipationPoint,
                     info.qInfo.badgeQuarterPointScalingFactor,
                     info.qInfo.badgeReputationPointScalingFactor,
@@ -377,7 +407,7 @@ contract DaoRewardsManager is DaoCommon {
                     daoStakeStorage().lockedDGDStake(info.currentUser)
                 ));
             } else {
-                _sumOfEffectiveBalance = _sumOfEffectiveBalance.add(daoCalculatorService().calculateUserEffectiveBalance(
+                info.totalEffectiveDGDLastQuarter = info.totalEffectiveDGDLastQuarter.add(daoCalculatorService().calculateUserEffectiveBalance(
                     info.qInfo.minimalParticipationPoint,
                     info.qInfo.quarterPointScalingFactor,
                     info.qInfo.reputationPointScalingFactor,
@@ -387,12 +417,28 @@ contract DaoRewardsManager is DaoCommon {
                 ));
             }
         }
+
+        // check if we have reached the last guy in the current list
+        if (_lastAddress == daoStakeStorage().readLastModerator() && _badgeCalculation) {
+            info.doneCalculatingModeratorEffectiveBalance = true;
+        }
+        if (_lastAddress == daoStakeStorage().readLastParticipant() && !_badgeCalculation) {
+            info.doneCalculatingEffectiveBalance = true;
+        }
+        intermediateResultsStorage().setIntermediateResults(
+            keccak256(_badgeCalculation ? "Quarter Mod Effective DGD " : "Quarter Effective DGD ", info.previousQuarter),
+            _lastAddress,
+            0,0,0,
+            _badgeCalculation ? info.totalEffectiveBadgesLastQuarter : info.totalEffectiveDGDLastQuarter
+        );
+
+        _operationsLeft = _operations.sub(info.userCount);
     }
 
     /// @notice Function to read effective/rewardable balance of user for the previous quarter
-    /// @param _user Address of the DAO participant
-    /// @return _effectiveDGDBalance Effective/Rewardable Balance of user
-    function getUserEffectiveDGDBalanceLastQuarter(address _user)
+    /// pparam _user Address of the DAO participant
+    /// rreturn _effectiveDGDBalance Effective/Rewardable Balance of user
+    /* function getUserEffectiveDGDBalanceLastQuarter(address _user)
         public
         returns (uint256 _effectiveDGDBalance)
     {
@@ -408,12 +454,12 @@ contract DaoRewardsManager is DaoCommon {
             daoPointsStorage().getReputation(_user),
             daoStakeStorage().lockedDGDStake(_user)
         );
-    }
+    } */
 
     /// @notice Function to read effective/rewardable balance of user in the previous quarter
-    /// @param _user Address of the DAO participant
-    /// @return _effectiveDGDBalance Effective/Rewardable Balance of user
-    function getUserEffectiveModeratorBalanceLastQuarter(address _user)
+    /// pparam _user Address of the DAO participant
+    /// rreturn _effectiveDGDBalance Effective/Rewardable Balance of user
+    /* function getUserEffectiveModeratorBalanceLastQuarter(address _user)
         public
         returns (uint256 _effectiveDGDBalance)
     {
@@ -429,7 +475,7 @@ contract DaoRewardsManager is DaoCommon {
             daoPointsStorage().getReputation(_user),
             daoStakeStorage().lockedDGDStake(_user)
         );
-    }
+    } */
 
     function readQuarterInfo(uint256 _quarterIndex)
         internal

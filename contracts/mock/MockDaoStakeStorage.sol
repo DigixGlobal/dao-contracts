@@ -12,6 +12,7 @@ contract MockDaoStakeStorage is DaoStakeStorage {
         uint256 _n = _moderators.length;
         for (uint256 i = 0; i < _n; i++) {
             allModerators.append(_moderators[i]);
+            totalModeratorLockedDGDStake += lockedDGDStake[_moderators[i]];
         }
     }
 
@@ -28,12 +29,10 @@ contract MockDaoStakeStorage is DaoStakeStorage {
         public
     {
         uint256 _n = _participants.length;
-        uint256 _totalDGDStake = 0;
         for (uint256 i = 0; i < _n; i++) {
             actualLockedDGD[_participants[i]] = _dgdStake[i];
             lockedDGDStake[_participants[i]] = _dgdStake[i];
-            _totalDGDStake += _dgdStake[i];
+            totalLockedDGDStake += _dgdStake[i];
         }
-        totalLockedDGDStake = _totalDGDStake;
     }
 }

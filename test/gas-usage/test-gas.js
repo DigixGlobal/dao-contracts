@@ -6,6 +6,7 @@ const {
   updateKyc,
   waitFor,
   phaseCorrection,
+  printProposalDetails,
 } = require('../setup');
 
 const {
@@ -42,7 +43,7 @@ contract('Dao', function (accounts) {
   const draftVotingFor = async function (n) {
     const mockModerators = randomAddresses(n);
     const mockVotes = new Array(n).fill().map(() => { return true; });
-    const mockWeights = randomBigNumbers(bN, n, (50 * (10 ** 18)));
+    const mockWeights = randomBigNumbers(bN, n, (50 * (10 ** 9)));
     await contracts.daoStorage.mock_put_proposal_as(
       proposals[0].id,
       bN(0),
@@ -53,6 +54,10 @@ contract('Dao', function (accounts) {
       proposals[0].versions[0].milestoneFundings,
       proposals[0].versions[0].finalReward,
     );
+
+    await printProposalDetails(contracts, proposals[0]);
+    console.log('min Quorum :', (await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[0].id)).toNumber());
+
     for (const i of indexRange(0, 20)) {
       if ((i * 50) >= n) break;
       await contracts.daoStakeStorage.mock_add_moderators(mockModerators.slice(i * 50, (i + 1) * 50));
@@ -69,10 +74,10 @@ contract('Dao', function (accounts) {
     }
     await waitFor(2, addressOf, web3);
     let totalGasUsed = 0;
-    for (const i of indexRange(0, 20)) {
+    for (const i of indexRange(0, 10)) {
       const tx = await contracts.daoVotingClaims.claimDraftVotingResult(
         proposals[0].id,
-        bN(50),
+        bN(100),
         { from: proposals[0].proposer },
       );
       totalGasUsed += tx.receipt.gasUsed;
@@ -85,26 +90,44 @@ contract('Dao', function (accounts) {
 
   const calculateGlobalRewardsFor = async function (n) {
     const mockParticipants = randomAddresses(n);
-    const mockWeights = randomBigNumbers(bN, n, (50 * (10 ** 18)));
+    const mockWeights = randomBigNumbers(bN, n, (50 * (10 ** 9)));
     const mockQP = randomBigNumbers(bN, n, 100);
     const mockModeratorQP = randomBigNumbers(bN, n, 50);
     const mockRP = randomBigNumbers(bN, n, 200);
-    for (const i of indexRange(0, 20)) {
-      if ((i * 50) >= n) break;
-      await contracts.daoStakeStorage.mock_add_participants(mockParticipants.slice(i * 50, (i + 1) * 50));
+    const BATCH_SIZE = 50;
+
+    for (const i of indexRange(0, 2000)) {
+      if ((i * BATCH_SIZE) >= n) break;
+      await contracts.daoStakeStorage.mock_add_participants(mockParticipants.slice(i * BATCH_SIZE, (i + 1) * BATCH_SIZE));
       // console.log('added participants');
-      await contracts.daoStakeStorage.mock_add_dgd_stake(mockParticipants.slice(i * 50, (i + 1) * 50), mockWeights.slice(i * 50, (i + 1) * 50));
+      await contracts.daoStakeStorage.mock_add_dgd_stake(mockParticipants.slice(i * BATCH_SIZE, (i + 1) * BATCH_SIZE), mockWeights.slice(i * BATCH_SIZE, (i + 1) * BATCH_SIZE));
       // console.log('added dgd stake');
-      await contracts.daoPointsStorage.mock_set_qp(mockParticipants.slice(i * 50, (i + 1) * 50), mockQP.slice(i * 50, (i + 1) * 50), bN(1));
+      await contracts.daoPointsStorage.mock_set_qp(mockParticipants.slice(i * BATCH_SIZE, (i + 1) * BATCH_SIZE), mockQP.slice(i * BATCH_SIZE, (i + 1) * BATCH_SIZE), bN(1));
       // console.log('added quarter points');
-      await contracts.daoPointsStorage.mock_set_moderator_qp(mockParticipants.slice(i * 50, (i + 1) * 50), mockModeratorQP.slice(i * 50, (i + 1) * 50), bN(1));
+      await contracts.daoPointsStorage.mock_set_moderator_qp(mockParticipants.slice(i * BATCH_SIZE, (i + 1) * BATCH_SIZE), mockModeratorQP.slice(i * BATCH_SIZE, (i + 1) * BATCH_SIZE), bN(1));
       // console.log('added moderator quarter points');
-      await contracts.daoPointsStorage.mock_set_rp(mockParticipants.slice(i * 50, (i + 1) * 50), mockRP.slice(i * 50, (i + 1) * 50));
+      await contracts.daoPointsStorage.mock_set_rp(mockParticipants.slice(i * BATCH_SIZE, (i + 1) * BATCH_SIZE), mockRP.slice(i * BATCH_SIZE, (i + 1) * BATCH_SIZE));
       // console.log('added reputation points');
+
+      // let the second half of participants be moderators;
+      if (i * BATCH_SIZE >= n / 2) {
+        await contracts.daoStakeStorage.mock_add_moderators(mockParticipants.slice(i * BATCH_SIZE, (i + 1) * BATCH_SIZE));
+        console.log('added moderators');
+      }
     }
     await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
-    const tx = await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
-    console.log('n = ', n, ', gas used = ', tx.receipt.gasUsed);
+    let totalGas = 0;
+    console.log('All participants: ', await contracts.daoListingService.listParticipants(bN(1000), true));
+    for (const i of indexRange(0, 2000)) {
+      if ((i * BATCH_SIZE) >= n) break;
+      const tx = await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(BATCH_SIZE), { from: addressOf.founderBadgeHolder });
+      totalGas += tx.receipt.gasUsed;
+      console.log('\tdid one tx, gas = ', tx.receipt.gasUsed);
+      console.log('\tIntermediate results = ', await contracts.intermediateResultsStorage.getIntermediateResults.call(
+        await contracts.daoRewardsManager.testBytes.call()
+      ));
+    }
+    console.log('n = ', n, ', gas used = ', totalGas);
   };
 
   describe('Gas Estimate', function () {
@@ -114,11 +137,13 @@ contract('Dao', function (accounts) {
         await draftVotingFor(i * 50);
       }
     });
-    // it('[calculateGlobalRewardsBeforeNewQuarter]', async function () {
-    //   for (const i of indexRange(1, 20)) {
-    //     await resetBeforeEach();
-    //     await calculateGlobalRewardsFor(i * 50);
-    //   }
-    // });
+    it('[calculateGlobalRewardsBeforeNewQuarter]', async function () {
+      await resetBeforeEach();
+      await calculateGlobalRewardsFor(1500);
+
+      // for (const i of indexRange(1, 20)) {
+      //   await calculateGlobalRewardsFor(i * 50);
+      // }
+    });
   });
 });

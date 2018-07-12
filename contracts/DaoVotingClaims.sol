@@ -6,6 +6,7 @@ import "./service/DaoCalculatorService.sol";
 import "./DaoFundingManager.sol";
 import "./DaoRewardsManager.sol";
 import "./lib/DaoIntermediateStructs.sol";
+import "./lib/DaoStructs.sol";
 
 /// @title Contract to claim voting results
 /// @author Digix Holdings
@@ -13,6 +14,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     using DaoIntermediateStructs for DaoIntermediateStructs.VotingCount;
     using DaoIntermediateStructs for DaoIntermediateStructs.MilestoneInfo;
     using DaoIntermediateStructs for DaoIntermediateStructs.Users;
+    using DaoStructs for DaoStructs.IntermediateResults;
 
     function daoCalculatorService()
         internal
@@ -54,59 +56,66 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         returns (bool _passed)
     {
         // get the previously stored intermediary state
-        DaoIntermediateStructs.CountIntermediaryStruct memory _pastCountState;
-        (_pastCountState.countedUntil, _pastCountState.forCount, _pastCountState.againstCount) = daoCountIntermediaryStorage().readIntermediaryState(
-            _proposalId
-        );
+        DaoStructs.IntermediateResults memory _currentResults;
+        (
+            _currentResults.countedUntil,
+            _currentResults.currentForCount,
+            _currentResults.currentAgainstCount,
+            _currentResults.currentQuorum,
+        ) = intermediateResultsStorage().getIntermediateResults(_proposalId);
 
         // get first address based on intermediate state
-        address _moderator;
-        if (_pastCountState.countedUntil == EMPTY_ADDRESS) {
-            _moderator = daoStakeStorage().readFirstModerator();
+        address[] memory _moderators;
+        if (_currentResults.countedUntil == EMPTY_ADDRESS) {
+            _moderators = daoListingService().listModerators(
+                _count,
+                true
+            );
         } else {
-            _moderator = daoStakeStorage().readNextModerator(_pastCountState.countedUntil);
+            _moderators = daoListingService().listModeratorsFrom(
+               _currentResults.countedUntil,
+               _count,
+               true
+           );
         }
 
         // get moderators
-        address[] memory _moderators = daoListingService().listModeratorsFrom(
-            _moderator,
-            _count,
-            true
-        );
-        _moderator = _moderators[_moderators.length-1];
+        address _moderator = _moderators[_moderators.length-1];
 
-        // count the votes for these moderators
+        // count the votes for this batch of moderators
         DaoIntermediateStructs.VotingCount memory _voteCount;
         (_voteCount.forCount, _voteCount.againstCount, _voteCount.quorum) = daoStorage().readDraftVotingCount(_proposalId, _moderators);
+
+        _currentResults.countedUntil = _moderator;
+        _currentResults.currentForCount = _currentResults.currentForCount.add(_voteCount.forCount);
+        _currentResults.currentAgainstCount = _currentResults.currentAgainstCount.add(_voteCount.againstCount);
+        _currentResults.currentQuorum = _currentResults.currentQuorum.add(_voteCount.quorum);
 
         if (_moderator == daoStakeStorage().readLastModerator()) {
             // this is the last iteration
             _passed = true;
-            tempFunction(_proposalId, _voteCount);
+            processDraftVotingClaim(_proposalId, _currentResults);
 
-            // set intermediary states as 0 and EMPTY_ADDRESS
-            daoCountIntermediaryStorage().updateIntermediaryState(
-                _proposalId,
-                EMPTY_ADDRESS,
-                0,
-                0
-            );
+            // reset intermediate result for the proposal
+            intermediateResultsStorage().resetIntermediateResults(_proposalId);
         } else {
-            // update intermediary states
-            daoCountIntermediaryStorage().updateIntermediaryState(
+            // update intermediate results
+            intermediateResultsStorage().setIntermediateResults(
                 _proposalId,
-                _moderator,
-                _voteCount.forCount.add(_pastCountState.forCount),
-                _voteCount.againstCount.add(_pastCountState.againstCount)
+                _currentResults.countedUntil,
+                _currentResults.currentForCount,
+                _currentResults.currentAgainstCount,
+                _currentResults.currentQuorum,
+                0
             );
         }
     }
 
-    function tempFunction(bytes32 _proposalId, DaoIntermediateStructs.VotingCount _voteCount)
+    function processDraftVotingClaim(bytes32 _proposalId, DaoStructs.IntermediateResults _currentResults)
         private
     {
-        require(_voteCount.quorum > daoCalculatorService().minimumDraftQuorum(_proposalId));
-        require(daoCalculatorService().draftQuotaPass(_voteCount.forCount, _voteCount.againstCount));
+        require(_currentResults.currentQuorum > daoCalculatorService().minimumDraftQuorum(_proposalId));
+        require(daoCalculatorService().draftQuotaPass(_currentResults.currentForCount, _currentResults.currentAgainstCount));
         daoStorage().setProposalDraftPass(_proposalId, true);
         // set startTime of first voting round
         // and the start of first milestone.

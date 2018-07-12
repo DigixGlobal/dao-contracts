@@ -44,7 +44,7 @@ contract DaoConstants {
     bytes32 CONTRACT_STORAGE_DAO_FUNDING = "storage:dao:funding";
     bytes32 CONTRACT_STORAGE_DAO_REWARDS = "storage:dao:rewards";
     bytes32 CONTRACT_STORAGE_DAO_WHITELISTING = "storage:dao:whitelisting";
-    bytes32 CONTRACT_STORAGE_DAO_INTERMEDIARY = "storage:dao:intermediary";
+    bytes32 CONTRACT_STORAGE_INTERMEDIATE_RESULTS = "storage:intermediate:results";
 
     bytes32 CONTRACT_DGD_TOKEN = "t:dgd";
     bytes32 CONTRACT_DGX_TOKEN = "t:dgx";
