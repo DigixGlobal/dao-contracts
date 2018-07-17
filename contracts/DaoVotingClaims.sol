@@ -135,23 +135,143 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     /// @param _proposalId ID of the proposal
     /// @param _index Index of the  voting round
     /// @return _passed Boolean, true if the  voting round passed, false if failed
-    function claimProposalVotingResult(bytes32 _proposalId, uint256 _index)
+    function claimProposalVotingResult(bytes32 _proposalId, uint256 _index, uint256 _operations)
         public
         if_main_phase()
         if_not_claimed(_proposalId, _index)
         if_after_proposal_reveal_phase(_proposalId, _index)
-        returns (bool _passed)
+        returns (bool _passed, bool _done)
+    {
+        // anyone can claim after the claiming deadline is over;
+        // and the result will be failed by default
+        if (now < daoStorage().readProposalNextMilestoneStart(_proposalId, _index)
+                    .add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE)))
+        {
+            (_operations, _passed, _done) = countProposalVote(_proposalId, _index, _operations);
+        }
+        if (!_done) return (_passed, false); // haven't done counting yet, return
+        _done = false;
+
+        if (_index > 0) { // We only need to do bonus calculation if its the interim voting round
+            _done = calculateVoterBonus(_proposalId, _index, _operations, _passed);
+            if (!_done) return (_passed, false);
+        }
+        daoStorage().setVotingClaim(_proposalId, _index, true);
+        daoStorage().setProposalPass(_proposalId, _index, _passed);
+        _done = true;
+    }
+
+    function calculateVoterBonus(bytes32 _proposalId, uint256 _index, uint256 _operations, bool _passed)
+        internal
+        returns (bool _done)
+    {
+        if (_operations == 0) return false;
+        address _countedUntil;
+        (_countedUntil,,,,) = intermediateResultsStorage().getIntermediateResults(_proposalId);
+
+        address[] memory _voterBatch;
+        if (_countedUntil == EMPTY_ADDRESS) {
+            _voterBatch = daoListingService().listParticipants(
+                _operations,
+                true
+            );
+        } else {
+            _voterBatch = daoListingService().listParticipantsFrom(
+                _countedUntil,
+                _operations,
+                true
+            );
+        }
+        address _lastVoter = _voterBatch[_voterBatch.length - 1]; // this will fail if _voterBatch is empty
+
+        DaoIntermediateStructs.Users memory _bonusVoters;
+        if (_passed) {
+
+            // give bonus points for all those who
+            // voted YES in the previous round
+            (_bonusVoters.users, _bonusVoters.usersLength) = daoStorage().readVotingRoundVotes(_proposalId, _index.sub(1), _voterBatch, true);
+        } else {
+            // give bonus points for all those who
+            // voted NO in the previous round
+            (_bonusVoters.users, _bonusVoters.usersLength) = daoStorage().readVotingRoundVotes(_proposalId, _index.sub(1), _voterBatch, false);
+        }
+        if (_bonusVoters.usersLength > 0) addBonusReputation(_bonusVoters.users, _bonusVoters.usersLength);
+
+        if (_lastVoter == daoStakeStorage().readLastParticipant()) {
+            // this is the last iteration
+            if (_passed) {
+                // give quarter points to proposer for finishing the milestone
+                daoPointsStorage().addQuarterPoint(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_QUARTER_POINT_MILESTONE_COMPLETION), currentQuarterIndex());
+            }
+            intermediateResultsStorage().resetIntermediateResults(_proposalId);
+            _done = true;
+        } else {
+            // this is not the last iteration yet
+            intermediateResultsStorage().setIntermediateResults(_proposalId, _lastVoter, 0, 0, 0, 0);
+        }
+    }
+
+    function countProposalVote(bytes32 _proposalId, uint256 _index, uint256 _operations)
+        internal
+        returns (uint256 _operationsLeft, bool _passed, bool _done)
     {
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
 
-        address[] memory _allStakeHolders = daoListingService().listParticipants(10000, true);
+        DaoStructs.IntermediateResults memory _currentResults;
+        (
+            _currentResults.countedUntil,
+            _currentResults.currentForCount,
+            _currentResults.currentAgainstCount,
+            _currentResults.currentQuorum,
+        ) = intermediateResultsStorage().getIntermediateResults(_proposalId);
+        address[] memory _voters;
+        if (_currentResults.countedUntil == EMPTY_ADDRESS) {
+            _voters = daoListingService().listParticipants(
+                _operations,
+                true
+            );
+        } else {
+            _voters = daoListingService().listParticipantsFrom(
+                _currentResults.countedUntil,
+                _operations,
+                true
+            );
+
+            // There's no more operations to be done, or there's no voters to count
+            if (_operations == 0 || _voters.length == 0) {
+                return (_operations, false, true);
+            }
+        }
+
+        address _lastVoter = _voters[_voters.length - 1];
 
         DaoIntermediateStructs.VotingCount memory _count;
-        (_count.forCount, _count.againstCount, _count.quorum) = daoStorage().readVotingCount(_proposalId, _index, _allStakeHolders);
-        if ((_count.quorum > daoCalculatorService().minimumVotingQuorum(_proposalId, _index)) &&
-            (daoCalculatorService().votingQuotaPass(_count.forCount, _count.againstCount))) {
+        (_count.forCount, _count.againstCount, _count.quorum) = daoStorage().readVotingCount(_proposalId, _index, _voters);
+
+        _currentResults.currentForCount = _currentResults.currentForCount.add(_count.forCount);
+        _currentResults.currentAgainstCount = _currentResults.currentAgainstCount.add(_count.againstCount);
+        _currentResults.currentQuorum = _currentResults.currentQuorum.add(_count.quorum);
+        intermediateResultsStorage().setIntermediateResults(
+            _proposalId,
+            _lastVoter,
+            _currentResults.currentForCount,
+            _currentResults.currentAgainstCount,
+            _currentResults.currentQuorum,
+            0
+        );
+
+        if (_lastVoter != daoStakeStorage().readLastParticipant()) {
+            return (0, false, false); // hasn't done counting yet
+        }
+
+        // this means all votes have already been counted
+        intermediateResultsStorage().resetIntermediateResults(_proposalId);
+        _operationsLeft = _operations.sub(_voters.length);
+        _done = true;
+
+        if ((_currentResults.currentQuorum > daoCalculatorService().minimumVotingQuorum(_proposalId, _index)) &&
+        (daoCalculatorService().votingQuotaPass(_currentResults.currentForCount, _currentResults.currentAgainstCount))) {
             _passed = true;
-            daoStorage().setProposalPass(_proposalId, _index, _passed);
 
             // set deadline for next milestone (set startTime for next  voting round)
             DaoIntermediateStructs.MilestoneInfo memory _info;
@@ -159,38 +279,17 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             _info.milestoneStart = daoStorage().readProposalNextMilestoneStart(_proposalId, _index);
 
             if (_info.duration > 0 && _info.funding > 0) {
-              if (isProposalPaused(_proposalId) == false) {
-                setTimelineForNextMilestone(_proposalId, _index.add(1), _info.duration, _info.milestoneStart);
-              }
+                if (isProposalPaused(_proposalId) == false) {
+                    setTimelineForNextMilestone(_proposalId, _index.add(1), _info.duration, _info.milestoneStart);
+                }
 
-              // update claimable funds
-              daoFundingManager().allocateEth(daoStorage().readProposalProposer(_proposalId), _info.funding);
+                // update claimable funds
+                daoFundingManager().allocateEth(daoStorage().readProposalProposer(_proposalId), _info.funding);
             } else {
-              // give final reward
-              daoFundingManager().allocateEth(daoStorage().readProposalProposer(_proposalId), _info.finalReward);
+                // give final reward
+                daoFundingManager().allocateEth(daoStorage().readProposalProposer(_proposalId), _info.finalReward);
             }
-        } else {
-            _passed = false;
         }
-
-        daoStorage().setVotingClaim(_proposalId, _index, true);
-        if (_index == 0) return _passed;
-
-        DaoIntermediateStructs.Users memory _bonusVoters;
-        if (_passed) {
-            // give quarter points to proposer for finishing the milestone
-            daoPointsStorage().addQuarterPoint(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_QUARTER_POINT_MILESTONE_COMPLETION), currentQuarterIndex());
-
-            // give bonus points for all those who
-            // voted YES in the previous round
-            (_bonusVoters.users, _bonusVoters.usersLength) = daoStorage().readVotingRoundVotes(_proposalId, _index.sub(1), _allStakeHolders, true);
-        } else {
-            // give bonus points for all those who
-            // voted NO in the previous round
-            (_bonusVoters.users, _bonusVoters.usersLength) = daoStorage().readVotingRoundVotes(_proposalId, _index.sub(1), _allStakeHolders, false);
-        }
-
-        if (_bonusVoters.usersLength > 0) addBonusReputation(_bonusVoters.users, _bonusVoters.usersLength);
     }
 
     /// @notice Function to claim the voting result on special proposal

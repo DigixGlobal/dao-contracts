@@ -13,6 +13,7 @@ contract DaoRewardsManager is DaoCommon {
     using DaoStructs for DaoStructs.DaoQuarterInfo;
     using DaoStructs for DaoStructs.IntermediateResults;
     bytes32 public testBytes;
+    bytes32 public testBytes2;
 
     address public ADDRESS_DGX_TOKEN;
 
@@ -128,7 +129,7 @@ contract DaoRewardsManager is DaoCommon {
             return;
         }
 
-        if (_lastParticipatedQuarter > _lastQuarterThatReputationWasUpdated) {
+        if (_lastParticipatedQuarter == currentQuarterIndex() - 1) {
             updateRPfromQP(
                 _user,
                 daoPointsStorage().getQuarterPoint(_user, _lastParticipatedQuarter),
@@ -323,16 +324,17 @@ contract DaoRewardsManager is DaoCommon {
             info.totalEffectiveDGDLastQuarter
         ) = intermediateResultsStorage().getIntermediateResults(keccak256("Quarter Effective DGD ", info.previousQuarter));
         testBytes = keccak256("Quarter Effective DGD ", info.previousQuarter);
+        testBytes2 = keccak256("Mod Effective DGD ", info.previousQuarter);
+
         _operations = sumEffectiveBalance(info, false, _operations, interResults);
         if (!info.doneCalculatingEffectiveBalance) { return false; }
 
         (
             interResults.countedUntil,,,,
             info.totalEffectiveBadgesLastQuarter
-        ) = intermediateResultsStorage().getIntermediateResults(keccak256("Quarter Mod Effective DGD ", info.previousQuarter));
+        ) = intermediateResultsStorage().getIntermediateResults(keccak256("Mod Effective DGD ", info.previousQuarter));
         sumEffectiveBalance(info, true, _operations, interResults);
         if (!info.doneCalculatingModeratorEffectiveBalance) { return false; }
-
         // save the quarter Info
         processGlobalRewardsUpdate(info);
     }
@@ -371,6 +373,8 @@ contract DaoRewardsManager is DaoCommon {
         internal
         returns (uint _operationsLeft)
     {
+        if (_operations == 0) return _operations;
+
         if (_interResults.countedUntil == EMPTY_ADDRESS) {
             info.users = _badgeCalculation ?
                 daoListingService().listModerators(_operations, true)
@@ -380,10 +384,10 @@ contract DaoRewardsManager is DaoCommon {
                 daoListingService().listModeratorsFrom(_interResults.countedUntil, _operations, true)
                 : daoListingService().listParticipantsFrom(_interResults.countedUntil, _operations, true);
 
-            // if no more operations left or the address is the already the last, no need to do;
-            if (_operations == 0 || info.users.length == 0) {
+            // if the address is the already the last, it means this is the first step, and its already done;
+            if (info.users.length == 0) {
                 info.doneCalculatingEffectiveBalance = true;
-                return 0;
+                return _operations;
             }
         }
 
@@ -426,7 +430,7 @@ contract DaoRewardsManager is DaoCommon {
             info.doneCalculatingEffectiveBalance = true;
         }
         intermediateResultsStorage().setIntermediateResults(
-            keccak256(_badgeCalculation ? "Quarter Mod Effective DGD " : "Quarter Effective DGD ", info.previousQuarter),
+            keccak256(_badgeCalculation ? "Mod Effective DGD " : "Quarter Effective DGD ", info.previousQuarter),
             _lastAddress,
             0,0,0,
             _badgeCalculation ? info.totalEffectiveBadgesLastQuarter : info.totalEffectiveDGDLastQuarter

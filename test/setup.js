@@ -287,15 +287,17 @@ const getTestProposals = function (bN, addressOf) {
   ];
 };
 
-const assignVotesAndCommits = function (addressOf) {
-  const salts = indexRange(0, 4).map(() => indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(() => randomBytes32()));
+const assignVotesAndCommits = function (addressOf, proposalCount = 4, voterCount = BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT, voterAddresses = null) {
+  if (!voterAddresses) voterAddresses = addressOf.allParticipants;
+
+  const salts = indexRange(0, proposalCount).map(() => indexRange(0, voterCount).map(() => randomBytes32()));
   // salts[proposalIndex][participantIndex] = salt
 
-  const votes = indexRange(0, 4).map(() => indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(() => true));
+  const votes = indexRange(0, proposalCount).map(() => indexRange(0, voterCount).map(() => true));
   // votes[proposalIndex][holderIndex] = true/false
 
-  const votingCommits = indexRange(0, 4).map(proposalIndex => indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(holderIndex => web3Utils.soliditySha3(
-    { t: 'address', v: addressOf.allParticipants[holderIndex] },
+  const votingCommits = indexRange(0, proposalCount).map(proposalIndex => indexRange(0, voterCount).map(holderIndex => web3Utils.soliditySha3(
+    { t: 'address', v: voterAddresses[holderIndex] },
     { t: 'bool', v: votes[proposalIndex][holderIndex] },
     { t: 'bytes32', v: salts[proposalIndex][holderIndex] },
   )));
@@ -305,7 +307,7 @@ const assignVotesAndCommits = function (addressOf) {
 
 const setDummyConfig = async function (contracts, bN) {
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION, bN(10));
-  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_QUARTER_DURATION, bN(200));
+  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_QUARTER_DURATION, bN(100));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTING_COMMIT_PHASE, bN(10));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTING_PHASE_TOTAL, bN(20));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_INTERIM_COMMIT_PHASE, bN(10));

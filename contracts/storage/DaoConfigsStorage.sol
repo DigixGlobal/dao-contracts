@@ -77,6 +77,8 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION] = 20;
         uintConfigs[CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM] = 1;
         uintConfigs[CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN] = 1;
+
+        uintConfigs[CONFIG_VOTE_CLAIMING_DEADLINE] = 5 days;
     }
 
     function updateUintConfigs(uint256[] _uintConfigs)
@@ -134,13 +136,15 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION] = _uintConfigs[47];
         uintConfigs[CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM] = _uintConfigs[48];
         uintConfigs[CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN] = _uintConfigs[49];
+
+        uintConfigs[CONFIG_VOTE_CLAIMING_DEADLINE] = _uintConfigs[50];
     }
 
     function readUintConfigs()
         public
         returns (uint256[])
     {
-        uint256[] memory _uintConfigs = new uint256[](50);
+        uint256[] memory _uintConfigs = new uint256[](51);
         _uintConfigs[0] = uintConfigs[CONFIG_LOCKING_PHASE_DURATION];
         _uintConfigs[1] = uintConfigs[CONFIG_QUARTER_DURATION];
         _uintConfigs[2] = uintConfigs[CONFIG_VOTING_COMMIT_PHASE];
@@ -192,6 +196,8 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         _uintConfigs[47] = uintConfigs[CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION];
         _uintConfigs[48] = uintConfigs[CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM];
         _uintConfigs[49] = uintConfigs[CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN];
+
+        _uintConfigs[50] = uintConfigs[CONFIG_VOTE_CLAIMING_DEADLINE];
         return _uintConfigs;
     }
 }

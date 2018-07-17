@@ -131,6 +131,7 @@ const daoConstantsKeys = function () {
     CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION: 'config_max_m_rp_deduction',
     CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM: 'config_rep_per_extra_m_qp_num',
     CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN: 'config_rep_per_extra_m_qp_den',
+    CONFIG_VOTE_CLAIMING_DEADLINE: 'config_claiming_deadline',
   };
 };
 
@@ -186,6 +187,7 @@ const daoConstantsValues = function (bN) {
     CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION: bN(20),
     CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM: bN(1),
     CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN: bN(1),
+    CONFIG_VOTE_CLAIMING_DEADLINE: bN(5 * 24 * 3600),
   };
 };
 

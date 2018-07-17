@@ -540,7 +540,9 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         public
         if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
-        if (_index == 0 && _result) {
+        if (!_result) {
+            closeProposalInternal(_proposalId);
+        } else if (_index == 0) {
             proposalsByState[PROPOSAL_STATE_MODERATED].remove_item(_proposalId);
             proposalsByState[PROPOSAL_STATE_ONGOING].append(_proposalId);
             proposalsById[_proposalId].currentState = PROPOSAL_STATE_ONGOING;
@@ -619,11 +621,17 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
           proposalsById[_proposalId].isPaused = false;
         } else { // STOP
           proposalsById[_proposalId].isPaused = true;
-          uint256 _currentState = proposalsById[_proposalId].currentState;
-          proposalsByState[_currentState].remove_item(_proposalId);
-          proposalsByState[PROPOSAL_STATE_CLOSED].append(_proposalId);
-          proposalsById[_proposalId].currentState = PROPOSAL_STATE_CLOSED;
+          closeProposalInternal(_proposalId);
         }
+    }
+
+    function closeProposalInternal(bytes32 _proposalId)
+        internal
+    {
+        uint256 _currentState = proposalsById[_proposalId].currentState;
+        proposalsByState[_currentState].remove_item(_proposalId);
+        proposalsByState[PROPOSAL_STATE_CLOSED].append(_proposalId);
+        proposalsById[_proposalId].currentState = PROPOSAL_STATE_CLOSED;
     }
 
     /// @notice add/update draft vote for an initial proposal

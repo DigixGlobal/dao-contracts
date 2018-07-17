@@ -87,10 +87,10 @@ contract MockDaoStorage is DaoStorage {
         DaoStructs.Voting storage _voting;
         if (_isDraftPhase) {
             _voting = proposalsById[_proposalId].draftVoting;
-            proposalsById[_proposalId].votingRounds[0].startOfNextMilestone = _startOfNextMilestone;
+            proposalsById[_proposalId].draftVoting.startOfNextMilestone = _startOfNextMilestone;
         } else {
             _voting = proposalsById[_proposalId].votingRounds[_roundIndex];
-            proposalsById[_proposalId].votingRounds[_roundIndex + 1].startOfNextMilestone = _startOfNextMilestone;
+            proposalsById[_proposalId].votingRounds[_roundIndex].startOfNextMilestone = _startOfNextMilestone;
         }
         for (uint256 i = 0; i < _length; i++) {
             if (_votes[i] == true) {
