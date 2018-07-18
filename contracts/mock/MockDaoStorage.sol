@@ -70,7 +70,7 @@ contract MockDaoStorage is DaoStorage {
     @param _votes Boolean array of the votes (for or against)
     @param _weights Uint array of the voting weights
     @param _length Length of the above arrays (number of voters)
-    @param _startOfNextMilestone Start of the next milestone after this round of voting
+    @param _startOfNextMilestone start of next milestone from this voting round
     */
     function mock_put_past_votes(
         bytes32 _proposalId,
@@ -87,7 +87,6 @@ contract MockDaoStorage is DaoStorage {
         DaoStructs.Voting storage _voting;
         if (_isDraftPhase) {
             _voting = proposalsById[_proposalId].draftVoting;
-            proposalsById[_proposalId].draftVoting.startOfNextMilestone = _startOfNextMilestone;
         } else {
             _voting = proposalsById[_proposalId].votingRounds[_roundIndex];
             proposalsById[_proposalId].votingRounds[_roundIndex].startOfNextMilestone = _startOfNextMilestone;

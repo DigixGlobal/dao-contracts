@@ -19,6 +19,7 @@ const DaoUpgradeStorage = artifacts.require('./DaoUpgradeStorage.sol');
 const DaoSpecialStorage = artifacts.require('./DaoSpecialStorage.sol');
 const DaoFundingStorage = artifacts.require('./DaoFundingStorage.sol');
 const DaoRewardsStorage = artifacts.require('./DaoRewardsStorage.sol');
+const IntermediateResultsStorage = artifacts.require('./IntermediateResultsStorage.sol');
 
 const DaoListingService = artifacts.require('./DaoListingService.sol');
 const DaoCalculatorService = artifacts.require('./DaoCalculatorService.sol');
@@ -137,7 +138,7 @@ const {
   getCurrentTimestamp,
   indexRange,
   randomBytes32,
-  randomBigNumbers,
+  randomBytes32s,
 } = require('@digix/helpers/lib/helpers');
 
 const bN = web3.toBigNumber;
@@ -177,6 +178,7 @@ const assignDeployedContracts = async function (contracts, libs) {
   contracts.daoSpecialStorage = await DaoSpecialStorage.deployed();
   contracts.daoFundingStorage = await DaoFundingStorage.deployed();
   contracts.daoRewardsStorage = await DaoRewardsStorage.deployed();
+  contracts.intermediateResultsStorage = await IntermediateResultsStorage.deployed();
 
   contracts.daoListingService = await DaoListingService.deployed();
   contracts.daoCalculatorService = await DaoCalculatorService.deployed();
@@ -239,14 +241,17 @@ const claimDraftVotingResult = async function (contracts) {
   console.log(mods);
   await contracts.daoVotingClaims.claimDraftVotingResult(
     proposals[0].id,
+    bN(10),
     { from: proposals[0].proposer },
   );
   await contracts.daoVotingClaims.claimDraftVotingResult(
     proposals[2].id,
+    bN(10),
     { from: proposals[2].proposer },
   );
   await contracts.daoVotingClaims.claimDraftVotingResult(
     proposals[3].id,
+    bN(10),
     { from: proposals[3].proposer },
   );
 };
@@ -300,6 +305,7 @@ const claimVotingResult = async function (contracts, addressOf) {
     await contracts.daoVotingClaims.claimProposalVotingResult(
       proposals[proposalIndex].id,
       bN(0),
+      bN(10),
       { from: proposals[proposalIndex].proposer },
     );
   });
@@ -366,7 +372,7 @@ const interimVotingRevealRound = async function (contracts, addressOf) {
 const interimvotingRoundClaim = async function (contracts) {
   await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
     if (proposalIndex === 1) return;
-    await contracts.daoVotingClaims.claimProposalVotingResult(proposals[proposalIndex].id, bN(1), { from: proposals[proposalIndex].proposer });
+    await contracts.daoVotingClaims.claimProposalVotingResult(proposals[proposalIndex].id, bN(1), bN(10), { from: proposals[proposalIndex].proposer });
   });
 };
 
@@ -407,18 +413,18 @@ const claimFinalReward = async function (contracts, addressOf, proposalId, propo
 };
 
 const specialProposalVoting = async function (contracts, addressOf, specialProposalId) {
-  const someSalts = randomBigNumbers(bN, 10);
+  const someSalts = randomBytes32s(10);
 
   await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
     await contracts.daoVoting.commitVoteOnSpecialProposal(
       specialProposalId,
-      web3Utils.soliditySha3({ t: 'address', v: addressOf.allParticipants[holderIndex] }, { t: 'bool', v: true }, { t: 'uint256', v: someSalts[holderIndex] }),
+      web3Utils.soliditySha3({ t: 'address', v: addressOf.allParticipants[holderIndex] }, { t: 'bool', v: true }, { t: 'bytes32', v: someSalts[holderIndex] }),
       { from: addressOf.allParticipants[holderIndex] },
     );
   });
   console.log('committed votes on special proposal');
 
-  await waitFor(10, addressOf, web3); // 10 seconds of commit phase
+  await waitFor(11, addressOf, web3); // 10 seconds of commit phase
 
   await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
     await contracts.daoVoting.revealVoteOnSpecialProposal(
@@ -431,7 +437,9 @@ const specialProposalVoting = async function (contracts, addressOf, specialPropo
   console.log('revealed votes on special proposal');
 
   await waitFor(10, addressOf, web3); // 10 seconds of reveal phase
+  await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
   await contracts.daoVotingClaims.claimSpecialProposalVotingResult(specialProposalId, { from: addressOf.founderBadgeHolder });
+  console.log('claimed special proposal');
 };
 
 const addAndEndorseProposals = async function (contracts, proposals) {
@@ -592,15 +600,15 @@ module.exports = async function () {
     // call the global rewards calculation
     await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(20 * (10 ** 9)));
     console.log('transferred dgx to rewards manager');
-    await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
+    await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(50), { from: addressOf.founderBadgeHolder });
     console.log('updated the rewards for previous quarter (quarterId = 1)');
 
     console.log('\t\t#### Info of users for last quarter: ');
     const printStake = async (user, userString) => {
       console.log(`DGDstake of ${userString} = `, await contracts.daoStakeStorage.lockedDGDStake.call(user));
       console.log(`Badge QP of ${userString}= `, await contracts.daoPointsStorage.getQuarterModeratorPoint.call(user, bN(1)));
-      console.log(`effectiveDGDBalance of ${userString} = `, await contracts.daoRewardsManager.getUserEffectiveDGDBalanceLastQuarter.call(user));
-      console.log(`effective moderator dgd balance of ${userString} = `, await contracts.daoRewardsManager.getUserEffectiveModeratorBalanceLastQuarter.call(user));
+      // console.log(`effectiveDGDBalance of ${userString} = `, await contracts.daoRewardsManager.getUserEffectiveDGDBalanceLastQuarter.call(user));
+      // console.log(`effective moderator dgd balance of ${userString} = `, await contracts.daoRewardsManager.getUserEffectiveModeratorBalanceLastQuarter.call(user));
       console.log();
     };
     await printStake(addressOf.badgeHolders[0], 'addressOf.badgeHolders[0]');
@@ -655,7 +663,7 @@ module.exports = async function () {
 
     await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(25 * (10 ** 9)));
     console.log('transferred dgx to rewards manager');
-    await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
+    await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(50), { from: addressOf.founderBadgeHolder });
     console.log('updated the rewards for previous quarter (quarterId = 2)');
 
     await confirmContinuedParticipation(contracts, addressOf);
@@ -674,7 +682,7 @@ module.exports = async function () {
     console.log('[before claiming result] claimable Eth of proposer = ', await contracts.daoFundingStorage.claimableEth.call(proposals[0].proposer));
     console.log('daoFunding balance = ', await web3.eth.getBalance(contracts.daoFundingManager.address));
 
-    await contracts.daoVotingClaims.claimProposalVotingResult(proposals[0].id, bN(2), { from: proposals[0].proposer });
+    await contracts.daoVotingClaims.claimProposalVotingResult(proposals[0].id, bN(2), bN(10), { from: proposals[0].proposer });
     console.log('claimed final voting round');
 
     console.log('before claimFinalReward');

@@ -1,12 +1,12 @@
 const assert = require('assert');
 
-const proposalStates = function (bN) {
+const proposalStates = function () {
   return {
-    PROPOSAL_STATE_PREPROPOSAL: bN(1),
-    PROPOSAL_STATE_DRAFT: bN(2),
-    PROPOSAL_STATE_MODERATED: bN(3),
-    PROPOSAL_STATE_ONGOING: bN(4),
-    PROPOSAL_STATE_CLOSED: bN(5),
+    PROPOSAL_STATE_PREPROPOSAL: 'proposal_state_preproposal',
+    PROPOSAL_STATE_DRAFT: 'proposal_state_draft',
+    PROPOSAL_STATE_MODERATED: 'proposal_state_moderated',
+    PROPOSAL_STATE_ONGOING: 'proposal_state_ongoing',
+    PROPOSAL_STATE_CLOSED: 'proposal_state_closed',
   };
 };
 

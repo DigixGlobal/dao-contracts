@@ -6,15 +6,18 @@ contract DaoConstants {
     using SafeMath for uint256;
     bytes32 EMPTY_BYTES = bytes32(0x0);
     address EMPTY_ADDRESS = address(0x0);
-    uint256 PROPOSAL_STATE_PREPROPOSAL = 1;
-    uint256 PROPOSAL_STATE_DRAFT = 2;
-    uint256 PROPOSAL_STATE_MODERATED = 3;
-    uint256 PROPOSAL_STATE_ONGOING = 4;
-    uint256 PROPOSAL_STATE_CLOSED = 5;
+    bytes32 PROPOSAL_STATE_PREPROPOSAL = "proposal_state_preproposal";
+    bytes32 PROPOSAL_STATE_DRAFT = "proposal_state_draft";
+    bytes32 PROPOSAL_STATE_MODERATED = "proposal_state_moderated";
+    bytes32 PROPOSAL_STATE_ONGOING = "proposal_state_ongoing";
+    bytes32 PROPOSAL_STATE_CLOSED = "proposal_state_closed";
 
     uint256 PRL_ACTION_STOP = 1;
     uint256 PRL_ACTION_PAUSE = 2;
     uint256 PRL_ACTION_UNPAUSE = 3;
+
+    bytes32 INTERMEDIATE_DGD_IDENTIFIER = "inter_dgd_id";
+    bytes32 INTERMEDIATE_MODERATOR_DGD_IDENTIFIER = "inter_mod_dgd_id";
 
     // interactive contracts
     bytes32 CONTRACT_DAO = "dao";

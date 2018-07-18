@@ -15,6 +15,7 @@ const {
   phases,
   getTimeToNextPhase,
   sampleStakeWeights,
+  daoConstantsKeys,
 } = require('../daoHelpers');
 
 const {
@@ -160,17 +161,19 @@ contract('DaoStakeLocking', function (accounts) {
     });
     it('[lock during main phase]: verify actual stake', async function () {
       const startOfDao = await contracts.daoUpgradeStorage.startOfFirstQuarter.call();
+      const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
+      const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
       const initialStake1 = await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.badgeHolders[1]);
       const initialStake2 = await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.badgeHolders[2]);
       const totalLockedDGDStake = await contracts.daoStakeStorage.totalLockedDGDStake.call();
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
       await waitFor(2, addressOf, web3);
-      const timeToNextPhase1 = getTimeToNextPhase(getCurrentTimestamp(), startOfDao.toNumber(), 10, 60);
+      const timeToNextPhase1 = getTimeToNextPhase(getCurrentTimestamp(), startOfDao.toNumber(), lockingPhaseDuration.toNumber(), quarterDuration.toNumber());
       await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 9)), { from: addressOf.badgeHolders[1] });
       const stakeNow1 = await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.badgeHolders[1]);
 
       await waitFor(2, addressOf, web3);
-      const timeToNextPhase2 = getTimeToNextPhase(getCurrentTimestamp(), startOfDao.toNumber(), 10, 60);
+      const timeToNextPhase2 = getTimeToNextPhase(getCurrentTimestamp(), startOfDao.toNumber(), lockingPhaseDuration.toNumber(), quarterDuration.toNumber());
       await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10 * (10 ** 9)), { from: addressOf.badgeHolders[2] });
       await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 9)), { from: addressOf.badgeHolders[2] });
       const stakeNow2 = await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.badgeHolders[2]);
@@ -233,7 +236,7 @@ contract('DaoStakeLocking', function (accounts) {
   describe('withdrawDGD', function () {
     before(async function () {
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
-      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
     });
     it('[confirmContinuedParticipation]: badgeHolders[1] --> moderator, badgeHolders[3] --> no moderator', async function () {
       const initial = await contracts.daoStakeStorage.totalModeratorLockedDGDStake.call();
@@ -355,7 +358,7 @@ contract('DaoStakeLocking', function (accounts) {
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
       await waitFor(1, addressOf, web3);
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
-      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
     });
     it('unlock dgds that were staked 2 quarters ago and never continued participation', async function () {
       const stake3 = await contracts.daoStakeStorage.readUserDGDStake.call(addressOf.dgdHolders[3]);

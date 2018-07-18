@@ -14,7 +14,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
 
     DoublyLinkedList.Bytes allProposals;
     mapping (bytes32 => DaoStructs.Proposal) proposalsById;
-    mapping (uint256 => DoublyLinkedList.Bytes) proposalsByState;
+    mapping (bytes32 => DoublyLinkedList.Bytes) proposalsByState;
 
     function DaoStorage(address _resolver) public {
         require(init(CONTRACT_STORAGE_DAO, _resolver));
@@ -40,7 +40,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
             bytes32 _doc,
             address _proposer,
             address _endorser,
-            uint256 _state,
+            bytes32 _state,
             uint256 _timeCreated,
             uint256 _nVersions,
             bytes32 _latestVersionDoc,
@@ -247,7 +247,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     /// return {
     ///   "_id": ""
     /// }
-    function getFirstProposalInState(uint8 _stateId)
+    function getFirstProposalInState(bytes32 _stateId)
         public
         constant
         returns (bytes32 _id)
@@ -260,7 +260,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     /// return {
     ///   "_id": ""
     /// }
-    function getLastProposalInState(uint8 _stateId)
+    function getLastProposalInState(bytes32 _stateId)
         public
         constant
         returns (bytes32 _id)
@@ -273,7 +273,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     /// return {
     ///   "_id": ""
     /// }
-    function getNextProposalInState(uint8 _stateId, bytes32 _proposalId)
+    function getNextProposalInState(bytes32 _stateId, bytes32 _proposalId)
         public
         constant
         returns (bytes32 _id)
@@ -289,7 +289,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     /// return {
     ///   "_id": ""
     /// }
-    function getPreviousProposalInState(uint8 _stateId, bytes32 _proposalId)
+    function getPreviousProposalInState(bytes32 _stateId, bytes32 _proposalId)
         public
         constant
         returns (bytes32 _id)
@@ -345,13 +345,13 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         return proposalsById[_proposalId].readProposalMilestone(_index);
     }
 
-    function readProposalMilestoneDuration(bytes32 _proposalId, uint256 _index)
+    /* function readProposalMilestoneDuration(bytes32 _proposalId, uint256 _index)
         public
         constant
         returns (uint256 _duration)
     {
         (,_duration,,) = readProposalMilestone(_proposalId, _index);
-    }
+    } */
 
     function readProposalDuration(bytes32 _proposalId)
         public
@@ -579,6 +579,11 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         public
         if_sender_is_from([CONTRACT_DAO, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES])
     {
+        /* if (_index == 0) {
+            proposalsById[_proposalId].draftVoting.startOfNextMilestone = _time;
+        } else {
+            proposalsById[_proposalId].votingRounds[_index-1].startOfNextMilestone = _time;
+        } */
         proposalsById[_proposalId].votingRounds[_index].startOfNextMilestone = _time;
     }
 
@@ -628,7 +633,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     function closeProposalInternal(bytes32 _proposalId)
         internal
     {
-        uint256 _currentState = proposalsById[_proposalId].currentState;
+        bytes32 _currentState = proposalsById[_proposalId].currentState;
         proposalsByState[_currentState].remove_item(_proposalId);
         proposalsByState[PROPOSAL_STATE_CLOSED].append(_proposalId);
         proposalsById[_proposalId].currentState = PROPOSAL_STATE_CLOSED;

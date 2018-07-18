@@ -87,8 +87,8 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier is_proposal_state(bytes32 _proposalId, uint256 _STATE) {
-        uint256 _currentState;
+    modifier is_proposal_state(bytes32 _proposalId, bytes32 _STATE) {
+        bytes32 _currentState;
         (,,,_currentState,,,,,) = daoStorage().readProposal(_proposalId);
         require(_currentState == _STATE);
         _;
@@ -245,7 +245,7 @@ contract DaoCommon is IdentityCommon {
         _timeInQuarter = (_time - daoUpgradeStorage().startOfFirstQuarter()) % get_uint_config(CONFIG_QUARTER_DURATION);
     }
 
-    function currentTInQuarter() internal returns(uint256 _currentT) {
+    function currentTInQuarter() public returns(uint256 _currentT) {
         _currentT = timeInQuarter(now);
     }
 

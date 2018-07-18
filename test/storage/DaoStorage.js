@@ -1,6 +1,7 @@
 const a = require('awaiting');
 
 const {
+  paddedHex,
   randomBytes32,
   randomBytes32s,
   randomAddress,
@@ -105,7 +106,7 @@ contract('DaoStorage', function (accounts) {
       assert.deepEqual(readProposalRes[0], doc);
       assert.deepEqual(readProposalRes[1], proposer);
       assert.deepEqual(readProposalRes[2], zeroAddress);
-      assert.deepEqual(readProposalRes[3], proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL);
+      assert.deepEqual(readProposalRes[3], paddedHex(web3, proposalStates().PROPOSAL_STATE_PREPROPOSAL));
       assert.deepEqual(timeIsRecent(readProposalRes[4], timeLags().ONE_SECOND_TIME_LAG), true);
       assert.deepEqual(readProposalRes[5], bN(1));
       assert.deepEqual(readProposalRes[6], doc);
@@ -219,8 +220,8 @@ contract('DaoStorage', function (accounts) {
       )));
     });
     it('[endorse proposal]: verify read functions', async function () {
-      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL), doc);
-      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_DRAFT), EMPTY_BYTES);
+      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates().PROPOSAL_STATE_PREPROPOSAL), doc);
+      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates().PROPOSAL_STATE_DRAFT), EMPTY_BYTES);
 
       assert.ok(await contracts.daoStorage.updateProposalEndorse.call(
         doc,
@@ -228,12 +229,12 @@ contract('DaoStorage', function (accounts) {
       ));
       await contracts.daoStorage.updateProposalEndorse(doc, endorser);
 
-      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL), EMPTY_BYTES);
-      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_DRAFT), doc);
+      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates().PROPOSAL_STATE_PREPROPOSAL), EMPTY_BYTES);
+      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates().PROPOSAL_STATE_DRAFT), doc);
       const readProposal = await contracts.daoStorage.readProposal.call(doc);
       const stateAfter = readProposal[3];
       const proposalEndorser = readProposal[2];
-      assert.deepEqual(stateAfter, proposalStates(bN).PROPOSAL_STATE_DRAFT);
+      assert.deepEqual(stateAfter, paddedHex(web3, proposalStates().PROPOSAL_STATE_DRAFT));
       assert.deepEqual(proposalEndorser, endorser);
     });
   });
@@ -285,7 +286,7 @@ contract('DaoStorage', function (accounts) {
     });
     it('[stop the proposal]', async function () {
       const prlDoc = randomBytes32();
-      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL), someDocs[4]);
+      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates().PROPOSAL_STATE_PREPROPOSAL), someDocs[4]);
       await contracts.daoStorage.updateProposalPRL(
         someDocs[4],
         bN(1),
@@ -296,9 +297,9 @@ contract('DaoStorage', function (accounts) {
       const isPaused = readProposal[8];
       const state = readProposal[3];
       assert.deepEqual(isPaused, true);
-      assert.deepEqual(state, bN(5)); // state closed
-      assert.notEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL), someDocs[4]);
-      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_CLOSED), someDocs[4]);
+      assert.deepEqual(state, paddedHex(web3, proposalStates().PROPOSAL_STATE_CLOSED));
+      assert.notEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates().PROPOSAL_STATE_PREPROPOSAL), someDocs[4]);
+      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates().PROPOSAL_STATE_CLOSED), someDocs[4]);
     });
   });
 
@@ -327,31 +328,31 @@ contract('DaoStorage', function (accounts) {
       assert.deepEqual(await contracts.daoStorage.getPreviousProposal.call(someDocs[3]), someDocs[2]);
     });
     it('getFirstProposalInState', async function () {
-      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL), someDocs[2]);
-      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_DRAFT), doc);
-      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_MODERATED), someDocs[0]);
-      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_ONGOING), EMPTY_BYTES);
-      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates(bN).PROPOSAL_STATE_CLOSED), someDocs[4]);
+      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates().PROPOSAL_STATE_PREPROPOSAL), someDocs[2]);
+      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates().PROPOSAL_STATE_DRAFT), doc);
+      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates().PROPOSAL_STATE_MODERATED), someDocs[0]);
+      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates().PROPOSAL_STATE_ONGOING), EMPTY_BYTES);
+      assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates().PROPOSAL_STATE_CLOSED), someDocs[4]);
     });
     it('getLastProposalInState', async function () {
-      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL), someDocs[3]);
-      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_DRAFT), someDocs[1]);
-      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_MODERATED), someDocs[0]);
-      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_ONGOING), EMPTY_BYTES);
+      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates().PROPOSAL_STATE_PREPROPOSAL), someDocs[3]);
+      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates().PROPOSAL_STATE_DRAFT), someDocs[1]);
+      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates().PROPOSAL_STATE_MODERATED), someDocs[0]);
+      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates().PROPOSAL_STATE_ONGOING), EMPTY_BYTES);
     });
     it('getNextProposalInState', async function () {
-      assert.deepEqual(await contracts.daoStorage.getNextProposalInState.call(proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL, someDocs[2]), someDocs[3]);
-      assert.deepEqual(await contracts.daoStorage.getNextProposalInState.call(proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL, someDocs[3]), EMPTY_BYTES);
-      assert.deepEqual(await contracts.daoStorage.getNextProposalInState.call(proposalStates(bN).PROPOSAL_STATE_DRAFT, doc), someDocs[1]);
-      assert.deepEqual(await contracts.daoStorage.getNextProposalInState.call(proposalStates(bN).PROPOSAL_STATE_DRAFT, someDocs[1]), EMPTY_BYTES);
-      assert.deepEqual(await contracts.daoStorage.getNextProposalInState.call(proposalStates(bN).PROPOSAL_STATE_MODERATED, someDocs[0]), EMPTY_BYTES);
+      assert.deepEqual(await contracts.daoStorage.getNextProposalInState.call(proposalStates().PROPOSAL_STATE_PREPROPOSAL, someDocs[2]), someDocs[3]);
+      assert.deepEqual(await contracts.daoStorage.getNextProposalInState.call(proposalStates().PROPOSAL_STATE_PREPROPOSAL, someDocs[3]), EMPTY_BYTES);
+      assert.deepEqual(await contracts.daoStorage.getNextProposalInState.call(proposalStates().PROPOSAL_STATE_DRAFT, doc), someDocs[1]);
+      assert.deepEqual(await contracts.daoStorage.getNextProposalInState.call(proposalStates().PROPOSAL_STATE_DRAFT, someDocs[1]), EMPTY_BYTES);
+      assert.deepEqual(await contracts.daoStorage.getNextProposalInState.call(proposalStates().PROPOSAL_STATE_MODERATED, someDocs[0]), EMPTY_BYTES);
     });
     it('getPreviousProposalInState', async function () {
-      assert.deepEqual(await contracts.daoStorage.getPreviousProposalInState.call(proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL, someDocs[2]), EMPTY_BYTES);
-      assert.deepEqual(await contracts.daoStorage.getPreviousProposalInState.call(proposalStates(bN).PROPOSAL_STATE_PREPROPOSAL, someDocs[3]), someDocs[2]);
-      assert.deepEqual(await contracts.daoStorage.getPreviousProposalInState.call(proposalStates(bN).PROPOSAL_STATE_DRAFT, doc), EMPTY_BYTES);
-      assert.deepEqual(await contracts.daoStorage.getPreviousProposalInState.call(proposalStates(bN).PROPOSAL_STATE_DRAFT, someDocs[1]), doc);
-      assert.deepEqual(await contracts.daoStorage.getPreviousProposalInState.call(proposalStates(bN).PROPOSAL_STATE_MODERATED, someDocs[0]), EMPTY_BYTES);
+      assert.deepEqual(await contracts.daoStorage.getPreviousProposalInState.call(proposalStates().PROPOSAL_STATE_PREPROPOSAL, someDocs[2]), EMPTY_BYTES);
+      assert.deepEqual(await contracts.daoStorage.getPreviousProposalInState.call(proposalStates().PROPOSAL_STATE_PREPROPOSAL, someDocs[3]), someDocs[2]);
+      assert.deepEqual(await contracts.daoStorage.getPreviousProposalInState.call(proposalStates().PROPOSAL_STATE_DRAFT, doc), EMPTY_BYTES);
+      assert.deepEqual(await contracts.daoStorage.getPreviousProposalInState.call(proposalStates().PROPOSAL_STATE_DRAFT, someDocs[1]), doc);
+      assert.deepEqual(await contracts.daoStorage.getPreviousProposalInState.call(proposalStates().PROPOSAL_STATE_MODERATED, someDocs[0]), EMPTY_BYTES);
     });
   });
 
@@ -445,8 +446,8 @@ contract('DaoStorage', function (accounts) {
       // read state of doc
       const readProposal = await contracts.daoStorage.readProposal.call(doc);
       const state = readProposal[3];
-      assert.deepEqual(state, proposalStates(bN).PROPOSAL_STATE_MODERATED);
-      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_MODERATED), doc);
+      assert.deepEqual(state, paddedHex(web3, proposalStates().PROPOSAL_STATE_MODERATED));
+      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates().PROPOSAL_STATE_MODERATED), doc);
       // read draft voting result
       assert.deepEqual(await contracts.daoStorage.readProposalDraftVotingResult.call(doc), true);
     });
@@ -599,8 +600,8 @@ contract('DaoStorage', function (accounts) {
       // verify state of the proposal
       const readProposal = await contracts.daoStorage.readProposal.call(doc);
       const state = readProposal[3];
-      assert.deepEqual(state, proposalStates(bN).PROPOSAL_STATE_ONGOING);
-      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_ONGOING), doc);
+      assert.deepEqual(state, paddedHex(web3, proposalStates().PROPOSAL_STATE_ONGOING));
+      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates().PROPOSAL_STATE_ONGOING), doc);
       // verify if proposal voting is passed
       assert.deepEqual(await contracts.daoStorage.readProposalVotingResult.call(doc, bN(0)), true);
     });

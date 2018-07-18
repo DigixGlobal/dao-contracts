@@ -27,7 +27,7 @@ const finalReward = bN(2);
 const dgdStakes = [bN(3), bN(4), bN(5), bN(6)];
 const randomCommits = randomBytes32s(10);
 
-contract('DaoIdentity', function (accounts) {
+contract('DaoWhitelisting', function (accounts) {
   let libs;
   let contracts;
   let addressOf;

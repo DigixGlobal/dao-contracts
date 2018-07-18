@@ -39,7 +39,7 @@ library DaoStructs {
         bytes32 proposalId;
         address proposer;
         address endorser;
-        uint256 currentState;
+        bytes32 currentState;
         uint256 timeCreated;
         DoublyLinkedList.Bytes proposalVersionDocs;
         mapping (bytes32 => ProposalVersion) proposalVersions;
@@ -188,10 +188,10 @@ library DaoStructs {
         uint256 reputationPointScalingFactor;
         uint256 totalEffectiveDGDLastQuarter;
 
-        uint256 badgeMinimalParticipationPoint;
-        uint256 badgeQuarterPointScalingFactor;
-        uint256 badgeReputationPointScalingFactor;
-        uint256 totalEffectiveBadgeLastQuarter;
+        uint256 moderatorMinimalParticipationPoint;
+        uint256 moderatorQuarterPointScalingFactor;
+        uint256 moderatorReputationPointScalingFactor;
+        uint256 totalEffectiveModeratorDGDLastQuarter;
 
         uint256 dgxDistributionDay; // the timestamp when DGX rewards is distributable to Holders
         uint256 dgxRewardsPoolLastQuarter;

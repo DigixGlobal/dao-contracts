@@ -12,8 +12,6 @@ contract DaoRewardsManager is DaoCommon {
     using MathHelper for MathHelper;
     using DaoStructs for DaoStructs.DaoQuarterInfo;
     using DaoStructs for DaoStructs.IntermediateResults;
-    bytes32 public testBytes;
-    bytes32 public testBytes2;
 
     address public ADDRESS_DGX_TOKEN;
 
@@ -22,7 +20,7 @@ contract DaoRewardsManager is DaoCommon {
         uint256 lastQuarterThatRewardsWasUpdated;
         DaoStructs.DaoQuarterInfo qInfo;
         uint256 effectiveDGDBalance;
-        uint256 effectiveBadgeBalance;
+        uint256 effectiveModeratorDGDBalance;
     }
 
     struct QuarterRewardsInfo {
@@ -30,7 +28,7 @@ contract DaoRewardsManager is DaoCommon {
         uint256 totalEffectiveDGDLastQuarter;
         bool doneCalculatingEffectiveBalance;
         bool doneCalculatingModeratorEffectiveBalance;
-        uint256 totalEffectiveBadgesLastQuarter;
+        uint256 totalEffectiveModeratorDGDLastQuarter;
         uint256 dgxRewardsPoolLastQuarter;
         DaoStructs.DaoQuarterInfo qInfo;
         address currentUser;
@@ -153,16 +151,16 @@ contract DaoRewardsManager is DaoCommon {
                     get_uint_config(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN)
                 );
             }
-        } else {
-            _reputationDeduction =
-                (currentQuarterIndex().sub(1).sub(_lastParticipatedQuarter))
-                .mul(
-                    get_uint_config(CONFIG_MAXIMUM_REPUTATION_DEDUCTION)
-                    .add(get_uint_config(CONFIG_PUNISHMENT_FOR_NOT_LOCKING))
-                );
-
-            daoPointsStorage().subtractReputation(_user, _reputationDeduction);
         }
+
+        _reputationDeduction =
+            (currentQuarterIndex().sub(1).sub(_lastParticipatedQuarter))
+            .mul(
+                get_uint_config(CONFIG_MAXIMUM_REPUTATION_DEDUCTION)
+                .add(get_uint_config(CONFIG_PUNISHMENT_FOR_NOT_LOCKING))
+            );
+
+        if (_reputationDeduction > 0) daoPointsStorage().subtractReputation(_user, _reputationDeduction);
         daoRewardsStorage().updateLastQuarterThatReputationWasUpdated(_user, _lastParticipatedQuarter);
     }
 
@@ -214,16 +212,9 @@ contract DaoRewardsManager is DaoCommon {
 
         // now we "deduct the demurrage" from the claimable DGXs for time period from
         // dgxDistributionDay of lastQuarterThatRewardsWasUpdated + 1 to dgxDistributionDay of lastParticipatedQuarter + 1
-        /* _userClaimableDgx -= daoCalculatorService().calculateDemurrage(
-            _userClaimableDgx,
-            (daoRewardsStorage().readDgxDistributionDay(data.lastParticipatedQuarter + 1)
-            - daoRewardsStorage().readDgxDistributionDay(data.lastQuarterThatRewardsWasUpdated + 1))
-            / (1 days) ); */
-
         uint256 _days_elapsed = daoRewardsStorage().readDgxDistributionDay(data.lastParticipatedQuarter.add(1))
             .sub(daoRewardsStorage().readDgxDistributionDay(data.lastQuarterThatRewardsWasUpdated.add(1)))
             .div(1 days);
-
         _userClaimableDgx = _userClaimableDgx.sub(
             daoCalculatorService().calculateDemurrage(
                 _userClaimableDgx,
@@ -246,10 +237,10 @@ contract DaoRewardsManager is DaoCommon {
             daoStakeStorage().lockedDGDStake(_user)
         );
 
-        data.effectiveBadgeBalance = daoCalculatorService().calculateUserEffectiveBalance(
-            data.qInfo.badgeMinimalParticipationPoint,
-            data.qInfo.badgeQuarterPointScalingFactor,
-            data.qInfo.badgeReputationPointScalingFactor,
+        data.effectiveModeratorDGDBalance = daoCalculatorService().calculateUserEffectiveBalance(
+            data.qInfo.moderatorMinimalParticipationPoint,
+            data.qInfo.moderatorQuarterPointScalingFactor,
+            data.qInfo.moderatorReputationPointScalingFactor,
             daoPointsStorage().getQuarterModeratorPoint(_user, data.lastParticipatedQuarter),
             daoPointsStorage().getReputation(_user),
             daoStakeStorage().lockedDGDStake(_user)
@@ -272,29 +263,21 @@ contract DaoRewardsManager is DaoCommon {
             );
         }
 
-        if (daoRewardsStorage().readTotalEffectiveBadgeLastQuarter(data.lastParticipatedQuarter.add(1)) > 0) {
+        if (daoRewardsStorage().readTotalEffectiveModeratorDGDLastQuarter(data.lastParticipatedQuarter.add(1)) > 0) {
             _userClaimableDgx = _userClaimableDgx.add(
-                data.effectiveBadgeBalance
+                data.effectiveModeratorDGDBalance
                 .mul(daoRewardsStorage().readRewardsPoolOfLastQuarter(
                     data.lastParticipatedQuarter.add(1)
                 ))
                 .mul(
                      get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_NUM)
                 )
-                .div(daoRewardsStorage().readTotalEffectiveBadgeLastQuarter(
+                .div(daoRewardsStorage().readTotalEffectiveModeratorDGDLastQuarter(
                     data.lastParticipatedQuarter.add(1)
                 ))
                 .div(get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN))
             );
         }
-
-        /* if (daoRewardsStorage().readTotalEffectiveBadgeLastQuarter(data.lastParticipatedQuarter + 1) > 0) {
-          _userClaimableDgx += data.effectiveBadgeBalance *
-              daoRewardsStorage().readRewardsPoolOfLastQuarter(data.lastParticipatedQuarter + 1)
-              * get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_NUM)
-              / daoRewardsStorage().readTotalEffectiveBadgeLastQuarter(data.lastParticipatedQuarter + 1)
-              / get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN);
-        } */
 
         // update claimableDGXs. The calculation needs to take into account demurrage since the
         // dgxDistributionDay of the last quarter as well
@@ -322,17 +305,14 @@ contract DaoRewardsManager is DaoCommon {
         (
             interResults.countedUntil,,,,
             info.totalEffectiveDGDLastQuarter
-        ) = intermediateResultsStorage().getIntermediateResults(keccak256("Quarter Effective DGD ", info.previousQuarter));
-        testBytes = keccak256("Quarter Effective DGD ", info.previousQuarter);
-        testBytes2 = keccak256("Mod Effective DGD ", info.previousQuarter);
-
+        ) = intermediateResultsStorage().getIntermediateResults(keccak256(INTERMEDIATE_DGD_IDENTIFIER, info.previousQuarter));
         _operations = sumEffectiveBalance(info, false, _operations, interResults);
         if (!info.doneCalculatingEffectiveBalance) { return false; }
 
         (
             interResults.countedUntil,,,,
-            info.totalEffectiveBadgesLastQuarter
-        ) = intermediateResultsStorage().getIntermediateResults(keccak256("Mod Effective DGD ", info.previousQuarter));
+            info.totalEffectiveModeratorDGDLastQuarter
+        ) = intermediateResultsStorage().getIntermediateResults(keccak256(INTERMEDIATE_MODERATOR_DGD_IDENTIFIER, info.previousQuarter));
         sumEffectiveBalance(info, true, _operations, interResults);
         if (!info.doneCalculatingModeratorEffectiveBalance) { return false; }
         // save the quarter Info
@@ -356,7 +336,7 @@ contract DaoRewardsManager is DaoCommon {
             get_uint_config(CONFIG_MINIMAL_MODERATOR_QUARTER_POINT),
             get_uint_config(CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR),
             get_uint_config(CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR),
-            info.totalEffectiveBadgesLastQuarter,
+            info.totalEffectiveModeratorDGDLastQuarter,
 
             now,
             info.dgxRewardsPoolLastQuarter,
@@ -402,10 +382,10 @@ contract DaoRewardsManager is DaoCommon {
                 continue;
             }
             if (_badgeCalculation) {
-                info.totalEffectiveBadgesLastQuarter = info.totalEffectiveBadgesLastQuarter.add(daoCalculatorService().calculateUserEffectiveBalance(
-                    info.qInfo.badgeMinimalParticipationPoint,
-                    info.qInfo.badgeQuarterPointScalingFactor,
-                    info.qInfo.badgeReputationPointScalingFactor,
+                info.totalEffectiveModeratorDGDLastQuarter = info.totalEffectiveModeratorDGDLastQuarter.add(daoCalculatorService().calculateUserEffectiveBalance(
+                    info.qInfo.moderatorMinimalParticipationPoint,
+                    info.qInfo.moderatorQuarterPointScalingFactor,
+                    info.qInfo.moderatorReputationPointScalingFactor,
                     daoPointsStorage().getQuarterModeratorPoint(info.currentUser, info.previousQuarter),
                     daoPointsStorage().getReputation(info.currentUser),
                     daoStakeStorage().lockedDGDStake(info.currentUser)
@@ -430,56 +410,14 @@ contract DaoRewardsManager is DaoCommon {
             info.doneCalculatingEffectiveBalance = true;
         }
         intermediateResultsStorage().setIntermediateResults(
-            keccak256(_badgeCalculation ? "Mod Effective DGD " : "Quarter Effective DGD ", info.previousQuarter),
+            keccak256(_badgeCalculation ? INTERMEDIATE_MODERATOR_DGD_IDENTIFIER : INTERMEDIATE_DGD_IDENTIFIER, info.previousQuarter),
             _lastAddress,
             0,0,0,
-            _badgeCalculation ? info.totalEffectiveBadgesLastQuarter : info.totalEffectiveDGDLastQuarter
+            _badgeCalculation ? info.totalEffectiveModeratorDGDLastQuarter : info.totalEffectiveDGDLastQuarter
         );
 
         _operationsLeft = _operations.sub(info.userCount);
     }
-
-    /// @notice Function to read effective/rewardable balance of user for the previous quarter
-    /// pparam _user Address of the DAO participant
-    /// rreturn _effectiveDGDBalance Effective/Rewardable Balance of user
-    /* function getUserEffectiveDGDBalanceLastQuarter(address _user)
-        public
-        returns (uint256 _effectiveDGDBalance)
-    {
-        QuarterRewardsInfo memory info;
-        info.previousQuarter = currentQuarterIndex().sub(1);
-        info.qInfo = readQuarterInfo(info.previousQuarter);
-
-        _effectiveDGDBalance = daoCalculatorService().calculateUserEffectiveBalance(
-            info.qInfo.minimalParticipationPoint,
-            info.qInfo.quarterPointScalingFactor,
-            info.qInfo.reputationPointScalingFactor,
-            daoPointsStorage().getQuarterPoint(_user, info.previousQuarter),
-            daoPointsStorage().getReputation(_user),
-            daoStakeStorage().lockedDGDStake(_user)
-        );
-    } */
-
-    /// @notice Function to read effective/rewardable balance of user in the previous quarter
-    /// pparam _user Address of the DAO participant
-    /// rreturn _effectiveDGDBalance Effective/Rewardable Balance of user
-    /* function getUserEffectiveModeratorBalanceLastQuarter(address _user)
-        public
-        returns (uint256 _effectiveDGDBalance)
-    {
-        QuarterRewardsInfo memory info;
-        info.previousQuarter = currentQuarterIndex().sub(1);
-        info.qInfo = readQuarterInfo(info.previousQuarter);
-
-        _effectiveDGDBalance = daoCalculatorService().calculateUserEffectiveBalance(
-            info.qInfo.badgeMinimalParticipationPoint,
-            info.qInfo.badgeQuarterPointScalingFactor,
-            info.qInfo.badgeReputationPointScalingFactor,
-            daoPointsStorage().getQuarterModeratorPoint(_user, info.previousQuarter),
-            daoPointsStorage().getReputation(_user),
-            daoStakeStorage().lockedDGDStake(_user)
-        );
-    } */
 
     function readQuarterInfo(uint256 _quarterIndex)
         internal
@@ -492,11 +430,11 @@ contract DaoRewardsManager is DaoCommon {
             _qInfo.totalEffectiveDGDLastQuarter,
         ) = daoRewardsStorage().readQuarterParticipantInfo(_quarterIndex);
         (
-            _qInfo.badgeMinimalParticipationPoint,
-            _qInfo.badgeQuarterPointScalingFactor,
-            _qInfo.badgeReputationPointScalingFactor,
-            _qInfo.totalEffectiveBadgeLastQuarter,
-        ) = daoRewardsStorage().readQuarterBadgeParticipantInfo(_quarterIndex);
+            _qInfo.moderatorMinimalParticipationPoint,
+            _qInfo.moderatorQuarterPointScalingFactor,
+            _qInfo.moderatorReputationPointScalingFactor,
+            _qInfo.totalEffectiveModeratorDGDLastQuarter,
+        ) = daoRewardsStorage().readQuarterModeratorInfo(_quarterIndex);
         (
             _qInfo.dgxDistributionDay,
             _qInfo.dgxRewardsPoolLastQuarter,

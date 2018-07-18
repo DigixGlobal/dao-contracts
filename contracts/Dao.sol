@@ -95,7 +95,7 @@ contract Dao is DaoCommon, Claimable {
         returns (bool _success)
     {
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
-        uint256 _currentState;
+        bytes32 _currentState;
         (,,,_currentState,,,,,) = daoStorage().readProposal(_proposalId);
         require(_currentState == PROPOSAL_STATE_PREPROPOSAL ||
           _currentState == PROPOSAL_STATE_DRAFT);
@@ -180,10 +180,12 @@ contract Dao is DaoCommon, Claimable {
 
                 daoStorage().setProposalNextMilestoneStart(_proposalId, _lastVotingRound, now);
 
+                uint256 _milestoneDuration;
+                (,_milestoneDuration,,) = daoStorage().readProposalMilestone(_proposalId, _lastVotingRound);
                 daoVotingClaims().updateTimelineForNextMilestone(
                     _proposalId,
                     _lastVotingRound.add(1),
-                    daoStorage().readProposalMilestoneDuration(_proposalId, _lastVotingRound),
+                    _milestoneDuration,
                     now
                 );
               }
