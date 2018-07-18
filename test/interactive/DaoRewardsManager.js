@@ -194,7 +194,7 @@ contract('DaoRewardsManager', function (accounts) {
       }
 
       for (const i of indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT)) {
-        calculatedRewards.push(calculateDgxRewards(
+        calculatedRewards.push(bN(calculateDgxRewards(
           effectiveDGDBalances[i],
           effectiveModeratorDGDBalances[i],
           daoConstantsValues(bN).CONFIG_PORTION_TO_BADGE_HOLDERS_NUM,
@@ -202,8 +202,8 @@ contract('DaoRewardsManager', function (accounts) {
           await contracts.daoRewardsStorage.readRewardsPoolOfLastQuarter(lastParticipatedQuarter.plus(bN(1))),
           await contracts.daoRewardsStorage.readTotalEffectiveDGDLastQuarter(lastParticipatedQuarter.plus(bN(1))),
           await contracts.daoRewardsStorage.readTotalEffectiveModeratorDGDLastQuarter(lastParticipatedQuarter.plus(bN(1))),
-        ) + rewardsBefore[i].toNumber());
-        calculatedReputation.push(calculateReputation(
+        )).plus(rewardsBefore[i]));
+        calculatedReputation.push(bN(calculateReputation(
           currentQuarter,
           await contracts.daoRewardsStorage.lastParticipatedQuarter.call(addressOf.allParticipants[i]),
           await contracts.daoRewardsStorage.lastQuarterThatRewardsWasUpdated.call(addressOf.allParticipants[i]),
@@ -221,7 +221,7 @@ contract('DaoRewardsManager', function (accounts) {
           await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.allParticipants[i], lastParticipatedQuarter),
           await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.allParticipants[i], lastParticipatedQuarter),
           (i < BADGE_HOLDER_COUNT),
-        ));
+        )));
       }
 
       await a.map(indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT), 20, async (i) => {
@@ -230,13 +230,13 @@ contract('DaoRewardsManager', function (accounts) {
         }
       });
 
-      // const pointsAfter = await readReputationPoints();
+      const pointsAfter = await readReputationPoints();
       const rewardsAfter = await readClaimableDgx();
 
       await a.map(indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT), 20, async (i) => {
         if (addressOf.allParticipants[i] !== addressOf.dgdHolders[4]) {
-          console.log('read = ', rewardsAfter[i]);
-          console.log('calc = ', calculatedRewards[i]);
+          console.log('read = ', rewardsAfter[i], ' & ', pointsAfter[i]);
+          console.log('calc = ', calculatedRewards[i], ' & ', calculatedReputation[i]);
           console.log('');
           // assert.deepEqual(pointsAfter[i], bN(calculatedReputation[i]));
           // assert.deepEqual(rewardsAfter[i], bN(calculatedRewards[i]));
@@ -265,53 +265,56 @@ contract('DaoRewardsManager', function (accounts) {
 
       const pointsAfter = await contracts.daoPointsStorage.getReputation.call(addressOf.dgdHolders[4]);
 
+      const calculatedValue = calculateReputation(
+        bN(3),
+        bN(1),
+        bN(0),
+        bN(0),
+        daoConstantsValues(bN).CONFIG_MAXIMUM_REPUTATION_DEDUCTION,
+        daoConstantsValues(bN).CONFIG_PUNISHMENT_FOR_NOT_LOCKING,
+        daoConstantsValues(bN).CONFIG_MINIMAL_PARTICIPATION_POINT,
+        daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_NUM,
+        daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_DEN,
+        daoConstantsValues(bN).CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION,
+        daoConstantsValues(bN).CONFIG_MINIMAL_MODERATOR_QUARTER_POINT,
+        daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM,
+        daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN,
+        pointsBefore,
+        await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.dgdHolders[4], bN(1)),
+        await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.dgdHolders[4], bN(1)),
+        false,
+      );
+
       // for missing q2
       assert.deepEqual(
         pointsFirst,
-        bN(calculateReputation(
-          bN(3),
-          bN(1),
-          bN(0),
-          bN(0),
-          daoConstantsValues(bN).CONFIG_MAXIMUM_REPUTATION_DEDUCTION,
-          daoConstantsValues(bN).CONFIG_PUNISHMENT_FOR_NOT_LOCKING,
-          daoConstantsValues(bN).CONFIG_MINIMAL_PARTICIPATION_POINT,
-          daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_NUM,
-          daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_DEN,
-          daoConstantsValues(bN).CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION,
-          daoConstantsValues(bN).CONFIG_MINIMAL_MODERATOR_QUARTER_POINT,
-          daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM,
-          daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN,
-          pointsBefore,
-          await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.dgdHolders[4], bN(1)),
-          await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.dgdHolders[4], bN(1)),
-          false,
-        )).minus(daoConstantsValues(bN).CONFIG_PUNISHMENT_FOR_NOT_LOCKING)
-          .minus(daoConstantsValues(bN).CONFIG_MAXIMUM_REPUTATION_DEDUCTION),
+        bN(calculatedValue),
+      );
+
+      const calculatedValue2 = calculateReputation(
+        bN(4),
+        bN(3),
+        bN(1),
+        bN(1),
+        daoConstantsValues(bN).CONFIG_MAXIMUM_REPUTATION_DEDUCTION,
+        daoConstantsValues(bN).CONFIG_PUNISHMENT_FOR_NOT_LOCKING,
+        daoConstantsValues(bN).CONFIG_MINIMAL_PARTICIPATION_POINT,
+        daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_NUM,
+        daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_DEN,
+        daoConstantsValues(bN).CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION,
+        daoConstantsValues(bN).CONFIG_MINIMAL_MODERATOR_QUARTER_POINT,
+        daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM,
+        daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN,
+        pointsFirst,
+        await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.dgdHolders[4], bN(3)),
+        await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.dgdHolders[4], bN(3)),
+        false,
       );
 
       // for participating in q3
       assert.deepEqual(
         pointsAfter.toNumber(),
-        calculateReputation(
-          bN(4),
-          bN(3),
-          bN(1),
-          bN(1),
-          daoConstantsValues(bN).CONFIG_MAXIMUM_REPUTATION_DEDUCTION,
-          daoConstantsValues(bN).CONFIG_PUNISHMENT_FOR_NOT_LOCKING,
-          daoConstantsValues(bN).CONFIG_MINIMAL_PARTICIPATION_POINT,
-          daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_NUM,
-          daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_DEN,
-          daoConstantsValues(bN).CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION,
-          daoConstantsValues(bN).CONFIG_MINIMAL_MODERATOR_QUARTER_POINT,
-          daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM,
-          daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN,
-          pointsFirst,
-          await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.dgdHolders[4], bN(3)),
-          await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.dgdHolders[4], bN(3)),
-          false,
-        ),
+        calculatedValue2,
       );
     });
     it('[Q5 | demurrage testing]: the claimable dgx should be demurraged', async function () {

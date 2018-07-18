@@ -86,7 +86,7 @@ const calculateReputation = function (
     return _currentReputation;
   }
 
-  if (_lastParticipatedQuarter > _lastQuarterThatReputationWasUpdated) {
+  if (_lastParticipatedQuarter === (_currentQuarter - 1)) {
     if (_quarterPoint < _minimalParticipationPoint) {
       _currentReputation -= Math.floor(((_minimalParticipationPoint - _quarterPoint) * _maxReputationDeduction) / _minimalParticipationPoint);
     } else {
@@ -100,10 +100,10 @@ const calculateReputation = function (
         _currentReputation += Math.floor(((_quarterModeratorPoint - _minimalModeratorParticipationPoint) * _reputationPerExtraModeratorNum) / _reputationPerExtraModeratorDen);
       }
     }
-  } else {
-    const _fineForNotLocking = (_currentQuarter - 1 - _lastParticipatedQuarter) * (_maxReputationDeduction + _punishmentForNotLocking);
-    _currentReputation = _fineForNotLocking > _currentReputation ? 0 : (_currentReputation - _fineForNotLocking);
   }
+
+  const _fineForNotLocking = (_currentQuarter - 1 - _lastParticipatedQuarter) * (_maxReputationDeduction + _punishmentForNotLocking);
+  _currentReputation = _fineForNotLocking > _currentReputation ? 0 : (_currentReputation - _fineForNotLocking);
   return _currentReputation;
 };
 
