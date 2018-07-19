@@ -28,6 +28,7 @@ const DaoFundingManager = artifacts.require('DaoFundingManager.sol');
 const Dao = artifacts.require('Dao.sol');
 const DaoVoting = artifacts.require('DaoVoting.sol');
 const DaoVotingClaims = artifacts.require('DaoVotingClaims.sol');
+const DaoSpecialVotingClaims = artifacts.require('DaoSpecialVotingClaims.sol');
 const DaoRewardsManager = artifacts.require('DaoRewardsManager.sol');
 
 module.exports = async function (deployer, network) {
@@ -74,6 +75,7 @@ module.exports = async function (deployer, network) {
       deployer.deploy(Dao, ContractResolver.address);
       deployer.deploy(DaoVoting, ContractResolver.address);
       deployer.deploy(DaoVotingClaims, ContractResolver.address);
+      deployer.deploy(DaoSpecialVotingClaims, ContractResolver.address);
       return deployer.deploy(DaoRewardsManager, ContractResolver.address, MockDgx.address);
     })
     .then(() => {

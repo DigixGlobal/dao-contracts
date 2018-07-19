@@ -533,6 +533,8 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
             proposalsByState[PROPOSAL_STATE_DRAFT].remove_item(_proposalId);
             proposalsByState[PROPOSAL_STATE_MODERATED].append(_proposalId);
             proposalsById[_proposalId].currentState = PROPOSAL_STATE_MODERATED;
+        } else {
+            closeProposalInternal(_proposalId);
         }
     }
 

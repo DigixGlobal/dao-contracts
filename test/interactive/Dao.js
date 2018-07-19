@@ -1857,7 +1857,7 @@ contract('Dao', function (accounts) {
     });
     it('claim special proposal voting result', async function () {
       await waitFor(10, addressOf, web3); // 10 seconds of reveal phase
-      await contracts.daoVotingClaims.claimSpecialProposalVotingResult(specialProposalId, { from: addressOf.founderBadgeHolder });
+      await contracts.daoSpecialVotingClaims.claimSpecialProposalVotingResult(specialProposalId, { from: addressOf.founderBadgeHolder });
     });
   });
 });

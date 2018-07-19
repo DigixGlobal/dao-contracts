@@ -52,9 +52,17 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         if_main_phase()
         if_draft_not_claimed(_proposalId)
         if_after_draft_voting_phase(_proposalId)
-        if_from_proposer(_proposalId)
         returns (bool _passed)
     {
+        // if after the claiming deadline, its auto failed
+        if (now > daoStorage().readProposalDraftVotingTime(_proposalId)
+                    .add(get_uint_config(CONFIG_DRAFT_VOTING_PHASE))
+                    .add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE))) {
+            daoStorage().setProposalDraftPass(_proposalId, false);
+            return false;
+        }
+        require(msg.sender == daoStorage().readProposalProposer(_proposalId));
+
         // get the previously stored intermediary state
         DaoStructs.IntermediateResults memory _currentResults;
         (
@@ -112,7 +120,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     }
 
     function processDraftVotingClaim(bytes32 _proposalId, DaoStructs.IntermediateResults _currentResults)
-        private
+        internal
     {
         require(_currentResults.currentQuorum > daoCalculatorService().minimumDraftQuorum(_proposalId));
         require(daoCalculatorService().draftQuotaPass(_currentResults.currentForCount, _currentResults.currentAgainstCount));
@@ -292,31 +300,6 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         }
     }
 
-    /// @notice Function to claim the voting result on special proposal
-    /// @param _proposalId ID of the special proposal
-    /// @return _passed Boolean, true if voting passed, false if failed
-    function claimSpecialProposalVotingResult(bytes32 _proposalId)
-        public
-        if_main_phase()
-        if_from_special_proposer(_proposalId)
-        if_not_claimed_special(_proposalId)
-        if_after_reveal_phase_special(_proposalId)
-        returns (bool _passed)
-    {
-        address[] memory _allStakeHolders = daoListingService().listParticipants(10000, true);
-        DaoIntermediateStructs.VotingCount memory _count;
-        (_count.forCount, _count.againstCount, _count.quorum) = daoSpecialStorage().readVotingCount(_proposalId, _allStakeHolders);
-        if ((_count.quorum > daoCalculatorService().minimumVotingQuorumForSpecial()) &&
-            (daoCalculatorService().votingQuotaForSpecialPass(_count.forCount, _count.againstCount))) {
-            _passed = true;
-        }
-        daoSpecialStorage().setPass(_proposalId, _passed);
-        daoSpecialStorage().setVotingClaim(_proposalId, true);
-        if (_passed) {
-            setConfigs(_proposalId);
-        }
-    }
-
     function updateTimelineForNextMilestone(
         bytes32 _proposalId,
         uint256 _index,
@@ -371,20 +354,6 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         for (uint256 i = 0; i < _n; i++) {
             daoPointsStorage().addReputation(_voters[i], _bonus);
         }
-    }
-
-    function setConfigs(bytes32 _proposalId)
-        private
-    {
-        uint256[] memory _uintConfigs;
-        address[] memory _addressConfigs;
-        bytes32[] memory _bytesConfigs;
-        (
-            _uintConfigs,
-            _addressConfigs,
-            _bytesConfigs
-        ) = daoSpecialStorage().readConfigs(_proposalId);
-        daoConfigsStorage().updateUintConfigs(_uintConfigs);
     }
 
 }

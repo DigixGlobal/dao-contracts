@@ -32,7 +32,7 @@ contract IntermediateResultsStorage is ResolverClient, DaoConstants {
 
     function resetIntermediateResults(bytes32 _key)
         public
-        if_sender_is_from([CONTRACT_DAO_REWARDS_MANAGER, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES])
+        if_sender_is_from([CONTRACT_DAO_REWARDS_MANAGER, CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_SPECIAL_VOTING_CLAIMS])
     {
         allIntermediateResults[_key].countedUntil = address(0x0);
     }
@@ -46,7 +46,7 @@ contract IntermediateResultsStorage is ResolverClient, DaoConstants {
         uint256 _currentSumOfEffectiveBalance
     )
         public
-        if_sender_is_from([CONTRACT_DAO_REWARDS_MANAGER, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES])
+        if_sender_is_from([CONTRACT_DAO_REWARDS_MANAGER, CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_SPECIAL_VOTING_CLAIMS])
     {
         allIntermediateResults[_key].countedUntil = _countedUntil;
         allIntermediateResults[_key].currentForCount = _currentForCount;

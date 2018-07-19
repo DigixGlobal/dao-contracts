@@ -24,6 +24,7 @@ contract DaoConstants {
     bytes32 CONTRACT_DAO_STAKE_LOCKING = "dao:stake-locking";
     bytes32 CONTRACT_DAO_VOTING = "dao:voting";
     bytes32 CONTRACT_DAO_VOTING_CLAIMS = "dao:voting:claims";
+    bytes32 CONTRACT_DAO_SPECIAL_VOTING_CLAIMS = "dao:svoting:claims";
     bytes32 CONTRACT_DAO_IDENTITY = "dao:identity";
     bytes32 CONTRACT_DAO_REWARDS_MANAGER = "dao:rewards-manager";
     bytes32 CONTRACT_DAO_ROLES = "dao:roles";

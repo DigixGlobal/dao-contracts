@@ -83,7 +83,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
 
     function updateUintConfigs(uint256[] _uintConfigs)
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
+        if_sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS)
     {
         uintConfigs[CONFIG_LOCKING_PHASE_DURATION] = _uintConfigs[0];
         uintConfigs[CONFIG_QUARTER_DURATION] = _uintConfigs[1];

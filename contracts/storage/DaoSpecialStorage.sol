@@ -123,14 +123,14 @@ contract DaoSpecialStorage is DaoStorageCommon {
 
     function setPass(bytes32 _proposalId, bool _result)
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
+        if_sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS)
     {
         proposalsById[_proposalId].voting.passed = _result;
     }
 
     function setVotingClaim(bytes32 _proposalId, bool _claimed)
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
+        if_sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS)
     {
         DaoStructs.SpecialProposal _proposal = proposalsById[_proposalId];
         _proposal.voting.claimed = _claimed;

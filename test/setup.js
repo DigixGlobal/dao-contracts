@@ -47,6 +47,7 @@ const DaoIdentity = process.env.SIMULATION ? 0 : artifacts.require('./DaoIdentit
 const Dao = process.env.SIMULATION ? 0 : artifacts.require('./Dao.sol');
 const DaoVoting = process.env.SIMULATION ? 0 : artifacts.require('./DaoVoting.sol');
 const DaoVotingClaims = process.env.SIMULATION ? 0 : artifacts.require('./DaoVotingClaims.sol');
+const DaoSpecialVotingClaims = process.env.SIMULATION ? 0 : artifacts.require('./DaoSpecialVotingClaims.sol');
 const DaoStakeLocking = process.env.SIMULATION ? 0 : artifacts.require('./DaoStakeLocking.sol');
 const DaoFundingManager = process.env.SIMULATION ? 0 : artifacts.require('./DaoFundingManager.sol');
 const DaoRewardsManager = process.env.SIMULATION ? 0 : artifacts.require('./DaoRewardsManager.sol');
@@ -85,7 +86,7 @@ const getAccountsAndAddressOf = function (accounts, addressOf) {
   for (const key in addressOfTemp) addressOf[key] = addressOfTemp[key];
 };
 
-const printProposalDetails = async (contracts, proposal) => {
+const printProposalDetails = async (contracts, proposal, votingRound = 0) => {
   console.log('\tPrinting details for proposal ', proposal.id);
   const proposalDetails = await contracts.daoStorage.readProposal(proposal.id);
   console.log('\t\tProposer: ', proposalDetails[1]);
@@ -94,6 +95,9 @@ const printProposalDetails = async (contracts, proposal) => {
   console.log('\t\tnVersions: ', proposalDetails[5]);
   console.log('\t\tlatestVersionDoc: ', proposalDetails[6]);
   console.log('\t\tfinalVersion: ', proposalDetails[7]);
+  console.log('\t\tVoting round ', votingRound);
+  console.log('\t\t\tVoting time start :', await contracts.daoStorage.readProposalVotingTime(proposal.id, votingRound));
+  console.log('\t\t\tNext milestone start :', await contracts.daoStorage.readProposalNextMilestoneStart(proposal.id, votingRound));
 };
 
 const getAllParticipantAddresses = function (accounts) {
@@ -151,6 +155,7 @@ const deployInteractive = async function (libs, contracts, resolver) {
   contracts.dao = await Dao.new(resolver.address);
   contracts.daoVoting = await DaoVoting.new(resolver.address);
   contracts.daoVotingClaims = await DaoVotingClaims.new(resolver.address);
+  contracts.daoSpecialVotingClaims = await DaoSpecialVotingClaims.new(resolver.address);
   contracts.daoRewardsManager = await DaoRewardsManager.new(resolver.address, contracts.dgxToken.address);
   contracts.daoWhitelisting = await DaoWhitelisting.new(resolver.address, [
     contracts.daoStakeLocking.address,
@@ -159,6 +164,7 @@ const deployInteractive = async function (libs, contracts, resolver) {
     contracts.dao.address,
     contracts.daoVoting.address,
     contracts.daoVotingClaims.address,
+    contracts.daoSpecialVotingClaims.address,
     contracts.daoCalculatorService.address,
     contracts.daoListingService.address,
   ]);

@@ -28,6 +28,7 @@ const DaoIdentity = artifacts.require('./DaoIdentity.sol');
 const Dao = artifacts.require('./Dao.sol');
 const DaoVoting = artifacts.require('./DaoVoting.sol');
 const DaoVotingClaims = artifacts.require('./DaoVotingClaims.sol');
+const DaoSpecialVotingClaims = artifacts.require('./DaoSpecialVotingClaims.sol');
 const DaoStakeLocking = artifacts.require('./DaoStakeLocking.sol');
 const DaoFundingManager = artifacts.require('./DaoFundingManager.sol');
 const DaoRewardsManager = artifacts.require('./DaoRewardsManager.sol');
@@ -189,6 +190,7 @@ const assignDeployedContracts = async function (contracts, libs) {
   contracts.dao = await Dao.deployed();
   contracts.daoVoting = await DaoVoting.deployed();
   contracts.daoVotingClaims = await DaoVotingClaims.deployed();
+  contracts.daoSpecialVotingClaims = await DaoSpecialVotingClaims.deployed();
   contracts.daoRewardsManager = await DaoRewardsManager.deployed();
 };
 
@@ -241,23 +243,25 @@ const claimDraftVotingResult = async function (contracts) {
   console.log(mods);
   await contracts.daoVotingClaims.claimDraftVotingResult(
     proposals[0].id,
-    bN(10),
+    bN(20),
     { from: proposals[0].proposer },
   );
   await contracts.daoVotingClaims.claimDraftVotingResult(
     proposals[2].id,
-    bN(10),
+    bN(20),
     { from: proposals[2].proposer },
   );
   await contracts.daoVotingClaims.claimDraftVotingResult(
     proposals[3].id,
-    bN(10),
+    bN(20),
     { from: proposals[3].proposer },
   );
 };
 
 const votingCommitRound = async function (contracts, addressOf) {
+  console.log('now = ', getCurrentTimestamp());
   await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
+    await printProposalDetails(contracts, proposals[proposalIndex]);
     if (proposalIndex === 1) return;
     await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
       await contracts.daoVoting.commitVoteOnProposal(
@@ -266,6 +270,7 @@ const votingCommitRound = async function (contracts, addressOf) {
         votingCommits[proposalIndex][holderIndex],
         { from: addressOf.allParticipants[holderIndex] },
       );
+      console.log(`committed vote for holder ${holderIndex} on proposal ${proposalIndex}`);
     });
   });
 };
@@ -438,7 +443,9 @@ const specialProposalVoting = async function (contracts, addressOf, specialPropo
 
   await waitFor(10, addressOf, web3); // 10 seconds of reveal phase
   await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
-  await contracts.daoVotingClaims.claimSpecialProposalVotingResult(specialProposalId, { from: addressOf.founderBadgeHolder });
+  console.log('before claiming special proposal');
+  await contracts.daoSpecialVotingClaims.claimSpecialProposalVotingResult(specialProposalId, bN(2), { from: addressOf.founderBadgeHolder });
+  await contracts.daoSpecialVotingClaims.claimSpecialProposalVotingResult(specialProposalId, bN(100), { from: addressOf.founderBadgeHolder });
   console.log('claimed special proposal');
 };
 
@@ -579,7 +586,8 @@ module.exports = async function () {
     // console.log('prl approved the proposals');
 
     // first voting round
-    await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);
+    // await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);
+    console.log('before committing votes');
     await votingCommitRound(contracts, addressOf);
     console.log('commit voting has been done');
     await votingRevealRound(contracts, addressOf, { v: votes, s: salts });

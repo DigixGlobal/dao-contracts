@@ -82,10 +82,10 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_from_special_proposer(bytes32 _specialProposalId) {
+    /* modifier if_from_special_proposer(bytes32 _specialProposalId) {
         require(msg.sender == daoSpecialStorage().readProposalProposer(_specialProposalId));
         _;
-    }
+    } */
 
     modifier is_proposal_state(bytes32 _proposalId, bytes32 _STATE) {
         bytes32 _currentState;
