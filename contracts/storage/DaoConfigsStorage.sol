@@ -39,7 +39,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_QUARTER_POINT_VOTE] = 1;
         uintConfigs[CONFIG_QUARTER_POINT_INTERIM_VOTE] = 1;
         uintConfigs[CONFIG_QUARTER_POINT_CLAIM_RESULT] = 1;
-        uintConfigs[CONFIG_QUARTER_POINT_MILESTONE_COMPLETION] = 3;
+        uintConfigs[CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH] = 3;
 
         uintConfigs[CONFIG_BONUS_REPUTATION_NUMERATOR] = 200;
         uintConfigs[CONFIG_BONUS_REPUTATION_DENOMINATOR] = 100;
@@ -108,7 +108,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_QUARTER_POINT_INTERIM_VOTE] = _uintConfigs[20];
         uintConfigs[CONFIG_MINIMAL_PARTICIPATION_POINT] = _uintConfigs[21];
         uintConfigs[CONFIG_QUARTER_POINT_CLAIM_RESULT] = _uintConfigs[22];
-        uintConfigs[CONFIG_QUARTER_POINT_MILESTONE_COMPLETION] = uintConfigs[23];
+        uintConfigs[CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH] = uintConfigs[23];
         uintConfigs[CONFIG_BONUS_REPUTATION_NUMERATOR] = _uintConfigs[24];
         uintConfigs[CONFIG_BONUS_REPUTATION_DENOMINATOR] = _uintConfigs[25];
         uintConfigs[CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE] = _uintConfigs[26];
@@ -168,7 +168,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         _uintConfigs[20] = uintConfigs[CONFIG_QUARTER_POINT_INTERIM_VOTE];
         _uintConfigs[21] = uintConfigs[CONFIG_MINIMAL_PARTICIPATION_POINT];
         _uintConfigs[22] = uintConfigs[CONFIG_QUARTER_POINT_CLAIM_RESULT];
-        _uintConfigs[23] = uintConfigs[CONFIG_QUARTER_POINT_MILESTONE_COMPLETION];
+        _uintConfigs[23] = uintConfigs[CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH];
         _uintConfigs[24] = uintConfigs[CONFIG_BONUS_REPUTATION_NUMERATOR];
         _uintConfigs[25] = uintConfigs[CONFIG_BONUS_REPUTATION_DENOMINATOR];
         _uintConfigs[26] = uintConfigs[CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE];

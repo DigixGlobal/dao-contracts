@@ -142,7 +142,7 @@ library DaoStructs {
     function readProposalMilestone(Proposal storage _proposal, uint256 _milestoneIndex)
         public
         constant
-        returns (uint256 _milestoneId, uint256 _duration, uint256 _funding, uint256 _finalReward)
+        returns (uint256 _milestoneId, uint256 _duration, uint256 _funding)
     {
         require(_milestoneIndex >= 0);
         bytes32 _finalVersion = _proposal.finalVersion;
@@ -150,8 +150,9 @@ library DaoStructs {
             _milestoneId = _milestoneIndex;
             _duration = _proposal.proposalVersions[_finalVersion].milestoneDurations[_milestoneIndex];
             _funding = _proposal.proposalVersions[_finalVersion].milestoneFundings[_milestoneIndex];
+        } else {
+            _funding = _proposal.proposalVersions[_finalVersion].finalReward;
         }
-        _finalReward = _proposal.proposalVersions[_finalVersion].finalReward;
     }
 
     function addProposalVersion(

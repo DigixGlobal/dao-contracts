@@ -204,7 +204,6 @@ contract('DaoStorage', function (accounts) {
       const milestoneInfoAfter = await contracts.daoStorage.readProposalMilestone.call(doc, bN(0));
       assert.deepEqual(milestoneInfoBefore[1], bN(0));
       assert.deepEqual(milestoneInfoBefore[2], bN(0));
-      assert.deepEqual(milestoneInfoBefore[3], bN(0));
       assert.deepEqual(milestoneInfoAfter[1], newDurations[0]);
       assert.deepEqual(milestoneInfoAfter[2], newFundings[0]);
     });

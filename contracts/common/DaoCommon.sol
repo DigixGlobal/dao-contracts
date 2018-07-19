@@ -104,7 +104,7 @@ contract DaoCommon is IdentityCommon {
         require(_value > 0);
         require(_value <= daoFundingStorage().claimableEth(msg.sender));
         uint256 _funding;
-        (,,_funding,) = daoStorage().readProposalMilestone(_proposalId, _index);
+        (,,_funding) = daoStorage().readProposalMilestone(_proposalId, _index);
         require(_value <= _funding);
         _;
     }

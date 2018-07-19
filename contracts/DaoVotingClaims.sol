@@ -164,6 +164,16 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             _done = calculateVoterBonus(_proposalId, _index, _operations, _passed);
             if (!_done) return (_passed, false);
         }
+        if (_passed) {
+            // give quarter points to proposer for finishing the milestone
+            uint256 _milestoneFunding;
+            (,, _milestoneFunding) = daoStorage().readProposalMilestone(_proposalId, _index);
+            daoPointsStorage().addQuarterPoint(
+                daoStorage().readProposalProposer(_proposalId),
+                get_uint_config(CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH).mul(_milestoneFunding).div(10000 ether),
+                currentQuarterIndex()
+            );
+        }
         daoStorage().setVotingClaim(_proposalId, _index, true);
         daoStorage().setProposalPass(_proposalId, _index, _passed);
         _done = true;
@@ -207,10 +217,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
         if (_lastVoter == daoStakeStorage().readLastParticipant()) {
             // this is the last iteration
-            if (_passed) {
-                // give quarter points to proposer for finishing the milestone
-                daoPointsStorage().addQuarterPoint(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_QUARTER_POINT_MILESTONE_COMPLETION), currentQuarterIndex());
-            }
+
             intermediateResultsStorage().resetIntermediateResults(_proposalId);
             _done = true;
         } else {
@@ -283,20 +290,13 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
             // set deadline for next milestone (set startTime for next  voting round)
             DaoIntermediateStructs.MilestoneInfo memory _info;
-            (_info.index, _info.duration, _info.funding, _info.finalReward) = daoStorage().readProposalMilestone(_proposalId, _index);
+            (_info.index, _info.duration, _info.funding) = daoStorage().readProposalMilestone(_proposalId, _index);
             _info.milestoneStart = daoStorage().readProposalNextMilestoneStart(_proposalId, _index);
 
-            if (_info.duration > 0 && _info.funding > 0) {
-                if (isProposalPaused(_proposalId) == false) {
-                    setTimelineForNextMilestone(_proposalId, _index.add(1), _info.duration, _info.milestoneStart);
-                }
-
-                // update claimable funds
-                daoFundingManager().allocateEth(daoStorage().readProposalProposer(_proposalId), _info.funding);
-            } else {
-                // give final reward
-                daoFundingManager().allocateEth(daoStorage().readProposalProposer(_proposalId), _info.finalReward);
+            if (_info.duration > 0 && _info.funding > 0 && !isProposalPaused(_proposalId)) {
+                setTimelineForNextMilestone(_proposalId, _index.add(1), _info.duration, _info.milestoneStart);
             }
+            daoFundingManager().allocateEth(daoStorage().readProposalProposer(_proposalId), _info.funding);
         }
     }
 

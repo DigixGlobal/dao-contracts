@@ -1509,7 +1509,7 @@ contract('Dao', function (accounts) {
       );
 
       assert(await contracts.daoFundingStorage.claimableEth.call(proposals[3].proposer), claimableEthBefore.plus(proposals[3].versions[0].finalReward));
-      assert(await contracts.daoPointsStorage.getQuarterPoint.call(proposals[3].proposer, bN(1)), qpBefore.plus(daoConstantsValues(bN).CONFIG_QUARTER_POINT_MILESTONE_COMPLETION));
+      assert(await contracts.daoPointsStorage.getQuarterPoint.call(proposals[3].proposer, bN(1)), qpBefore.plus(daoConstantsValues(bN).CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH));
     });
     it('[re-claim same voting round]: revert', async function () {
       const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);

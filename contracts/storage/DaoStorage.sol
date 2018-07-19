@@ -340,7 +340,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     function readProposalMilestone(bytes32 _proposalId, uint256 _index)
         public
         constant
-        returns (uint256 _milestoneId, uint256 _duration, uint256 _funding, uint256 _finalReward)
+        returns (uint256 _milestoneId, uint256 _duration, uint256 _funding)
     {
         return proposalsById[_proposalId].readProposalMilestone(_index);
     }
