@@ -136,6 +136,7 @@ const registerInteractive = async function (resolver, addressOf) {
     'dao',
     'dao:voting',
     'dao:voting:claims',
+    'dao:svoting:claims',
     'dao:funding-manager',
     'dao:rewards-manager',
     'dao:whitelisting',
