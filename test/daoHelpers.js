@@ -21,6 +21,8 @@ const prlActions = function (bN) {
 const configs = function (bN) {
   return {
     CONFIG_MINIMUM_LOCKED_DGD: bN(10 ** 9),
+    INTERMEDIATE_DGD_IDENTIFIER: 'inter_dgd_id',
+    INTERMEDIATE_MODERATOR_DGD_IDENTIFIER: 'inter_mod_dgd_id',
   };
 };
 

@@ -306,6 +306,7 @@ contract DaoRewardsManager is DaoCommon {
             interResults.countedUntil,,,,
             info.totalEffectiveDGDLastQuarter
         ) = intermediateResultsStorage().getIntermediateResults(keccak256(INTERMEDIATE_DGD_IDENTIFIER, info.previousQuarter));
+
         _operations = sumEffectiveBalance(info, false, _operations, interResults);
         if (!info.doneCalculatingEffectiveBalance) { return false; }
 
@@ -313,10 +314,12 @@ contract DaoRewardsManager is DaoCommon {
             interResults.countedUntil,,,,
             info.totalEffectiveModeratorDGDLastQuarter
         ) = intermediateResultsStorage().getIntermediateResults(keccak256(INTERMEDIATE_MODERATOR_DGD_IDENTIFIER, info.previousQuarter));
+
         sumEffectiveBalance(info, true, _operations, interResults);
         if (!info.doneCalculatingModeratorEffectiveBalance) { return false; }
         // save the quarter Info
         processGlobalRewardsUpdate(info);
+        _done = true;
     }
 
     function processGlobalRewardsUpdate(QuarterRewardsInfo memory info) internal {

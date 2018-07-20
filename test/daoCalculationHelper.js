@@ -38,7 +38,7 @@ const calculateUserEffectiveBalance = function (
   _quarterPoint = _quarterPoint.toNumber();
   _reputationPoint = _reputationPoint.toNumber();
   _lockedDGDStake = _lockedDGDStake.toNumber();
-  const _baseDGDBalance = _quarterPoint > _minimalParticipationPoint ? _lockedDGDStake : ((_quarterPoint * _lockedDGDStake) / _minimalParticipationPoint);
+  const _baseDGDBalance = _quarterPoint > _minimalParticipationPoint ? _lockedDGDStake : Math.floor((_quarterPoint * _lockedDGDStake) / _minimalParticipationPoint);
   const _effectiveDGDBalance = (_baseDGDBalance * ((_quarterPointScalingFactor + _quarterPoint) - _minimalParticipationPoint) *
                                (_reputationPointScalingFactor + _reputationPoint)) /
                                (_quarterPointScalingFactor * _reputationPointScalingFactor);
