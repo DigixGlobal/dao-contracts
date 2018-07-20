@@ -30,6 +30,7 @@ const {
   randomAddress,
   randomAddresses,
   paddedHex,
+  timeIsRecent,
 } = require('@digix/helpers/lib/helpers');
 
 const MockDaoFundingManager = artifacts.require('MockDaoFundingManager.sol');
@@ -579,6 +580,38 @@ contract('DaoRewardsManager', function (accounts) {
       const quarterInfo2 = await contracts.daoRewardsStorage.readQuarterInfo.call(bN(2));
       assert.deepEqual(totalEffectiveDGDLastQuarter, quarterInfo2[3]);
       assert.deepEqual(totalEffectiveModeratorDGDLastQuarter, quarterInfo2[7]);
+    });
+    it('[daoRewardsManager already has some dgx unclaimed from previous quarter]: verify quarter info', async function () {
+      // this user will claim their dgx
+      const user8 = accounts[8];
+      await contracts.daoStakeStorage.mock_add_participants([user8], [bN(20 * (10 ** 9))]);
+      await contracts.daoPointsStorage.mock_set_qp([user8], [bN(7)], bN(1));
+      await contracts.daoPointsStorage.mock_set_rp([user8], [bN(75)]);
+      await contracts.daoRewardsStorage.mock_set_last_participated_quarter(user8, bN(1));
+      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+      await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(10 * (10 ** 9)));
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
+      // claim now
+      assert.deepEqual(await contracts.dgxToken.balanceOf.call(user8), bN(0));
+      await contracts.daoStakeLocking.confirmContinuedParticipation({ from: user8 });
+      await contracts.daoRewardsManager.claimRewards({ from: user8 });
+      assert.isAbove((await contracts.dgxToken.balanceOf.call(user8)).toNumber(), 0);
+      await contracts.daoRewardsStorage.mock_bulk_set_last_participated_quarter(mockParticipants, bN(2));
+      await contracts.daoPointsStorage.mock_set_qp(mockParticipants, mockQPs, bN(2));
+      await contracts.daoPointsStorage.mock_set_moderator_qp(mockModerators, mockModeratorQPs, bN(2));
+      await contracts.daoPointsStorage.mock_set_rp(mockParticipants, mockRPs);
+      await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
+      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+      await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(5 * (10 ** 9)));
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
+      const quarterInfo = await contracts.daoRewardsStorage.readQuarterInfo.call(bN(3));
+      assert.deepEqual(timeIsRecent(quarterInfo[8], 5), true);
+      assert.deepEqual(quarterInfo[9], bN(5 * (10 ** 9)));
+      assert.deepEqual(quarterInfo[10], bN(10 * (10 ** 9)).plus(bN(5 * (10 ** 9))));
     });
   });
 });
