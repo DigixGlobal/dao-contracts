@@ -156,8 +156,8 @@ contract DaoVotingClaims is DaoCommon, Claimable {
                     .add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE)))
         {
             (_operations, _passed, _done) = countProposalVote(_proposalId, _index, _operations);
+            if (!_done) return (_passed, false); // haven't done counting yet, return
         }
-        if (!_done) return (_passed, false); // haven't done counting yet, return
         _done = false;
 
         if (_index > 0) { // We only need to do bonus calculation if its the interim voting round
@@ -322,7 +322,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     )
         internal
     {
-        uint256 _votingTime = _milestoneStart + _milestoneDuration;
+        uint256 _votingTime = _milestoneStart.add(_milestoneDuration);
         uint256 _timeLeftInQuarter = getTimeLeftInQuarter(_votingTime);
         uint256 _votingDuration = get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL);
         if (timeInQuarter(_votingTime) < get_uint_config(CONFIG_LOCKING_PHASE_DURATION)) {

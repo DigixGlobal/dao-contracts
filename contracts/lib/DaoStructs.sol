@@ -1,9 +1,11 @@
 pragma solidity ^0.4.23;
 
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
+import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
 
 library DaoStructs {
     using DoublyLinkedList for DoublyLinkedList.Bytes;
+    using SafeMath for uint256;
 
     struct PrlAction {
         uint256 at;
@@ -58,12 +60,12 @@ library DaoStructs {
         uint256 _n = _allUsers.length;
         for (uint256 i = 0; i < _n; i++) {
             if (_voting.yesVotes[_allUsers[i]] > 0) {
-                _for += _voting.yesVotes[_allUsers[i]];
+                _for = _for.add(_voting.yesVotes[_allUsers[i]]);
             } else if (_voting.noVotes[_allUsers[i]] > 0) {
-                _against += _voting.noVotes[_allUsers[i]];
+                _against = _against.add(_voting.noVotes[_allUsers[i]]);
             }
         }
-        _quorum = _for + _against;
+        _quorum = _for.add(_against);
     }
 
     function listVotes(Voting storage _voting, address[] _allUsers, bool _vote)

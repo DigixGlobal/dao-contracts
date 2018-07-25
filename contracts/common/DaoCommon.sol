@@ -39,7 +39,7 @@ contract DaoCommon is IdentityCommon {
         uint256 _start = daoStorage().readProposalDraftVotingTime(_proposalId);
         require(_start > 0);
         require(now > _start);
-        require(now - _start > get_uint_config(CONFIG_DRAFT_VOTING_PHASE));
+        require(now.sub(_start) > get_uint_config(CONFIG_DRAFT_VOTING_PHASE));
         _;
     }
 
@@ -64,7 +64,7 @@ contract DaoCommon is IdentityCommon {
     modifier if_after_proposal_reveal_phase(bytes32 _proposalId, uint256 _index) {
       uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
       require(_start > 0);
-      require(now >= _start + get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL));
+      require(now >= _start.add(get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL)));
       _;
     }
 
@@ -149,7 +149,7 @@ contract DaoCommon is IdentityCommon {
     modifier if_funding_possible(uint256[] _fundings) {
         uint256 _total = 0;
         for (uint256 i = 0; i < _fundings.length; i++) {
-            _total += _fundings[i];
+            _total = _total.add(_fundings[i]);
         }
         require(_total <= daoFundingStorage().ethInDao());
         _;
@@ -187,7 +187,7 @@ contract DaoCommon is IdentityCommon {
     modifier if_after_reveal_phase_special(bytes32 _proposalId) {
       uint256 _start = daoSpecialStorage().readVotingTime(_proposalId);
       require(_start > 0);
-      require(now - _start >= get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
+      require(now.sub(_start) >= get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
       _;
     }
 
@@ -227,8 +227,8 @@ contract DaoCommon is IdentityCommon {
 
     function require_in_phase(uint256 _startingPoint, uint256 _relativePhaseStart, uint256 _relativePhaseEnd) {
         require(_startingPoint > 0);
-        require(now < _startingPoint + _relativePhaseEnd);
-        require(now >= _startingPoint + _relativePhaseStart);
+        require(now < _startingPoint.add(_relativePhaseEnd));
+        require(now >= _startingPoint.add(_relativePhaseStart));
     }
 
     function currentQuarterIndex() public returns(uint256 _quarterIndex) {
@@ -237,12 +237,12 @@ contract DaoCommon is IdentityCommon {
     }
 
     function getQuarterIndex(uint256 _time) internal returns (uint256 _index) {
-        _index = ((_time - daoUpgradeStorage().startOfFirstQuarter()) / get_uint_config(CONFIG_QUARTER_DURATION)) + 1;
+        _index = ((_time.sub(daoUpgradeStorage().startOfFirstQuarter())).div(get_uint_config(CONFIG_QUARTER_DURATION))).add(1);
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
     function timeInQuarter(uint256 _time) internal returns (uint256 _timeInQuarter) {
-        _timeInQuarter = (_time - daoUpgradeStorage().startOfFirstQuarter()) % get_uint_config(CONFIG_QUARTER_DURATION);
+        _timeInQuarter = (_time.sub(daoUpgradeStorage().startOfFirstQuarter())) % get_uint_config(CONFIG_QUARTER_DURATION);
     }
 
     function currentTInQuarter() public returns(uint256 _currentT) {
@@ -250,7 +250,7 @@ contract DaoCommon is IdentityCommon {
     }
 
     function getTimeLeftInQuarter(uint256 _time) internal returns(uint256 _timeLeftInQuarter) {
-        _timeLeftInQuarter = get_uint_config(CONFIG_QUARTER_DURATION) - timeInQuarter(_time);
+        _timeLeftInQuarter = get_uint_config(CONFIG_QUARTER_DURATION).sub(timeInQuarter(_time));
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 

@@ -76,6 +76,7 @@ contract DaoSpecialStorage is DaoStorageCommon {
         constant
         returns (uint256 _for, uint256 _against, uint256 _quorum)
     {
+        require(isWhitelisted(msg.sender));
         return proposalsById[_proposalId].voting.countVotes(_allUsers);
     }
 
@@ -84,6 +85,7 @@ contract DaoSpecialStorage is DaoStorageCommon {
         constant
         returns (uint256 _start)
     {
+        require(isWhitelisted(msg.sender));
         _start = proposalsById[_proposalId].voting.startTime;
     }
 
@@ -118,6 +120,7 @@ contract DaoSpecialStorage is DaoStorageCommon {
         public
         returns (bool _result)
     {
+        require(isWhitelisted(msg.sender));
         _result = proposalsById[_proposalId].voting.passed;
     }
 
@@ -140,6 +143,7 @@ contract DaoSpecialStorage is DaoStorageCommon {
         public
         returns (bool _claimed)
     {
+        require(isWhitelisted(msg.sender));
         _claimed = proposalsById[_proposalId].voting.claimed;
     }
 

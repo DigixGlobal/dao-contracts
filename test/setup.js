@@ -237,7 +237,7 @@ const getTestProposals = function (bN, addressOf) {
         versionId: randomBytes32(),
         milestoneCount: 3,
         milestoneFundings: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
-        milestoneDurations: [bN(500), bN(700), bN(300)],
+        milestoneDurations: [bN(500), bN(730), bN(300)],
         finalReward: bN(1 * (10 ** 18)),
       }, {
         versionId: randomBytes32(),
