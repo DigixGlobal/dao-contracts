@@ -625,7 +625,6 @@ contract('Dao', function (accounts) {
       assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[0]), true);
       assert(await a.failure(contracts.daoVoting.voteOnDraft(
         proposals[0].id,
-        proposals[0].versions[1].versionId,
         true,
         { from: addressOf.badgeHolders[0] },
       )));
@@ -633,20 +632,10 @@ contract('Dao', function (accounts) {
       await contracts.dao.finalizeProposal(proposals[0].id, { from: proposals[0].proposer });
       await contracts.dao.finalizeProposal(proposals[1].id, { from: proposals[1].proposer });
     });
-    it('[if version provided is not the finalized version of proposal]: revert', async function () {
-      assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.badgeHolders[0]), true);
-      assert(await a.failure(contracts.daoVoting.voteOnDraft(
-        proposals[0].id,
-        proposals[0].versions[0].versionId, // versions[1] is the latest finalized version
-        true,
-        { from: addressOf.badgeHolders[0] },
-      )));
-    });
     it('[if not a moderator for that quarter]: revert', async function () {
       assert.deepEqual(await contracts.daoStakeStorage.isInModeratorsList.call(addressOf.dgdHolders[0]), false);
       assert(await a.failure(contracts.daoVoting.voteOnDraft(
         proposals[0].id,
-        proposals[0].versions[1].versionId,
         true,
         { from: addressOf.dgdHolders[0] },
       )));
@@ -659,25 +648,21 @@ contract('Dao', function (accounts) {
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
       await contracts.daoVoting.voteOnDraft(
         proposals[0].id,
-        proposals[0].versions[1].versionId,
         true,
         { from: addressOf.badgeHolders[0] },
       );
       await contracts.daoVoting.voteOnDraft(
         proposals[0].id,
-        proposals[0].versions[1].versionId,
         true,
         { from: addressOf.badgeHolders[1] },
       );
       await contracts.daoVoting.voteOnDraft(
         proposals[1].id,
-        proposals[1].versions[0].versionId,
         false,
         { from: addressOf.badgeHolders[0] },
       );
       await contracts.daoVoting.voteOnDraft(
         proposals[1].id,
-        proposals[1].versions[0].versionId,
         false,
         { from: addressOf.badgeHolders[1] },
       );
@@ -727,13 +712,11 @@ contract('Dao', function (accounts) {
 
       await contracts.daoVoting.voteOnDraft(
         proposals[0].id,
-        proposals[0].versions[1].versionId,
         false,
         { from: addressOf.badgeHolders[0] },
       );
       await contracts.daoVoting.voteOnDraft(
         proposals[1].id,
-        proposals[1].versions[0].versionId,
         true,
         { from: addressOf.badgeHolders[1] },
       );
@@ -761,7 +744,6 @@ contract('Dao', function (accounts) {
       // now vote back true so that proposals[0] can pass
       await contracts.daoVoting.voteOnDraft(
         proposals[0].id,
-        proposals[0].versions[1].versionId,
         true,
         { from: addressOf.badgeHolders[0] },
       );
@@ -772,7 +754,6 @@ contract('Dao', function (accounts) {
       assert.deepEqual(await contracts.daoStakeLocking.isMainPhase.call(), true);
       assert(await a.failure(contracts.daoVoting.voteOnDraft(
         proposals[1].id,
-        proposals[1].versions[0].versionId,
         true,
         { from: proposals[1].proposer },
       )));
@@ -821,13 +802,11 @@ contract('Dao', function (accounts) {
       // proposals[3] => quorum fails
       await contracts.daoVoting.voteOnDraft(
         proposals[2].id,
-        proposals[2].versions[0].versionId,
         true,
         { from: addressOf.badgeHolders[0] },
       );
       await contracts.daoVoting.voteOnDraft(
         proposals[2].id,
-        proposals[2].versions[0].versionId,
         true,
         { from: addressOf.badgeHolders[1] },
       );
@@ -838,13 +817,11 @@ contract('Dao', function (accounts) {
       // now change the votes
       await contracts.daoVoting.voteOnDraft(
         proposals[2].id,
-        proposals[2].versions[0].versionId,
         false,
         { from: addressOf.badgeHolders[0] },
       );
       await contracts.daoVoting.voteOnDraft(
         proposals[2].id,
-        proposals[2].versions[0].versionId,
         false,
         { from: addressOf.badgeHolders[1] },
       );

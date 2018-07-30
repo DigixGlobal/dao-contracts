@@ -13,19 +13,16 @@ contract DaoVoting is DaoCommon, Claimable {
 
     /// @notice Function to vote on draft proposal (only Moderators can vote)
     /// @param _proposalId ID of the proposal
-    /// @param _proposalVersion The final version of the proposal (only the final version can be voted on)
     /// @param _voteYes Boolean, true if voting for, false if voting against
     /// @return _success Boolean, true if vote was cast successfully
     function voteOnDraft(
         bytes32 _proposalId,
-        bytes32 _proposalVersion,
         bool _voteYes
     )
         public
         if_main_phase()
         if_draft_voting_phase(_proposalId)
         if_moderator()
-        if_final_version(_proposalId, _proposalVersion)
         returns (bool _success)
     {
         address _moderator = msg.sender;

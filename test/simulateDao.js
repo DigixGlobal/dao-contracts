@@ -214,7 +214,6 @@ const draftVoting = async function (contracts, addressOf, proposals) {
     await a.map(indexRange(0, 4), 20, async (badgeHolderIndex) => {
       await contracts.daoVoting.voteOnDraft(
         proposals[proposalIndex].id,
-        proposals[proposalIndex].versions[1].versionId,
         true,
         { from: addressOf.badgeHolders[badgeHolderIndex] },
       );
@@ -223,7 +222,6 @@ const draftVoting = async function (contracts, addressOf, proposals) {
   });
   await a.map(indexRange(0, 4), 20, async (badgeHolderIndex) => {
     await contracts.daoVoting.voteOnDraft(
-      proposals[3].id,
       proposals[3].id,
       true,
       { from: addressOf.badgeHolders[badgeHolderIndex] },

@@ -152,6 +152,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     {
         // anyone can claim after the claiming deadline is over;
         // and the result will be failed by default
+        _done = true;
         if (now < daoStorage().readProposalNextMilestoneStart(_proposalId, _index)
                     .add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE)))
         {
