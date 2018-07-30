@@ -21,7 +21,15 @@ contract DaoFundingManager is DaoCommon {
         valid_withdraw_amount(_proposalId, _index, _value)
         returns (bool _success)
     {
+        // proposal should not be paused/stopped
         require(isProposalPaused(_proposalId) == false);
+
+        // the `index` voting round should have passed and claimed
+        require(
+            (daoStorage().isClaimed(_proposalId, _index) == true) &&
+            (daoStorage().readProposalVotingResult(_proposalId, _index) == true)
+        );
+
         daoFundingStorage().updateClaimableEth(msg.sender, daoFundingStorage().claimableEth(msg.sender).sub(_value));
         daoFundingStorage().withdrawEth(_value);
 

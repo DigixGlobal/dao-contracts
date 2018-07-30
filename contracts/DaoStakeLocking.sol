@@ -42,10 +42,27 @@ contract DaoStakeLocking is DaoCommon {
     /// @notice Function to initially convert DGD Badge to Reputation Points
     /// @dev Only 1 DGD Badge is accepted from an address, so multiple badge holders
     /// should either sell their other badges or redeem reputation to another address
-    function redeemBadge() public {
+    function redeemBadge()
+        public
+    {
+        // should not have redeemed a badge already
         require(!daoStakeStorage().redeemedBadge(msg.sender));
+        // should not redeem just before updating last quarter's rewards/reputation
+        // this condition makes sure that the reputation and rewards are at the most updated stage
+        // only exception is, if its their first participation ever
+        require(
+            (daoRewardsStorage().lastParticipatedQuarter(msg.sender) == 0) ||
+            (daoRewardsStorage().lastQuarterThatReputationWasUpdated(msg.sender) == (currentQuarterIndex() - 1))
+        );
+
         daoStakeStorage().redeemBadge(msg.sender);
         daoPointsStorage().addReputation(msg.sender, get_uint_config(CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE));
+
+        // update moderator status
+        StakeInformation memory _info = getStakeInformation(msg.sender);
+        refreshModeratorStatus(msg.sender, _info, _info);
+
+        // transfer the badge to this contract
         require(ERC20(dgdBadgeToken).transferFrom(msg.sender, address(this), 1));
     }
 
@@ -77,7 +94,7 @@ contract DaoStakeLocking is DaoCommon {
 
         //TODO: there might be a case when user locked in very small amount A that is less than Minimum locked DGD?
         // then, lock again in the middle of the quarter. This will not take into account that A was staked in earlier
-        if (_newInfo.userLockedDGDStake >= CONFIG_MINIMUM_LOCKED_DGD) {
+        if (_newInfo.userLockedDGDStake >= get_uint_config(CONFIG_MINIMUM_LOCKED_DGD)) {
             daoStakeStorage().addToParticipantList(msg.sender);
             daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
         }
@@ -108,7 +125,7 @@ contract DaoStakeLocking is DaoCommon {
         // This has to happen at least once before user can participate in next quarter
         daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
 
-        if (_newInfo.userLockedDGDStake < CONFIG_MINIMUM_LOCKED_DGD) {
+        if (_newInfo.userLockedDGDStake < get_uint_config(CONFIG_MINIMUM_LOCKED_DGD)) {
             daoStakeStorage().removeFromParticipantList(msg.sender);
         } else {
             daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
@@ -187,8 +204,8 @@ contract DaoStakeLocking is DaoCommon {
         // remove from moderator list if conditions not satisfied
         if (daoStakeStorage().isInModeratorsList(_user) == true) {
 
-            if (_infoAfter.userLockedDGDStake < CONFIG_MINIMUM_DGD_FOR_MODERATOR ||
-                daoPointsStorage().getReputation(_user) < CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR) {
+            if (_infoAfter.userLockedDGDStake < get_uint_config(CONFIG_MINIMUM_DGD_FOR_MODERATOR) ||
+                daoPointsStorage().getReputation(_user) < get_uint_config(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR)) {
 
                     daoStakeStorage().removeFromModeratorList(_user);
                     daoStakeStorage().updateTotalModeratorLockedDGDs(
@@ -200,8 +217,8 @@ contract DaoStakeLocking is DaoCommon {
                 );
             }
         } else { // add to moderator list if conditions satisfied
-            if (_infoAfter.userLockedDGDStake >= CONFIG_MINIMUM_DGD_FOR_MODERATOR &&
-                daoPointsStorage().getReputation(_user) >= CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR) {
+            if (_infoAfter.userLockedDGDStake >= get_uint_config(CONFIG_MINIMUM_DGD_FOR_MODERATOR) &&
+                daoPointsStorage().getReputation(_user) >= get_uint_config(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR)) {
 
                     daoStakeStorage().addToModeratorList(_user);
                     daoStakeStorage().updateTotalModeratorLockedDGDs(

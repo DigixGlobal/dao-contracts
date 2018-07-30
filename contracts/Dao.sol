@@ -115,7 +115,7 @@ contract Dao is DaoCommon, Claimable {
     {
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
         require(identity_storage().is_kyc_approved(msg.sender));
-        require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_DRAFT_VOTING_PHASE));
+        require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_DRAFT_VOTING_PHASE).add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE)));
         address _endorser;
         (,,_endorser,,,,,,) = daoStorage().readProposal(_proposalId);
         require(_endorser != EMPTY_ADDRESS);
@@ -157,38 +157,43 @@ contract Dao is DaoCommon, Claimable {
             // then we need to push back the milestone, and set the startTime of the voting accordingly.
             uint256 _prlActionCount = daoStorage().readTotalPrlActions(_proposalId);
             if (_prlActionCount > 0) {
-              uint256 _lastAction;
-              uint256 _lastActionTime;
-              (_lastAction, _lastActionTime, ) = daoStorage().readPrlAction(_proposalId, _prlActionCount.sub(1));
+                uint256 _lastAction;
+                uint256 _lastActionTime;
+                (_lastAction, _lastActionTime, ) = daoStorage().readPrlAction(_proposalId, _prlActionCount.sub(1));
 
-              // find out the last voting round that has just happened
-              // hence, it is also the index of the current milestone
-              uint256 _lastVotingRound = 0;
-              while (true) {
-                uint256 _nextMilestoneStartOfNextVotingRound = daoStorage().readProposalNextMilestoneStart(_proposalId, _lastVotingRound + 1);
-                if (_nextMilestoneStartOfNextVotingRound == 0 || _nextMilestoneStartOfNextVotingRound > now) { break; }
-                _lastVotingRound = _lastVotingRound.add(1);
-              }
+                // find out the last voting round that has just happened
+                // hence, it is also the index of the current milestone
+                uint256 _lastVotingRound = 0;
+                while (true) {
+                    uint256 _nextMilestoneStartOfNextVotingRound = daoStorage().readProposalNextMilestoneStart(_proposalId, _lastVotingRound + 1);
+                    if (_nextMilestoneStartOfNextVotingRound == 0 || _nextMilestoneStartOfNextVotingRound > now) break;
+                    _lastVotingRound = _lastVotingRound.add(1);
+                }
 
-              // if it's before even the start of the first milestone: no need to do anything
-              if (now < daoStorage().readProposalNextMilestoneStart(_proposalId, 0)) {
-                return true;
-              }
+                // if it's before even the start of the first milestone: no need to do anything
+                if (now < daoStorage().readProposalNextMilestoneStart(_proposalId, 0)) {
+                    return true;
+                }
 
-              // update the startOfNextMilestone and setTimelineForNextMilestone() accordingly if we just deplayed the proposal
-              if (_lastAction == PRL_ACTION_PAUSE && _lastActionTime < daoStorage().readProposalNextMilestoneStart(_proposalId, _lastVotingRound)) {
+                // update the startOfNextMilestone and setTimelineForNextMilestone() accordingly if we just delayed the proposal
+                // this is the case when _lastVotingRound was claimed
+                if (
+                    (_lastAction == PRL_ACTION_PAUSE) &&
+                    (_lastActionTime < daoStorage().readProposalNextMilestoneStart(_proposalId, _lastVotingRound))
+                )
+                {
+                    daoStorage().setProposalNextMilestoneStart(_proposalId, _lastVotingRound, now);
 
-                daoStorage().setProposalNextMilestoneStart(_proposalId, _lastVotingRound, now);
-
-                uint256 _milestoneDuration;
-                (,_milestoneDuration,) = daoStorage().readProposalMilestone(_proposalId, _lastVotingRound);
-                daoVotingClaims().updateTimelineForNextMilestone(
-                    _proposalId,
-                    _lastVotingRound.add(1),
-                    _milestoneDuration,
-                    now
-                );
-              }
+                    // fetch milestone info
+                    uint256 _milestoneDuration;
+                    (,_milestoneDuration,) = daoStorage().readProposalMilestone(_proposalId, _lastVotingRound);
+                    daoVotingClaims().updateTimelineForNextMilestone(
+                        _proposalId,
+                        _lastVotingRound.add(1),
+                        _milestoneDuration,
+                        now
+                    );
+                }
             }
         }
         daoStorage().updateProposalPRL(_proposalId, _action, _doc, now);

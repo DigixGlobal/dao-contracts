@@ -79,6 +79,8 @@ contract('DaoFundingManager', function (accounts) {
       // create dummy proposals
       await contracts.daoStorage.addProposal(doc, addressOf.dgdHolders[2], durations, fundings, finalReward);
       await contracts.daoStorage.finalizeProposal(doc);
+      await contracts.daoStorage.setProposalPass(doc, bN(0), true);
+      await contracts.daoStorage.setVotingClaim(doc, bN(0), true);
     });
     it('[proposal is not prl approved]: revert', async function () {
       await contracts.daoStorage.updateProposalPRL(doc, bN(2), randomBytes32(), bN(getCurrentTimestamp()));

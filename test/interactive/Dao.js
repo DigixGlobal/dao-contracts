@@ -36,7 +36,6 @@ const {
 
 const {
   randomBigNumber,
-  randomBytes32s,
   getCurrentTimestamp,
   timeIsRecent,
   randomBytes32,
@@ -386,6 +385,9 @@ contract('Dao', function (accounts) {
         proposals[0].versions[1].finalReward,
         { from: proposals[0].proposer },
       );
+
+      // 5 seconds is the vote claiming deadline
+      await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE, bN(5));
     });
     it('[if not called by proposer]: revert', async function () {
       assert.notEqual(await contracts.daoStorage.readProposalProposer.call(proposals[0].id), addressOf.dgdHolders[1]);
@@ -448,6 +450,37 @@ contract('Dao', function (accounts) {
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
       // proposals[1].proposer is no more a participant since
       // its quarter 2 and proposer has not continued participation
+      assert(await a.failure(contracts.dao.finalizeProposal(proposals[1].id, { from: proposals[1].proposer })));
+    });
+    it('[if not enough time left in main phase for draft voting + claim deadline]: revert', async function () {
+      await resetBeforeEach();
+      await addProposal(contracts, proposals[0]);
+      await addProposal(contracts, proposals[1]);
+      await endorseProposal(contracts, proposals[0]);
+      await endorseProposal(contracts, proposals[1]);
+      await contracts.dao.modifyProposal(
+        proposals[0].id,
+        proposals[0].versions[1].versionId,
+        proposals[0].versions[1].milestoneDurations,
+        proposals[0].versions[1].milestoneFundings,
+        proposals[0].versions[1].finalReward,
+        { from: proposals[0].proposer },
+      );
+      // 5 seconds is the vote claiming deadline
+      await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE, bN(5));
+
+      const startOfDao = await contracts.daoUpgradeStorage.startOfFirstQuarter.call();
+      const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
+      const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
+      const draftVotingDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_DRAFT_VOTING_PHASE);
+      const claimDeadline = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE);
+      const timeToLockingPhase = getTimeToNextPhase(
+        getCurrentTimestamp(),
+        startOfDao.toNumber(),
+        lockingPhaseDuration.toNumber(),
+        quarterDuration.toNumber(),
+      );
+      await waitFor((timeToLockingPhase + 1) - (draftVotingDuration.toNumber() + claimDeadline.toNumber()), addressOf, web3);
       assert(await a.failure(contracts.dao.finalizeProposal(proposals[1].id, { from: proposals[1].proposer })));
     });
     after(async function () {
@@ -753,7 +786,7 @@ contract('Dao', function (accounts) {
   describe('claimDraftVotingResult', function () {
     before(async function () {
       // need moderators to confirm participation in this quarter
-      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
+      // await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
       await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.badgeHolders[0] });
       await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.badgeHolders[1] });
       await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.dgdHolders[0] });
@@ -833,6 +866,26 @@ contract('Dao', function (accounts) {
       assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[2].id, { from: proposals[2].proposer })));
     });
     it('[valid claim, quorum quota both passed]: verify read functions', async function () {
+      await resetBeforeEach();
+      await addProposal(contracts, proposals[0]);
+      await endorseProposal(contracts, proposals[0]);
+      await modifyProposal(contracts, proposals[0], 1);
+      await contracts.dao.finalizeProposal(proposals[0].id, { from: proposals[0].proposer });
+      const participants = getParticipants(addressOf, bN);
+      await contracts.daoStorage.mock_put_past_votes(
+        proposals[0].id,
+        bN(0),
+        true,
+        [addressOf.badgeHolders[0], addressOf.badgeHolders[1], addressOf.dgdHolders[0], addressOf.dgdHolders[1]],
+        [true, true, true, true],
+        [participants[0].dgdToLock, participants[1].dgdToLock, participants[2].dgdToLock, participants[3].dgdToLock],
+        bN(4),
+        bN(0),
+      );
+
+      // wait for draft voting phase to end
+      await waitFor(bN(6), addressOf, web3);
+
       const voteCount0 = await contracts.daoStorage.readDraftVotingCount.call(proposals[0].id, addressOf.allParticipants);
       const minimumDraftQuorum = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[2].id);
       assert.isAtLeast(voteCount0[2].toNumber(), minimumDraftQuorum.toNumber());
@@ -855,8 +908,9 @@ contract('Dao', function (accounts) {
       const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
       const timeToLockingPhase = getTimeToNextPhase(timeNow, startOfDao.toNumber(), lockingPhaseDuration.toNumber(), quarterDuration.toNumber());
       const votingRoundDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_VOTING_PHASE_TOTAL);
+      const claimDeadline = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE);
       let idealVotingTime;
-      if (timeToLockingPhase < votingRoundDuration.toNumber()) {
+      if (timeToLockingPhase < (votingRoundDuration.plus(claimDeadline)).toNumber()) {
         idealVotingTime = timeNow + timeToLockingPhase + lockingPhaseDuration.toNumber();
       } else {
         idealVotingTime = timeNow;
@@ -1306,7 +1360,7 @@ contract('Dao', function (accounts) {
         [false, false, false, true],
         [participants[0].dgdToLock, participants[1].dgdToLock, participants[2].dgdToLock, participants[3].dgdToLock],
         bN(4),
-        bN(getCurrentTimestamp() + 40).plus(proposals[2].versions[0].milestoneDurations[0]),
+        bN(getCurrentTimestamp() + 20),
       );
     });
     it('[if claiming before reveal phase ends]: revert', async function () {
@@ -1444,7 +1498,7 @@ contract('Dao', function (accounts) {
       if (getTimeInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber()) < lockingPhaseDuration.toNumber()) {
         console.log('it lies in the locking phase, should be pushed ahead to main phase');
         nextVotingTime += (lockingPhaseDuration.toNumber() - getTimeInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber())) + 1;
-      } else if (getTimeLeftInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber()) < interimVotingPhaseDuration.toNumber()) {
+      } else if (getTimeLeftInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber()) < (interimVotingPhaseDuration.toNumber() + daoConstantsValues(bN).CONFIG_VOTE_CLAIMING_DEADLINE.toNumber())) {
         console.log('it lies in main phase, but not enough time for voting round, should be pushed to the next main phase');
         nextVotingTime += getTimeLeftInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber()) + lockingPhaseDuration.toNumber() + 1;
       }
@@ -1593,6 +1647,26 @@ contract('Dao', function (accounts) {
       assert.deepEqual(await contracts.daoPointsStorage.getReputation.call(addressOf.allParticipants[4]), rep4.plus(bN(bonusRP)));
       assert.deepEqual(await contracts.daoPointsStorage.getReputation.call(addressOf.allParticipants[5]), rep5.plus(bN(bonusRP)));
     });
+    it('[only enough _operations so that votes are counted (but bonus not calculated)]: timeline not set, eth not allocated', async function () {
+      const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);
+      await waitFor(interimVotingPhaseDuration.toNumber(), addressOf, web3);
+
+      // since there are 4 participants, 4 operations needed to complete countProposalVote
+      // in this case, bonus votes will not be calculated
+      // timeline should not be set, ether should not be allocated
+      await contracts.daoVotingClaims.claimProposalVotingResult(
+        proposals[0].id,
+        bN(1),
+        bN(4),
+        { from: proposals[0].proposer },
+      );
+
+      assert.deepEqual(await contracts.daoStorage.readProposalVotingTime.call(proposals[0].id, bN(2)), bN(0));
+      assert.deepEqual(await contracts.daoStorage.readProposalNextMilestoneStart.call(proposals[0].id, bN(2)), bN(0));
+      assert.deepEqual(await contracts.daoStorage.isClaimed.call(proposals[0].id, bN(1)), false);
+      assert.deepEqual(await contracts.daoStorage.readProposalVotingResult.call(proposals[0].id, bN(1)), false);
+      assert.deepEqual(await contracts.daoFundingStorage.claimableEth.call(proposals[0].proposer), bN(0));
+    });
   });
 
   describe('updatePRL', function () {
@@ -1620,8 +1694,8 @@ contract('Dao', function (accounts) {
         bN(4),
         bN(0),
       );
-      await waitFor(6, addressOf, web3); //  wait for draft voting phase to get done
-      await contracts.daoVotingClaims.claimDraftVotingResult(proposals[0].id, bN(10), { from: proposals[0].proposer });
+      await waitFor(5, addressOf, web3); //  wait for draft voting phase to get done
+      await contracts.daoVotingClaims.claimDraftVotingResult(proposals[0].id, bN(20), { from: proposals[0].proposer });
     });
     it('[non-prl calls function]: revert', async function () {
       for (const i of indexRange(2, 10)) {
@@ -1667,7 +1741,7 @@ contract('Dao', function (accounts) {
         { from: addressOf.allParticipants[4] },
       );
       // wait for reveal phase
-      await waitFor(11, addressOf, web3);
+      await waitFor(10, addressOf, web3);
 
       // reveal votes
       await contracts.daoVoting.revealVoteOnProposal(
@@ -1708,13 +1782,13 @@ contract('Dao', function (accounts) {
       assert.deepEqual(action0[2], paddedHex(web3, 'pausing:proposal'));
 
       // wait for reveal phase to get over
-      await waitFor(11, addressOf, web3);
+      await waitFor(10, addressOf, web3);
 
       // claim the voting result
       await contracts.daoVotingClaims.claimProposalVotingResult(
         proposals[0].id,
         bN(0),
-        bN(10),
+        bN(30),
         { from: proposals[0].proposer },
       );
       const nextVotingTimeBefore = await contracts.daoStorage.readProposalVotingTime.call(proposals[0].id, bN(1));
@@ -1729,7 +1803,7 @@ contract('Dao', function (accounts) {
       )));
 
       // wait for some time before unpausing
-      await waitFor(36, addressOf, web3);
+      await waitFor(10, addressOf, web3);
 
       // unpause proposal
       await contracts.dao.updatePRL(
@@ -1748,10 +1822,11 @@ contract('Dao', function (accounts) {
       const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
       const nextMilestoneDuration = proposals[0].versions[1].milestoneDurations[0];
       const startOfThisMilestone = await contracts.daoStorage.readProposalNextMilestoneStart.call(proposals[0].id, bN(0));
+      const claimDeadline = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE);
       let nextVotingTime = startOfThisMilestone.toNumber() + nextMilestoneDuration.toNumber();
       if (getTimeInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber()) < lockingPhaseDuration.toNumber()) {
         nextVotingTime += (lockingPhaseDuration.toNumber() - getTimeInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber())) + 1;
-      } else if (getTimeLeftInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber()) < interimVotingPhaseDuration.toNumber()) {
+      } else if (getTimeLeftInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber()) < (interimVotingPhaseDuration.plus(claimDeadline).toNumber())) {
         nextVotingTime += getTimeLeftInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber()) + lockingPhaseDuration.toNumber() + 1;
       }
       assert.deepEqual(startOfThisMilestone, bN(unpausedAt));
@@ -1844,10 +1919,11 @@ contract('Dao', function (accounts) {
       const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
       const nextMilestoneDuration = proposals[0].versions[1].milestoneDurations[1];
       const startOfThisMilestone = await contracts.daoStorage.readProposalNextMilestoneStart.call(proposals[0].id, bN(1));
+      const claimDeadline = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE);
       let nextVotingTime = startOfThisMilestone.toNumber() + nextMilestoneDuration.toNumber();
       if (getTimeInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber()) < lockingPhaseDuration.toNumber()) {
         nextVotingTime += (lockingPhaseDuration.toNumber() - getTimeInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber())) + 1;
-      } else if (getTimeLeftInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber()) < interimVotingPhaseDuration.toNumber()) {
+      } else if (getTimeLeftInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber()) < (interimVotingPhaseDuration.plus(claimDeadline).toNumber())) {
         nextVotingTime += getTimeLeftInQuarter(nextVotingTime, startOfDao.toNumber(), quarterDuration.toNumber()) + lockingPhaseDuration.toNumber() + 1;
       }
       assert.deepEqual(startOfThisMilestone, bN(unpausedAt));
@@ -1861,6 +1937,69 @@ contract('Dao', function (accounts) {
         { from: proposals[0].proposer },
       ));
     });
+    it('[pause and unpause proposal within the milestone (after funding has been claimed)]: should not change the voting times in any way', async function () {
+      // put the mock votes for voting round 0
+      await contracts.daoStorage.mock_put_past_votes(
+        proposals[0].id,
+        bN(0),
+        false,
+        [participants[0].address, participants[1].address, participants[2].address, participants[3].address],
+        [true, true, true, true],
+        [participants[0].dgdToLock, participants[1].dgdToLock, participants[2].dgdToLock, participants[3].dgdToLock],
+        bN(4),
+        bN(getCurrentTimestamp() + 20),
+      );
+      // wait for voting phase
+      await waitFor(20, addressOf, web3);
+      // claim the result
+      await contracts.daoVotingClaims.claimProposalVotingResult(proposals[0].id, bN(0), bN(10), { from: proposals[0].proposer });
+
+      const nextVotingTime = await contracts.daoStorage.readProposalVotingTime.call(proposals[0].id, bN(1));
+      const nextMilestoneStart = await contracts.daoStorage.readProposalNextMilestoneStart.call(proposals[0].id, bN(1));
+
+      // claim the funding
+      await contracts.daoFundingManager.claimEthFunding(proposals[0].id, bN(0), proposals[0].versions[1].milestoneFundings[0], { from: proposals[0].proposer });
+
+      // now the prl pauses the proposal
+      await contracts.dao.updatePRL(proposals[0].id, bN(2), 'pausing:proposal[0]', { from: addressOf.prl });
+
+      // wait for 5 seconds
+      await waitFor(5, addressOf, web3);
+
+      // unpause the proposal
+      await contracts.dao.updatePRL(proposals[0].id, bN(3), 'unpaused:proposal[0]', { from: addressOf.prl });
+
+      assert.deepEqual(await contracts.daoStorage.readProposalVotingTime.call(proposals[0].id, bN(1)), nextVotingTime);
+      assert.deepEqual(await contracts.daoStorage.readProposalNextMilestoneStart.call(proposals[0].id, bN(1)), nextMilestoneStart);
+    });
+    it('[stop proposal just after claiming passed result]: should not be able to withdraw ether', async function () {
+      // put the mock votes for voting round 0
+      await contracts.daoStorage.mock_put_past_votes(
+        proposals[0].id,
+        bN(0),
+        false,
+        [participants[0].address, participants[1].address, participants[2].address, participants[3].address],
+        [true, true, true, true],
+        [participants[0].dgdToLock, participants[1].dgdToLock, participants[2].dgdToLock, participants[3].dgdToLock],
+        bN(4),
+        bN(getCurrentTimestamp() + 20),
+      );
+      // wait for voting phase
+      await waitFor(20, addressOf, web3);
+      // claim the result
+      await contracts.daoVotingClaims.claimProposalVotingResult(proposals[0].id, bN(0), bN(10), { from: proposals[0].proposer });
+
+      // unpause the proposal
+      await contracts.dao.updatePRL(proposals[0].id, bN(1), 'stop:proposal[0]', { from: addressOf.prl });
+
+      // claim the funding
+      assert(await a.failure(contracts.daoFundingManager.claimEthFunding(
+        proposals[0].id,
+        bN(0),
+        proposals[0].versions[1].milestoneFundings[0],
+        { from: proposals[0].proposer },
+      )));
+    });
     it('[stop a proposal]', async function () {
       assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates().PROPOSAL_STATE_MODERATED), proposals[0].id);
       await contracts.dao.updatePRL(proposals[0].id, bN(1), 'stop:proposal', { from: addressOf.prl });
@@ -1871,11 +2010,111 @@ contract('Dao', function (accounts) {
     });
   });
 
+  describe('setTimelineForNextMilestone', function () {
+    beforeEach(async function () {
+      await resetBeforeEach();
+      await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE, bN(5));
+    });
+    it('[next voting time lies within main phase with enough time for voting]', async function () {
+      // milestone starts now, milestone duration is only 5 seconds
+      const proposalId = randomBytes32();
+      const index = bN(1);
+      const milestoneStart = bN(getCurrentTimestamp());
+      const milestoneDuration = bN(5);
+
+      await contracts.daoVotingClaims.mock_set_timeline_for_next_milestone(
+        proposalId,
+        index,
+        milestoneStart,
+        milestoneDuration,
+      );
+
+      const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);
+      assert.deepEqual(await contracts.daoStorage.readProposalVotingTime.call(proposalId, index), milestoneStart.plus(milestoneDuration));
+      assert.deepEqual(await contracts.daoStorage.readProposalNextMilestoneStart.call(proposalId, index), milestoneStart.plus(milestoneDuration).plus(interimVotingPhaseDuration));
+    });
+    it('[next voting time lies within main phase, but with not enough time for voting left]: must be pushed to the next main phase', async function () {
+      // milestone starts now, milestone duration is 40 seconds
+      // so there should not be enough time for 20 seconds of voting
+      const proposalId = randomBytes32();
+      const index = bN(1);
+      const milestoneStart = bN(getCurrentTimestamp());
+      const milestoneDuration = bN(40);
+
+      await contracts.daoVotingClaims.mock_set_timeline_for_next_milestone(
+        proposalId,
+        index,
+        milestoneStart,
+        milestoneDuration,
+      );
+
+      const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);
+      const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
+      const startOfDao = await contracts.daoUpgradeStorage.startOfFirstQuarter.call();
+      const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
+      assert.deepEqual(await contracts.daoStorage.readProposalVotingTime.call(proposalId, index), startOfDao.plus(quarterDuration).plus(lockingPhaseDuration).plus(bN(1)));
+      assert.deepEqual(await contracts.daoStorage.readProposalNextMilestoneStart.call(proposalId, index), startOfDao.plus(quarterDuration).plus(lockingPhaseDuration).plus(bN(1)).plus(interimVotingPhaseDuration));
+    });
+    it('[next voting time lies within main phase, enough time for voting, but not enough time for claim deadline]: pushed to next main phase', async function () {
+      // milestone starts now, milestone duration is 27 seconds
+      // so there should be enough time for 20 seconds of voting
+      // but not enough time for 20+5 seconds of voting+claim_deadline
+      const proposalId = randomBytes32();
+      const index = bN(1);
+      const milestoneStart = bN(getCurrentTimestamp());
+      const milestoneDuration = bN(27);
+
+      await contracts.daoVotingClaims.mock_set_timeline_for_next_milestone(
+        proposalId,
+        index,
+        milestoneStart,
+        milestoneDuration,
+      );
+
+      const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);
+      const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
+      const startOfDao = await contracts.daoUpgradeStorage.startOfFirstQuarter.call();
+      const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
+      assert.deepEqual(await contracts.daoStorage.readProposalVotingTime.call(proposalId, index), startOfDao.plus(quarterDuration).plus(lockingPhaseDuration).plus(bN(1)));
+      assert.deepEqual(await contracts.daoStorage.readProposalNextMilestoneStart.call(proposalId, index), startOfDao.plus(quarterDuration).plus(lockingPhaseDuration).plus(bN(1)).plus(interimVotingPhaseDuration));
+    });
+    it('[next voting time lies in the locking phase]: must be pushed to the main phase', async function () {
+      // milestone starts now, milestone duration is 55 seconds
+      // so next voting will technically lie in the locking phase
+      const proposalId = randomBytes32();
+      const index = bN(1);
+      const milestoneStart = bN(getCurrentTimestamp());
+      const milestoneDuration = bN(55);
+
+      await contracts.daoVotingClaims.mock_set_timeline_for_next_milestone(
+        proposalId,
+        index,
+        milestoneStart,
+        milestoneDuration,
+      );
+
+      const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);
+      const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
+      const startOfDao = await contracts.daoUpgradeStorage.startOfFirstQuarter.call();
+      const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
+      assert.deepEqual(await contracts.daoStorage.readProposalVotingTime.call(proposalId, index), startOfDao.plus(quarterDuration).plus(lockingPhaseDuration).plus(bN(1)));
+      assert.deepEqual(await contracts.daoStorage.readProposalNextMilestoneStart.call(proposalId, index), startOfDao.plus(quarterDuration).plus(lockingPhaseDuration).plus(bN(1)).plus(interimVotingPhaseDuration));
+    });
+  });
+
+  // TODO:
+  describe('commitVoteOnSpecialProposal', function () {
+
+  });
+
+  // TODO:
+  describe('revealVoteOnSpecialProposal', function () {
+
+  });
+
   // TODO:
   describe('claimSpecialProposalVotingResult', function () {
     let specialProposalId;
-    let someSalts;
-    let participants;
     before(async function () {
       await resetBeforeEach();
       const uintConfigs = await contracts.daoConfigsStorage.readUintConfigs.call();
@@ -1890,37 +2129,6 @@ contract('Dao', function (accounts) {
       );
       await contracts.dao.startSpecialProposalVoting(specialProposalId, { from: addressOf.founderBadgeHolder });
       await waitFor(2, addressOf, web3);
-      participants = getParticipants(addressOf, bN);
-    });
-    it('commit votes', async function () {
-      someSalts = randomBytes32s(participants.length);
-      console.log('participants = ', participants);
-      for (const i of indexRange(0, participants.length)) {
-        await contracts.daoVoting.commitVoteOnSpecialProposal(
-          specialProposalId,
-          web3Utils.soliditySha3({ t: 'address', v: participants[i].address }, { t: 'bool', v: true }, { t: 'bytes32', v: someSalts[i] }),
-          { from: participants[i].address },
-        );
-      }
-      console.log('committed votes on special proposal');
-    });
-    it('reveal votes', async function () {
-      await waitFor(11, addressOf, web3); // 10 seconds of commit phase
-
-      for (const i of indexRange(0, participants.length)) {
-        console.log('revealing vote now for = ', await contracts.daoSpecialStorage.readCommitVote.call(specialProposalId, participants[i].address));
-        await contracts.daoVoting.revealVoteOnSpecialProposal(
-          specialProposalId,
-          true,
-          someSalts[i],
-          { from: participants[i].address },
-        );
-      }
-      console.log('revealed votes on special proposal');
-    });
-    it('claim special proposal voting result', async function () {
-      await waitFor(10, addressOf, web3); // 10 seconds of reveal phase
-      await contracts.daoSpecialVotingClaims.claimSpecialProposalVotingResult(specialProposalId, bN(100), { from: addressOf.founderBadgeHolder });
     });
   });
 });

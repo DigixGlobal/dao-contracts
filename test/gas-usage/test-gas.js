@@ -35,6 +35,7 @@ contract('Dao', function (accounts) {
 
   const resetBeforeEach = async function () {
     await deployFreshDao(libs, contracts, addressOf, accounts, bN, web3);
+    await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE, bN(10000));
     await setupParticipantsStates(web3, contracts, addressOf, bN);
     proposals = getTestProposals(bN, addressOf);
     await contracts.daoIdentity.addGroupUser(bN(3), addressOf.prl, randomBytes32());

@@ -335,7 +335,7 @@ contract DaoCommon is IdentityCommon {
     {
         if (
             (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex()) &&
-            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= CONFIG_MINIMUM_LOCKED_DGD)
+            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= get_uint_config(CONFIG_MINIMUM_LOCKED_DGD))
         ) {
             _is = true;
         }
@@ -348,8 +348,8 @@ contract DaoCommon is IdentityCommon {
     {
         if (
             (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex()) &&
-            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= CONFIG_MINIMUM_DGD_FOR_MODERATOR) &&
-            (daoPointsStorage().getReputation(_user) >= CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR)
+            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= get_uint_config(CONFIG_MINIMUM_DGD_FOR_MODERATOR)) &&
+            (daoPointsStorage().getReputation(_user) >= get_uint_config(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR))
         ) {
             _is = true;
         }

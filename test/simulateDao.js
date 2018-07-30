@@ -310,7 +310,7 @@ const claimVotingResult = async function (contracts, addressOf) {
     await contracts.daoVotingClaims.claimProposalVotingResult(
       proposals[proposalIndex].id,
       bN(0),
-      bN(10),
+      bN(30),
       { from: proposals[proposalIndex].proposer },
     );
   });
@@ -377,7 +377,7 @@ const interimVotingRevealRound = async function (contracts, addressOf) {
 const interimvotingRoundClaim = async function (contracts) {
   await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
     if (proposalIndex === 1) return;
-    await contracts.daoVotingClaims.claimProposalVotingResult(proposals[proposalIndex].id, bN(1), bN(10), { from: proposals[proposalIndex].proposer });
+    await contracts.daoVotingClaims.claimProposalVotingResult(proposals[proposalIndex].id, bN(1), bN(30), { from: proposals[proposalIndex].proposer });
   });
 };
 
@@ -690,7 +690,7 @@ module.exports = async function () {
     console.log('[before claiming result] claimable Eth of proposer = ', await contracts.daoFundingStorage.claimableEth.call(proposals[0].proposer));
     console.log('daoFunding balance = ', await web3.eth.getBalance(contracts.daoFundingManager.address));
 
-    await contracts.daoVotingClaims.claimProposalVotingResult(proposals[0].id, bN(2), bN(10), { from: proposals[0].proposer });
+    await contracts.daoVotingClaims.claimProposalVotingResult(proposals[0].id, bN(2), bN(30), { from: proposals[0].proposer });
     console.log('claimed final voting round');
 
     console.log('before claimFinalReward');
