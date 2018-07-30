@@ -1,11 +1,11 @@
 pragma solidity ^0.4.23;
 
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
-import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
-import "../common/DaoConstants.sol";
+import "../common/DaoStorageCommon.sol";
 import "../lib/DaoStructs.sol";
+import "./DaoWhitelistingStorage.sol";
 
-contract DaoSpecialStorage is ResolverClient, DaoConstants {
+contract DaoSpecialStorage is DaoStorageCommon {
     using DoublyLinkedList for DoublyLinkedList.Bytes;
     using DaoStructs for DaoStructs.SpecialProposal;
     using DaoStructs for DaoStructs.Voting;
@@ -76,16 +76,8 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
         constant
         returns (uint256 _for, uint256 _against, uint256 _quorum)
     {
-        DaoStructs.Voting storage _voting = proposalsById[_proposalId].voting;
-        uint256 _n = _allUsers.length;
-        for (uint256 i = 0; i < _n; i++) {
-            if (_voting.yesVotes[_allUsers[i]] > 0) {
-                _for += _voting.yesVotes[_allUsers[i]];
-            } else if (_voting.noVotes[_allUsers[i]] > 0) {
-                _against += _voting.noVotes[_allUsers[i]];
-            }
-        }
-        _quorum = _for + _against;
+        require(isWhitelisted(msg.sender));
+        return proposalsById[_proposalId].voting.countVotes(_allUsers);
     }
 
     function readVotingTime(bytes32 _proposalId)
@@ -93,6 +85,7 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
         constant
         returns (uint256 _start)
     {
+        require(isWhitelisted(msg.sender));
         _start = proposalsById[_proposalId].voting.startTime;
     }
 
@@ -103,11 +96,8 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
     )
         public
         if_sender_is(CONTRACT_DAO_VOTING)
-        returns (bool _success)
     {
-        DaoStructs.SpecialProposal _proposal = proposalsById[_proposalId];
-        _proposal.voting.commits[_voter] = _hash;
-        _success = true;
+        proposalsById[_proposalId].voting.commits[_voter] = _hash;
     }
 
     function readCommitVote(bytes32 _proposalId, address _voter)
@@ -115,6 +105,7 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
         constant
         returns (bytes32 _commitHash)
     {
+        require(isWhitelisted(msg.sender));
         _commitHash = proposalsById[_proposalId].voting.commits[_voter];
     }
 
@@ -129,21 +120,20 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
         public
         returns (bool _result)
     {
+        require(isWhitelisted(msg.sender));
         _result = proposalsById[_proposalId].voting.passed;
     }
 
     function setPass(bytes32 _proposalId, bool _result)
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
-        returns (bool _success)
+        if_sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS)
     {
         proposalsById[_proposalId].voting.passed = _result;
-        _success = true;
     }
 
     function setVotingClaim(bytes32 _proposalId, bool _claimed)
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
+        if_sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS)
     {
         DaoStructs.SpecialProposal _proposal = proposalsById[_proposalId];
         _proposal.voting.claimed = _claimed;
@@ -153,6 +143,7 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
         public
         returns (bool _claimed)
     {
+        require(isWhitelisted(msg.sender));
         _claimed = proposalsById[_proposalId].voting.claimed;
     }
 
@@ -161,14 +152,8 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
         constant
         returns (bool _vote, uint256 _weight)
     {
-        DaoStructs.Voting _voting = proposalsById[_proposalId].voting;
-        if (_voting.yesVotes[_voter] > 0) {
-            _weight = _voting.yesVotes[_voter];
-            _vote = true;
-        } else {
-            _weight = _voting.noVotes[_voter];
-            _vote = false;
-        }
+        require(isWhitelisted(msg.sender));
+        return proposalsById[_proposalId].voting.readVote(_voter);
     }
 
     function revealVote(
@@ -179,14 +164,7 @@ contract DaoSpecialStorage is ResolverClient, DaoConstants {
     )
         public
         if_sender_is(CONTRACT_DAO_VOTING)
-        returns (bool _success)
     {
-        DaoStructs.Voting _voting = proposalsById[_proposalId].voting;
-        if (_vote) {
-            _voting.yesVotes[_voter] = _weight;
-        } else {
-            _voting.noVotes[_voter] = _weight;
-        }
-        _success = true;
+        proposalsById[_proposalId].voting.revealVote(_voter, _vote, _weight);
     }
 }

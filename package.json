@@ -9,7 +9,8 @@
   "scripts": {
     "test": "bash scripts/unit-test.sh",
     "test:simulate": "bash scripts/simulate-dao.sh",
-    "lint": "./node_modules/.bin/eslint test/"
+    "lint": "./node_modules/.bin/eslint test/",
+    "ganache": "bash scripts/start_ganache.sh"
   },
   "repository": {
     "type": "git",
@@ -24,7 +25,7 @@
   "dependencies": {
     "@digix/cacp-contracts-dao": "^1.0.3",
     "@digix/cdap": "^0.1.0",
-    "@digix/helpers": "^1.0.0",
+    "@digix/helpers": "^1.0.1",
     "@digix/lite-dgx-contract": "1.0.1",
     "@digix/multi-hash": "0.0.2",
     "@digix/solidity-collections": "^1.1.0",

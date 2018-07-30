@@ -13,6 +13,7 @@ const {
 const {
   randomBytes32,
   indexRange,
+  getCurrentTimestamp,
 } = require('@digix/helpers/lib/helpers');
 
 const bN = web3.toBigNumber;
@@ -37,7 +38,7 @@ contract('DaoFundingManager', function (accounts) {
     await deployStorage(libs, contracts, contracts.resolver, addressOf);
     contracts.daoFundingManager = await DaoFundingManager.new(contracts.resolver.address);
     await contracts.resolver.register_contract('dao:voting:claims', addressOf.root);
-    await contracts.resolver.register_contract('c:dao', addressOf.root);
+    await contracts.resolver.register_contract('dao', addressOf.root);
     await fundDao();
   });
 
@@ -78,20 +79,27 @@ contract('DaoFundingManager', function (accounts) {
       // create dummy proposals
       await contracts.daoStorage.addProposal(doc, addressOf.dgdHolders[2], durations, fundings, finalReward);
       await contracts.daoStorage.finalizeProposal(doc);
+      await contracts.daoStorage.setProposalPass(doc, bN(0), true);
+      await contracts.daoStorage.setVotingClaim(doc, bN(0), true);
     });
     it('[proposal is not prl approved]: revert', async function () {
-      assert.deepEqual(await contracts.daoStorage.readProposalPRL.call(doc, bN(0)), false);
+      await contracts.daoStorage.updateProposalPRL(doc, bN(2), randomBytes32(), bN(getCurrentTimestamp()));
+      const readProposal = await contracts.daoStorage.readProposal.call(doc);
+      const isPaused = readProposal[8];
+      assert.deepEqual(isPaused, true);
       assert(await a.failure(contracts.daoFundingManager.claimEthFunding.call(
         doc,
         bN(0),
         fundings[0],
         { from: addressOf.dgdHolders[2] },
       )));
+      // unpause again
+      await contracts.daoStorage.updateProposalPRL(doc, bN(3), randomBytes32(), bN(getCurrentTimestamp()));
     });
     it('[not called by addressOf.dgdHolders[2]]: revert', async function () {
-      // approve prl
-      await contracts.daoStorage.updateProposalPRL(doc, bN(0), true);
-      assert.deepEqual(await contracts.daoStorage.readProposalPRL.call(doc, bN(0)), true);
+      const readProposal = await contracts.daoStorage.readProposal.call(doc);
+      const isPaused = readProposal[8];
+      assert.deepEqual(isPaused, false);
       assert(await a.failure(contracts.daoFundingManager.claimEthFunding.call(
         doc,
         bN(0),

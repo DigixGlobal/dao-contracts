@@ -15,11 +15,12 @@ const DaoConfigsStorage = artifacts.require('./MockDaoConfigsStorage.sol');
 const DaoStakeStorage = artifacts.require('./DaoStakeStorage.sol');
 const DaoPointsStorage = artifacts.require('./DaoPointsStorage.sol');
 const DaoStorage = artifacts.require('./DaoStorage.sol');
+const DaoUpgradeStorage = artifacts.require('./DaoUpgradeStorage.sol');
 const DaoSpecialStorage = artifacts.require('./DaoSpecialStorage.sol');
 const DaoFundingStorage = artifacts.require('./DaoFundingStorage.sol');
 const DaoRewardsStorage = artifacts.require('./DaoRewardsStorage.sol');
+const IntermediateResultsStorage = artifacts.require('./IntermediateResultsStorage.sol');
 
-const DaoInfoService = artifacts.require('./DaoInfoService.sol');
 const DaoListingService = artifacts.require('./DaoListingService.sol');
 const DaoCalculatorService = artifacts.require('./DaoCalculatorService.sol');
 
@@ -27,6 +28,7 @@ const DaoIdentity = artifacts.require('./DaoIdentity.sol');
 const Dao = artifacts.require('./Dao.sol');
 const DaoVoting = artifacts.require('./DaoVoting.sol');
 const DaoVotingClaims = artifacts.require('./DaoVotingClaims.sol');
+const DaoSpecialVotingClaims = artifacts.require('./DaoSpecialVotingClaims.sol');
 const DaoStakeLocking = artifacts.require('./DaoStakeLocking.sol');
 const DaoFundingManager = artifacts.require('./DaoFundingManager.sol');
 const DaoRewardsManager = artifacts.require('./DaoRewardsManager.sol');
@@ -137,7 +139,7 @@ const {
   getCurrentTimestamp,
   indexRange,
   randomBytes32,
-  randomBigNumbers,
+  randomBytes32s,
 } = require('@digix/helpers/lib/helpers');
 
 const bN = web3.toBigNumber;
@@ -173,11 +175,12 @@ const assignDeployedContracts = async function (contracts, libs) {
   contracts.daoStakeStorage = await DaoStakeStorage.deployed();
   contracts.daoPointsStorage = await DaoPointsStorage.deployed();
   contracts.daoStorage = await DaoStorage.deployed();
+  contracts.daoUpgradeStorage = await DaoUpgradeStorage.deployed();
   contracts.daoSpecialStorage = await DaoSpecialStorage.deployed();
   contracts.daoFundingStorage = await DaoFundingStorage.deployed();
   contracts.daoRewardsStorage = await DaoRewardsStorage.deployed();
+  contracts.intermediateResultsStorage = await IntermediateResultsStorage.deployed();
 
-  contracts.daoInfoService = await DaoInfoService.deployed();
   contracts.daoListingService = await DaoListingService.deployed();
   contracts.daoCalculatorService = await DaoCalculatorService.deployed();
 
@@ -187,6 +190,7 @@ const assignDeployedContracts = async function (contracts, libs) {
   contracts.dao = await Dao.deployed();
   contracts.daoVoting = await DaoVoting.deployed();
   contracts.daoVotingClaims = await DaoVotingClaims.deployed();
+  contracts.daoSpecialVotingClaims = await DaoSpecialVotingClaims.deployed();
   contracts.daoRewardsManager = await DaoRewardsManager.deployed();
 };
 
@@ -210,7 +214,6 @@ const draftVoting = async function (contracts, addressOf, proposals) {
     await a.map(indexRange(0, 4), 20, async (badgeHolderIndex) => {
       await contracts.daoVoting.voteOnDraft(
         proposals[proposalIndex].id,
-        proposals[proposalIndex].versions[1].versionId,
         true,
         { from: addressOf.badgeHolders[badgeHolderIndex] },
       );
@@ -219,7 +222,6 @@ const draftVoting = async function (contracts, addressOf, proposals) {
   });
   await a.map(indexRange(0, 4), 20, async (badgeHolderIndex) => {
     await contracts.daoVoting.voteOnDraft(
-      proposals[3].id,
       proposals[3].id,
       true,
       { from: addressOf.badgeHolders[badgeHolderIndex] },
@@ -239,27 +241,34 @@ const claimDraftVotingResult = async function (contracts) {
   console.log(mods);
   await contracts.daoVotingClaims.claimDraftVotingResult(
     proposals[0].id,
+    bN(20),
     { from: proposals[0].proposer },
   );
   await contracts.daoVotingClaims.claimDraftVotingResult(
     proposals[2].id,
+    bN(20),
     { from: proposals[2].proposer },
   );
   await contracts.daoVotingClaims.claimDraftVotingResult(
     proposals[3].id,
+    bN(20),
     { from: proposals[3].proposer },
   );
 };
 
 const votingCommitRound = async function (contracts, addressOf) {
+  console.log('now = ', getCurrentTimestamp());
   await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
+    await printProposalDetails(contracts, proposals[proposalIndex]);
     if (proposalIndex === 1) return;
     await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
       await contracts.daoVoting.commitVoteOnProposal(
         proposals[proposalIndex].id,
+        bN(0),
         votingCommits[proposalIndex][holderIndex],
         { from: addressOf.allParticipants[holderIndex] },
       );
+      console.log(`committed vote for holder ${holderIndex} on proposal ${proposalIndex}`);
     });
   });
 };
@@ -272,6 +281,7 @@ const votingRevealRound = async function (contracts, addressOf, commits) {
     await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
       await contracts.daoVoting.revealVoteOnProposal(
         proposals[proposalIndex].id,
+        bN(0),
         commits.v[proposalIndex][holderIndex],
         commits.s[proposalIndex][holderIndex],
         { from: addressOf.allParticipants[holderIndex] },
@@ -295,8 +305,10 @@ const claimVotingResult = async function (contracts, addressOf) {
   await waitForRevealPhaseToGetOver(contracts, addressOf, proposals[3].id, bN(0), bN, web3);
   await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
     if (proposalIndex === 1) return;
-    await contracts.daoVotingClaims.claimVotingResult(
+    await contracts.daoVotingClaims.claimProposalVotingResult(
       proposals[proposalIndex].id,
+      bN(0),
+      bN(30),
       { from: proposals[proposalIndex].proposer },
     );
   });
@@ -334,7 +346,7 @@ const interimVotingCommitRound = async function (contracts, addressOf) {
     console.log('Relative time of start of interim voting time = ', (await contracts.daoStorage.readProposalVotingTime.call(proposals[proposalIndex].id, bN(1))).toNumber() - getCurrentTimestamp());
     await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
       console.log(`\t\tInterim commit Voting by holder index ${holderIndex} on proposal ${proposalIndex}`);
-      await contracts.daoVoting.commitVoteOnInterim(
+      await contracts.daoVoting.commitVoteOnProposal(
         proposals[proposalIndex].id,
         bN(1),
         votingCommits[proposalIndex][holderIndex],
@@ -350,7 +362,7 @@ const interimVotingRevealRound = async function (contracts, addressOf) {
   console.log('Proposal being revealed = ', proposals[0].id);
 
   await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
-    await contracts.daoVoting.revealVoteOnInterim(
+    await contracts.daoVoting.revealVoteOnProposal(
       proposals[0].id,
       bN(1),
       votes[0][holderIndex],
@@ -360,16 +372,16 @@ const interimVotingRevealRound = async function (contracts, addressOf) {
   });
 };
 
-const interimVotingRoundClaim = async function (contracts) {
+const interimvotingRoundClaim = async function (contracts) {
   await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
     if (proposalIndex === 1) return;
-    await contracts.daoVotingClaims.claimInterimVotingResult(proposals[proposalIndex].id, bN(1), { from: proposals[proposalIndex].proposer });
+    await contracts.daoVotingClaims.claimProposalVotingResult(proposals[proposalIndex].id, bN(1), bN(30), { from: proposals[proposalIndex].proposer });
   });
 };
 
 const interimCommitRound = async function (contracts, addressOf, proposalIndex, index) {
   await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
-    await contracts.daoVoting.commitVoteOnInterim(
+    await contracts.daoVoting.commitVoteOnProposal(
       proposals[proposalIndex].id,
       index,
       votingCommits[proposalIndex][holderIndex],
@@ -381,7 +393,7 @@ const interimCommitRound = async function (contracts, addressOf, proposalIndex, 
 const interimRevealRound = async function (contracts, addressOf, proposalIndex, index) {
   console.log('Proposal being revealed = ', proposals[proposalIndex].id);
   await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
-    await contracts.daoVoting.revealVoteOnInterim(
+    await contracts.daoVoting.revealVoteOnProposal(
       proposals[proposalIndex].id,
       index,
       votes[proposalIndex][holderIndex],
@@ -404,18 +416,18 @@ const claimFinalReward = async function (contracts, addressOf, proposalId, propo
 };
 
 const specialProposalVoting = async function (contracts, addressOf, specialProposalId) {
-  const someSalts = randomBigNumbers(bN, 10);
+  const someSalts = randomBytes32s(10);
 
   await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
     await contracts.daoVoting.commitVoteOnSpecialProposal(
       specialProposalId,
-      web3Utils.soliditySha3({ t: 'address', v: addressOf.allParticipants[holderIndex] }, { t: 'bool', v: true }, { t: 'uint256', v: someSalts[holderIndex] }),
+      web3Utils.soliditySha3({ t: 'address', v: addressOf.allParticipants[holderIndex] }, { t: 'bool', v: true }, { t: 'bytes32', v: someSalts[holderIndex] }),
       { from: addressOf.allParticipants[holderIndex] },
     );
   });
   console.log('committed votes on special proposal');
 
-  await waitFor(10, addressOf, web3); // 10 seconds of commit phase
+  await waitFor(11, addressOf, web3); // 10 seconds of commit phase
 
   await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
     await contracts.daoVoting.revealVoteOnSpecialProposal(
@@ -428,7 +440,11 @@ const specialProposalVoting = async function (contracts, addressOf, specialPropo
   console.log('revealed votes on special proposal');
 
   await waitFor(10, addressOf, web3); // 10 seconds of reveal phase
-  await contracts.daoVotingClaims.claimSpecialProposalVotingResult(specialProposalId, { from: addressOf.founderBadgeHolder });
+  await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
+  console.log('before claiming special proposal');
+  await contracts.daoSpecialVotingClaims.claimSpecialProposalVotingResult(specialProposalId, bN(2), { from: addressOf.founderBadgeHolder });
+  await contracts.daoSpecialVotingClaims.claimSpecialProposalVotingResult(specialProposalId, bN(100), { from: addressOf.founderBadgeHolder });
+  console.log('claimed special proposal');
 };
 
 const addAndEndorseProposals = async function (contracts, proposals) {
@@ -503,7 +519,7 @@ module.exports = async function () {
     proposals = getTestProposals(bN, addressOf);
 
     console.log('got accounts');
-    ({ salts, votes, votingCommits } = assignVotesAndCommits(addressOf, bN));
+    ({ salts, votes, votingCommits } = assignVotesAndCommits(addressOf));
 
     // get deployed mock tokens
     await setupMockTokens(contracts, addressOf);
@@ -568,7 +584,8 @@ module.exports = async function () {
     // console.log('prl approved the proposals');
 
     // first voting round
-    await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);
+    // await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);
+    console.log('before committing votes');
     await votingCommitRound(contracts, addressOf);
     console.log('commit voting has been done');
     await votingRevealRound(contracts, addressOf, { v: votes, s: salts });
@@ -589,15 +606,15 @@ module.exports = async function () {
     // call the global rewards calculation
     await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(20 * (10 ** 9)));
     console.log('transferred dgx to rewards manager');
-    await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
+    await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(50), { from: addressOf.founderBadgeHolder });
     console.log('updated the rewards for previous quarter (quarterId = 1)');
 
     console.log('\t\t#### Info of users for last quarter: ');
     const printStake = async (user, userString) => {
       console.log(`DGDstake of ${userString} = `, await contracts.daoStakeStorage.lockedDGDStake.call(user));
       console.log(`Badge QP of ${userString}= `, await contracts.daoPointsStorage.getQuarterModeratorPoint.call(user, bN(1)));
-      console.log(`effectiveDGDBalance of ${userString} = `, await contracts.daoRewardsManager.getUserEffectiveDGDBalanceLastQuarter.call(user));
-      console.log(`effective moderator dgd balance of ${userString} = `, await contracts.daoRewardsManager.getUserEffectiveModeratorBalanceLastQuarter.call(user));
+      // console.log(`effectiveDGDBalance of ${userString} = `, await contracts.daoRewardsManager.getUserEffectiveDGDBalanceLastQuarter.call(user));
+      // console.log(`effective moderator dgd balance of ${userString} = `, await contracts.daoRewardsManager.getUserEffectiveModeratorBalanceLastQuarter.call(user));
       console.log();
     };
     await printStake(addressOf.badgeHolders[0], 'addressOf.badgeHolders[0]');
@@ -606,6 +623,7 @@ module.exports = async function () {
     await printStake(addressOf.badgeHolders[3], 'addressOf.badgeHolders[3]');
 
     // confirm participation for the next quarter
+    console.log('Before confirming participation of all members');
     await confirmContinuedParticipation(contracts, addressOf);
     console.log('confirmed participation of all members');
 
@@ -638,7 +656,7 @@ module.exports = async function () {
 
     await waitForRevealPhaseToGetOver(contracts, addressOf, proposals[0].id, bN(1), bN, web3);
     console.log('done waitForRevealPhaseToGetOver');
-    await interimVotingRoundClaim(contracts);
+    await interimvotingRoundClaim(contracts);
     console.log('done with claiming interim round voting');
 
     // prlApproveProposals(contracts, bN(1), addressOf); // approve second milestone funding
@@ -651,7 +669,7 @@ module.exports = async function () {
 
     await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(25 * (10 ** 9)));
     console.log('transferred dgx to rewards manager');
-    await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter({ from: addressOf.founderBadgeHolder });
+    await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(50), { from: addressOf.founderBadgeHolder });
     console.log('updated the rewards for previous quarter (quarterId = 2)');
 
     await confirmContinuedParticipation(contracts, addressOf);
@@ -661,14 +679,16 @@ module.exports = async function () {
     console.log('in the main phase, now going for interim voting after last milestone');
 
     await interimCommitRound(contracts, addressOf, 0, bN(2));
+    console.log('interim commit round is done');
     await waitForRevealPhase(contracts, addressOf, proposals[0].id, bN(2), bN, web3);
     await interimRevealRound(contracts, addressOf, 0, bN(2));
+    console.log('interim reveal is done');
     await waitForRevealPhaseToGetOver(contracts, addressOf, proposals[0].id, bN(2), bN, web3);
 
     console.log('[before claiming result] claimable Eth of proposer = ', await contracts.daoFundingStorage.claimableEth.call(proposals[0].proposer));
     console.log('daoFunding balance = ', await web3.eth.getBalance(contracts.daoFundingManager.address));
 
-    await contracts.daoVotingClaims.claimInterimVotingResult(proposals[0].id, bN(2), { from: proposals[0].proposer });
+    await contracts.daoVotingClaims.claimProposalVotingResult(proposals[0].id, bN(2), bN(30), { from: proposals[0].proposer });
     console.log('claimed final voting round');
 
     console.log('before claimFinalReward');
@@ -704,7 +724,7 @@ module.exports = async function () {
     );
     console.log('created special proposal');
     // vote on special proposal everybody
-    await contracts.dao.startSpecialProposalVoting(specialProposalId, getCurrentTimestamp(), { from: addressOf.founderBadgeHolder });
+    await contracts.dao.startSpecialProposalVoting(specialProposalId, { from: addressOf.founderBadgeHolder });
     await waitFor(2, addressOf, web3); // wait for a couple of seconds
     await specialProposalVoting(contracts, addressOf, specialProposalId);
     const uintConfigs2 = await contracts.daoConfigsStorage.readUintConfigs.call();

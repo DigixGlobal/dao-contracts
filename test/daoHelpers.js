@@ -1,17 +1,27 @@
 const assert = require('assert');
 
-const proposalStates = function (bN) {
+const proposalStates = function () {
   return {
-    PROPOSAL_STATE_PREPROPOSAL: bN(1),
-    PROPOSAL_STATE_INITIAL: bN(2),
-    PROPOSAL_STATE_VETTED: bN(3),
-    PROPOSAL_STATE_FUNDED: bN(4),
+    PROPOSAL_STATE_PREPROPOSAL: 'proposal_state_preproposal',
+    PROPOSAL_STATE_DRAFT: 'proposal_state_draft',
+    PROPOSAL_STATE_MODERATED: 'proposal_state_moderated',
+    PROPOSAL_STATE_ONGOING: 'proposal_state_ongoing',
+    PROPOSAL_STATE_CLOSED: 'proposal_state_closed',
   };
 };
 
-const configs = function (bN) {
+const prlActions = function (bN) {
   return {
-    CONFIG_MINIMUM_LOCKED_DGD: bN(10 ** 9),
+    PRL_ACTION_STOP: bN(1),
+    PRL_ACTION_PAUSE: bN(2),
+    PRL_ACTION_UNPAUSE: bN(3),
+  };
+};
+
+const configs = function () {
+  return {
+    INTERMEDIATE_DGD_IDENTIFIER: 'inter_dgd_id',
+    INTERMEDIATE_MODERATOR_DGD_IDENTIFIER: 'inter_mod_dgd_id',
   };
 };
 
@@ -62,6 +72,14 @@ const getTimeToNextPhase = function (timeNow, startOfDao, lockingPhaseDuration, 
   return timeToNextPhase;
 };
 
+const getTimeLeftInQuarter = function (timeNow, startOfDao, quarterDuration) {
+  return (quarterDuration - getTimeInQuarter(timeNow, startOfDao, quarterDuration));
+};
+
+const getTimeInQuarter = function (timeNow, startOfDao, quarterDuration) {
+  return ((timeNow - startOfDao) % quarterDuration);
+};
+
 const daoConstantsKeys = function () {
   return {
     CONFIG_LOCKING_PHASE_DURATION: 'locking_phase_duration',
@@ -85,14 +103,14 @@ const daoConstantsKeys = function () {
     CONFIG_MINIMAL_PARTICIPATION_POINT: 'CONFIG_MINIMAL_QP',
     CONFIG_QUARTER_POINT_SCALING_FACTOR: 'quarter_point_scaling_factor',
     CONFIG_REPUTATION_POINT_SCALING_FACTOR: 'rep_point_scaling_factor',
-    CONFIG_MINIMAL_BADGE_PARTICIPATION_POINT: 'CONFIG_MINIMAL_B_QP',
-    CONFIG_BADGE_QUARTER_POINT_SCALING_FACTOR: 'b_qp_scaling_factor',
-    CONFIG_BADGE_REPUTATION_POINT_SCALING_FACTOR: 'b_rep_point_scaling_factor',
+    CONFIG_MINIMAL_MODERATOR_QUARTER_POINT: 'CONFIG_MINIMAL_B_QP',
+    CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR: 'b_qp_scaling_factor',
+    CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR: 'b_rep_point_scaling_factor',
     CONFIG_QUARTER_POINT_DRAFT_VOTE: 'quarter_point_draft_vote',
     CONFIG_QUARTER_POINT_VOTE: 'quarter_point_vote',
     CONFIG_QUARTER_POINT_INTERIM_VOTE: 'quarter_point_interim_vote',
     CONFIG_QUARTER_POINT_CLAIM_RESULT: 'quarter_point_claim_result',
-    CONFIG_QUARTER_POINT_MILESTONE_COMPLETION: 'q_p_milestone_completion',
+    CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH: 'q_p_milestone_completion',
     CONFIG_BONUS_REPUTATION_NUMERATOR: 'bonus_reputation_numerator',
     CONFIG_BONUS_REPUTATION_DENOMINATOR: 'bonus_reputation_denominator',
     CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE: 'special_proposal_commit_phase',
@@ -109,6 +127,15 @@ const daoConstantsKeys = function () {
     CONFIG_PORTION_TO_BADGE_HOLDERS_DEN: 'config_bholder_portion_den',
     CONFIG_DRAFT_VOTING_PHASE: 'config_draft_voting_phase',
     CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE: 'config_rp_boost_per_badge',
+    CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR: 'final_reward_sfactor_numerator',
+    CONFIG_FINAL_REWARD_SCALING_FACTOR_DENOMINATOR: 'final_reward_sfactor_denominator',
+    CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION: 'config_max_m_rp_deduction',
+    CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM: 'config_rep_per_extra_m_qp_num',
+    CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN: 'config_rep_per_extra_m_qp_den',
+    CONFIG_VOTE_CLAIMING_DEADLINE: 'config_claiming_deadline',
+    CONFIG_MINIMUM_LOCKED_DGD: 'min_dgd_participant',
+    CONFIG_MINIMUM_DGD_FOR_MODERATOR: 'min_dgd_moderator',
+    CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR: 'min_reputation_moderator',
   };
 };
 
@@ -136,8 +163,8 @@ const daoConstantsValues = function (bN) {
     CONFIG_QUARTER_POINT_VOTE: bN(1),
     CONFIG_QUARTER_POINT_INTERIM_VOTE: bN(1),
     CONFIG_QUARTER_POINT_CLAIM_RESULT: bN(1),
-    CONFIG_QUARTER_POINT_MILESTONE_COMPLETION: bN(3),
-    CONFIG_BONUS_REPUTATION_NUMERATOR: bN(20),
+    CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH: bN(3),
+    CONFIG_BONUS_REPUTATION_NUMERATOR: bN(200),
     CONFIG_BONUS_REPUTATION_DENOMINATOR: bN(100),
     CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE: bN(1814400),
     CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL: bN(2419200),
@@ -152,13 +179,22 @@ const daoConstantsValues = function (bN) {
     CONFIG_MINIMAL_PARTICIPATION_POINT: bN(3),
     CONFIG_QUARTER_POINT_SCALING_FACTOR: bN(10),
     CONFIG_REPUTATION_POINT_SCALING_FACTOR: bN(10),
-    CONFIG_MINIMAL_BADGE_PARTICIPATION_POINT: bN(3),
-    CONFIG_BADGE_QUARTER_POINT_SCALING_FACTOR: bN(10),
-    CONFIG_BADGE_REPUTATION_POINT_SCALING_FACTOR: bN(10),
+    CONFIG_MINIMAL_MODERATOR_QUARTER_POINT: bN(3),
+    CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR: bN(10),
+    CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR: bN(10),
     CONFIG_PORTION_TO_BADGE_HOLDERS_NUM: bN(5),
     CONFIG_PORTION_TO_BADGE_HOLDERS_DEN: bN(100),
     CONFIG_DRAFT_VOTING_PHASE: bN(1209600),
     CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE: bN(1000),
+    CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR: bN(30),
+    CONFIG_FINAL_REWARD_SCALING_FACTOR_DENOMINATOR: bN(100),
+    CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION: bN(20),
+    CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM: bN(1),
+    CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN: bN(1),
+    CONFIG_VOTE_CLAIMING_DEADLINE: bN(5 * 24 * 3600),
+    CONFIG_MINIMUM_LOCKED_DGD: bN(10 ** 9),
+    CONFIG_MINIMUM_DGD_FOR_MODERATOR: bN(100 * (10 ** 9)),
+    CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR: bN(100),
   };
 };
 
@@ -213,6 +249,9 @@ module.exports = {
   getTimeToNextPhase,
   assertQuarter,
   max,
+  prlActions,
+  getTimeInQuarter,
+  getTimeLeftInQuarter,
   EMPTY_BYTES,
   EMPTY_ADDRESS,
 };

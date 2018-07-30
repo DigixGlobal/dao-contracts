@@ -59,7 +59,7 @@ module.exports = {
       host: 'localhost',
       port: 8545,
       network_id: '*',
-      gas: 10850000,
+      gas: 22000000,
     },
   },
   solc: {

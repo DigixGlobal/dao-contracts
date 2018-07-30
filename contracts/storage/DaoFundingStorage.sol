@@ -2,7 +2,6 @@ pragma solidity ^0.4.19;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../common/DaoConstants.sol";
-import "../common/DaoConstants.sol";
 
 contract DaoFundingStorage is ResolverClient, DaoConstants {
 
@@ -25,7 +24,7 @@ contract DaoFundingStorage is ResolverClient, DaoConstants {
         if_sender_is(CONTRACT_DAO_FUNDING_MANAGER)
         public
     {
-        ethInDao = ethInDao + _ethAmount;
+        ethInDao = ethInDao.add(_ethAmount);
     }
 
     // TODO: Add SafeMath
@@ -33,6 +32,6 @@ contract DaoFundingStorage is ResolverClient, DaoConstants {
         if_sender_is(CONTRACT_DAO_FUNDING_MANAGER)
         public
     {
-        ethInDao = ethInDao - _ethAmount;
+        ethInDao = ethInDao.sub(_ethAmount);
     }
 }

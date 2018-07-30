@@ -2,7 +2,6 @@ const a = require('awaiting');
 
 const {
   indexRange,
-  randomAddress,
   randomBigNumber,
   getCurrentTimestamp,
   randomBytes32,
@@ -29,24 +28,30 @@ const DoublyLinkedList = process.env.SIMULATION ? 0 : artifacts.require('./Doubl
 
 const DaoIdentityStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoIdentityStorage.sol');
 const DaoConfigsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoConfigsStorage.sol');
-const DaoStakeStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoStakeStorage.sol');
+const DaoStakeStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoStakeStorage.sol');
 const DaoPointsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoPointsStorage.sol');
-const DaoStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoStorage.sol');
+const DaoStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoStorage.sol');
+const DaoWhitelistingStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoWhitelistingStorage.sol');
+const IntermediateResultsStorage = process.env.SIMULATION ? 0 : artifacts.require('./IntermediateResultsStorage.sol');
+
+const DaoStructs = process.env.SIMULATION ? 0 : artifacts.require('./DaoStructs.sol');
+const DaoUpgradeStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoUpgradeStorage.sol');
 const DaoSpecialStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoSpecialStorage.sol');
 const DaoFundingStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoFundingStorage.sol');
 const DaoRewardsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoRewardsStorage.sol');
 
-const DaoInfoService = process.env.SIMULATION ? 0 : artifacts.require('./DaoInfoService.sol');
 const DaoListingService = process.env.SIMULATION ? 0 : artifacts.require('./DaoListingService.sol');
 const DaoCalculatorService = process.env.SIMULATION ? 0 : artifacts.require('./DaoCalculatorService.sol');
 
 const DaoIdentity = process.env.SIMULATION ? 0 : artifacts.require('./DaoIdentity.sol');
 const Dao = process.env.SIMULATION ? 0 : artifacts.require('./Dao.sol');
 const DaoVoting = process.env.SIMULATION ? 0 : artifacts.require('./DaoVoting.sol');
-const DaoVotingClaims = process.env.SIMULATION ? 0 : artifacts.require('./DaoVotingClaims.sol');
+const DaoVotingClaims = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoVotingClaims.sol');
+const DaoSpecialVotingClaims = process.env.SIMULATION ? 0 : artifacts.require('./DaoSpecialVotingClaims.sol');
 const DaoStakeLocking = process.env.SIMULATION ? 0 : artifacts.require('./DaoStakeLocking.sol');
 const DaoFundingManager = process.env.SIMULATION ? 0 : artifacts.require('./DaoFundingManager.sol');
 const DaoRewardsManager = process.env.SIMULATION ? 0 : artifacts.require('./DaoRewardsManager.sol');
+const DaoWhitelisting = process.env.SIMULATION ? 0 : artifacts.require('./DaoWhitelisting.sol');
 
 const MockDGD = process.env.SIMULATION ? 0 : artifacts.require('./MockDGD.sol');
 const MockBadge = process.env.SIMULATION ? 0 : artifacts.require('./MockBadge.sol');
@@ -59,6 +64,8 @@ const DGD_HOLDER_COUNT = 6;
 
 const deployLibraries = async function (libs) {
   libs.doublyLinkedList = await DoublyLinkedList.new();
+  await DaoStructs.link('DoublyLinkedList', libs.doublyLinkedList.address);
+  libs.daoStructs = await DaoStructs.new();
   return libs;
 };
 
@@ -79,7 +86,7 @@ const getAccountsAndAddressOf = function (accounts, addressOf) {
   for (const key in addressOfTemp) addressOf[key] = addressOfTemp[key];
 };
 
-const printProposalDetails = async (contracts, proposal) => {
+const printProposalDetails = async (contracts, proposal, votingRound = 0) => {
   console.log('\tPrinting details for proposal ', proposal.id);
   const proposalDetails = await contracts.daoStorage.readProposal(proposal.id);
   console.log('\t\tProposer: ', proposalDetails[1]);
@@ -87,8 +94,10 @@ const printProposalDetails = async (contracts, proposal) => {
   console.log('\t\tState: ', proposalDetails[3]);
   console.log('\t\tnVersions: ', proposalDetails[5]);
   console.log('\t\tlatestVersionDoc: ', proposalDetails[6]);
-  console.log('\t\tfinalVersion: ', await contracts.daoStorage.readFinalVersion.call(proposal.id));
-  // console.log('\t\tprlValid: ', await contracts.daoStorage.readProposalPRL.call(proposal.id));
+  console.log('\t\tfinalVersion: ', proposalDetails[7]);
+  console.log('\t\tVoting round ', votingRound);
+  console.log('\t\t\tVoting time start :', await contracts.daoStorage.readProposalVotingTime(proposal.id, votingRound));
+  console.log('\t\t\tNext milestone start :', await contracts.daoStorage.readProposalNextMilestoneStart(proposal.id, votingRound));
 };
 
 const getAllParticipantAddresses = function (accounts) {
@@ -101,34 +110,41 @@ const getAllParticipantAddresses = function (accounts) {
 
 const deployStorage = async function (libs, contracts, resolver) {
   DaoIdentityStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
+  contracts.daoWhitelistingStorage = await DaoWhitelistingStorage.new(resolver.address);
   contracts.daoIdentityStorage = await DaoIdentityStorage.new(resolver.address);
   contracts.daoConfigsStorage = await DaoConfigsStorage.new(resolver.address);
   DaoStakeStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
   contracts.daoStakeStorage = await DaoStakeStorage.new(resolver.address);
   contracts.daoPointsStorage = await DaoPointsStorage.new(resolver.address);
   DaoStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
+  DaoStorage.link('DaoStructs', libs.daoStructs.address);
   DaoSpecialStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
+  DaoSpecialStorage.link('DaoStructs', libs.daoStructs.address);
+  contracts.daoUpgradeStorage = await DaoUpgradeStorage.new(resolver.address);
   contracts.daoStorage = await DaoStorage.new(resolver.address);
+  // console.log('tx = ', await web3.eth.getTransactionReceipt(contracts.daoStorage.transactionHash));
   contracts.daoSpecialStorage = await DaoSpecialStorage.new(resolver.address);
   contracts.daoFundingStorage = await DaoFundingStorage.new(resolver.address);
   contracts.daoRewardsStorage = await DaoRewardsStorage.new(resolver.address);
+  contracts.intermediateResultsStorage = await IntermediateResultsStorage.new(resolver.address);
 };
 
 const registerInteractive = async function (resolver, addressOf) {
   const callingKeys = [
     'dao:identity',
     'dao:stake-locking',
-    'c:dao',
+    'dao',
     'dao:voting',
     'dao:voting:claims',
+    'dao:svoting:claims',
     'dao:funding-manager',
     'dao:rewards-manager',
+    'dao:whitelisting',
   ];
   await a.map(callingKeys, 10, key => resolver.register_contract(key, addressOf.root));
 };
 
 const deployServices = async function (libs, contracts, resolver) {
-  contracts.daoInfoService = await DaoInfoService.new(resolver.address);
   contracts.daoListingService = await DaoListingService.new(resolver.address);
   contracts.daoCalculatorService = await DaoCalculatorService.new(resolver.address, contracts.dgxDemurrageReporter.address);
 };
@@ -140,7 +156,19 @@ const deployInteractive = async function (libs, contracts, resolver) {
   contracts.dao = await Dao.new(resolver.address);
   contracts.daoVoting = await DaoVoting.new(resolver.address);
   contracts.daoVotingClaims = await DaoVotingClaims.new(resolver.address);
+  contracts.daoSpecialVotingClaims = await DaoSpecialVotingClaims.new(resolver.address);
   contracts.daoRewardsManager = await DaoRewardsManager.new(resolver.address, contracts.dgxToken.address);
+  contracts.daoWhitelisting = await DaoWhitelisting.new(resolver.address, [
+    contracts.daoStakeLocking.address,
+    contracts.daoIdentity.address,
+    contracts.daoFundingManager.address,
+    contracts.dao.address,
+    contracts.daoVoting.address,
+    contracts.daoVotingClaims.address,
+    contracts.daoSpecialVotingClaims.address,
+    contracts.daoCalculatorService.address,
+    contracts.daoListingService.address,
+  ]);
 };
 
 const initialTransferTokens = async function (contracts, addressOf, bN) {
@@ -190,7 +218,7 @@ const getTestProposals = function (bN, addressOf) {
         versionId: randomBytes32(),
         milestoneCount: 3,
         milestoneFundings: [bN(10 * (10 ** 18)), bN(20 * (10 ** 18)), bN(25 * (10 ** 18))],
-        milestoneDurations: [bN(30), bN(30), bN(20)],
+        milestoneDurations: [bN(15), bN(30), bN(20)],
         finalReward: bN(1 * (10 ** 18)),
       }, {
         versionId: randomBytes32(),
@@ -206,25 +234,25 @@ const getTestProposals = function (bN, addressOf) {
       addressOf.dgdHolders[1],
       addressOf.badgeHolders[1],
       [{
-        versionId: randomAddress(),
+        versionId: randomBytes32(),
         milestoneCount: 3,
         milestoneFundings: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
-        milestoneDurations: [bN(500), bN(700), bN(300)],
+        milestoneDurations: [bN(500), bN(730), bN(300)],
         finalReward: bN(1 * (10 ** 18)),
       }, {
-        versionId: randomAddress(),
+        versionId: randomBytes32(),
         milestoneCount: 3,
         milestoneFundings: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
         milestoneDurations: [bN(20), bN(20), bN(20)],
         finalReward: bN(1 * (10 ** 18)),
       }, {
-        versionId: randomAddress(),
+        versionId: randomBytes32(),
         milestoneCount: 3,
         milestoneFundings: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
         milestoneDurations: [bN(500), bN(700), bN(300)],
         finalReward: bN(1 * (10 ** 18)),
       }, {
-        versionId: randomAddress(),
+        versionId: randomBytes32(),
         milestoneCount: 3,
         milestoneFundings: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
         milestoneDurations: [bN(500), bN(700), bN(300)],
@@ -234,16 +262,16 @@ const getTestProposals = function (bN, addressOf) {
 
     getProposalStruct(
       bN,
-      addressOf.dgdHolders[4],
-      addressOf.badgeHolders[2],
+      addressOf.dgdHolders[1],
+      addressOf.badgeHolders[0],
       [{
-        versionId: randomAddress(),
+        versionId: randomBytes32(),
         milestoneCount: 2,
         milestoneFundings: [bN(20 * (10 ** 18)), bN(30 * (10 ** 18))],
         milestoneDurations: [bN(2000), bN(3000)],
         finalReward: bN(1 * (10 ** 18)),
       }, {
-        versionId: randomAddress(),
+        versionId: randomBytes32(),
         milestoneCount: 2,
         milestoneFundings: [bN(25 * (10 ** 18)), bN(25 * (10 ** 18))],
         milestoneDurations: [bN(10), bN(10)],
@@ -253,31 +281,32 @@ const getTestProposals = function (bN, addressOf) {
 
     getProposalStruct(
       bN,
-      addressOf.dgdHolders[5],
-      addressOf.badgeHolders[3],
+      addressOf.dgdHolders[0],
+      addressOf.badgeHolders[1],
       [{
-        versionId: randomAddress(),
+        versionId: randomBytes32(),
         milestoneCount: 4,
         milestoneFundings: [bN(1 * (10 ** 18)), bN(1 * (10 ** 18)), bN(2 * (10 ** 18)), bN(2 * (10 ** 18))],
         milestoneDurations: [bN(25), bN(25), bN(25), bN(25)],
         finalReward: bN(1 * (10 ** 18)),
       }],
     ),
-
   ];
 };
 
-const assignVotesAndCommits = function (addressOf, bN) {
-  const salts = indexRange(0, 4).map(() => indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(() => randomBigNumber(bN)));
+const assignVotesAndCommits = function (addressOf, proposalCount = 4, voterCount = BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT, voterAddresses = null) {
+  if (!voterAddresses) voterAddresses = addressOf.allParticipants;
+
+  const salts = indexRange(0, proposalCount).map(() => indexRange(0, voterCount).map(() => randomBytes32()));
   // salts[proposalIndex][participantIndex] = salt
 
-  const votes = indexRange(0, 4).map(() => indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(() => true));
+  const votes = indexRange(0, proposalCount).map(() => indexRange(0, voterCount).map(() => true));
   // votes[proposalIndex][holderIndex] = true/false
 
-  const votingCommits = indexRange(0, 4).map(proposalIndex => indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT).map(holderIndex => web3Utils.soliditySha3(
-    { t: 'address', v: addressOf.allParticipants[holderIndex] },
+  const votingCommits = indexRange(0, proposalCount).map(proposalIndex => indexRange(0, voterCount).map(holderIndex => web3Utils.soliditySha3(
+    { t: 'address', v: voterAddresses[holderIndex] },
     { t: 'bool', v: votes[proposalIndex][holderIndex] },
-    { t: 'uint256', v: salts[proposalIndex][holderIndex] },
+    { t: 'bytes32', v: salts[proposalIndex][holderIndex] },
   )));
   // votingCommits[proposalIndex][holderIndex] contains the commit
   return { salts, votes, votingCommits };
@@ -293,6 +322,7 @@ const setDummyConfig = async function (contracts, bN) {
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE, bN(10));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL, bN(20));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_DRAFT_VOTING_PHASE, bN(5));
+  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE, bN(5));
 };
 
 const initDao = async function (contracts, addressOf, bN, web3) {
@@ -323,7 +353,7 @@ const waitFor = async function (timeToWait, addressOf, web3) {
  * @param quarterToEndIn : The quarter in which to land (quarter.QUARTER_1 or phases.QUARTER_2)
  */
 const phaseCorrection = async function (web3, contracts, addressOf, phaseToEndIn, quarterToEndIn) {
-  const startOfDao = await contracts.daoStorage.startOfFirstQuarter.call();
+  const startOfDao = await contracts.daoUpgradeStorage.startOfFirstQuarter.call();
   const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
   const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
   const currentPhase = getPhase(
@@ -405,6 +435,44 @@ const fundDao = async function (web3, accounts, contracts) {
   });
 };
 
+const printParticipantDetails = async (bN, contracts, address) => {
+  console.log('Printing details for ', address);
+  console.log('\tClaimable ETHs: ', await contracts.daoFundingStorage.claimableEth.call(address));
+  console.log('\tPoints: ', address);
+  console.log('\t\tQP = ', await contracts.daoPointsStorage.getQuarterPoint.call(address, bN(1)));
+  console.log('\t\tModerator QP = ', await contracts.daoPointsStorage.getQuarterModeratorPoint.call(address, bN(1)));
+  console.log('\t\tRP = ', await contracts.daoPointsStorage.getReputation.call(address));
+  console.log('\tStake: ');
+  console.log('\t\tActual locked DGDs: ', await contracts.daoStakeStorage.actualLockedDGD.call(address));
+  console.log('\t\tLocked DGD Stake: ', await contracts.daoStakeStorage.lockedDGDStake.call(address));
+  console.log('\tRewards: ');
+  console.log('\t\tClaimable DGX  = ', await contracts.daoRewardsStorage.claimableDGXs.call(address));
+  console.log('\t\tLast participated quarter = ', await contracts.daoRewardsStorage.lastParticipatedQuarter.call(address));
+  console.log('\t\tlastQuarterThatRewardsWasUpdated = ', await contracts.daoRewardsStorage.lastQuarterThatRewardsWasUpdated.call(address));
+  console.log('\t\tlastQuarterThatReputationWasUpdated = ', await contracts.daoRewardsStorage.lastQuarterThatReputationWasUpdated.call(address));
+  console.log();
+};
+
+const printDaoDetails = async (bN, contracts) => {
+  console.log('Printing DAO details');
+  const qIndex = await contracts.dao.currentQuarterIndex.call();
+  console.log('\tCurrent Quarter: ', qIndex);
+  console.log('\tDGX distribution day: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex));
+  console.log('\tDGX distribution day last quarter: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex.minus(1)));
+  console.log('\tDGX distribution day last last quarter: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex.minus(2)));
+  // TODO: print more stuff
+};
+
+const withdrawDGDs = async (web3, contracts, bN, participants) => {
+  for (const participant of participants) {
+    console.log('\nAbout to withdraw DGD for ', participant.address);
+    await printParticipantDetails(bN, contracts, participant.address);
+  }
+  await a.map(participants, 20, async (participant) => {
+    await contracts.daoStakeLocking.withdrawDGD(participant.dgdToLock, { from: participant.address });
+  });
+};
+
 const lockDGDs = async (web3, contracts, bN, participants) => {
   await a.map(participants, 20, async (participant) => {
     await contracts.daoStakeLocking.lockDGD(participant.dgdToLock, { from: participant.address });
@@ -424,53 +492,91 @@ const fundUserAndApproveForStakeLocking = async (web3, contracts, bN, participan
   const ENOUGH_BADGE = bN(5);
   await a.map(participants, 20, async (participant) => {
     await contracts.dgdToken.transfer(participant.address, ENOUGH_DGD);
-    console.log('sent dgd to participant ', participant.address);
+    // console.log('sent dgd to participant ', participant.address);
     await contracts.badgeToken.transfer(participant.address, ENOUGH_BADGE);
-    console.log('sent badge to participant ', participant.address);
+    // console.log('sent badge to participant ', participant.address);
     await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(2 ** 255), { from: participant.address });
-    console.log('approved dgd for participant ', participant.address);
+    // console.log('approved dgd for participant ', participant.address);
     await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(2 ** 255), { from: participant.address });
-    console.log('approved badge for participant ', participant.address);
+    // console.log('approved badge for participant ', participant.address);
+  });
+};
+
+const getParticipants = (addressOf, bN) => {
+  const participants = [
+    {
+      address: addressOf.badgeHolders[0],
+      dgdToLock: bN(120e9),
+      startingReputation: bN(1000),
+      quarterPointFirstQuarter: bN(50),
+      quarterModeratorPointFirstQuarter: bN(5),
+      kycInfo: {
+        doc: 'till 2 months',
+        expiry: bN(getCurrentTimestamp() + (3600 * 24 * 30 * 2)),
+      },
+    },
+    {
+      address: addressOf.badgeHolders[1],
+      dgdToLock: bN(110e9),
+      startingReputation: bN(800),
+      quarterPointFirstQuarter: bN(50),
+      quarterModeratorPointFirstQuarter: bN(5),
+      kycInfo: {
+        doc: 'till 2 months',
+        expiry: bN(getCurrentTimestamp() + (3600 * 24 * 30 * 2)),
+      },
+    },
+    {
+      address: addressOf.dgdHolders[0],
+      dgdToLock: bN(20e9),
+      startingReputation: bN(10),
+      quarterPointFirstQuarter: bN(30),
+      quarterModeratorPointFirstQuarter: bN(0),
+      kycInfo: {
+        doc: 'till 1 month',
+        expiry: bN(getCurrentTimestamp() + (3600 * 24 * 30)),
+      },
+    },
+    {
+      address: addressOf.dgdHolders[1],
+      dgdToLock: bN(10e9),
+      startingReputation: bN(0),
+      quarterPointFirstQuarter: bN(20),
+      quarterModeratorPointFirstQuarter: bN(0),
+      kycInfo: {
+        doc: 'till 1 month',
+        expiry: bN(getCurrentTimestamp() + (3600 * 24 * 30)),
+      },
+    },
+  ];
+  return participants;
+};
+
+const updateKyc = async function (contracts, addressOf, participants) {
+  await a.map(participants, 20, async (participant) => {
+    await contracts.daoIdentity.updateKyc(
+      participant.address,
+      participant.kycInfo.doc,
+      participant.kycInfo.expiry,
+      { from: addressOf.kycadmin },
+    );
   });
 };
 
 // This function will setup the participants state exactly as specified, before the first quarter mainphase starts
 const setupParticipantsStates = async (web3, contracts, addressOf, bN, participants) => {
   if (!participants) {
-    participants = [
-      {
-        address: addressOf.badgeHolders[0],
-        dgdToLock: bN(100e9),
-        startingReputation: bN(1000),
-        quarterPointFirstQuarter: bN(50),
-        quarterModeratorPointFirstQuarter: bN(5),
-      },
-      {
-        address: addressOf.dgdHolders[0],
-        dgdToLock: bN(20e9),
-        startingReputation: bN(10),
-        quarterPointFirstQuarter: bN(30),
-        quarterModeratorPointFirstQuarter: bN(0),
-      },
-      {
-        address: addressOf.dgdHolders[1],
-        dgdToLock: bN(10e9),
-        startingReputation: bN(0),
-        quarterPointFirstQuarter: bN(20),
-        quarterModeratorPointFirstQuarter: bN(0),
-      },
-    ];
+    participants = getParticipants(addressOf, bN);
   }
-  // const participantCount = participants.length;
   await fundUserAndApproveForStakeLocking(web3, contracts, bN, participants);
-  await lockDGDs(web3, contracts, bN, participants);
-
   await a.map(participants, 20, async (participant) => {
     await contracts.daoPointsStorage.setQP(participant.address, participant.quarterPointFirstQuarter, bN(1));
     await contracts.daoPointsStorage.setRP(participant.address, participant.startingReputation);
-    await contracts.daoPointsStorage.setModeratorQP(participant.address, participant.quarterModeratorPointFirstQuarter);
+    await contracts.daoPointsStorage.setModeratorQP(participant.address, participant.quarterModeratorPointFirstQuarter, bN(1));
   });
-  console.log('\tInitialized participants stakes and points for first quarter, waiting until main phase');
+  await lockDGDs(web3, contracts, bN, participants);
+
+  // console.log('\tInitialized participants stakes and points for first quarter, waiting until main phase');
   await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
 };
 
@@ -524,10 +630,15 @@ module.exports = {
   redeemBadges,
   fundUserAndApproveForStakeLocking,
   lockDGDs,
+  getParticipants,
+  withdrawDGDs,
   assignVotesAndCommits,
   setDummyConfig,
   deployFreshDao,
   printProposalDetails,
+  updateKyc,
+  printDaoDetails,
+  printParticipantDetails,
   BADGE_HOLDER_COUNT,
   DGD_HOLDER_COUNT,
 };

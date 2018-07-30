@@ -88,7 +88,7 @@ contract('DaoSpecialStorage', function (accounts) {
 
   describe('commitVote', function () {
     before(async function () {
-      votingObj = assignVotesAndCommits(addressOf, bN);
+      votingObj = assignVotesAndCommits(addressOf);
     });
     it('[not called from CONTRACT_DAO_VOTING]: revert', async function () {
       for (const i of indexRange(1, 20)) {

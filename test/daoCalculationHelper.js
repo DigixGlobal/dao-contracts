@@ -38,7 +38,7 @@ const calculateUserEffectiveBalance = function (
   _quarterPoint = _quarterPoint.toNumber();
   _reputationPoint = _reputationPoint.toNumber();
   _lockedDGDStake = _lockedDGDStake.toNumber();
-  const _baseDGDBalance = _quarterPoint > _minimalParticipationPoint ? _lockedDGDStake : ((_quarterPoint * _lockedDGDStake) / _minimalParticipationPoint);
+  const _baseDGDBalance = _quarterPoint > _minimalParticipationPoint ? _lockedDGDStake : Math.floor((_quarterPoint * _lockedDGDStake) / _minimalParticipationPoint);
   const _effectiveDGDBalance = (_baseDGDBalance * ((_quarterPointScalingFactor + _quarterPoint) - _minimalParticipationPoint) *
                                (_reputationPointScalingFactor + _reputationPoint)) /
                                (_quarterPointScalingFactor * _reputationPointScalingFactor);
@@ -57,8 +57,14 @@ const calculateReputation = function (
   _minimalParticipationPoint,
   _reputationPerExtraNum,
   _reputationPerExtraDen,
+  _maxReputationModeratorDeduction,
+  _minimalModeratorParticipationPoint,
+  _reputationPerExtraModeratorNum,
+  _reputationPerExtraModeratorDen,
   _currentReputation,
   _quarterPoint,
+  _quarterModeratorPoint,
+  _isModerator,
 ) {
   _currentQuarter = _currentQuarter.toNumber();
   _lastParticipatedQuarter = _lastParticipatedQuarter.toNumber();
@@ -70,21 +76,34 @@ const calculateReputation = function (
   _reputationPerExtraDen = _reputationPerExtraDen.toNumber();
   _currentReputation = _currentReputation.toNumber();
   _quarterPoint = _quarterPoint.toNumber();
+  _maxReputationModeratorDeduction = _maxReputationModeratorDeduction.toNumber();
+  _minimalModeratorParticipationPoint = _minimalModeratorParticipationPoint.toNumber();
+  _reputationPerExtraModeratorNum = _reputationPerExtraModeratorNum.toNumber();
+  _reputationPerExtraModeratorDen = _reputationPerExtraModeratorDen.toNumber();
+  _quarterModeratorPoint = _quarterModeratorPoint.toNumber();
 
   if (_currentQuarter <= _lastParticipatedQuarter) {
     return _currentReputation;
   }
 
-  if (_lastParticipatedQuarter > _lastQuarterThatReputationWasUpdated) {
+  if (_lastParticipatedQuarter === (_currentQuarter - 1)) {
     if (_quarterPoint < _minimalParticipationPoint) {
       _currentReputation -= Math.floor(((_minimalParticipationPoint - _quarterPoint) * _maxReputationDeduction) / _minimalParticipationPoint);
     } else {
       _currentReputation += Math.floor(((_quarterPoint - _minimalParticipationPoint) * _reputationPerExtraNum) / _reputationPerExtraDen);
     }
-  } else {
-    const _fineForNotLocking = (_currentQuarter - 1 - _lastParticipatedQuarter) * (_maxReputationDeduction + _punishmentForNotLocking);
-    _currentReputation = _fineForNotLocking > _currentReputation ? 0 : (_currentReputation - _fineForNotLocking);
+
+    if (_isModerator) {
+      if (_quarterModeratorPoint < _minimalModeratorParticipationPoint) {
+        _currentReputation -= Math.floor(((_minimalModeratorParticipationPoint - _quarterModeratorPoint) * _maxReputationModeratorDeduction) / _minimalModeratorParticipationPoint);
+      } else {
+        _currentReputation += Math.floor(((_quarterModeratorPoint - _minimalModeratorParticipationPoint) * _reputationPerExtraModeratorNum) / _reputationPerExtraModeratorDen);
+      }
+    }
   }
+
+  const _fineForNotLocking = (_currentQuarter - 1 - _lastParticipatedQuarter) * (_maxReputationDeduction + _punishmentForNotLocking);
+  _currentReputation = _fineForNotLocking > _currentReputation ? 0 : (_currentReputation - _fineForNotLocking);
   return _currentReputation;
 };
 
@@ -130,6 +149,23 @@ const calculateDgxRewards = function (
   return _rewards;
 };
 
+const getBonusReputation = function (
+  _quarterPointPerVote,
+  _bonusReputationNumerator,
+  _bonusReputationDenominator,
+  _reputationPerExtraNum,
+  _reputationPerExtraDen,
+) {
+  _quarterPointPerVote = _quarterPointPerVote.toNumber();
+  _bonusReputationNumerator = _bonusReputationNumerator.toNumber();
+  _bonusReputationDenominator = _bonusReputationDenominator.toNumber();
+  _reputationPerExtraNum = _reputationPerExtraNum.toNumber();
+  _reputationPerExtraDen = _reputationPerExtraDen.toNumber();
+
+  return Math.floor((_quarterPointPerVote * _bonusReputationNumerator * _reputationPerExtraNum) /
+    (_reputationPerExtraDen * _bonusReputationDenominator));
+};
+
 module.exports = {
   calculateMinQuorum,
   calculateQuota,
@@ -137,5 +173,6 @@ module.exports = {
   calculateDgxDemurrage,
   calculateDgxRewards,
   calculateReputation,
+  getBonusReputation,
   SECONDS_IN_A_DAY,
 };
