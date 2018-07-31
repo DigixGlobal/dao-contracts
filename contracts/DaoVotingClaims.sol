@@ -59,6 +59,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
                     .add(get_uint_config(CONFIG_DRAFT_VOTING_PHASE))
                     .add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE))) {
             daoStorage().setProposalDraftPass(_proposalId, false);
+            daoCollateralStorage().unlockCollateral(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
             return false;
         }
         require(msg.sender == daoStorage().readProposalProposer(_proposalId));
@@ -167,6 +168,12 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         }
         if (_passed) {
             setTimelineAndManageFunding(_proposalId, _index);
+        } else {
+            // failed voting in the first round
+            // return the collateral
+            if (_index == 0) {
+                daoCollateralStorage().unlockCollateral(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+            }
         }
         daoStorage().setVotingClaim(_proposalId, _index, true);
         daoStorage().setProposalPass(_proposalId, _index, _passed);
@@ -184,6 +191,12 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             setTimelineForNextMilestone(_proposalId, _index.add(1), _info.duration, _info.milestoneStart);
         }
         daoFundingManager().allocateEth(daoStorage().readProposalProposer(_proposalId), _info.funding);
+
+        // if this was the last milestone and final reward has been released
+        // unlock their original collateral
+        if (_info.duration == 0 && _info.funding == 0 && !isProposalPaused(_proposalId)) {
+            daoCollateralStorage().unlockCollateral(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        }
 
         daoPointsStorage().addQuarterPoint(
             daoStorage().readProposalProposer(_proposalId),
@@ -225,6 +238,9 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             // give bonus points for all those who
             // voted NO in the previous round
             (_bonusVoters.users, _bonusVoters.usersLength) = daoStorage().readVotingRoundVotes(_proposalId, _index.sub(1), _voterBatch, false);
+
+            // confiscate the collateral as failed to complete milestone
+            daoCollateralStorage().confiscateCollateral(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
         }
         if (_bonusVoters.usersLength > 0) addBonusReputation(_bonusVoters.users, _bonusVoters.usersLength);
 

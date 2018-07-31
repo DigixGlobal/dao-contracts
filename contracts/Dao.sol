@@ -61,14 +61,17 @@ contract Dao is DaoCommon, Claimable {
         uint256 _finalReward
     )
         public
+        payable
         if_main_phase()
         if_participant()
         if_funding_possible(_milestonesFundings)
         if_valid_milestones(_milestonesDurations.length, _milestonesFundings.length)
         returns (bool _success)
     {
+        require(msg.value >= get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
         address _proposer = msg.sender;
         require(identity_storage().is_kyc_approved(_proposer));
+        daoCollateralStorage().lockCollateral(msg.sender, get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
         daoStorage().addProposal(_docIpfsHash, _proposer, _milestonesDurations, _milestonesFundings, _finalReward);
         _success = true;
     }
@@ -242,6 +245,27 @@ contract Dao is DaoCommon, Claimable {
         require(daoSpecialStorage().readVotingTime(_proposalId) == 0);
         require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
         daoSpecialStorage().setVotingTime(_proposalId, now);
+        _success = true;
+    }
+
+    function transferCollateral(address _user, uint256 _value)
+        public
+        if_sender_is(CONTRACT_DAO_FUNDING_MANAGER)
+        returns (bool _success)
+    {
+        _user.transfer(_value);
+        _success = true;
+    }
+
+    function collectCollaterals(address _collectorAddress)
+        public
+        if_founder()
+        returns (bool _success)
+    {
+        uint256 _value = daoCollateralStorage().readConfiscatedCollateral();
+        require(_value > 0);
+        daoCollateralStorage().collectConfiscatedCollateral(_value);
+        _collectorAddress.transfer(_value);
         _success = true;
     }
 }

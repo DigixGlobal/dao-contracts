@@ -1,5 +1,6 @@
 pragma solidity ^0.4.19;
 import "./common/DaoCommon.sol";
+import "./Dao.sol";
 
 /// @title Contract to manage DAO funds
 /// @author Digix Holdings
@@ -7,6 +8,10 @@ contract DaoFundingManager is DaoCommon {
 
     function DaoFundingManager(address _resolver) public {
         require(init(CONTRACT_DAO_FUNDING_MANAGER, _resolver));
+    }
+
+    function dao() internal returns (Dao _contract) {
+        _contract = Dao(get_contract(CONTRACT_DAO));
     }
 
     /// @notice Call function to claim ETH allocated by DAO (transferred to caller)
@@ -34,6 +39,28 @@ contract DaoFundingManager is DaoCommon {
         daoFundingStorage().withdrawEth(_value);
 
         msg.sender.transfer(_value);
+        _success = true;
+    }
+
+    function claimCollateral(bytes32 _proposalId)
+        public
+        if_from_proposer(_proposalId)
+        returns (bool _success)
+    {
+        // proposal should not be paused/stopped
+        require(isProposalPaused(_proposalId) == false);
+
+        // require unlocked collateral to be enough
+        uint256 _unlockedCollateral = daoCollateralStorage().readUnlockedCollateral(msg.sender);
+        address _endorser;
+        (,,_endorser,,,,,,) = daoStorage().readProposal(_proposalId);
+        require(
+            (_unlockedCollateral >= get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT)) ||
+            (_endorser != EMPTY_ADDRESS)
+        );
+
+        daoCollateralStorage().withdrawCollateral(msg.sender, _unlockedCollateral);
+        require(dao().transferCollateral(msg.sender, _unlockedCollateral));
         _success = true;
     }
 

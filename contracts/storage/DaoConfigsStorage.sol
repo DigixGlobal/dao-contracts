@@ -83,6 +83,8 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_MINIMUM_LOCKED_DGD] = 10 ** 9;
         uintConfigs[CONFIG_MINIMUM_DGD_FOR_MODERATOR] = 100 * (10 ** 9);
         uintConfigs[CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR] = 100;
+
+        uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT] = 2 * (10 ** 18);
     }
 
     function updateUintConfigs(uint256[] _uintConfigs)
@@ -136,23 +138,21 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE] = _uintConfigs[44];
         uintConfigs[CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR] = _uintConfigs[45];
         uintConfigs[CONFIG_FINAL_REWARD_SCALING_FACTOR_DENOMINATOR] = _uintConfigs[46];
-
         uintConfigs[CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION] = _uintConfigs[47];
         uintConfigs[CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM] = _uintConfigs[48];
         uintConfigs[CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN] = _uintConfigs[49];
-
         uintConfigs[CONFIG_VOTE_CLAIMING_DEADLINE] = _uintConfigs[50];
-
         uintConfigs[CONFIG_MINIMUM_LOCKED_DGD] = _uintConfigs[51];
         uintConfigs[CONFIG_MINIMUM_DGD_FOR_MODERATOR] = _uintConfigs[52];
         uintConfigs[CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR] = _uintConfigs[53];
+        uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT] = _uintConfigs[54];
     }
 
     function readUintConfigs()
         public
         returns (uint256[])
     {
-        uint256[] memory _uintConfigs = new uint256[](54);
+        uint256[] memory _uintConfigs = new uint256[](55);
         _uintConfigs[0] = uintConfigs[CONFIG_LOCKING_PHASE_DURATION];
         _uintConfigs[1] = uintConfigs[CONFIG_QUARTER_DURATION];
         _uintConfigs[2] = uintConfigs[CONFIG_VOTING_COMMIT_PHASE];
@@ -207,6 +207,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         _uintConfigs[51] = uintConfigs[CONFIG_MINIMUM_LOCKED_DGD];
         _uintConfigs[52] = uintConfigs[CONFIG_MINIMUM_DGD_FOR_MODERATOR];
         _uintConfigs[53] = uintConfigs[CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR];
+        _uintConfigs[54] = uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT];
         return _uintConfigs;
     }
 }

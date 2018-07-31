@@ -13,6 +13,7 @@ import "./../storage/DaoFundingStorage.sol";
 import "./../storage/DaoRewardsStorage.sol";
 import "./../storage/DaoWhitelistingStorage.sol";
 import "./../storage/IntermediateResultsStorage.sol";
+import "./../storage/DaoCollateralStorage.sol";
 
 contract DaoCommon is IdentityCommon {
     modifier daoIsValid() {
@@ -302,6 +303,10 @@ contract DaoCommon is IdentityCommon {
 
     function intermediateResultsStorage() internal returns (IntermediateResultsStorage _contract) {
         _contract = IntermediateResultsStorage(get_contract(CONTRACT_STORAGE_INTERMEDIATE_RESULTS));
+    }
+
+    function daoCollateralStorage() internal returns (DaoCollateralStorage _contract) {
+        _contract = DaoCollateralStorage(get_contract(CONTRACT_STORAGE_DAO_COLLATERAL));
     }
 
     function get_uint_config(bytes32 _config_key)
