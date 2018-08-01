@@ -324,14 +324,10 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     function readProposalFunding(bytes32 _proposalId)
         public
         constant
-        returns (uint256[] memory _fundings, uint256 _finalReward, uint256 _totalFunding)
+        returns (uint256[] memory _fundings, uint256 _finalReward)
     {
         bytes32 _finalVersion = proposalsById[_proposalId].finalVersion;
         _fundings = proposalsById[_proposalId].proposalVersions[_finalVersion].milestoneFundings;
-        uint256 _n = _fundings.length;
-        for (uint256 i = 0; i < _n; i++) {
-            _totalFunding = _totalFunding.add(_fundings[i]);
-        }
         _finalReward = proposalsById[_proposalId].proposalVersions[_finalVersion].finalReward;
     }
 
@@ -477,6 +473,22 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         bytes32 _lastVersion = getLastProposalVersion(_proposalId);
         proposalsById[_proposalId].proposalVersions[_lastVersion].milestoneFundings = _newMilestoneFundings;
         proposalsById[_proposalId].proposalVersions[_lastVersion].finalReward = _finalReward;
+    }
+
+    function addProposalDoc(bytes32 _proposalId, bytes32 _newDoc)
+        public
+        if_sender_is(CONTRACT_DAO)
+    {
+        bytes32 _lastVersion = getLastProposalVersion(_proposalId);
+        proposalsById[_proposalId].proposalVersions[_lastVersion].moreDocs.push(_newDoc);
+    }
+
+    function readProposalDocs(bytes32 _proposalId)
+        public
+        returns (bytes32[] _moreDocs)
+    {
+        bytes32 _lastVersion = getLastProposalVersion(_proposalId);
+        _moreDocs = proposalsById[_proposalId].proposalVersions[_lastVersion].moreDocs;
     }
 
     function finalizeProposal(bytes32 _proposalId)

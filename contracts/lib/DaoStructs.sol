@@ -29,6 +29,7 @@ library DaoStructs {
         uint256 milestoneCount;
         uint256[] milestoneFundings;
         uint256 finalReward;
+        bytes32[] moreDocs;
     }
 
     struct Proposal {

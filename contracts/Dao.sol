@@ -134,7 +134,7 @@ contract Dao is DaoCommon, Claimable {
             require(_milestonesFundings.length <= get_uint_config(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
         }
         uint256[] memory _currentFundings;
-        (_currentFundings, _finalReward,) = daoStorage().readProposalFunding(_proposalId);
+        (_currentFundings, _finalReward) = daoStorage().readProposalFunding(_proposalId);
 
         // must be after the start of the milestone, and the milestone has not been finished yet (voting hasnt started)
         require(now > startOfMilestone(_proposalId, _currentMilestone));
@@ -181,6 +181,16 @@ contract Dao is DaoCommon, Claimable {
         require(daoStorage().readProposalVotingTime(_proposalId, _milestoneIndex.add(1)) == 0);
 
         daoStorage().setProposalVotingTime(_proposalId, _milestoneIndex.add(1), now); // set the voting time of next voting
+    }
+
+    function addProposalDoc(bytes32 _proposalId, bytes32 _newDoc)
+        public
+        if_main_phase()
+        if_participant()
+        if_from_proposer(_proposalId)
+    {
+        require(identity_storage().is_kyc_approved(msg.sender));
+        daoStorage().addProposalDoc(_proposalId, _newDoc);
     }
 
     /// @notice Function to endorse a pre-proposal (can be called only by DAO Moderator)
