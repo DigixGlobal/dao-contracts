@@ -21,10 +21,10 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
 
     /// @notice add quarter points for a _participant for a _quarterId
     function addQuarterPoint(address _participant, uint256 _point, uint256 _quarterId)
-        if_sender_is_from([CONTRACT_DAO_VOTING, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES])
         public
         returns (uint256 _newPoint, uint256 _newTotalPoint)
     {
+        require(sender_is_from([CONTRACT_DAO_VOTING, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES]));
         quarterPoint[_quarterId].totalSupply = quarterPoint[_quarterId].totalSupply.add(_point);
         quarterPoint[_quarterId].balance[_participant] = quarterPoint[_quarterId].balance[_participant].add(_point);
 
@@ -33,10 +33,10 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
     }
 
     function addQuarterModeratorPoint(address _participant, uint256 _point, uint256 _quarterId)
-        if_sender_is_from([CONTRACT_DAO_VOTING, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES])
         public
         returns (uint256 _newPoint, uint256 _newTotalPoint)
     {
+        require(sender_is_from([CONTRACT_DAO_VOTING, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES]));
         quarterModeratorPoint[_quarterId].totalSupply = quarterModeratorPoint[_quarterId].totalSupply.add(_point);
         quarterModeratorPoint[_quarterId].balance[_participant] = quarterModeratorPoint[_quarterId].balance[_participant].add(_point);
 
@@ -80,10 +80,10 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
 
     /// @notice add reputation points for a _participant
     function addReputation(address _participant, uint256 _point)
-        if_sender_is_from([CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_REWARDS_MANAGER, CONTRACT_DAO_STAKE_LOCKING])
         public
         returns (uint256 _newPoint, uint256 _totalPoint)
     {
+        require(sender_is_from([CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_REWARDS_MANAGER, CONTRACT_DAO_STAKE_LOCKING]));
         reputationPoint.totalSupply = reputationPoint.totalSupply.add(_point);
         reputationPoint.balance[_participant] = reputationPoint.balance[_participant].add(_point);
 
@@ -93,10 +93,10 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
 
     /// @notice subtract reputation points for a _participant
     function subtractReputation(address _participant, uint256 _point)
-        if_sender_is_from([CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_REWARDS_MANAGER, EMPTY_BYTES])
         public
         returns (uint256 _newPoint, uint256 _totalPoint)
     {
+        require(sender_is_from([CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_REWARDS_MANAGER, EMPTY_BYTES]));
         uint256 _toDeduct = _point;
         if (reputationPoint.balance[_participant] > _point) {
             reputationPoint.balance[_participant] = reputationPoint.balance[_participant].sub(_point);

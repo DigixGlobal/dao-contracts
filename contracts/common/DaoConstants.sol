@@ -140,4 +140,5 @@ contract DaoConstants {
 
     bytes32 CONFIG_MAX_FUNDING_FOR_NON_DIGIX = "config_max_funding_nonDigix";
     bytes32 CONFIG_MAX_MILESTONES_FOR_NON_DIGIX = "config_max_milestones_nonDigix";
+    bytes32 CONFIG_PROPOSAL_CAP_PER_QUARTER = "config_proposal_cap";
 }

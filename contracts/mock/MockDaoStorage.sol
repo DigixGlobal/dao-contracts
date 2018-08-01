@@ -24,7 +24,6 @@ contract MockDaoStorage is DaoStorage {
         bool _isDraftPhase,
         address _proposer,
         address _endorser,
-        /* uint256[] _milestonesDurations, */
         uint256[] _milestonesFundings,
         uint256 _finalReward
     )
@@ -38,7 +37,6 @@ contract MockDaoStorage is DaoStorage {
         proposalsById[_proposalId].proposalVersions[_proposalId].docIpfsHash = _proposalId;
         proposalsById[_proposalId].proposalVersions[_proposalId].created = now;
         proposalsById[_proposalId].proposalVersions[_proposalId].milestoneCount = _milestonesFundings.length;
-        /* proposalsById[_proposalId].proposalVersions[_proposalId].milestoneDurations = _milestonesDurations; */
         proposalsById[_proposalId].proposalVersions[_proposalId].milestoneFundings = _milestonesFundings;
         proposalsById[_proposalId].proposalVersions[_proposalId].finalReward = _finalReward;
         proposalsById[_proposalId].endorser = _endorser;

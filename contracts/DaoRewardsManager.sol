@@ -105,8 +105,8 @@ contract DaoRewardsManager is DaoCommon {
     /// @param _user Address of the DAO participant
     function updateRewardsBeforeNewQuarter(address _user)
         public
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         uint256 _currentQuarter = currentQuarterIndex();
         // do nothing if the rewards was already updated for the previous quarter
         if (daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user).add(1) >= _currentQuarter) {
@@ -291,11 +291,11 @@ contract DaoRewardsManager is DaoCommon {
     /// @notice Function called by the founder after transfering the DGX fees into the DAO at the beginning of the quarter
     function calculateGlobalRewardsBeforeNewQuarter(uint256 _operations)
         if_founder()
-        if_locking_phase()
-        daoIsValid()
         public
         returns (bool _done)
     {
+        require(is_dao_valid());
+        require(is_locking_phase());
         QuarterRewardsInfo memory info;
         info.previousQuarter = currentQuarterIndex().sub(1);
         require(info.previousQuarter > 0); // throw if this is the first quarter

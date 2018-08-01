@@ -88,6 +88,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
 
         uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX] = 100 ether; // TODO: change to 5000USD
         uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX] = 4;  // TODO: change to 2
+        uintConfigs[CONFIG_PROPOSAL_CAP_PER_QUARTER] = 10;
 
         // set address configs
         addressConfigs[CONFIG_CONTRACT_MEDIANIZER] = 0x729D19f657BD0614b4985Cf1D82531c67569197B;
@@ -95,8 +96,8 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
 
     function updateUintConfigs(uint256[] _uintConfigs)
         public
-        if_sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS)
     {
+        require(sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS));
         uintConfigs[CONFIG_LOCKING_PHASE_DURATION] = _uintConfigs[0];
         uintConfigs[CONFIG_QUARTER_DURATION] = _uintConfigs[1];
         uintConfigs[CONFIG_VOTING_COMMIT_PHASE] = _uintConfigs[2];
@@ -154,13 +155,14 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT] = _uintConfigs[54];
         uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX] = _uintConfigs[55];
         uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX] = _uintConfigs[56];
+        uintConfigs[CONFIG_PROPOSAL_CAP_PER_QUARTER] = _uintConfigs[57];
     }
 
     function readUintConfigs()
         public
         returns (uint256[])
     {
-        uint256[] memory _uintConfigs = new uint256[](57);
+        uint256[] memory _uintConfigs = new uint256[](58);
         _uintConfigs[0] = uintConfigs[CONFIG_LOCKING_PHASE_DURATION];
         _uintConfigs[1] = uintConfigs[CONFIG_QUARTER_DURATION];
         _uintConfigs[2] = uintConfigs[CONFIG_VOTING_COMMIT_PHASE];
@@ -218,6 +220,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         _uintConfigs[54] = uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT];
         _uintConfigs[55] = uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX];
         _uintConfigs[56] = uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX];
+        _uintConfigs[57] = uintConfigs[CONFIG_PROPOSAL_CAP_PER_QUARTER];
         return _uintConfigs;
     }
 }

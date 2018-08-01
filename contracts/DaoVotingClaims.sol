@@ -49,11 +49,12 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         uint256 _count
     )
         public
-        if_main_phase()
         if_draft_not_claimed(_proposalId)
         if_after_draft_voting_phase(_proposalId)
         returns (bool _passed)
     {
+        require(is_main_phase());
+
         // if after the claiming deadline, its auto failed
         if (now > daoStorage().readProposalDraftVotingTime(_proposalId)
                     .add(get_uint_config(CONFIG_DRAFT_VOTING_PHASE))
@@ -126,12 +127,14 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         require(_currentResults.currentQuorum > daoCalculatorService().minimumDraftQuorum(_proposalId));
         require(daoCalculatorService().draftQuotaPass(_currentResults.currentForCount, _currentResults.currentAgainstCount));
         daoStorage().setProposalDraftPass(_proposalId, true);
+
         // set startTime of first voting round
         // and the start of first milestone.
+        uint256 _idealClaimTime = daoStorage().readProposalDraftVotingTime(_proposalId).add(get_uint_config(CONFIG_DRAFT_VOTING_PHASE));
         daoStorage().setProposalVotingTime(
             _proposalId,
             0,
-            daoStorage().readProposalDraftVotingTime(_proposalId).add(get_uint_config(CONFIG_DRAFT_VOTING_PHASE))
+            getTimelineForNextVote(0, _idealClaimTime)
         );
         daoStorage().setDraftVotingClaim(_proposalId, true);
     }
@@ -145,11 +148,11 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     /// @return _passed Boolean, true if the  voting round passed, false if failed
     function claimProposalVotingResult(bytes32 _proposalId, uint256 _index, uint256 _operations)
         public
-        if_main_phase()
         if_not_claimed(_proposalId, _index)
         if_after_proposal_reveal_phase(_proposalId, _index)
         returns (bool _passed, bool _done)
     {
+        require(is_main_phase());
         // anyone can claim after the claiming deadline is over;
         // and the result will be failed by default
         _done = true;
@@ -166,7 +169,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             if (!_done) return (_passed, false);
         }
         if (_passed) {
-            setTimelineAndManageFunding(_proposalId, _index);
+            allocateFunding(_proposalId, _index);
         } else {
             // failed voting in the first round
             // return the collateral
@@ -179,7 +182,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         _done = true;
     }
 
-    function setTimelineAndManageFunding(bytes32 _proposalId, uint256 _index)
+    function allocateFunding(bytes32 _proposalId, uint256 _index)
         internal
     {
         uint256 _funding;
@@ -191,6 +194,10 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         // unlock their original collateral
         if (_funding == 0 && !isProposalPaused(_proposalId)) {
             daoCollateralStorage().unlockCollateral(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        }
+
+        if (_index == 0) {
+            daoStorage().addProposalCountInQuarter(currentQuarterIndex());
         }
 
         daoPointsStorage().addQuarterPoint(

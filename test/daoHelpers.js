@@ -137,6 +137,7 @@ const daoConstantsKeys = function () {
     CONFIG_MINIMUM_DGD_FOR_MODERATOR: 'min_dgd_moderator',
     CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR: 'min_reputation_moderator',
     CONFIG_CONTRACT_MEDIANIZER: 'config_medianizer_address',
+    CONFIG_PROPOSAL_CAP_PER_QUARTER: 'config_proposal_cap',
   };
 };
 
@@ -196,6 +197,7 @@ const daoConstantsValues = function (bN) {
     CONFIG_MINIMUM_LOCKED_DGD: bN(10 ** 9),
     CONFIG_MINIMUM_DGD_FOR_MODERATOR: bN(100 * (10 ** 9)),
     CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR: bN(100),
+    CONFIG_PROPOSAL_CAP_PER_QUARTER: bN(10),
   };
 };
 

@@ -13,25 +13,25 @@ contract DaoFundingStorage is ResolverClient, DaoConstants {
     }
 
     function updateClaimableEth(address _proposer, uint256 _value)
-        if_sender_is(CONTRACT_DAO_FUNDING_MANAGER)
         public
     {
+        require(sender_is(CONTRACT_DAO_FUNDING_MANAGER));
         claimableEth[_proposer] = _value;
     }
 
     // TODO: Add SafeMath
     function addEth(uint256 _ethAmount)
-        if_sender_is(CONTRACT_DAO_FUNDING_MANAGER)
         public
     {
+        require(sender_is(CONTRACT_DAO_FUNDING_MANAGER));
         ethInDao = ethInDao.add(_ethAmount);
     }
 
     // TODO: Add SafeMath
     function withdrawEth(uint256 _ethAmount)
-        if_sender_is(CONTRACT_DAO_FUNDING_MANAGER)
         public
     {
+        require(sender_is(CONTRACT_DAO_FUNDING_MANAGER));
         ethInDao = ethInDao.sub(_ethAmount);
     }
 }

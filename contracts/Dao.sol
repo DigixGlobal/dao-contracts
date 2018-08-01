@@ -62,13 +62,14 @@ contract Dao is DaoCommon, Claimable {
     )
         public
         payable
-        if_main_phase()
-        if_participant()
         if_funding_possible(_milestonesFundings)
         returns (bool _success)
     {
+        require(is_main_phase());
+        require(isParticipant(msg.sender));
         bool _isFounder = is_founder();
         require(msg.value >= get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        require(daoStorage().proposalCountByQuarter(currentQuarterIndex()) < get_uint_config(CONFIG_PROPOSAL_CAP_PER_QUARTER));
 
         if (!_isFounder) {
             require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
@@ -96,12 +97,12 @@ contract Dao is DaoCommon, Claimable {
         uint256 _finalReward
     )
         public
-        if_main_phase()
-        if_participant()
-        if_editable(_proposalId)
         returns (bool _success)
     {
+        require(is_main_phase());
+        require(isParticipant(msg.sender));
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
+        require(is_editable(_proposalId));
         bytes32 _currentState;
         (,,,_currentState,,,,,) = daoStorage().readProposal(_proposalId);
         require(_currentState == PROPOSAL_STATE_PREPROPOSAL ||
@@ -124,9 +125,9 @@ contract Dao is DaoCommon, Claimable {
         uint256 _currentMilestone
     )
         public
-        if_main_phase()
-        if_participant()
     {
+        require(is_main_phase());
+        require(isParticipant(msg.sender));
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
         require(identity_storage().is_kyc_approved(msg.sender));
         if (!is_founder()) {
@@ -154,11 +155,11 @@ contract Dao is DaoCommon, Claimable {
     /// @param _proposalId ID of the proposal
     function finalizeProposal(bytes32 _proposalId)
         public
-        if_main_phase()
-        if_participant()
-        if_editable(_proposalId)
     {
+        require(is_main_phase());
+        require(isParticipant(msg.sender));
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
+        require(is_editable(_proposalId));
         require(identity_storage().is_kyc_approved(msg.sender));
         require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_DRAFT_VOTING_PHASE).add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE)));
         address _endorser;
@@ -170,25 +171,29 @@ contract Dao is DaoCommon, Claimable {
 
     function finishMilestone(bytes32 _proposalId, uint256 _milestoneIndex)
         public
-        if_main_phase()
-        if_participant()
-        if_from_proposer(_proposalId)
     {
+        require(is_main_phase());
+        require(isParticipant(msg.sender));
+        require(is_from_proposer(_proposalId));
         require(identity_storage().is_kyc_approved(msg.sender));
 
         // must be after the start of this milestone, and the milestone has not been finished yet (voting hasnt started)
         require(now > startOfMilestone(_proposalId, _milestoneIndex));
         require(daoStorage().readProposalVotingTime(_proposalId, _milestoneIndex.add(1)) == 0);
 
-        daoStorage().setProposalVotingTime(_proposalId, _milestoneIndex.add(1), now); // set the voting time of next voting
+        daoStorage().setProposalVotingTime(
+            _proposalId,
+            _milestoneIndex.add(1),
+            getTimelineForNextVote(_milestoneIndex.add(1), now)
+        ); // set the voting time of next voting
     }
 
     function addProposalDoc(bytes32 _proposalId, bytes32 _newDoc)
         public
-        if_main_phase()
-        if_participant()
-        if_from_proposer(_proposalId)
     {
+        require(is_main_phase());
+        require(isParticipant(msg.sender));
+        require(is_from_proposer(_proposalId));
         require(identity_storage().is_kyc_approved(msg.sender));
         daoStorage().addProposalDoc(_proposalId, _newDoc);
     }
@@ -198,13 +203,12 @@ contract Dao is DaoCommon, Claimable {
     /// @return Whether the proposal was endorsed successfully or not
     function endorseProposal(bytes32 _proposalId)
         public
-        if_main_phase()
-        if_moderator()
         is_proposal_state(_proposalId, PROPOSAL_STATE_PREPROPOSAL)
         returns (bool _success)
     {
-        address _endorser = msg.sender;
-        daoStorage().updateProposalEndorse(_proposalId, _endorser);
+        require(is_main_phase());
+        require(isModerator(msg.sender));
+        daoStorage().updateProposalEndorse(_proposalId, msg.sender);
         _success = true;
     }
 
@@ -222,50 +226,6 @@ contract Dao is DaoCommon, Claimable {
         returns (bool _success)
     {
         require(_action == PRL_ACTION_STOP || _action == PRL_ACTION_PAUSE || _action == PRL_ACTION_UNPAUSE);
-        /* if (_action == PRL_ACTION_UNPAUSE) {
-            //if the last action was pause, and it happened before a release of funding
-            // then we need to push back the milestone, and set the startTime of the voting accordingly.
-            uint256 _prlActionCount = daoStorage().readTotalPrlActions(_proposalId);
-            if (_prlActionCount > 0) {
-                uint256 _lastAction;
-                uint256 _lastActionTime;
-                (_lastAction, _lastActionTime, ) = daoStorage().readPrlAction(_proposalId, _prlActionCount.sub(1));
-
-                // find out the last voting round that has just happened
-                // hence, it is also the index of the current milestone
-                uint256 _lastVotingRound = 0;
-                while (true) {
-                    uint256 _nextMilestoneStartOfNextVotingRound = daoStorage().readProposalNextMilestoneStart(_proposalId, _lastVotingRound + 1);
-                    if (_nextMilestoneStartOfNextVotingRound == 0 || _nextMilestoneStartOfNextVotingRound > now) break;
-                    _lastVotingRound = _lastVotingRound.add(1);
-                }
-
-                // if it's before even the start of the first milestone: no need to do anything
-                if (now < daoStorage().readProposalNextMilestoneStart(_proposalId, 0)) {
-                    return true;
-                }
-
-                // update the startOfNextMilestone and setTimelineForNextMilestone() accordingly if we just delayed the proposal
-                // this is the case when _lastVotingRound was claimed
-                if (
-                    (_lastAction == PRL_ACTION_PAUSE) &&
-                    (_lastActionTime < daoStorage().readProposalNextMilestoneStart(_proposalId, _lastVotingRound))
-                )
-                {
-                    daoStorage().setProposalNextMilestoneStart(_proposalId, _lastVotingRound, now);
-
-                    // fetch milestone info
-                    uint256 _milestoneDuration;
-                    (,_milestoneDuration,) = daoStorage().readProposalMilestone(_proposalId, _lastVotingRound);
-                    daoVotingClaims().updateTimelineForNextMilestone(
-                        _proposalId,
-                        _lastVotingRound.add(1),
-                        _milestoneDuration,
-                        now
-                    );
-                }
-            }
-        } */
         daoStorage().updateProposalPRL(_proposalId, _action, _doc, now);
         _success = true;
     }
@@ -284,9 +244,9 @@ contract Dao is DaoCommon, Claimable {
     )
         public
         if_founder()
-        if_main_phase()
         returns (bool _success)
     {
+        require(is_main_phase());
         address _proposer = msg.sender;
         daoSpecialStorage().addSpecialProposal(
             _doc,
@@ -305,9 +265,9 @@ contract Dao is DaoCommon, Claimable {
         bytes32 _proposalId
     )
         public
-        if_main_phase()
         returns (bool _success)
     {
+        require(is_main_phase());
         require(daoSpecialStorage().readProposalProposer(_proposalId) == msg.sender);
         require(daoSpecialStorage().readVotingTime(_proposalId) == 0);
         require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
@@ -317,13 +277,17 @@ contract Dao is DaoCommon, Claimable {
 
     function transferCollateral(address _user, uint256 _value)
         public
-        if_sender_is(CONTRACT_DAO_FUNDING_MANAGER)
         returns (bool _success)
     {
+        require(sender_is(CONTRACT_DAO_FUNDING_MANAGER));
         _user.transfer(_value);
         _success = true;
     }
 
+    /// @notice Function to collect the confiscated collaterals to a collector
+    /// @dev This can only be called by the founders
+    /// @param _collectorAddress Address of the collector to which to transfer the collected collateral so far
+    /// @return _success Boolean, true if the confiscated collateral has been transferred to _collectorAddress
     function collectCollaterals(address _collectorAddress)
         public
         if_founder()

@@ -22,10 +22,11 @@ contract DaoFundingManager is DaoCommon {
     /// @return _success Boolean, true if claim successful, revert otherwise
     function claimEthFunding(bytes32 _proposalId, uint256 _index, uint256 _value)
         public
-        if_from_proposer(_proposalId)
         valid_withdraw_amount(_proposalId, _index, _value)
         returns (bool _success)
     {
+        require(is_from_proposer(_proposalId));
+
         // proposal should not be paused/stopped
         require(isProposalPaused(_proposalId) == false);
 
@@ -42,11 +43,16 @@ contract DaoFundingManager is DaoCommon {
         _success = true;
     }
 
+    /// @notice Function to claim unlocked collateral
+    /// @dev Collaterals are unlocked only when proposals fail at/before the initial voting or on completion of all milestones
+    /// @param _proposalId Proposal ID to claim collateral for
+    /// @return _success Boolean, true if claim is successful
     function claimCollateral(bytes32 _proposalId)
         public
-        if_from_proposer(_proposalId)
         returns (bool _success)
     {
+        require(is_from_proposer(_proposalId));
+
         // proposal should not be paused/stopped
         require(isProposalPaused(_proposalId) == false);
 
@@ -69,8 +75,8 @@ contract DaoFundingManager is DaoCommon {
     /// @param _value Amount to be allocated (in wei)
     function allocateEth(address _to, uint256 _value)
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
         _value = _value.add(daoFundingStorage().claimableEth(_to));
         daoFundingStorage().updateClaimableEth(_to, _value);
     }
@@ -78,9 +84,9 @@ contract DaoFundingManager is DaoCommon {
     /// @notice Function to move funds to a new DAO
     /// @param _destinationForDaoFunds Ethereum contract address of the new DaoFundingManager
     function moveFundsToNewDao(address _destinationForDaoFunds)
-        if_sender_is(CONTRACT_DAO)
         public
     {
+        require(sender_is(CONTRACT_DAO));
         uint256 _remainingBalance = address(this).balance;
         daoFundingStorage().withdrawEth(_remainingBalance);
         _destinationForDaoFunds.transfer(_remainingBalance);

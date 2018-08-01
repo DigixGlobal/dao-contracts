@@ -151,26 +151,6 @@ contract DaoStakeLocking is DaoCommon {
         daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
     }
 
-    /// @notice Function to see if it is locking phase
-    /// @return _success Boolean, true if it is locking phase, revert otherwise
-    function isLockingPhase()
-        public
-        if_locking_phase()
-        returns (bool _success)
-    {
-        _success = true;
-    }
-
-    /// @notice Function to see if it is main phase
-    /// @return _success Boolean, true if it is main phase, revert otherwise
-    function isMainPhase()
-        public
-        if_main_phase()
-        returns (bool _success)
-    {
-        _success = true;
-    }
-
     /// @notice This function refreshes the DGD stake of a user before continuing participation next quarter
     // has no difference if called in the lastParticipatedQuarter
     function refreshDGDStake(address _user, StakeInformation _infoBefore, bool _saveToStorage)

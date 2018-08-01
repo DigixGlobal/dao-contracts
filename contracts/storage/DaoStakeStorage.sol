@@ -39,30 +39,30 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
     }
 
     function redeemBadge(address _user)
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         public
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         redeemedBadge[_user] = true;
     }
 
     function updateTotalLockedDGDStake(uint256 _totalLockedDGDStake)
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         public
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         totalLockedDGDStake = _totalLockedDGDStake;
     }
 
     function updateTotalModeratorLockedDGDs(uint256 _totalLockedDGDStake)
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         public
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         totalModeratorLockedDGDStake = _totalLockedDGDStake;
     }
 
     function updateUserDGDStake(address _user, uint256 _actualLockedDGD, uint256 _lockedDGDStake)
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         public
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         actualLockedDGD[_user] = _actualLockedDGD;
         lockedDGDStake[_user] = _lockedDGDStake;
     }
@@ -89,33 +89,33 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function addToParticipantList(address _user)
         public
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         returns (bool _success)
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         _success = allParticipants.append(_user);
     }
 
     function removeFromParticipantList(address _user)
         public
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         returns (bool _success)
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         _success = allParticipants.remove_item(_user);
     }
 
     function addToModeratorList(address _user)
         public
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         returns (bool _success)
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         _success = allModerators.append(_user);
     }
 
     function removeFromModeratorList(address _user)
         public
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         returns (bool _success)
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         _success = allModerators.remove_item(_user);
     }
 

@@ -20,24 +20,39 @@ contract MedianizerInterface {
 }
 
 contract DaoCommon is IdentityCommon {
-    modifier daoIsValid() {
+
+    function is_dao_valid() internal returns (bool) {
         require(!daoUpgradeStorage().isReplacedByNewDao());
-        _;
+        return true;
     }
 
-    modifier if_locking_phase() {
-        require(is_locking_phase());
-        _;
+    function is_locking_phase() internal returns (bool) {
+        require(currentTInQuarter() < get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
+        return true;
     }
 
-    function is_locking_phase() returns (bool) {
-         return currentTInQuarter() < get_uint_config(CONFIG_LOCKING_PHASE_DURATION);
-    }
-
-    modifier if_main_phase() {
+    function is_main_phase() internal returns (bool) {
         require(!daoUpgradeStorage().isReplacedByNewDao());
         require(currentTInQuarter() >= get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
-        _;
+        return true;
+    }
+
+    function isProposalPaused(bytes32 _proposalId) public constant returns (bool) {
+        bool _isPaused;
+        (,,,,,,,,_isPaused) = daoStorage().readProposal(_proposalId);
+        return _isPaused;
+    }
+
+    function is_from_proposer(bytes32 _proposalId) internal returns (bool) {
+        require(msg.sender == daoStorage().readProposalProposer(_proposalId));
+        return true;
+    }
+
+    function is_editable(bytes32 _proposalId) internal returns (bool) {
+        bytes32 _finalVersion;
+        (,,,,,,,_finalVersion,) = daoStorage().readProposal(_proposalId);
+        require(_finalVersion == EMPTY_BYTES);
+        return true;
     }
 
     modifier if_after_draft_voting_phase(bytes32 _proposalId) {
@@ -82,27 +97,11 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_from_proposer(bytes32 _proposalId) {
-        require(msg.sender == daoStorage().readProposalProposer(_proposalId));
-        _;
-    }
-
-    /* modifier if_from_special_proposer(bytes32 _specialProposalId) {
-        require(msg.sender == daoSpecialStorage().readProposalProposer(_specialProposalId));
-        _;
-    } */
-
     modifier is_proposal_state(bytes32 _proposalId, bytes32 _STATE) {
         bytes32 _currentState;
         (,,,_currentState,,,,,) = daoStorage().readProposal(_proposalId);
         require(_currentState == _STATE);
         _;
-    }
-
-    function isProposalPaused(bytes32 _proposalId) public constant returns (bool) {
-        bool _isPaused;
-        (,,,,,,,,_isPaused) = daoStorage().readProposal(_proposalId);
-        return _isPaused;
     }
 
     modifier valid_withdraw_amount(bytes32 _proposalId, uint256 _index, uint256 _value) {
@@ -111,38 +110,6 @@ contract DaoCommon is IdentityCommon {
         uint256 _funding;
         (,,_funding) = daoStorage().readProposalMilestone(_proposalId, _index);
         require(_value <= _funding);
-        _;
-    }
-
-    modifier if_participant() {
-        require(isParticipant(msg.sender));
-        _;
-    }
-
-    modifier if_moderator() {
-        require(isModerator(msg.sender));
-        _;
-    }
-
-    modifier if_dao_member() {
-        require(
-            isParticipant(msg.sender) ||
-            isModerator(msg.sender)
-        );
-        _;
-    }
-
-    modifier if_editable(bytes32 _proposalId) {
-        bytes32 _finalVersion;
-        (,,,,,,,_finalVersion,) = daoStorage().readProposal(_proposalId);
-        require(_finalVersion == EMPTY_BYTES);
-        _;
-    }
-
-    modifier if_final_version(bytes32 _proposalId, bytes32 _proposalVersion) {
-        bytes32 _finalVersion;
-        (,,,,,,,_finalVersion,) = daoStorage().readProposal(_proposalId);
-        require(_finalVersion == _proposalVersion);
         _;
     }
 
@@ -389,5 +356,26 @@ contract DaoCommon is IdentityCommon {
                 daoStorage().readProposalVotingTime(_proposalId, _milestoneIndex)
                 .add(get_uint_config(CONFIG_INTERIM_PHASE_TOTAL));
         }
+    }
+
+    function getTimelineForNextVote(
+        uint256 _index,
+        uint256 _votingTime
+    )
+        internal
+        returns (uint256)
+    {
+        uint256 _timeLeftInQuarter = getTimeLeftInQuarter(_votingTime);
+        uint256 _votingDuration = get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL);
+        if (timeInQuarter(_votingTime) < get_uint_config(CONFIG_LOCKING_PHASE_DURATION)) {
+            _votingTime = _votingTime.add(
+                get_uint_config(CONFIG_LOCKING_PHASE_DURATION).sub(timeInQuarter(_votingTime)).add(1)
+            );
+        } else if (_timeLeftInQuarter < _votingDuration.add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE))) {
+            _votingTime = _votingTime.add(
+                _timeLeftInQuarter.add(get_uint_config(CONFIG_LOCKING_PHASE_DURATION)).add(1)
+            );
+        }
+        return _votingTime;
     }
 }

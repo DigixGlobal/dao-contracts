@@ -15,6 +15,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     DoublyLinkedList.Bytes allProposals;
     mapping (bytes32 => DaoStructs.Proposal) proposalsById;
     mapping (bytes32 => DoublyLinkedList.Bytes) proposalsByState;
+    mapping (uint256 => uint256) public proposalCountByQuarter;
 
     function DaoStorage(address _resolver) public {
         require(init(CONTRACT_STORAGE_DAO, _resolver));
@@ -119,14 +120,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     {
         _start = proposalsById[_proposalId].votingRounds[_index].startTime;
     }
-
-    /* function readProposalNextMilestoneStart(bytes32 _proposalId, uint256 _index)
-        public
-        constant
-        returns (uint256 _start)
-    {
-        _start = proposalsById[_proposalId].votingRounds[_index].startOfNextMilestone;
-    } */
 
     function readDraftVotingCount(bytes32 _proposalId, address[] memory _allUsers)
         public
@@ -436,7 +429,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         bool _isFounder
     )
         public
-
     {
         require(sender_is(CONTRACT_DAO));
 
@@ -463,7 +455,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _finalReward
     )
         public
-
     {
         require(sender_is(CONTRACT_DAO));
 
@@ -472,7 +463,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
 
     function changeFundings(bytes32 _proposalId, uint256[] _newMilestoneFundings, uint256 _finalReward)
         public
-
     {
         require(sender_is(CONTRACT_DAO));
 
@@ -483,7 +473,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
 
     function addProposalDoc(bytes32 _proposalId, bytes32 _newDoc)
         public
-
     {
         require(sender_is(CONTRACT_DAO));
 
@@ -501,7 +490,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
 
     function finalizeProposal(bytes32 _proposalId)
         public
-
     {
         require(sender_is(CONTRACT_DAO));
 
@@ -519,7 +507,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         address _endorser
     )
         public
-
     {
         require(sender_is(CONTRACT_DAO));
 
@@ -532,7 +519,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
 
     function setProposalDraftPass(bytes32 _proposalId, bool _result)
         public
-
     {
         require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
 
@@ -548,7 +534,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
 
     function setProposalPass(bytes32 _proposalId, uint256 _index, bool _result)
         public
-
     {
         require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
 
@@ -567,7 +552,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _time
     )
         public
-
     {
         require(sender_is(CONTRACT_DAO));
 
@@ -595,7 +579,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
 
     function setVotingClaim(bytes32 _proposalId, uint256 _index, bool _claimed)
         public
-
     {
         require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
         proposalsById[_proposalId].votingRounds[_index].claimed = _claimed;
@@ -612,7 +595,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _time
     )
         public
-
     {
         require(sender_is(CONTRACT_DAO));
         DaoStructs.PrlAction memory prlAction;
@@ -655,7 +637,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _weight
     )
         public
-
     {
         require(sender_is(CONTRACT_DAO_VOTING));
 
@@ -688,7 +669,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _index
     )
         public
-
     {
         require(sender_is(CONTRACT_DAO_VOTING));
 
@@ -712,10 +692,26 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _index
     )
         public
-
     {
         require(sender_is(CONTRACT_DAO_VOTING));
 
         proposalsById[_proposalId].votingRounds[_index].revealVote(_voter, _vote, _weight);
+    }
+
+    function addProposalCountInQuarter(uint256 _quarterIndex)
+        public
+    {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
+        proposalCountByQuarter[_quarterIndex] = proposalCountByQuarter[_quarterIndex].add(1);
+    }
+
+    function deleteProposal(bytes32 _proposalId)
+        public
+    {
+        require(sender_is(CONTRACT_DAO));
+        bytes32 _state = proposalsById[_proposalId].currentState;
+        allProposals.remove_item(_proposalId);
+        proposalsByState[_state].remove_item(_proposalId);
+        delete proposalsById[_proposalId];
     }
 }

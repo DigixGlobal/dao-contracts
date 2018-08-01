@@ -20,11 +20,11 @@ contract DaoVoting is DaoCommon, Claimable {
         bool _voteYes
     )
         public
-        if_main_phase()
         if_draft_voting_phase(_proposalId)
-        if_moderator()
         returns (bool _success)
     {
+        require(is_main_phase());
+        require(isModerator(msg.sender));
         address _moderator = msg.sender;
         uint256 _moderatorStake = daoStakeStorage().readUserEffectiveDGDStake(_moderator);
 
@@ -50,9 +50,9 @@ contract DaoVoting is DaoCommon, Claimable {
     )
         public
         if_commmit_phase_special(_proposalId)
-        if_participant()
         returns (bool _success)
     {
+        require(isParticipant(msg.sender));
         daoSpecialStorage().commitVote(_proposalId, _commitHash, msg.sender);
         _success = true;
     }
@@ -69,8 +69,8 @@ contract DaoVoting is DaoCommon, Claimable {
         public
         if_reveal_phase_special(_proposalId)
         has_not_revealed_special(_proposalId)
-        if_participant()
     {
+        require(isParticipant(msg.sender));
         require(keccak256(msg.sender, _vote, _salt) == daoSpecialStorage().readCommitVote(_proposalId, msg.sender));
         daoSpecialStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().readUserEffectiveDGDStake(msg.sender));
         daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_VOTE), currentQuarterIndex());
@@ -88,9 +88,9 @@ contract DaoVoting is DaoCommon, Claimable {
     )
         public
         if_commit_phase(_proposalId, _index)
-        if_participant()
         returns (bool _success)
     {
+        require(isParticipant(msg.sender));
         daoStorage().commitVote(_proposalId, _commitHash, msg.sender, _index);
         _success = true;
     }
@@ -109,8 +109,8 @@ contract DaoVoting is DaoCommon, Claimable {
         public
         if_reveal_phase(_proposalId, _index)
         has_not_revealed(_proposalId, _index)
-        if_participant()
     {
+        require(isParticipant(msg.sender));
         require(keccak256(msg.sender, _vote, _salt) == daoStorage().readCommitVote(_proposalId, _index, msg.sender));
         daoStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().readUserEffectiveDGDStake(msg.sender), _index);
         daoPointsStorage().addQuarterPoint(

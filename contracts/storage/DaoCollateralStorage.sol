@@ -17,38 +17,38 @@ contract DaoCollateralStorage is ResolverClient, DaoConstants {
 
     function lockCollateral(address _user, uint256 _value)
         public
-        if_sender_is(CONTRACT_DAO)
     {
+        require(sender_is(CONTRACT_DAO));
         collateralsLocked[_user] = collateralsLocked[_user].add(_value);
     }
 
     function unlockCollateral(address _user, uint256 _value)
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
         collateralsLocked[_user] = collateralsLocked[_user].sub(_value);
         collateralsUnlocked[_user] = collateralsUnlocked[_user].add(_value);
     }
 
     function confiscateCollateral(address _user, uint256 _value)
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
         collateralsLocked[_user] = collateralsLocked[_user].sub(_value);
         collateralsConfiscated = collateralsConfiscated.add(_value);
     }
 
     function collectConfiscatedCollateral(uint256 _value)
         public
-        if_sender_is(CONTRACT_DAO)
     {
+        require(sender_is(CONTRACT_DAO));
         collateralsConfiscated = collateralsConfiscated.sub(_value);
     }
 
     function withdrawCollateral(address _user, uint256 _value)
         public
-        if_sender_is(CONTRACT_DAO_FUNDING_MANAGER)
     {
+        require(sender_is(CONTRACT_DAO_FUNDING_MANAGER));
         collateralsUnlocked[_user] = collateralsUnlocked[_user].sub(_value);
     }
 
