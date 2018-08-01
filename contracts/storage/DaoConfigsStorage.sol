@@ -85,6 +85,9 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR] = 100;
 
         uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT] = 2 * (10 ** 18);
+
+        // set address configs
+        addressConfigs[CONFIG_CONTRACT_MEDIANIZER] = 0x729D19f657BD0614b4985Cf1D82531c67569197B;
     }
 
     function updateUintConfigs(uint256[] _uintConfigs)

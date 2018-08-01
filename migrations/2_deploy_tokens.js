@@ -4,6 +4,7 @@ const MockDgxStorage = artifacts.require('./MockDgxStorage.sol');
 const MockDgx = artifacts.require('./MockDgx.sol');
 const Types = artifacts.require('./Types.sol');
 const MockDgxDemurrageReporter = artifacts.require('./MockDgxDemurrageReporter.sol');
+const MockMedianizer = artifacts.require('./MockMedianizer.sol');
 
 module.exports = async function (deployer, network, accounts) {
   if ((network !== 'development') || process.env.SKIP) { return null; }
@@ -25,5 +26,8 @@ module.exports = async function (deployer, network, accounts) {
     })
     .then(() => {
       return deployer.deploy(MockDgxDemurrageReporter, MockDgx.address);
+    })
+    .then(() => {
+      return deployer.deploy(MockMedianizer);
     });
 };

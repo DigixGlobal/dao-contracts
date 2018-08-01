@@ -15,6 +15,10 @@ import "./../storage/DaoWhitelistingStorage.sol";
 import "./../storage/IntermediateResultsStorage.sol";
 import "./../storage/DaoCollateralStorage.sol";
 
+contract MedianizerInterface {
+    function compute() public returns (uint256, bool);
+}
+
 contract DaoCommon is IdentityCommon {
     modifier daoIsValid() {
         require(!daoUpgradeStorage().isReplacedByNewDao());
@@ -358,5 +362,17 @@ contract DaoCommon is IdentityCommon {
         ) {
             _is = true;
         }
+    }
+
+    /// @notice Returns ETH/USD rate
+    /// @dev 18 decimal places in the return value. Divide by (10 ** 18) while using
+    /// @return _value Price of ETH/USD (18 decimals)
+    function getPriceFeed()
+        internal
+        returns (uint256 _value)
+    {
+        bool _valid;
+        (_value, _valid) = MedianizerInterface(get_address_config(CONFIG_CONTRACT_MEDIANIZER)).compute();
+        require(_valid);
     }
 }

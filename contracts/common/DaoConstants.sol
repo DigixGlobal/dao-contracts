@@ -135,4 +135,6 @@ contract DaoConstants {
     bytes32 CONFIG_VOTE_CLAIMING_DEADLINE = "config_claiming_deadline";
 
     bytes32 CONFIG_PREPROPOSAL_DEPOSIT = "config_preproposal_deposit";
+
+    bytes32 CONFIG_CONTRACT_MEDIANIZER = "config_medianizer_address";
 }
