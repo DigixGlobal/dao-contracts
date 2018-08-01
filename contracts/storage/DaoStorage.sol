@@ -436,8 +436,10 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         bool _isFounder
     )
         public
-        if_sender_is(CONTRACT_DAO)
+
     {
+        require(sender_is(CONTRACT_DAO));
+
         allProposals.append(_doc);
         proposalsByState[PROPOSAL_STATE_PREPROPOSAL].append(_doc);
         proposalsById[_doc].proposalId = _doc;
@@ -461,15 +463,19 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _finalReward
     )
         public
-        if_sender_is(CONTRACT_DAO)
+
     {
+        require(sender_is(CONTRACT_DAO));
+
         proposalsById[_proposalId].addProposalVersion(_newDoc, _newMilestoneFundings, _finalReward);
     }
 
     function changeFundings(bytes32 _proposalId, uint256[] _newMilestoneFundings, uint256 _finalReward)
         public
-        if_sender_is(CONTRACT_DAO)
+
     {
+        require(sender_is(CONTRACT_DAO));
+
         bytes32 _lastVersion = getLastProposalVersion(_proposalId);
         proposalsById[_proposalId].proposalVersions[_lastVersion].milestoneFundings = _newMilestoneFundings;
         proposalsById[_proposalId].proposalVersions[_lastVersion].finalReward = _finalReward;
@@ -477,8 +483,10 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
 
     function addProposalDoc(bytes32 _proposalId, bytes32 _newDoc)
         public
-        if_sender_is(CONTRACT_DAO)
+
     {
+        require(sender_is(CONTRACT_DAO));
+
         bytes32 _lastVersion = getLastProposalVersion(_proposalId);
         proposalsById[_proposalId].proposalVersions[_lastVersion].moreDocs.push(_newDoc);
     }
@@ -493,8 +501,10 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
 
     function finalizeProposal(bytes32 _proposalId)
         public
-        if_sender_is(CONTRACT_DAO)
+
     {
+        require(sender_is(CONTRACT_DAO));
+
         proposalsById[_proposalId].finalVersion = getLastProposalVersion(_proposalId);
     }
 
@@ -509,8 +519,10 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         address _endorser
     )
         public
-        if_sender_is(CONTRACT_DAO)
+
     {
+        require(sender_is(CONTRACT_DAO));
+
         DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
         _proposal.endorser = _endorser;
         _proposal.currentState = PROPOSAL_STATE_DRAFT;
@@ -520,8 +532,10 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
 
     function setProposalDraftPass(bytes32 _proposalId, bool _result)
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
+
     {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
+
         proposalsById[_proposalId].draftVoting.passed = _result;
         if (_result) {
             proposalsByState[PROPOSAL_STATE_DRAFT].remove_item(_proposalId);
@@ -534,8 +548,10 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
 
     function setProposalPass(bytes32 _proposalId, uint256 _index, bool _result)
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
+
     {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
+
         if (!_result) {
             closeProposalInternal(_proposalId);
         } else if (_index == 0) {
@@ -551,8 +567,10 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _time
     )
         public
-        if_sender_is(CONTRACT_DAO)
+
     {
+        require(sender_is(CONTRACT_DAO));
+
         proposalsById[_proposalId].draftVoting.startTime = _time;
     }
 
@@ -562,22 +580,24 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _time
     )
         public
-        if_sender_is_from([CONTRACT_DAO, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES])
     {
+        require(sender_is_from([CONTRACT_DAO, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES]));
+
         proposalsById[_proposalId].votingRounds[_index].startTime = _time;
     }
 
     function setDraftVotingClaim(bytes32 _proposalId, bool _claimed)
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
         proposalsById[_proposalId].draftVoting.claimed = _claimed;
     }
 
     function setVotingClaim(bytes32 _proposalId, uint256 _index, bool _claimed)
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
+
     {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
         proposalsById[_proposalId].votingRounds[_index].claimed = _claimed;
     }
 
@@ -592,8 +612,9 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _time
     )
         public
-        if_sender_is(CONTRACT_DAO)
+
     {
+        require(sender_is(CONTRACT_DAO));
         DaoStructs.PrlAction memory prlAction;
         prlAction.at = _time;
         prlAction.doc = _doc;
@@ -634,8 +655,10 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _weight
     )
         public
-        if_sender_is(CONTRACT_DAO_VOTING)
+
     {
+        require(sender_is(CONTRACT_DAO_VOTING));
+
         DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
         if (_vote) {
             _proposal.draftVoting.yesVotes[_voter] = _weight;
@@ -665,8 +688,10 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _index
     )
         public
-        if_sender_is(CONTRACT_DAO_VOTING)
+
     {
+        require(sender_is(CONTRACT_DAO_VOTING));
+
         proposalsById[_proposalId].votingRounds[_index].commits[_voter] = _hash;
     }
 
@@ -687,8 +712,10 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _index
     )
         public
-        if_sender_is(CONTRACT_DAO_VOTING)
+
     {
+        require(sender_is(CONTRACT_DAO_VOTING));
+
         proposalsById[_proposalId].votingRounds[_index].revealVote(_voter, _vote, _weight);
     }
 }

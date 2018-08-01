@@ -23,7 +23,7 @@
     "dao"
   ],
   "dependencies": {
-    "@digix/cacp-contracts-dao": "^1.0.3",
+    "@digix/cacp-contracts-dao": "^1.0.4",
     "@digix/cdap": "^0.1.0",
     "@digix/helpers": "^1.0.1",
     "@digix/lite-dgx-contract": "1.0.1",
