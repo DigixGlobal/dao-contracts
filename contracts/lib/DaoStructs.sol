@@ -21,18 +21,12 @@ library DaoStructs {
         mapping (address => uint256) noVotes;
         bool passed;
         bool claimed;
-
-        // this is normally startTime + duration of the voting
-        // however, it can be delayed due to the PRL pausing
-        uint256 startOfNextMilestone;
-
     }
 
     struct ProposalVersion {
         bytes32 docIpfsHash;
         uint256 created;
         uint256 milestoneCount;
-        uint256[] milestoneDurations;
         uint256[] milestoneFundings;
         uint256 finalReward;
     }
@@ -48,6 +42,7 @@ library DaoStructs {
         Voting draftVoting;
         mapping (uint256 => Voting) votingRounds;
         bool isPaused;
+        bool isDigix;
         bytes32 finalVersion;
         PrlAction[] prlActions;
     }
@@ -129,14 +124,14 @@ library DaoStructs {
         returns (
             bytes32 _doc,
             uint256 _created,
-            uint256[] _milestoneDurations,
+            /* uint256[] _milestoneDurations, */
             uint256[] _milestoneFundings,
             uint256 _finalReward
         )
     {
         _doc = _version.docIpfsHash;
         _created = _version.created;
-        _milestoneDurations = _version.milestoneDurations;
+        /* _milestoneDurations = _version.milestoneDurations; */
         _milestoneFundings = _version.milestoneFundings;
         _finalReward = _version.finalReward;
     }
@@ -144,13 +139,12 @@ library DaoStructs {
     function readProposalMilestone(Proposal storage _proposal, uint256 _milestoneIndex)
         public
         constant
-        returns (uint256 _milestoneId, uint256 _duration, uint256 _funding)
+        returns (uint256 _milestoneId, uint256 _funding)
     {
         require(_milestoneIndex >= 0);
         bytes32 _finalVersion = _proposal.finalVersion;
-        if (_milestoneIndex < _proposal.proposalVersions[_finalVersion].milestoneDurations.length) {
+        if (_milestoneIndex < _proposal.proposalVersions[_finalVersion].milestoneFundings.length) {
             _milestoneId = _milestoneIndex;
-            _duration = _proposal.proposalVersions[_finalVersion].milestoneDurations[_milestoneIndex];
             _funding = _proposal.proposalVersions[_finalVersion].milestoneFundings[_milestoneIndex];
         } else {
             _funding = _proposal.proposalVersions[_finalVersion].finalReward;
@@ -160,7 +154,6 @@ library DaoStructs {
     function addProposalVersion(
         Proposal storage _proposal,
         bytes32 _newDoc,
-        uint256[] _newMilestoneDurations,
         uint256[] _newMilestoneFundings,
         uint256 _finalReward
     )
@@ -170,7 +163,6 @@ library DaoStructs {
         _proposal.proposalVersions[_newDoc].docIpfsHash = _newDoc;
         _proposal.proposalVersions[_newDoc].created = now;
         _proposal.proposalVersions[_newDoc].milestoneCount = _newMilestoneFundings.length;
-        _proposal.proposalVersions[_newDoc].milestoneDurations = _newMilestoneDurations;
         _proposal.proposalVersions[_newDoc].milestoneFundings = _newMilestoneFundings;
         _proposal.proposalVersions[_newDoc].finalReward = _finalReward;
     }

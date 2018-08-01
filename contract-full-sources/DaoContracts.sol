@@ -3104,8 +3104,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     /// @notice edit/modify a proposal
     /// @param _proposalId Proposal ID
     /// @param _newDoc hash of IPFS document for newer version
-    /// @param _newMilestoneDurations new array of time durations for milestones
-    /// @param _newMilestoneDurations new array of req fundings for milestones
     /// @return {
     ///    "_success": "if proposal was edited successfully"
     /// }
@@ -5570,10 +5568,10 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_valid_milestones(uint256 a, uint256 b) {
+    /* modifier if_valid_milestones(uint256 a, uint256 b) {
         require(a == b);
         _;
-    }
+    } */
 
     modifier if_funding_possible(uint256[] _fundings) {
         uint256 _total = 0;

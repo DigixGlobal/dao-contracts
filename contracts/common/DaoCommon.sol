@@ -375,4 +375,19 @@ contract DaoCommon is IdentityCommon {
         (_value, _valid) = MedianizerInterface(get_address_config(CONFIG_CONTRACT_MEDIANIZER)).compute();
         require(_valid);
     }
+
+    function startOfMilestone(bytes32 _proposalId, uint256 _milestoneIndex)
+        internal
+        returns (uint256 _milestoneStart)
+    {
+        if (_milestoneIndex == 0) { // This is the 1st milestone, which starts after voting round 0
+            _milestoneStart =
+                daoStorage().readProposalVotingTime(_proposalId, 0)
+                .add(get_uint_config(CONFIG_VOTING_PHASE_TOTAL));
+        } else { // if its the n-th milestone, it starts after voting round n-th
+            _milestoneStart =
+                daoStorage().readProposalVotingTime(_proposalId, _milestoneIndex)
+                .add(get_uint_config(CONFIG_INTERIM_PHASE_TOTAL));
+        }
+    }
 }

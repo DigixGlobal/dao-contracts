@@ -33,6 +33,7 @@ const DaoPointsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockD
 const DaoStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoStorage.sol');
 const DaoWhitelistingStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoWhitelistingStorage.sol');
 const IntermediateResultsStorage = process.env.SIMULATION ? 0 : artifacts.require('./IntermediateResultsStorage.sol');
+const DaoCollateralStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoCollateralStorage.sol');
 
 const DaoStructs = process.env.SIMULATION ? 0 : artifacts.require('./DaoStructs.sol');
 const DaoUpgradeStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoUpgradeStorage.sol');
@@ -98,7 +99,6 @@ const printProposalDetails = async (contracts, proposal, votingRound = 0) => {
   console.log('\t\tfinalVersion: ', proposalDetails[7]);
   console.log('\t\tVoting round ', votingRound);
   console.log('\t\t\tVoting time start :', await contracts.daoStorage.readProposalVotingTime(proposal.id, votingRound));
-  console.log('\t\t\tNext milestone start :', await contracts.daoStorage.readProposalNextMilestoneStart(proposal.id, votingRound));
 };
 
 const getAllParticipantAddresses = function (accounts) {
@@ -128,6 +128,7 @@ const deployStorage = async function (libs, contracts, resolver) {
   contracts.daoFundingStorage = await DaoFundingStorage.new(resolver.address);
   contracts.daoRewardsStorage = await DaoRewardsStorage.new(resolver.address);
   contracts.intermediateResultsStorage = await IntermediateResultsStorage.new(resolver.address);
+  contracts.daoCollateralStorage = await DaoCollateralStorage.new(resolver.address);
 };
 
 const registerInteractive = async function (resolver, addressOf) {
@@ -327,6 +328,7 @@ const setDummyConfig = async function (contracts, bN) {
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL, bN(20));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_DRAFT_VOTING_PHASE, bN(5));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE, bN(5));
+  console.log('args for setting medianizer : ', daoConstantsKeys().CONFIG_CONTRACT_MEDIANIZER, contracts.mockMedianizer.address);
   await contracts.daoConfigsStorage.mock_set_address_config(daoConstantsKeys().CONFIG_CONTRACT_MEDIANIZER, contracts.mockMedianizer.address);
 };
 
@@ -589,10 +591,9 @@ const addProposal = async function (contracts, proposal) {
   console.log('adding proposal ', proposal.id);
   await contracts.dao.submitPreproposal(
     proposal.id,
-    proposal.versions[0].milestoneDurations,
     proposal.versions[0].milestoneFundings,
     proposal.versions[0].finalReward,
-    { from: proposal.proposer },
+    { from: proposal.proposer, value: 2 * (10 ** 18) },
   );
 };
 
@@ -605,7 +606,6 @@ const modifyProposal = async function (contracts, proposal, nextVersion) {
   await contracts.dao.modifyProposal(
     proposal.id,
     proposal.versions[nextVersion].versionId,
-    proposal.versions[nextVersion].milestoneDurations,
     proposal.versions[nextVersion].milestoneFundings,
     proposal.versions[nextVersion].finalReward,
     { from: proposal.proposer },

@@ -18,6 +18,7 @@ const DaoFundingStorage = artifacts.require('DaoFundingStorage.sol');
 const DaoRewardsStorage = artifacts.require('DaoRewardsStorage.sol');
 const DaoWhitelistingStorage = artifacts.require('DaoWhitelistingStorage.sol');
 const IntermediateResultsStorage = artifacts.require('IntermediateResultsStorage.sol');
+const DaoCollateralStorage = artifacts.require('DaoCollateralStorage.sol');
 
 const DaoListingService = artifacts.require('DaoListingService.sol');
 const DaoCalculatorService = artifacts.require('DaoCalculatorService.sol');
@@ -62,6 +63,7 @@ module.exports = async function (deployer, network) {
       deployer.deploy(DaoFundingStorage, ContractResolver.address);
       deployer.deploy(DaoWhitelistingStorage, ContractResolver.address);
       deployer.deploy(IntermediateResultsStorage, ContractResolver.address);
+      deployer.deploy(DaoCollateralStorage, ContractResolver.address);
       return deployer.deploy(DaoRewardsStorage, ContractResolver.address);
     })
     .then(() => {

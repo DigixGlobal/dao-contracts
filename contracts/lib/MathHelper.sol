@@ -15,4 +15,10 @@ library MathHelper {
           _min = a;
       }
   }
+
+  function sumNumbers(uint256[] _numbers) internal pure returns (uint256 _sum) {
+      for (uint256 i=0;i<_numbers.length;i++) {
+          _sum = _sum + _numbers[i];
+      }
+  }
 }

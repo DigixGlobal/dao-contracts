@@ -136,6 +136,7 @@ const daoConstantsKeys = function () {
     CONFIG_MINIMUM_LOCKED_DGD: 'min_dgd_participant',
     CONFIG_MINIMUM_DGD_FOR_MODERATOR: 'min_dgd_moderator',
     CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR: 'min_reputation_moderator',
+    CONFIG_CONTRACT_MEDIANIZER: 'config_medianizer_address',
   };
 };
 

@@ -6,6 +6,7 @@ const MockBadge = artifacts.require('./MockBadge.sol');
 const MockDgxStorage = artifacts.require('./MockDgxStorage.sol');
 const MockDgx = artifacts.require('./MockDgx.sol');
 const MockDgxDemurrageReporter = artifacts.require('./MockDgxDemurrageReporter.sol');
+const MockMedianizer = artifacts.require('./MockMedianizer.sol');
 
 const ContractResolver = artifacts.require('./ContractResolver.sol');
 const DoublyLinkedList = artifacts.require('./DoublyLinkedList.sol');
@@ -180,6 +181,7 @@ const assignDeployedContracts = async function (contracts, libs) {
   contracts.daoFundingStorage = await DaoFundingStorage.deployed();
   contracts.daoRewardsStorage = await DaoRewardsStorage.deployed();
   contracts.intermediateResultsStorage = await IntermediateResultsStorage.deployed();
+  contracts.mockMedianizer = await MockMedianizer.deployed();
 
   contracts.daoListingService = await DaoListingService.deployed();
   contracts.daoCalculatorService = await DaoCalculatorService.deployed();
@@ -238,7 +240,7 @@ const claimDraftVotingResult = async function (contracts) {
   console.log(await contracts.daoStorage.readDraftVotingCount.call(proposals[0].id, mods));
   console.log(await contracts.daoStakeStorage.totalModeratorLockedDGDStake.call());
   console.log(await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[0].id));
-  console.log(mods);
+  console.log('moderators: ', mods);
   await contracts.daoVotingClaims.claimDraftVotingResult(
     proposals[0].id,
     bN(20),
@@ -354,6 +356,13 @@ const interimVotingCommitRound = async function (contracts, addressOf) {
       );
       console.log(`\t\t\tDone interim commit Voting by holder index ${holderIndex} on proposal ${proposalIndex}`);
     });
+  });
+};
+
+const finishMilestones = async function (contracts) {
+  await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
+    if (proposalIndex === 1) return;
+    await contracts.dao.finishMilestone(proposals[proposalIndex].id, bN(0), { from: proposals[proposalIndex].proposer });
   });
 };
 
@@ -647,6 +656,7 @@ module.exports = async function () {
     console.log('in the second quarter (quarterId = 2), main phase');
 
     // create some fake proposals to draft vote on
+    await finishMilestones(contracts);
 
     await interimVotingCommitRound(contracts, addressOf);
     console.log('done with interim voting commit round');
@@ -677,6 +687,8 @@ module.exports = async function () {
 
     await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_3, web3);
     console.log('in the main phase, now going for interim voting after last milestone');
+
+    await contracts.dao.finishMilestone(proposals[0].id, bN(1), { from: proposals[0].proposer });
 
     await interimCommitRound(contracts, addressOf, 0, bN(2));
     console.log('interim commit round is done');
