@@ -59,7 +59,6 @@ const MockBadge = process.env.SIMULATION ? 0 : artifacts.require('./MockBadge.so
 const MockDgxDemurrageReporter = process.env.SIMULATION ? 0 : artifacts.require('./MockDgxDemurrageReporter.sol');
 const MockDgx = process.env.SIMULATION ? 0 : artifacts.require('./MockDgx.sol');
 const MockDgxStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDgxStorage.sol');
-const MockMedianizer = process.env.SIMULATION ? 0 : artifacts.require('./MockMedianizer.sol');
 
 const BADGE_HOLDER_COUNT = 4;
 const DGD_HOLDER_COUNT = 6;
@@ -171,9 +170,6 @@ const deployInteractive = async function (libs, contracts, resolver) {
     contracts.daoCalculatorService.address,
     contracts.daoListingService.address,
   ]);
-
-  // deploy mock medianizer contract
-  contracts.mockMedianizer = await MockMedianizer.new();
 };
 
 const initialTransferTokens = async function (contracts, addressOf, bN) {
@@ -328,8 +324,6 @@ const setDummyConfig = async function (contracts, bN) {
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL, bN(20));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_DRAFT_VOTING_PHASE, bN(5));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE, bN(5));
-  console.log('args for setting medianizer : ', daoConstantsKeys().CONFIG_CONTRACT_MEDIANIZER, contracts.mockMedianizer.address);
-  await contracts.daoConfigsStorage.mock_set_address_config('config_medianizer_address', contracts.mockMedianizer.address);
 };
 
 const initDao = async function (contracts, addressOf, bN, web3) {

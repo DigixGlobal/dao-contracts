@@ -6,7 +6,6 @@ const MockBadge = artifacts.require('./MockBadge.sol');
 const MockDgxStorage = artifacts.require('./MockDgxStorage.sol');
 const MockDgx = artifacts.require('./MockDgx.sol');
 const MockDgxDemurrageReporter = artifacts.require('./MockDgxDemurrageReporter.sol');
-const MockMedianizer = artifacts.require('./MockMedianizer.sol');
 
 const ContractResolver = artifacts.require('./ContractResolver.sol');
 const DoublyLinkedList = artifacts.require('./DoublyLinkedList.sol');
@@ -181,7 +180,6 @@ const assignDeployedContracts = async function (contracts, libs) {
   contracts.daoFundingStorage = await DaoFundingStorage.deployed();
   contracts.daoRewardsStorage = await DaoRewardsStorage.deployed();
   contracts.intermediateResultsStorage = await IntermediateResultsStorage.deployed();
-  contracts.mockMedianizer = await MockMedianizer.deployed();
 
   contracts.daoListingService = await DaoListingService.deployed();
   contracts.daoCalculatorService = await DaoCalculatorService.deployed();

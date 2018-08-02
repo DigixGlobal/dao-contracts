@@ -55,11 +55,11 @@ contract DaoCalculatorService is DaoCommon {
         public
         returns (uint256 _minQuorum)
     {
-        uint256[] memory _usdAskedPerMilestone;
+        uint256[] memory _ethAskedPerMilestone;
         uint256 _finalReward;
-        (_usdAskedPerMilestone,_finalReward,) = daoStorage().readProposalFunding(_proposalId);
-        require(_milestone_id <= _usdAskedPerMilestone.length);
-        if (_milestone_id == _usdAskedPerMilestone.length) {
+        (_ethAskedPerMilestone,_finalReward,) = daoStorage().readProposalFunding(_proposalId);
+        require(_milestone_id <= _ethAskedPerMilestone.length);
+        if (_milestone_id == _ethAskedPerMilestone.length) {
             _minQuorum = calculateMinQuorum(
                 daoStakeStorage().totalLockedDGDStake(),
                 get_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR),
@@ -75,7 +75,7 @@ contract DaoCalculatorService is DaoCommon {
                 get_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR),
                 get_uint_config(CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR),
                 get_uint_config(CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR),
-                _usdAskedPerMilestone[_milestone_id]
+                _ethAskedPerMilestone[_milestone_id]
             );
         }
     }
@@ -117,13 +117,11 @@ contract DaoCalculatorService is DaoCommon {
         uint256 _fixedQuorumPortionDenominator,
         uint256 _scalingFactorNumerator,
         uint256 _scalingFactorDenominator,
-        uint256 _usdAsked
+        uint256 _ethAsked
     )
         internal
         returns (uint256 _minimumQuorum)
     {
-        /* uint256 _ethAsked = usdToWei(_usdAsked); */
-        uint256 _ethAsked = _usdAsked;
         uint256 _ethInDao = get_contract(CONTRACT_DAO_FUNDING_MANAGER).balance;
         // add the fixed portion of the quorum
         _minimumQuorum = (_totalStake.mul(_fixedQuorumPortionNumerator)).div(_fixedQuorumPortionDenominator);

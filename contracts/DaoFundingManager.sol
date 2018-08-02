@@ -20,7 +20,6 @@ contract DaoFundingManager is DaoCommon {
     /// @return _success Boolean, true if claim successful, revert otherwise
     function claimFunding(bytes32 _proposalId, uint256 _index)
         public
-        /* valid_withdraw_amount(_proposalId, _index, _value) */
         returns (bool _success)
     {
         require(is_from_proposer(_proposalId));
@@ -35,12 +34,10 @@ contract DaoFundingManager is DaoCommon {
         uint256 _funding;
         (, _funding) = daoStorage().readProposalMilestone(_proposalId, _index);
 
-        /* uint256 _ethEquivalent = usdToWei(_funding); */
-        uint256 _ethEquivalent = _funding;
-        daoFundingStorage().withdrawEth(_ethEquivalent);
+        daoFundingStorage().withdrawEth(_funding);
         daoStorage().setMilestoneFunded(_proposalId, _index);
 
-        msg.sender.transfer(_ethEquivalent);
+        msg.sender.transfer(_funding);
         _success = true;
     }
 
@@ -70,17 +67,6 @@ contract DaoFundingManager is DaoCommon {
         msg.sender.transfer(_unlockedCollateral);
         _success = true;
     }
-
-    /// @notice Function to allocate ETH to a user address
-    /// @param _to Ethereum address of the receiver of ETH
-    /// @param _value Amount to be allocated (in wei)
-    /* function allocateEth(address _to, uint256 _value)
-        public
-    {
-        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
-        _value = _value.add(daoFundingStorage().claimableEth(_to));
-        daoFundingStorage().updateClaimableEth(_to, _value);
-    } */
 
     /// @notice Function to move funds to a new DAO
     /// @param _destinationForDaoFunds Ethereum contract address of the new DaoFundingManager

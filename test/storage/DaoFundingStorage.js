@@ -9,9 +9,7 @@ const {
 } = require('../setup');
 
 const {
-  randomBigNumbers,
   randomBigNumber,
-  randomAddresses,
 } = require('@digix/helpers/lib/helpers');
 
 const bN = web3.toBigNumber;
@@ -75,30 +73,6 @@ contract('DaoFundingStorage', function (accounts) {
       assert.ok(await contracts.daoFundingStorage.withdrawEth.call(amount));
       await contracts.daoFundingStorage.withdrawEth(amount);
       assert.deepEqual(await contracts.daoFundingStorage.ethInDao.call(), ethInDaoBefore.minus(amount));
-    });
-  });
-
-  describe('updateClaimableEth', function () {
-    const users = randomAddresses(2);
-    const amounts = randomBigNumbers(bN, 2);
-    it('[not called from CONTRACT_DAO_FUNDING_MANAGER]: revert', async function () {
-      for (let i = 1; i < 20; i++) {
-        assert(await a.failure(contracts.daoFundingStorage.updateClaimableEth.call(
-          users[0],
-          amounts[0],
-          { from: accounts[i] },
-        )));
-      }
-    });
-    it('[valid call]: verify read function', async function () {
-      assert.ok(await contracts.daoFundingStorage.updateClaimableEth.call(
-        users[0],
-        amounts[0],
-      ));
-      await contracts.daoFundingStorage.updateClaimableEth(users[0], amounts[0]);
-      await contracts.daoFundingStorage.updateClaimableEth(users[1], amounts[1]);
-      assert.deepEqual(await contracts.daoFundingStorage.claimableEth.call(users[0]), amounts[0]);
-      assert.deepEqual(await contracts.daoFundingStorage.claimableEth.call(users[1]), amounts[1]);
     });
   });
 });

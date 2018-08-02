@@ -89,9 +89,6 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX] = 100 ether; // TODO: change to 5000USD
         uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX] = 4;  // TODO: change to 2
         uintConfigs[CONFIG_PROPOSAL_CAP_PER_QUARTER] = 10;
-
-        // set address configs
-        addressConfigs[CONFIG_CONTRACT_MEDIANIZER] = 0x729D19f657BD0614b4985Cf1D82531c67569197B;
     }
 
     function updateUintConfigs(uint256[] _uintConfigs)

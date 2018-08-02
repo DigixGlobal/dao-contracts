@@ -188,8 +188,6 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         uint256 _funding;
         (, _funding) = daoStorage().readProposalMilestone(_proposalId, _index);
 
-        /* daoFundingManager().allocateEth(daoStorage().readProposalProposer(_proposalId), _funding); */
-
         // if this was the last milestone and final reward has been released
         // unlock their original collateral
         if (_funding == 0 && !isProposalPaused(_proposalId)) {
