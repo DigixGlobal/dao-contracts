@@ -196,7 +196,9 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             daoCollateralStorage().unlockCollateral(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
         }
 
-        if (_index == 0) {
+        bool _isDigixProposal;
+        (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
+        if (_index == 0 && !_isDigixProposal) {
             daoStorage().addProposalCountInQuarter(currentQuarterIndex());
         }
 
@@ -240,9 +242,6 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             // give bonus points for all those who
             // voted NO in the previous round
             (_bonusVoters.users, _bonusVoters.usersLength) = daoStorage().readVotingRoundVotes(_proposalId, _index.sub(1), _voterBatch, false);
-
-            // confiscate the collateral as failed to complete milestone
-            daoCollateralStorage().confiscateCollateral(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
         }
         if (_bonusVoters.usersLength > 0) addBonusReputation(_bonusVoters.users, _bonusVoters.usersLength);
 

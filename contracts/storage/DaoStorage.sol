@@ -32,7 +32,9 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     ///   "_state": "",
     ///   "_timeCreated": "",
     ///   "_nVersions": "",
-    ///   "_finalVersion": ""
+    ///   "_finalVersion": "",
+    ///   "_paused": "",
+    ///   "_isDigixProposal": ""
     /// }
     function readProposal(bytes32 _proposalId)
         public
@@ -46,7 +48,8 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
             uint256 _nVersions,
             bytes32 _latestVersionDoc,
             bytes32 _finalVersion,
-            bool _paused
+            bool _paused,
+            bool _isDigixProposal
         )
     {
         DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
@@ -59,6 +62,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         _latestVersionDoc = read_last_from_bytesarray(_proposal.proposalVersionDocs);
         _finalVersion = _proposal.finalVersion;
         _paused = _proposal.isPaused;
+        _isDigixProposal = _proposal.isDigix;
     }
 
     function readProposalProposer(bytes32 _proposalId)
@@ -705,13 +709,10 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         proposalCountByQuarter[_quarterIndex] = proposalCountByQuarter[_quarterIndex].add(1);
     }
 
-    function deleteProposal(bytes32 _proposalId)
+    function closeProposal(bytes32 _proposalId)
         public
     {
         require(sender_is(CONTRACT_DAO));
-        bytes32 _state = proposalsById[_proposalId].currentState;
-        allProposals.remove_item(_proposalId);
-        proposalsByState[_state].remove_item(_proposalId);
-        delete proposalsById[_proposalId];
+        closeProposalInternal(_proposalId);
     }
 }

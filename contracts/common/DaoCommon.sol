@@ -39,7 +39,7 @@ contract DaoCommon is IdentityCommon {
 
     function isProposalPaused(bytes32 _proposalId) public constant returns (bool) {
         bool _isPaused;
-        (,,,,,,,,_isPaused) = daoStorage().readProposal(_proposalId);
+        (,,,,,,,,_isPaused,) = daoStorage().readProposal(_proposalId);
         return _isPaused;
     }
 
@@ -50,7 +50,7 @@ contract DaoCommon is IdentityCommon {
 
     function is_editable(bytes32 _proposalId) internal returns (bool) {
         bytes32 _finalVersion;
-        (,,,,,,,_finalVersion,) = daoStorage().readProposal(_proposalId);
+        (,,,,,,,_finalVersion,,) = daoStorage().readProposal(_proposalId);
         require(_finalVersion == EMPTY_BYTES);
         return true;
     }
@@ -99,7 +99,7 @@ contract DaoCommon is IdentityCommon {
 
     modifier is_proposal_state(bytes32 _proposalId, bytes32 _STATE) {
         bytes32 _currentState;
-        (,,,_currentState,,,,,) = daoStorage().readProposal(_proposalId);
+        (,,,_currentState,,,,,,) = daoStorage().readProposal(_proposalId);
         require(_currentState == _STATE);
         _;
     }

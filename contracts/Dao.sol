@@ -68,8 +68,9 @@ contract Dao is DaoCommon, Claimable {
         require(is_main_phase());
         require(isParticipant(msg.sender));
         bool _isFounder = is_founder();
+
         require(msg.value >= get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
-        require(daoStorage().proposalCountByQuarter(currentQuarterIndex()) < get_uint_config(CONFIG_PROPOSAL_CAP_PER_QUARTER));
+        require(address(daoFundingManager()).call.value(msg.value)());
 
         if (!_isFounder) {
             require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
@@ -104,7 +105,7 @@ contract Dao is DaoCommon, Claimable {
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
         require(is_editable(_proposalId));
         bytes32 _currentState;
-        (,,,_currentState,,,,,) = daoStorage().readProposal(_proposalId);
+        (,,,_currentState,,,,,,) = daoStorage().readProposal(_proposalId);
         require(_currentState == PROPOSAL_STATE_PREPROPOSAL ||
           _currentState == PROPOSAL_STATE_DRAFT);
         require(identity_storage().is_kyc_approved(msg.sender));
@@ -161,9 +162,14 @@ contract Dao is DaoCommon, Claimable {
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
         require(is_editable(_proposalId));
         require(identity_storage().is_kyc_approved(msg.sender));
+        bool _isDigixProposal;
+        (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
+        if (!_isDigixProposal) {
+            require(daoStorage().proposalCountByQuarter(currentQuarterIndex()) < get_uint_config(CONFIG_PROPOSAL_CAP_PER_QUARTER));
+        }
         require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_DRAFT_VOTING_PHASE).add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE)));
         address _endorser;
-        (,,_endorser,,,,,,) = daoStorage().readProposal(_proposalId);
+        (,,_endorser,,,,,,,) = daoStorage().readProposal(_proposalId);
         require(_endorser != EMPTY_ADDRESS);
         daoStorage().finalizeProposal(_proposalId);
         daoStorage().setProposalDraftVotingTime(_proposalId, now);
@@ -272,31 +278,6 @@ contract Dao is DaoCommon, Claimable {
         require(daoSpecialStorage().readVotingTime(_proposalId) == 0);
         require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
         daoSpecialStorage().setVotingTime(_proposalId, now);
-        _success = true;
-    }
-
-    function transferCollateral(address _user, uint256 _value)
-        public
-        returns (bool _success)
-    {
-        require(sender_is(CONTRACT_DAO_FUNDING_MANAGER));
-        _user.transfer(_value);
-        _success = true;
-    }
-
-    /// @notice Function to collect the confiscated collaterals to a collector
-    /// @dev This can only be called by the founders
-    /// @param _collectorAddress Address of the collector to which to transfer the collected collateral so far
-    /// @return _success Boolean, true if the confiscated collateral has been transferred to _collectorAddress
-    function collectCollaterals(address _collectorAddress)
-        public
-        if_founder()
-        returns (bool _success)
-    {
-        uint256 _value = daoCollateralStorage().readConfiscatedCollateral();
-        require(_value > 0);
-        daoCollateralStorage().collectConfiscatedCollateral(_value);
-        _collectorAddress.transfer(_value);
         _success = true;
     }
 }

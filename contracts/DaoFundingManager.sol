@@ -59,14 +59,14 @@ contract DaoFundingManager is DaoCommon {
         // require unlocked collateral to be enough
         uint256 _unlockedCollateral = daoCollateralStorage().readUnlockedCollateral(msg.sender);
         address _endorser;
-        (,,_endorser,,,,,,) = daoStorage().readProposal(_proposalId);
+        (,,_endorser,,,,,,,) = daoStorage().readProposal(_proposalId);
         require(
             (_unlockedCollateral >= get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT)) ||
             (_endorser != EMPTY_ADDRESS)
         );
 
         daoCollateralStorage().withdrawCollateral(msg.sender, _unlockedCollateral);
-        require(dao().transferCollateral(msg.sender, _unlockedCollateral));
+        msg.sender.transfer(_unlockedCollateral);
         _success = true;
     }
 

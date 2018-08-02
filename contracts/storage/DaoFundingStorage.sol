@@ -19,7 +19,6 @@ contract DaoFundingStorage is ResolverClient, DaoConstants {
         claimableEth[_proposer] = _value;
     }
 
-    // TODO: Add SafeMath
     function addEth(uint256 _ethAmount)
         public
     {
@@ -27,7 +26,6 @@ contract DaoFundingStorage is ResolverClient, DaoConstants {
         ethInDao = ethInDao.add(_ethAmount);
     }
 
-    // TODO: Add SafeMath
     function withdrawEth(uint256 _ethAmount)
         public
     {

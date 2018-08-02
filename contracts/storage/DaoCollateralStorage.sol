@@ -7,7 +7,6 @@ import "./../common/DaoConstants.sol";
 contract DaoCollateralStorage is ResolverClient, DaoConstants {
     using SafeMath for uint256;
 
-    uint256 collateralsConfiscated;
     mapping(address => uint256) collateralsLocked;
     mapping(address => uint256) collateralsUnlocked;
 
@@ -30,21 +29,6 @@ contract DaoCollateralStorage is ResolverClient, DaoConstants {
         collateralsUnlocked[_user] = collateralsUnlocked[_user].add(_value);
     }
 
-    function confiscateCollateral(address _user, uint256 _value)
-        public
-    {
-        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
-        collateralsLocked[_user] = collateralsLocked[_user].sub(_value);
-        collateralsConfiscated = collateralsConfiscated.add(_value);
-    }
-
-    function collectConfiscatedCollateral(uint256 _value)
-        public
-    {
-        require(sender_is(CONTRACT_DAO));
-        collateralsConfiscated = collateralsConfiscated.sub(_value);
-    }
-
     function withdrawCollateral(address _user, uint256 _value)
         public
     {
@@ -64,12 +48,5 @@ contract DaoCollateralStorage is ResolverClient, DaoConstants {
         returns (uint256 _value)
     {
         _value = collateralsUnlocked[_user];
-    }
-
-    function readConfiscatedCollateral()
-        public
-        returns (uint256 _value)
-    {
-        _value = collateralsConfiscated;
     }
 }

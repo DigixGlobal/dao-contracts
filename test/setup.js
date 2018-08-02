@@ -329,7 +329,7 @@ const setDummyConfig = async function (contracts, bN) {
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_DRAFT_VOTING_PHASE, bN(5));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE, bN(5));
   console.log('args for setting medianizer : ', daoConstantsKeys().CONFIG_CONTRACT_MEDIANIZER, contracts.mockMedianizer.address);
-  await contracts.daoConfigsStorage.mock_set_address_config(daoConstantsKeys().CONFIG_CONTRACT_MEDIANIZER, contracts.mockMedianizer.address);
+  await contracts.daoConfigsStorage.mock_set_address_config('config_medianizer_address', contracts.mockMedianizer.address);
 };
 
 const initDao = async function (contracts, addressOf, bN, web3) {
