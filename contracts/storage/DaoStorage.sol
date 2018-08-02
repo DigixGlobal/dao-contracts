@@ -715,4 +715,18 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         require(sender_is(CONTRACT_DAO));
         closeProposalInternal(_proposalId);
     }
+
+    function readIfMilestoneFunded(bytes32 _proposalId, uint256 _milestoneId)
+        public
+        returns (bool _funded)
+    {
+        _funded = proposalsById[_proposalId].votingRounds[_milestoneId].funded;
+    }
+
+    function setMilestoneFunded(bytes32 _proposalId, uint256 _milestoneId)
+        public
+    {
+        require(sender_is(CONTRACT_DAO_FUNDING_MANAGER));
+        proposalsById[_proposalId].votingRounds[_milestoneId].funded = true;
+    }
 }

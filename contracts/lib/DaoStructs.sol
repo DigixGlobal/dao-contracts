@@ -21,6 +21,7 @@ library DaoStructs {
         mapping (address => uint256) noVotes;
         bool passed;
         bool claimed;
+        bool funded;
     }
 
     struct ProposalVersion {

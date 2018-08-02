@@ -104,14 +104,14 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier valid_withdraw_amount(bytes32 _proposalId, uint256 _index, uint256 _value) {
+    /* modifier valid_withdraw_amount(bytes32 _proposalId, uint256 _index, uint256 _value) {
         require(_value > 0);
-        require(_value <= daoFundingStorage().claimableEth(msg.sender));
+        require(_value <= daoFundingStorage().claimableUsd(msg.sender));
         uint256 _funding;
         (,,_funding) = daoStorage().readProposalMilestone(_proposalId, _index);
         require(_value <= _funding);
         _;
-    }
+    } */
 
     modifier if_valid_milestones(uint256 a, uint256 b) {
         require(a == b);
@@ -342,6 +342,10 @@ contract DaoCommon is IdentityCommon {
         (_value, _valid) = MedianizerInterface(get_address_config(CONFIG_CONTRACT_MEDIANIZER)).compute();
         require(_valid);
     }
+
+    /* function usdToWei(uint256 _usd) internal returns (uint256 _wei) {
+        _wei = _usd.mul(1e36).div(getPriceFeed());
+    } */
 
     function startOfMilestone(bytes32 _proposalId, uint256 _milestoneIndex)
         internal

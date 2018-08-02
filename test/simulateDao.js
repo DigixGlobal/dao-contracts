@@ -317,11 +317,10 @@ const claimVotingResult = async function (contracts, addressOf) {
 };
 
 const claimFunding = async function (contracts, index) {
-  const value = index < proposals[0].versions[1].milestoneCount ? proposals[0].versions[1].milestoneFundings[index] : proposals[0].versions[1].finalReward;
-  await contracts.daoFundingManager.claimEthFunding(
+  // const value = index < proposals[0].versions[1].milestoneCount ? proposals[0].versions[1].milestoneFundings[index] : proposals[0].versions[1].finalReward;
+  await contracts.daoFundingManager.claimFunding(
     proposals[0].id,
     bN(index),
-    value,
     { from: proposals[0].proposer },
   );
 };
@@ -414,12 +413,11 @@ const interimRevealRound = async function (contracts, addressOf, proposalIndex, 
 
 const claimFinalReward = async function (contracts, addressOf, proposalId, proposer, index) {
   console.log(`proposer is ${proposer}, proposalId = ${proposalId}`);
-  console.log('claimable Eth of proposer = ', await contracts.daoFundingStorage.claimableEth.call(proposer));
-  const value = index >= proposals[0].versions[1].milestoneCount ? proposals[0].versions[1].finalReward : proposals[0].versions[1].milestoneFundings[index];
-  await contracts.daoFundingManager.claimEthFunding(
+  // console.log('claimable Eth of proposer = ', await contracts.daoFundingStorage.claimableEth.call(proposer));
+  // const value = index >= proposals[0].versions[1].milestoneCount ? proposals[0].versions[1].finalReward : proposals[0].versions[1].milestoneFundings[index];
+  await contracts.daoFundingManager.claimFunding(
     proposalId,
     bN(index),
-    value,
     { from: proposer },
   );
 };
@@ -697,7 +695,7 @@ module.exports = async function () {
     console.log('interim reveal is done');
     await waitForRevealPhaseToGetOver(contracts, addressOf, proposals[0].id, bN(2), bN, web3);
 
-    console.log('[before claiming result] claimable Eth of proposer = ', await contracts.daoFundingStorage.claimableEth.call(proposals[0].proposer));
+    // console.log('[before claiming result] claimable Eth of proposer = ', await contracts.daoFundingStorage.claimableEth.call(proposals[0].proposer));
     console.log('daoFunding balance = ', await web3.eth.getBalance(contracts.daoFundingManager.address));
 
     await contracts.daoVotingClaims.claimProposalVotingResult(proposals[0].id, bN(2), bN(30), { from: proposals[0].proposer });

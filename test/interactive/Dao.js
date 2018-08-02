@@ -1772,7 +1772,7 @@ contract('Dao', function (accounts) {
       assert.deepEqual(nextVotingTimeBefore, bN(0));
 
       // proposer shouldn't be able to claim eth (since proposal paused)
-      assert(await a.failure(contracts.daoFundingManager.claimEthFunding(
+      assert(await a.failure(contracts.daoFundingManager.claimFunding(
         proposals[0].id,
         bN(0),
         proposals[0].versions[1].milestoneFundings[0],
@@ -1810,7 +1810,7 @@ contract('Dao', function (accounts) {
       assert.deepEqual(nextInterimVotingTime, bN(nextVotingTime));
 
       // can now claim ether
-      assert.ok(await contracts.daoFundingManager.claimEthFunding.call(
+      assert.ok(await contracts.daoFundingManager.claimFunding.call(
         proposals[0].id,
         bN(0),
         proposals[0].versions[1].milestoneFundings[0],
@@ -1837,7 +1837,7 @@ contract('Dao', function (accounts) {
         bN(10),
         { from: proposals[0].proposer },
       );
-      await contracts.daoFundingManager.claimEthFunding(
+      await contracts.daoFundingManager.claimFunding(
         proposals[0].id,
         bN(0),
         proposals[0].versions[1].milestoneFundings[0],
@@ -1874,7 +1874,7 @@ contract('Dao', function (accounts) {
         bN(10),
         { from: proposals[0].proposer },
       );
-      assert(await a.failure(contracts.daoFundingManager.claimEthFunding(
+      assert(await a.failure(contracts.daoFundingManager.claimFunding(
         proposals[0].id,
         bN(1),
         proposals[0].versions[1].milestoneFundings[1],
@@ -1907,7 +1907,7 @@ contract('Dao', function (accounts) {
       assert.deepEqual(nextInterimVotingTime, bN(nextVotingTime));
 
       // can claim the funding now
-      assert.ok(await contracts.daoFundingManager.claimEthFunding(
+      assert.ok(await contracts.daoFundingManager.claimFunding(
         proposals[0].id,
         bN(1),
         proposals[0].versions[1].milestoneFundings[1],
@@ -1935,7 +1935,7 @@ contract('Dao', function (accounts) {
       const nextMilestoneStart = await contracts.daoStorage.readProposalNextMilestoneStart.call(proposals[0].id, bN(1));
 
       // claim the funding
-      await contracts.daoFundingManager.claimEthFunding(proposals[0].id, bN(0), proposals[0].versions[1].milestoneFundings[0], { from: proposals[0].proposer });
+      await contracts.daoFundingManager.claimFunding(proposals[0].id, bN(0), proposals[0].versions[1].milestoneFundings[0], { from: proposals[0].proposer });
 
       // now the prl pauses the proposal
       await contracts.dao.updatePRL(proposals[0].id, bN(2), 'pausing:proposal[0]', { from: addressOf.prl });
@@ -1970,7 +1970,7 @@ contract('Dao', function (accounts) {
       await contracts.dao.updatePRL(proposals[0].id, bN(1), 'stop:proposal[0]', { from: addressOf.prl });
 
       // claim the funding
-      assert(await a.failure(contracts.daoFundingManager.claimEthFunding(
+      assert(await a.failure(contracts.daoFundingManager.claimFunding(
         proposals[0].id,
         bN(0),
         proposals[0].versions[1].milestoneFundings[0],

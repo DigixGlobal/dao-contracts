@@ -5618,7 +5618,7 @@ contract DaoCommon is IdentityCommon {
         (,,_funding) = daoStorage().readProposalMilestone(_proposalId, _index);
         require(_value <= _funding);
         _;
-    }
+    } */
 
     modifier if_valid_milestones(uint256 a, uint256 b) {
         require(a == b);
@@ -5865,12 +5865,26 @@ contract DaoCommon is IdentityCommon {
         }
     }
 
+<<<<<<< Updated upstream
     function getTimelineForNextVote(
         uint256 _index,
         uint256 _votingTime
     )
         internal
         returns (uint256)
+=======
+    /// @notice Call function to claim ETH allocated by DAO (transferred to caller)
+    /// @dev _value should be at the most the milestone fundings for the specific _index milestone
+    /// @param _proposalId ID of the proposal
+    /// @param _index Index of the proposal voting round
+    /// @param _value Eth to be withdrawn by user (in wei)
+    /// @return _success Boolean, true if claim successful, revert otherwise
+    function claimFunding(bytes32 _proposalId, uint256 _index, uint256 _value)
+        public
+        if_from_proposer(_proposalId)
+        valid_withdraw_amount(_proposalId, _index, _value)
+        returns (bool _success)
+>>>>>>> Stashed changes
     {
         uint256 _timeLeftInQuarter = getTimeLeftInQuarter(_votingTime);
         uint256 _votingDuration = get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL);

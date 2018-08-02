@@ -74,7 +74,7 @@ contract('DaoFundingManager', function (accounts) {
     });
   });
 
-  describe('claimEthFunding', function () {
+  describe('claimFunding', function () {
     before(async function () {
       // create dummy proposals
       await contracts.daoStorage.addProposal(doc, addressOf.dgdHolders[2], durations, fundings, finalReward);
@@ -87,7 +87,7 @@ contract('DaoFundingManager', function (accounts) {
       const readProposal = await contracts.daoStorage.readProposal.call(doc);
       const isPaused = readProposal[8];
       assert.deepEqual(isPaused, true);
-      assert(await a.failure(contracts.daoFundingManager.claimEthFunding.call(
+      assert(await a.failure(contracts.daoFundingManager.claimFunding.call(
         doc,
         bN(0),
         fundings[0],
@@ -100,7 +100,7 @@ contract('DaoFundingManager', function (accounts) {
       const readProposal = await contracts.daoStorage.readProposal.call(doc);
       const isPaused = readProposal[8];
       assert.deepEqual(isPaused, false);
-      assert(await a.failure(contracts.daoFundingManager.claimEthFunding.call(
+      assert(await a.failure(contracts.daoFundingManager.claimFunding.call(
         doc,
         bN(0),
         fundings[0],
@@ -109,7 +109,7 @@ contract('DaoFundingManager', function (accounts) {
     });
     it('[cannot withdraw more than the funding for milestone, even if claimable eth is more for that address]', async function () {
       const claimable = await contracts.daoFundingStorage.claimableEth.call(addressOf.dgdHolders[2]);
-      assert(await a.failure(contracts.daoFundingManager.claimEthFunding.call(
+      assert(await a.failure(contracts.daoFundingManager.claimFunding.call(
         doc,
         bN(0),
         claimable,
@@ -122,7 +122,7 @@ contract('DaoFundingManager', function (accounts) {
       const claimable = await contracts.daoFundingStorage.claimableEth.call(addressOf.dgdHolders[2]);
       const claim = fundings[0];
       const ethInDaoBefore = await contracts.daoFundingStorage.ethInDao.call();
-      const tx = await contracts.daoFundingManager.claimEthFunding(doc, bN(0), claim, { from: addressOf.dgdHolders[2], gasPrice: web3.toWei(20, 'gwei') });
+      const tx = await contracts.daoFundingManager.claimFunding(doc, bN(0), claim, { from: addressOf.dgdHolders[2], gasPrice: web3.toWei(20, 'gwei') });
       const { gasUsed } = tx.receipt;
       const gasPrice = bN(web3.toWei(20, 'gwei'));
       const totalWeiUsed = bN(gasUsed).times(bN(gasPrice));
