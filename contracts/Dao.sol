@@ -80,8 +80,8 @@ contract Dao is DaoCommon, Claimable {
         address _proposer = msg.sender;
         require(identity_storage().is_kyc_approved(_proposer));
 
-        daoCollateralStorage().lockCollateral(msg.sender, get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
         daoStorage().addProposal(_docIpfsHash, _proposer, _milestonesFundings, _finalReward, _isFounder);
+        daoStorage().setProposalCollateralStatus(_docIpfsHash, COLLATERAL_STATUS_UNLOCKED);
         _success = true;
     }
 
@@ -278,6 +278,49 @@ contract Dao is DaoCommon, Claimable {
         require(daoSpecialStorage().readVotingTime(_proposalId) == 0);
         require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
         daoSpecialStorage().setVotingTime(_proposalId, now);
+        _success = true;
+    }
+
+    /// @notice Function to close proposal (also get back collateral)
+    /// @dev Can only be closed if the proposal has not been finalized yet
+    /// @param _proposalId ID of the proposal
+    /// @return _success Boolean, true if proposal was closed successfully
+    function closeProposal(bytes32 _proposalId)
+        public
+        returns (bool _success)
+    {
+        require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
+        bytes32 _finalVersion;
+        bytes32 _status;
+        (,,,_status,,,,_finalVersion,,) = daoStorage().readProposal(_proposalId);
+        require(_finalVersion == EMPTY_BYTES);
+        require(_status != PROPOSAL_STATE_CLOSED);
+        require(daoStorage().readProposalCollateralStatus(_proposalId) == COLLATERAL_STATUS_UNLOCKED);
+
+        daoStorage().closeProposal(_proposalId);
+        daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_CLAIMED);
+        msg.sender.transfer(get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        _success = true;
+    }
+
+    /// @notice Function for founders to close all the dead proposals
+    /// @dev all proposals who are not yet finalized, and been there for more than the threshold time
+    /// @param _proposalIds Array of proposal IDs
+    /// @return _success Boolean, true if all proposals were closed successfully
+    function founderCloseProposals(bytes32[] _proposalIds)
+        public
+        if_founder()
+        returns (bool _success)
+    {
+        uint256 _length = _proposalIds.length;
+        uint256 _timeCreated;
+        bytes32 _finalVersion;
+        for (uint256 _i = 0; _i < _length; _i++) {
+            (,,,,_timeCreated,,,_finalVersion,,) = daoStorage().readProposal(_proposalIds[_i]);
+            require(_finalVersion == EMPTY_BYTES);
+            require(now > _timeCreated.add(get_uint_config(CONFIG_PROPOSAL_DEAD_DURATION)));
+            daoStorage().closeProposal(_proposalIds[_i]);
+        }
         _success = true;
     }
 }

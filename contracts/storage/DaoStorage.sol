@@ -414,6 +414,13 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         _claimed = proposalsById[_proposalId].votingRounds[_index].claimed;
     }
 
+    function readProposalCollateralStatus(bytes32 _proposalId)
+        public
+        returns (uint256 _status)
+    {
+        _status = proposalsById[_proposalId].collateralStatus;
+    }
+
     ///////////////////////////// PRIVATE FUNCTIONS /////////////////////////////
 
     ////////////////////////////// WRITE FUNCTIONS //////////////////////////////
@@ -586,6 +593,13 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     {
         require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
         proposalsById[_proposalId].votingRounds[_index].claimed = _claimed;
+    }
+
+    function setProposalCollateralStatus(bytes32 _proposalId, uint256 _status)
+        public
+    {
+        require(sender_is_from([CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_FUNDING_MANAGER, CONTRACT_DAO]));
+        proposalsById[_proposalId].collateralStatus = _status;
     }
 
     /// @notice update the PRL status of the voting in a proposal

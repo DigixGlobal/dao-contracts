@@ -54,17 +54,12 @@ contract DaoFundingManager is DaoCommon {
         // proposal should not be paused/stopped
         require(isProposalPaused(_proposalId) == false);
 
-        // require unlocked collateral to be enough
-        uint256 _unlockedCollateral = daoCollateralStorage().readUnlockedCollateral(msg.sender);
-        address _endorser;
-        (,,_endorser,,,,,,,) = daoStorage().readProposal(_proposalId);
-        require(
-            (_unlockedCollateral >= get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT)) ||
-            (_endorser != EMPTY_ADDRESS)
-        );
+        // check if proposal's first voting passed (collateral went to Locked state) and now collateral is unlocked
+        require(daoStorage().readProposalVotingResult(_proposalId, 0) == true);
+        require(daoStorage().readProposalCollateralStatus(_proposalId) == COLLATERAL_STATUS_UNLOCKED);
 
-        daoCollateralStorage().withdrawCollateral(msg.sender, _unlockedCollateral);
-        msg.sender.transfer(_unlockedCollateral);
+        daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_CLAIMED);
+        msg.sender.transfer(get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
         _success = true;
     }
 

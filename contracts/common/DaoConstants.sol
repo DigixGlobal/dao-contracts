@@ -16,6 +16,10 @@ contract DaoConstants {
     uint256 PRL_ACTION_PAUSE = 2;
     uint256 PRL_ACTION_UNPAUSE = 3;
 
+    uint256 COLLATERAL_STATUS_UNLOCKED = 1;
+    uint256 COLLATERAL_STATUS_LOCKED = 2;
+    uint256 COLLATERAL_STATUS_CLAIMED = 3;
+
     bytes32 INTERMEDIATE_DGD_IDENTIFIER = "inter_dgd_id";
     bytes32 INTERMEDIATE_MODERATOR_DGD_IDENTIFIER = "inter_mod_dgd_id";
 
@@ -139,4 +143,6 @@ contract DaoConstants {
     bytes32 CONFIG_MAX_FUNDING_FOR_NON_DIGIX = "config_max_funding_nonDigix";
     bytes32 CONFIG_MAX_MILESTONES_FOR_NON_DIGIX = "config_max_milestones_nonDigix";
     bytes32 CONFIG_PROPOSAL_CAP_PER_QUARTER = "config_proposal_cap";
+
+    bytes32 CONFIG_PROPOSAL_DEAD_DURATION = "config_dead_duration";
 }

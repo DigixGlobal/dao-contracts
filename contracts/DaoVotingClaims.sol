@@ -60,7 +60,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
                     .add(get_uint_config(CONFIG_DRAFT_VOTING_PHASE))
                     .add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE))) {
             daoStorage().setProposalDraftPass(_proposalId, false);
-            daoCollateralStorage().unlockCollateral(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+            daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_UNLOCKED);
             return false;
         }
         require(msg.sender == daoStorage().readProposalProposer(_proposalId));
@@ -170,11 +170,14 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         }
         if (_passed) {
             allocateFunding(_proposalId, _index);
+            if (_index == 0) {
+                daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_LOCKED);
+            }
         } else {
             // failed voting in the first round
             // return the collateral
             if (_index == 0) {
-                daoCollateralStorage().unlockCollateral(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+                daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_UNLOCKED);
             }
         }
         daoStorage().setVotingClaim(_proposalId, _index, true);
@@ -191,7 +194,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         // if this was the last milestone and final reward has been released
         // unlock their original collateral
         if (_funding == 0 && !isProposalPaused(_proposalId)) {
-            daoCollateralStorage().unlockCollateral(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+            daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_UNLOCKED);
         }
 
         bool _isDigixProposal;

@@ -19,7 +19,6 @@ const {
 const bN = web3.toBigNumber;
 
 const doc = randomBytes32();
-const durations = [bN(35), bN(45), bN(55)];
 const fundings = [bN(100 * (10 ** 18)), bN(200), bN(50)];
 const finalReward = bN(1 * (10 ** 18));
 
@@ -51,33 +50,10 @@ contract('DaoFundingManager', function (accounts) {
     assert.deepEqual(await contracts.daoFundingStorage.ethInDao.call(), bN(web3.toWei(1000, 'ether')));
   };
 
-  describe('allocateEth', function () {
-    it('[not called from CONTRACT_DAO]: revert', async function () {
-      for (let i = 1; i < 20; i++) {
-        assert(await a.failure(contracts.daoFundingManager.allocateEth.call(
-          addressOf.dgdHolders[2],
-          fundings[0],
-          { from: accounts[i] },
-        )));
-      }
-    });
-    it('[valid call]: success | read functions', async function () {
-      assert.ok(await contracts.daoFundingManager.allocateEth.call(
-        addressOf.dgdHolders[2],
-        fundings[0],
-      ));
-      await contracts.daoFundingManager.allocateEth(addressOf.dgdHolders[2], fundings[0]);
-      assert.deepEqual(await contracts.daoFundingStorage.claimableEth.call(addressOf.dgdHolders[2]), fundings[0]);
-
-      await contracts.daoFundingManager.allocateEth(addressOf.dgdHolders[2], bN(20));
-      assert.deepEqual(await contracts.daoFundingStorage.claimableEth.call(addressOf.dgdHolders[2]), fundings[0].plus(bN(20)));
-    });
-  });
-
   describe('claimFunding', function () {
     before(async function () {
       // create dummy proposals
-      await contracts.daoStorage.addProposal(doc, addressOf.dgdHolders[2], durations, fundings, finalReward);
+      await contracts.daoStorage.addProposal(doc, addressOf.dgdHolders[2], fundings, finalReward, false);
       await contracts.daoStorage.finalizeProposal(doc);
       await contracts.daoStorage.setProposalPass(doc, bN(0), true);
       await contracts.daoStorage.setVotingClaim(doc, bN(0), true);
@@ -135,6 +111,34 @@ contract('DaoFundingManager', function (accounts) {
       assert.deepEqual(ethInDaoBefore, ethInDaoAfter.plus(claim));
     });
   });
+
+  // TODO:
+  // describe('claimCollateral', function () {
+  //   before(async function () {
+  //
+  //   });
+  //   it('[if not proposer]: revert', async function () {
+  //
+  //   });
+  //   it('[if proposal is paused by PRL]: revert', async function () {
+  //
+  //   });
+  //   it('[if proposal has not started draft voting phase]: revert', async function () {
+  //
+  //   });
+  //   it('[if proposal has not started voting phase]: revert', async function () {
+  //
+  //   });
+  //   it('[if proposal passed the voting round, but not yet completed all milestones]: revert', async function () {
+  //
+  //   });
+  //   it('[if proposal passed all milestones]: success', async function () {
+  //
+  //   });
+  //   it('[try to claim for already claimed collateral proposal]: revert', async function () {
+  //
+  //   });
+  // });
 
   describe('moveFundsToNewDao', function () {
     let newDaoFundingManager;

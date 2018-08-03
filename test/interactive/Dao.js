@@ -2080,6 +2080,16 @@ contract('Dao', function (accounts) {
   });
 
   // TODO:
+  describe('closeProposal', function () {
+
+  });
+
+  // TODO:
+  describe('founderCloseProposals', function () {
+
+  });
+
+  // TODO:
   describe('commitVoteOnSpecialProposal', function () {
 
   });

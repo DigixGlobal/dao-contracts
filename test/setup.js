@@ -33,7 +33,6 @@ const DaoPointsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockD
 const DaoStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoStorage.sol');
 const DaoWhitelistingStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoWhitelistingStorage.sol');
 const IntermediateResultsStorage = process.env.SIMULATION ? 0 : artifacts.require('./IntermediateResultsStorage.sol');
-const DaoCollateralStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoCollateralStorage.sol');
 
 const DaoStructs = process.env.SIMULATION ? 0 : artifacts.require('./DaoStructs.sol');
 const DaoUpgradeStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoUpgradeStorage.sol');
@@ -127,7 +126,6 @@ const deployStorage = async function (libs, contracts, resolver) {
   contracts.daoFundingStorage = await DaoFundingStorage.new(resolver.address);
   contracts.daoRewardsStorage = await DaoRewardsStorage.new(resolver.address);
   contracts.intermediateResultsStorage = await IntermediateResultsStorage.new(resolver.address);
-  contracts.daoCollateralStorage = await DaoCollateralStorage.new(resolver.address);
 };
 
 const registerInteractive = async function (resolver, addressOf) {

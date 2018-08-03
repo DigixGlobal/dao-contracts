@@ -45,6 +45,7 @@ library DaoStructs {
         mapping (uint256 => Voting) votingRounds;
         bool isPaused;
         bool isDigix;
+        uint256 collateralStatus;
         bytes32 finalVersion;
         PrlAction[] prlActions;
     }
