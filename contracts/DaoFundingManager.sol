@@ -55,11 +55,22 @@ contract DaoFundingManager is DaoCommon {
         require(isProposalPaused(_proposalId) == false);
 
         // check if proposal's first voting passed (collateral went to Locked state) and now collateral is unlocked
-        require(daoStorage().readProposalVotingResult(_proposalId, 0) == true);
+        require(daoStorage().readProposalVotingResult(_proposalId, 0));
         require(daoStorage().readProposalCollateralStatus(_proposalId) == COLLATERAL_STATUS_UNLOCKED);
 
         daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_CLAIMED);
+        daoFundingStorage().withdrawEth(get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
         msg.sender.transfer(get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        _success = true;
+    }
+
+    function refundCollateral(address _receiver)
+        public
+        returns (bool _success)
+    {
+        require(sender_is(CONTRACT_DAO));
+        daoFundingStorage().withdrawEth(get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        _receiver.transfer(get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
         _success = true;
     }
 

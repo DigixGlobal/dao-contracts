@@ -69,7 +69,7 @@ contract Dao is DaoCommon, Claimable {
         require(isParticipant(msg.sender));
         bool _isFounder = is_founder();
 
-        require(msg.value >= get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        require(msg.value == get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
         require(address(daoFundingManager()).call.value(msg.value)());
 
         if (!_isFounder) {
@@ -299,7 +299,7 @@ contract Dao is DaoCommon, Claimable {
 
         daoStorage().closeProposal(_proposalId);
         daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_CLAIMED);
-        msg.sender.transfer(get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        require(daoFundingManager().refundCollateral(msg.sender));
         _success = true;
     }
 

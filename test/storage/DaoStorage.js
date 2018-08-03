@@ -602,6 +602,20 @@ contract('DaoStorage', function (accounts) {
     });
   });
 
+  describe('setProposalCollateralStatus', function () {
+    it('[not called by CONTRACT_DAO, CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_FUNDING_MANAGER]: revert', async function () {
+      assert(await a.failure(contracts.daoStorage.setProposalCollateralStatus.call(doc, bN(1), { from: accounts[2] })));
+    });
+    it('[valid call]: readProposalCollateralStatus', async function () {
+      await contracts.daoStorage.setProposalCollateralStatus(doc, bN(1));
+      assert.deepEqual(await contracts.daoStorage.readProposalCollateralStatus.call(doc), bN(1));
+      await contracts.daoStorage.setProposalCollateralStatus(doc, bN(2));
+      assert.deepEqual(await contracts.daoStorage.readProposalCollateralStatus.call(doc), bN(2));
+      await contracts.daoStorage.setProposalCollateralStatus(doc, bN(3));
+      assert.deepEqual(await contracts.daoStorage.readProposalCollateralStatus.call(doc), bN(3));
+    });
+  });
+
   describe('closeProposal', function () {
     it('[not called by CONTRACT_DAO]: revert', async function () {
       assert(await a.failure(contracts.daoStorage.closeProposal(someDocs[1], { from: accounts[3] })));
