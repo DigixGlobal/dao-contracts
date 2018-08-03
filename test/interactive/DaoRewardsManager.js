@@ -245,11 +245,8 @@ contract('DaoRewardsManager', function (accounts) {
 
       await a.map(indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT), 20, async (i) => {
         if (addressOf.allParticipants[i] !== addressOf.dgdHolders[4]) {
-          console.log('read = ', rewardsAfter[i], ' & ', pointsAfter[i]);
-          console.log('calc = ', calculatedRewards[i], ' & ', calculatedReputation[i]);
-          console.log('');
-          // assert.deepEqual(pointsAfter[i], bN(calculatedReputation[i]));
-          // assert.deepEqual(rewardsAfter[i], bN(calculatedRewards[i]));
+          assert.deepEqual(pointsAfter[i], bN(calculatedReputation[i]));
+          assert.deepEqual(rewardsAfter[i], bN(calculatedRewards[i]));
         }
       });
     });
@@ -304,8 +301,8 @@ contract('DaoRewardsManager', function (accounts) {
       const calculatedValue2 = calculateReputation(
         bN(4),
         bN(3),
-        bN(1),
-        bN(1),
+        bN(2),
+        bN(2),
         daoConstantsValues(bN).CONFIG_MAXIMUM_REPUTATION_DEDUCTION,
         daoConstantsValues(bN).CONFIG_PUNISHMENT_FOR_NOT_LOCKING,
         daoConstantsValues(bN).CONFIG_MINIMAL_PARTICIPATION_POINT,
@@ -400,10 +397,10 @@ contract('DaoRewardsManager', function (accounts) {
 
       const rewardsAfter = await readClaimableDgx();
       for (const i of indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT)) {
-        console.log('read = ', rewardsAfter[i]);
-        console.log('calc = ', calculatedRewards[i]);
-        console.log('');
-        // assert.deepEqual(rewardsAfter[i], calculatedRewards[i]);
+        // console.log('read = ', rewardsAfter[i]);
+        // console.log('calc = ', calculatedRewards[i]);
+        // console.log('');
+        assert.deepEqual(rewardsAfter[i], calculatedRewards[i]);
       }
     });
   });

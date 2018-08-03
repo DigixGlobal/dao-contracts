@@ -63,6 +63,16 @@ contract('DaoStakeLocking', function (accounts) {
     it('[redeem badges from same address again]: revert', async function () {
       assert(await a.failure(contracts.daoStakeLocking.redeemBadge.call({ from: addressOf.badgeHolders[2] })));
     });
+    // TODO:
+    // it('[redeem badge in quarter 3, this user has never participated in DigixDAO before]: success', async function () {
+    //
+    // });
+    // it('[redeem badge after skipping one or more quarters of participation]: revert', async function () {
+    //
+    // });
+    // it('[redeem badge after skipping one or more quarters of participation, but after confirming participation for currentQuarter]: success', async function () {
+    //
+    // });
   });
 
   describe('lockDGD | confirmContinuedParticipation', function () {

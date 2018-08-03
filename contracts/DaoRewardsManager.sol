@@ -127,7 +127,7 @@ contract DaoRewardsManager is DaoCommon {
             return;
         }
 
-        if (_lastParticipatedQuarter == currentQuarterIndex() - 1) {
+        if (_lastQuarterThatReputationWasUpdated == _lastParticipatedQuarter.sub(1)) {
             updateRPfromQP(
                 _user,
                 daoPointsStorage().getQuarterPoint(_user, _lastParticipatedQuarter),
@@ -154,14 +154,14 @@ contract DaoRewardsManager is DaoCommon {
         }
 
         _reputationDeduction =
-            (currentQuarterIndex().sub(1).sub(_lastParticipatedQuarter))
+            (currentQuarterIndex().sub(1).sub(MathHelper.max(_lastParticipatedQuarter, _lastQuarterThatReputationWasUpdated)))
             .mul(
                 get_uint_config(CONFIG_MAXIMUM_REPUTATION_DEDUCTION)
                 .add(get_uint_config(CONFIG_PUNISHMENT_FOR_NOT_LOCKING))
             );
 
         if (_reputationDeduction > 0) daoPointsStorage().subtractReputation(_user, _reputationDeduction);
-        daoRewardsStorage().updateLastQuarterThatReputationWasUpdated(_user, _lastParticipatedQuarter);
+        daoRewardsStorage().updateLastQuarterThatReputationWasUpdated(_user, currentQuarterIndex().sub(1));
     }
 
     function updateRPfromQP (
