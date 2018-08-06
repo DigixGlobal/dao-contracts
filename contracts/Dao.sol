@@ -65,24 +65,23 @@ contract Dao is DaoCommon, Claimable {
         if_funding_possible(_milestonesFundings)
         returns (bool _success)
     {
-        require(is_main_phase());
-        require(isParticipant(msg.sender));
+        senderCanDoProposerOperations();
         bool _isFounder = is_founder();
 
         require(msg.value == get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
         require(address(daoFundingManager()).call.value(msg.value)());
 
-        if (!_isFounder) {
-            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
-            require(_milestonesFundings.length <= get_uint_config(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
-        }
+        checkNonDigixFundings(_milestonesFundings, _finalReward);
 
-        address _proposer = msg.sender;
-        require(identity_storage().is_kyc_approved(_proposer));
-
-        daoStorage().addProposal(_docIpfsHash, _proposer, _milestonesFundings, _finalReward, _isFounder);
+        daoStorage().addProposal(_docIpfsHash, msg.sender, _milestonesFundings, _finalReward, _isFounder);
         daoStorage().setProposalCollateralStatus(_docIpfsHash, COLLATERAL_STATUS_UNLOCKED);
         _success = true;
+    }
+
+    function senderCanDoProposerOperations() internal {
+        require(is_main_phase());
+        require(isParticipant(msg.sender));
+        require(identity_storage().is_kyc_approved(msg.sender));
     }
 
     /// @notice Modify a proposal (this can be done only before setting the final version)
@@ -98,25 +97,19 @@ contract Dao is DaoCommon, Claimable {
         uint256 _finalReward
     )
         public
-        returns (bool _success)
     {
-        require(is_main_phase());
-        require(isParticipant(msg.sender));
-        require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
+        senderCanDoProposerOperations();
+        require(is_from_proposer(_proposalId));
+
         require(is_editable(_proposalId));
         bytes32 _currentState;
         (,,,_currentState,,,,,,) = daoStorage().readProposal(_proposalId);
         require(_currentState == PROPOSAL_STATE_PREPROPOSAL ||
           _currentState == PROPOSAL_STATE_DRAFT);
-        require(identity_storage().is_kyc_approved(msg.sender));
 
-        if (!is_founder()) {
-            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
-            require(_milestonesFundings.length <= get_uint_config(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
-        }
+        checkNonDigixFundings(_milestonesFundings, _finalReward);
 
         daoStorage().editProposal(_proposalId, _docIpfsHash, _milestonesFundings, _finalReward);
-        _success = true;
     }
 
     function changeFundings(
@@ -127,14 +120,11 @@ contract Dao is DaoCommon, Claimable {
     )
         public
     {
-        require(is_main_phase());
-        require(isParticipant(msg.sender));
-        require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
-        require(identity_storage().is_kyc_approved(msg.sender));
-        if (!is_founder()) {
-            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
-            require(_milestonesFundings.length <= get_uint_config(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
-        }
+        senderCanDoProposerOperations();
+        require(is_from_proposer(_proposalId));
+
+        checkNonDigixFundings(_milestonesFundings, _finalReward);
+
         uint256[] memory _currentFundings;
         (_currentFundings, _finalReward) = daoStorage().readProposalFunding(_proposalId);
 
@@ -151,17 +141,22 @@ contract Dao is DaoCommon, Claimable {
         daoStorage().changeFundings(_proposalId, _milestonesFundings, _finalReward);
     }
 
+    function checkNonDigixFundings(uint256[] _milestonesFundings, uint256 _finalReward) internal {
+        if (!is_founder()) {
+            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
+            require(_milestonesFundings.length <= get_uint_config(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
+        }
+    }
+
     /// @notice Finalize a proposal
     /// @dev After finalizing a proposal, it cannot be modified further
     /// @param _proposalId ID of the proposal
     function finalizeProposal(bytes32 _proposalId)
         public
     {
-        require(is_main_phase());
-        require(isParticipant(msg.sender));
-        require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
+        senderCanDoProposerOperations();
+        require(is_from_proposer(_proposalId));
         require(is_editable(_proposalId));
-        require(identity_storage().is_kyc_approved(msg.sender));
         bool _isDigixProposal;
         (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
         if (!_isDigixProposal) {
@@ -178,10 +173,8 @@ contract Dao is DaoCommon, Claimable {
     function finishMilestone(bytes32 _proposalId, uint256 _milestoneIndex)
         public
     {
-        require(is_main_phase());
-        require(isParticipant(msg.sender));
+        senderCanDoProposerOperations();
         require(is_from_proposer(_proposalId));
-        require(identity_storage().is_kyc_approved(msg.sender));
 
         // must be after the start of this milestone, and the milestone has not been finished yet (voting hasnt started)
         require(now > startOfMilestone(_proposalId, _milestoneIndex));
@@ -197,10 +190,8 @@ contract Dao is DaoCommon, Claimable {
     function addProposalDoc(bytes32 _proposalId, bytes32 _newDoc)
         public
     {
-        require(is_main_phase());
-        require(isParticipant(msg.sender));
+        senderCanDoProposerOperations();
         require(is_from_proposer(_proposalId));
-        require(identity_storage().is_kyc_approved(msg.sender));
         daoStorage().addProposalDoc(_proposalId, _newDoc);
     }
 
@@ -229,11 +220,9 @@ contract Dao is DaoCommon, Claimable {
     )
         public
         if_prl()
-        returns (bool _success)
     {
         require(_action == PRL_ACTION_STOP || _action == PRL_ACTION_PAUSE || _action == PRL_ACTION_UNPAUSE);
         daoStorage().updateProposalPRL(_proposalId, _action, _doc, now);
-        _success = true;
     }
 
     /// @notice Function to create a Special Proposal (can only be created by the founders)
@@ -271,14 +260,12 @@ contract Dao is DaoCommon, Claimable {
         bytes32 _proposalId
     )
         public
-        returns (bool _success)
     {
         require(is_main_phase());
         require(daoSpecialStorage().readProposalProposer(_proposalId) == msg.sender);
         require(daoSpecialStorage().readVotingTime(_proposalId) == 0);
         require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
         daoSpecialStorage().setVotingTime(_proposalId, now);
-        _success = true;
     }
 
     /// @notice Function to close proposal (also get back collateral)
@@ -287,9 +274,9 @@ contract Dao is DaoCommon, Claimable {
     /// @return _success Boolean, true if proposal was closed successfully
     function closeProposal(bytes32 _proposalId)
         public
-        returns (bool _success)
     {
-        require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
+        senderCanDoProposerOperations();
+        require(is_from_proposer(_proposalId));
         bytes32 _finalVersion;
         bytes32 _status;
         (,,,_status,,,,_finalVersion,,) = daoStorage().readProposal(_proposalId);
@@ -299,8 +286,7 @@ contract Dao is DaoCommon, Claimable {
 
         daoStorage().closeProposal(_proposalId);
         daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_CLAIMED);
-        require(daoFundingManager().refundCollateral(msg.sender));
-        _success = true;
+        daoFundingManager().refundCollateral(msg.sender);
     }
 
     /// @notice Function for founders to close all the dead proposals
@@ -310,7 +296,6 @@ contract Dao is DaoCommon, Claimable {
     function founderCloseProposals(bytes32[] _proposalIds)
         public
         if_founder()
-        returns (bool _success)
     {
         uint256 _length = _proposalIds.length;
         uint256 _timeCreated;
@@ -321,6 +306,5 @@ contract Dao is DaoCommon, Claimable {
             require(now > _timeCreated.add(get_uint_config(CONFIG_PROPOSAL_DEAD_DURATION)));
             daoStorage().closeProposal(_proposalIds[_i]);
         }
-        _success = true;
     }
 }

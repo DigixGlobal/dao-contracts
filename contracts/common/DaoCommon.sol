@@ -99,11 +99,6 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_valid_milestones(uint256 a, uint256 b) {
-        require(a == b);
-        _;
-    }
-
     modifier if_funding_possible(uint256[] _fundings) {
         uint256 _total = 0;
         for (uint256 i = 0; i < _fundings.length; i++) {
@@ -183,7 +178,7 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    function require_in_phase(uint256 _startingPoint, uint256 _relativePhaseStart, uint256 _relativePhaseEnd) {
+    function require_in_phase(uint256 _startingPoint, uint256 _relativePhaseStart, uint256 _relativePhaseEnd) internal {
         require(_startingPoint > 0);
         require(now < _startingPoint.add(_relativePhaseEnd));
         require(now >= _startingPoint.add(_relativePhaseStart));
