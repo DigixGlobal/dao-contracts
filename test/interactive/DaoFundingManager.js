@@ -114,7 +114,6 @@ contract('DaoFundingManager', function (accounts) {
     });
   });
 
-  // TODO:
   describe('claimCollateral', function () {
     before(async function () {
       await resetBeforeEach();
