@@ -64,6 +64,10 @@ contract DaoFundingManager is DaoCommon {
         _success = true;
     }
 
+    /// @notice Function to refund the collateral to _receiver
+    /// @dev Can only be called from the Dao contract
+    /// @param _receiver The receiver of the funds
+    /// @return _success Boolean, true if refund was successful
     function refundCollateral(address _receiver)
         public
         returns (bool _success)
