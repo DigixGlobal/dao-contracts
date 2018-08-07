@@ -13,8 +13,11 @@ import "../storage/DaoFundingStorage.sol";
 import "../storage/DaoRewardsStorage.sol";
 import "../storage/DaoWhitelistingStorage.sol";
 import "../storage/IntermediateResultsStorage.sol";
+import "../lib/MathHelper.sol";
 
 contract DaoCommon is IdentityCommon {
+
+    using MathHelper for MathHelper;
 
     function isDaoNotReplaced() internal returns (bool) {
         return !daoUpgradeStorage().isReplacedByNewDao();
@@ -52,8 +55,7 @@ contract DaoCommon is IdentityCommon {
     modifier if_after_draft_voting_phase(bytes32 _proposalId) {
         uint256 _start = daoStorage().readProposalDraftVotingTime(_proposalId);
         require(_start > 0);
-        require(now > _start);
-        require(now.sub(_start) > get_uint_config(CONFIG_DRAFT_VOTING_PHASE));
+        require(now > _start + get_uint_config(CONFIG_DRAFT_VOTING_PHASE));
         _;
     }
 
@@ -99,11 +101,7 @@ contract DaoCommon is IdentityCommon {
     }
 
     modifier if_funding_possible(uint256[] _fundings) {
-        uint256 _total = 0;
-        for (uint256 i = 0; i < _fundings.length; i++) {
-            _total = _total.add(_fundings[i]);
-        }
-        require(_total <= daoFundingStorage().ethInDao());
+        require(MathHelper.sumNumbers(_fundings) <= daoFundingStorage().ethInDao());
         _;
     }
 
@@ -342,4 +340,19 @@ contract DaoCommon is IdentityCommon {
         }
         return _votingTime;
     }
+
+    function checkNonDigixProposalLimit(bytes32 _proposalId) {
+        bool _isDigixProposal;
+        (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
+        if (!_isDigixProposal) {
+            require(daoStorage().proposalCountByQuarter(currentQuarterIndex()) < get_uint_config(CONFIG_PROPOSAL_CAP_PER_QUARTER));
+        }
+    }
+
+    function senderCanDoProposerOperations() internal {
+        require(isMainPhase());
+        require(isParticipant(msg.sender));
+        require(identity_storage().is_kyc_approved(msg.sender));
+    }
+
 }

@@ -43,7 +43,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
     /// @notice Function to claim the draft voting result (can only be called by the proposal proposer)
     /// @param _proposalId ID of the proposal
-    /// @return _passed Boolean, true if the draft voting has passed, reverted otherwise
+    /// @return _passed Boolean, true if the draft voting has passed, false if the claiming deadline has passed, revert otherwise
     function claimDraftVotingResult(
         bytes32 _proposalId,
         uint256 _count
@@ -53,7 +53,6 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         if_after_draft_voting_phase(_proposalId)
         returns (bool _passed)
     {
-        require(isMainPhase());
 
         // if after the claiming deadline, its auto failed
         if (now > daoStorage().readProposalDraftVotingTime(_proposalId)
@@ -63,7 +62,10 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_UNLOCKED);
             return false;
         }
-        require(msg.sender == daoStorage().readProposalProposer(_proposalId));
+        require(is_from_proposer(_proposalId));
+        senderCanDoProposerOperations();
+        checkNonDigixProposalLimit(_proposalId);
+
 
         // get the previously stored intermediary state
         DaoStructs.IntermediateResults memory _currentResults;
@@ -152,7 +154,6 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         if_after_proposal_reveal_phase(_proposalId, _index)
         returns (bool _passed, bool _done)
     {
-        require(isMainPhase());
         // anyone can claim after the claiming deadline is over;
         // and the result will be failed by default
         _done = true;
@@ -167,18 +168,18 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         if (_index > 0) { // We only need to do bonus calculation if its the interim voting round
             _done = calculateVoterBonus(_proposalId, _index, _operations, _passed);
             if (!_done) return (_passed, false);
+        } else {
+            // its the first voting round, we unlock the collateral if it fails, locks if it passes
+            daoStorage().setProposalCollateralStatus(
+                _proposalId,
+                _passed ? COLLATERAL_STATUS_LOCKED : COLLATERAL_STATUS_UNLOCKED
+            );
+
+            checkNonDigixProposalLimit(_proposalId);
         }
+
         if (_passed) {
             allocateFunding(_proposalId, _index);
-            if (_index == 0) {
-                daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_LOCKED);
-            }
-        } else {
-            // failed voting in the first round
-            // return the collateral
-            if (_index == 0) {
-                daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_UNLOCKED);
-            }
         }
         daoStorage().setVotingClaim(_proposalId, _index, true);
         daoStorage().setProposalPass(_proposalId, _index, _passed);
@@ -261,7 +262,8 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         internal
         returns (uint256 _operationsLeft, bool _passed, bool _done)
     {
-        require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
+        senderCanDoProposerOperations();
+        require(is_from_proposer(_proposalId));
 
         DaoStructs.IntermediateResults memory _currentResults;
         (

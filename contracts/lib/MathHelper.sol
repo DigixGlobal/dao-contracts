@@ -1,6 +1,11 @@
 pragma solidity ^0.4.19;
 
+import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
+
 library MathHelper {
+
+  using SafeMath for uint256;
+  
   // functions to calculate points/rewards
   function max(uint256 a, uint256 b) internal pure returns (uint256 _max){
       _max = b;
@@ -18,7 +23,7 @@ library MathHelper {
 
   function sumNumbers(uint256[] _numbers) internal pure returns (uint256 _sum) {
       for (uint256 i=0;i<_numbers.length;i++) {
-          _sum = _sum + _numbers[i];
+          _sum = _sum.add(_numbers[i]);
       }
   }
 }

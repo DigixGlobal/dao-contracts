@@ -4,12 +4,10 @@ import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
 import "../common/DaoCommon.sol";
 import "./DaoFundingManager.sol";
 import "./DaoVotingClaims.sol";
-import "../lib/MathHelper.sol";
 
 /// @title Interactive DAO contract for creating/modifying/endorsing proposals
 /// @author Digix Holdings
 contract Dao is DaoCommon, Claimable {
-    using MathHelper for MathHelper;
 
     function Dao(address _resolver) public {
         require(init(CONTRACT_DAO, _resolver));
@@ -78,12 +76,6 @@ contract Dao is DaoCommon, Claimable {
         _success = true;
     }
 
-    function senderCanDoProposerOperations() internal {
-        require(isMainPhase());
-        require(isParticipant(msg.sender));
-        require(identity_storage().is_kyc_approved(msg.sender));
-    }
-
     /// @notice Modify a proposal (this can be done only before setting the final version)
     /// @param _proposalId Proposal ID (hash of IPFS doc of the first version of the proposal)
     /// @param _docIpfsHash Hash of IPFS doc of the modified version of the proposal
@@ -112,6 +104,8 @@ contract Dao is DaoCommon, Claimable {
         daoStorage().editProposal(_proposalId, _docIpfsHash, _milestonesFundings, _finalReward);
     }
 
+    /// @dev Proposers can only change fundings for the subsequent milestones,
+    /// during the duration of an on-going milestone (so, cannot be during any voting phase)
     function changeFundings(
         bytes32 _proposalId,
         uint256[] _milestonesFundings,
@@ -129,7 +123,9 @@ contract Dao is DaoCommon, Claimable {
         (_currentFundings, _finalReward) = daoStorage().readProposalFunding(_proposalId);
 
         // must be after the start of the milestone, and the milestone has not been finished yet (voting hasnt started)
-        require(now > startOfMilestone(_proposalId, _currentMilestone));
+        uint256 _startOfCurrentMilestone = startOfMilestone(_proposalId, _currentMilestone);
+        require(_startOfCurrentMilestone > 0);
+        require(now > _startOfCurrentMilestone);
         require(daoStorage().readProposalVotingTime(_proposalId, _currentMilestone.add(1)) == 0);
 
         // can only modify the fundings after _currentMilestone
@@ -157,11 +153,8 @@ contract Dao is DaoCommon, Claimable {
         senderCanDoProposerOperations();
         require(is_from_proposer(_proposalId));
         require(is_editable(_proposalId));
-        bool _isDigixProposal;
-        (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
-        if (!_isDigixProposal) {
-            require(daoStorage().proposalCountByQuarter(currentQuarterIndex()) < get_uint_config(CONFIG_PROPOSAL_CAP_PER_QUARTER));
-        }
+        checkNonDigixProposalLimit(_proposalId);
+
         require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_DRAFT_VOTING_PHASE).add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE)));
         address _endorser;
         (,,_endorser,,,,,,,) = daoStorage().readProposal(_proposalId);

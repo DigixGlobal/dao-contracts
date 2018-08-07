@@ -33,8 +33,13 @@ library DaoStructs {
         bytes32[] moreDocs;
     }
 
+    // Each Proposal can have different versions.
     struct Proposal {
+        // This is a bytes32 that is used to identify proposals
+        // It is also the docIpfsHash of the first ProposalVersion
         bytes32 proposalId;
+
+
         address proposer;
         address endorser;
         bytes32 currentState;
