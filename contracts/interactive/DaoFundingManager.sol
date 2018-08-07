@@ -1,5 +1,5 @@
 pragma solidity ^0.4.19;
-import "./common/DaoCommon.sol";
+import "../common/DaoCommon.sol";
 import "./Dao.sol";
 
 /// @title Contract to manage DAO funds

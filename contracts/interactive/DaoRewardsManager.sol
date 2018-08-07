@@ -1,9 +1,9 @@
 pragma solidity ^0.4.19;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
-import "./common/DaoCommon.sol";
-import "./lib/DaoStructs.sol";
-import "./service/DaoCalculatorService.sol";
+import "../common/DaoCommon.sol";
+import "../lib/DaoStructs.sol";
+import "../service/DaoCalculatorService.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
 /// @title Contract to manage DGX rewards
@@ -294,8 +294,8 @@ contract DaoRewardsManager is DaoCommon {
         public
         returns (bool _done)
     {
-        require(is_dao_valid());
-        require(is_locking_phase());
+        require(isDaoNotReplaced());
+        require(isLockingPhase());
         QuarterRewardsInfo memory info;
         info.previousQuarter = currentQuarterIndex().sub(1);
         require(info.previousQuarter > 0); // throw if this is the first quarter

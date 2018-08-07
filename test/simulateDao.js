@@ -1,7 +1,7 @@
 const a = require('awaiting');
 const web3Utils = require('web3-utils');
 
-const MockDGD = artifacts.require('./MockDGD.sol');
+const MockDgd = artifacts.require('./MockDgd.sol');
 const MockBadge = artifacts.require('./MockBadge.sol');
 const MockDgxStorage = artifacts.require('./MockDgxStorage.sol');
 const MockDgx = artifacts.require('./MockDgx.sol');
@@ -154,7 +154,7 @@ let participants;
 
 const setupMockTokens = async function (contracts, addressOf) {
   dotenv.config();
-  contracts.dgdToken = await MockDGD.deployed();
+  contracts.dgdToken = await MockDgd.deployed();
   contracts.badgeToken = await MockBadge.deployed();
   contracts.dgxStorage = await MockDgxStorage.deployed();
   contracts.dgxToken = await MockDgx.deployed();

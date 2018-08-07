@@ -1,12 +1,12 @@
 pragma solidity ^0.4.23;
 
-import "./../storage/DaoConfigsStorage.sol";
+import "../../storage/DaoConfigsStorage.sol";
 
 contract MockDaoConfigsStorage is DaoConfigsStorage {
   function MockDaoConfigsStorage(address _resolver) public DaoConfigsStorage(_resolver) {
-    
+
   }
-  
+
   function mock_set_uint_config(bytes32 _config_name, uint256 _new_value)
       public
   {

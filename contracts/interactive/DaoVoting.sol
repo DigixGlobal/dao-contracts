@@ -1,7 +1,7 @@
 pragma solidity ^0.4.23;
 
 import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
-import "./common/DaoCommon.sol";
+import "../common/DaoCommon.sol";
 
 /// @title Contract for all voting operations of DAO
 /// @author Digix Holdings
@@ -23,7 +23,7 @@ contract DaoVoting is DaoCommon, Claimable {
         if_draft_voting_phase(_proposalId)
         returns (bool _success)
     {
-        require(is_main_phase());
+        require(isMainPhase());
         require(isModerator(msg.sender));
         address _moderator = msg.sender;
         uint256 _moderatorStake = daoStakeStorage().readUserEffectiveDGDStake(_moderator);

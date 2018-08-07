@@ -1,6 +1,6 @@
 pragma solidity ^0.4.23;
 
-import "./../storage/DaoPointsStorage.sol";
+import "../../storage/DaoPointsStorage.sol";
 
 contract MockDaoPointsStorage is DaoPointsStorage {
   function MockDaoPointsStorage(address _resolver) public DaoPointsStorage(_resolver) {

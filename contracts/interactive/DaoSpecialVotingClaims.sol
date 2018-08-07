@@ -1,12 +1,12 @@
 pragma solidity ^0.4.23;
 
 import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
-import "./common/DaoCommon.sol";
-import "./service/DaoCalculatorService.sol";
+import "../common/DaoCommon.sol";
+import "../service/DaoCalculatorService.sol";
 import "./DaoFundingManager.sol";
 import "./DaoRewardsManager.sol";
-import "./lib/DaoIntermediateStructs.sol";
-import "./lib/DaoStructs.sol";
+import "../lib/DaoIntermediateStructs.sol";
+import "../lib/DaoStructs.sol";
 
 /// @title Contract to claim voting results
 /// @author Digix Holdings
@@ -50,7 +50,7 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
         if_after_reveal_phase_special(_proposalId)
         returns (bool _passed)
     {
-        require(is_main_phase());
+        require(isMainPhase());
         if (now > daoSpecialStorage().readVotingTime(_proposalId)
                     .add(get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL))
                     .add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE))) {

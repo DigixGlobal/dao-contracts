@@ -1,7 +1,7 @@
 pragma solidity ^0.4.19;
 
-import "./common/DaoConstants.sol";
-import "./common/DaoCommon.sol";
+import "../common/DaoConstants.sol";
+import "../common/DaoCommon.sol";
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 
 /// @title Interactive DAO contract for whitelisting/blacklisting contracts from reading

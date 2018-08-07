@@ -53,7 +53,7 @@ const DaoFundingManager = process.env.SIMULATION ? 0 : artifacts.require('./DaoF
 const DaoRewardsManager = process.env.SIMULATION ? 0 : artifacts.require('./DaoRewardsManager.sol');
 const DaoWhitelisting = process.env.SIMULATION ? 0 : artifacts.require('./DaoWhitelisting.sol');
 
-const MockDGD = process.env.SIMULATION ? 0 : artifacts.require('./MockDGD.sol');
+const MockDgd = process.env.SIMULATION ? 0 : artifacts.require('./MockDgd.sol');
 const MockBadge = process.env.SIMULATION ? 0 : artifacts.require('./MockBadge.sol');
 const MockDgxDemurrageReporter = process.env.SIMULATION ? 0 : artifacts.require('./MockDgxDemurrageReporter.sol');
 const MockDgx = process.env.SIMULATION ? 0 : artifacts.require('./MockDgx.sol');
@@ -410,7 +410,7 @@ const deployFreshDao = async (libs, contracts, addressOf, accounts, bN, web3) =>
   await deployLibraries(libs);
   await deployNewContractResolver(contracts);
   await getAccountsAndAddressOf(accounts, addressOf);
-  contracts.dgdToken = await MockDGD.new();
+  contracts.dgdToken = await MockDgd.new();
   contracts.badgeToken = await MockBadge.new();
   contracts.dgxStorage = await MockDgxStorage.new();
   contracts.dgxToken = await MockDgx.new(contracts.dgxStorage.address, addressOf.feesadmin);

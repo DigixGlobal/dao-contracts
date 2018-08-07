@@ -1,7 +1,7 @@
 pragma solidity ^0.4.19;
 
-import "./storage/DaoIdentityStorage.sol";
-import "./common/IdentityCommon.sol";
+import "../storage/DaoIdentityStorage.sol";
+import "../common/IdentityCommon.sol";
 
 /// @title Contract to manage directory in DAO (roles, groups)
 /// @author Digix Holdings

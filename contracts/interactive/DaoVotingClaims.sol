@@ -1,12 +1,12 @@
 pragma solidity ^0.4.23;
 
 import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
-import "./common/DaoCommon.sol";
-import "./service/DaoCalculatorService.sol";
+import "../common/DaoCommon.sol";
+import "../service/DaoCalculatorService.sol";
 import "./DaoFundingManager.sol";
 import "./DaoRewardsManager.sol";
-import "./lib/DaoIntermediateStructs.sol";
-import "./lib/DaoStructs.sol";
+import "../lib/DaoIntermediateStructs.sol";
+import "../lib/DaoStructs.sol";
 
 /// @title Contract to claim voting results
 /// @author Digix Holdings
@@ -53,7 +53,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         if_after_draft_voting_phase(_proposalId)
         returns (bool _passed)
     {
-        require(is_main_phase());
+        require(isMainPhase());
 
         // if after the claiming deadline, its auto failed
         if (now > daoStorage().readProposalDraftVotingTime(_proposalId)
@@ -152,7 +152,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         if_after_proposal_reveal_phase(_proposalId, _index)
         returns (bool _passed, bool _done)
     {
-        require(is_main_phase());
+        require(isMainPhase());
         // anyone can claim after the claiming deadline is over;
         // and the result will be failed by default
         _done = true;

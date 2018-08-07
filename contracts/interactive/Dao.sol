@@ -1,10 +1,10 @@
 pragma solidity ^0.4.23;
 
 import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
-import "./common/DaoCommon.sol";
+import "../common/DaoCommon.sol";
 import "./DaoFundingManager.sol";
 import "./DaoVotingClaims.sol";
-import "./lib/MathHelper.sol";
+import "../lib/MathHelper.sol";
 
 /// @title Interactive DAO contract for creating/modifying/endorsing proposals
 /// @author Digix Holdings
@@ -79,7 +79,7 @@ contract Dao is DaoCommon, Claimable {
     }
 
     function senderCanDoProposerOperations() internal {
-        require(is_main_phase());
+        require(isMainPhase());
         require(isParticipant(msg.sender));
         require(identity_storage().is_kyc_approved(msg.sender));
     }
@@ -203,7 +203,7 @@ contract Dao is DaoCommon, Claimable {
         is_proposal_state(_proposalId, PROPOSAL_STATE_PREPROPOSAL)
         returns (bool _success)
     {
-        require(is_main_phase());
+        require(isMainPhase());
         require(isModerator(msg.sender));
         daoStorage().updateProposalEndorse(_proposalId, msg.sender);
         _success = true;
@@ -241,7 +241,7 @@ contract Dao is DaoCommon, Claimable {
         if_founder()
         returns (bool _success)
     {
-        require(is_main_phase());
+        require(isMainPhase());
         address _proposer = msg.sender;
         daoSpecialStorage().addSpecialProposal(
             _doc,
@@ -261,7 +261,7 @@ contract Dao is DaoCommon, Claimable {
     )
         public
     {
-        require(is_main_phase());
+        require(isMainPhase());
         require(daoSpecialStorage().readProposalProposer(_proposalId) == msg.sender);
         require(daoSpecialStorage().readVotingTime(_proposalId) == 0);
         require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));

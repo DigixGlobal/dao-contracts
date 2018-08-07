@@ -1,6 +1,6 @@
 pragma solidity ^0.4.19;
 
-import "./../storage/DaoStakeStorage.sol";
+import "../../storage/DaoStakeStorage.sol";
 
 contract MockDaoStakeStorage is DaoStakeStorage {
 

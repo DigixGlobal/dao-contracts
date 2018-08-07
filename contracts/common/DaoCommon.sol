@@ -1,33 +1,32 @@
 pragma solidity ^0.4.19;
 
-import "./../service/DaoListingService.sol";
-import "./../common/DaoConstants.sol";
-import "./../common/IdentityCommon.sol";
-import "./../storage/DaoConfigsStorage.sol";
-import "./../storage/DaoStakeStorage.sol";
-import "./../storage/DaoStorage.sol";
-import "./../storage/DaoUpgradeStorage.sol";
-import "./../storage/DaoSpecialStorage.sol";
-import "./../storage/DaoPointsStorage.sol";
-import "./../storage/DaoFundingStorage.sol";
-import "./../storage/DaoRewardsStorage.sol";
-import "./../storage/DaoWhitelistingStorage.sol";
-import "./../storage/IntermediateResultsStorage.sol";
+import "../service/DaoListingService.sol";
+import "./DaoConstants.sol";
+import "./IdentityCommon.sol";
+import "../storage/DaoConfigsStorage.sol";
+import "../storage/DaoStakeStorage.sol";
+import "../storage/DaoStorage.sol";
+import "../storage/DaoUpgradeStorage.sol";
+import "../storage/DaoSpecialStorage.sol";
+import "../storage/DaoPointsStorage.sol";
+import "../storage/DaoFundingStorage.sol";
+import "../storage/DaoRewardsStorage.sol";
+import "../storage/DaoWhitelistingStorage.sol";
+import "../storage/IntermediateResultsStorage.sol";
 
 contract DaoCommon is IdentityCommon {
 
-    function is_dao_valid() internal returns (bool) {
-        require(!daoUpgradeStorage().isReplacedByNewDao());
-        return true;
+    function isDaoNotReplaced() internal returns (bool) {
+        return !daoUpgradeStorage().isReplacedByNewDao();
     }
 
-    function is_locking_phase() internal returns (bool) {
+    function isLockingPhase() internal returns (bool) {
         require(currentTInQuarter() < get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
         return true;
     }
 
-    function is_main_phase() internal returns (bool) {
-        require(!daoUpgradeStorage().isReplacedByNewDao());
+    function isMainPhase() internal returns (bool) {
+        require(isDaoNotReplaced());
         require(currentTInQuarter() >= get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
         return true;
     }

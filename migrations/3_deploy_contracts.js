@@ -1,4 +1,4 @@
-const DGDToken = artifacts.require('./MockDGD.sol');
+const DGDToken = artifacts.require('./MockDgd.sol');
 const DGDBadgeToken = artifacts.require('./MockBadge.sol');
 const MockDgx = artifacts.require('./MockDgx.sol');
 const MockDgxDemurrageReporter = artifacts.require('./MockDgxDemurrageReporter.sol');

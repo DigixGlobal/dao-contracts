@@ -5528,17 +5528,17 @@ contract MedianizerInterface {
 
 contract DaoCommon is IdentityCommon {
 
-    function is_dao_valid() internal returns (bool) {
+    function isDaoNotReplaced() internal returns (bool) {
         require(!daoUpgradeStorage().isReplacedByNewDao());
         return true;
     }
 
-    function is_locking_phase() internal returns (bool) {
+    function isLockingPhase() internal returns (bool) {
         require(currentTInQuarter() < get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
         return true;
     }
 
-    function is_main_phase() internal returns (bool) {
+    function isMainPhase() internal returns (bool) {
         require(!daoUpgradeStorage().isReplacedByNewDao());
         require(currentTInQuarter() >= get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
         return true;
@@ -7500,8 +7500,8 @@ contract DaoRewardsManager is DaoCommon {
         public
         returns (bool _done)
     {
-        require(is_dao_valid());
-        require(is_locking_phase());
+        require(isDaoNotReplaced());
+        require(isLockingPhase());
         QuarterRewardsInfo memory info;
         info.previousQuarter = currentQuarterIndex().sub(1);
         require(info.previousQuarter > 0); // throw if this is the first quarter
@@ -7735,7 +7735,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         if_after_draft_voting_phase(_proposalId)
         returns (bool _passed)
     {
-        require(is_main_phase());
+        require(isMainPhase());
 
         // if after the claiming deadline, its auto failed
         if (now > daoStorage().readProposalDraftVotingTime(_proposalId)
@@ -7834,7 +7834,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         if_after_proposal_reveal_phase(_proposalId, _index)
         returns (bool _passed, bool _done)
     {
-        require(is_main_phase());
+        require(isMainPhase());
         // anyone can claim after the claiming deadline is over;
         // and the result will be failed by default
         _done = true;
@@ -8088,7 +8088,7 @@ contract Dao is DaoCommon, Claimable {
         if_funding_possible(_milestonesFundings)
         returns (bool _success)
     {
-        require(is_main_phase());
+        require(isMainPhase());
         require(isParticipant(msg.sender));
         bool _isFounder = is_founder();
 
@@ -8123,7 +8123,7 @@ contract Dao is DaoCommon, Claimable {
         public
         returns (bool _success)
     {
-        require(is_main_phase());
+        require(isMainPhase());
         require(isParticipant(msg.sender));
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
         require(is_editable(_proposalId));
@@ -8150,7 +8150,7 @@ contract Dao is DaoCommon, Claimable {
     )
         public
     {
-        require(is_main_phase());
+        require(isMainPhase());
         require(isParticipant(msg.sender));
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
         require(identity_storage().is_kyc_approved(msg.sender));
@@ -8180,7 +8180,7 @@ contract Dao is DaoCommon, Claimable {
     function finalizeProposal(bytes32 _proposalId)
         public
     {
-        require(is_main_phase());
+        require(isMainPhase());
         require(isParticipant(msg.sender));
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
         require(is_editable(_proposalId));
@@ -8201,7 +8201,7 @@ contract Dao is DaoCommon, Claimable {
     function finishMilestone(bytes32 _proposalId, uint256 _milestoneIndex)
         public
     {
-        require(is_main_phase());
+        require(isMainPhase());
         require(isParticipant(msg.sender));
         require(is_from_proposer(_proposalId));
         require(identity_storage().is_kyc_approved(msg.sender));
@@ -8220,7 +8220,7 @@ contract Dao is DaoCommon, Claimable {
     function addProposalDoc(bytes32 _proposalId, bytes32 _newDoc)
         public
     {
-        require(is_main_phase());
+        require(isMainPhase());
         require(isParticipant(msg.sender));
         require(is_from_proposer(_proposalId));
         require(identity_storage().is_kyc_approved(msg.sender));
@@ -8235,7 +8235,7 @@ contract Dao is DaoCommon, Claimable {
         is_proposal_state(_proposalId, PROPOSAL_STATE_PREPROPOSAL)
         returns (bool _success)
     {
-        require(is_main_phase());
+        require(isMainPhase());
         require(isModerator(msg.sender));
         daoStorage().updateProposalEndorse(_proposalId, msg.sender);
         _success = true;
@@ -8275,7 +8275,7 @@ contract Dao is DaoCommon, Claimable {
         if_founder()
         returns (bool _success)
     {
-        require(is_main_phase());
+        require(isMainPhase());
         address _proposer = msg.sender;
         daoSpecialStorage().addSpecialProposal(
             _doc,
@@ -8296,7 +8296,7 @@ contract Dao is DaoCommon, Claimable {
         public
         returns (bool _success)
     {
-        require(is_main_phase());
+        require(isMainPhase());
         require(daoSpecialStorage().readProposalProposer(_proposalId) == msg.sender);
         require(daoSpecialStorage().readVotingTime(_proposalId) == 0);
         require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
@@ -8470,7 +8470,7 @@ contract Dao is DaoCommon, Claimable {
         if_funding_possible(_milestonesFundings)
         returns (bool _success)
     {
-        require(is_main_phase());
+        require(isMainPhase());
         require(isParticipant(msg.sender));
         bool _isFounder = is_founder();
 
@@ -8505,7 +8505,7 @@ contract Dao is DaoCommon, Claimable {
         public
         returns (bool _success)
     {
-        require(is_main_phase());
+        require(isMainPhase());
         require(isParticipant(msg.sender));
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
         require(is_editable(_proposalId));
@@ -8532,7 +8532,7 @@ contract Dao is DaoCommon, Claimable {
     )
         public
     {
-        require(is_main_phase());
+        require(isMainPhase());
         require(isParticipant(msg.sender));
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
         require(identity_storage().is_kyc_approved(msg.sender));
@@ -8562,7 +8562,7 @@ contract Dao is DaoCommon, Claimable {
     function finalizeProposal(bytes32 _proposalId)
         public
     {
-        require(is_main_phase());
+        require(isMainPhase());
         require(isParticipant(msg.sender));
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
         require(is_editable(_proposalId));
@@ -8583,7 +8583,7 @@ contract Dao is DaoCommon, Claimable {
     function finishMilestone(bytes32 _proposalId, uint256 _milestoneIndex)
         public
     {
-        require(is_main_phase());
+        require(isMainPhase());
         require(isParticipant(msg.sender));
         require(is_from_proposer(_proposalId));
         require(identity_storage().is_kyc_approved(msg.sender));
@@ -8602,7 +8602,7 @@ contract Dao is DaoCommon, Claimable {
     function addProposalDoc(bytes32 _proposalId, bytes32 _newDoc)
         public
     {
-        require(is_main_phase());
+        require(isMainPhase());
         require(isParticipant(msg.sender));
         require(is_from_proposer(_proposalId));
         require(identity_storage().is_kyc_approved(msg.sender));
@@ -8617,7 +8617,7 @@ contract Dao is DaoCommon, Claimable {
         is_proposal_state(_proposalId, PROPOSAL_STATE_PREPROPOSAL)
         returns (bool _success)
     {
-        require(is_main_phase());
+        require(isMainPhase());
         require(isModerator(msg.sender));
         daoStorage().updateProposalEndorse(_proposalId, msg.sender);
         _success = true;
@@ -8657,7 +8657,7 @@ contract Dao is DaoCommon, Claimable {
         if_founder()
         returns (bool _success)
     {
-        require(is_main_phase());
+        require(isMainPhase());
         address _proposer = msg.sender;
         daoSpecialStorage().addSpecialProposal(
             _doc,
@@ -8678,7 +8678,7 @@ contract Dao is DaoCommon, Claimable {
         public
         returns (bool _success)
     {
-        require(is_main_phase());
+        require(isMainPhase());
         require(daoSpecialStorage().readProposalProposer(_proposalId) == msg.sender);
         require(daoSpecialStorage().readVotingTime(_proposalId) == 0);
         require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));

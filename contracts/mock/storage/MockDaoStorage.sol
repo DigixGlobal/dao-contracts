@@ -1,6 +1,6 @@
 pragma solidity ^0.4.19;
 
-import "./../storage/DaoStorage.sol";
+import "../../storage/DaoStorage.sol";
 
 contract MockDaoStorage is DaoStorage {
     using DoublyLinkedList for DoublyLinkedList.Bytes;

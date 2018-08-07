@@ -1,9 +1,9 @@
 pragma solidity ^0.4.19;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
-import "./lib/MathHelper.sol";
-import "./common/DaoCommon.sol";
-import "./service/DaoCalculatorService.sol";
+import "../lib/MathHelper.sol";
+import "../common/DaoCommon.sol";
+import "../service/DaoCalculatorService.sol";
 import "./DaoRewardsManager.sol";
 
 /// @title Contract to handle staking/withdrawing of DGDs for participation in DAO
@@ -112,7 +112,7 @@ contract DaoStakeLocking is DaoCommon {
         if_global_rewards_set(currentQuarterIndex())
         returns (bool _success)
     {
-        require(is_locking_phase() || daoUpgradeStorage().isReplacedByNewDao());
+        require(isLockingPhase() || daoUpgradeStorage().isReplacedByNewDao());
         StakeInformation memory _info = getStakeInformation(msg.sender);
         StakeInformation memory _newInfo = refreshDGDStake(msg.sender, _info, false);
 
