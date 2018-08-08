@@ -124,7 +124,10 @@ contract Dao is DaoCommon, Claimable {
 
         // must be after the start of the milestone, and the milestone has not been finished yet (voting hasnt started)
         uint256 _startOfCurrentMilestone = startOfMilestone(_proposalId, _currentMilestone);
-        require(_startOfCurrentMilestone > 0);
+
+        // start of milestone must be more than 1st Jan 2000, otherwise the voting for this milestone hasn't even started yet
+        require(_startOfCurrentMilestone > 946684800);
+
         require(now > _startOfCurrentMilestone);
         require(daoStorage().readProposalVotingTime(_proposalId, _currentMilestone.add(1)) == 0);
 

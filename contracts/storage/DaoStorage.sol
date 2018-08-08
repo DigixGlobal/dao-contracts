@@ -477,7 +477,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     {
         require(sender_is(CONTRACT_DAO));
 
-        bytes32 _lastVersion = getLastProposalVersion(_proposalId);
+        bytes32 _lastVersion = proposalsById[_proposalId].finalVersion;
         proposalsById[_proposalId].proposalVersions[_lastVersion].milestoneFundings = _newMilestoneFundings;
         proposalsById[_proposalId].proposalVersions[_lastVersion].finalReward = _finalReward;
     }
@@ -487,7 +487,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     {
         require(sender_is(CONTRACT_DAO));
 
-        bytes32 _lastVersion = getLastProposalVersion(_proposalId);
+        bytes32 _lastVersion = proposalsById[_proposalId].finalVersion;
         proposalsById[_proposalId].proposalVersions[_lastVersion].moreDocs.push(_newDoc);
     }
 
@@ -495,7 +495,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         public
         returns (bytes32[] _moreDocs)
     {
-        bytes32 _lastVersion = getLastProposalVersion(_proposalId);
+        bytes32 _lastVersion = proposalsById[_proposalId].finalVersion;
         _moreDocs = proposalsById[_proposalId].proposalVersions[_lastVersion].moreDocs;
     }
 
