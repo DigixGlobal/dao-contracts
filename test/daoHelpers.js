@@ -18,6 +18,14 @@ const prlActions = function (bN) {
   };
 };
 
+const collateralStatus = function (bN) {
+  return {
+    COLLATERAL_STATUS_UNLOCKED: bN(1),
+    COLLATERAL_STATUS_LOCKED: bN(2),
+    COLLATERAL_STATUS_CLAIMED: bN(3),
+  };
+};
+
 const configs = function () {
   return {
     INTERMEDIATE_DGD_IDENTIFIER: 'inter_dgd_id',
@@ -137,6 +145,10 @@ const daoConstantsKeys = function () {
     CONFIG_MINIMUM_DGD_FOR_MODERATOR: 'min_dgd_moderator',
     CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR: 'min_reputation_moderator',
     CONFIG_PROPOSAL_CAP_PER_QUARTER: 'config_proposal_cap',
+    CONFIG_MAX_FUNDING_FOR_NON_DIGIX: 'config_max_funding_nonDigix',
+    CONFIG_MAX_MILESTONES_FOR_NON_DIGIX: 'config_max_milestones_nonDigix',
+    CONFIG_PROPOSAL_DEAD_DURATION: 'config_dead_duration',
+    CONFIG_PREPROPOSAL_DEPOSIT: 'config_preproposal_deposit',
   };
 };
 
@@ -197,6 +209,10 @@ const daoConstantsValues = function (bN) {
     CONFIG_MINIMUM_DGD_FOR_MODERATOR: bN(100 * (10 ** 9)),
     CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR: bN(100),
     CONFIG_PROPOSAL_CAP_PER_QUARTER: bN(10),
+    CONFIG_MAX_FUNDING_FOR_NON_DIGIX: bN(20 * (10 ** 18)),
+    CONFIG_MAX_MILESTONES_FOR_NON_DIGIX: bN(2),
+    CONFIG_PROPOSAL_DEAD_DURATION: bN(15552000),
+    CONFIG_PREPROPOSAL_DEPOSIT: bN(2 * (10 ** 18)),
   };
 };
 
@@ -252,6 +268,7 @@ module.exports = {
   assertQuarter,
   max,
   prlActions,
+  collateralStatus,
   getTimeInQuarter,
   getTimeLeftInQuarter,
   EMPTY_BYTES,

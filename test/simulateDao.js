@@ -541,9 +541,9 @@ module.exports = async function () {
     await initDao(contracts, addressOf, bN, web3);
     console.log('setup and funded dao');
 
-    await fundUserAndApproveForStakeLocking(web3, contracts, bN, participants);
+    await fundUserAndApproveForStakeLocking(web3, contracts, bN, participants, addressOf);
     console.log('\tfunded users DGDs and Badges');
-    await lockDGDs(web3, contracts, bN, participants);
+    await lockDGDs(web3, contracts, bN, participants, addressOf);
     console.log('\tusers locked DGDs for first quarter');
     await redeemBadges(web3, contracts, bN, participants);
     console.log('\tusers redeemed badges');
@@ -569,7 +569,7 @@ module.exports = async function () {
 
     // its main phase, lock more tokens
     await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);
-    await lockDGDs(web3, contracts, bN, participants);
+    await lockDGDs(web3, contracts, bN, participants, addressOf);
     console.log('locked more dgds in main phase');
 
 

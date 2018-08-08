@@ -84,10 +84,10 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_MINIMUM_DGD_FOR_MODERATOR] = 100 * (10 ** 9);
         uintConfigs[CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR] = 100;
 
-        uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT] = 2 * (10 ** 18);
+        uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT] = 2 ether;
 
-        uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX] = 100 ether; // TODO: change to 5000USD
-        uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX] = 4;  // TODO: change to 2
+        uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX] = 20 ether;
+        uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX] = 2;
         uintConfigs[CONFIG_PROPOSAL_CAP_PER_QUARTER] = 10;
 
         uintConfigs[CONFIG_PROPOSAL_DEAD_DURATION] = 180 days;

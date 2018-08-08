@@ -104,8 +104,13 @@ contract Dao is DaoCommon, Claimable {
         daoStorage().editProposal(_proposalId, _docIpfsHash, _milestonesFundings, _finalReward);
     }
 
+    /// @notice Function to change the funding structure for a proposal
     /// @dev Proposers can only change fundings for the subsequent milestones,
     /// during the duration of an on-going milestone (so, cannot be during any voting phase)
+    /// @param _proposalId ID of the proposal
+    /// @param _milestonesFundings Array of fundings for milestones
+    /// @param _finalReward Final reward needed for completion of proposal
+    /// @param _currentMilestone the milestone number the proposal is currently in
     function changeFundings(
         bytes32 _proposalId,
         uint256[] _milestonesFundings,
@@ -120,7 +125,7 @@ contract Dao is DaoCommon, Claimable {
         checkNonDigixFundings(_milestonesFundings, _finalReward);
 
         uint256[] memory _currentFundings;
-        (_currentFundings, _finalReward) = daoStorage().readProposalFunding(_proposalId);
+        (_currentFundings,) = daoStorage().readProposalFunding(_proposalId);
 
         // must be after the start of the milestone, and the milestone has not been finished yet (voting hasnt started)
         uint256 _startOfCurrentMilestone = startOfMilestone(_proposalId, _currentMilestone);
@@ -138,13 +143,6 @@ contract Dao is DaoCommon, Claimable {
         }
 
         daoStorage().changeFundings(_proposalId, _milestonesFundings, _finalReward);
-    }
-
-    function checkNonDigixFundings(uint256[] _milestonesFundings, uint256 _finalReward) internal {
-        if (!is_founder()) {
-            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
-            require(_milestonesFundings.length <= get_uint_config(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
-        }
     }
 
     /// @notice Finalize a proposal
@@ -173,7 +171,9 @@ contract Dao is DaoCommon, Claimable {
         require(is_from_proposer(_proposalId));
 
         // must be after the start of this milestone, and the milestone has not been finished yet (voting hasnt started)
-        require(now > startOfMilestone(_proposalId, _milestoneIndex));
+        uint256 _startOfCurrentMilestone = startOfMilestone(_proposalId, _milestoneIndex);
+        require(_startOfCurrentMilestone > 946684800);
+        require(now > _startOfCurrentMilestone);
         require(daoStorage().readProposalVotingTime(_proposalId, _milestoneIndex.add(1)) == 0);
 
         daoStorage().setProposalVotingTime(
@@ -188,6 +188,9 @@ contract Dao is DaoCommon, Claimable {
     {
         senderCanDoProposerOperations();
         require(is_from_proposer(_proposalId));
+        bytes32 _finalVersion;
+        (,,,,,,,_finalVersion,,) = daoStorage().readProposal(_proposalId);
+        require(_finalVersion != EMPTY_BYTES);
         daoStorage().addProposalDoc(_proposalId, _newDoc);
     }
 

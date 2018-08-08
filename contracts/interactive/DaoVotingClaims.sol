@@ -143,7 +143,6 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
     // NOTE: Voting round i-th is before milestone index i-th
 
-
     /// @notice Function to claim the  voting round results (can only be called by the proposer)
     /// @param _proposalId ID of the proposal
     /// @param _index Index of the  voting round
@@ -154,6 +153,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         if_after_proposal_reveal_phase(_proposalId, _index)
         returns (bool _passed, bool _done)
     {
+        require(isMainPhase());
         // anyone can claim after the claiming deadline is over;
         // and the result will be failed by default
         _done = true;
@@ -180,6 +180,9 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
         if (_passed) {
             allocateFunding(_proposalId, _index);
+            if (_index == 0) {
+                daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_LOCKED);
+            }
         }
         daoStorage().setVotingClaim(_proposalId, _index, true);
         daoStorage().setProposalPass(_proposalId, _index, _passed);
@@ -191,10 +194,11 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     {
         uint256 _funding;
         (, _funding) = daoStorage().readProposalMilestone(_proposalId, _index);
+        uint256[] memory _milestoneFundings;
+        (_milestoneFundings,) = daoStorage().readProposalFunding(_proposalId);
 
-        // if this was the last milestone and final reward has been released
-        // unlock their original collateral
-        if (_funding == 0 && !isProposalPaused(_proposalId)) {
+        // if this was the last milestone, unlock their original collateral
+        if ((_index == _milestoneFundings.length) && !isProposalPaused(_proposalId)) {
             daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_UNLOCKED);
         }
 

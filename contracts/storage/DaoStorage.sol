@@ -32,6 +32,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     ///   "_state": "",
     ///   "_timeCreated": "",
     ///   "_nVersions": "",
+    ///   "_latestVersionDoc": "",
     ///   "_finalVersion": "",
     ///   "_paused": "",
     ///   "_isDigixProposal": ""

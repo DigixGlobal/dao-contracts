@@ -341,7 +341,9 @@ contract DaoCommon is IdentityCommon {
         return _votingTime;
     }
 
-    function checkNonDigixProposalLimit(bytes32 _proposalId) {
+    function checkNonDigixProposalLimit(bytes32 _proposalId)
+        internal
+    {
         bool _isDigixProposal;
         (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
         if (!_isDigixProposal) {
@@ -349,7 +351,18 @@ contract DaoCommon is IdentityCommon {
         }
     }
 
-    function senderCanDoProposerOperations() internal {
+    function checkNonDigixFundings(uint256[] _milestonesFundings, uint256 _finalReward)
+        internal
+    {
+        if (!is_founder()) {
+            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
+            require(_milestonesFundings.length <= get_uint_config(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
+        }
+    }
+
+    function senderCanDoProposerOperations()
+        internal
+    {
         require(isMainPhase());
         require(isParticipant(msg.sender));
         require(identity_storage().is_kyc_approved(msg.sender));

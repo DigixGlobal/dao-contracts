@@ -57,7 +57,7 @@ contract DaoCalculatorService is DaoCommon {
     {
         uint256[] memory _ethAskedPerMilestone;
         uint256 _finalReward;
-        (_ethAskedPerMilestone,_finalReward,) = daoStorage().readProposalFunding(_proposalId);
+        (_ethAskedPerMilestone,_finalReward) = daoStorage().readProposalFunding(_proposalId);
         require(_milestone_id <= _ethAskedPerMilestone.length);
         if (_milestone_id == _ethAskedPerMilestone.length) {
             _minQuorum = calculateMinQuorum(

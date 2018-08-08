@@ -38,8 +38,6 @@ library DaoStructs {
         // This is a bytes32 that is used to identify proposals
         // It is also the docIpfsHash of the first ProposalVersion
         bytes32 proposalId;
-
-
         address proposer;
         address endorser;
         bytes32 currentState;
@@ -132,14 +130,12 @@ library DaoStructs {
         returns (
             bytes32 _doc,
             uint256 _created,
-            /* uint256[] _milestoneDurations, */
             uint256[] _milestoneFundings,
             uint256 _finalReward
         )
     {
         _doc = _version.docIpfsHash;
         _created = _version.created;
-        /* _milestoneDurations = _version.milestoneDurations; */
         _milestoneFundings = _version.milestoneFundings;
         _finalReward = _version.finalReward;
     }

@@ -57,6 +57,35 @@ contract MockDaoStorage is DaoStorage {
         }
     }
 
+    function mock_put_proposal_in_milestone(
+        bytes32 _proposalId,
+        uint256 _milestoneId,
+        address _proposer,
+        address _endorser,
+        uint256[] _milestonesFundings,
+        uint256 _finalReward,
+        uint256 _previousVotingStart
+    )
+        public
+    {
+        allProposals.append(_proposalId);
+        proposalsById[_proposalId].proposalId = _proposalId;
+        proposalsById[_proposalId].proposer = _proposer;
+        proposalsById[_proposalId].timeCreated = now - (5 minutes);
+        proposalsById[_proposalId].proposalVersionDocs.append(_proposalId);
+        proposalsById[_proposalId].proposalVersions[_proposalId].docIpfsHash = _proposalId;
+        proposalsById[_proposalId].proposalVersions[_proposalId].created = now;
+        proposalsById[_proposalId].proposalVersions[_proposalId].milestoneCount = _milestonesFundings.length;
+        proposalsById[_proposalId].proposalVersions[_proposalId].milestoneFundings = _milestonesFundings;
+        proposalsById[_proposalId].proposalVersions[_proposalId].finalReward = _finalReward;
+        proposalsById[_proposalId].endorser = _endorser;
+        proposalsById[_proposalId].finalVersion = _proposalId;
+        proposalsById[_proposalId].votingRounds[_milestoneId].startTime = _previousVotingStart;
+        proposalsById[_proposalId].votingRounds[_milestoneId].claimed = true;
+        proposalsById[_proposalId].votingRounds[_milestoneId].passed = true;
+        proposalsById[_proposalId].votingRounds[_milestoneId].funded = true;
+    }
+
     /**
     @notice Mock function to add fake votes in the past for a proposal
     @dev This will never be available in the deployment, only for test purposes
@@ -96,5 +125,11 @@ contract MockDaoStorage is DaoStorage {
                 _voting.noVotes[_voters[i]] = _weights[i];
             }
         }
+    }
+
+    function mock_set_proposal_count(uint256 _quarterId, uint256 _count)
+        public
+    {
+        proposalCountByQuarter[_quarterId] = _count;
     }
 }

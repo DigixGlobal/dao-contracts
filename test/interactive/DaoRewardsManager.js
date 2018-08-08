@@ -407,7 +407,8 @@ contract('DaoRewardsManager', function (accounts) {
 
   describe('claimRewards', function () {
     before(async function () {
-      await contracts.daoRewardsManager.claimRewards({ from: addressOf.dgdHolders[3] });
+      const claimable = await contracts.daoRewardsStorage.claimableDGXs.call(addressOf.dgdHolders[3]);
+      if (claimable.toNumber() > 0) await contracts.daoRewardsManager.claimRewards({ from: addressOf.dgdHolders[3] });
     });
     it('[claimable dgx = 0]: revert', async function () {
       assert(await a.failure(contracts.daoRewardsManager.claimRewards.call({ from: addressOf.dgdHolders[3] })));

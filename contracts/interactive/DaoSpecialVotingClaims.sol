@@ -92,14 +92,16 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
         _currentResults.currentQuorum = _currentResults.currentQuorum.add(_voteCount.quorum);
 
         if (_lastVoter == daoStakeStorage().readLastParticipant()) {
-            require((_currentResults.currentQuorum > daoCalculatorService().minimumVotingQuorumForSpecial()) &&
-                (daoCalculatorService().votingQuotaForSpecialPass(_currentResults.currentForCount, _currentResults.currentAgainstCount)));
-
+            if (
+                (_currentResults.currentQuorum > daoCalculatorService().minimumVotingQuorumForSpecial()) &&
+                (daoCalculatorService().votingQuotaForSpecialPass(_currentResults.currentForCount, _currentResults.currentAgainstCount))
+            ) {
+                _passed = true;
+                setConfigs(_proposalId);
+            }
             daoSpecialStorage().setPass(_proposalId, _passed);
             daoSpecialStorage().setVotingClaim(_proposalId, true);
-            setConfigs(_proposalId);
 
-            _passed = true;
             intermediateResultsStorage().resetIntermediateResults(_proposalId);
         } else {
             intermediateResultsStorage().setIntermediateResults(
@@ -111,7 +113,6 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
                 0
             );
         }
-
     }
 
     function setConfigs(bytes32 _proposalId)
