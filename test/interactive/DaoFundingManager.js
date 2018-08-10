@@ -12,7 +12,6 @@ const {
 
 const {
   randomBytes32,
-  randomBytes32s,
   indexRange,
   getCurrentTimestamp,
 } = require('@digix/helpers/lib/helpers');
@@ -22,10 +21,6 @@ const bN = web3.toBigNumber;
 const doc = randomBytes32();
 const fundings = [bN(100 * (10 ** 18)), bN(200), bN(50)];
 const finalReward = bN(1 * (10 ** 18));
-
-const someDocs = randomBytes32s(2);
-const someFundings = [[bN(100 * (10 ** 18)), bN(200), bN(50)], [bN(100 * (10 ** 18)), bN(200), bN(50)]];
-const someFinalRewards = [bN(1 * (10 ** 18)), bN(1 * (10 ** 18))];
 
 contract('DaoFundingManager', function (accounts) {
   let libs;
@@ -110,64 +105,6 @@ contract('DaoFundingManager', function (accounts) {
         doc,
         bN(0),
         { from: addressOf.dgdHolders[2] },
-      )));
-    });
-  });
-
-  describe('claimCollateral', function () {
-    before(async function () {
-      await resetBeforeEach();
-      await contracts.daoStorage.addProposal(someDocs[0], addressOf.dgdHolders[0], someFundings[0], someFinalRewards[0], false);
-      await contracts.daoStorage.addProposal(someDocs[1], addressOf.dgdHolders[1], someFundings[1], someFinalRewards[1], false);
-      await contracts.daoStorage.setProposalCollateralStatus(someDocs[1], bN(1)); // this is unlocked
-      await contracts.daoStorage.finalizeProposal(someDocs[0]);
-      await contracts.daoStorage.setProposalDraftPass(someDocs[0], true);
-      await contracts.daoStorage.setProposalPass(someDocs[0], bN(0), true);
-      await contracts.daoStorage.setProposalCollateralStatus(someDocs[0], bN(2)); // this is locked, coz voting has passed
-    });
-    it('[if not proposer]: revert', async function () {
-      assert(await a.failure(contracts.daoFundingManager.claimCollateral(
-        someDocs[0],
-        { from: addressOf.badgeHolders[0] },
-      )));
-    });
-    it('[if proposal is paused by PRL]: revert', async function () {
-      await contracts.daoStorage.updateProposalPRL(someDocs[0], bN(2), randomBytes32(), bN(getCurrentTimestamp())); // pause the proposal
-      assert(await a.failure(contracts.daoFundingManager.claimCollateral(
-        someDocs[0],
-        { from: addressOf.dgdHolders[0] },
-      )));
-      await contracts.daoStorage.updateProposalPRL(someDocs[0], bN(3), randomBytes32(), bN(getCurrentTimestamp())); // unpause it
-    });
-    it('[if proposal has not started any voting phase]: revert', async function () {
-      assert(await a.failure(contracts.daoFundingManager.claimCollateral(
-        someDocs[1],
-        { from: addressOf.dgdHolders[1] },
-      )));
-    });
-    it('[if proposal passed the voting round, but not yet completed all milestones]: revert', async function () {
-      assert(await a.failure(contracts.daoFundingManager.claimCollateral(
-        someDocs[0],
-        { from: addressOf.dgdHolders[0] },
-      )));
-    });
-    it('[if proposal passed all milestones]: success', async function () {
-      await contracts.daoStorage.setProposalCollateralStatus(someDocs[0], bN(1)); // unlock it as all milestones have passed
-      const balanceBefore = await web3.eth.getBalance(addressOf.dgdHolders[0]);
-      const tx = await contracts.daoFundingManager.claimCollateral(
-        someDocs[0],
-        { from: addressOf.dgdHolders[0], gasPrice: web3.toWei(20, 'gwei') },
-      );
-      const { gasUsed } = tx.receipt;
-      const gasPrice = bN(web3.toWei(20, 'gwei'));
-      const totalWeiUsed = bN(gasUsed).times(bN(gasPrice));
-      assert.deepEqual(await web3.eth.getBalance(addressOf.dgdHolders[0]), balanceBefore.plus(bN(2 * (10 ** 18))).minus(totalWeiUsed));
-      assert.deepEqual(await contracts.daoStorage.readProposalCollateralStatus.call(someDocs[0]), bN(3));
-    });
-    it('[try to claim for already claimed collateral proposal]: revert', async function () {
-      assert(await a.failure(contracts.daoFundingManager.claimCollateral(
-        someDocs[0],
-        { from: addressOf.dgdHolders[0] },
       )));
     });
   });

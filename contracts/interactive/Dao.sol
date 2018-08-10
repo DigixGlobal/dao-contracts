@@ -283,7 +283,7 @@ contract Dao is DaoCommon, Claimable {
 
         daoStorage().closeProposal(_proposalId);
         daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_CLAIMED);
-        daoFundingManager().refundCollateral(msg.sender);
+        require(daoFundingManager().refundCollateral(msg.sender));
     }
 
     /// @notice Function for founders to close all the dead proposals

@@ -24,8 +24,6 @@ const {
   proposalStates,
   daoConstantsKeys,
   daoConstantsValues,
-  getTimeInQuarter,
-  getTimeLeftInQuarter,
   collateralStatus,
   EMPTY_ADDRESS,
   EMPTY_BYTES,
@@ -1220,7 +1218,7 @@ contract('Dao', function (accounts) {
       assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[0].id, { from: addressOf.badgeHolders[1] })));
       assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[0].id, { from: addressOf.dgdHolders[1] })));
     });
-    it('[if voting before draft voting phase ends | quorum is not met]: revert', async function () {
+    it('[if voting before draft voting phase ends | quorum is not met]: claimed true, passed false, collateral refunded', async function () {
       // add proposals
       await addProposal(contracts, proposals[2]);
       await addProposal(contracts, proposals[3]);
@@ -1265,14 +1263,26 @@ contract('Dao', function (accounts) {
       const voteCount3 = await contracts.daoStorage.readDraftVotingCount.call(proposals[3].id, addressOf.allParticipants);
       const minimumDraftQuorum = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[3].id);
       assert.isBelow(voteCount3[2].toNumber(), minimumDraftQuorum.toNumber());
-      assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[3].id, { from: proposals[3].proposer })));
+      const ethBalanceBefore = await web3.eth.getBalance(proposals[3].proposer);
+      const tx = await contracts.daoVotingClaims.claimDraftVotingResult(proposals[3].id, bN(20), { from: proposals[3].proposer, gasPrice: web3.toWei(20, 'gwei') });
+      const gasUsed = tx.receipt.gasUsed * web3.toWei(20, 'gwei');
+      assert.deepEqual(await web3.eth.getBalance(proposals[3].proposer), ethBalanceBefore.plus(bN(2 * (10 ** 18))).minus(bN(gasUsed)));
+      assert.deepEqual(await contracts.daoStorage.readProposalDraftVotingResult.call(proposals[3].id), false);
+      assert.deepEqual(await contracts.daoStorage.isDraftClaimed.call(proposals[3].id), true);
+      assert.deepEqual(await contracts.daoStorage.readProposalCollateralStatus.call(proposals[3].id), collateralStatus(bN).COLLATERAL_STATUS_CLAIMED);
     });
-    it('[if quota is not met]: revert', async function () {
+    it('[if quota is not met]: claimed true, passed false, collateral refunded', async function () {
       const voteCount2 = await contracts.daoStorage.readDraftVotingCount.call(proposals[2].id, addressOf.allParticipants);
       const minimumDraftQuorum = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[2].id);
       assert.isAtLeast(voteCount2[2].toNumber(), minimumDraftQuorum.toNumber());
       assert.deepEqual(await contracts.daoCalculatorService.draftQuotaPass.call(voteCount2[0], voteCount2[1]), false);
-      assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[2].id, { from: proposals[2].proposer })));
+      const ethBalanceBefore = await web3.eth.getBalance(proposals[2].proposer);
+      const tx = await contracts.daoVotingClaims.claimDraftVotingResult(proposals[2].id, bN(20), { from: proposals[2].proposer, gasPrice: web3.toWei(20, 'gwei') });
+      const gasUsed = tx.receipt.gasUsed * web3.toWei(20, 'gwei');
+      assert.deepEqual(await web3.eth.getBalance(proposals[2].proposer), ethBalanceBefore.plus(bN(2 * (10 ** 18))).minus(bN(gasUsed)));
+      assert.deepEqual(await contracts.daoStorage.readProposalDraftVotingResult.call(proposals[2].id), false);
+      assert.deepEqual(await contracts.daoStorage.isDraftClaimed.call(proposals[2].id), true);
+      assert.deepEqual(await contracts.daoStorage.readProposalCollateralStatus.call(proposals[2].id), collateralStatus(bN).COLLATERAL_STATUS_CLAIMED);
     });
     it('[valid claim, quorum quota both passed]: verify read functions', async function () {
       await resetBeforeEach();
@@ -1335,6 +1345,82 @@ contract('Dao', function (accounts) {
         bN(50),
         { from: proposals[0].proposer },
       )));
+    });
+    it('[founder/any other person cannot claim before the voting deadline is over, anybody can claim after deadline (default result fail and collateral refunded to proposer)]', async function () {
+      await resetBeforeEach();
+      const participants = getParticipants(addressOf, bN);
+      await contracts.daoStorage.mock_put_proposal_as(
+        proposals[0].id,
+        bN(101),
+        true,
+        proposals[0].proposer,
+        proposals[0].endorser,
+        proposals[0].versions[0].milestoneFundings,
+        proposals[0].versions[0].finalReward,
+      );
+      await contracts.daoStorage.mock_put_past_votes(
+        proposals[0].id,
+        bN(101),
+        true,
+        [participants[0].address, participants[1].address, participants[2].address, participants[3].address],
+        [true, true, true, true],
+        [participants[0].dgdToLock, participants[1].dgdToLock, participants[2].dgdToLock, participants[3].dgdToLock],
+        bN(101),
+      );
+
+      // before the deadline, founder/other participants try to claim
+      assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(
+        proposals[0].id,
+        bN(20),
+        { from: addressOf.founderBadgeHolder },
+      )));
+      assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(
+        proposals[0].id,
+        bN(20),
+        { from: proposals[1].proposer },
+      )));
+
+      // but the proposer can claim
+      assert.ok(await contracts.daoVotingClaims.claimDraftVotingResult.call(
+        proposals[0].id,
+        bN(20),
+        { from: proposals[0].proposer },
+      ));
+
+      // wait for deadline
+      await waitFor(6, addressOf, bN);
+
+      // now proposer/founder/any participant can claim and by default the result will fail
+      const claimResultProposer = await contracts.daoVotingClaims.claimDraftVotingResult.call(
+        proposals[0].id,
+        bN(20),
+        { from: proposals[0].proposer },
+      );
+      const claimResultFounder = await contracts.daoVotingClaims.claimDraftVotingResult.call(
+        proposals[0].id,
+        bN(20),
+        { from: addressOf.founderBadgeHolder },
+      );
+      const claimResultParticipant = await contracts.daoVotingClaims.claimDraftVotingResult.call(
+        proposals[0].id,
+        bN(20),
+        { from: proposals[1].proposer },
+      );
+      assert.deepEqual(claimResultProposer[0], false);
+      assert.deepEqual(claimResultProposer[1], true);
+      assert.deepEqual(claimResultFounder[0], false);
+      assert.deepEqual(claimResultFounder[1], true);
+      assert.deepEqual(claimResultParticipant[0], false);
+      assert.deepEqual(claimResultParticipant[1], true);
+
+      const ethBalanceBefore = await web3.eth.getBalance(proposals[0].proposer);
+      await contracts.daoVotingClaims.claimDraftVotingResult(
+        proposals[0].id,
+        bN(20),
+        { from: proposals[1].proposer },
+      );
+      assert.deepEqual(await web3.eth.getBalance(proposals[0].proposer), ethBalanceBefore.plus(bN(2 * (10 ** 18))));
+      assert.deepEqual(await contracts.daoStorage.readProposalCollateralStatus.call(proposals[0].id), collateralStatus(bN).COLLATERAL_STATUS_CLAIMED);
     });
   });
 
@@ -1887,7 +1973,7 @@ contract('Dao', function (accounts) {
       */
       await contracts.daoStorage.mock_put_proposal_as(
         proposals[3].id,
-        bN(2),
+        bN(1),
         false,
         proposals[3].proposer,
         proposals[3].endorser,
@@ -1896,7 +1982,7 @@ contract('Dao', function (accounts) {
       );
       await contracts.daoStorage.mock_put_past_votes(
         proposals[3].id,
-        bN(2),
+        bN(1),
         false,
         [addressOf.allParticipants[0], addressOf.allParticipants[1], addressOf.allParticipants[4], addressOf.allParticipants[5]],
         [true, true, true, false],
@@ -1908,20 +1994,20 @@ contract('Dao', function (accounts) {
       const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);
       await waitFor(interimVotingPhaseDuration.toNumber() + 1, addressOf, web3);
 
+      await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE, bN(1000000));
+
       const qpBefore = await contracts.daoPointsStorage.getQuarterPoint.call(proposals[3].proposer, bN(1));
 
-      await contracts.daoVotingClaims.claimProposalVotingResult(
+      const ethBalanceBefore = await web3.eth.getBalance(proposals[3].proposer);
+      const tx = await contracts.daoVotingClaims.claimProposalVotingResult(
         proposals[3].id,
-        bN(2),
+        bN(1),
         bN(10),
-        { from: proposals[3].proposer },
+        { from: proposals[3].proposer, gasPrice: web3.toWei(20, 'gwei') },
       );
 
-      assert.ok(await contracts.daoFundingManager.claimFunding.call(
-        proposals[3].id,
-        bN(2),
-        { from: proposals[3].proposer },
-      ));
+      const gasUsed = tx.receipt.gasUsed * web3.toWei(20, 'gwei');
+      assert.deepEqual(await web3.eth.getBalance(proposals[3].proposer), ethBalanceBefore.plus(bN(2 * (10 ** 18))).minus(bN(gasUsed)));
 
       assert(await contracts.daoPointsStorage.getQuarterPoint.call(proposals[3].proposer, bN(1)), qpBefore.plus(daoConstantsValues(bN).CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH));
     });
@@ -2023,6 +2109,98 @@ contract('Dao', function (accounts) {
         bN(1),
         { from: proposals[0].proposer },
       )));
+    });
+    it('[before the vote claiming deadline, founder/participants cannot claim voting (only proposer can)]', async function () {
+      // now wait for the interim phase to get over
+      const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);
+      await waitFor(interimVotingPhaseDuration.toNumber() + 1, addressOf, web3);
+
+      // check that the proposer can claim
+      assert.ok(await contracts.daoVotingClaims.claimProposalVotingResult.call(
+        proposals[0].id,
+        bN(1),
+        bN(10),
+        { from: proposals[0].proposer },
+      ));
+
+      // check that founder claiming reverts (within the deadline)
+      assert(await a.failure(contracts.daoVotingClaims.claimProposalVotingResult.call(
+        proposals[0].id,
+        bN(1),
+        bN(10),
+        { from: addressOf.founderBadgeHolder },
+      )));
+
+      // wait for 5 seconds for the deadline to get over with
+      await waitFor(5, addressOf, web3);
+
+      assert.ok(await contracts.daoVotingClaims.claimProposalVotingResult.call(
+        proposals[0].id,
+        bN(1),
+        bN(10),
+        { from: proposals[0].proposer },
+      ));
+    });
+    it('[if the voting round is failing, the proposer must receive collateral back]', async function () {
+      // now wait for the voting phase to get over
+      const votingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_VOTING_PHASE_TOTAL);
+      await waitFor(votingPhaseDuration.toNumber() + 1, addressOf, web3);
+
+      const claimResult = await contracts.daoVotingClaims.claimProposalVotingResult.call(
+        proposals[2].id,
+        bN(0),
+        bN(20),
+        { from: proposals[2].proposer },
+      );
+      assert.deepEqual(claimResult[0], false);
+      assert.deepEqual(claimResult[1], true);
+
+      const ethBalanceBefore = await web3.eth.getBalance(proposals[2].proposer);
+      const tx = await contracts.daoVotingClaims.claimProposalVotingResult(
+        proposals[2].id,
+        bN(0),
+        bN(20),
+        { from: proposals[2].proposer, gasPrice: web3.toWei(20, 'gwei') },
+      );
+      const gasUsed = tx.receipt.gasUsed * web3.toWei(20, 'gwei');
+      assert.deepEqual(await web3.eth.getBalance(proposals[2].proposer), ethBalanceBefore.plus(bN(2 * (10 ** 18))).minus(gasUsed));
+
+      assert.deepEqual(await contracts.daoStorage.readProposalVotingResult.call(proposals[2].id, bN(0)), false);
+      assert.deepEqual(await contracts.daoStorage.isClaimed.call(proposals[2].id, bN(0)), true);
+      assert.deepEqual(await contracts.daoStorage.readProposalCollateralStatus.call(proposals[2].id), collateralStatus(bN).COLLATERAL_STATUS_CLAIMED);
+    });
+    it('[if first round of voting passes, the collateral is locked]', async function () {
+      const participants = getParticipants(addressOf, bN);
+      await contracts.daoStorage.mock_put_proposal_as(
+        proposals[3].id,
+        bN(0),
+        false,
+        proposals[3].proposer,
+        proposals[3].endorser,
+        proposals[3].versions[0].milestoneFundings,
+        proposals[3].versions[0].finalReward,
+      );
+      await contracts.daoStorage.mock_put_past_votes(
+        proposals[3].id,
+        bN(0),
+        false,
+        [participants[0].address, participants[1].address, participants[2].address, participants[3].address],
+        [true, true, true, true],
+        [participants[0].dgdToLock, participants[1].dgdToLock, participants[2].dgdToLock, participants[3].dgdToLock],
+        bN(4),
+        bN(getCurrentTimestamp()).minus(bN(20)),
+      );
+
+      await contracts.daoVotingClaims.claimProposalVotingResult(
+        proposals[3].id,
+        bN(0),
+        bN(20),
+        { from: proposals[3].proposer },
+      );
+
+      assert.deepEqual(await contracts.daoStorage.readProposalVotingResult.call(proposals[3].id, bN(0)), true);
+      assert.deepEqual(await contracts.daoStorage.isClaimed.call(proposals[3].id, bN(0)), true);
+      assert.deepEqual(await contracts.daoStorage.readProposalCollateralStatus.call(proposals[3].id), collateralStatus(bN).COLLATERAL_STATUS_LOCKED);
     });
   });
 

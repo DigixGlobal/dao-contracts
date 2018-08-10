@@ -39,36 +39,17 @@ contract DaoFundingManager is DaoCommon {
         msg.sender.transfer(_funding);
     }
 
-    /// @notice Function to claim unlocked collateral
-    /// @dev Collaterals are unlocked only when proposals fail at/before the initial voting or on completion of all milestones
-    /// @param _proposalId Proposal ID to claim collateral for
-    /// @return _success Boolean, true if claim is successful
-    function claimCollateral(bytes32 _proposalId)
-        public
-    {
-        require(isFromProposer(_proposalId));
-        senderCanDoProposerOperations();
-
-        // proposal should not be paused/stopped
-        require(isProposalPaused(_proposalId) == false);
-
-        // check if proposal's first voting passed (collateral went to Locked state) and now collateral is unlocked
-        require(daoStorage().readProposalVotingResult(_proposalId, 0));
-        require(daoStorage().readProposalCollateralStatus(_proposalId) == COLLATERAL_STATUS_UNLOCKED);
-
-        daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_CLAIMED);
-        refundCollateralInternal(msg.sender);
-    }
-
     /// @notice Function to refund the collateral to _receiver
     /// @dev Can only be called from the Dao contract
     /// @param _receiver The receiver of the funds
     /// @return _success Boolean, true if refund was successful
     function refundCollateral(address _receiver)
         public
+        returns (bool _success)
     {
-        require(sender_is(CONTRACT_DAO));
+        require(sender_is_from([CONTRACT_DAO, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES]));
         refundCollateralInternal(_receiver);
+        _success = true;
     }
 
     function refundCollateralInternal(address _receiver)
@@ -77,6 +58,7 @@ contract DaoFundingManager is DaoCommon {
         daoFundingStorage().withdrawEth(get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
         _receiver.transfer(get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
     }
+
     /// @notice Function to move funds to a new DAO
     /// @param _destinationForDaoFunds Ethereum contract address of the new DaoFundingManager
     function moveFundsToNewDao(address _destinationForDaoFunds)
