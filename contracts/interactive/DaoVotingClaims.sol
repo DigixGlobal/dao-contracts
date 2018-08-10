@@ -49,8 +49,8 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         uint256 _count
     )
         public
-        if_draft_not_claimed(_proposalId)
-        if_after_draft_voting_phase(_proposalId)
+        ifDraftNotClaimed(_proposalId)
+        ifAfterDraftVotingPhase(_proposalId)
         returns (bool _passed)
     {
 
@@ -62,7 +62,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_UNLOCKED);
             return false;
         }
-        require(is_from_proposer(_proposalId));
+        require(isFromProposer(_proposalId));
         senderCanDoProposerOperations();
         checkNonDigixProposalLimit(_proposalId);
 
@@ -149,8 +149,8 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     /// @return _passed Boolean, true if the  voting round passed, false if failed
     function claimProposalVotingResult(bytes32 _proposalId, uint256 _index, uint256 _operations)
         public
-        if_not_claimed(_proposalId, _index)
-        if_after_proposal_reveal_phase(_proposalId, _index)
+        ifNotClaimed(_proposalId, _index)
+        ifAfterProposalRevealPhase(_proposalId, _index)
         returns (bool _passed, bool _done)
     {
         require(isMainPhase());
@@ -267,7 +267,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         returns (uint256 _operationsLeft, bool _passed, bool _done)
     {
         senderCanDoProposerOperations();
-        require(is_from_proposer(_proposalId));
+        require(isFromProposer(_proposalId));
 
         DaoStructs.IntermediateResults memory _currentResults;
         (

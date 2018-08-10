@@ -28,7 +28,7 @@ contract Dao is DaoCommon, Claimable {
     }
 
     /// @notice Migrate this DAO to a new DAO contract
-    /// @param _newDaoFundingManager Address of the new DaoFundingManager contract
+    /// @param _newDaoFundingManager Address of the new DaoFundingManager contract, which would receive the remaining ETHs in this DAO
     /// @param _newDaoContract Address of the new DAO contract
     function migrateToNewDao(
         address _newDaoFundingManager,
@@ -42,9 +42,10 @@ contract Dao is DaoCommon, Claimable {
         daoFundingManager().moveFundsToNewDao(_newDaoFundingManager);
     }
 
-    /// @notice Call this function to mark the start of the DAO's first quarter
+    /// @notice Call this function to mark the start of the DAO's first quarter. This can only be done once, by a founder
     /// @param _start Start time of the first quarter in the DAO
     function setStartOfFirstQuarter(uint256 _start) public if_founder() {
+        require(daoUpgradeStorage().startOfFirstQuarter() == 0);
         daoUpgradeStorage().setStartOfFirstQuarter(_start);
     }
 
@@ -52,7 +53,6 @@ contract Dao is DaoCommon, Claimable {
     /// @param _docIpfsHash Hash of the IPFS doc containing details of proposal
     /// @param _milestonesFundings Array of fundings of the proposal milestones (in wei)
     /// @param _finalReward Final reward asked by proposer at successful completion of all milestones of proposal
-    /// @return Whether pre-proposal was successfully created
     function submitPreproposal(
         bytes32 _docIpfsHash,
         uint256[] _milestonesFundings,
@@ -60,8 +60,7 @@ contract Dao is DaoCommon, Claimable {
     )
         public
         payable
-        if_funding_possible(_milestonesFundings)
-        returns (bool _success)
+        ifFundingPossible(_milestonesFundings)
     {
         senderCanDoProposerOperations();
         bool _isFounder = is_founder();
@@ -73,7 +72,6 @@ contract Dao is DaoCommon, Claimable {
 
         daoStorage().addProposal(_docIpfsHash, msg.sender, _milestonesFundings, _finalReward, _isFounder);
         daoStorage().setProposalCollateralStatus(_docIpfsHash, COLLATERAL_STATUS_UNLOCKED);
-        _success = true;
     }
 
     /// @notice Modify a proposal (this can be done only before setting the final version)
@@ -91,9 +89,9 @@ contract Dao is DaoCommon, Claimable {
         public
     {
         senderCanDoProposerOperations();
-        require(is_from_proposer(_proposalId));
+        require(isFromProposer(_proposalId));
 
-        require(is_editable(_proposalId));
+        require(isEditable(_proposalId));
         bytes32 _currentState;
         (,,,_currentState,,,,,,) = daoStorage().readProposal(_proposalId);
         require(_currentState == PROPOSAL_STATE_PREPROPOSAL ||
@@ -120,19 +118,19 @@ contract Dao is DaoCommon, Claimable {
         public
     {
         senderCanDoProposerOperations();
-        require(is_from_proposer(_proposalId));
+        require(isFromProposer(_proposalId));
 
         checkNonDigixFundings(_milestonesFundings, _finalReward);
 
         uint256[] memory _currentFundings;
         (_currentFundings,) = daoStorage().readProposalFunding(_proposalId);
 
-        // must be after the start of the milestone, and the milestone has not been finished yet (voting hasnt started)
         uint256 _startOfCurrentMilestone = startOfMilestone(_proposalId, _currentMilestone);
 
         // start of milestone must be more than 1st Jan 2000, otherwise the voting for this milestone hasn't even started yet
         require(_startOfCurrentMilestone > 946684800);
 
+        // must be after the start of the milestone, and the milestone has not been finished yet (voting hasnt started)
         require(now > _startOfCurrentMilestone);
         require(daoStorage().readProposalVotingTime(_proposalId, _currentMilestone.add(1)) == 0);
 
@@ -152,8 +150,8 @@ contract Dao is DaoCommon, Claimable {
         public
     {
         senderCanDoProposerOperations();
-        require(is_from_proposer(_proposalId));
-        require(is_editable(_proposalId));
+        require(isFromProposer(_proposalId));
+        require(isEditable(_proposalId));
         checkNonDigixProposalLimit(_proposalId);
 
         require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_DRAFT_VOTING_PHASE).add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE)));
@@ -168,7 +166,7 @@ contract Dao is DaoCommon, Claimable {
         public
     {
         senderCanDoProposerOperations();
-        require(is_from_proposer(_proposalId));
+        require(isFromProposer(_proposalId));
 
         // must be after the start of this milestone, and the milestone has not been finished yet (voting hasnt started)
         uint256 _startOfCurrentMilestone = startOfMilestone(_proposalId, _milestoneIndex);
@@ -187,7 +185,7 @@ contract Dao is DaoCommon, Claimable {
         public
     {
         senderCanDoProposerOperations();
-        require(is_from_proposer(_proposalId));
+        require(isFromProposer(_proposalId));
         bytes32 _finalVersion;
         (,,,,,,,_finalVersion,,) = daoStorage().readProposal(_proposalId);
         require(_finalVersion != EMPTY_BYTES);
@@ -199,7 +197,7 @@ contract Dao is DaoCommon, Claimable {
     /// @return Whether the proposal was endorsed successfully or not
     function endorseProposal(bytes32 _proposalId)
         public
-        is_proposal_state(_proposalId, PROPOSAL_STATE_PREPROPOSAL)
+        isProposalState(_proposalId, PROPOSAL_STATE_PREPROPOSAL)
         returns (bool _success)
     {
         require(isMainPhase());
@@ -275,7 +273,7 @@ contract Dao is DaoCommon, Claimable {
         public
     {
         senderCanDoProposerOperations();
-        require(is_from_proposer(_proposalId));
+        require(isFromProposer(_proposalId));
         bytes32 _finalVersion;
         bytes32 _status;
         (,,,_status,,,,_finalVersion,,) = daoStorage().readProposal(_proposalId);

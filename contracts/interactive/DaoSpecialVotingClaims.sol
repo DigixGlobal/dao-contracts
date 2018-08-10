@@ -46,8 +46,8 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
     /// @return _passed Boolean, true if voting passed, throw if failed, returns false if passed deadline
     function claimSpecialProposalVotingResult(bytes32 _proposalId, uint256 _operations)
         public
-        if_not_claimed_special(_proposalId)
-        if_after_reveal_phase_special(_proposalId)
+        ifNotClaimedSpecial(_proposalId)
+        ifAfterRevealPhaseSpecial(_proposalId)
         returns (bool _passed)
     {
         require(isMainPhase());

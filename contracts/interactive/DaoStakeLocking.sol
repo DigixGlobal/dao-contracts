@@ -72,8 +72,8 @@ contract DaoStakeLocking is DaoCommon {
     /// @return _success Boolean, true if the locking process is successful, false otherwise
     function lockDGD(uint256 _amount)
         public
-        if_not_contract(msg.sender)
-        if_global_rewards_set(currentQuarterIndex())
+        ifNotContract(msg.sender)
+        ifGlobalRewardsSet(currentQuarterIndex())
         returns (bool _success)
     {
         StakeInformation memory _info = getStakeInformation(msg.sender);
@@ -109,7 +109,7 @@ contract DaoStakeLocking is DaoCommon {
     /// @return _success Boolean, true if the withdrawal was successful, revert otherwise
     function withdrawDGD(uint256 _amount)
         public
-        if_global_rewards_set(currentQuarterIndex())
+        ifGlobalRewardsSet(currentQuarterIndex())
         returns (bool _success)
     {
         require(isLockingPhase() || daoUpgradeStorage().isReplacedByNewDao());
@@ -142,7 +142,7 @@ contract DaoStakeLocking is DaoCommon {
     /// @dev This can be done in the middle of the quarter as well
     function confirmContinuedParticipation()
         public
-        if_global_rewards_set(currentQuarterIndex())
+        ifGlobalRewardsSet(currentQuarterIndex())
     {
         StakeInformation memory _info = getStakeInformation(msg.sender);
         daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);

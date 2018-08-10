@@ -20,7 +20,7 @@ contract DaoVoting is DaoCommon, Claimable {
         bool _voteYes
     )
         public
-        if_draft_voting_phase(_proposalId)
+        ifDraftVotingPhase(_proposalId)
         returns (bool _success)
     {
         require(isMainPhase());
@@ -49,7 +49,7 @@ contract DaoVoting is DaoCommon, Claimable {
         bytes32 _commitHash
     )
         public
-        if_commmit_phase_special(_proposalId)
+        ifCommitPhaseSpecial(_proposalId)
         returns (bool _success)
     {
         require(isParticipant(msg.sender));
@@ -67,8 +67,8 @@ contract DaoVoting is DaoCommon, Claimable {
         bytes32 _salt
     )
         public
-        if_reveal_phase_special(_proposalId)
-        has_not_revealed_special(_proposalId)
+        ifRevealPhaseSpecial(_proposalId)
+        hasNotRevealedSpecial(_proposalId)
     {
         require(isParticipant(msg.sender));
         require(keccak256(msg.sender, _vote, _salt) == daoSpecialStorage().readCommitVote(_proposalId, msg.sender));
@@ -87,7 +87,7 @@ contract DaoVoting is DaoCommon, Claimable {
         bytes32 _commitHash
     )
         public
-        if_commit_phase(_proposalId, _index)
+        ifCommitPhase(_proposalId, _index)
         returns (bool _success)
     {
         require(isParticipant(msg.sender));
@@ -107,8 +107,8 @@ contract DaoVoting is DaoCommon, Claimable {
         bytes32 _salt
     )
         public
-        if_reveal_phase(_proposalId, _index)
-        has_not_revealed(_proposalId, _index)
+        ifRevealPhase(_proposalId, _index)
+        hasNotRevealed(_proposalId, _index)
     {
         require(isParticipant(msg.sender));
         require(keccak256(msg.sender, _vote, _salt) == daoStorage().readCommitVote(_proposalId, _index, msg.sender));

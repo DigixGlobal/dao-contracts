@@ -5550,19 +5550,19 @@ contract DaoCommon is IdentityCommon {
         return _isPaused;
     }
 
-    function is_from_proposer(bytes32 _proposalId) internal returns (bool) {
+    function isFromProposer(bytes32 _proposalId) internal returns (bool) {
         require(msg.sender == daoStorage().readProposalProposer(_proposalId));
         return true;
     }
 
-    function is_editable(bytes32 _proposalId) internal returns (bool) {
+    function isEditable(bytes32 _proposalId) internal returns (bool) {
         bytes32 _finalVersion;
         (,,,,,,,_finalVersion,,) = daoStorage().readProposal(_proposalId);
         require(_finalVersion == EMPTY_BYTES);
         return true;
     }
 
-    modifier if_after_draft_voting_phase(bytes32 _proposalId) {
+    modifier ifAfterDraftVotingPhase(bytes32 _proposalId) {
         uint256 _start = daoStorage().readProposalDraftVotingTime(_proposalId);
         require(_start > 0);
         require(now > _start);
@@ -5570,8 +5570,8 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_commit_phase(bytes32 _proposalId, uint8 _index) {
-        require_in_phase(
+    modifier ifCommitPhase(bytes32 _proposalId, uint8 _index) {
+        requireInPhase(
             daoStorage().readProposalVotingTime(_proposalId, _index),
             0,
             get_uint_config(_index == 0 ? CONFIG_VOTING_COMMIT_PHASE : CONFIG_INTERIM_COMMIT_PHASE)
@@ -5579,8 +5579,8 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_reveal_phase(bytes32 _proposalId, uint256 _index) {
-      require_in_phase(
+    modifier ifRevealPhase(bytes32 _proposalId, uint256 _index) {
+      requireInPhase(
           daoStorage().readProposalVotingTime(_proposalId, _index),
           get_uint_config(_index == 0 ? CONFIG_VOTING_COMMIT_PHASE : CONFIG_INTERIM_COMMIT_PHASE),
           get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL)
@@ -5588,15 +5588,15 @@ contract DaoCommon is IdentityCommon {
       _;
     }
 
-    modifier if_after_proposal_reveal_phase(bytes32 _proposalId, uint256 _index) {
+    modifier ifAfterProposalRevealPhase(bytes32 _proposalId, uint256 _index) {
       uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
       require(_start > 0);
       require(now >= _start.add(get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL)));
       _;
     }
 
-    modifier if_draft_voting_phase(bytes32 _proposalId) {
-        require_in_phase(
+    modifier ifDraftVotingPhase(bytes32 _proposalId) {
+        requireInPhase(
             daoStorage().readProposalDraftVotingTime(_proposalId),
             0,
             get_uint_config(CONFIG_DRAFT_VOTING_PHASE)
@@ -5604,7 +5604,7 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier is_proposal_state(bytes32 _proposalId, bytes32 _STATE) {
+    modifier isProposalState(bytes32 _proposalId, bytes32 _STATE) {
         bytes32 _currentState;
         (,,,_currentState,,,,,,) = daoStorage().readProposal(_proposalId);
         require(_currentState == _STATE);
@@ -5625,7 +5625,7 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_funding_possible(uint256[] _fundings) {
+    modifier ifFundingPossible(uint256[] _fundings) {
         uint256 _total = 0;
         for (uint256 i = 0; i < _fundings.length; i++) {
             _total = _total.add(_fundings[i]);
@@ -5634,44 +5634,44 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_draft_not_claimed(bytes32 _proposalId) {
+    modifier ifDraftNotClaimed(bytes32 _proposalId) {
         require(daoStorage().isDraftClaimed(_proposalId) == false);
         _;
     }
 
-    modifier if_not_claimed(bytes32 _proposalId, uint256 _index) {
+    modifier ifNotClaimed(bytes32 _proposalId, uint256 _index) {
         require(daoStorage().isClaimed(_proposalId, _index) == false);
         _;
     }
 
-    modifier if_not_claimed_special(bytes32 _proposalId) {
+    modifier ifNotClaimedSpecial(bytes32 _proposalId) {
         require(daoSpecialStorage().isClaimed(_proposalId) == false);
         _;
     }
 
-    modifier has_not_revealed(bytes32 _proposalId, uint256 _index) {
+    modifier hasNotRevealed(bytes32 _proposalId, uint256 _index) {
         uint256 _voteWeight;
         (, _voteWeight) = daoStorage().readVote(_proposalId, _index, msg.sender);
         require(_voteWeight == uint(0));
         _;
     }
 
-    modifier has_not_revealed_special(bytes32 _proposalId) {
+    modifier hasNotRevealedSpecial(bytes32 _proposalId) {
         uint256 _weight;
         (,_weight) = daoSpecialStorage().readVote(_proposalId, msg.sender);
         require(_weight == uint(0));
         _;
     }
 
-    modifier if_after_reveal_phase_special(bytes32 _proposalId) {
+    modifier ifAfterRevealPhaseSpecial(bytes32 _proposalId) {
       uint256 _start = daoSpecialStorage().readVotingTime(_proposalId);
       require(_start > 0);
       require(now.sub(_start) >= get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
       _;
     }
 
-    modifier if_commmit_phase_special(bytes32 _proposalId) {
-        require_in_phase(
+    modifier ifCommitPhaseSpecial(bytes32 _proposalId) {
+        requireInPhase(
             daoSpecialStorage().readVotingTime(_proposalId),
             0,
             get_uint_config(CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE)
@@ -5679,8 +5679,8 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_reveal_phase_special(bytes32 _proposalId) {
-        require_in_phase(
+    modifier ifRevealPhaseSpecial(bytes32 _proposalId) {
+        requireInPhase(
             daoSpecialStorage().readVotingTime(_proposalId),
             get_uint_config(CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE),
             get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL)
@@ -5688,7 +5688,7 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_not_contract(address _address) {
+    modifier ifNotContract(address _address) {
         uint size;
         assembly {
             size := extcodesize(_address)
@@ -5697,14 +5697,14 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_global_rewards_set(uint256 _quarterIndex) {
+    modifier ifGlobalRewardsSet(uint256 _quarterIndex) {
         if (_quarterIndex > 1) {
             require(daoRewardsStorage().readDgxDistributionDay(_quarterIndex) > 0);
         }
         _;
     }
 
-    function require_in_phase(uint256 _startingPoint, uint256 _relativePhaseStart, uint256 _relativePhaseEnd) {
+    function requireInPhase(uint256 _startingPoint, uint256 _relativePhaseStart, uint256 _relativePhaseEnd) {
         require(_startingPoint > 0);
         require(now < _startingPoint.add(_relativePhaseEnd));
         require(now >= _startingPoint.add(_relativePhaseStart));
@@ -7731,8 +7731,8 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         uint256 _count
     )
         public
-        if_draft_not_claimed(_proposalId)
-        if_after_draft_voting_phase(_proposalId)
+        ifDraftNotClaimed(_proposalId)
+        ifAfterDraftVotingPhase(_proposalId)
         returns (bool _passed)
     {
         require(isMainPhase());
@@ -7830,8 +7830,8 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     /// @return _passed Boolean, true if the  voting round passed, false if failed
     function claimProposalVotingResult(bytes32 _proposalId, uint256 _index, uint256 _operations)
         public
-        if_not_claimed(_proposalId, _index)
-        if_after_proposal_reveal_phase(_proposalId, _index)
+        ifNotClaimed(_proposalId, _index)
+        ifAfterProposalRevealPhase(_proposalId, _index)
         returns (bool _passed, bool _done)
     {
         require(isMainPhase());
@@ -8085,7 +8085,7 @@ contract Dao is DaoCommon, Claimable {
     )
         public
         payable
-        if_funding_possible(_milestonesFundings)
+        ifFundingPossible(_milestonesFundings)
         returns (bool _success)
     {
         require(isMainPhase());
@@ -8126,7 +8126,7 @@ contract Dao is DaoCommon, Claimable {
         require(isMainPhase());
         require(isParticipant(msg.sender));
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
-        require(is_editable(_proposalId));
+        require(isEditable(_proposalId));
         bytes32 _currentState;
         (,,,_currentState,,,,,,) = daoStorage().readProposal(_proposalId);
         require(_currentState == PROPOSAL_STATE_PREPROPOSAL ||
@@ -8183,7 +8183,7 @@ contract Dao is DaoCommon, Claimable {
         require(isMainPhase());
         require(isParticipant(msg.sender));
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
-        require(is_editable(_proposalId));
+        require(isEditable(_proposalId));
         require(identity_storage().is_kyc_approved(msg.sender));
         bool _isDigixProposal;
         (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
@@ -8203,7 +8203,7 @@ contract Dao is DaoCommon, Claimable {
     {
         require(isMainPhase());
         require(isParticipant(msg.sender));
-        require(is_from_proposer(_proposalId));
+        require(isFromProposer(_proposalId));
         require(identity_storage().is_kyc_approved(msg.sender));
 
         // must be after the start of this milestone, and the milestone has not been finished yet (voting hasnt started)
@@ -8222,7 +8222,7 @@ contract Dao is DaoCommon, Claimable {
     {
         require(isMainPhase());
         require(isParticipant(msg.sender));
-        require(is_from_proposer(_proposalId));
+        require(isFromProposer(_proposalId));
         require(identity_storage().is_kyc_approved(msg.sender));
         daoStorage().addProposalDoc(_proposalId, _newDoc);
     }
@@ -8232,7 +8232,7 @@ contract Dao is DaoCommon, Claimable {
     /// @return Whether the proposal was endorsed successfully or not
     function endorseProposal(bytes32 _proposalId)
         public
-        is_proposal_state(_proposalId, PROPOSAL_STATE_PREPROPOSAL)
+        isProposalState(_proposalId, PROPOSAL_STATE_PREPROPOSAL)
         returns (bool _success)
     {
         require(isMainPhase());
@@ -8331,7 +8331,7 @@ contract DaoFundingManager is DaoCommon {
         valid_withdraw_amount(_proposalId, _index, _value)
         returns (bool _success)
     {
-        require(is_from_proposer(_proposalId));
+        require(isFromProposer(_proposalId));
 
         // proposal should not be paused/stopped
         require(isProposalPaused(_proposalId) == false);
@@ -8357,7 +8357,7 @@ contract DaoFundingManager is DaoCommon {
         public
         returns (bool _success)
     {
-        require(is_from_proposer(_proposalId));
+        require(isFromProposer(_proposalId));
 
         // proposal should not be paused/stopped
         require(isProposalPaused(_proposalId) == false);
@@ -8467,7 +8467,7 @@ contract Dao is DaoCommon, Claimable {
     )
         public
         payable
-        if_funding_possible(_milestonesFundings)
+        ifFundingPossible(_milestonesFundings)
         returns (bool _success)
     {
         require(isMainPhase());
@@ -8508,7 +8508,7 @@ contract Dao is DaoCommon, Claimable {
         require(isMainPhase());
         require(isParticipant(msg.sender));
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
-        require(is_editable(_proposalId));
+        require(isEditable(_proposalId));
         bytes32 _currentState;
         (,,,_currentState,,,,,,) = daoStorage().readProposal(_proposalId);
         require(_currentState == PROPOSAL_STATE_PREPROPOSAL ||
@@ -8565,7 +8565,7 @@ contract Dao is DaoCommon, Claimable {
         require(isMainPhase());
         require(isParticipant(msg.sender));
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
-        require(is_editable(_proposalId));
+        require(isEditable(_proposalId));
         require(identity_storage().is_kyc_approved(msg.sender));
         bool _isDigixProposal;
         (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
@@ -8585,7 +8585,7 @@ contract Dao is DaoCommon, Claimable {
     {
         require(isMainPhase());
         require(isParticipant(msg.sender));
-        require(is_from_proposer(_proposalId));
+        require(isFromProposer(_proposalId));
         require(identity_storage().is_kyc_approved(msg.sender));
 
         // must be after the start of this milestone, and the milestone has not been finished yet (voting hasnt started)
@@ -8604,7 +8604,7 @@ contract Dao is DaoCommon, Claimable {
     {
         require(isMainPhase());
         require(isParticipant(msg.sender));
-        require(is_from_proposer(_proposalId));
+        require(isFromProposer(_proposalId));
         require(identity_storage().is_kyc_approved(msg.sender));
         daoStorage().addProposalDoc(_proposalId, _newDoc);
     }
@@ -8614,7 +8614,7 @@ contract Dao is DaoCommon, Claimable {
     /// @return Whether the proposal was endorsed successfully or not
     function endorseProposal(bytes32 _proposalId)
         public
-        is_proposal_state(_proposalId, PROPOSAL_STATE_PREPROPOSAL)
+        isProposalState(_proposalId, PROPOSAL_STATE_PREPROPOSAL)
         returns (bool _success)
     {
         require(isMainPhase());

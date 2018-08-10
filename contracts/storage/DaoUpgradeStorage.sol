@@ -18,7 +18,6 @@ contract DaoUpgradeStorage is ResolverClient, DaoConstants {
         public
     {
         require(sender_is(CONTRACT_DAO));
-        require(startOfFirstQuarter == 0);
         startOfFirstQuarter = _start;
     }
 

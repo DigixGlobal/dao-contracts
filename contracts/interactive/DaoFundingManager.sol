@@ -21,7 +21,7 @@ contract DaoFundingManager is DaoCommon {
     function claimFunding(bytes32 _proposalId, uint256 _index)
         public
     {
-        require(is_from_proposer(_proposalId));
+        require(isFromProposer(_proposalId));
 
         // proposal should not be paused/stopped
         require(!isProposalPaused(_proposalId));
@@ -46,7 +46,8 @@ contract DaoFundingManager is DaoCommon {
     function claimCollateral(bytes32 _proposalId)
         public
     {
-        require(is_from_proposer(_proposalId));
+        require(isFromProposer(_proposalId));
+        senderCanDoProposerOperations();
 
         // proposal should not be paused/stopped
         require(isProposalPaused(_proposalId) == false);
