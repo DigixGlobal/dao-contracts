@@ -1365,8 +1365,12 @@ contract('Dao', function (accounts) {
         [participants[0].address, participants[1].address, participants[2].address, participants[3].address],
         [true, true, true, true],
         [participants[0].dgdToLock, participants[1].dgdToLock, participants[2].dgdToLock, participants[3].dgdToLock],
+        bN(4),
         bN(101),
       );
+
+      // wait for draft voting phase
+      await waitFor(5, addressOf, web3);
 
       // before the deadline, founder/other participants try to claim
       assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(
@@ -1388,7 +1392,7 @@ contract('Dao', function (accounts) {
       ));
 
       // wait for deadline
-      await waitFor(6, addressOf, bN);
+      await waitFor(6, addressOf, web3);
 
       // now proposer/founder/any participant can claim and by default the result will fail
       const claimResultProposer = await contracts.daoVotingClaims.claimDraftVotingResult.call(
@@ -1406,12 +1410,9 @@ contract('Dao', function (accounts) {
         bN(20),
         { from: proposals[1].proposer },
       );
-      assert.deepEqual(claimResultProposer[0], false);
-      assert.deepEqual(claimResultProposer[1], true);
-      assert.deepEqual(claimResultFounder[0], false);
-      assert.deepEqual(claimResultFounder[1], true);
-      assert.deepEqual(claimResultParticipant[0], false);
-      assert.deepEqual(claimResultParticipant[1], true);
+      assert.deepEqual(claimResultProposer, false);
+      assert.deepEqual(claimResultFounder, false);
+      assert.deepEqual(claimResultParticipant, false);
 
       const ethBalanceBefore = await web3.eth.getBalance(proposals[0].proposer);
       await contracts.daoVotingClaims.claimDraftVotingResult(
@@ -1419,6 +1420,7 @@ contract('Dao', function (accounts) {
         bN(20),
         { from: proposals[1].proposer },
       );
+
       assert.deepEqual(await web3.eth.getBalance(proposals[0].proposer), ethBalanceBefore.plus(bN(2 * (10 ** 18))));
       assert.deepEqual(await contracts.daoStorage.readProposalCollateralStatus.call(proposals[0].id), collateralStatus(bN).COLLATERAL_STATUS_CLAIMED);
     });
@@ -2487,7 +2489,7 @@ contract('Dao', function (accounts) {
       )));
 
       // wait for draft voting to get over
-      await waitFor(20, addressOf, web3);
+      await waitFor(21, addressOf, web3);
       const participants = getParticipants(addressOf, bN);
       await contracts.daoStorage.mock_put_past_votes(
         proposals[0].id,
@@ -2507,6 +2509,7 @@ contract('Dao', function (accounts) {
         { from: proposals[0].proposer },
       )));
 
+
       // claim the draft voting phase
       await contracts.daoVotingClaims.claimDraftVotingResult(
         proposals[0].id,
@@ -2522,7 +2525,7 @@ contract('Dao', function (accounts) {
       )));
 
       // wait for voting round
-      await waitFor(20, addressOf, web3);
+      await waitFor(21, addressOf, web3);
       await contracts.daoStorage.mock_put_past_votes(
         proposals[0].id,
         bN(0),
