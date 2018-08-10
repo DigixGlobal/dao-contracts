@@ -182,7 +182,7 @@ contract('DaoRewardsManager', function (accounts) {
           await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.badgeHolders[i]),
         ));
         effectiveModeratorDGDBalances.push(calculateUserEffectiveBalance(
-          daoConstantsValues(bN).CONFIG_MINIMAL_MODERATOR_QUARTER_POINT,
+          daoConstantsValues(bN).CONFIG_MODERATOR_MINIMAL_QUARTER_POINT,
           daoConstantsValues(bN).CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR,
           daoConstantsValues(bN).CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR,
           await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[i], lastParticipatedQuarter),
@@ -224,7 +224,7 @@ contract('DaoRewardsManager', function (accounts) {
           daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_NUM,
           daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_DEN,
           daoConstantsValues(bN).CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION,
-          daoConstantsValues(bN).CONFIG_MINIMAL_MODERATOR_QUARTER_POINT,
+          daoConstantsValues(bN).CONFIG_MODERATOR_MINIMAL_QUARTER_POINT,
           daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM,
           daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN,
           pointsBefore[i],
@@ -283,7 +283,7 @@ contract('DaoRewardsManager', function (accounts) {
         daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_NUM,
         daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_DEN,
         daoConstantsValues(bN).CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION,
-        daoConstantsValues(bN).CONFIG_MINIMAL_MODERATOR_QUARTER_POINT,
+        daoConstantsValues(bN).CONFIG_MODERATOR_MINIMAL_QUARTER_POINT,
         daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM,
         daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN,
         pointsBefore,
@@ -309,7 +309,7 @@ contract('DaoRewardsManager', function (accounts) {
         daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_NUM,
         daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_DEN,
         daoConstantsValues(bN).CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION,
-        daoConstantsValues(bN).CONFIG_MINIMAL_MODERATOR_QUARTER_POINT,
+        daoConstantsValues(bN).CONFIG_MODERATOR_MINIMAL_QUARTER_POINT,
         daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM,
         daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN,
         pointsFirst,
@@ -358,7 +358,7 @@ contract('DaoRewardsManager', function (accounts) {
           await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.allParticipants[i]),
         ));
         effectiveModeratorDGDBalance[i] = (i >= BADGE_HOLDER_COUNT) ? 0 : calculateUserEffectiveBalance(
-          daoConstantsValues(bN).CONFIG_MINIMAL_MODERATOR_QUARTER_POINT,
+          daoConstantsValues(bN).CONFIG_MODERATOR_MINIMAL_QUARTER_POINT,
           daoConstantsValues(bN).CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR,
           daoConstantsValues(bN).CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR,
           await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.allParticipants[i], bN(4)),
@@ -554,7 +554,7 @@ contract('DaoRewardsManager', function (accounts) {
       let totalEffectiveModeratorDGDLastQuarter = bN(0);
       for (const i of indexRange(0, N_MODERATORS.toNumber())) {
         effectiveModeratorBalances.push(calculateUserEffectiveBalance(
-          daoConstantsValues(bN).CONFIG_MINIMAL_MODERATOR_QUARTER_POINT,
+          daoConstantsValues(bN).CONFIG_MODERATOR_MINIMAL_QUARTER_POINT,
           daoConstantsValues(bN).CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR,
           daoConstantsValues(bN).CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR,
           mockModeratorQPs[i],

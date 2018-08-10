@@ -97,7 +97,7 @@ contract DaoConstants {
     bytes32 CONFIG_QUARTER_POINT_SCALING_FACTOR = "quarter_point_scaling_factor";
     bytes32 CONFIG_REPUTATION_POINT_SCALING_FACTOR = "rep_point_scaling_factor";
 
-    bytes32 CONFIG_MINIMAL_MODERATOR_QUARTER_POINT = "CONFIG_MINIMAL_B_QP";
+    bytes32 CONFIG_MODERATOR_MINIMAL_QUARTER_POINT = "CONFIG_MINIMAL_B_QP";
     bytes32 CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR = "b_qp_scaling_factor";
     bytes32 CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR = "b_rep_point_scaling_factor";
 

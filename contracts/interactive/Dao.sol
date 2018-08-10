@@ -60,7 +60,7 @@ contract Dao is DaoCommon, Claimable {
     )
         public
         payable
-        ifFundingPossible(_milestonesFundings)
+        ifFundingPossible(_milestonesFundings, _finalReward)
     {
         senderCanDoProposerOperations();
         bool _isFounder = is_founder();
@@ -79,7 +79,6 @@ contract Dao is DaoCommon, Claimable {
     /// @param _docIpfsHash Hash of IPFS doc of the modified version of the proposal
     /// @param _milestonesFundings Array of fundings of the modified version of the proposal (in wei)
     /// @param _finalReward Final reward on successful completion of all milestones of the modified version of proposal (in wei)
-    /// @return Whether the proposal was modified successfully
     function modifyProposal(
         bytes32 _proposalId,
         bytes32 _docIpfsHash,
@@ -198,12 +197,10 @@ contract Dao is DaoCommon, Claimable {
     function endorseProposal(bytes32 _proposalId)
         public
         isProposalState(_proposalId, PROPOSAL_STATE_PREPROPOSAL)
-        returns (bool _success)
     {
         require(isMainPhase());
         require(isModerator(msg.sender));
         daoStorage().updateProposalEndorse(_proposalId, msg.sender);
-        _success = true;
     }
 
     /// @notice Function to update the PRL (regulatory status) status of a proposal

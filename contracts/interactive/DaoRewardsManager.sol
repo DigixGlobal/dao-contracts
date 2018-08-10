@@ -51,7 +51,7 @@ contract DaoRewardsManager is DaoCommon {
             get_uint_config(CONFIG_QUARTER_POINT_SCALING_FACTOR),
             get_uint_config(CONFIG_REPUTATION_POINT_SCALING_FACTOR),
             0,
-            get_uint_config(CONFIG_MINIMAL_MODERATOR_QUARTER_POINT),
+            get_uint_config(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
             get_uint_config(CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR),
             get_uint_config(CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR),
             0,
@@ -145,7 +145,7 @@ contract DaoRewardsManager is DaoCommon {
                 updateRPfromQP(
                     _user,
                     daoPointsStorage().getQuarterModeratorPoint(_user, _lastParticipatedQuarter),
-                    get_uint_config(CONFIG_MINIMAL_MODERATOR_QUARTER_POINT),
+                    get_uint_config(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
                     get_uint_config(CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION),
                     get_uint_config(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM),
                     get_uint_config(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN)
@@ -336,7 +336,7 @@ contract DaoRewardsManager is DaoCommon {
             get_uint_config(CONFIG_REPUTATION_POINT_SCALING_FACTOR),
             info.totalEffectiveDGDLastQuarter,
 
-            get_uint_config(CONFIG_MINIMAL_MODERATOR_QUARTER_POINT),
+            get_uint_config(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
             get_uint_config(CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR),
             get_uint_config(CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR),
             info.totalEffectiveModeratorDGDLastQuarter,

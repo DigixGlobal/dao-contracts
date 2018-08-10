@@ -247,10 +247,6 @@ contract('Dao', function (accounts) {
       const state = readProposal[3];
       assert.deepEqual(state, paddedHex(web3, proposalStates().PROPOSAL_STATE_PREPROPOSAL));
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
-      assert.deepEqual(await contracts.dao.endorseProposal.call(
-        proposals[1].id,
-        { from: addressOf.badgeHolders[0] },
-      ), true);
       await contracts.dao.endorseProposal(proposals[1].id, { from: addressOf.badgeHolders[0] });
 
       const readProposalAfter = await contracts.daoStorage.readProposal.call(proposals[1].id);

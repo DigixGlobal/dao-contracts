@@ -34,6 +34,7 @@ contract DaoSpecialStorage is DaoStorageCommon {
         proposalsById[_proposalId].uintConfigs = _uintConfigs;
         proposalsById[_proposalId].addressConfigs = _addressConfigs;
         proposalsById[_proposalId].bytesConfigs = _bytesConfigs;
+        /* proposalsById[_proposalId].dissolveDao = _dissolveDao; */
     }
 
     function readProposal(bytes32 _proposalId)

@@ -100,8 +100,8 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier ifFundingPossible(uint256[] _fundings) {
-        require(MathHelper.sumNumbers(_fundings) <= daoFundingStorage().ethInDao());
+    modifier ifFundingPossible(uint256[] _fundings, uint256 _finalReward) {
+        require(MathHelper.sumNumbers(_fundings).add(_finalReward) <= daoFundingStorage().ethInDao());
         _;
     }
 

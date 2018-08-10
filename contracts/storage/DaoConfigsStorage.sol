@@ -14,7 +14,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         require(init(CONTRACT_STORAGE_DAO_CONFIG, _resolver));
 
         uintConfigs[CONFIG_LOCKING_PHASE_DURATION] = 10 days;
-        uintConfigs[CONFIG_QUARTER_DURATION] = 90 days;
+        uintConfigs[CONFIG_QUARTER_DURATION] = 90 days; // TODO: make it a fixed constant instead of a config
         uintConfigs[CONFIG_VOTING_COMMIT_PHASE] = 3 weeks;
         uintConfigs[CONFIG_VOTING_PHASE_TOTAL] = 4 weeks;
         uintConfigs[CONFIG_INTERIM_COMMIT_PHASE] = 7 days;
@@ -38,7 +38,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_QUARTER_POINT_DRAFT_VOTE] = 1;
         uintConfigs[CONFIG_QUARTER_POINT_VOTE] = 1;
         uintConfigs[CONFIG_QUARTER_POINT_INTERIM_VOTE] = 1;
-        uintConfigs[CONFIG_QUARTER_POINT_CLAIM_RESULT] = 1;
+        uintConfigs[CONFIG_QUARTER_POINT_CLAIM_RESULT] = 1; // TODO: remove this config
         uintConfigs[CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH] = 3;
 
         uintConfigs[CONFIG_BONUS_REPUTATION_NUMERATOR] = 200;
@@ -61,7 +61,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_QUARTER_POINT_SCALING_FACTOR] = 10;
         uintConfigs[CONFIG_REPUTATION_POINT_SCALING_FACTOR] = 10;
 
-        uintConfigs[CONFIG_MINIMAL_MODERATOR_QUARTER_POINT] = 3;
+        uintConfigs[CONFIG_MODERATOR_MINIMAL_QUARTER_POINT] = 3;
         uintConfigs[CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR] = 10;
         uintConfigs[CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR] = 10;
 
@@ -135,7 +135,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_DEN] = _uintConfigs[35];
         uintConfigs[CONFIG_QUARTER_POINT_SCALING_FACTOR] = _uintConfigs[36];
         uintConfigs[CONFIG_REPUTATION_POINT_SCALING_FACTOR] = _uintConfigs[37];
-        uintConfigs[CONFIG_MINIMAL_MODERATOR_QUARTER_POINT] = _uintConfigs[38];
+        uintConfigs[CONFIG_MODERATOR_MINIMAL_QUARTER_POINT] = _uintConfigs[38];
         uintConfigs[CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR] = _uintConfigs[39];
         uintConfigs[CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR] = _uintConfigs[40];
         uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM] = _uintConfigs[41];
@@ -201,7 +201,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         _uintConfigs[35] = uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_DEN];
         _uintConfigs[36] = uintConfigs[CONFIG_QUARTER_POINT_SCALING_FACTOR];
         _uintConfigs[37] = uintConfigs[CONFIG_REPUTATION_POINT_SCALING_FACTOR];
-        _uintConfigs[38] = uintConfigs[CONFIG_MINIMAL_MODERATOR_QUARTER_POINT];
+        _uintConfigs[38] = uintConfigs[CONFIG_MODERATOR_MINIMAL_QUARTER_POINT];
         _uintConfigs[39] = uintConfigs[CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR];
         _uintConfigs[40] = uintConfigs[CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR];
         _uintConfigs[41] = uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM];
