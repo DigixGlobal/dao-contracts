@@ -53,10 +53,6 @@ contract('DaoUpgradeStorage', function (accounts) {
       await contracts.daoUpgradeStorage.setStartOfFirstQuarter(start);
       assert.deepEqual(await contracts.daoUpgradeStorage.startOfFirstQuarter.call(), start);
     });
-    it('[startOfFirstQuarter has already been set]: revert', async function () {
-      const start2 = randomBigNumber(bN);
-      assert(await a.failure(contracts.daoUpgradeStorage.setStartOfFirstQuarter(start2)));
-    });
   });
 
   describe('updateForDaoMigration', function () {
