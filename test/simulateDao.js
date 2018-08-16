@@ -1,7 +1,7 @@
 const a = require('awaiting');
 const web3Utils = require('web3-utils');
 
-const MockDGD = artifacts.require('./MockDGD.sol');
+const MockDgd = artifacts.require('./MockDgd.sol');
 const MockBadge = artifacts.require('./MockBadge.sol');
 const MockDgxStorage = artifacts.require('./MockDgxStorage.sol');
 const MockDgx = artifacts.require('./MockDgx.sol');
@@ -154,7 +154,7 @@ let participants;
 
 const setupMockTokens = async function (contracts, addressOf) {
   dotenv.config();
-  contracts.dgdToken = await MockDGD.deployed();
+  contracts.dgdToken = await MockDgd.deployed();
   contracts.badgeToken = await MockBadge.deployed();
   contracts.dgxStorage = await MockDgxStorage.deployed();
   contracts.dgxToken = await MockDgx.deployed();
@@ -238,7 +238,7 @@ const claimDraftVotingResult = async function (contracts) {
   console.log(await contracts.daoStorage.readDraftVotingCount.call(proposals[0].id, mods));
   console.log(await contracts.daoStakeStorage.totalModeratorLockedDGDStake.call());
   console.log(await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[0].id));
-  console.log(mods);
+  console.log('moderators: ', mods);
   await contracts.daoVotingClaims.claimDraftVotingResult(
     proposals[0].id,
     bN(20),
@@ -315,11 +315,10 @@ const claimVotingResult = async function (contracts, addressOf) {
 };
 
 const claimFunding = async function (contracts, index) {
-  const value = index < proposals[0].versions[1].milestoneCount ? proposals[0].versions[1].milestoneFundings[index] : proposals[0].versions[1].finalReward;
-  await contracts.daoFundingManager.claimEthFunding(
+  // const value = index < proposals[0].versions[1].milestoneCount ? proposals[0].versions[1].milestoneFundings[index] : proposals[0].versions[1].finalReward;
+  await contracts.daoFundingManager.claimFunding(
     proposals[0].id,
     bN(index),
-    value,
     { from: proposals[0].proposer },
   );
 };
@@ -354,6 +353,13 @@ const interimVotingCommitRound = async function (contracts, addressOf) {
       );
       console.log(`\t\t\tDone interim commit Voting by holder index ${holderIndex} on proposal ${proposalIndex}`);
     });
+  });
+};
+
+const finishMilestones = async function (contracts) {
+  await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
+    if (proposalIndex === 1) return;
+    await contracts.dao.finishMilestone(proposals[proposalIndex].id, bN(0), { from: proposals[proposalIndex].proposer });
   });
 };
 
@@ -405,12 +411,11 @@ const interimRevealRound = async function (contracts, addressOf, proposalIndex, 
 
 const claimFinalReward = async function (contracts, addressOf, proposalId, proposer, index) {
   console.log(`proposer is ${proposer}, proposalId = ${proposalId}`);
-  console.log('claimable Eth of proposer = ', await contracts.daoFundingStorage.claimableEth.call(proposer));
-  const value = index >= proposals[0].versions[1].milestoneCount ? proposals[0].versions[1].finalReward : proposals[0].versions[1].milestoneFundings[index];
-  await contracts.daoFundingManager.claimEthFunding(
+  // console.log('claimable Eth of proposer = ', await contracts.daoFundingStorage.claimableEth.call(proposer));
+  // const value = index >= proposals[0].versions[1].milestoneCount ? proposals[0].versions[1].finalReward : proposals[0].versions[1].milestoneFundings[index];
+  await contracts.daoFundingManager.claimFunding(
     proposalId,
     bN(index),
-    value,
     { from: proposer },
   );
 };
@@ -536,9 +541,9 @@ module.exports = async function () {
     await initDao(contracts, addressOf, bN, web3);
     console.log('setup and funded dao');
 
-    await fundUserAndApproveForStakeLocking(web3, contracts, bN, participants);
+    await fundUserAndApproveForStakeLocking(web3, contracts, bN, participants, addressOf);
     console.log('\tfunded users DGDs and Badges');
-    await lockDGDs(web3, contracts, bN, participants);
+    await lockDGDs(web3, contracts, bN, participants, addressOf);
     console.log('\tusers locked DGDs for first quarter');
     await redeemBadges(web3, contracts, bN, participants);
     console.log('\tusers redeemed badges');
@@ -564,7 +569,7 @@ module.exports = async function () {
 
     // its main phase, lock more tokens
     await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);
-    await lockDGDs(web3, contracts, bN, participants);
+    await lockDGDs(web3, contracts, bN, participants, addressOf);
     console.log('locked more dgds in main phase');
 
 
@@ -647,6 +652,7 @@ module.exports = async function () {
     console.log('in the second quarter (quarterId = 2), main phase');
 
     // create some fake proposals to draft vote on
+    await finishMilestones(contracts);
 
     await interimVotingCommitRound(contracts, addressOf);
     console.log('done with interim voting commit round');
@@ -678,6 +684,8 @@ module.exports = async function () {
     await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_3, web3);
     console.log('in the main phase, now going for interim voting after last milestone');
 
+    await contracts.dao.finishMilestone(proposals[0].id, bN(1), { from: proposals[0].proposer });
+
     await interimCommitRound(contracts, addressOf, 0, bN(2));
     console.log('interim commit round is done');
     await waitForRevealPhase(contracts, addressOf, proposals[0].id, bN(2), bN, web3);
@@ -685,7 +693,7 @@ module.exports = async function () {
     console.log('interim reveal is done');
     await waitForRevealPhaseToGetOver(contracts, addressOf, proposals[0].id, bN(2), bN, web3);
 
-    console.log('[before claiming result] claimable Eth of proposer = ', await contracts.daoFundingStorage.claimableEth.call(proposals[0].proposer));
+    // console.log('[before claiming result] claimable Eth of proposer = ', await contracts.daoFundingStorage.claimableEth.call(proposals[0].proposer));
     console.log('daoFunding balance = ', await web3.eth.getBalance(contracts.daoFundingManager.address));
 
     await contracts.daoVotingClaims.claimProposalVotingResult(proposals[0].id, bN(2), bN(30), { from: proposals[0].proposer });

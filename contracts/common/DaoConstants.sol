@@ -16,6 +16,10 @@ contract DaoConstants {
     uint256 PRL_ACTION_PAUSE = 2;
     uint256 PRL_ACTION_UNPAUSE = 3;
 
+    uint256 COLLATERAL_STATUS_UNLOCKED = 1;
+    uint256 COLLATERAL_STATUS_LOCKED = 2;
+    uint256 COLLATERAL_STATUS_CLAIMED = 3;
+
     bytes32 INTERMEDIATE_DGD_IDENTIFIER = "inter_dgd_id";
     bytes32 INTERMEDIATE_MODERATOR_DGD_IDENTIFIER = "inter_mod_dgd_id";
 
@@ -49,6 +53,7 @@ contract DaoConstants {
     bytes32 CONTRACT_STORAGE_DAO_REWARDS = "storage:dao:rewards";
     bytes32 CONTRACT_STORAGE_DAO_WHITELISTING = "storage:dao:whitelisting";
     bytes32 CONTRACT_STORAGE_INTERMEDIATE_RESULTS = "storage:intermediate:results";
+    bytes32 CONTRACT_STORAGE_DAO_COLLATERAL = "storage:dao:collateral";
 
     bytes32 CONTRACT_DGD_TOKEN = "t:dgd";
     bytes32 CONTRACT_DGX_TOKEN = "t:dgx";
@@ -92,7 +97,7 @@ contract DaoConstants {
     bytes32 CONFIG_QUARTER_POINT_SCALING_FACTOR = "quarter_point_scaling_factor";
     bytes32 CONFIG_REPUTATION_POINT_SCALING_FACTOR = "rep_point_scaling_factor";
 
-    bytes32 CONFIG_MINIMAL_MODERATOR_QUARTER_POINT = "CONFIG_MINIMAL_B_QP";
+    bytes32 CONFIG_MODERATOR_MINIMAL_QUARTER_POINT = "CONFIG_MINIMAL_B_QP";
     bytes32 CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR = "b_qp_scaling_factor";
     bytes32 CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR = "b_rep_point_scaling_factor";
 
@@ -132,4 +137,12 @@ contract DaoConstants {
     bytes32 CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE = "config_rp_boost_per_badge";
 
     bytes32 CONFIG_VOTE_CLAIMING_DEADLINE = "config_claiming_deadline";
+
+    bytes32 CONFIG_PREPROPOSAL_DEPOSIT = "config_preproposal_deposit";
+
+    bytes32 CONFIG_MAX_FUNDING_FOR_NON_DIGIX = "config_max_funding_nonDigix";
+    bytes32 CONFIG_MAX_MILESTONES_FOR_NON_DIGIX = "config_max_milestones_nonDigix";
+    bytes32 CONFIG_PROPOSAL_CAP_PER_QUARTER = "config_proposal_cap";
+
+    bytes32 CONFIG_PROPOSAL_DEAD_DURATION = "config_dead_duration";
 }

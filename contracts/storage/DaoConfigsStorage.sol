@@ -14,7 +14,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         require(init(CONTRACT_STORAGE_DAO_CONFIG, _resolver));
 
         uintConfigs[CONFIG_LOCKING_PHASE_DURATION] = 10 days;
-        uintConfigs[CONFIG_QUARTER_DURATION] = 90 days;
+        uintConfigs[CONFIG_QUARTER_DURATION] = 90 days; // TODO: make it a fixed constant instead of a config
         uintConfigs[CONFIG_VOTING_COMMIT_PHASE] = 3 weeks;
         uintConfigs[CONFIG_VOTING_PHASE_TOTAL] = 4 weeks;
         uintConfigs[CONFIG_INTERIM_COMMIT_PHASE] = 7 days;
@@ -38,7 +38,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_QUARTER_POINT_DRAFT_VOTE] = 1;
         uintConfigs[CONFIG_QUARTER_POINT_VOTE] = 1;
         uintConfigs[CONFIG_QUARTER_POINT_INTERIM_VOTE] = 1;
-        uintConfigs[CONFIG_QUARTER_POINT_CLAIM_RESULT] = 1;
+        uintConfigs[CONFIG_QUARTER_POINT_CLAIM_RESULT] = 1; // TODO: remove this config
         uintConfigs[CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH] = 3;
 
         uintConfigs[CONFIG_BONUS_REPUTATION_NUMERATOR] = 200;
@@ -61,7 +61,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_QUARTER_POINT_SCALING_FACTOR] = 10;
         uintConfigs[CONFIG_REPUTATION_POINT_SCALING_FACTOR] = 10;
 
-        uintConfigs[CONFIG_MINIMAL_MODERATOR_QUARTER_POINT] = 3;
+        uintConfigs[CONFIG_MODERATOR_MINIMAL_QUARTER_POINT] = 3;
         uintConfigs[CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR] = 10;
         uintConfigs[CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR] = 10;
 
@@ -83,12 +83,20 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_MINIMUM_LOCKED_DGD] = 10 ** 9;
         uintConfigs[CONFIG_MINIMUM_DGD_FOR_MODERATOR] = 100 * (10 ** 9);
         uintConfigs[CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR] = 100;
+
+        uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT] = 2 ether;
+
+        uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX] = 20 ether;
+        uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX] = 2;
+        uintConfigs[CONFIG_PROPOSAL_CAP_PER_QUARTER] = 10;
+
+        uintConfigs[CONFIG_PROPOSAL_DEAD_DURATION] = 180 days;
     }
 
     function updateUintConfigs(uint256[] _uintConfigs)
         public
-        if_sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS)
     {
+        require(sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS));
         uintConfigs[CONFIG_LOCKING_PHASE_DURATION] = _uintConfigs[0];
         uintConfigs[CONFIG_QUARTER_DURATION] = _uintConfigs[1];
         uintConfigs[CONFIG_VOTING_COMMIT_PHASE] = _uintConfigs[2];
@@ -127,7 +135,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_DEN] = _uintConfigs[35];
         uintConfigs[CONFIG_QUARTER_POINT_SCALING_FACTOR] = _uintConfigs[36];
         uintConfigs[CONFIG_REPUTATION_POINT_SCALING_FACTOR] = _uintConfigs[37];
-        uintConfigs[CONFIG_MINIMAL_MODERATOR_QUARTER_POINT] = _uintConfigs[38];
+        uintConfigs[CONFIG_MODERATOR_MINIMAL_QUARTER_POINT] = _uintConfigs[38];
         uintConfigs[CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR] = _uintConfigs[39];
         uintConfigs[CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR] = _uintConfigs[40];
         uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM] = _uintConfigs[41];
@@ -136,23 +144,25 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE] = _uintConfigs[44];
         uintConfigs[CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR] = _uintConfigs[45];
         uintConfigs[CONFIG_FINAL_REWARD_SCALING_FACTOR_DENOMINATOR] = _uintConfigs[46];
-
         uintConfigs[CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION] = _uintConfigs[47];
         uintConfigs[CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM] = _uintConfigs[48];
         uintConfigs[CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN] = _uintConfigs[49];
-
         uintConfigs[CONFIG_VOTE_CLAIMING_DEADLINE] = _uintConfigs[50];
-
         uintConfigs[CONFIG_MINIMUM_LOCKED_DGD] = _uintConfigs[51];
         uintConfigs[CONFIG_MINIMUM_DGD_FOR_MODERATOR] = _uintConfigs[52];
         uintConfigs[CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR] = _uintConfigs[53];
+        uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT] = _uintConfigs[54];
+        uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX] = _uintConfigs[55];
+        uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX] = _uintConfigs[56];
+        uintConfigs[CONFIG_PROPOSAL_CAP_PER_QUARTER] = _uintConfigs[57];
+        uintConfigs[CONFIG_PROPOSAL_DEAD_DURATION] = _uintConfigs[58];
     }
 
     function readUintConfigs()
         public
         returns (uint256[])
     {
-        uint256[] memory _uintConfigs = new uint256[](54);
+        uint256[] memory _uintConfigs = new uint256[](59);
         _uintConfigs[0] = uintConfigs[CONFIG_LOCKING_PHASE_DURATION];
         _uintConfigs[1] = uintConfigs[CONFIG_QUARTER_DURATION];
         _uintConfigs[2] = uintConfigs[CONFIG_VOTING_COMMIT_PHASE];
@@ -191,7 +201,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         _uintConfigs[35] = uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_DEN];
         _uintConfigs[36] = uintConfigs[CONFIG_QUARTER_POINT_SCALING_FACTOR];
         _uintConfigs[37] = uintConfigs[CONFIG_REPUTATION_POINT_SCALING_FACTOR];
-        _uintConfigs[38] = uintConfigs[CONFIG_MINIMAL_MODERATOR_QUARTER_POINT];
+        _uintConfigs[38] = uintConfigs[CONFIG_MODERATOR_MINIMAL_QUARTER_POINT];
         _uintConfigs[39] = uintConfigs[CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR];
         _uintConfigs[40] = uintConfigs[CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR];
         _uintConfigs[41] = uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM];
@@ -207,6 +217,11 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         _uintConfigs[51] = uintConfigs[CONFIG_MINIMUM_LOCKED_DGD];
         _uintConfigs[52] = uintConfigs[CONFIG_MINIMUM_DGD_FOR_MODERATOR];
         _uintConfigs[53] = uintConfigs[CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR];
+        _uintConfigs[54] = uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT];
+        _uintConfigs[55] = uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX];
+        _uintConfigs[56] = uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX];
+        _uintConfigs[57] = uintConfigs[CONFIG_PROPOSAL_CAP_PER_QUARTER];
+        _uintConfigs[58] = uintConfigs[CONFIG_PROPOSAL_DEAD_DURATION];
         return _uintConfigs;
     }
 }

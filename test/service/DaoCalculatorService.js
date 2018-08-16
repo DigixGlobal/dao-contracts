@@ -1,6 +1,6 @@
 // const a = require('awaiting');
 
-const MockDGD = artifacts.require('./MockDGD.sol');
+const MockDgd = artifacts.require('./MockDgd.sol');
 const MockBadge = artifacts.require('./MockBadge.sol');
 
 const {
@@ -96,7 +96,7 @@ contract('DaoCalculatorService', function (accounts) {
     contracts = {};
     await deployStorage(libs, contracts, resolver, addressOf);
     await deployServices(libs, contracts, resolver, addressOf);
-    contracts.dgdToken = await MockDGD.at(process.env.DGD_ADDRESS);
+    contracts.dgdToken = await MockDgd.at(process.env.DGD_ADDRESS);
     contracts.badgeToken = await MockBadge.at(process.env.DGD_BADGE_ADDRESS);
     await deployInteractive(libs, contracts, resolver, addressOf);
     await resolver.register_contract('dao', accounts[0]);

@@ -1,12 +1,12 @@
 pragma solidity ^0.4.23;
 
 import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
-import "./common/DaoCommon.sol";
-import "./service/DaoCalculatorService.sol";
+import "../common/DaoCommon.sol";
+import "../service/DaoCalculatorService.sol";
 import "./DaoFundingManager.sol";
 import "./DaoRewardsManager.sol";
-import "./lib/DaoIntermediateStructs.sol";
-import "./lib/DaoStructs.sol";
+import "../lib/DaoIntermediateStructs.sol";
+import "../lib/DaoStructs.sol";
 
 /// @title Contract to claim voting results
 /// @author Digix Holdings
@@ -46,11 +46,11 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
     /// @return _passed Boolean, true if voting passed, throw if failed, returns false if passed deadline
     function claimSpecialProposalVotingResult(bytes32 _proposalId, uint256 _operations)
         public
-        if_main_phase()
-        if_not_claimed_special(_proposalId)
-        if_after_reveal_phase_special(_proposalId)
+        ifNotClaimedSpecial(_proposalId)
+        ifAfterRevealPhaseSpecial(_proposalId)
         returns (bool _passed)
     {
+        require(isMainPhase());
         if (now > daoSpecialStorage().readVotingTime(_proposalId)
                     .add(get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL))
                     .add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE))) {
@@ -92,14 +92,16 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
         _currentResults.currentQuorum = _currentResults.currentQuorum.add(_voteCount.quorum);
 
         if (_lastVoter == daoStakeStorage().readLastParticipant()) {
-            require((_currentResults.currentQuorum > daoCalculatorService().minimumVotingQuorumForSpecial()) &&
-                (daoCalculatorService().votingQuotaForSpecialPass(_currentResults.currentForCount, _currentResults.currentAgainstCount)));
-
+            if (
+                (_currentResults.currentQuorum > daoCalculatorService().minimumVotingQuorumForSpecial()) &&
+                (daoCalculatorService().votingQuotaForSpecialPass(_currentResults.currentForCount, _currentResults.currentAgainstCount))
+            ) {
+                _passed = true;
+                setConfigs(_proposalId);
+            }
             daoSpecialStorage().setPass(_proposalId, _passed);
             daoSpecialStorage().setVotingClaim(_proposalId, true);
-            setConfigs(_proposalId);
 
-            _passed = true;
             intermediateResultsStorage().resetIntermediateResults(_proposalId);
         } else {
             intermediateResultsStorage().setIntermediateResults(
@@ -111,7 +113,6 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
                 0
             );
         }
-
     }
 
     function setConfigs(bytes32 _proposalId)

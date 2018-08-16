@@ -1,12 +1,12 @@
 pragma solidity ^0.4.23;
 
 import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
-import "./common/DaoCommon.sol";
-import "./service/DaoCalculatorService.sol";
+import "../common/DaoCommon.sol";
+import "../service/DaoCalculatorService.sol";
 import "./DaoFundingManager.sol";
 import "./DaoRewardsManager.sol";
-import "./lib/DaoIntermediateStructs.sol";
-import "./lib/DaoStructs.sol";
+import "../lib/DaoIntermediateStructs.sol";
+import "../lib/DaoStructs.sol";
 
 /// @title Contract to claim voting results
 /// @author Digix Holdings
@@ -43,25 +43,30 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
     /// @notice Function to claim the draft voting result (can only be called by the proposal proposer)
     /// @param _proposalId ID of the proposal
-    /// @return _passed Boolean, true if the draft voting has passed, reverted otherwise
+    /// @return _passed Boolean, true if the draft voting has passed, false if the claiming deadline has passed, revert otherwise
     function claimDraftVotingResult(
         bytes32 _proposalId,
         uint256 _count
     )
         public
-        if_main_phase()
-        if_draft_not_claimed(_proposalId)
-        if_after_draft_voting_phase(_proposalId)
+        ifDraftNotClaimed(_proposalId)
+        ifAfterDraftVotingPhase(_proposalId)
         returns (bool _passed)
     {
+
         // if after the claiming deadline, its auto failed
         if (now > daoStorage().readProposalDraftVotingTime(_proposalId)
                     .add(get_uint_config(CONFIG_DRAFT_VOTING_PHASE))
                     .add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE))) {
             daoStorage().setProposalDraftPass(_proposalId, false);
+            daoStorage().setDraftVotingClaim(_proposalId, true);
+            handleRefundCollateral(_proposalId);
             return false;
         }
-        require(msg.sender == daoStorage().readProposalProposer(_proposalId));
+        require(isFromProposer(_proposalId));
+        senderCanDoProposerOperations();
+        checkNonDigixProposalLimit(_proposalId);
+
 
         // get the previously stored intermediary state
         DaoStructs.IntermediateResults memory _currentResults;
@@ -122,22 +127,28 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     function processDraftVotingClaim(bytes32 _proposalId, DaoStructs.IntermediateResults _currentResults)
         internal
     {
-        require(_currentResults.currentQuorum > daoCalculatorService().minimumDraftQuorum(_proposalId));
-        require(daoCalculatorService().draftQuotaPass(_currentResults.currentForCount, _currentResults.currentAgainstCount));
-        daoStorage().setProposalDraftPass(_proposalId, true);
-        // set startTime of first voting round
-        // and the start of first milestone.
-        setTimelineForNextMilestone(
-            _proposalId,
-            0,
-            0,
-            daoStorage().readProposalDraftVotingTime(_proposalId).add(get_uint_config(CONFIG_DRAFT_VOTING_PHASE))
-        );
+        if (
+            (_currentResults.currentQuorum > daoCalculatorService().minimumDraftQuorum(_proposalId)) &&
+            (daoCalculatorService().draftQuotaPass(_currentResults.currentForCount, _currentResults.currentAgainstCount))
+        ) {
+            daoStorage().setProposalDraftPass(_proposalId, true);
+
+            // set startTime of first voting round
+            // and the start of first milestone.
+            uint256 _idealClaimTime = daoStorage().readProposalDraftVotingTime(_proposalId).add(get_uint_config(CONFIG_DRAFT_VOTING_PHASE));
+            daoStorage().setProposalVotingTime(
+                _proposalId,
+                0,
+                getTimelineForNextVote(0, _idealClaimTime)
+            );
+        } else {
+            handleRefundCollateral(_proposalId);
+        }
+
         daoStorage().setDraftVotingClaim(_proposalId, true);
     }
 
     // NOTE: Voting round i-th is before milestone index i-th
-
 
     /// @notice Function to claim the  voting round results (can only be called by the proposer)
     /// @param _proposalId ID of the proposal
@@ -145,15 +156,15 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     /// @return _passed Boolean, true if the  voting round passed, false if failed
     function claimProposalVotingResult(bytes32 _proposalId, uint256 _index, uint256 _operations)
         public
-        if_main_phase()
-        if_not_claimed(_proposalId, _index)
-        if_after_proposal_reveal_phase(_proposalId, _index)
+        ifNotClaimed(_proposalId, _index)
+        ifAfterProposalRevealPhase(_proposalId, _index)
         returns (bool _passed, bool _done)
     {
+        require(isMainPhase());
         // anyone can claim after the claiming deadline is over;
         // and the result will be failed by default
         _done = true;
-        if (now < daoStorage().readProposalNextMilestoneStart(_proposalId, _index)
+        if (now < startOfMilestone(_proposalId, _index)
                     .add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE)))
         {
             (_operations, _passed, _done) = countProposalVote(_proposalId, _index, _operations);
@@ -164,30 +175,50 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         if (_index > 0) { // We only need to do bonus calculation if its the interim voting round
             _done = calculateVoterBonus(_proposalId, _index, _operations, _passed);
             if (!_done) return (_passed, false);
+        } else {
+            // its the first voting round, we unlock the collateral if it fails, locks if it passes
+            if (_passed) {
+                daoStorage().setProposalCollateralStatus(
+                    _proposalId,
+                    COLLATERAL_STATUS_LOCKED
+                );
+            } else {
+                handleRefundCollateral(_proposalId);
+            }
+
+            checkNonDigixProposalLimit(_proposalId);
         }
+
         if (_passed) {
-            setTimelineAndManageFunding(_proposalId, _index);
+            allocateFunding(_proposalId, _index);
         }
         daoStorage().setVotingClaim(_proposalId, _index, true);
         daoStorage().setProposalPass(_proposalId, _index, _passed);
         _done = true;
     }
 
-    function setTimelineAndManageFunding(bytes32 _proposalId, uint256 _index)
+    function allocateFunding(bytes32 _proposalId, uint256 _index)
         internal
     {
-        DaoIntermediateStructs.MilestoneInfo memory _info;
-        (_info.index, _info.duration, _info.funding) = daoStorage().readProposalMilestone(_proposalId, _index);
-        _info.milestoneStart = daoStorage().readProposalNextMilestoneStart(_proposalId, _index);
+        uint256 _funding;
+        (, _funding) = daoStorage().readProposalMilestone(_proposalId, _index);
+        uint256[] memory _milestoneFundings;
+        (_milestoneFundings,) = daoStorage().readProposalFunding(_proposalId);
 
-        if (_info.duration > 0 && _info.funding > 0 && !isProposalPaused(_proposalId)) {
-            setTimelineForNextMilestone(_proposalId, _index.add(1), _info.duration, _info.milestoneStart);
+        // if this was the last milestone, unlock their original collateral
+        if ((_index == _milestoneFundings.length) && !isProposalPaused(_proposalId)) {
+            handleRefundCollateral(_proposalId);
         }
-        daoFundingManager().allocateEth(daoStorage().readProposalProposer(_proposalId), _info.funding);
+
+        bool _isDigixProposal;
+        (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
+        if (_index == 0 && !_isDigixProposal) {
+            daoStorage().addProposalCountInQuarter(currentQuarterIndex());
+        }
 
         daoPointsStorage().addQuarterPoint(
             daoStorage().readProposalProposer(_proposalId),
-            get_uint_config(CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH).mul(_info.funding).div(10000 ether),
+            get_uint_config(CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH).mul(_funding).div(10000 ether),
             currentQuarterIndex()
         );
     }
@@ -243,7 +274,8 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         internal
         returns (uint256 _operationsLeft, bool _passed, bool _done)
     {
-        require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
+        senderCanDoProposerOperations();
+        require(isFromProposer(_proposalId));
 
         DaoStructs.IntermediateResults memory _currentResults;
         (
@@ -304,43 +336,11 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         }
     }
 
-    function updateTimelineForNextMilestone(
-        bytes32 _proposalId,
-        uint256 _index,
-        uint256 _milestoneDuration,
-        uint256 _milestoneStart
-    )
-        public
-        if_sender_is(CONTRACT_DAO)
-    {
-        setTimelineForNextMilestone(_proposalId, _index, _milestoneDuration, _milestoneStart);
-    }
-
-    // set the voting start time for milestone index _index (starts from 0)
-    // as well as setting the startOfNextMilestone of the voting round of milestone index _index (starts from 0)
-    function setTimelineForNextMilestone(
-        bytes32 _proposalId,
-        uint256 _index,
-        uint256 _milestoneDuration,
-        uint256 _milestoneStart
-    )
+    function handleRefundCollateral(bytes32 _proposalId)
         internal
     {
-        uint256 _votingTime = _milestoneStart.add(_milestoneDuration);
-        uint256 _timeLeftInQuarter = getTimeLeftInQuarter(_votingTime);
-        uint256 _votingDuration = get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL);
-        if (timeInQuarter(_votingTime) < get_uint_config(CONFIG_LOCKING_PHASE_DURATION)) {
-            _votingTime = _votingTime.add(
-                get_uint_config(CONFIG_LOCKING_PHASE_DURATION).sub(timeInQuarter(_votingTime)).add(1)
-            );
-        } else if (_timeLeftInQuarter < _votingDuration.add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE))) {
-            _votingTime = _votingTime.add(
-                _timeLeftInQuarter.add(get_uint_config(CONFIG_LOCKING_PHASE_DURATION)).add(1)
-            );
-        }
-
-        daoStorage().setProposalVotingTime(_proposalId, _index, _votingTime);
-        daoStorage().setProposalNextMilestoneStart(_proposalId, _index, _votingTime.add(_votingDuration));
+        daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_CLAIMED);
+        require(daoFundingManager().refundCollateral(daoStorage().readProposalProposer(_proposalId)));
     }
 
     function addBonusReputation(address[] _voters, uint256 _n)

@@ -15,6 +15,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     DoublyLinkedList.Bytes allProposals;
     mapping (bytes32 => DaoStructs.Proposal) proposalsById;
     mapping (bytes32 => DoublyLinkedList.Bytes) proposalsByState;
+    mapping (uint256 => uint256) public proposalCountByQuarter;
 
     function DaoStorage(address _resolver) public {
         require(init(CONTRACT_STORAGE_DAO, _resolver));
@@ -31,7 +32,10 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     ///   "_state": "",
     ///   "_timeCreated": "",
     ///   "_nVersions": "",
-    ///   "_finalVersion": ""
+    ///   "_latestVersionDoc": "",
+    ///   "_finalVersion": "",
+    ///   "_paused": "",
+    ///   "_isDigixProposal": ""
     /// }
     function readProposal(bytes32 _proposalId)
         public
@@ -45,7 +49,8 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
             uint256 _nVersions,
             bytes32 _latestVersionDoc,
             bytes32 _finalVersion,
-            bool _paused
+            bool _paused,
+            bool _isDigixProposal
         )
     {
         DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
@@ -58,6 +63,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         _latestVersionDoc = read_last_from_bytesarray(_proposal.proposalVersionDocs);
         _finalVersion = _proposal.finalVersion;
         _paused = _proposal.isPaused;
+        _isDigixProposal = _proposal.isDigix;
     }
 
     function readProposalProposer(bytes32 _proposalId)
@@ -118,14 +124,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         returns (uint256 _start)
     {
         _start = proposalsById[_proposalId].votingRounds[_index].startTime;
-    }
-
-    function readProposalNextMilestoneStart(bytes32 _proposalId, uint256 _index)
-        public
-        constant
-        returns (uint256 _start)
-    {
-        _start = proposalsById[_proposalId].votingRounds[_index].startOfNextMilestone;
     }
 
     function readDraftVotingCount(bytes32 _proposalId, address[] memory _allUsers)
@@ -306,7 +304,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     /// return {
     ///   "_doc": "",
     ///   "_created": "",
-    ///   "_milestoneDurations": "",
     ///   "_milestoneFundings": ""
     /// }
     function readProposalVersion(bytes32 _proposalId, bytes32 _version)
@@ -315,7 +312,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         returns (
             bytes32 _doc,
             uint256 _created,
-            uint256[] _milestoneDurations,
             uint256[] _milestoneFundings,
             uint256 _finalReward
         )
@@ -326,36 +322,19 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     function readProposalFunding(bytes32 _proposalId)
         public
         constant
-        returns (uint256[] memory _fundings, uint256 _finalReward, uint256 _totalFunding)
+        returns (uint256[] memory _fundings, uint256 _finalReward)
     {
         bytes32 _finalVersion = proposalsById[_proposalId].finalVersion;
         _fundings = proposalsById[_proposalId].proposalVersions[_finalVersion].milestoneFundings;
-        uint256 _n = _fundings.length;
-        for (uint256 i = 0; i < _n; i++) {
-            _totalFunding = _totalFunding.add(_fundings[i]);
-        }
         _finalReward = proposalsById[_proposalId].proposalVersions[_finalVersion].finalReward;
     }
 
     function readProposalMilestone(bytes32 _proposalId, uint256 _index)
         public
         constant
-        returns (uint256 _milestoneId, uint256 _duration, uint256 _funding)
+        returns (uint256 _milestoneId, uint256 _funding)
     {
         return proposalsById[_proposalId].readProposalMilestone(_index);
-    }
-
-    function readProposalDuration(bytes32 _proposalId)
-        public
-        constant
-        returns (uint256[] memory _durations, uint256 _totalDuration)
-    {
-        bytes32 _finalVersion = proposalsById[_proposalId].finalVersion;
-        _durations = proposalsById[_proposalId].proposalVersions[_finalVersion].milestoneFundings;
-        uint256 _n = _durations.length;
-        for (uint256 i = 0; i < _n; i++) {
-            _totalDuration = _totalDuration.add(_durations[i]);
-        }
     }
 
     /// @notice get proposal version details for the first version
@@ -436,6 +415,13 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         _claimed = proposalsById[_proposalId].votingRounds[_index].claimed;
     }
 
+    function readProposalCollateralStatus(bytes32 _proposalId)
+        public
+        returns (uint256 _status)
+    {
+        _status = proposalsById[_proposalId].collateralStatus;
+    }
+
     ///////////////////////////// PRIVATE FUNCTIONS /////////////////////////////
 
     ////////////////////////////// WRITE FUNCTIONS //////////////////////////////
@@ -443,7 +429,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     /// @notice add a new proposal, added to the PREPROPOSAL state
     /// @param _doc hash of IPFS document
     /// @param _proposer address of proposer of the proposal
-    /// @param _milestoneDurations array of time durations for milestones
     /// @param _milestoneFundings array of required fundings for milestones
     /// @return {
     ///    "_success": "if pre-proposal was created successfully"
@@ -451,48 +436,75 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     function addProposal(
         bytes32 _doc,
         address _proposer,
-        uint256[] _milestoneDurations,
         uint256[] _milestoneFundings,
-        uint256 _finalReward
+        uint256 _finalReward,
+        bool _isFounder
     )
         public
-        if_sender_is(CONTRACT_DAO)
     {
+        require(sender_is(CONTRACT_DAO));
+
         allProposals.append(_doc);
         proposalsByState[PROPOSAL_STATE_PREPROPOSAL].append(_doc);
         proposalsById[_doc].proposalId = _doc;
         proposalsById[_doc].proposer = _proposer;
         proposalsById[_doc].currentState = PROPOSAL_STATE_PREPROPOSAL;
         proposalsById[_doc].timeCreated = now;
-
-        proposalsById[_doc].addProposalVersion(_doc, _milestoneDurations, _milestoneFundings, _finalReward);
+        proposalsById[_doc].isDigix = _isFounder;
+        proposalsById[_doc].addProposalVersion(_doc, _milestoneFundings, _finalReward);
     }
 
     /// @notice edit/modify a proposal
     /// @param _proposalId Proposal ID
     /// @param _newDoc hash of IPFS document for newer version
-    /// @param _newMilestoneDurations new array of time durations for milestones
-    /// @param _newMilestoneDurations new array of req fundings for milestones
     /// @return {
     ///    "_success": "if proposal was edited successfully"
     /// }
     function editProposal(
         bytes32 _proposalId,
         bytes32 _newDoc,
-        uint256[] _newMilestoneDurations,
         uint256[] _newMilestoneFundings,
         uint256 _finalReward
     )
         public
-        if_sender_is(CONTRACT_DAO)
     {
-        proposalsById[_proposalId].addProposalVersion(_newDoc, _newMilestoneDurations, _newMilestoneFundings, _finalReward);
+        require(sender_is(CONTRACT_DAO));
+
+        proposalsById[_proposalId].addProposalVersion(_newDoc, _newMilestoneFundings, _finalReward);
+    }
+
+    function changeFundings(bytes32 _proposalId, uint256[] _newMilestoneFundings, uint256 _finalReward)
+        public
+    {
+        require(sender_is(CONTRACT_DAO));
+
+        bytes32 _lastVersion = proposalsById[_proposalId].finalVersion;
+        proposalsById[_proposalId].proposalVersions[_lastVersion].milestoneFundings = _newMilestoneFundings;
+        proposalsById[_proposalId].proposalVersions[_lastVersion].finalReward = _finalReward;
+    }
+
+    function addProposalDoc(bytes32 _proposalId, bytes32 _newDoc)
+        public
+    {
+        require(sender_is(CONTRACT_DAO));
+
+        bytes32 _lastVersion = proposalsById[_proposalId].finalVersion;
+        proposalsById[_proposalId].proposalVersions[_lastVersion].moreDocs.push(_newDoc);
+    }
+
+    function readProposalDocs(bytes32 _proposalId)
+        public
+        returns (bytes32[] _moreDocs)
+    {
+        bytes32 _lastVersion = proposalsById[_proposalId].finalVersion;
+        _moreDocs = proposalsById[_proposalId].proposalVersions[_lastVersion].moreDocs;
     }
 
     function finalizeProposal(bytes32 _proposalId)
         public
-        if_sender_is(CONTRACT_DAO)
     {
+        require(sender_is(CONTRACT_DAO));
+
         proposalsById[_proposalId].finalVersion = getLastProposalVersion(_proposalId);
     }
 
@@ -507,8 +519,9 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         address _endorser
     )
         public
-        if_sender_is(CONTRACT_DAO)
     {
+        require(sender_is(CONTRACT_DAO));
+
         DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
         _proposal.endorser = _endorser;
         _proposal.currentState = PROPOSAL_STATE_DRAFT;
@@ -518,8 +531,9 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
 
     function setProposalDraftPass(bytes32 _proposalId, bool _result)
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
+
         proposalsById[_proposalId].draftVoting.passed = _result;
         if (_result) {
             proposalsByState[PROPOSAL_STATE_DRAFT].remove_item(_proposalId);
@@ -532,8 +546,9 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
 
     function setProposalPass(bytes32 _proposalId, uint256 _index, bool _result)
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
+
         if (!_result) {
             closeProposalInternal(_proposalId);
         } else if (_index == 0) {
@@ -549,8 +564,9 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _time
     )
         public
-        if_sender_is(CONTRACT_DAO)
     {
+        require(sender_is(CONTRACT_DAO));
+
         proposalsById[_proposalId].draftVoting.startTime = _time;
     }
 
@@ -560,39 +576,31 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _time
     )
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
-        proposalsById[_proposalId].votingRounds[_index].startTime = _time;
-    }
+        require(sender_is_from([CONTRACT_DAO, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES]));
 
-    function setProposalNextMilestoneStart(
-        bytes32 _proposalId,
-        uint256 _index,
-        uint256 _time
-    )
-        public
-        if_sender_is_from([CONTRACT_DAO, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES])
-    {
-        /* if (_index == 0) {
-            proposalsById[_proposalId].draftVoting.startOfNextMilestone = _time;
-        } else {
-            proposalsById[_proposalId].votingRounds[_index-1].startOfNextMilestone = _time;
-        } */
-        proposalsById[_proposalId].votingRounds[_index].startOfNextMilestone = _time;
+        proposalsById[_proposalId].votingRounds[_index].startTime = _time;
     }
 
     function setDraftVotingClaim(bytes32 _proposalId, bool _claimed)
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
         proposalsById[_proposalId].draftVoting.claimed = _claimed;
     }
 
     function setVotingClaim(bytes32 _proposalId, uint256 _index, bool _claimed)
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
         proposalsById[_proposalId].votingRounds[_index].claimed = _claimed;
+    }
+
+    function setProposalCollateralStatus(bytes32 _proposalId, uint256 _status)
+        public
+    {
+        require(sender_is_from([CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_FUNDING_MANAGER, CONTRACT_DAO]));
+        proposalsById[_proposalId].collateralStatus = _status;
     }
 
     /// @notice update the PRL status of the voting in a proposal
@@ -606,8 +614,8 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _time
     )
         public
-        if_sender_is(CONTRACT_DAO)
     {
+        require(sender_is(CONTRACT_DAO));
         DaoStructs.PrlAction memory prlAction;
         prlAction.at = _time;
         prlAction.doc = _doc;
@@ -648,8 +656,9 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _weight
     )
         public
-        if_sender_is(CONTRACT_DAO_VOTING)
     {
+        require(sender_is(CONTRACT_DAO_VOTING));
+
         DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
         if (_vote) {
             _proposal.draftVoting.yesVotes[_voter] = _weight;
@@ -679,8 +688,9 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _index
     )
         public
-        if_sender_is(CONTRACT_DAO_VOTING)
     {
+        require(sender_is(CONTRACT_DAO_VOTING));
+
         proposalsById[_proposalId].votingRounds[_index].commits[_voter] = _hash;
     }
 
@@ -701,8 +711,37 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _index
     )
         public
-        if_sender_is(CONTRACT_DAO_VOTING)
     {
+        require(sender_is(CONTRACT_DAO_VOTING));
+
         proposalsById[_proposalId].votingRounds[_index].revealVote(_voter, _vote, _weight);
+    }
+
+    function addProposalCountInQuarter(uint256 _quarterIndex)
+        public
+    {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
+        proposalCountByQuarter[_quarterIndex] = proposalCountByQuarter[_quarterIndex].add(1);
+    }
+
+    function closeProposal(bytes32 _proposalId)
+        public
+    {
+        require(sender_is(CONTRACT_DAO));
+        closeProposalInternal(_proposalId);
+    }
+
+    function readIfMilestoneFunded(bytes32 _proposalId, uint256 _milestoneId)
+        public
+        returns (bool _funded)
+    {
+        _funded = proposalsById[_proposalId].votingRounds[_milestoneId].funded;
+    }
+
+    function setMilestoneFunded(bytes32 _proposalId, uint256 _milestoneId)
+        public
+    {
+        require(sender_is(CONTRACT_DAO_FUNDING_MANAGER));
+        proposalsById[_proposalId].votingRounds[_milestoneId].funded = true;
     }
 }

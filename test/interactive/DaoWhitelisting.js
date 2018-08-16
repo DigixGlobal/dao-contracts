@@ -21,7 +21,6 @@ const bN = web3.toBigNumber;
 
 const doc = randomBytes32();
 const proposer = randomAddress();
-const durations = [bN(35), bN(45), bN(55)];
 const fundings = [bN(100), bN(200), bN(50)];
 const finalReward = bN(2);
 const dgdStakes = [bN(3), bN(4), bN(5), bN(6)];
@@ -98,7 +97,7 @@ contract('DaoWhitelisting', function (accounts) {
     });
     it('[call functions from whitelisted contracts]', async function () {
       // setup dummy proposal and votes
-      await contracts.daoStorage.addProposal(doc, proposer, durations, fundings, finalReward);
+      await contracts.daoStorage.addProposal(doc, proposer, fundings, finalReward, false);
       await contracts.daoStorage.addDraftVote(
         doc, addressOf.badgeHolders[0],
         true, dgdStakes[0],

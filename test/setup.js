@@ -36,7 +36,7 @@ const IntermediateResultsStorage = process.env.SIMULATION ? 0 : artifacts.requir
 
 const DaoStructs = process.env.SIMULATION ? 0 : artifacts.require('./DaoStructs.sol');
 const DaoUpgradeStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoUpgradeStorage.sol');
-const DaoSpecialStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoSpecialStorage.sol');
+const DaoSpecialStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoSpecialStorage.sol');
 const DaoFundingStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoFundingStorage.sol');
 const DaoRewardsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoRewardsStorage.sol');
 
@@ -53,7 +53,7 @@ const DaoFundingManager = process.env.SIMULATION ? 0 : artifacts.require('./DaoF
 const DaoRewardsManager = process.env.SIMULATION ? 0 : artifacts.require('./DaoRewardsManager.sol');
 const DaoWhitelisting = process.env.SIMULATION ? 0 : artifacts.require('./DaoWhitelisting.sol');
 
-const MockDGD = process.env.SIMULATION ? 0 : artifacts.require('./MockDGD.sol');
+const MockDgd = process.env.SIMULATION ? 0 : artifacts.require('./MockDgd.sol');
 const MockBadge = process.env.SIMULATION ? 0 : artifacts.require('./MockBadge.sol');
 const MockDgxDemurrageReporter = process.env.SIMULATION ? 0 : artifacts.require('./MockDgxDemurrageReporter.sol');
 const MockDgx = process.env.SIMULATION ? 0 : artifacts.require('./MockDgx.sol');
@@ -97,7 +97,6 @@ const printProposalDetails = async (contracts, proposal, votingRound = 0) => {
   console.log('\t\tfinalVersion: ', proposalDetails[7]);
   console.log('\t\tVoting round ', votingRound);
   console.log('\t\t\tVoting time start :', await contracts.daoStorage.readProposalVotingTime(proposal.id, votingRound));
-  console.log('\t\t\tNext milestone start :', await contracts.daoStorage.readProposalNextMilestoneStart(proposal.id, votingRound));
 };
 
 const getAllParticipantAddresses = function (accounts) {
@@ -211,20 +210,20 @@ const getTestProposals = function (bN, addressOf) {
       [{
         versionId: randomBytes32(),
         milestoneCount: 3,
-        milestoneFundings: [bN(10 * (10 ** 18)), bN(15 * (10 ** 18)), bN(20 * (10 ** 18))],
-        milestoneDurations: [bN(1000), bN(1500), bN(2000)],
+        milestoneFundings: [bN(2 * (10 ** 18)), bN(3 * (10 ** 18))],
+        milestoneDurations: [bN(1000), bN(1500)],
         finalReward: bN(1 * (10 ** 18)),
       }, {
         versionId: randomBytes32(),
         milestoneCount: 3,
-        milestoneFundings: [bN(10 * (10 ** 18)), bN(20 * (10 ** 18)), bN(25 * (10 ** 18))],
-        milestoneDurations: [bN(15), bN(30), bN(20)],
+        milestoneFundings: [bN(2 * (10 ** 18)), bN(4 * (10 ** 18))],
+        milestoneDurations: [bN(15), bN(30)],
         finalReward: bN(1 * (10 ** 18)),
       }, {
         versionId: randomBytes32(),
         milestoneCount: 3,
-        milestoneFundings: [bN(10 * (10 ** 18)), bN(15 * (10 ** 18)), bN(15 * (10 ** 18)), bN(20 * (10 ** 18))],
-        milestoneDurations: [bN(1000), bN(1500), bN(1500), bN(2000)],
+        milestoneFundings: [bN(2 * (10 ** 18)), bN(4 * (10 ** 18))],
+        milestoneDurations: [bN(1000), bN(1500)],
         finalReward: bN(1 * (10 ** 18)),
       }],
     ),
@@ -235,27 +234,27 @@ const getTestProposals = function (bN, addressOf) {
       addressOf.badgeHolders[1],
       [{
         versionId: randomBytes32(),
-        milestoneCount: 3,
-        milestoneFundings: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
-        milestoneDurations: [bN(500), bN(730), bN(300)],
+        milestoneCount: 2,
+        milestoneFundings: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18))],
+        milestoneDurations: [bN(500), bN(730)],
         finalReward: bN(1 * (10 ** 18)),
       }, {
         versionId: randomBytes32(),
-        milestoneCount: 3,
-        milestoneFundings: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
-        milestoneDurations: [bN(20), bN(20), bN(20)],
+        milestoneCount: 2,
+        milestoneFundings: [bN(6 * (10 ** 18)), bN(7 * (10 ** 18))],
+        milestoneDurations: [bN(20), bN(20)],
         finalReward: bN(1 * (10 ** 18)),
       }, {
         versionId: randomBytes32(),
-        milestoneCount: 3,
-        milestoneFundings: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
-        milestoneDurations: [bN(500), bN(700), bN(300)],
-        finalReward: bN(1 * (10 ** 18)),
+        milestoneCount: 2,
+        milestoneFundings: [bN(5 * (10 ** 18)), bN(8 * (10 ** 18))],
+        milestoneDurations: [bN(500), bN(700)],
+        finalReward: bN(2 * (10 ** 18)),
       }, {
         versionId: randomBytes32(),
-        milestoneCount: 3,
-        milestoneFundings: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
-        milestoneDurations: [bN(500), bN(700), bN(300)],
+        milestoneCount: 2,
+        milestoneFundings: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18))],
+        milestoneDurations: [bN(500), bN(700)],
         finalReward: bN(1 * (10 ** 18)),
       }],
     ),
@@ -267,13 +266,13 @@ const getTestProposals = function (bN, addressOf) {
       [{
         versionId: randomBytes32(),
         milestoneCount: 2,
-        milestoneFundings: [bN(20 * (10 ** 18)), bN(30 * (10 ** 18))],
+        milestoneFundings: [bN(2 * (10 ** 18)), bN(5 * (10 ** 18))],
         milestoneDurations: [bN(2000), bN(3000)],
         finalReward: bN(1 * (10 ** 18)),
       }, {
         versionId: randomBytes32(),
         milestoneCount: 2,
-        milestoneFundings: [bN(25 * (10 ** 18)), bN(25 * (10 ** 18))],
+        milestoneFundings: [bN(5 * (10 ** 18)), bN(2 * (10 ** 18))],
         milestoneDurations: [bN(10), bN(10)],
         finalReward: bN(1 * (10 ** 18)),
       }],
@@ -286,8 +285,8 @@ const getTestProposals = function (bN, addressOf) {
       [{
         versionId: randomBytes32(),
         milestoneCount: 4,
-        milestoneFundings: [bN(1 * (10 ** 18)), bN(1 * (10 ** 18)), bN(2 * (10 ** 18)), bN(2 * (10 ** 18))],
-        milestoneDurations: [bN(25), bN(25), bN(25), bN(25)],
+        milestoneFundings: [bN(5 * (10 ** 18))],
+        milestoneDurations: [bN(25)],
         finalReward: bN(1 * (10 ** 18)),
       }],
     ),
@@ -411,7 +410,7 @@ const deployFreshDao = async (libs, contracts, addressOf, accounts, bN, web3) =>
   await deployLibraries(libs);
   await deployNewContractResolver(contracts);
   await getAccountsAndAddressOf(accounts, addressOf);
-  contracts.dgdToken = await MockDGD.new();
+  contracts.dgdToken = await MockDgd.new();
   contracts.badgeToken = await MockBadge.new();
   contracts.dgxStorage = await MockDgxStorage.new();
   contracts.dgxToken = await MockDgx.new(contracts.dgxStorage.address, addressOf.feesadmin);
@@ -437,7 +436,6 @@ const fundDao = async function (web3, accounts, contracts) {
 
 const printParticipantDetails = async (bN, contracts, address) => {
   console.log('Printing details for ', address);
-  console.log('\tClaimable ETHs: ', await contracts.daoFundingStorage.claimableEth.call(address));
   console.log('\tPoints: ', address);
   console.log('\t\tQP = ', await contracts.daoPointsStorage.getQuarterPoint.call(address, bN(1)));
   console.log('\t\tModerator QP = ', await contracts.daoPointsStorage.getQuarterModeratorPoint.call(address, bN(1)));
@@ -473,10 +471,11 @@ const withdrawDGDs = async (web3, contracts, bN, participants) => {
   });
 };
 
-const lockDGDs = async (web3, contracts, bN, participants) => {
+const lockDGDs = async (web3, contracts, bN, participants, addressOf) => {
   await a.map(participants, 20, async (participant) => {
     await contracts.daoStakeLocking.lockDGD(participant.dgdToLock, { from: participant.address });
   });
+  await contracts.daoStakeLocking.lockDGD(participants[0].dgdToLock, { from: addressOf.founderBadgeHolder });
 };
 
 const redeemBadges = async (web3, contracts, bN, participants) => {
@@ -487,19 +486,19 @@ const redeemBadges = async (web3, contracts, bN, participants) => {
   });
 };
 
-const fundUserAndApproveForStakeLocking = async (web3, contracts, bN, participants) => {
+const fundUserAndApproveForStakeLocking = async (web3, contracts, bN, participants, addressOf) => {
   const ENOUGH_DGD = bN(1000e9);
   const ENOUGH_BADGE = bN(5);
   await a.map(participants, 20, async (participant) => {
     await contracts.dgdToken.transfer(participant.address, ENOUGH_DGD);
-    // console.log('sent dgd to participant ', participant.address);
     await contracts.badgeToken.transfer(participant.address, ENOUGH_BADGE);
-    // console.log('sent badge to participant ', participant.address);
     await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(2 ** 255), { from: participant.address });
-    // console.log('approved dgd for participant ', participant.address);
     await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(2 ** 255), { from: participant.address });
-    // console.log('approved badge for participant ', participant.address);
   });
+  await contracts.dgdToken.transfer(addressOf.founderBadgeHolder, ENOUGH_DGD);
+  await contracts.badgeToken.transfer(addressOf.founderBadgeHolder, ENOUGH_BADGE);
+  await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(2 ** 255), { from: addressOf.founderBadgeHolder });
+  await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(2 ** 255), { from: addressOf.founderBadgeHolder });
 };
 
 const getParticipants = (addressOf, bN) => {
@@ -561,6 +560,12 @@ const updateKyc = async function (contracts, addressOf, participants) {
       { from: addressOf.kycadmin },
     );
   });
+  await contracts.daoIdentity.updateKyc(
+    addressOf.founderBadgeHolder,
+    '',
+    participants[0].kycInfo.expiry,
+    { from: addressOf.kycadmin },
+  );
 };
 
 // This function will setup the participants state exactly as specified, before the first quarter mainphase starts
@@ -568,13 +573,13 @@ const setupParticipantsStates = async (web3, contracts, addressOf, bN, participa
   if (!participants) {
     participants = getParticipants(addressOf, bN);
   }
-  await fundUserAndApproveForStakeLocking(web3, contracts, bN, participants);
+  await fundUserAndApproveForStakeLocking(web3, contracts, bN, participants, addressOf);
   await a.map(participants, 20, async (participant) => {
     await contracts.daoPointsStorage.setQP(participant.address, participant.quarterPointFirstQuarter, bN(1));
     await contracts.daoPointsStorage.setRP(participant.address, participant.startingReputation);
     await contracts.daoPointsStorage.setModeratorQP(participant.address, participant.quarterModeratorPointFirstQuarter, bN(1));
   });
-  await lockDGDs(web3, contracts, bN, participants);
+  await lockDGDs(web3, contracts, bN, participants, addressOf);
 
   // console.log('\tInitialized participants stakes and points for first quarter, waiting until main phase');
   await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
@@ -584,10 +589,9 @@ const addProposal = async function (contracts, proposal) {
   console.log('adding proposal ', proposal.id);
   await contracts.dao.submitPreproposal(
     proposal.id,
-    proposal.versions[0].milestoneDurations,
     proposal.versions[0].milestoneFundings,
     proposal.versions[0].finalReward,
-    { from: proposal.proposer },
+    { from: proposal.proposer, value: 2 * (10 ** 18) },
   );
 };
 
@@ -600,7 +604,6 @@ const modifyProposal = async function (contracts, proposal, nextVersion) {
   await contracts.dao.modifyProposal(
     proposal.id,
     proposal.versions[nextVersion].versionId,
-    proposal.versions[nextVersion].milestoneDurations,
     proposal.versions[nextVersion].milestoneFundings,
     proposal.versions[nextVersion].finalReward,
     { from: proposal.proposer },

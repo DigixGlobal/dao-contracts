@@ -28,16 +28,16 @@ contract DaoCalculatorService is DaoCommon {
     }
 
     function minimumDraftQuorum(bytes32 _proposalId) public returns (uint256 _minQuorum) {
-        uint256 _ethAsked;
+        uint256[] memory _fundings;
 
-        (,,_ethAsked) = daoStorage().readProposalFunding(_proposalId);
+        (_fundings,) = daoStorage().readProposalFunding(_proposalId);
         _minQuorum = calculateMinQuorum(
             daoStakeStorage().totalModeratorLockedDGDStake(),
             get_uint_config(CONFIG_DRAFT_QUORUM_FIXED_PORTION_NUMERATOR),
             get_uint_config(CONFIG_DRAFT_QUORUM_FIXED_PORTION_DENOMINATOR),
             get_uint_config(CONFIG_DRAFT_QUORUM_SCALING_FACTOR_NUMERATOR),
             get_uint_config(CONFIG_DRAFT_QUORUM_SCALING_FACTOR_DENOMINATOR),
-            _ethAsked
+            _fundings[0]
         );
     }
 
@@ -57,7 +57,7 @@ contract DaoCalculatorService is DaoCommon {
     {
         uint256[] memory _ethAskedPerMilestone;
         uint256 _finalReward;
-        (_ethAskedPerMilestone,_finalReward,) = daoStorage().readProposalFunding(_proposalId);
+        (_ethAskedPerMilestone,_finalReward) = daoStorage().readProposalFunding(_proposalId);
         require(_milestone_id <= _ethAskedPerMilestone.length);
         if (_milestone_id == _ethAskedPerMilestone.length) {
             _minQuorum = calculateMinQuorum(

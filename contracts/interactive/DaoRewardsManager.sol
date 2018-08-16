@@ -1,9 +1,9 @@
 pragma solidity ^0.4.19;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
-import "./common/DaoCommon.sol";
-import "./lib/DaoStructs.sol";
-import "./service/DaoCalculatorService.sol";
+import "../common/DaoCommon.sol";
+import "../lib/DaoStructs.sol";
+import "../service/DaoCalculatorService.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
 /// @title Contract to manage DGX rewards
@@ -51,7 +51,7 @@ contract DaoRewardsManager is DaoCommon {
             get_uint_config(CONFIG_QUARTER_POINT_SCALING_FACTOR),
             get_uint_config(CONFIG_REPUTATION_POINT_SCALING_FACTOR),
             0,
-            get_uint_config(CONFIG_MINIMAL_MODERATOR_QUARTER_POINT),
+            get_uint_config(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
             get_uint_config(CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR),
             get_uint_config(CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR),
             0,
@@ -105,8 +105,8 @@ contract DaoRewardsManager is DaoCommon {
     /// @param _user Address of the DAO participant
     function updateRewardsBeforeNewQuarter(address _user)
         public
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         uint256 _currentQuarter = currentQuarterIndex();
         // do nothing if the rewards was already updated for the previous quarter
         if (daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user).add(1) >= _currentQuarter) {
@@ -127,7 +127,7 @@ contract DaoRewardsManager is DaoCommon {
             return;
         }
 
-        if (_lastParticipatedQuarter == currentQuarterIndex() - 1) {
+        if (_lastQuarterThatReputationWasUpdated == _lastParticipatedQuarter.sub(1)) {
             updateRPfromQP(
                 _user,
                 daoPointsStorage().getQuarterPoint(_user, _lastParticipatedQuarter),
@@ -145,7 +145,7 @@ contract DaoRewardsManager is DaoCommon {
                 updateRPfromQP(
                     _user,
                     daoPointsStorage().getQuarterModeratorPoint(_user, _lastParticipatedQuarter),
-                    get_uint_config(CONFIG_MINIMAL_MODERATOR_QUARTER_POINT),
+                    get_uint_config(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
                     get_uint_config(CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION),
                     get_uint_config(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM),
                     get_uint_config(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN)
@@ -154,14 +154,14 @@ contract DaoRewardsManager is DaoCommon {
         }
 
         _reputationDeduction =
-            (currentQuarterIndex().sub(1).sub(_lastParticipatedQuarter))
+            (currentQuarterIndex().sub(1).sub(MathHelper.max(_lastParticipatedQuarter, _lastQuarterThatReputationWasUpdated)))
             .mul(
                 get_uint_config(CONFIG_MAXIMUM_REPUTATION_DEDUCTION)
                 .add(get_uint_config(CONFIG_PUNISHMENT_FOR_NOT_LOCKING))
             );
 
         if (_reputationDeduction > 0) daoPointsStorage().subtractReputation(_user, _reputationDeduction);
-        daoRewardsStorage().updateLastQuarterThatReputationWasUpdated(_user, _lastParticipatedQuarter);
+        daoRewardsStorage().updateLastQuarterThatReputationWasUpdated(_user, currentQuarterIndex().sub(1));
     }
 
     function updateRPfromQP (
@@ -291,11 +291,11 @@ contract DaoRewardsManager is DaoCommon {
     /// @notice Function called by the founder after transfering the DGX fees into the DAO at the beginning of the quarter
     function calculateGlobalRewardsBeforeNewQuarter(uint256 _operations)
         if_founder()
-        if_locking_phase()
-        daoIsValid()
         public
         returns (bool _done)
     {
+        require(isDaoNotReplaced());
+        require(isLockingPhase());
         QuarterRewardsInfo memory info;
         info.previousQuarter = currentQuarterIndex().sub(1);
         require(info.previousQuarter > 0); // throw if this is the first quarter
@@ -336,7 +336,7 @@ contract DaoRewardsManager is DaoCommon {
             get_uint_config(CONFIG_REPUTATION_POINT_SCALING_FACTOR),
             info.totalEffectiveDGDLastQuarter,
 
-            get_uint_config(CONFIG_MINIMAL_MODERATOR_QUARTER_POINT),
+            get_uint_config(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
             get_uint_config(CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR),
             get_uint_config(CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR),
             info.totalEffectiveModeratorDGDLastQuarter,

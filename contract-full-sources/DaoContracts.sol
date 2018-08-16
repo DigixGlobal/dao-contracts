@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 
 
 /**
@@ -241,107 +241,6 @@ contract Constants {
 
 
 
-/// @title Contract Resolver Interface
-/// @author DigixGlobal
-
-contract ResolverClient {
-
-  /// The address of the resolver contract for this project
-  address public resolver;
-  bytes32 public key;
-
-  /// Make our own address available to us as a constant
-  address public CONTRACT_ADDRESS;
-
-  /// Function modifier to check if msg.sender corresponds to the resolved address of a given key
-  /// @param _contract The resolver key
-  modifier if_sender_is(bytes32 _contract) {
-    require(msg.sender == ContractResolver(resolver).get_contract(_contract));
-    _;
-  }
-
-  modifier if_sender_is_from(bytes32[3] _contracts) {
-    bool _valid = false;
-    uint256 _n = _contracts.length;
-    for (uint256 i = 0; i < _n; i++) {
-      if (_contracts[i] == bytes32(0x0)) continue;
-      if (msg.sender == ContractResolver(resolver).get_contract(_contracts[i])) {
-        _valid = true;
-      }
-    }
-    require(_valid);
-    _;
-  }
-
-  /// Function modifier to check resolver's locking status.
-  modifier unless_resolver_is_locked() {
-    require(is_locked() == false);
-    _;
-  }
-
-  /// @dev Initialize new contract
-  /// @param _key the resolver key for this contract
-  /// @return _success if the initialization is successful
-  function init(bytes32 _key, address _resolver)
-           internal
-           returns (bool _success)
-  {
-    bool _is_locked = ContractResolver(_resolver).locked();
-    if (_is_locked == false) {
-      CONTRACT_ADDRESS = address(this);
-      resolver = _resolver;
-      key = _key;
-      require(ContractResolver(resolver).init_register_contract(key, CONTRACT_ADDRESS));
-      _success = true;
-    }  else {
-      _success = false;
-    }
-  }
-
-  /// @dev Destroy the contract and unregister self from the ContractResolver
-  /// @dev Can only be called by the owner of ContractResolver
-  /* function destroy()
-           public
-           returns (bool _success)
-  {
-    bool _is_locked = ContractResolver(resolver).locked();
-    require(!_is_locked);
-
-    address _owner_of_contract_resolver = ContractResolver(resolver).owner();
-    require(msg.sender == _owner_of_contract_resolver);
-
-    _success = ContractResolver(resolver).unregister_contract(key);
-    require(_success);
-
-    selfdestruct(_owner_of_contract_resolver);
-  } */
-
-  /// @dev Check if resolver is locked
-  /// @return _locked if the resolver is currently locked
-  function is_locked()
-           private
-           constant
-           returns (bool _locked)
-  {
-    _locked = ContractResolver(resolver).locked();
-  }
-
-  /// @dev Get the address of a contract
-  /// @param _key the resolver key to look up
-  /// @return _contract the address of the contract
-  function get_contract(bytes32 _key)
-           public
-           constant
-           returns (address _contract)
-  {
-    _contract = ContractResolver(resolver).get_contract(_key);
-  }
-}
-
-
-
-
-
 /// @title Contract Name Registry
 /// @author DigixGlobal
 
@@ -501,6 +400,113 @@ contract ContractResolver is ACGroups, Constants {
     groups["nsadmins"].members[owner] = false;
     groups["nsadmins"].members[new_owner] = true;
     _success = super.claim_ownership();
+  }
+}
+
+
+
+
+
+/// @title Contract Resolver Interface
+/// @author DigixGlobal
+
+contract ResolverClient {
+
+  /// The address of the resolver contract for this project
+  address public resolver;
+  bytes32 public key;
+
+  /// Make our own address available to us as a constant
+  address public CONTRACT_ADDRESS;
+
+  /// Function modifier to check if msg.sender corresponds to the resolved address of a given key
+  /// @param _contract The resolver key
+  modifier if_sender_is(bytes32 _contract) {
+    require(sender_is(_contract));
+    _;
+  }
+
+  function sender_is(bytes32 _contract) internal view returns (bool _isFrom) {
+    _isFrom = msg.sender == ContractResolver(resolver).get_contract(_contract);
+  }
+
+  modifier if_sender_is_from(bytes32[3] _contracts) {
+    require(sender_is_from(_contracts));
+    _;
+  }
+
+  function sender_is_from(bytes32[3] _contracts) internal view returns (bool _isFrom) {
+    uint256 _n = _contracts.length;
+    for (uint256 i = 0; i < _n; i++) {
+      if (_contracts[i] == bytes32(0x0)) continue;
+      if (msg.sender == ContractResolver(resolver).get_contract(_contracts[i])) {
+        _isFrom = true;
+      }
+    }
+  }
+
+  /// Function modifier to check resolver's locking status.
+  modifier unless_resolver_is_locked() {
+    require(is_locked() == false);
+    _;
+  }
+
+  /// @dev Initialize new contract
+  /// @param _key the resolver key for this contract
+  /// @return _success if the initialization is successful
+  function init(bytes32 _key, address _resolver)
+           internal
+           returns (bool _success)
+  {
+    bool _is_locked = ContractResolver(_resolver).locked();
+    if (_is_locked == false) {
+      CONTRACT_ADDRESS = address(this);
+      resolver = _resolver;
+      key = _key;
+      require(ContractResolver(resolver).init_register_contract(key, CONTRACT_ADDRESS));
+      _success = true;
+    }  else {
+      _success = false;
+    }
+  }
+
+  /// @dev Destroy the contract and unregister self from the ContractResolver
+  /// @dev Can only be called by the owner of ContractResolver
+  /* function destroy()
+           public
+           returns (bool _success)
+  {
+    bool _is_locked = ContractResolver(resolver).locked();
+    require(!_is_locked);
+
+    address _owner_of_contract_resolver = ContractResolver(resolver).owner();
+    require(msg.sender == _owner_of_contract_resolver);
+
+    _success = ContractResolver(resolver).unregister_contract(key);
+    require(_success);
+
+    selfdestruct(_owner_of_contract_resolver);
+  } */
+
+  /// @dev Check if resolver is locked
+  /// @return _locked if the resolver is currently locked
+  function is_locked()
+           private
+           constant
+           returns (bool _locked)
+  {
+    _locked = ContractResolver(resolver).locked();
+  }
+
+  /// @dev Get the address of a contract
+  /// @param _key the resolver key to look up
+  /// @return _contract the address of the contract
+  function get_contract(bytes32 _key)
+           public
+           constant
+           returns (address _contract)
+  {
+    _contract = ContractResolver(resolver).get_contract(_key);
   }
 }
 
@@ -2260,6 +2266,7 @@ contract DaoConstants {
     bytes32 CONTRACT_STORAGE_DAO_REWARDS = "storage:dao:rewards";
     bytes32 CONTRACT_STORAGE_DAO_WHITELISTING = "storage:dao:whitelisting";
     bytes32 CONTRACT_STORAGE_INTERMEDIATE_RESULTS = "storage:intermediate:results";
+    bytes32 CONTRACT_STORAGE_DAO_COLLATERAL = "storage:dao:collateral";
 
     bytes32 CONTRACT_DGD_TOKEN = "t:dgd";
     bytes32 CONTRACT_DGX_TOKEN = "t:dgx";
@@ -2272,9 +2279,9 @@ contract DaoConstants {
 
     uint256 QUARTER_DURATION = 90 days;
 
-    uint256 CONFIG_MINIMUM_LOCKED_DGD = 10 ** 9;
-    uint256 CONFIG_MINIMUM_DGD_FOR_MODERATOR = 100 * (10 ** 9);
-    uint256 CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR = 100;
+    bytes32 CONFIG_MINIMUM_LOCKED_DGD = "min_dgd_participant";
+    bytes32 CONFIG_MINIMUM_DGD_FOR_MODERATOR = "min_dgd_moderator";
+    bytes32 CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR = "min_reputation_moderator";
 
     bytes32 CONFIG_LOCKING_PHASE_DURATION = "locking_phase_duration";
     bytes32 CONFIG_QUARTER_DURATION = "quarter_duration";
@@ -2303,7 +2310,7 @@ contract DaoConstants {
     bytes32 CONFIG_QUARTER_POINT_SCALING_FACTOR = "quarter_point_scaling_factor";
     bytes32 CONFIG_REPUTATION_POINT_SCALING_FACTOR = "rep_point_scaling_factor";
 
-    bytes32 CONFIG_MINIMAL_MODERATOR_QUARTER_POINT = "CONFIG_MINIMAL_B_QP";
+    bytes32 CONFIG_MODERATOR_MINIMAL_QUARTER_POINT = "CONFIG_MINIMAL_B_QP";
     bytes32 CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR = "b_qp_scaling_factor";
     bytes32 CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR = "b_rep_point_scaling_factor";
 
@@ -2343,6 +2350,14 @@ contract DaoConstants {
     bytes32 CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE = "config_rp_boost_per_badge";
 
     bytes32 CONFIG_VOTE_CLAIMING_DEADLINE = "config_claiming_deadline";
+
+    bytes32 CONFIG_PREPROPOSAL_DEPOSIT = "config_preproposal_deposit";
+
+    bytes32 CONFIG_CONTRACT_MEDIANIZER = "config_medianizer_address";
+
+    bytes32 CONFIG_MAX_FUNDING_FOR_NON_DIGIX = "config_max_funding_nonDigix";
+    bytes32 CONFIG_MAX_MILESTONES_FOR_NON_DIGIX = "config_max_milestones_nonDigix";
+    bytes32 CONFIG_PROPOSAL_CAP_PER_QUARTER = "config_proposal_cap";
 }
 
 
@@ -2361,44 +2376,9 @@ contract DaoWhitelistingStorage is ResolverClient, DaoConstants {
 
     function setWhitelisted(address _contractAddress, bool _isWhitelisted)
         public
-        if_sender_is(CONTRACT_DAO_WHITELISTING)
     {
+        require(sender_is(CONTRACT_DAO_WHITELISTING));
         whitelist[_contractAddress] = _isWhitelisted;
-    }
-}
-
-
-
-
-
-
-contract DaoStorageCommon is ResolverClient, DaoConstants {
-    function daoWhitelistingStorage() internal returns (DaoWhitelistingStorage _contract) {
-        _contract = DaoWhitelistingStorage(get_contract(CONTRACT_STORAGE_DAO_WHITELISTING));
-    }
-
-    function isContract(address _address)
-        internal
-        returns (bool)
-    {
-        uint size;
-        assembly {
-            size := extcodesize(_address)
-        }
-        if (size > 0) {
-            return true;
-        }
-        return false;
-    }
-
-    function isWhitelisted(address _address)
-        internal
-        returns (bool)
-    {
-        if (isContract(_address)) {
-            require(daoWhitelistingStorage().whitelist(_address));
-        }
-        return true;
     }
 }
 
@@ -2424,20 +2404,15 @@ library DaoStructs {
         mapping (address => uint256) noVotes;
         bool passed;
         bool claimed;
-
-        // this is normally startTime + duration of the voting
-        // however, it can be delayed due to the PRL pausing
-        uint256 startOfNextMilestone;
-
     }
 
     struct ProposalVersion {
         bytes32 docIpfsHash;
         uint256 created;
         uint256 milestoneCount;
-        uint256[] milestoneDurations;
         uint256[] milestoneFundings;
         uint256 finalReward;
+        bytes32[] moreDocs;
     }
 
     struct Proposal {
@@ -2451,6 +2426,7 @@ library DaoStructs {
         Voting draftVoting;
         mapping (uint256 => Voting) votingRounds;
         bool isPaused;
+        bool isDigix;
         bytes32 finalVersion;
         PrlAction[] prlActions;
     }
@@ -2532,14 +2508,14 @@ library DaoStructs {
         returns (
             bytes32 _doc,
             uint256 _created,
-            uint256[] _milestoneDurations,
+            /* uint256[] _milestoneDurations, */
             uint256[] _milestoneFundings,
             uint256 _finalReward
         )
     {
         _doc = _version.docIpfsHash;
         _created = _version.created;
-        _milestoneDurations = _version.milestoneDurations;
+        /* _milestoneDurations = _version.milestoneDurations; */
         _milestoneFundings = _version.milestoneFundings;
         _finalReward = _version.finalReward;
     }
@@ -2547,13 +2523,12 @@ library DaoStructs {
     function readProposalMilestone(Proposal storage _proposal, uint256 _milestoneIndex)
         public
         constant
-        returns (uint256 _milestoneId, uint256 _duration, uint256 _funding)
+        returns (uint256 _milestoneId, uint256 _funding)
     {
         require(_milestoneIndex >= 0);
         bytes32 _finalVersion = _proposal.finalVersion;
-        if (_milestoneIndex < _proposal.proposalVersions[_finalVersion].milestoneDurations.length) {
+        if (_milestoneIndex < _proposal.proposalVersions[_finalVersion].milestoneFundings.length) {
             _milestoneId = _milestoneIndex;
-            _duration = _proposal.proposalVersions[_finalVersion].milestoneDurations[_milestoneIndex];
             _funding = _proposal.proposalVersions[_finalVersion].milestoneFundings[_milestoneIndex];
         } else {
             _funding = _proposal.proposalVersions[_finalVersion].finalReward;
@@ -2563,7 +2538,6 @@ library DaoStructs {
     function addProposalVersion(
         Proposal storage _proposal,
         bytes32 _newDoc,
-        uint256[] _newMilestoneDurations,
         uint256[] _newMilestoneFundings,
         uint256 _finalReward
     )
@@ -2573,7 +2547,6 @@ library DaoStructs {
         _proposal.proposalVersions[_newDoc].docIpfsHash = _newDoc;
         _proposal.proposalVersions[_newDoc].created = now;
         _proposal.proposalVersions[_newDoc].milestoneCount = _newMilestoneFundings.length;
-        _proposal.proposalVersions[_newDoc].milestoneDurations = _newMilestoneDurations;
         _proposal.proposalVersions[_newDoc].milestoneFundings = _newMilestoneFundings;
         _proposal.proposalVersions[_newDoc].finalReward = _finalReward;
     }
@@ -2620,6 +2593,41 @@ library DaoStructs {
 
 
 
+contract DaoStorageCommon is ResolverClient, DaoConstants {
+    function daoWhitelistingStorage() internal returns (DaoWhitelistingStorage _contract) {
+        _contract = DaoWhitelistingStorage(get_contract(CONTRACT_STORAGE_DAO_WHITELISTING));
+    }
+
+    function isContract(address _address)
+        internal
+        returns (bool)
+    {
+        uint size;
+        assembly {
+            size := extcodesize(_address)
+        }
+        if (size > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    function isWhitelisted(address _address)
+        internal
+        returns (bool)
+    {
+        if (isContract(_address)) {
+            require(daoWhitelistingStorage().whitelist(_address));
+        }
+        return true;
+    }
+}
+
+
+
+
+
+
 
 
 contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
@@ -2631,6 +2639,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     DoublyLinkedList.Bytes allProposals;
     mapping (bytes32 => DaoStructs.Proposal) proposalsById;
     mapping (bytes32 => DoublyLinkedList.Bytes) proposalsByState;
+    mapping (uint256 => uint256) public proposalCountByQuarter;
 
     function DaoStorage(address _resolver) public {
         require(init(CONTRACT_STORAGE_DAO, _resolver));
@@ -2647,7 +2656,9 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     ///   "_state": "",
     ///   "_timeCreated": "",
     ///   "_nVersions": "",
-    ///   "_finalVersion": ""
+    ///   "_finalVersion": "",
+    ///   "_paused": "",
+    ///   "_isDigixProposal": ""
     /// }
     function readProposal(bytes32 _proposalId)
         public
@@ -2661,7 +2672,8 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
             uint256 _nVersions,
             bytes32 _latestVersionDoc,
             bytes32 _finalVersion,
-            bool _paused
+            bool _paused,
+            bool _isDigixProposal
         )
     {
         DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
@@ -2674,6 +2686,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         _latestVersionDoc = read_last_from_bytesarray(_proposal.proposalVersionDocs);
         _finalVersion = _proposal.finalVersion;
         _paused = _proposal.isPaused;
+        _isDigixProposal = _proposal.isDigix;
     }
 
     function readProposalProposer(bytes32 _proposalId)
@@ -2709,7 +2722,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         constant
         returns (bool _result)
     {
-        require(isWhitelisted(msg.sender));
         _result = proposalsById[_proposalId].draftVoting.passed;
     }
 
@@ -2718,7 +2730,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         constant
         returns (bool _result)
     {
-        require(isWhitelisted(msg.sender));
         _result = proposalsById[_proposalId].votingRounds[_index].passed;
     }
 
@@ -2727,7 +2738,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         constant
         returns (uint256 _start)
     {
-        require(isWhitelisted(msg.sender));
         _start = proposalsById[_proposalId].draftVoting.startTime;
     }
 
@@ -2736,17 +2746,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         constant
         returns (uint256 _start)
     {
-        require(isWhitelisted(msg.sender));
         _start = proposalsById[_proposalId].votingRounds[_index].startTime;
-    }
-
-    function readProposalNextMilestoneStart(bytes32 _proposalId, uint256 _index)
-        public
-        constant
-        returns (uint256 _start)
-    {
-        require(isWhitelisted(msg.sender));
-        _start = proposalsById[_proposalId].votingRounds[_index].startOfNextMilestone;
     }
 
     function readDraftVotingCount(bytes32 _proposalId, address[] memory _allUsers)
@@ -2754,7 +2754,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         constant
         returns (uint256 _for, uint256 _against, uint256 _quorum)
     {
-        require(isWhitelisted(msg.sender));
         return proposalsById[_proposalId].draftVoting.countVotes(_allUsers);
     }
 
@@ -2763,7 +2762,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         constant
         returns (uint256 _for, uint256 _against, uint256 _quorum)
     {
-        require(isWhitelisted(msg.sender));
         return proposalsById[_proposalId].votingRounds[_index].countVotes(_allUsers);
     }
 
@@ -2929,7 +2927,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     /// return {
     ///   "_doc": "",
     ///   "_created": "",
-    ///   "_milestoneDurations": "",
     ///   "_milestoneFundings": ""
     /// }
     function readProposalVersion(bytes32 _proposalId, bytes32 _version)
@@ -2938,7 +2935,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         returns (
             bytes32 _doc,
             uint256 _created,
-            uint256[] _milestoneDurations,
             uint256[] _milestoneFundings,
             uint256 _finalReward
         )
@@ -2949,44 +2945,19 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     function readProposalFunding(bytes32 _proposalId)
         public
         constant
-        returns (uint256[] memory _fundings, uint256 _finalReward, uint256 _totalFunding)
+        returns (uint256[] memory _fundings, uint256 _finalReward)
     {
         bytes32 _finalVersion = proposalsById[_proposalId].finalVersion;
         _fundings = proposalsById[_proposalId].proposalVersions[_finalVersion].milestoneFundings;
-        uint256 _n = _fundings.length;
-        for (uint256 i = 0; i < _n; i++) {
-            _totalFunding = _totalFunding.add(_fundings[i]);
-        }
         _finalReward = proposalsById[_proposalId].proposalVersions[_finalVersion].finalReward;
     }
 
     function readProposalMilestone(bytes32 _proposalId, uint256 _index)
         public
         constant
-        returns (uint256 _milestoneId, uint256 _duration, uint256 _funding)
+        returns (uint256 _milestoneId, uint256 _funding)
     {
         return proposalsById[_proposalId].readProposalMilestone(_index);
-    }
-
-    /* function readProposalMilestoneDuration(bytes32 _proposalId, uint256 _index)
-        public
-        constant
-        returns (uint256 _duration)
-    {
-        (,_duration,,) = readProposalMilestone(_proposalId, _index);
-    } */
-
-    function readProposalDuration(bytes32 _proposalId)
-        public
-        constant
-        returns (uint256[] memory _durations, uint256 _totalDuration)
-    {
-        bytes32 _finalVersion = proposalsById[_proposalId].finalVersion;
-        _durations = proposalsById[_proposalId].proposalVersions[_finalVersion].milestoneFundings;
-        uint256 _n = _durations.length;
-        for (uint256 i = 0; i < _n; i++) {
-            _totalDuration = _totalDuration.add(_durations[i]);
-        }
     }
 
     /// @notice get proposal version details for the first version
@@ -3057,7 +3028,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         public
         returns (bool _claimed)
     {
-        require(isWhitelisted(msg.sender));
         _claimed = proposalsById[_proposalId].draftVoting.claimed;
     }
 
@@ -3065,7 +3035,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         public
         returns (bool _claimed)
     {
-        require(isWhitelisted(msg.sender));
         _claimed = proposalsById[_proposalId].votingRounds[_index].claimed;
     }
 
@@ -3076,7 +3045,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     /// @notice add a new proposal, added to the PREPROPOSAL state
     /// @param _doc hash of IPFS document
     /// @param _proposer address of proposer of the proposal
-    /// @param _milestoneDurations array of time durations for milestones
     /// @param _milestoneFundings array of required fundings for milestones
     /// @return {
     ///    "_success": "if pre-proposal was created successfully"
@@ -3084,48 +3052,75 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     function addProposal(
         bytes32 _doc,
         address _proposer,
-        uint256[] _milestoneDurations,
         uint256[] _milestoneFundings,
-        uint256 _finalReward
+        uint256 _finalReward,
+        bool _isFounder
     )
         public
-        if_sender_is(CONTRACT_DAO)
     {
+        require(sender_is(CONTRACT_DAO));
+
         allProposals.append(_doc);
         proposalsByState[PROPOSAL_STATE_PREPROPOSAL].append(_doc);
         proposalsById[_doc].proposalId = _doc;
         proposalsById[_doc].proposer = _proposer;
         proposalsById[_doc].currentState = PROPOSAL_STATE_PREPROPOSAL;
         proposalsById[_doc].timeCreated = now;
-
-        proposalsById[_doc].addProposalVersion(_doc, _milestoneDurations, _milestoneFundings, _finalReward);
+        proposalsById[_doc].isDigix = _isFounder;
+        proposalsById[_doc].addProposalVersion(_doc, _milestoneFundings, _finalReward);
     }
 
     /// @notice edit/modify a proposal
     /// @param _proposalId Proposal ID
     /// @param _newDoc hash of IPFS document for newer version
-    /// @param _newMilestoneDurations new array of time durations for milestones
-    /// @param _newMilestoneDurations new array of req fundings for milestones
     /// @return {
     ///    "_success": "if proposal was edited successfully"
     /// }
     function editProposal(
         bytes32 _proposalId,
         bytes32 _newDoc,
-        uint256[] _newMilestoneDurations,
         uint256[] _newMilestoneFundings,
         uint256 _finalReward
     )
         public
-        if_sender_is(CONTRACT_DAO)
     {
-        proposalsById[_proposalId].addProposalVersion(_newDoc, _newMilestoneDurations, _newMilestoneFundings, _finalReward);
+        require(sender_is(CONTRACT_DAO));
+
+        proposalsById[_proposalId].addProposalVersion(_newDoc, _newMilestoneFundings, _finalReward);
+    }
+
+    function changeFundings(bytes32 _proposalId, uint256[] _newMilestoneFundings, uint256 _finalReward)
+        public
+    {
+        require(sender_is(CONTRACT_DAO));
+
+        bytes32 _lastVersion = getLastProposalVersion(_proposalId);
+        proposalsById[_proposalId].proposalVersions[_lastVersion].milestoneFundings = _newMilestoneFundings;
+        proposalsById[_proposalId].proposalVersions[_lastVersion].finalReward = _finalReward;
+    }
+
+    function addProposalDoc(bytes32 _proposalId, bytes32 _newDoc)
+        public
+    {
+        require(sender_is(CONTRACT_DAO));
+
+        bytes32 _lastVersion = getLastProposalVersion(_proposalId);
+        proposalsById[_proposalId].proposalVersions[_lastVersion].moreDocs.push(_newDoc);
+    }
+
+    function readProposalDocs(bytes32 _proposalId)
+        public
+        returns (bytes32[] _moreDocs)
+    {
+        bytes32 _lastVersion = getLastProposalVersion(_proposalId);
+        _moreDocs = proposalsById[_proposalId].proposalVersions[_lastVersion].moreDocs;
     }
 
     function finalizeProposal(bytes32 _proposalId)
         public
-        if_sender_is(CONTRACT_DAO)
     {
+        require(sender_is(CONTRACT_DAO));
+
         proposalsById[_proposalId].finalVersion = getLastProposalVersion(_proposalId);
     }
 
@@ -3140,8 +3135,9 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         address _endorser
     )
         public
-        if_sender_is(CONTRACT_DAO)
     {
+        require(sender_is(CONTRACT_DAO));
+
         DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
         _proposal.endorser = _endorser;
         _proposal.currentState = PROPOSAL_STATE_DRAFT;
@@ -3151,8 +3147,9 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
 
     function setProposalDraftPass(bytes32 _proposalId, bool _result)
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
+
         proposalsById[_proposalId].draftVoting.passed = _result;
         if (_result) {
             proposalsByState[PROPOSAL_STATE_DRAFT].remove_item(_proposalId);
@@ -3165,8 +3162,9 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
 
     function setProposalPass(bytes32 _proposalId, uint256 _index, bool _result)
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
+
         if (!_result) {
             closeProposalInternal(_proposalId);
         } else if (_index == 0) {
@@ -3182,8 +3180,9 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _time
     )
         public
-        if_sender_is(CONTRACT_DAO)
     {
+        require(sender_is(CONTRACT_DAO));
+
         proposalsById[_proposalId].draftVoting.startTime = _time;
     }
 
@@ -3193,38 +3192,23 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _time
     )
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
-        proposalsById[_proposalId].votingRounds[_index].startTime = _time;
-    }
+        require(sender_is_from([CONTRACT_DAO, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES]));
 
-    function setProposalNextMilestoneStart(
-        bytes32 _proposalId,
-        uint256 _index,
-        uint256 _time
-    )
-        public
-        if_sender_is_from([CONTRACT_DAO, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES])
-    {
-        /* if (_index == 0) {
-            proposalsById[_proposalId].draftVoting.startOfNextMilestone = _time;
-        } else {
-            proposalsById[_proposalId].votingRounds[_index-1].startOfNextMilestone = _time;
-        } */
-        proposalsById[_proposalId].votingRounds[_index].startOfNextMilestone = _time;
+        proposalsById[_proposalId].votingRounds[_index].startTime = _time;
     }
 
     function setDraftVotingClaim(bytes32 _proposalId, bool _claimed)
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
         proposalsById[_proposalId].draftVoting.claimed = _claimed;
     }
 
     function setVotingClaim(bytes32 _proposalId, uint256 _index, bool _claimed)
         public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
     {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
         proposalsById[_proposalId].votingRounds[_index].claimed = _claimed;
     }
 
@@ -3239,8 +3223,8 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _time
     )
         public
-        if_sender_is(CONTRACT_DAO)
     {
+        require(sender_is(CONTRACT_DAO));
         DaoStructs.PrlAction memory prlAction;
         prlAction.at = _time;
         prlAction.doc = _doc;
@@ -3281,8 +3265,9 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _weight
     )
         public
-        if_sender_is(CONTRACT_DAO_VOTING)
     {
+        require(sender_is(CONTRACT_DAO_VOTING));
+
         DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
         if (_vote) {
             _proposal.draftVoting.yesVotes[_voter] = _weight;
@@ -3312,8 +3297,9 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _index
     )
         public
-        if_sender_is(CONTRACT_DAO_VOTING)
     {
+        require(sender_is(CONTRACT_DAO_VOTING));
+
         proposalsById[_proposalId].votingRounds[_index].commits[_voter] = _hash;
     }
 
@@ -3334,9 +3320,24 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         uint256 _index
     )
         public
-        if_sender_is(CONTRACT_DAO_VOTING)
     {
+        require(sender_is(CONTRACT_DAO_VOTING));
+
         proposalsById[_proposalId].votingRounds[_index].revealVote(_voter, _vote, _weight);
+    }
+
+    function addProposalCountInQuarter(uint256 _quarterIndex)
+        public
+    {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
+        proposalCountByQuarter[_quarterIndex] = proposalCountByQuarter[_quarterIndex].add(1);
+    }
+
+    function closeProposal(bytes32 _proposalId)
+        public
+    {
+        require(sender_is(CONTRACT_DAO));
+        closeProposalInternal(_proposalId);
     }
 }
 
@@ -3463,30 +3464,30 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
     }
 
     function redeemBadge(address _user)
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         public
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         redeemedBadge[_user] = true;
     }
 
     function updateTotalLockedDGDStake(uint256 _totalLockedDGDStake)
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         public
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         totalLockedDGDStake = _totalLockedDGDStake;
     }
 
     function updateTotalModeratorLockedDGDs(uint256 _totalLockedDGDStake)
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         public
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         totalModeratorLockedDGDStake = _totalLockedDGDStake;
     }
 
     function updateUserDGDStake(address _user, uint256 _actualLockedDGD, uint256 _lockedDGDStake)
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         public
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         actualLockedDGD[_user] = _actualLockedDGD;
         lockedDGDStake[_user] = _lockedDGDStake;
     }
@@ -3513,33 +3514,33 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function addToParticipantList(address _user)
         public
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         returns (bool _success)
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         _success = allParticipants.append(_user);
     }
 
     function removeFromParticipantList(address _user)
         public
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         returns (bool _success)
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         _success = allParticipants.remove_item(_user);
     }
 
     function addToModeratorList(address _user)
         public
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         returns (bool _success)
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         _success = allModerators.append(_user);
     }
 
     function removeFromModeratorList(address _user)
         public
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         returns (bool _success)
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         _success = allModerators.remove_item(_user);
     }
 
@@ -3954,86 +3955,6 @@ contract DaoListingService is ResolverClient,
 
 
 /**
-  @title Uint Iterator Storage
-  @author DigixGlobal Pte Ltd
-*/
-contract UintIteratorStorage {
-
-  using DoublyLinkedList for DoublyLinkedList.Uint;
-
-  /**
-    @notice Returns the first item from a `DoublyLinkedList.Uint` list
-    @param _list The DoublyLinkedList.Uint list
-    @return {"_item": "The first item"}
-  */
-  function read_first_from_uints(DoublyLinkedList.Uint storage _list)
-           internal
-           constant
-           returns (uint256 _item)
-  {
-    _item = _list.start_item();
-  }
-
-  /**
-    @notice Returns the last item from a `DoublyLinkedList.Uint` list
-    @param _list The DoublyLinkedList.Uint list
-    @return {"_item": "The last item"}
-  */
-  function read_last_from_uints(DoublyLinkedList.Uint storage _list)
-           internal
-           constant
-           returns (uint256 _item)
-  {
-    _item = _list.end_item();
-  }
-
-  /**
-    @notice Returns the next item from a `DoublyLinkedList.Uint` list based on the specified `_current_item`
-    @param _list The DoublyLinkedList.Uint list
-    @param _current_item The current item
-    @return {"_item": "The next item"}
-  */
-  function read_next_from_uints(DoublyLinkedList.Uint storage _list, uint256 _current_item)
-           internal
-           constant
-           returns (uint256 _item)
-  {
-    _item = _list.next_item(_current_item);
-  }
-
-  /**
-    @notice Returns the previous item from a `DoublyLinkedList.Uint` list based on the specified `_current_item`
-    @param _list The DoublyLinkedList.Uint list
-    @param _current_item The current item
-    @return {"_item": "The previous item"}
-  */
-  function read_previous_from_uints(DoublyLinkedList.Uint storage _list, uint256 _current_item)
-           internal
-           constant
-           returns (uint256 _item)
-  {
-    _item = _list.previous_item(_current_item);
-  }
-
-  /**
-    @notice Returns the total count of itemsfrom a `DoublyLinkedList.Uint` list
-    @param _list The DoublyLinkedList.Uint list
-    @return {"_count": "The total count of items"}
-  */
-  function read_total_uints(DoublyLinkedList.Uint storage _list)
-           internal
-           constant
-           returns (uint256 _count)
-  {
-    _count = _list.total();
-  }
-
-}
-
-
-
-
-/**
   @title Indexed Address IteratorStorage
   @author DigixGlobal Pte Ltd
   @notice This contract utilizes: [Doubly Linked List](/DoublyLinkedList)
@@ -4112,6 +4033,86 @@ contract IndexedAddressIteratorStorage {
            returns (uint256 _count)
   {
     _count = _list.total(_collection_index);
+  }
+
+}
+
+
+
+
+/**
+  @title Uint Iterator Storage
+  @author DigixGlobal Pte Ltd
+*/
+contract UintIteratorStorage {
+
+  using DoublyLinkedList for DoublyLinkedList.Uint;
+
+  /**
+    @notice Returns the first item from a `DoublyLinkedList.Uint` list
+    @param _list The DoublyLinkedList.Uint list
+    @return {"_item": "The first item"}
+  */
+  function read_first_from_uints(DoublyLinkedList.Uint storage _list)
+           internal
+           constant
+           returns (uint256 _item)
+  {
+    _item = _list.start_item();
+  }
+
+  /**
+    @notice Returns the last item from a `DoublyLinkedList.Uint` list
+    @param _list The DoublyLinkedList.Uint list
+    @return {"_item": "The last item"}
+  */
+  function read_last_from_uints(DoublyLinkedList.Uint storage _list)
+           internal
+           constant
+           returns (uint256 _item)
+  {
+    _item = _list.end_item();
+  }
+
+  /**
+    @notice Returns the next item from a `DoublyLinkedList.Uint` list based on the specified `_current_item`
+    @param _list The DoublyLinkedList.Uint list
+    @param _current_item The current item
+    @return {"_item": "The next item"}
+  */
+  function read_next_from_uints(DoublyLinkedList.Uint storage _list, uint256 _current_item)
+           internal
+           constant
+           returns (uint256 _item)
+  {
+    _item = _list.next_item(_current_item);
+  }
+
+  /**
+    @notice Returns the previous item from a `DoublyLinkedList.Uint` list based on the specified `_current_item`
+    @param _list The DoublyLinkedList.Uint list
+    @param _current_item The current item
+    @return {"_item": "The previous item"}
+  */
+  function read_previous_from_uints(DoublyLinkedList.Uint storage _list, uint256 _current_item)
+           internal
+           constant
+           returns (uint256 _item)
+  {
+    _item = _list.previous_item(_current_item);
+  }
+
+  /**
+    @notice Returns the total count of itemsfrom a `DoublyLinkedList.Uint` list
+    @param _list The DoublyLinkedList.Uint list
+    @return {"_count": "The total count of items"}
+  */
+  function read_total_uints(DoublyLinkedList.Uint storage _list)
+           internal
+           constant
+           returns (uint256 _count)
+  {
+    _count = _list.total();
   }
 
 }
@@ -4476,45 +4477,45 @@ contract DaoIdentityStorage is ResolverClient, DaoConstants, DirectoryStorage {
     }
 
     function create_group(uint256 _role_id, bytes32 _name, bytes32 _document)
-        if_sender_is(CONTRACT_DAO_IDENTITY)
         public
         returns (bool _success, uint256 _group_id)
     {
+        require(sender_is(CONTRACT_DAO_IDENTITY));
         (_success, _group_id) = internal_create_group(_role_id, _name, _document);
         require(_success);
     }
 
     function create_role(uint256 _role_id, bytes32 _name)
-        if_sender_is(CONTRACT_DAO_IDENTITY)
         public
         returns (bool _success)
     {
+        require(sender_is(CONTRACT_DAO_IDENTITY));
         _success = internal_create_role(_role_id, _name);
         require(_success);
     }
 
     function update_add_user_to_group(uint256 _group_id, address _user, bytes32 _document)
-        if_sender_is(CONTRACT_DAO_IDENTITY)
         public
         returns (bool _success)
     {
+        require(sender_is(CONTRACT_DAO_IDENTITY));
         _success = internal_update_add_user_to_group(_group_id, _user, _document);
         require(_success);
     }
 
     function update_remove_group_user(address _user)
-        if_sender_is(CONTRACT_DAO_IDENTITY)
         public
         returns (bool _success)
     {
+        require(sender_is(CONTRACT_DAO_IDENTITY));
         _success = internal_destroy_group_user(_user);
         require(_success);
     }
 
     function update_kyc(address _user, bytes32 _doc, uint256 _id_expiration)
-        if_sender_is(CONTRACT_DAO_IDENTITY)
         public
     {
+        require(sender_is(CONTRACT_DAO_IDENTITY));
         kycInfo[_user].doc = _doc;
         kycInfo[_user].id_expiration = _id_expiration;
     }
@@ -4551,8 +4552,12 @@ contract IdentityCommon is ResolverClient, DaoConstants {
   }
 
   modifier if_founder() {
-    require(identity_storage().read_user_role_id(msg.sender) == ROLES_FOUNDERS);
+    require(is_founder());
     _;
+  }
+
+  function is_founder() returns (bool _isFounder) {
+      _isFounder = identity_storage().read_user_role_id(msg.sender) == ROLES_FOUNDERS;
   }
 
   modifier if_prl() {
@@ -4636,7 +4641,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_QUARTER_POINT_SCALING_FACTOR] = 10;
         uintConfigs[CONFIG_REPUTATION_POINT_SCALING_FACTOR] = 10;
 
-        uintConfigs[CONFIG_MINIMAL_MODERATOR_QUARTER_POINT] = 3;
+        uintConfigs[CONFIG_MODERATOR_MINIMAL_QUARTER_POINT] = 3;
         uintConfigs[CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR] = 10;
         uintConfigs[CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR] = 10;
 
@@ -4654,12 +4659,25 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN] = 1;
 
         uintConfigs[CONFIG_VOTE_CLAIMING_DEADLINE] = 5 days;
+
+        uintConfigs[CONFIG_MINIMUM_LOCKED_DGD] = 10 ** 9;
+        uintConfigs[CONFIG_MINIMUM_DGD_FOR_MODERATOR] = 100 * (10 ** 9);
+        uintConfigs[CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR] = 100;
+
+        uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT] = 2 * (10 ** 18);
+
+        uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX] = 100 ether; // TODO: change to 5000USD
+        uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX] = 4;  // TODO: change to 2
+        uintConfigs[CONFIG_PROPOSAL_CAP_PER_QUARTER] = 10;
+
+        // set address configs
+        addressConfigs[CONFIG_CONTRACT_MEDIANIZER] = 0x729D19f657BD0614b4985Cf1D82531c67569197B;
     }
 
     function updateUintConfigs(uint256[] _uintConfigs)
         public
-        if_sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS)
     {
+        require(sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS));
         uintConfigs[CONFIG_LOCKING_PHASE_DURATION] = _uintConfigs[0];
         uintConfigs[CONFIG_QUARTER_DURATION] = _uintConfigs[1];
         uintConfigs[CONFIG_VOTING_COMMIT_PHASE] = _uintConfigs[2];
@@ -4698,7 +4716,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_DEN] = _uintConfigs[35];
         uintConfigs[CONFIG_QUARTER_POINT_SCALING_FACTOR] = _uintConfigs[36];
         uintConfigs[CONFIG_REPUTATION_POINT_SCALING_FACTOR] = _uintConfigs[37];
-        uintConfigs[CONFIG_MINIMAL_MODERATOR_QUARTER_POINT] = _uintConfigs[38];
+        uintConfigs[CONFIG_MODERATOR_MINIMAL_QUARTER_POINT] = _uintConfigs[38];
         uintConfigs[CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR] = _uintConfigs[39];
         uintConfigs[CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR] = _uintConfigs[40];
         uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM] = _uintConfigs[41];
@@ -4707,19 +4725,24 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE] = _uintConfigs[44];
         uintConfigs[CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR] = _uintConfigs[45];
         uintConfigs[CONFIG_FINAL_REWARD_SCALING_FACTOR_DENOMINATOR] = _uintConfigs[46];
-
         uintConfigs[CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION] = _uintConfigs[47];
         uintConfigs[CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM] = _uintConfigs[48];
         uintConfigs[CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN] = _uintConfigs[49];
-
         uintConfigs[CONFIG_VOTE_CLAIMING_DEADLINE] = _uintConfigs[50];
+        uintConfigs[CONFIG_MINIMUM_LOCKED_DGD] = _uintConfigs[51];
+        uintConfigs[CONFIG_MINIMUM_DGD_FOR_MODERATOR] = _uintConfigs[52];
+        uintConfigs[CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR] = _uintConfigs[53];
+        uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT] = _uintConfigs[54];
+        uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX] = _uintConfigs[55];
+        uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX] = _uintConfigs[56];
+        uintConfigs[CONFIG_PROPOSAL_CAP_PER_QUARTER] = _uintConfigs[57];
     }
 
     function readUintConfigs()
         public
         returns (uint256[])
     {
-        uint256[] memory _uintConfigs = new uint256[](51);
+        uint256[] memory _uintConfigs = new uint256[](58);
         _uintConfigs[0] = uintConfigs[CONFIG_LOCKING_PHASE_DURATION];
         _uintConfigs[1] = uintConfigs[CONFIG_QUARTER_DURATION];
         _uintConfigs[2] = uintConfigs[CONFIG_VOTING_COMMIT_PHASE];
@@ -4758,7 +4781,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         _uintConfigs[35] = uintConfigs[CONFIG_REPUTATION_PER_EXTRA_QP_DEN];
         _uintConfigs[36] = uintConfigs[CONFIG_QUARTER_POINT_SCALING_FACTOR];
         _uintConfigs[37] = uintConfigs[CONFIG_REPUTATION_POINT_SCALING_FACTOR];
-        _uintConfigs[38] = uintConfigs[CONFIG_MINIMAL_MODERATOR_QUARTER_POINT];
+        _uintConfigs[38] = uintConfigs[CONFIG_MODERATOR_MINIMAL_QUARTER_POINT];
         _uintConfigs[39] = uintConfigs[CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR];
         _uintConfigs[40] = uintConfigs[CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR];
         _uintConfigs[41] = uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM];
@@ -4767,12 +4790,17 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         _uintConfigs[44] = uintConfigs[CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE];
         _uintConfigs[45] = uintConfigs[CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR];
         _uintConfigs[46] = uintConfigs[CONFIG_FINAL_REWARD_SCALING_FACTOR_DENOMINATOR];
-
         _uintConfigs[47] = uintConfigs[CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION];
         _uintConfigs[48] = uintConfigs[CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM];
         _uintConfigs[49] = uintConfigs[CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN];
-
         _uintConfigs[50] = uintConfigs[CONFIG_VOTE_CLAIMING_DEADLINE];
+        _uintConfigs[51] = uintConfigs[CONFIG_MINIMUM_LOCKED_DGD];
+        _uintConfigs[52] = uintConfigs[CONFIG_MINIMUM_DGD_FOR_MODERATOR];
+        _uintConfigs[53] = uintConfigs[CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR];
+        _uintConfigs[54] = uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT];
+        _uintConfigs[55] = uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX];
+        _uintConfigs[56] = uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX];
+        _uintConfigs[57] = uintConfigs[CONFIG_PROPOSAL_CAP_PER_QUARTER];
         return _uintConfigs;
     }
 }
@@ -4783,31 +4811,31 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
 
 contract DaoUpgradeStorage is ResolverClient, DaoConstants {
 
-  uint256 public startOfFirstQuarter;
-  bool public isReplacedByNewDao;
-  address public newDaoContract;
-  address public newDaoFundingManager;
+    uint256 public startOfFirstQuarter;
+    bool public isReplacedByNewDao;
+    address public newDaoContract;
+    address public newDaoFundingManager;
 
-  function DaoUpgradeStorage(address _resolver) public {
-      require(init(CONTRACT_STORAGE_DAO_UPGRADABLE, _resolver));
-  }
+    function DaoUpgradeStorage(address _resolver) public {
+        require(init(CONTRACT_STORAGE_DAO_UPGRADABLE, _resolver));
+    }
 
-  function setStartOfFirstQuarter(uint256 _start)
-      if_sender_is(CONTRACT_DAO)
-      public
-  {
-      require(startOfFirstQuarter == 0);
-      startOfFirstQuarter = _start;
-  }
+    function setStartOfFirstQuarter(uint256 _start)
+        public
+    {
+        require(sender_is(CONTRACT_DAO));
+        require(startOfFirstQuarter == 0);
+        startOfFirstQuarter = _start;
+    }
 
-  function updateForDaoMigration(address _newDaoFundingManager, address _newDaoContract)
-      if_sender_is(CONTRACT_DAO)
-      public
-  {
-    isReplacedByNewDao = true;
-    newDaoContract = _newDaoContract;
-    newDaoFundingManager = _newDaoFundingManager;
-  }
+    function updateForDaoMigration(address _newDaoFundingManager, address _newDaoContract)
+        public
+    {
+        require(sender_is(CONTRACT_DAO));
+        isReplacedByNewDao = true;
+        newDaoContract = _newDaoContract;
+        newDaoFundingManager = _newDaoFundingManager;
+    }
 }
 
 
@@ -4836,8 +4864,8 @@ contract DaoSpecialStorage is DaoStorageCommon {
         bytes32[] _bytesConfigs
     )
         public
-        if_sender_is(CONTRACT_DAO)
     {
+        require(sender_is(CONTRACT_DAO));
         proposals.append(_proposalId);
         proposalsById[_proposalId].proposalId = _proposalId;
         proposalsById[_proposalId].proposer = _proposer;
@@ -4906,8 +4934,8 @@ contract DaoSpecialStorage is DaoStorageCommon {
         address _voter
     )
         public
-        if_sender_is(CONTRACT_DAO_VOTING)
     {
+        require(sender_is(CONTRACT_DAO_VOTING));
         proposalsById[_proposalId].voting.commits[_voter] = _hash;
     }
 
@@ -4922,8 +4950,8 @@ contract DaoSpecialStorage is DaoStorageCommon {
 
     function setVotingTime(bytes32 _proposalId, uint256 _time)
         public
-        if_sender_is(CONTRACT_DAO)
     {
+        require(sender_is(CONTRACT_DAO));
         proposalsById[_proposalId].voting.startTime = _time;
     }
 
@@ -4937,15 +4965,15 @@ contract DaoSpecialStorage is DaoStorageCommon {
 
     function setPass(bytes32 _proposalId, bool _result)
         public
-        if_sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS)
     {
+        require(sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS));
         proposalsById[_proposalId].voting.passed = _result;
     }
 
     function setVotingClaim(bytes32 _proposalId, bool _claimed)
         public
-        if_sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS)
     {
+        require(sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS));
         DaoStructs.SpecialProposal _proposal = proposalsById[_proposalId];
         _proposal.voting.claimed = _claimed;
     }
@@ -4974,8 +5002,8 @@ contract DaoSpecialStorage is DaoStorageCommon {
         uint256 _weight
     )
         public
-        if_sender_is(CONTRACT_DAO_VOTING)
     {
+        require(sender_is(CONTRACT_DAO_VOTING));
         proposalsById[_proposalId].voting.revealVote(_voter, _vote, _weight);
     }
 }
@@ -5002,10 +5030,10 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
 
     /// @notice add quarter points for a _participant for a _quarterId
     function addQuarterPoint(address _participant, uint256 _point, uint256 _quarterId)
-        if_sender_is_from([CONTRACT_DAO_VOTING, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES])
         public
         returns (uint256 _newPoint, uint256 _newTotalPoint)
     {
+        require(sender_is_from([CONTRACT_DAO_VOTING, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES]));
         quarterPoint[_quarterId].totalSupply = quarterPoint[_quarterId].totalSupply.add(_point);
         quarterPoint[_quarterId].balance[_participant] = quarterPoint[_quarterId].balance[_participant].add(_point);
 
@@ -5014,10 +5042,10 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
     }
 
     function addQuarterModeratorPoint(address _participant, uint256 _point, uint256 _quarterId)
-        if_sender_is_from([CONTRACT_DAO_VOTING, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES])
         public
         returns (uint256 _newPoint, uint256 _newTotalPoint)
     {
+        require(sender_is_from([CONTRACT_DAO_VOTING, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES]));
         quarterModeratorPoint[_quarterId].totalSupply = quarterModeratorPoint[_quarterId].totalSupply.add(_point);
         quarterModeratorPoint[_quarterId].balance[_participant] = quarterModeratorPoint[_quarterId].balance[_participant].add(_point);
 
@@ -5061,10 +5089,10 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
 
     /// @notice add reputation points for a _participant
     function addReputation(address _participant, uint256 _point)
-        if_sender_is_from([CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_REWARDS_MANAGER, CONTRACT_DAO_STAKE_LOCKING])
         public
         returns (uint256 _newPoint, uint256 _totalPoint)
     {
+        require(sender_is_from([CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_REWARDS_MANAGER, CONTRACT_DAO_STAKE_LOCKING]));
         reputationPoint.totalSupply = reputationPoint.totalSupply.add(_point);
         reputationPoint.balance[_participant] = reputationPoint.balance[_participant].add(_point);
 
@@ -5074,10 +5102,10 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
 
     /// @notice subtract reputation points for a _participant
     function subtractReputation(address _participant, uint256 _point)
-        if_sender_is_from([CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_REWARDS_MANAGER, EMPTY_BYTES])
         public
         returns (uint256 _newPoint, uint256 _totalPoint)
     {
+        require(sender_is_from([CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_REWARDS_MANAGER, EMPTY_BYTES]));
         uint256 _toDeduct = _point;
         if (reputationPoint.balance[_participant] > _point) {
             reputationPoint.balance[_participant] = reputationPoint.balance[_participant].sub(_point);
@@ -5125,25 +5153,23 @@ contract DaoFundingStorage is ResolverClient, DaoConstants {
     }
 
     function updateClaimableEth(address _proposer, uint256 _value)
-        if_sender_is(CONTRACT_DAO_FUNDING_MANAGER)
         public
     {
+        require(sender_is(CONTRACT_DAO_FUNDING_MANAGER));
         claimableEth[_proposer] = _value;
     }
 
-    // TODO: Add SafeMath
     function addEth(uint256 _ethAmount)
-        if_sender_is(CONTRACT_DAO_FUNDING_MANAGER)
         public
     {
+        require(sender_is(CONTRACT_DAO_FUNDING_MANAGER));
         ethInDao = ethInDao.add(_ethAmount);
     }
 
-    // TODO: Add SafeMath
     function withdrawEth(uint256 _ethAmount)
-        if_sender_is(CONTRACT_DAO_FUNDING_MANAGER)
         public
     {
+        require(sender_is(CONTRACT_DAO_FUNDING_MANAGER));
         ethInDao = ethInDao.sub(_ethAmount);
     }
 }
@@ -5187,9 +5213,9 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         uint256 _dgxRewardsPoolLastQuarter,
         uint256 _sumRewardsFromBeginning
     )
-        if_sender_is(CONTRACT_DAO_REWARDS_MANAGER)
         public
     {
+        require(sender_is(CONTRACT_DAO_REWARDS_MANAGER));
         allQuartersInfo[_quarterIndex].minimalParticipationPoint = _minimalParticipationPoint;
         allQuartersInfo[_quarterIndex].quarterPointScalingFactor = _quarterPointScalingFactor;
         allQuartersInfo[_quarterIndex].reputationPointScalingFactor = _reputationPointScalingFactor;
@@ -5210,44 +5236,44 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         uint256 _quarterIndex,
         uint256 _reputationPoint
     )
-        if_sender_is(CONTRACT_DAO_REWARDS_MANAGER)
         public
     {
+        require(sender_is(CONTRACT_DAO_REWARDS_MANAGER));
         allQuartersInfo[_quarterIndex].reputationPoint[_user] = _reputationPoint;
     }
 
     function updateClaimableDGX(address _user, uint256 _newClaimableDGX)
-        if_sender_is(CONTRACT_DAO_REWARDS_MANAGER)
         public
     {
+        require(sender_is(CONTRACT_DAO_REWARDS_MANAGER));
         claimableDGXs[_user] = _newClaimableDGX;
     }
 
     function updateLastParticipatedQuarter(address _user, uint256 _lastQuarter)
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         public
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         lastParticipatedQuarter[_user] = _lastQuarter;
     }
 
     function updateLastQuarterThatRewardsWasUpdated(address _user, uint256 _lastQuarter)
-        if_sender_is(CONTRACT_DAO_REWARDS_MANAGER)
         public
     {
+        require(sender_is(CONTRACT_DAO_REWARDS_MANAGER));
         lastQuarterThatRewardsWasUpdated[_user] = _lastQuarter;
     }
 
     function updateLastQuarterThatReputationWasUpdated(address _user, uint256 _lastQuarter)
-        if_sender_is(CONTRACT_DAO_REWARDS_MANAGER)
         public
     {
+        require(sender_is(CONTRACT_DAO_REWARDS_MANAGER));
         lastQuarterThatReputationWasUpdated[_user] = _lastQuarter;
     }
 
     function addToTotalDgxClaimed(uint256 _dgxClaimed)
-        if_sender_is(CONTRACT_DAO_REWARDS_MANAGER)
         public
     {
+        require(sender_is(CONTRACT_DAO_REWARDS_MANAGER));
         totalDGXsClaimed = totalDGXsClaimed.add(_dgxClaimed);
     }
 
@@ -5404,8 +5430,8 @@ contract IntermediateResultsStorage is ResolverClient, DaoConstants {
 
     function resetIntermediateResults(bytes32 _key)
         public
-        if_sender_is_from([CONTRACT_DAO_REWARDS_MANAGER, CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_SPECIAL_VOTING_CLAIMS])
     {
+        require(sender_is_from([CONTRACT_DAO_REWARDS_MANAGER, CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_SPECIAL_VOTING_CLAIMS]));
         allIntermediateResults[_key].countedUntil = address(0x0);
     }
 
@@ -5418,13 +5444,65 @@ contract IntermediateResultsStorage is ResolverClient, DaoConstants {
         uint256 _currentSumOfEffectiveBalance
     )
         public
-        if_sender_is_from([CONTRACT_DAO_REWARDS_MANAGER, CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_SPECIAL_VOTING_CLAIMS])
     {
+        require(sender_is_from([CONTRACT_DAO_REWARDS_MANAGER, CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_SPECIAL_VOTING_CLAIMS]));
         allIntermediateResults[_key].countedUntil = _countedUntil;
         allIntermediateResults[_key].currentForCount = _currentForCount;
         allIntermediateResults[_key].currentAgainstCount = _currentAgainstCount;
         allIntermediateResults[_key].currentQuorum = _currentQuorum;
         allIntermediateResults[_key].currentSumOfEffectiveBalance = _currentSumOfEffectiveBalance;
+    }
+}
+
+
+
+
+
+
+contract DaoCollateralStorage is ResolverClient, DaoConstants {
+    using SafeMath for uint256;
+
+    mapping(address => uint256) collateralsLocked;
+    mapping(address => uint256) collateralsUnlocked;
+
+    function DaoCollateralStorage(address _resolver) public {
+        require(init(CONTRACT_STORAGE_DAO_COLLATERAL, _resolver));
+    }
+
+    function lockCollateral(address _user, uint256 _value)
+        public
+    {
+        require(sender_is(CONTRACT_DAO));
+        collateralsLocked[_user] = collateralsLocked[_user].add(_value);
+    }
+
+    function unlockCollateral(address _user, uint256 _value)
+        public
+    {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
+        collateralsLocked[_user] = collateralsLocked[_user].sub(_value);
+        collateralsUnlocked[_user] = collateralsUnlocked[_user].add(_value);
+    }
+
+    function withdrawCollateral(address _user, uint256 _value)
+        public
+    {
+        require(sender_is(CONTRACT_DAO_FUNDING_MANAGER));
+        collateralsUnlocked[_user] = collateralsUnlocked[_user].sub(_value);
+    }
+
+    function readLockedCollateral(address _user)
+        public
+        returns (uint256 _value)
+    {
+        _value = collateralsLocked[_user];
+    }
+
+    function readUnlockedCollateral(address _user)
+        public
+        returns (uint256 _value)
+    {
+        _value = collateralsUnlocked[_user];
     }
 }
 
@@ -5443,28 +5521,48 @@ contract IntermediateResultsStorage is ResolverClient, DaoConstants {
 
 
 
+
+contract MedianizerInterface {
+    function compute() public returns (uint256, bool);
+}
+
 contract DaoCommon is IdentityCommon {
-    modifier daoIsValid() {
+
+    function isDaoNotReplaced() internal returns (bool) {
         require(!daoUpgradeStorage().isReplacedByNewDao());
-        _;
+        return true;
     }
 
-    modifier if_locking_phase() {
-        require(is_locking_phase());
-        _;
+    function isLockingPhase() internal returns (bool) {
+        require(currentTInQuarter() < get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
+        return true;
     }
 
-    function is_locking_phase() returns (bool) {
-         return currentTInQuarter() < get_uint_config(CONFIG_LOCKING_PHASE_DURATION);
-    }
-
-    modifier if_main_phase() {
+    function isMainPhase() internal returns (bool) {
         require(!daoUpgradeStorage().isReplacedByNewDao());
         require(currentTInQuarter() >= get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
-        _;
+        return true;
     }
 
-    modifier if_after_draft_voting_phase(bytes32 _proposalId) {
+    function isProposalPaused(bytes32 _proposalId) public constant returns (bool) {
+        bool _isPaused;
+        (,,,,,,,,_isPaused,) = daoStorage().readProposal(_proposalId);
+        return _isPaused;
+    }
+
+    function isFromProposer(bytes32 _proposalId) internal returns (bool) {
+        require(msg.sender == daoStorage().readProposalProposer(_proposalId));
+        return true;
+    }
+
+    function isEditable(bytes32 _proposalId) internal returns (bool) {
+        bytes32 _finalVersion;
+        (,,,,,,,_finalVersion,,) = daoStorage().readProposal(_proposalId);
+        require(_finalVersion == EMPTY_BYTES);
+        return true;
+    }
+
+    modifier ifAfterDraftVotingPhase(bytes32 _proposalId) {
         uint256 _start = daoStorage().readProposalDraftVotingTime(_proposalId);
         require(_start > 0);
         require(now > _start);
@@ -5472,8 +5570,8 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_commit_phase(bytes32 _proposalId, uint8 _index) {
-        require_in_phase(
+    modifier ifCommitPhase(bytes32 _proposalId, uint8 _index) {
+        requireInPhase(
             daoStorage().readProposalVotingTime(_proposalId, _index),
             0,
             get_uint_config(_index == 0 ? CONFIG_VOTING_COMMIT_PHASE : CONFIG_INTERIM_COMMIT_PHASE)
@@ -5481,8 +5579,8 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_reveal_phase(bytes32 _proposalId, uint256 _index) {
-      require_in_phase(
+    modifier ifRevealPhase(bytes32 _proposalId, uint256 _index) {
+      requireInPhase(
           daoStorage().readProposalVotingTime(_proposalId, _index),
           get_uint_config(_index == 0 ? CONFIG_VOTING_COMMIT_PHASE : CONFIG_INTERIM_COMMIT_PHASE),
           get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL)
@@ -5490,15 +5588,15 @@ contract DaoCommon is IdentityCommon {
       _;
     }
 
-    modifier if_after_proposal_reveal_phase(bytes32 _proposalId, uint256 _index) {
+    modifier ifAfterProposalRevealPhase(bytes32 _proposalId, uint256 _index) {
       uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
       require(_start > 0);
       require(now >= _start.add(get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL)));
       _;
     }
 
-    modifier if_draft_voting_phase(bytes32 _proposalId) {
-        require_in_phase(
+    modifier ifDraftVotingPhase(bytes32 _proposalId) {
+        requireInPhase(
             daoStorage().readProposalDraftVotingTime(_proposalId),
             0,
             get_uint_config(CONFIG_DRAFT_VOTING_PHASE)
@@ -5506,27 +5604,11 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_from_proposer(bytes32 _proposalId) {
-        require(msg.sender == daoStorage().readProposalProposer(_proposalId));
-        _;
-    }
-
-    /* modifier if_from_special_proposer(bytes32 _specialProposalId) {
-        require(msg.sender == daoSpecialStorage().readProposalProposer(_specialProposalId));
-        _;
-    } */
-
-    modifier is_proposal_state(bytes32 _proposalId, bytes32 _STATE) {
+    modifier isProposalState(bytes32 _proposalId, bytes32 _STATE) {
         bytes32 _currentState;
-        (,,,_currentState,,,,,) = daoStorage().readProposal(_proposalId);
+        (,,,_currentState,,,,,,) = daoStorage().readProposal(_proposalId);
         require(_currentState == _STATE);
         _;
-    }
-
-    function isProposalPaused(bytes32 _proposalId) public constant returns (bool) {
-        bool _isPaused;
-        (,,,,,,,,_isPaused) = daoStorage().readProposal(_proposalId);
-        return _isPaused;
     }
 
     modifier valid_withdraw_amount(bytes32 _proposalId, uint256 _index, uint256 _value) {
@@ -5538,45 +5620,13 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_participant() {
-        require(isParticipant(msg.sender));
-        _;
-    }
-
-    modifier if_moderator() {
-        require(isModerator(msg.sender));
-        _;
-    }
-
-    modifier if_dao_member() {
-        require(
-            isParticipant(msg.sender) ||
-            isModerator(msg.sender)
-        );
-        _;
-    }
-
-    modifier if_editable(bytes32 _proposalId) {
-        bytes32 _finalVersion;
-        (,,,,,,,_finalVersion,) = daoStorage().readProposal(_proposalId);
-        require(_finalVersion == EMPTY_BYTES);
-        _;
-    }
-
-    modifier if_final_version(bytes32 _proposalId, bytes32 _proposalVersion) {
-        bytes32 _finalVersion;
-        (,,,,,,,_finalVersion,) = daoStorage().readProposal(_proposalId);
-        require(_finalVersion == _proposalVersion);
-        _;
-    }
-
     modifier if_valid_milestones(uint256 a, uint256 b) {
         require(a == b);
         _;
     }
 
-    modifier if_funding_possible(uint256[] _fundings) {
-        uint256 _total = 0;
+    modifier ifFundingPossible(uint256[] _fundings, uint256 _finalReward) {
+        uint256 _total = _finalReward;
         for (uint256 i = 0; i < _fundings.length; i++) {
             _total = _total.add(_fundings[i]);
         }
@@ -5584,44 +5634,44 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_draft_not_claimed(bytes32 _proposalId) {
+    modifier ifDraftNotClaimed(bytes32 _proposalId) {
         require(daoStorage().isDraftClaimed(_proposalId) == false);
         _;
     }
 
-    modifier if_not_claimed(bytes32 _proposalId, uint256 _index) {
+    modifier ifNotClaimed(bytes32 _proposalId, uint256 _index) {
         require(daoStorage().isClaimed(_proposalId, _index) == false);
         _;
     }
 
-    modifier if_not_claimed_special(bytes32 _proposalId) {
+    modifier ifNotClaimedSpecial(bytes32 _proposalId) {
         require(daoSpecialStorage().isClaimed(_proposalId) == false);
         _;
     }
 
-    modifier has_not_revealed(bytes32 _proposalId, uint256 _index) {
+    modifier hasNotRevealed(bytes32 _proposalId, uint256 _index) {
         uint256 _voteWeight;
         (, _voteWeight) = daoStorage().readVote(_proposalId, _index, msg.sender);
         require(_voteWeight == uint(0));
         _;
     }
 
-    modifier has_not_revealed_special(bytes32 _proposalId) {
+    modifier hasNotRevealedSpecial(bytes32 _proposalId) {
         uint256 _weight;
         (,_weight) = daoSpecialStorage().readVote(_proposalId, msg.sender);
         require(_weight == uint(0));
         _;
     }
 
-    modifier if_after_reveal_phase_special(bytes32 _proposalId) {
+    modifier ifAfterRevealPhaseSpecial(bytes32 _proposalId) {
       uint256 _start = daoSpecialStorage().readVotingTime(_proposalId);
       require(_start > 0);
       require(now.sub(_start) >= get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
       _;
     }
 
-    modifier if_commmit_phase_special(bytes32 _proposalId) {
-        require_in_phase(
+    modifier ifCommitPhaseSpecial(bytes32 _proposalId) {
+        requireInPhase(
             daoSpecialStorage().readVotingTime(_proposalId),
             0,
             get_uint_config(CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE)
@@ -5629,8 +5679,8 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_reveal_phase_special(bytes32 _proposalId) {
-        require_in_phase(
+    modifier ifRevealPhaseSpecial(bytes32 _proposalId) {
+        requireInPhase(
             daoSpecialStorage().readVotingTime(_proposalId),
             get_uint_config(CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE),
             get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL)
@@ -5638,7 +5688,7 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_not_contract(address _address) {
+    modifier ifNotContract(address _address) {
         uint size;
         assembly {
             size := extcodesize(_address)
@@ -5647,14 +5697,14 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    modifier if_global_rewards_set(uint256 _quarterIndex) {
+    modifier ifGlobalRewardsSet(uint256 _quarterIndex) {
         if (_quarterIndex > 1) {
             require(daoRewardsStorage().readDgxDistributionDay(_quarterIndex) > 0);
         }
         _;
     }
 
-    function require_in_phase(uint256 _startingPoint, uint256 _relativePhaseStart, uint256 _relativePhaseEnd) {
+    function requireInPhase(uint256 _startingPoint, uint256 _relativePhaseStart, uint256 _relativePhaseEnd) {
         require(_startingPoint > 0);
         require(now < _startingPoint.add(_relativePhaseEnd));
         require(now >= _startingPoint.add(_relativePhaseStart));
@@ -5666,7 +5716,7 @@ contract DaoCommon is IdentityCommon {
     }
 
     function getQuarterIndex(uint256 _time) internal returns (uint256 _index) {
-        _index = ((_time.sub(daoUpgradeStorage().startOfFirstQuarter())) / get_uint_config(CONFIG_QUARTER_DURATION)).add(1);
+        _index = ((_time.sub(daoUpgradeStorage().startOfFirstQuarter())).div(get_uint_config(CONFIG_QUARTER_DURATION))).add(1);
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
@@ -5733,6 +5783,10 @@ contract DaoCommon is IdentityCommon {
         _contract = IntermediateResultsStorage(get_contract(CONTRACT_STORAGE_INTERMEDIATE_RESULTS));
     }
 
+    function daoCollateralStorage() internal returns (DaoCollateralStorage _contract) {
+        _contract = DaoCollateralStorage(get_contract(CONTRACT_STORAGE_DAO_COLLATERAL));
+    }
+
     function get_uint_config(bytes32 _config_key)
         public
         constant
@@ -5764,7 +5818,7 @@ contract DaoCommon is IdentityCommon {
     {
         if (
             (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex()) &&
-            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= CONFIG_MINIMUM_LOCKED_DGD)
+            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= get_uint_config(CONFIG_MINIMUM_LOCKED_DGD))
         ) {
             _is = true;
         }
@@ -5777,69 +5831,73 @@ contract DaoCommon is IdentityCommon {
     {
         if (
             (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex()) &&
-            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= CONFIG_MINIMUM_DGD_FOR_MODERATOR) &&
-            (daoPointsStorage().getReputation(_user) >= CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR)
+            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= get_uint_config(CONFIG_MINIMUM_DGD_FOR_MODERATOR)) &&
+            (daoPointsStorage().getReputation(_user) >= get_uint_config(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR))
         ) {
             _is = true;
         }
     }
-}
 
-
-
-/// @title Contract to manage DAO funds
-/// @author Digix Holdings
-contract DaoFundingManager is DaoCommon {
-
-    function DaoFundingManager(address _resolver) public {
-        require(init(CONTRACT_DAO_FUNDING_MANAGER, _resolver));
+    /// @notice Returns ETH/USD rate
+    /// @dev 18 decimal places in the return value. Divide by (10 ** 18) while using
+    /// @return _value Price of ETH/USD (18 decimals)
+    function getPriceFeed()
+        internal
+        returns (uint256 _value)
+    {
+        bool _valid;
+        (_value, _valid) = MedianizerInterface(get_address_config(CONFIG_CONTRACT_MEDIANIZER)).compute();
+        require(_valid);
     }
 
+    function startOfMilestone(bytes32 _proposalId, uint256 _milestoneIndex)
+        internal
+        returns (uint256 _milestoneStart)
+    {
+        if (_milestoneIndex == 0) { // This is the 1st milestone, which starts after voting round 0
+            _milestoneStart =
+                daoStorage().readProposalVotingTime(_proposalId, 0)
+                .add(get_uint_config(CONFIG_VOTING_PHASE_TOTAL));
+        } else { // if its the n-th milestone, it starts after voting round n-th
+            _milestoneStart =
+                daoStorage().readProposalVotingTime(_proposalId, _milestoneIndex)
+                .add(get_uint_config(CONFIG_INTERIM_PHASE_TOTAL));
+        }
+    }
+
+<<<<<<< Updated upstream
+    function getTimelineForNextVote(
+        uint256 _index,
+        uint256 _votingTime
+    )
+        internal
+        returns (uint256)
+=======
     /// @notice Call function to claim ETH allocated by DAO (transferred to caller)
     /// @dev _value should be at the most the milestone fundings for the specific _index milestone
     /// @param _proposalId ID of the proposal
     /// @param _index Index of the proposal voting round
     /// @param _value Eth to be withdrawn by user (in wei)
     /// @return _success Boolean, true if claim successful, revert otherwise
-    function claimEthFunding(bytes32 _proposalId, uint256 _index, uint256 _value)
+    function claimFunding(bytes32 _proposalId, uint256 _index, uint256 _value)
         public
         if_from_proposer(_proposalId)
         valid_withdraw_amount(_proposalId, _index, _value)
         returns (bool _success)
+>>>>>>> Stashed changes
     {
-        require(isProposalPaused(_proposalId) == false);
-        daoFundingStorage().updateClaimableEth(msg.sender, daoFundingStorage().claimableEth(msg.sender).sub(_value));
-        daoFundingStorage().withdrawEth(_value);
-
-        msg.sender.transfer(_value);
-        _success = true;
-    }
-
-    /// @notice Function to allocate ETH to a user address
-    /// @param _to Ethereum address of the receiver of ETH
-    /// @param _value Amount to be allocated (in wei)
-    function allocateEth(address _to, uint256 _value)
-        public
-        if_sender_is(CONTRACT_DAO_VOTING_CLAIMS)
-    {
-        _value = _value.add(daoFundingStorage().claimableEth(_to));
-        daoFundingStorage().updateClaimableEth(_to, _value);
-    }
-
-    /// @notice Function to move funds to a new DAO
-    /// @param _destinationForDaoFunds Ethereum contract address of the new DaoFundingManager
-    function moveFundsToNewDao(address _destinationForDaoFunds)
-        if_sender_is(CONTRACT_DAO)
-        public
-    {
-        uint256 _remainingBalance = address(this).balance;
-        daoFundingStorage().withdrawEth(_remainingBalance);
-        _destinationForDaoFunds.transfer(_remainingBalance);
-    }
-
-    /// @notice Payable function to receive ETH funds from DigixDAO crowdsale contract
-    function () payable public {
-        daoFundingStorage().addEth(msg.value);
+        uint256 _timeLeftInQuarter = getTimeLeftInQuarter(_votingTime);
+        uint256 _votingDuration = get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL);
+        if (timeInQuarter(_votingTime) < get_uint_config(CONFIG_LOCKING_PHASE_DURATION)) {
+            _votingTime = _votingTime.add(
+                get_uint_config(CONFIG_LOCKING_PHASE_DURATION).sub(timeInQuarter(_votingTime)).add(1)
+            );
+        } else if (_timeLeftInQuarter < _votingDuration.add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE))) {
+            _votingTime = _votingTime.add(
+                _timeLeftInQuarter.add(get_uint_config(CONFIG_LOCKING_PHASE_DURATION)).add(1)
+            );
+        }
+        return _votingTime;
     }
 }
 
@@ -6948,6 +7006,12 @@ library MathHelper {
           _min = a;
       }
   }
+
+  function sumNumbers(uint256[] _numbers) internal pure returns (uint256 _sum) {
+      for (uint256 i=0;i<_numbers.length;i++) {
+          _sum = _sum + _numbers[i];
+      }
+  }
 }
 
 
@@ -6973,22 +7037,22 @@ contract DaoCalculatorService is DaoCommon {
         returns (uint256 _additionalLockedDGDStake)
     {
         // todo: change this to fixed quarter duration
-        /* _additionalLockedDGDStake = _additionalDgd * (QUARTER_DURATION - currentTInQuarter()) / (QUARTER_DURATION - get_uint_config(CONFIG_LOCKING_PHASE_DURATION)); */
+        /* _additionalLockedDGDStake = _additionalDgd.mul(QUARTER_DURATION.sub(currentTInQuarter())).div(QUARTER_DURATION.sub(get_uint_config(CONFIG_LOCKING_PHASE_DURATION))); */
         _additionalLockedDGDStake = _additionalDgd.mul((get_uint_config(CONFIG_QUARTER_DURATION).sub(MathHelper.max(currentTInQuarter(), get_uint_config(CONFIG_LOCKING_PHASE_DURATION)))))
-                                    .div(get_uint_config(CONFIG_QUARTER_DURATION) - get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
+                                    .div(get_uint_config(CONFIG_QUARTER_DURATION).sub(get_uint_config(CONFIG_LOCKING_PHASE_DURATION)));
     }
 
     function minimumDraftQuorum(bytes32 _proposalId) public returns (uint256 _minQuorum) {
-        uint256 _ethAsked;
+        uint256[] memory _fundings;
 
-        (,,_ethAsked) = daoStorage().readProposalFunding(_proposalId);
+        (_fundings,) = daoStorage().readProposalFunding(_proposalId);
         _minQuorum = calculateMinQuorum(
             daoStakeStorage().totalModeratorLockedDGDStake(),
             get_uint_config(CONFIG_DRAFT_QUORUM_FIXED_PORTION_NUMERATOR),
             get_uint_config(CONFIG_DRAFT_QUORUM_FIXED_PORTION_DENOMINATOR),
             get_uint_config(CONFIG_DRAFT_QUORUM_SCALING_FACTOR_NUMERATOR),
             get_uint_config(CONFIG_DRAFT_QUORUM_SCALING_FACTOR_DENOMINATOR),
-            _ethAsked
+            _fundings[0]
         );
     }
 
@@ -7078,7 +7142,7 @@ contract DaoCalculatorService is DaoCommon {
         _minimumQuorum = (_totalStake.mul(_fixedQuorumPortionNumerator)).div(_fixedQuorumPortionDenominator);
 
         // add the dynamic portion of the quorum
-        _minimumQuorum += (_totalStake.mul(_ethAsked.mul(_scalingFactorNumerator))).div(_ethInDao.div(_scalingFactorDenominator));
+        _minimumQuorum = _minimumQuorum.add(_totalStake.mul(_ethAsked.mul(_scalingFactorNumerator)).div(_ethInDao.mul(_scalingFactorDenominator)));
     }
 
     function calculateUserEffectiveBalance(
@@ -7193,7 +7257,7 @@ contract DaoRewardsManager is DaoCommon {
             get_uint_config(CONFIG_QUARTER_POINT_SCALING_FACTOR),
             get_uint_config(CONFIG_REPUTATION_POINT_SCALING_FACTOR),
             0,
-            get_uint_config(CONFIG_MINIMAL_MODERATOR_QUARTER_POINT),
+            get_uint_config(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
             get_uint_config(CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR),
             get_uint_config(CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR),
             0,
@@ -7247,8 +7311,8 @@ contract DaoRewardsManager is DaoCommon {
     /// @param _user Address of the DAO participant
     function updateRewardsBeforeNewQuarter(address _user)
         public
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         uint256 _currentQuarter = currentQuarterIndex();
         // do nothing if the rewards was already updated for the previous quarter
         if (daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user).add(1) >= _currentQuarter) {
@@ -7287,7 +7351,7 @@ contract DaoRewardsManager is DaoCommon {
                 updateRPfromQP(
                     _user,
                     daoPointsStorage().getQuarterModeratorPoint(_user, _lastParticipatedQuarter),
-                    get_uint_config(CONFIG_MINIMAL_MODERATOR_QUARTER_POINT),
+                    get_uint_config(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
                     get_uint_config(CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION),
                     get_uint_config(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM),
                     get_uint_config(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN)
@@ -7433,11 +7497,11 @@ contract DaoRewardsManager is DaoCommon {
     /// @notice Function called by the founder after transfering the DGX fees into the DAO at the beginning of the quarter
     function calculateGlobalRewardsBeforeNewQuarter(uint256 _operations)
         if_founder()
-        if_locking_phase()
-        daoIsValid()
         public
         returns (bool _done)
     {
+        require(isDaoNotReplaced());
+        require(isLockingPhase());
         QuarterRewardsInfo memory info;
         info.previousQuarter = currentQuarterIndex().sub(1);
         require(info.previousQuarter > 0); // throw if this is the first quarter
@@ -7478,7 +7542,7 @@ contract DaoRewardsManager is DaoCommon {
             get_uint_config(CONFIG_REPUTATION_POINT_SCALING_FACTOR),
             info.totalEffectiveDGDLastQuarter,
 
-            get_uint_config(CONFIG_MINIMAL_MODERATOR_QUARTER_POINT),
+            get_uint_config(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
             get_uint_config(CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR),
             get_uint_config(CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR),
             info.totalEffectiveModeratorDGDLastQuarter,
@@ -7667,16 +7731,18 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         uint256 _count
     )
         public
-        if_main_phase()
-        if_draft_not_claimed(_proposalId)
-        if_after_draft_voting_phase(_proposalId)
+        ifDraftNotClaimed(_proposalId)
+        ifAfterDraftVotingPhase(_proposalId)
         returns (bool _passed)
     {
+        require(isMainPhase());
+
         // if after the claiming deadline, its auto failed
         if (now > daoStorage().readProposalDraftVotingTime(_proposalId)
                     .add(get_uint_config(CONFIG_DRAFT_VOTING_PHASE))
                     .add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE))) {
             daoStorage().setProposalDraftPass(_proposalId, false);
+            daoCollateralStorage().unlockCollateral(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
             return false;
         }
         require(msg.sender == daoStorage().readProposalProposer(_proposalId));
@@ -7743,13 +7809,14 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         require(_currentResults.currentQuorum > daoCalculatorService().minimumDraftQuorum(_proposalId));
         require(daoCalculatorService().draftQuotaPass(_currentResults.currentForCount, _currentResults.currentAgainstCount));
         daoStorage().setProposalDraftPass(_proposalId, true);
+
         // set startTime of first voting round
         // and the start of first milestone.
-        setTimelineForNextMilestone(
+        uint256 _idealClaimTime = daoStorage().readProposalDraftVotingTime(_proposalId).add(get_uint_config(CONFIG_DRAFT_VOTING_PHASE));
+        daoStorage().setProposalVotingTime(
             _proposalId,
             0,
-            0,
-            daoStorage().readProposalDraftVotingTime(_proposalId).add(get_uint_config(CONFIG_DRAFT_VOTING_PHASE))
+            getTimelineForNextVote(0, _idealClaimTime)
         );
         daoStorage().setDraftVotingClaim(_proposalId, true);
     }
@@ -7763,19 +7830,20 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     /// @return _passed Boolean, true if the  voting round passed, false if failed
     function claimProposalVotingResult(bytes32 _proposalId, uint256 _index, uint256 _operations)
         public
-        if_main_phase()
-        if_not_claimed(_proposalId, _index)
-        if_after_proposal_reveal_phase(_proposalId, _index)
+        ifNotClaimed(_proposalId, _index)
+        ifAfterProposalRevealPhase(_proposalId, _index)
         returns (bool _passed, bool _done)
     {
+        require(isMainPhase());
         // anyone can claim after the claiming deadline is over;
         // and the result will be failed by default
-        if (now < daoStorage().readProposalNextMilestoneStart(_proposalId, _index)
+        _done = true;
+        if (now < startOfMilestone(_proposalId, _index)
                     .add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE)))
         {
             (_operations, _passed, _done) = countProposalVote(_proposalId, _index, _operations);
+            if (!_done) return (_passed, false); // haven't done counting yet, return
         }
-        if (!_done) return (_passed, false); // haven't done counting yet, return
         _done = false;
 
         if (_index > 0) { // We only need to do bonus calculation if its the interim voting round
@@ -7783,18 +7851,44 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             if (!_done) return (_passed, false);
         }
         if (_passed) {
-            // give quarter points to proposer for finishing the milestone
-            uint256 _milestoneFunding;
-            (,, _milestoneFunding) = daoStorage().readProposalMilestone(_proposalId, _index);
-            daoPointsStorage().addQuarterPoint(
-                daoStorage().readProposalProposer(_proposalId),
-                get_uint_config(CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH).mul(_milestoneFunding).div(10000 ether),
-                currentQuarterIndex()
-            );
+            allocateFunding(_proposalId, _index);
+        } else {
+            // failed voting in the first round
+            // return the collateral
+            if (_index == 0) {
+                daoCollateralStorage().unlockCollateral(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+            }
         }
         daoStorage().setVotingClaim(_proposalId, _index, true);
         daoStorage().setProposalPass(_proposalId, _index, _passed);
         _done = true;
+    }
+
+    function allocateFunding(bytes32 _proposalId, uint256 _index)
+        internal
+    {
+        uint256 _funding;
+        (, _funding) = daoStorage().readProposalMilestone(_proposalId, _index);
+
+        daoFundingManager().allocateEth(daoStorage().readProposalProposer(_proposalId), _funding);
+
+        // if this was the last milestone and final reward has been released
+        // unlock their original collateral
+        if (_funding == 0 && !isProposalPaused(_proposalId)) {
+            daoCollateralStorage().unlockCollateral(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        }
+
+        bool _isDigixProposal;
+        (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
+        if (_index == 0 && !_isDigixProposal) {
+            daoStorage().addProposalCountInQuarter(currentQuarterIndex());
+        }
+
+        daoPointsStorage().addQuarterPoint(
+            daoStorage().readProposalProposer(_proposalId),
+            get_uint_config(CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH).mul(_funding).div(10000 ether),
+            currentQuarterIndex()
+        );
     }
 
     function calculateVoterBonus(bytes32 _proposalId, uint256 _index, uint256 _operations, bool _passed)
@@ -7903,58 +7997,10 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         _done = true;
 
         if ((_currentResults.currentQuorum > daoCalculatorService().minimumVotingQuorum(_proposalId, _index)) &&
-        (daoCalculatorService().votingQuotaPass(_currentResults.currentForCount, _currentResults.currentAgainstCount))) {
+            (daoCalculatorService().votingQuotaPass(_currentResults.currentForCount, _currentResults.currentAgainstCount)))
+        {
             _passed = true;
-
-            // set deadline for next milestone (set startTime for next  voting round)
-            DaoIntermediateStructs.MilestoneInfo memory _info;
-            (_info.index, _info.duration, _info.funding) = daoStorage().readProposalMilestone(_proposalId, _index);
-            _info.milestoneStart = daoStorage().readProposalNextMilestoneStart(_proposalId, _index);
-
-            if (_info.duration > 0 && _info.funding > 0 && !isProposalPaused(_proposalId)) {
-                setTimelineForNextMilestone(_proposalId, _index.add(1), _info.duration, _info.milestoneStart);
-            }
-            daoFundingManager().allocateEth(daoStorage().readProposalProposer(_proposalId), _info.funding);
         }
-    }
-
-    function updateTimelineForNextMilestone(
-        bytes32 _proposalId,
-        uint256 _index,
-        uint256 _milestoneDuration,
-        uint256 _milestoneStart
-    )
-        public
-        if_sender_is(CONTRACT_DAO)
-    {
-        setTimelineForNextMilestone(_proposalId, _index, _milestoneDuration, _milestoneStart);
-    }
-
-    // set the voting start time for milestone index _index (starts from 0)
-    // as well as setting the startOfNextMilestone of the voting round of milestone index _index (starts from 0)
-    function setTimelineForNextMilestone(
-        bytes32 _proposalId,
-        uint256 _index,
-        uint256 _milestoneDuration,
-        uint256 _milestoneStart
-    )
-        internal
-    {
-        uint256 _votingTime = _milestoneStart.add(_milestoneDuration);
-        uint256 _timeLeftInQuarter = getTimeLeftInQuarter(_votingTime);
-        uint256 _votingDuration = get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL);
-        if (timeInQuarter(_votingTime) < get_uint_config(CONFIG_LOCKING_PHASE_DURATION)) {
-            _votingTime = _votingTime.add(
-                get_uint_config(CONFIG_LOCKING_PHASE_DURATION).sub(timeInQuarter(_votingTime)).add(1)
-            );
-        } else if (_timeLeftInQuarter < _votingDuration) {
-            _votingTime = _votingTime.add(
-                _timeLeftInQuarter.add(get_uint_config(CONFIG_LOCKING_PHASE_DURATION)).add(1)
-            );
-        }
-
-        daoStorage().setProposalVotingTime(_proposalId, _index, _votingTime);
-        daoStorage().setProposalNextMilestoneStart(_proposalId, _index, _votingTime.add(_votingDuration));
     }
 
     function addBonusReputation(address[] _voters, uint256 _n)
@@ -7982,9 +8028,11 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
 
 
+
 /// @title Interactive DAO contract for creating/modifying/endorsing proposals
 /// @author Digix Holdings
 contract Dao is DaoCommon, Claimable {
+    using MathHelper for MathHelper;
 
     function Dao(address _resolver) public {
         require(init(CONTRACT_DAO, _resolver));
@@ -8027,58 +8075,103 @@ contract Dao is DaoCommon, Claimable {
 
     /// @notice Submit a new preliminary idea / Pre-proposal
     /// @param _docIpfsHash Hash of the IPFS doc containing details of proposal
-    /// @param _milestonesDurations Array of durations of the proposal milestones (in seconds)
     /// @param _milestonesFundings Array of fundings of the proposal milestones (in wei)
     /// @param _finalReward Final reward asked by proposer at successful completion of all milestones of proposal
     /// @return Whether pre-proposal was successfully created
     function submitPreproposal(
         bytes32 _docIpfsHash,
-        uint256[] _milestonesDurations,
         uint256[] _milestonesFundings,
         uint256 _finalReward
     )
         public
-        if_main_phase()
-        if_participant()
-        if_funding_possible(_milestonesFundings)
-        if_valid_milestones(_milestonesDurations.length, _milestonesFundings.length)
+        payable
+        ifFundingPossible(_milestonesFundings)
         returns (bool _success)
     {
+        require(isMainPhase());
+        require(isParticipant(msg.sender));
+        bool _isFounder = is_founder();
+
+        require(msg.value >= get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        require(address(daoFundingManager()).call.value(msg.value)());
+
+        if (!_isFounder) {
+            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
+            require(_milestonesFundings.length <= get_uint_config(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
+        }
+
         address _proposer = msg.sender;
         require(identity_storage().is_kyc_approved(_proposer));
-        daoStorage().addProposal(_docIpfsHash, _proposer, _milestonesDurations, _milestonesFundings, _finalReward);
+
+        daoCollateralStorage().lockCollateral(msg.sender, get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        daoStorage().addProposal(_docIpfsHash, _proposer, _milestonesFundings, _finalReward, _isFounder);
         _success = true;
     }
 
     /// @notice Modify a proposal (this can be done only before setting the final version)
     /// @param _proposalId Proposal ID (hash of IPFS doc of the first version of the proposal)
     /// @param _docIpfsHash Hash of IPFS doc of the modified version of the proposal
-    /// @param _milestonesDurations Array of durations of the modified version of the proposal (in seconds)
     /// @param _milestonesFundings Array of fundings of the modified version of the proposal (in wei)
     /// @param _finalReward Final reward on successful completion of all milestones of the modified version of proposal (in wei)
     /// @return Whether the proposal was modified successfully
     function modifyProposal(
         bytes32 _proposalId,
         bytes32 _docIpfsHash,
-        uint256[] _milestonesDurations,
         uint256[] _milestonesFundings,
         uint256 _finalReward
     )
         public
-        if_main_phase()
-        if_participant()
-        if_editable(_proposalId)
-        if_valid_milestones(_milestonesDurations.length, _milestonesFundings.length)
         returns (bool _success)
     {
+        require(isMainPhase());
+        require(isParticipant(msg.sender));
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
+        require(isEditable(_proposalId));
         bytes32 _currentState;
-        (,,,_currentState,,,,,) = daoStorage().readProposal(_proposalId);
+        (,,,_currentState,,,,,,) = daoStorage().readProposal(_proposalId);
         require(_currentState == PROPOSAL_STATE_PREPROPOSAL ||
           _currentState == PROPOSAL_STATE_DRAFT);
         require(identity_storage().is_kyc_approved(msg.sender));
-        daoStorage().editProposal(_proposalId, _docIpfsHash, _milestonesDurations, _milestonesFundings, _finalReward);
+
+        if (!is_founder()) {
+            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
+            require(_milestonesFundings.length <= get_uint_config(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
+        }
+
+        daoStorage().editProposal(_proposalId, _docIpfsHash, _milestonesFundings, _finalReward);
         _success = true;
+    }
+
+    function changeFundings(
+        bytes32 _proposalId,
+        uint256[] _milestonesFundings,
+        uint256 _finalReward,
+        uint256 _currentMilestone
+    )
+        public
+    {
+        require(isMainPhase());
+        require(isParticipant(msg.sender));
+        require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
+        require(identity_storage().is_kyc_approved(msg.sender));
+        if (!is_founder()) {
+            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
+            require(_milestonesFundings.length <= get_uint_config(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
+        }
+        uint256[] memory _currentFundings;
+        (_currentFundings, _finalReward) = daoStorage().readProposalFunding(_proposalId);
+
+        // must be after the start of the milestone, and the milestone has not been finished yet (voting hasnt started)
+        require(now > startOfMilestone(_proposalId, _currentMilestone));
+        require(daoStorage().readProposalVotingTime(_proposalId, _currentMilestone.add(1)) == 0);
+
+        // can only modify the fundings after _currentMilestone
+        //so, all the fundings from 0 to _currentMilestone must be the same
+        for (uint256 i=0;i<=_currentMilestone;i++) {
+            require(_milestonesFundings[i] == _currentFundings[i]);
+        }
+
+        daoStorage().changeFundings(_proposalId, _milestonesFundings, _finalReward);
     }
 
     /// @notice Finalize a proposal
@@ -8086,18 +8179,52 @@ contract Dao is DaoCommon, Claimable {
     /// @param _proposalId ID of the proposal
     function finalizeProposal(bytes32 _proposalId)
         public
-        if_main_phase()
-        if_participant()
-        if_editable(_proposalId)
     {
+        require(isMainPhase());
+        require(isParticipant(msg.sender));
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
+        require(isEditable(_proposalId));
         require(identity_storage().is_kyc_approved(msg.sender));
-        require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_DRAFT_VOTING_PHASE));
+        bool _isDigixProposal;
+        (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
+        if (!_isDigixProposal) {
+            require(daoStorage().proposalCountByQuarter(currentQuarterIndex()) < get_uint_config(CONFIG_PROPOSAL_CAP_PER_QUARTER));
+        }
+        require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_DRAFT_VOTING_PHASE).add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE)));
         address _endorser;
-        (,,_endorser,,,,,,) = daoStorage().readProposal(_proposalId);
+        (,,_endorser,,,,,,,) = daoStorage().readProposal(_proposalId);
         require(_endorser != EMPTY_ADDRESS);
         daoStorage().finalizeProposal(_proposalId);
         daoStorage().setProposalDraftVotingTime(_proposalId, now);
+    }
+
+    function finishMilestone(bytes32 _proposalId, uint256 _milestoneIndex)
+        public
+    {
+        require(isMainPhase());
+        require(isParticipant(msg.sender));
+        require(isFromProposer(_proposalId));
+        require(identity_storage().is_kyc_approved(msg.sender));
+
+        // must be after the start of this milestone, and the milestone has not been finished yet (voting hasnt started)
+        require(now > startOfMilestone(_proposalId, _milestoneIndex));
+        require(daoStorage().readProposalVotingTime(_proposalId, _milestoneIndex.add(1)) == 0);
+
+        daoStorage().setProposalVotingTime(
+            _proposalId,
+            _milestoneIndex.add(1),
+            getTimelineForNextVote(_milestoneIndex.add(1), now)
+        ); // set the voting time of next voting
+    }
+
+    function addProposalDoc(bytes32 _proposalId, bytes32 _newDoc)
+        public
+    {
+        require(isMainPhase());
+        require(isParticipant(msg.sender));
+        require(isFromProposer(_proposalId));
+        require(identity_storage().is_kyc_approved(msg.sender));
+        daoStorage().addProposalDoc(_proposalId, _newDoc);
     }
 
     /// @notice Function to endorse a pre-proposal (can be called only by DAO Moderator)
@@ -8105,13 +8232,12 @@ contract Dao is DaoCommon, Claimable {
     /// @return Whether the proposal was endorsed successfully or not
     function endorseProposal(bytes32 _proposalId)
         public
-        if_main_phase()
-        if_moderator()
-        is_proposal_state(_proposalId, PROPOSAL_STATE_PREPROPOSAL)
+        isProposalState(_proposalId, PROPOSAL_STATE_PREPROPOSAL)
         returns (bool _success)
     {
-        address _endorser = msg.sender;
-        daoStorage().updateProposalEndorse(_proposalId, _endorser);
+        require(isMainPhase());
+        require(isModerator(msg.sender));
+        daoStorage().updateProposalEndorse(_proposalId, msg.sender);
         _success = true;
     }
 
@@ -8129,45 +8255,6 @@ contract Dao is DaoCommon, Claimable {
         returns (bool _success)
     {
         require(_action == PRL_ACTION_STOP || _action == PRL_ACTION_PAUSE || _action == PRL_ACTION_UNPAUSE);
-        if (_action == PRL_ACTION_UNPAUSE) {
-            //if the last action was pause, and it happened before a release of funding
-            // then we need to push back the milestone, and set the startTime of the voting accordingly.
-            uint256 _prlActionCount = daoStorage().readTotalPrlActions(_proposalId);
-            if (_prlActionCount > 0) {
-              uint256 _lastAction;
-              uint256 _lastActionTime;
-              (_lastAction, _lastActionTime, ) = daoStorage().readPrlAction(_proposalId, _prlActionCount.sub(1));
-
-              // find out the last voting round that has just happened
-              // hence, it is also the index of the current milestone
-              uint256 _lastVotingRound = 0;
-              while (true) {
-                uint256 _nextMilestoneStartOfNextVotingRound = daoStorage().readProposalNextMilestoneStart(_proposalId, _lastVotingRound + 1);
-                if (_nextMilestoneStartOfNextVotingRound == 0 || _nextMilestoneStartOfNextVotingRound > now) { break; }
-                _lastVotingRound = _lastVotingRound.add(1);
-              }
-
-              // if it's before even the start of the first milestone: no need to do anything
-              if (now < daoStorage().readProposalNextMilestoneStart(_proposalId, 0)) {
-                return true;
-              }
-
-              // update the startOfNextMilestone and setTimelineForNextMilestone() accordingly if we just deplayed the proposal
-              if (_lastAction == PRL_ACTION_PAUSE && _lastActionTime < daoStorage().readProposalNextMilestoneStart(_proposalId, _lastVotingRound)) {
-
-                daoStorage().setProposalNextMilestoneStart(_proposalId, _lastVotingRound, now);
-
-                uint256 _milestoneDuration;
-                (,_milestoneDuration,) = daoStorage().readProposalMilestone(_proposalId, _lastVotingRound);
-                daoVotingClaims().updateTimelineForNextMilestone(
-                    _proposalId,
-                    _lastVotingRound.add(1),
-                    _milestoneDuration,
-                    now
-                );
-              }
-            }
-        }
         daoStorage().updateProposalPRL(_proposalId, _action, _doc, now);
         _success = true;
     }
@@ -8186,9 +8273,9 @@ contract Dao is DaoCommon, Claimable {
     )
         public
         if_founder()
-        if_main_phase()
         returns (bool _success)
     {
+        require(isMainPhase());
         address _proposer = msg.sender;
         daoSpecialStorage().addSpecialProposal(
             _doc,
@@ -8207,9 +8294,391 @@ contract Dao is DaoCommon, Claimable {
         bytes32 _proposalId
     )
         public
-        if_main_phase()
         returns (bool _success)
     {
+        require(isMainPhase());
+        require(daoSpecialStorage().readProposalProposer(_proposalId) == msg.sender);
+        require(daoSpecialStorage().readVotingTime(_proposalId) == 0);
+        require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
+        daoSpecialStorage().setVotingTime(_proposalId, now);
+        _success = true;
+    }
+}
+
+
+
+
+/// @title Contract to manage DAO funds
+/// @author Digix Holdings
+contract DaoFundingManager is DaoCommon {
+
+    function DaoFundingManager(address _resolver) public {
+        require(init(CONTRACT_DAO_FUNDING_MANAGER, _resolver));
+    }
+
+    function dao() internal returns (Dao _contract) {
+        _contract = Dao(get_contract(CONTRACT_DAO));
+    }
+
+    /// @notice Call function to claim ETH allocated by DAO (transferred to caller)
+    /// @dev _value should be at the most the milestone fundings for the specific _index milestone
+    /// @param _proposalId ID of the proposal
+    /// @param _index Index of the proposal voting round
+    /// @param _value Eth to be withdrawn by user (in wei)
+    /// @return _success Boolean, true if claim successful, revert otherwise
+    function claimEthFunding(bytes32 _proposalId, uint256 _index, uint256 _value)
+        public
+        valid_withdraw_amount(_proposalId, _index, _value)
+        returns (bool _success)
+    {
+        require(isFromProposer(_proposalId));
+
+        // proposal should not be paused/stopped
+        require(isProposalPaused(_proposalId) == false);
+
+        // the `index` voting round should have passed and claimed
+        require(
+            (daoStorage().isClaimed(_proposalId, _index) == true) &&
+            (daoStorage().readProposalVotingResult(_proposalId, _index) == true)
+        );
+
+        daoFundingStorage().updateClaimableEth(msg.sender, daoFundingStorage().claimableEth(msg.sender).sub(_value));
+        daoFundingStorage().withdrawEth(_value);
+
+        msg.sender.transfer(_value);
+        _success = true;
+    }
+
+    /// @notice Function to claim unlocked collateral
+    /// @dev Collaterals are unlocked only when proposals fail at/before the initial voting or on completion of all milestones
+    /// @param _proposalId Proposal ID to claim collateral for
+    /// @return _success Boolean, true if claim is successful
+    function claimCollateral(bytes32 _proposalId)
+        public
+        returns (bool _success)
+    {
+        require(isFromProposer(_proposalId));
+
+        // proposal should not be paused/stopped
+        require(isProposalPaused(_proposalId) == false);
+
+        // require unlocked collateral to be enough
+        uint256 _unlockedCollateral = daoCollateralStorage().readUnlockedCollateral(msg.sender);
+        address _endorser;
+        (,,_endorser,,,,,,,) = daoStorage().readProposal(_proposalId);
+        require(
+            (_unlockedCollateral >= get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT)) ||
+            (_endorser != EMPTY_ADDRESS)
+        );
+
+        daoCollateralStorage().withdrawCollateral(msg.sender, _unlockedCollateral);
+        msg.sender.transfer(_unlockedCollateral);
+        _success = true;
+    }
+
+    /// @notice Function to allocate ETH to a user address
+    /// @param _to Ethereum address of the receiver of ETH
+    /// @param _value Amount to be allocated (in wei)
+    function allocateEth(address _to, uint256 _value)
+        public
+    {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
+        _value = _value.add(daoFundingStorage().claimableEth(_to));
+        daoFundingStorage().updateClaimableEth(_to, _value);
+    }
+
+    /// @notice Function to move funds to a new DAO
+    /// @param _destinationForDaoFunds Ethereum contract address of the new DaoFundingManager
+    function moveFundsToNewDao(address _destinationForDaoFunds)
+        public
+    {
+        require(sender_is(CONTRACT_DAO));
+        uint256 _remainingBalance = address(this).balance;
+        daoFundingStorage().withdrawEth(_remainingBalance);
+        _destinationForDaoFunds.transfer(_remainingBalance);
+    }
+
+    /// @notice Payable function to receive ETH funds from DigixDAO crowdsale contract
+    function () payable public {
+        daoFundingStorage().addEth(msg.value);
+    }
+}
+
+
+
+
+
+
+
+
+/// @title Interactive DAO contract for creating/modifying/endorsing proposals
+/// @author Digix Holdings
+contract Dao is DaoCommon, Claimable {
+    using MathHelper for MathHelper;
+
+    function Dao(address _resolver) public {
+        require(init(CONTRACT_DAO, _resolver));
+    }
+
+    function daoFundingManager()
+        internal
+        returns (DaoFundingManager _contract)
+    {
+        _contract = DaoFundingManager(get_contract(CONTRACT_DAO_FUNDING_MANAGER));
+    }
+
+    function daoVotingClaims()
+        internal
+        returns (DaoVotingClaims _contract)
+    {
+        _contract = DaoVotingClaims(get_contract(CONTRACT_DAO_VOTING_CLAIMS));
+    }
+
+    /// @notice Migrate this DAO to a new DAO contract
+    /// @param _newDaoFundingManager Address of the new DaoFundingManager contract
+    /// @param _newDaoContract Address of the new DAO contract
+    function migrateToNewDao(
+        address _newDaoFundingManager,
+        address _newDaoContract
+    )
+        public
+        onlyOwner()
+    {
+        require(daoUpgradeStorage().isReplacedByNewDao() == false);
+        daoUpgradeStorage().updateForDaoMigration(_newDaoFundingManager, _newDaoContract);
+        daoFundingManager().moveFundsToNewDao(_newDaoFundingManager);
+    }
+
+    /// @notice Call this function to mark the start of the DAO's first quarter
+    /// @param _start Start time of the first quarter in the DAO
+    function setStartOfFirstQuarter(uint256 _start) public if_founder() {
+        daoUpgradeStorage().setStartOfFirstQuarter(_start);
+    }
+
+    /// @notice Submit a new preliminary idea / Pre-proposal
+    /// @param _docIpfsHash Hash of the IPFS doc containing details of proposal
+    /// @param _milestonesFundings Array of fundings of the proposal milestones (in wei)
+    /// @param _finalReward Final reward asked by proposer at successful completion of all milestones of proposal
+    /// @return Whether pre-proposal was successfully created
+    function submitPreproposal(
+        bytes32 _docIpfsHash,
+        uint256[] _milestonesFundings,
+        uint256 _finalReward
+    )
+        public
+        payable
+        ifFundingPossible(_milestonesFundings)
+        returns (bool _success)
+    {
+        require(isMainPhase());
+        require(isParticipant(msg.sender));
+        bool _isFounder = is_founder();
+
+        require(msg.value >= get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        require(address(daoFundingManager()).call.value(msg.value)());
+
+        if (!_isFounder) {
+            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
+            require(_milestonesFundings.length <= get_uint_config(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
+        }
+
+        address _proposer = msg.sender;
+        require(identity_storage().is_kyc_approved(_proposer));
+
+        daoCollateralStorage().lockCollateral(msg.sender, get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        daoStorage().addProposal(_docIpfsHash, _proposer, _milestonesFundings, _finalReward, _isFounder);
+        _success = true;
+    }
+
+    /// @notice Modify a proposal (this can be done only before setting the final version)
+    /// @param _proposalId Proposal ID (hash of IPFS doc of the first version of the proposal)
+    /// @param _docIpfsHash Hash of IPFS doc of the modified version of the proposal
+    /// @param _milestonesFundings Array of fundings of the modified version of the proposal (in wei)
+    /// @param _finalReward Final reward on successful completion of all milestones of the modified version of proposal (in wei)
+    /// @return Whether the proposal was modified successfully
+    function modifyProposal(
+        bytes32 _proposalId,
+        bytes32 _docIpfsHash,
+        uint256[] _milestonesFundings,
+        uint256 _finalReward
+    )
+        public
+        returns (bool _success)
+    {
+        require(isMainPhase());
+        require(isParticipant(msg.sender));
+        require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
+        require(isEditable(_proposalId));
+        bytes32 _currentState;
+        (,,,_currentState,,,,,,) = daoStorage().readProposal(_proposalId);
+        require(_currentState == PROPOSAL_STATE_PREPROPOSAL ||
+          _currentState == PROPOSAL_STATE_DRAFT);
+        require(identity_storage().is_kyc_approved(msg.sender));
+
+        if (!is_founder()) {
+            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
+            require(_milestonesFundings.length <= get_uint_config(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
+        }
+
+        daoStorage().editProposal(_proposalId, _docIpfsHash, _milestonesFundings, _finalReward);
+        _success = true;
+    }
+
+    function changeFundings(
+        bytes32 _proposalId,
+        uint256[] _milestonesFundings,
+        uint256 _finalReward,
+        uint256 _currentMilestone
+    )
+        public
+    {
+        require(isMainPhase());
+        require(isParticipant(msg.sender));
+        require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
+        require(identity_storage().is_kyc_approved(msg.sender));
+        if (!is_founder()) {
+            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
+            require(_milestonesFundings.length <= get_uint_config(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
+        }
+        uint256[] memory _currentFundings;
+        (_currentFundings, _finalReward) = daoStorage().readProposalFunding(_proposalId);
+
+        // must be after the start of the milestone, and the milestone has not been finished yet (voting hasnt started)
+        require(now > startOfMilestone(_proposalId, _currentMilestone));
+        require(daoStorage().readProposalVotingTime(_proposalId, _currentMilestone.add(1)) == 0);
+
+        // can only modify the fundings after _currentMilestone
+        //so, all the fundings from 0 to _currentMilestone must be the same
+        for (uint256 i=0;i<=_currentMilestone;i++) {
+            require(_milestonesFundings[i] == _currentFundings[i]);
+        }
+
+        daoStorage().changeFundings(_proposalId, _milestonesFundings, _finalReward);
+    }
+
+    /// @notice Finalize a proposal
+    /// @dev After finalizing a proposal, it cannot be modified further
+    /// @param _proposalId ID of the proposal
+    function finalizeProposal(bytes32 _proposalId)
+        public
+    {
+        require(isMainPhase());
+        require(isParticipant(msg.sender));
+        require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
+        require(isEditable(_proposalId));
+        require(identity_storage().is_kyc_approved(msg.sender));
+        bool _isDigixProposal;
+        (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
+        if (!_isDigixProposal) {
+            require(daoStorage().proposalCountByQuarter(currentQuarterIndex()) < get_uint_config(CONFIG_PROPOSAL_CAP_PER_QUARTER));
+        }
+        require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_DRAFT_VOTING_PHASE).add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE)));
+        address _endorser;
+        (,,_endorser,,,,,,,) = daoStorage().readProposal(_proposalId);
+        require(_endorser != EMPTY_ADDRESS);
+        daoStorage().finalizeProposal(_proposalId);
+        daoStorage().setProposalDraftVotingTime(_proposalId, now);
+    }
+
+    function finishMilestone(bytes32 _proposalId, uint256 _milestoneIndex)
+        public
+    {
+        require(isMainPhase());
+        require(isParticipant(msg.sender));
+        require(isFromProposer(_proposalId));
+        require(identity_storage().is_kyc_approved(msg.sender));
+
+        // must be after the start of this milestone, and the milestone has not been finished yet (voting hasnt started)
+        require(now > startOfMilestone(_proposalId, _milestoneIndex));
+        require(daoStorage().readProposalVotingTime(_proposalId, _milestoneIndex.add(1)) == 0);
+
+        daoStorage().setProposalVotingTime(
+            _proposalId,
+            _milestoneIndex.add(1),
+            getTimelineForNextVote(_milestoneIndex.add(1), now)
+        ); // set the voting time of next voting
+    }
+
+    function addProposalDoc(bytes32 _proposalId, bytes32 _newDoc)
+        public
+    {
+        require(isMainPhase());
+        require(isParticipant(msg.sender));
+        require(isFromProposer(_proposalId));
+        require(identity_storage().is_kyc_approved(msg.sender));
+        daoStorage().addProposalDoc(_proposalId, _newDoc);
+    }
+
+    /// @notice Function to endorse a pre-proposal (can be called only by DAO Moderator)
+    /// @param _proposalId ID of the proposal (hash of IPFS doc of the first version of the proposal)
+    /// @return Whether the proposal was endorsed successfully or not
+    function endorseProposal(bytes32 _proposalId)
+        public
+        isProposalState(_proposalId, PROPOSAL_STATE_PREPROPOSAL)
+        returns (bool _success)
+    {
+        require(isMainPhase());
+        require(isModerator(msg.sender));
+        daoStorage().updateProposalEndorse(_proposalId, msg.sender);
+        _success = true;
+    }
+
+    /// @notice Function to update the PRL (regulatory status) status of a proposal
+    /// @param _proposalId ID of the proposal
+    /// @param _doc hash of IPFS uploaded document, containing details of PRL Action
+    /// @return _success Boolean, whether the PRL status was updated successfully
+    function updatePRL(
+        bytes32 _proposalId,
+        uint256 _action,
+        bytes32 _doc
+    )
+        public
+        if_prl()
+        returns (bool _success)
+    {
+        require(_action == PRL_ACTION_STOP || _action == PRL_ACTION_PAUSE || _action == PRL_ACTION_UNPAUSE);
+        daoStorage().updateProposalPRL(_proposalId, _action, _doc, now);
+        _success = true;
+    }
+
+    /// @notice Function to create a Special Proposal (can only be created by the founders)
+    /// @param _doc hash of the IPFS doc of the special proposal details
+    /// @param _uintConfigs Array of the new UINT256 configs
+    /// @param _addressConfigs Array of the new Address configs
+    /// @param _bytesConfigs Array of the new Bytes32 configs
+    /// @return _success true if created special successfully
+    function createSpecialProposal(
+        bytes32 _doc,
+        uint256[] _uintConfigs,
+        address[] _addressConfigs,
+        bytes32[] _bytesConfigs
+    )
+        public
+        if_founder()
+        returns (bool _success)
+    {
+        require(isMainPhase());
+        address _proposer = msg.sender;
+        daoSpecialStorage().addSpecialProposal(
+            _doc,
+            _proposer,
+            _uintConfigs,
+            _addressConfigs,
+            _bytesConfigs
+        );
+        _success = true;
+    }
+
+    /// @notice Function to set start of voting round for special proposal
+    /// @param _proposalId ID of the special proposal
+    /// @return _success Boolean, true if voting time was set successfully
+    function startSpecialProposalVoting(
+        bytes32 _proposalId
+    )
+        public
+        returns (bool _success)
+    {
+        require(isMainPhase());
         require(daoSpecialStorage().readProposalProposer(_proposalId) == msg.sender);
         require(daoSpecialStorage().readVotingTime(_proposalId) == 0);
         require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));

@@ -15,8 +15,8 @@ contract DaoWhitelistingStorage is ResolverClient, DaoConstants {
 
     function setWhitelisted(address _contractAddress, bool _isWhitelisted)
         public
-        if_sender_is(CONTRACT_DAO_WHITELISTING)
     {
+        require(sender_is(CONTRACT_DAO_WHITELISTING));
         whitelist[_contractAddress] = _isWhitelisted;
     }
 }

@@ -56,6 +56,4 @@ fi
 
 rm -rf build/
 truffle compile
-truffle test test/storage/*
-truffle test test/interactive/*
-truffle test test/gas-usage/*
+truffle test test/interactive/Dao.js

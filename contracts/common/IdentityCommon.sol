@@ -12,8 +12,12 @@ contract IdentityCommon is ResolverClient, DaoConstants {
   }
 
   modifier if_founder() {
-    require(identity_storage().read_user_role_id(msg.sender) == ROLES_FOUNDERS);
+    require(is_founder());
     _;
+  }
+
+  function is_founder() returns (bool _isFounder) {
+      _isFounder = identity_storage().read_user_role_id(msg.sender) == ROLES_FOUNDERS;
   }
 
   modifier if_prl() {

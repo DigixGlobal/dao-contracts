@@ -38,9 +38,9 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         uint256 _dgxRewardsPoolLastQuarter,
         uint256 _sumRewardsFromBeginning
     )
-        if_sender_is(CONTRACT_DAO_REWARDS_MANAGER)
         public
     {
+        require(sender_is(CONTRACT_DAO_REWARDS_MANAGER));
         allQuartersInfo[_quarterIndex].minimalParticipationPoint = _minimalParticipationPoint;
         allQuartersInfo[_quarterIndex].quarterPointScalingFactor = _quarterPointScalingFactor;
         allQuartersInfo[_quarterIndex].reputationPointScalingFactor = _reputationPointScalingFactor;
@@ -61,44 +61,44 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         uint256 _quarterIndex,
         uint256 _reputationPoint
     )
-        if_sender_is(CONTRACT_DAO_REWARDS_MANAGER)
         public
     {
+        require(sender_is(CONTRACT_DAO_REWARDS_MANAGER));
         allQuartersInfo[_quarterIndex].reputationPoint[_user] = _reputationPoint;
     }
 
     function updateClaimableDGX(address _user, uint256 _newClaimableDGX)
-        if_sender_is(CONTRACT_DAO_REWARDS_MANAGER)
         public
     {
+        require(sender_is(CONTRACT_DAO_REWARDS_MANAGER));
         claimableDGXs[_user] = _newClaimableDGX;
     }
 
     function updateLastParticipatedQuarter(address _user, uint256 _lastQuarter)
-        if_sender_is(CONTRACT_DAO_STAKE_LOCKING)
         public
     {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         lastParticipatedQuarter[_user] = _lastQuarter;
     }
 
     function updateLastQuarterThatRewardsWasUpdated(address _user, uint256 _lastQuarter)
-        if_sender_is(CONTRACT_DAO_REWARDS_MANAGER)
         public
     {
+        require(sender_is(CONTRACT_DAO_REWARDS_MANAGER));
         lastQuarterThatRewardsWasUpdated[_user] = _lastQuarter;
     }
 
     function updateLastQuarterThatReputationWasUpdated(address _user, uint256 _lastQuarter)
-        if_sender_is(CONTRACT_DAO_REWARDS_MANAGER)
         public
     {
+        require(sender_is(CONTRACT_DAO_REWARDS_MANAGER));
         lastQuarterThatReputationWasUpdated[_user] = _lastQuarter;
     }
 
     function addToTotalDgxClaimed(uint256 _dgxClaimed)
-        if_sender_is(CONTRACT_DAO_REWARDS_MANAGER)
         public
     {
+        require(sender_is(CONTRACT_DAO_REWARDS_MANAGER));
         totalDGXsClaimed = totalDGXsClaimed.add(_dgxClaimed);
     }
 

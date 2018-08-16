@@ -2,7 +2,7 @@ pragma solidity ^0.4.19;
 
 import "openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol";
 
-contract MockDGD is StandardToken {
+contract MockDgd is StandardToken {
   string public constant name = "MockDigixDao";
   string public constant symbol = "MDGD";
   uint8 public constant decimals = 9;
@@ -12,7 +12,7 @@ contract MockDGD is StandardToken {
   /**
    * @dev Constructor that gives msg.sender all of existing tokens.
    */
-  function MockDGD() public {
+  function MockDgd() public {
     totalSupply_ = INITIAL_SUPPLY;
     balances[msg.sender] = INITIAL_SUPPLY;
     Transfer(0x0, msg.sender, INITIAL_SUPPLY);

@@ -1,7 +1,7 @@
 pragma solidity ^0.4.23;
 
 import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
-import "./common/DaoCommon.sol";
+import "../common/DaoCommon.sol";
 
 /// @title Contract for all voting operations of DAO
 /// @author Digix Holdings
@@ -20,11 +20,11 @@ contract DaoVoting is DaoCommon, Claimable {
         bool _voteYes
     )
         public
-        if_main_phase()
-        if_draft_voting_phase(_proposalId)
-        if_moderator()
+        ifDraftVotingPhase(_proposalId)
         returns (bool _success)
     {
+        require(isMainPhase());
+        require(isModerator(msg.sender));
         address _moderator = msg.sender;
         uint256 _moderatorStake = daoStakeStorage().readUserEffectiveDGDStake(_moderator);
 
@@ -49,10 +49,10 @@ contract DaoVoting is DaoCommon, Claimable {
         bytes32 _commitHash
     )
         public
-        if_commmit_phase_special(_proposalId)
-        if_participant()
+        ifCommitPhaseSpecial(_proposalId)
         returns (bool _success)
     {
+        require(isParticipant(msg.sender));
         daoSpecialStorage().commitVote(_proposalId, _commitHash, msg.sender);
         _success = true;
     }
@@ -67,10 +67,10 @@ contract DaoVoting is DaoCommon, Claimable {
         bytes32 _salt
     )
         public
-        if_reveal_phase_special(_proposalId)
-        has_not_revealed_special(_proposalId)
-        if_participant()
+        ifRevealPhaseSpecial(_proposalId)
+        hasNotRevealedSpecial(_proposalId)
     {
+        require(isParticipant(msg.sender));
         require(keccak256(msg.sender, _vote, _salt) == daoSpecialStorage().readCommitVote(_proposalId, msg.sender));
         daoSpecialStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().readUserEffectiveDGDStake(msg.sender));
         daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_VOTE), currentQuarterIndex());
@@ -87,10 +87,10 @@ contract DaoVoting is DaoCommon, Claimable {
         bytes32 _commitHash
     )
         public
-        if_commit_phase(_proposalId, _index)
-        if_participant()
+        ifCommitPhase(_proposalId, _index)
         returns (bool _success)
     {
+        require(isParticipant(msg.sender));
         daoStorage().commitVote(_proposalId, _commitHash, msg.sender, _index);
         _success = true;
     }
@@ -107,10 +107,10 @@ contract DaoVoting is DaoCommon, Claimable {
         bytes32 _salt
     )
         public
-        if_reveal_phase(_proposalId, _index)
-        has_not_revealed(_proposalId, _index)
-        if_participant()
+        ifRevealPhase(_proposalId, _index)
+        hasNotRevealed(_proposalId, _index)
     {
+        require(isParticipant(msg.sender));
         require(keccak256(msg.sender, _vote, _salt) == daoStorage().readCommitVote(_proposalId, _index, msg.sender));
         daoStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().readUserEffectiveDGDStake(msg.sender), _index);
         daoPointsStorage().addQuarterPoint(

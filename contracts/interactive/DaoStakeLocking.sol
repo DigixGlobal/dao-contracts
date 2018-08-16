@@ -1,9 +1,9 @@
 pragma solidity ^0.4.19;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
-import "./lib/MathHelper.sol";
-import "./common/DaoCommon.sol";
-import "./service/DaoCalculatorService.sol";
+import "../lib/MathHelper.sol";
+import "../common/DaoCommon.sol";
+import "../service/DaoCalculatorService.sol";
 import "./DaoRewardsManager.sol";
 
 /// @title Contract to handle staking/withdrawing of DGDs for participation in DAO
@@ -72,8 +72,8 @@ contract DaoStakeLocking is DaoCommon {
     /// @return _success Boolean, true if the locking process is successful, false otherwise
     function lockDGD(uint256 _amount)
         public
-        if_not_contract(msg.sender)
-        if_global_rewards_set(currentQuarterIndex())
+        ifNotContract(msg.sender)
+        ifGlobalRewardsSet(currentQuarterIndex())
         returns (bool _success)
     {
         StakeInformation memory _info = getStakeInformation(msg.sender);
@@ -109,10 +109,10 @@ contract DaoStakeLocking is DaoCommon {
     /// @return _success Boolean, true if the withdrawal was successful, revert otherwise
     function withdrawDGD(uint256 _amount)
         public
-        if_global_rewards_set(currentQuarterIndex())
+        ifGlobalRewardsSet(currentQuarterIndex())
         returns (bool _success)
     {
-        require(is_locking_phase() || daoUpgradeStorage().isReplacedByNewDao());
+        require(isLockingPhase() || daoUpgradeStorage().isReplacedByNewDao());
         StakeInformation memory _info = getStakeInformation(msg.sender);
         StakeInformation memory _newInfo = refreshDGDStake(msg.sender, _info, false);
 
@@ -142,33 +142,13 @@ contract DaoStakeLocking is DaoCommon {
     /// @dev This can be done in the middle of the quarter as well
     function confirmContinuedParticipation()
         public
-        if_global_rewards_set(currentQuarterIndex())
+        ifGlobalRewardsSet(currentQuarterIndex())
     {
         StakeInformation memory _info = getStakeInformation(msg.sender);
         daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
         StakeInformation memory _infoAfter = refreshDGDStake(msg.sender, _info, true);
         refreshModeratorStatus(msg.sender, _info, _infoAfter);
         daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
-    }
-
-    /// @notice Function to see if it is locking phase
-    /// @return _success Boolean, true if it is locking phase, revert otherwise
-    function isLockingPhase()
-        public
-        if_locking_phase()
-        returns (bool _success)
-    {
-        _success = true;
-    }
-
-    /// @notice Function to see if it is main phase
-    /// @return _success Boolean, true if it is main phase, revert otherwise
-    function isMainPhase()
-        public
-        if_main_phase()
-        returns (bool _success)
-    {
-        _success = true;
     }
 
     /// @notice This function refreshes the DGD stake of a user before continuing participation next quarter

@@ -69,6 +69,7 @@ const calculateReputation = function (
   _currentQuarter = _currentQuarter.toNumber();
   _lastParticipatedQuarter = _lastParticipatedQuarter.toNumber();
   _lastQuarterThatRewardsWasUpdated = _lastQuarterThatRewardsWasUpdated.toNumber();
+  _lastQuarterThatReputationWasUpdated = _lastQuarterThatReputationWasUpdated.toNumber();
   _maxReputationDeduction = _maxReputationDeduction.toNumber();
   _punishmentForNotLocking = _punishmentForNotLocking.toNumber();
   _minimalParticipationPoint = _minimalParticipationPoint.toNumber();
@@ -86,7 +87,7 @@ const calculateReputation = function (
     return _currentReputation;
   }
 
-  if (_lastParticipatedQuarter === (_currentQuarter - 1)) {
+  if (_lastQuarterThatReputationWasUpdated === (_lastParticipatedQuarter - 1)) {
     if (_quarterPoint < _minimalParticipationPoint) {
       _currentReputation -= Math.floor(((_minimalParticipationPoint - _quarterPoint) * _maxReputationDeduction) / _minimalParticipationPoint);
     } else {
@@ -102,9 +103,14 @@ const calculateReputation = function (
     }
   }
 
-  const _fineForNotLocking = (_currentQuarter - 1 - _lastParticipatedQuarter) * (_maxReputationDeduction + _punishmentForNotLocking);
+  const _fineForNotLocking = (_currentQuarter - 1 - max(_lastParticipatedQuarter, _lastQuarterThatReputationWasUpdated)) * (_maxReputationDeduction + _punishmentForNotLocking);
   _currentReputation = _fineForNotLocking > _currentReputation ? 0 : (_currentReputation - _fineForNotLocking);
   return _currentReputation;
+};
+
+const max = function (a, b) {
+  if (a > b) return a;
+  return b;
 };
 
 const calculateDgxDemurrage = function (

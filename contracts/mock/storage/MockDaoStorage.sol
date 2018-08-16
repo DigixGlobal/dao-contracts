@@ -1,6 +1,6 @@
 pragma solidity ^0.4.19;
 
-import "./../storage/DaoStorage.sol";
+import "../../storage/DaoStorage.sol";
 
 contract MockDaoStorage is DaoStorage {
     using DoublyLinkedList for DoublyLinkedList.Bytes;
@@ -14,7 +14,6 @@ contract MockDaoStorage is DaoStorage {
     @param _roundIndex Index of the voting round, if not draft phase
     @param _proposer Address of the proposer
     @param _endorser Address of the endorser
-    @param _milestonesDurations Uint Array of the milestone durations
     @param _milestonesFundings Uint Array of the milestone fundings
     @param _isDraftPhase Boolean, true if adding proposal in draft phase
     @param _finalReward Final rewards on completion of proposal
@@ -25,7 +24,6 @@ contract MockDaoStorage is DaoStorage {
         bool _isDraftPhase,
         address _proposer,
         address _endorser,
-        uint256[] _milestonesDurations,
         uint256[] _milestonesFundings,
         uint256 _finalReward
     )
@@ -39,7 +37,6 @@ contract MockDaoStorage is DaoStorage {
         proposalsById[_proposalId].proposalVersions[_proposalId].docIpfsHash = _proposalId;
         proposalsById[_proposalId].proposalVersions[_proposalId].created = now;
         proposalsById[_proposalId].proposalVersions[_proposalId].milestoneCount = _milestonesFundings.length;
-        proposalsById[_proposalId].proposalVersions[_proposalId].milestoneDurations = _milestonesDurations;
         proposalsById[_proposalId].proposalVersions[_proposalId].milestoneFundings = _milestonesFundings;
         proposalsById[_proposalId].proposalVersions[_proposalId].finalReward = _finalReward;
         proposalsById[_proposalId].endorser = _endorser;
@@ -60,6 +57,35 @@ contract MockDaoStorage is DaoStorage {
         }
     }
 
+    function mock_put_proposal_in_milestone(
+        bytes32 _proposalId,
+        uint256 _milestoneId,
+        address _proposer,
+        address _endorser,
+        uint256[] _milestonesFundings,
+        uint256 _finalReward,
+        uint256 _previousVotingStart
+    )
+        public
+    {
+        allProposals.append(_proposalId);
+        proposalsById[_proposalId].proposalId = _proposalId;
+        proposalsById[_proposalId].proposer = _proposer;
+        proposalsById[_proposalId].timeCreated = now - (5 minutes);
+        proposalsById[_proposalId].proposalVersionDocs.append(_proposalId);
+        proposalsById[_proposalId].proposalVersions[_proposalId].docIpfsHash = _proposalId;
+        proposalsById[_proposalId].proposalVersions[_proposalId].created = now;
+        proposalsById[_proposalId].proposalVersions[_proposalId].milestoneCount = _milestonesFundings.length;
+        proposalsById[_proposalId].proposalVersions[_proposalId].milestoneFundings = _milestonesFundings;
+        proposalsById[_proposalId].proposalVersions[_proposalId].finalReward = _finalReward;
+        proposalsById[_proposalId].endorser = _endorser;
+        proposalsById[_proposalId].finalVersion = _proposalId;
+        proposalsById[_proposalId].votingRounds[_milestoneId].startTime = _previousVotingStart;
+        proposalsById[_proposalId].votingRounds[_milestoneId].claimed = true;
+        proposalsById[_proposalId].votingRounds[_milestoneId].passed = true;
+        proposalsById[_proposalId].votingRounds[_milestoneId].funded = true;
+    }
+
     /**
     @notice Mock function to add fake votes in the past for a proposal
     @dev This will never be available in the deployment, only for test purposes
@@ -70,7 +96,7 @@ contract MockDaoStorage is DaoStorage {
     @param _votes Boolean array of the votes (for or against)
     @param _weights Uint array of the voting weights
     @param _length Length of the above arrays (number of voters)
-    @param _startOfNextMilestone start of next milestone from this voting round
+    @param _startOfVotingRound start of this voting round
     */
     function mock_put_past_votes(
         bytes32 _proposalId,
@@ -80,7 +106,7 @@ contract MockDaoStorage is DaoStorage {
         bool[] _votes,
         uint256[] _weights,
         uint256 _length,
-        uint256 _startOfNextMilestone
+        uint256 _startOfVotingRound
     )
         public
     {
@@ -89,8 +115,9 @@ contract MockDaoStorage is DaoStorage {
             _voting = proposalsById[_proposalId].draftVoting;
         } else {
             _voting = proposalsById[_proposalId].votingRounds[_roundIndex];
-            proposalsById[_proposalId].votingRounds[_roundIndex].startOfNextMilestone = _startOfNextMilestone;
+            proposalsById[_proposalId].votingRounds[_roundIndex].startTime = _startOfVotingRound;
         }
+
         for (uint256 i = 0; i < _length; i++) {
             if (_votes[i] == true) {
                 _voting.yesVotes[_voters[i]] = _weights[i];
@@ -98,5 +125,11 @@ contract MockDaoStorage is DaoStorage {
                 _voting.noVotes[_voters[i]] = _weights[i];
             }
         }
+    }
+
+    function mock_set_proposal_count(uint256 _quarterId, uint256 _count)
+        public
+    {
+        proposalCountByQuarter[_quarterId] = _count;
     }
 }

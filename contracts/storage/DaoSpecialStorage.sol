@@ -25,8 +25,8 @@ contract DaoSpecialStorage is DaoStorageCommon {
         bytes32[] _bytesConfigs
     )
         public
-        if_sender_is(CONTRACT_DAO)
     {
+        require(sender_is(CONTRACT_DAO));
         proposals.append(_proposalId);
         proposalsById[_proposalId].proposalId = _proposalId;
         proposalsById[_proposalId].proposer = _proposer;
@@ -34,6 +34,7 @@ contract DaoSpecialStorage is DaoStorageCommon {
         proposalsById[_proposalId].uintConfigs = _uintConfigs;
         proposalsById[_proposalId].addressConfigs = _addressConfigs;
         proposalsById[_proposalId].bytesConfigs = _bytesConfigs;
+        /* proposalsById[_proposalId].dissolveDao = _dissolveDao; */
     }
 
     function readProposal(bytes32 _proposalId)
@@ -95,8 +96,8 @@ contract DaoSpecialStorage is DaoStorageCommon {
         address _voter
     )
         public
-        if_sender_is(CONTRACT_DAO_VOTING)
     {
+        require(sender_is(CONTRACT_DAO_VOTING));
         proposalsById[_proposalId].voting.commits[_voter] = _hash;
     }
 
@@ -111,8 +112,8 @@ contract DaoSpecialStorage is DaoStorageCommon {
 
     function setVotingTime(bytes32 _proposalId, uint256 _time)
         public
-        if_sender_is(CONTRACT_DAO)
     {
+        require(sender_is(CONTRACT_DAO));
         proposalsById[_proposalId].voting.startTime = _time;
     }
 
@@ -126,15 +127,15 @@ contract DaoSpecialStorage is DaoStorageCommon {
 
     function setPass(bytes32 _proposalId, bool _result)
         public
-        if_sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS)
     {
+        require(sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS));
         proposalsById[_proposalId].voting.passed = _result;
     }
 
     function setVotingClaim(bytes32 _proposalId, bool _claimed)
         public
-        if_sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS)
     {
+        require(sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS));
         DaoStructs.SpecialProposal _proposal = proposalsById[_proposalId];
         _proposal.voting.claimed = _claimed;
     }
@@ -163,8 +164,8 @@ contract DaoSpecialStorage is DaoStorageCommon {
         uint256 _weight
     )
         public
-        if_sender_is(CONTRACT_DAO_VOTING)
     {
+        require(sender_is(CONTRACT_DAO_VOTING));
         proposalsById[_proposalId].voting.revealVote(_voter, _vote, _weight);
     }
 }
