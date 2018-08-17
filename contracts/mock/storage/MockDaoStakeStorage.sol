@@ -1,10 +1,10 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 
 import "../../storage/DaoStakeStorage.sol";
 
 contract MockDaoStakeStorage is DaoStakeStorage {
 
-    function MockDaoStakeStorage(address _resolver) DaoStakeStorage(_resolver) public {}
+    constructor(address _resolver) DaoStakeStorage(_resolver) public {}
 
     function mock_add_moderators(address[] _moderators, uint256[] _dgdStake)
         public

@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "./../storage/DaoIdentityStorage.sol";
@@ -16,7 +16,11 @@ contract IdentityCommon is ResolverClient, DaoConstants {
     _;
   }
 
-  function is_founder() returns (bool _isFounder) {
+  function is_founder()
+      internal
+      constant
+      returns (bool _isFounder)
+  {
       _isFounder = identity_storage().read_user_role_id(msg.sender) == ROLES_FOUNDERS;
   }
 

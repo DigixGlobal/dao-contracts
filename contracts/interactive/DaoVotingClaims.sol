@@ -1,4 +1,4 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.4.24;
 
 import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
 import "../common/DaoCommon.sol";
@@ -8,8 +8,10 @@ import "./DaoRewardsManager.sol";
 import "../lib/DaoIntermediateStructs.sol";
 import "../lib/DaoStructs.sol";
 
-/// @title Contract to claim voting results
-/// @author Digix Holdings
+/**
+@title Contract to claim voting results
+@author Digix Holdings
+*/
 contract DaoVotingClaims is DaoCommon, Claimable {
     using DaoIntermediateStructs for DaoIntermediateStructs.VotingCount;
     using DaoIntermediateStructs for DaoIntermediateStructs.MilestoneInfo;
@@ -18,6 +20,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
     function daoCalculatorService()
         internal
+        constant
         returns (DaoCalculatorService _contract)
     {
         _contract = DaoCalculatorService(get_contract(CONTRACT_SERVICE_DAO_CALCULATOR));
@@ -25,6 +28,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
     function daoFundingManager()
         internal
+        constant
         returns (DaoFundingManager _contract)
     {
         _contract = DaoFundingManager(get_contract(CONTRACT_DAO_FUNDING_MANAGER));
@@ -32,18 +36,24 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
     function daoRewardsManager()
         internal
+        constant
         returns (DaoRewardsManager _contract)
     {
         _contract = DaoRewardsManager(get_contract(CONTRACT_DAO_REWARDS_MANAGER));
     }
 
-    function DaoVotingClaims(address _resolver) public {
+    constructor(address _resolver) public {
         require(init(CONTRACT_DAO_VOTING_CLAIMS, _resolver));
     }
 
-    /// @notice Function to claim the draft voting result (can only be called by the proposal proposer)
-    /// @param _proposalId ID of the proposal
-    /// @return _passed Boolean, true if the draft voting has passed, false if the claiming deadline has passed, revert otherwise
+    /**
+    @notice Function to claim the draft voting result (can only be called by the proposal proposer)
+    @param _proposalId ID of the proposal
+    @param _count Number of operations to do in this call
+    @return {
+      "_passed": "Boolean, true if the draft voting has passed, false if the claiming deadline has passed, revert otherwise"
+    }
+    */
     function claimDraftVotingResult(
         bytes32 _proposalId,
         uint256 _count
@@ -148,12 +158,17 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         daoStorage().setDraftVotingClaim(_proposalId, true);
     }
 
-    // NOTE: Voting round i-th is before milestone index i-th
+    /// NOTE: Voting round i-th is before milestone index i-th
 
-    /// @notice Function to claim the  voting round results (can only be called by the proposer)
-    /// @param _proposalId ID of the proposal
-    /// @param _index Index of the  voting round
-    /// @return _passed Boolean, true if the  voting round passed, false if failed
+    /**
+    @notice Function to claim the  voting round results (can only be called by the proposer)
+    @param _proposalId ID of the proposal
+    @param _index Index of the  voting round
+    @param _operations Number of operations to do in this call
+    @return {
+      "_passed": "Boolean, true if the  voting round passed, false if failed"
+    }
+    */
     function claimProposalVotingResult(bytes32 _proposalId, uint256 _index, uint256 _operations)
         public
         ifNotClaimed(_proposalId, _index)

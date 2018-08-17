@@ -1,16 +1,22 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.4.24;
 
 import "./DaoConstants.sol";
 import "../storage/DaoWhitelistingStorage.sol";
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 
 contract DaoStorageCommon is ResolverClient, DaoConstants {
-    function daoWhitelistingStorage() internal returns (DaoWhitelistingStorage _contract) {
+
+    function daoWhitelistingStorage()
+        internal
+        constant
+        returns (DaoWhitelistingStorage _contract)
+    {
         _contract = DaoWhitelistingStorage(get_contract(CONTRACT_STORAGE_DAO_WHITELISTING));
     }
 
     function isContract(address _address)
         internal
+        constant
         returns (bool)
     {
         uint size;
@@ -25,6 +31,7 @@ contract DaoStorageCommon is ResolverClient, DaoConstants {
 
     function isWhitelisted(address _address)
         internal
+        constant
         returns (bool)
     {
         if (isContract(_address)) {

@@ -1,4 +1,4 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.4.24;
 
 contract MockCommitRevealContract {
   mapping (address => bytes32) commits;
@@ -14,7 +14,7 @@ contract MockCommitRevealContract {
     view
     returns (bool)
   {
-    require(keccak256(msg.sender, _vote, _salt) == commits[msg.sender]);
+    require(keccak256(abi.encodePacked(msg.sender, _vote, _salt)) == commits[msg.sender]);
     return true;
   }
 }

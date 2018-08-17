@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "@digix/cdap/contracts/storage/DirectoryStorage.sol";
@@ -12,7 +12,7 @@ contract DaoIdentityStorage is ResolverClient, DaoConstants, DirectoryStorage {
 
     mapping (address => KycDetails) kycInfo;
 
-    function DaoIdentityStorage(address _resolver)
+    constructor(address _resolver)
         public
     {
         require(init(CONTRACT_STORAGE_DAO_IDENTITY, _resolver));
@@ -74,6 +74,7 @@ contract DaoIdentityStorage is ResolverClient, DaoConstants, DirectoryStorage {
 
     function is_kyc_approved(address _user)
         public
+        constant
         returns (bool _approved)
     {
         uint256 _id_expiration;

@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../common/DaoConstants.sol";
@@ -10,7 +10,7 @@ contract DaoUpgradeStorage is ResolverClient, DaoConstants {
     address public newDaoContract;
     address public newDaoFundingManager;
 
-    function DaoUpgradeStorage(address _resolver) public {
+    constructor(address _resolver) public {
         require(init(CONTRACT_STORAGE_DAO_UPGRADABLE, _resolver));
     }
 

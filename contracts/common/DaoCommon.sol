@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 
 import "../service/DaoListingService.sol";
 import "./DaoConstants.sol";
@@ -19,33 +19,57 @@ contract DaoCommon is IdentityCommon {
 
     using MathHelper for MathHelper;
 
-    function isDaoNotReplaced() internal returns (bool) {
+    function isDaoNotReplaced()
+        internal
+        constant
+        returns (bool)
+    {
         return !daoUpgradeStorage().isReplacedByNewDao();
     }
 
-    function isLockingPhase() internal returns (bool) {
+    function isLockingPhase()
+        internal
+        constant
+        returns (bool)
+    {
         require(currentTInQuarter() < get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
         return true;
     }
 
-    function isMainPhase() internal returns (bool) {
+    function isMainPhase()
+        internal
+        constant
+        returns (bool)
+    {
         require(isDaoNotReplaced());
         require(currentTInQuarter() >= get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
         return true;
     }
 
-    function isProposalPaused(bytes32 _proposalId) public constant returns (bool) {
+    function isProposalPaused(bytes32 _proposalId)
+        public
+        constant
+        returns (bool)
+    {
         bool _isPaused;
         (,,,,,,,,_isPaused,) = daoStorage().readProposal(_proposalId);
         return _isPaused;
     }
 
-    function isFromProposer(bytes32 _proposalId) internal returns (bool) {
+    function isFromProposer(bytes32 _proposalId)
+        internal
+        constant
+        returns (bool)
+    {
         require(msg.sender == daoStorage().readProposalProposer(_proposalId));
         return true;
     }
 
-    function isEditable(bytes32 _proposalId) internal returns (bool) {
+    function isEditable(bytes32 _proposalId)
+        internal
+        constant
+        returns (bool)
+    {
         bytes32 _finalVersion;
         (,,,,,,,_finalVersion,,) = daoStorage().readProposal(_proposalId);
         require(_finalVersion == EMPTY_BYTES);
@@ -175,37 +199,61 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    function requireInPhase(uint256 _startingPoint, uint256 _relativePhaseStart, uint256 _relativePhaseEnd) internal {
+    function requireInPhase(uint256 _startingPoint, uint256 _relativePhaseStart, uint256 _relativePhaseEnd)
+        internal
+        constant
+    {
         require(_startingPoint > 0);
         require(now < _startingPoint.add(_relativePhaseEnd));
         require(now >= _startingPoint.add(_relativePhaseStart));
     }
 
-    function currentQuarterIndex() public returns(uint256 _quarterIndex) {
+    function currentQuarterIndex()
+        public
+        constant
+        returns(uint256 _quarterIndex)
+    {
         _quarterIndex = getQuarterIndex(now);
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
-    function getQuarterIndex(uint256 _time) internal returns (uint256 _index) {
+    function getQuarterIndex(uint256 _time)
+        internal
+        constant
+        returns (uint256 _index)
+    {
         _index = ((_time.sub(daoUpgradeStorage().startOfFirstQuarter())).div(get_uint_config(CONFIG_QUARTER_DURATION))).add(1);
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
-    function timeInQuarter(uint256 _time) internal returns (uint256 _timeInQuarter) {
+    function timeInQuarter(uint256 _time)
+        internal
+        constant
+        returns (uint256 _timeInQuarter)
+    {
         _timeInQuarter = (_time.sub(daoUpgradeStorage().startOfFirstQuarter())) % get_uint_config(CONFIG_QUARTER_DURATION);
     }
 
-    function currentTInQuarter() public returns(uint256 _currentT) {
+    function currentTInQuarter()
+        public
+        constant
+        returns (uint256 _currentT)
+    {
         _currentT = timeInQuarter(now);
     }
 
-    function getTimeLeftInQuarter(uint256 _time) internal returns(uint256 _timeLeftInQuarter) {
+    function getTimeLeftInQuarter(uint256 _time)
+        internal
+        constant
+        returns (uint256 _timeLeftInQuarter)
+    {
         _timeLeftInQuarter = get_uint_config(CONFIG_QUARTER_DURATION).sub(timeInQuarter(_time));
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
     function daoListingService()
         internal
+        constant
         returns (DaoListingService _contract)
     {
         _contract = DaoListingService(get_contract(CONTRACT_SERVICE_DAO_LISTING));
@@ -213,44 +261,81 @@ contract DaoCommon is IdentityCommon {
 
     function daoConfigsStorage()
         internal
+        constant
         returns (DaoConfigsStorage _contract)
     {
         _contract = DaoConfigsStorage(get_contract(CONTRACT_STORAGE_DAO_CONFIG));
     }
 
-    function daoStakeStorage() internal returns (DaoStakeStorage _contract) {
+    function daoStakeStorage()
+        internal
+        constant
+        returns (DaoStakeStorage _contract)
+    {
         _contract = DaoStakeStorage(get_contract(CONTRACT_STORAGE_DAO_STAKE));
     }
 
-    function daoStorage() internal returns (DaoStorage _contract) {
+    function daoStorage()
+        internal
+        constant
+        returns (DaoStorage _contract)
+    {
         _contract = DaoStorage(get_contract(CONTRACT_STORAGE_DAO));
     }
 
-    function daoUpgradeStorage() internal returns (DaoUpgradeStorage _contract) {
+    function daoUpgradeStorage()
+        internal
+        constant
+        returns (DaoUpgradeStorage _contract)
+    {
         _contract = DaoUpgradeStorage(get_contract(CONTRACT_STORAGE_DAO_UPGRADABLE));
     }
 
-    function daoSpecialStorage() internal returns (DaoSpecialStorage _contract) {
+    function daoSpecialStorage()
+        internal
+        constant
+        returns (DaoSpecialStorage _contract)
+    {
         _contract = DaoSpecialStorage(get_contract(CONTRACT_STORAGE_DAO_SPECIAL));
     }
 
-    function daoPointsStorage() internal returns (DaoPointsStorage _contract) {
+    function daoPointsStorage()
+        internal
+        constant
+        returns (DaoPointsStorage _contract)
+    {
         _contract = DaoPointsStorage(get_contract(CONTRACT_STORAGE_DAO_POINTS));
     }
 
-    function daoFundingStorage() internal returns (DaoFundingStorage _contract) {
+    function daoFundingStorage()
+        internal
+        constant
+        returns (DaoFundingStorage _contract)
+    {
         _contract = DaoFundingStorage(get_contract(CONTRACT_STORAGE_DAO_FUNDING));
     }
 
-    function daoRewardsStorage() internal returns (DaoRewardsStorage _contract) {
+    function daoRewardsStorage()
+        internal
+        constant
+        returns (DaoRewardsStorage _contract)
+    {
         _contract = DaoRewardsStorage(get_contract(CONTRACT_STORAGE_DAO_REWARDS));
     }
 
-    function daoWhitelistingStorage() internal returns (DaoWhitelistingStorage _contract) {
+    function daoWhitelistingStorage()
+        internal
+        constant
+        returns (DaoWhitelistingStorage _contract)
+    {
         _contract = DaoWhitelistingStorage(get_contract(CONTRACT_STORAGE_DAO_WHITELISTING));
     }
 
-    function intermediateResultsStorage() internal returns (IntermediateResultsStorage _contract) {
+    function intermediateResultsStorage()
+        internal
+        constant
+        returns (IntermediateResultsStorage _contract)
+    {
         _contract = IntermediateResultsStorage(get_contract(CONTRACT_STORAGE_INTERMEDIATE_RESULTS));
     }
 
@@ -307,6 +392,7 @@ contract DaoCommon is IdentityCommon {
 
     function startOfMilestone(bytes32 _proposalId, uint256 _milestoneIndex)
         internal
+        constant
         returns (uint256 _milestoneStart)
     {
         if (_milestoneIndex == 0) { // This is the 1st milestone, which starts after voting round 0
@@ -325,6 +411,7 @@ contract DaoCommon is IdentityCommon {
         uint256 _votingTime
     )
         internal
+        constant
         returns (uint256)
     {
         uint256 _timeLeftInQuarter = getTimeLeftInQuarter(_votingTime);
@@ -343,6 +430,7 @@ contract DaoCommon is IdentityCommon {
 
     function checkNonDigixProposalLimit(bytes32 _proposalId)
         internal
+        constant
     {
         bool _isDigixProposal;
         (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
@@ -353,6 +441,7 @@ contract DaoCommon is IdentityCommon {
 
     function checkNonDigixFundings(uint256[] _milestonesFundings, uint256 _finalReward)
         internal
+        constant
     {
         if (!is_founder()) {
             require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
@@ -362,6 +451,7 @@ contract DaoCommon is IdentityCommon {
 
     function senderCanDoProposerOperations()
         internal
+        constant
     {
         require(isMainPhase());
         require(isParticipant(msg.sender));

@@ -4,7 +4,7 @@ import "./../storage/DaoSpecialStorage.sol";
 
 contract MockDaoSpecialStorage is DaoSpecialStorage {
 
-    function MockDaoSpecialStorage(address _resolver) public DaoSpecialStorage(_resolver) {}
+    constructor(address _resolver) public DaoSpecialStorage(_resolver) {}
 
     function mock_put_proposal_as(
         bytes32 _specialProposalId,

@@ -1,23 +1,31 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
+
 import "../common/DaoCommon.sol";
 import "./Dao.sol";
 
-/// @title Contract to manage DAO funds
-/// @author Digix Holdings
+/**
+@title Contract to manage DAO funds
+@author Digix Holdings
+*/
 contract DaoFundingManager is DaoCommon {
 
-    function DaoFundingManager(address _resolver) public {
+    constructor(address _resolver) public {
         require(init(CONTRACT_DAO_FUNDING_MANAGER, _resolver));
     }
 
-    function dao() internal returns (Dao _contract) {
+    function dao()
+        internal
+        constant
+        returns (Dao _contract)
+    {
         _contract = Dao(get_contract(CONTRACT_DAO));
     }
 
-    /// @notice Call function to claim ETH allocated by DAO (transferred to caller)
-    /// @param _proposalId ID of the proposal
-    /// @param _index Index of the proposal voting round
-    /// @return _success Boolean, true if claim successful, revert otherwise
+    /**
+    @notice Call function to claim ETH allocated by DAO (transferred to caller)
+    @param _proposalId ID of the proposal
+    @param _index Index of the proposal voting round
+    */
     function claimFunding(bytes32 _proposalId, uint256 _index)
         public
     {
@@ -39,10 +47,14 @@ contract DaoFundingManager is DaoCommon {
         msg.sender.transfer(_funding);
     }
 
-    /// @notice Function to refund the collateral to _receiver
-    /// @dev Can only be called from the Dao contract
-    /// @param _receiver The receiver of the funds
-    /// @return _success Boolean, true if refund was successful
+    /**
+    @notice Function to refund the collateral to _receiver
+    @dev Can only be called from the Dao contract
+    @param _receiver The receiver of the funds
+    @return {
+      "_success": "Boolean, true if refund was successful"
+    }
+    */
     function refundCollateral(address _receiver)
         public
         returns (bool _success)
@@ -59,8 +71,10 @@ contract DaoFundingManager is DaoCommon {
         _receiver.transfer(get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
     }
 
-    /// @notice Function to move funds to a new DAO
-    /// @param _destinationForDaoFunds Ethereum contract address of the new DaoFundingManager
+    /**
+    @notice Function to move funds to a new DAO
+    @param _destinationForDaoFunds Ethereum contract address of the new DaoFundingManager
+    */
     function moveFundsToNewDao(address _destinationForDaoFunds)
         public
     {
@@ -70,7 +84,9 @@ contract DaoFundingManager is DaoCommon {
         _destinationForDaoFunds.transfer(_remainingBalance);
     }
 
-    /// @notice Payable function to receive ETH funds from DigixDAO crowdsale contract
+    /**
+    @notice Payable function to receive ETH funds from DigixDAO crowdsale contract
+    */
     function () payable public {
         daoFundingStorage().addEth(msg.value);
     }

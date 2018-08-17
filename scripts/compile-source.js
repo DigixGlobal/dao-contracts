@@ -40,6 +40,6 @@ function scanContract(contractName) {
 }
 
 module.exports = async function () {
-  writeTextFile('pragma solidity ^0.4.19;');
+  writeTextFile('pragma solidity ^0.4.24;');
   scanContract('Dao.sol');
 };

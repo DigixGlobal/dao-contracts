@@ -10,7 +10,10 @@
     "test": "bash scripts/unit-test.sh",
     "test:simulate": "bash scripts/simulate-dao.sh",
     "lint": "./node_modules/.bin/eslint test/",
-    "ganache": "bash scripts/start_ganache.sh"
+    "ganache": "bash scripts/start_ganache.sh",
+    "docs:compile": "./node_modules/.bin/doxity compile",
+    "docs:publish": "./node_modules/.bin/doxity publish",
+    "docs:server": "cd scripts/doxity/ && ./node_modules/.bin/gatsby develop"
   },
   "repository": {
     "type": "git",
@@ -23,16 +26,17 @@
     "dao"
   ],
   "dependencies": {
-    "@digix/cacp-contracts-dao": "^1.0.4",
+    "@digix/cacp-contracts-dao": "^1.0.6",
     "@digix/cdap": "^0.1.0",
     "@digix/helpers": "^1.0.1",
     "@digix/lite-dgx-contract": "1.0.1",
     "@digix/multi-hash": "0.0.2",
-    "@digix/solidity-collections": "^1.1.0",
+    "@digix/solidity-collections": "^1.1.1",
     "@digix/solidity-core-libraries": "^0.2.3",
     "@digix/solidity-statemachine": "^0.2.0",
     "@digix/tempo": "^0.2.0",
     "@digix/truffle-lightwallet-provider": "^0.1.4",
+    "@digix/doxity-solc": "0.6.0",
     "awaiting": "^3.0.0",
     "canvas": "^1.6.7",
     "canvas-to-buffer": "^1.0.9",
@@ -41,9 +45,9 @@
     "dijix-image": "0.0.10",
     "dijix-pdf": "0.0.8",
     "dotenv": "5.0.1",
-    "ganache-cli": "6.1.0",
     "ethereumjs-testrpc": "^3.9.2",
-    "openzeppelin-solidity": "1.9.0",
+    "ganache-cli": "6.1.0",
+    "openzeppelin-solidity": "^1.12.0",
     "web3-utils": "^1.0.0-beta.34"
   },
   "author": "DigixGlobal",
