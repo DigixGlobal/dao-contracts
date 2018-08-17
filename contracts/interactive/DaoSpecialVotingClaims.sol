@@ -8,8 +8,10 @@ import "./DaoRewardsManager.sol";
 import "../lib/DaoIntermediateStructs.sol";
 import "../lib/DaoStructs.sol";
 
-/// @title Contract to claim voting results
-/// @author Digix Holdings
+/**
+@title Contract to claim voting results
+@author Digix Holdings
+*/
 contract DaoSpecialVotingClaims is DaoCommon, Claimable {
     using DaoIntermediateStructs for DaoIntermediateStructs.VotingCount;
     using DaoIntermediateStructs for DaoIntermediateStructs.MilestoneInfo;
@@ -41,9 +43,13 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
         require(init(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS, _resolver));
     }
 
-    /// @notice Function to claim the voting result on special proposal
-    /// @param _proposalId ID of the special proposal
-    /// @return _passed Boolean, true if voting passed, throw if failed, returns false if passed deadline
+    /**
+    @notice Function to claim the voting result on special proposal
+    @param _proposalId ID of the special proposal
+    @return {
+      "_passed": "Boolean, true if voting passed, throw if failed, returns false if passed deadline"
+    }
+    */
     function claimSpecialProposalVotingResult(bytes32 _proposalId, uint256 _operations)
         public
         ifNotClaimedSpecial(_proposalId)

@@ -8,8 +8,10 @@ import "./DaoRewardsManager.sol";
 import "../lib/DaoIntermediateStructs.sol";
 import "../lib/DaoStructs.sol";
 
-/// @title Contract to claim voting results
-/// @author Digix Holdings
+/**
+@title Contract to claim voting results
+@author Digix Holdings
+*/
 contract DaoVotingClaims is DaoCommon, Claimable {
     using DaoIntermediateStructs for DaoIntermediateStructs.VotingCount;
     using DaoIntermediateStructs for DaoIntermediateStructs.MilestoneInfo;
@@ -41,9 +43,13 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         require(init(CONTRACT_DAO_VOTING_CLAIMS, _resolver));
     }
 
-    /// @notice Function to claim the draft voting result (can only be called by the proposal proposer)
-    /// @param _proposalId ID of the proposal
-    /// @return _passed Boolean, true if the draft voting has passed, false if the claiming deadline has passed, revert otherwise
+    /**
+    @notice Function to claim the draft voting result (can only be called by the proposal proposer)
+    @param _proposalId ID of the proposal
+    @return {
+      "_passed": "Boolean, true if the draft voting has passed, false if the claiming deadline has passed, revert otherwise"
+    }
+    */
     function claimDraftVotingResult(
         bytes32 _proposalId,
         uint256 _count
@@ -148,12 +154,16 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         daoStorage().setDraftVotingClaim(_proposalId, true);
     }
 
-    // NOTE: Voting round i-th is before milestone index i-th
+    /// NOTE: Voting round i-th is before milestone index i-th
 
-    /// @notice Function to claim the  voting round results (can only be called by the proposer)
-    /// @param _proposalId ID of the proposal
-    /// @param _index Index of the  voting round
-    /// @return _passed Boolean, true if the  voting round passed, false if failed
+    /**
+    @notice Function to claim the  voting round results (can only be called by the proposer)
+    @param _proposalId ID of the proposal
+    @param _index Index of the  voting round
+    @return {
+      "_passed": "Boolean, true if the  voting round passed, false if failed"
+    }
+    */
     function claimProposalVotingResult(bytes32 _proposalId, uint256 _index, uint256 _operations)
         public
         ifNotClaimed(_proposalId, _index)
