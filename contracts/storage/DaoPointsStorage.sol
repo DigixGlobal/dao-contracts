@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../common/DaoConstants.sol";
@@ -13,7 +13,7 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
     mapping (uint256 => Token) quarterPoint;
     mapping (uint256 => Token) quarterModeratorPoint;
 
-    function DaoPointsStorage(address _resolver)
+    constructor(address _resolver)
         public
     {
         require(init(CONTRACT_STORAGE_DAO_POINTS, _resolver));

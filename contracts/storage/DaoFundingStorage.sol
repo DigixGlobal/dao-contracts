@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../common/DaoConstants.sol";
@@ -7,7 +7,7 @@ contract DaoFundingStorage is ResolverClient, DaoConstants {
 
     uint256 public ethInDao;
 
-    function DaoFundingStorage(address _resolver) public {
+    constructor(address _resolver) public {
         require(init(CONTRACT_STORAGE_DAO_FUNDING, _resolver));
     }
 

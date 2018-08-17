@@ -1,0 +1,77 @@
+linkPrefix = "/dao-contracts"
+name = "@digix/dao-contracts"
+license = "Apache-2.0"
+version = "1.0.0"
+description = "Smart contracts for DigixDAO"
+homepage = "https://github.com/DigixGlobal/dao-contracts#readme"
+author = "DigixGlobal"
+buildTime = 2018-08-17T07:14:51.051Z
+target = "scripts/doxity"
+src = "contracts/interactive/*"
+dir = "pages/docs"
+source = "https://github.com/DigixGlobal/doxity-gatsby-starter-project/archive/a4886b7a7a04c018ac04fed3125d7d4785e74bed.tar.gz"
+out = "docs"
+
+[interaction]
+
+[whitelist]
+
+[whitelist.all]
+abi = true
+methods = true
+bytecode = false
+source = true
+
+[whitelist.Dao]
+abi = true
+methods = true
+bytecode = false
+source = true
+
+[whitelist.DaoFundingManager]
+abi = true
+methods = true
+bytecode = false
+source = true
+
+[whitelist.DaoIdentity]
+abi = true
+methods = true
+bytecode = false
+source = true
+
+[whitelist.DaoRewardsManager]
+abi = true
+methods = true
+bytecode = false
+source = true
+
+[whitelist.DaoSpecialVotingClaims]
+abi = true
+methods = true
+bytecode = false
+source = true
+
+[whitelist.DaoStakeLocking]
+abi = true
+methods = true
+bytecode = false
+source = true
+
+[whitelist.DaoVoting]
+abi = true
+methods = true
+bytecode = false
+source = true
+
+[whitelist.DaoVotingClaims]
+abi = true
+methods = true
+bytecode = false
+source = true
+
+[whitelist.DaoWhitelisting]
+abi = true
+methods = true
+bytecode = false
+source = true

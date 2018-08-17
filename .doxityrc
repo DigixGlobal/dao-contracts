@@ -1,0 +1,69 @@
+{
+  "target": "scripts/doxity",
+  "src": "contracts/interactive/*",
+  "dir": "pages/docs",
+  "source": "https://github.com/DigixGlobal/doxity-gatsby-starter-project/archive/a4886b7a7a04c018ac04fed3125d7d4785e74bed.tar.gz",
+  "out": "docs",
+  "whitelist": {
+    "all": {
+      "abi": true,
+      "methods": true,
+      "bytecode": false,
+      "source": true
+    },
+    "Dao": {
+      "abi": true,
+      "methods": true,
+      "bytecode": false,
+      "source": true
+    },
+    "DaoFundingManager": {
+      "abi": true,
+      "methods": true,
+      "bytecode": false,
+      "source": true
+    },
+    "DaoIdentity": {
+      "abi": true,
+      "methods": true,
+      "bytecode": false,
+      "source": true
+    },
+    "DaoRewardsManager": {
+      "abi": true,
+      "methods": true,
+      "bytecode": false,
+      "source": true
+    },
+    "DaoSpecialVotingClaims": {
+      "abi": true,
+      "methods": true,
+      "bytecode": false,
+      "source": true
+    },
+    "DaoStakeLocking": {
+      "abi": true,
+      "methods": true,
+      "bytecode": false,
+      "source": true
+    },
+    "DaoVoting": {
+      "abi": true,
+      "methods": true,
+      "bytecode": false,
+      "source": true
+    },
+    "DaoVotingClaims": {
+      "abi": true,
+      "methods": true,
+      "bytecode": false,
+      "source": true
+    },
+    "DaoWhitelisting": {
+      "abi": true,
+      "methods": true,
+      "bytecode": false,
+      "source": true
+    }
+  }
+}

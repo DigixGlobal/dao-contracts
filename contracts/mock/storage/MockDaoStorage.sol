@@ -1,11 +1,11 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 
 import "../../storage/DaoStorage.sol";
 
 contract MockDaoStorage is DaoStorage {
     using DoublyLinkedList for DoublyLinkedList.Bytes;
 
-    function MockDaoStorage(address _resolver) public DaoStorage(_resolver) {}
+    constructor(address _resolver) public DaoStorage(_resolver) {}
 
     /**
     @notice Function to mock add new proposal in pre-defined state
@@ -110,11 +110,10 @@ contract MockDaoStorage is DaoStorage {
     )
         public
     {
-        DaoStructs.Voting storage _voting;
+        DaoStructs.Voting storage _voting = proposalsById[_proposalId].votingRounds[_roundIndex];
         if (_isDraftPhase) {
             _voting = proposalsById[_proposalId].draftVoting;
         } else {
-            _voting = proposalsById[_proposalId].votingRounds[_roundIndex];
             proposalsById[_proposalId].votingRounds[_roundIndex].startTime = _startOfVotingRound;
         }
 

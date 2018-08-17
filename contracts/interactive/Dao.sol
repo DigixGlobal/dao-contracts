@@ -1,20 +1,23 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.4.24;
 
 import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
 import "../common/DaoCommon.sol";
 import "./DaoFundingManager.sol";
 import "./DaoVotingClaims.sol";
 
-/// @title Interactive DAO contract for creating/modifying/endorsing proposals
-/// @author Digix Holdings
+/**
+@title Interactive DAO contract for creating/modifying/endorsing proposals
+@author Digix Holdings
+*/
 contract Dao is DaoCommon, Claimable {
 
-    function Dao(address _resolver) public {
+    constructor(address _resolver) public {
         require(init(CONTRACT_DAO, _resolver));
     }
 
     function daoFundingManager()
         internal
+        constant
         returns (DaoFundingManager _contract)
     {
         _contract = DaoFundingManager(get_contract(CONTRACT_DAO_FUNDING_MANAGER));
@@ -22,14 +25,17 @@ contract Dao is DaoCommon, Claimable {
 
     function daoVotingClaims()
         internal
+        constant
         returns (DaoVotingClaims _contract)
     {
         _contract = DaoVotingClaims(get_contract(CONTRACT_DAO_VOTING_CLAIMS));
     }
 
-    /// @notice Migrate this DAO to a new DAO contract
-    /// @param _newDaoFundingManager Address of the new DaoFundingManager contract, which would receive the remaining ETHs in this DAO
-    /// @param _newDaoContract Address of the new DAO contract
+    /**
+    @notice Migrate this DAO to a new DAO contract
+    @param _newDaoFundingManager Address of the new DaoFundingManager contract, which would receive the remaining ETHs in this DAO
+    @param _newDaoContract Address of the new DAO contract
+    */
     function migrateToNewDao(
         address _newDaoFundingManager,
         address _newDaoContract
@@ -42,17 +48,21 @@ contract Dao is DaoCommon, Claimable {
         daoFundingManager().moveFundsToNewDao(_newDaoFundingManager);
     }
 
-    /// @notice Call this function to mark the start of the DAO's first quarter. This can only be done once, by a founder
-    /// @param _start Start time of the first quarter in the DAO
+    /**
+    @notice Call this function to mark the start of the DAO's first quarter. This can only be done once, by a founder
+    @param _start Start time of the first quarter in the DAO
+    */
     function setStartOfFirstQuarter(uint256 _start) public if_founder() {
         require(daoUpgradeStorage().startOfFirstQuarter() == 0);
         daoUpgradeStorage().setStartOfFirstQuarter(_start);
     }
 
-    /// @notice Submit a new preliminary idea / Pre-proposal
-    /// @param _docIpfsHash Hash of the IPFS doc containing details of proposal
-    /// @param _milestonesFundings Array of fundings of the proposal milestones (in wei)
-    /// @param _finalReward Final reward asked by proposer at successful completion of all milestones of proposal
+    /**
+    @notice Submit a new preliminary idea / Pre-proposal
+    @param _docIpfsHash Hash of the IPFS doc containing details of proposal
+    @param _milestonesFundings Array of fundings of the proposal milestones (in wei)
+    @param _finalReward Final reward asked by proposer at successful completion of all milestones of proposal
+    */
     function submitPreproposal(
         bytes32 _docIpfsHash,
         uint256[] _milestonesFundings,
@@ -74,11 +84,13 @@ contract Dao is DaoCommon, Claimable {
         daoStorage().setProposalCollateralStatus(_docIpfsHash, COLLATERAL_STATUS_UNLOCKED);
     }
 
-    /// @notice Modify a proposal (this can be done only before setting the final version)
-    /// @param _proposalId Proposal ID (hash of IPFS doc of the first version of the proposal)
-    /// @param _docIpfsHash Hash of IPFS doc of the modified version of the proposal
-    /// @param _milestonesFundings Array of fundings of the modified version of the proposal (in wei)
-    /// @param _finalReward Final reward on successful completion of all milestones of the modified version of proposal (in wei)
+    /**
+    @notice Modify a proposal (this can be done only before setting the final version)
+    @param _proposalId Proposal ID (hash of IPFS doc of the first version of the proposal)
+    @param _docIpfsHash Hash of IPFS doc of the modified version of the proposal
+    @param _milestonesFundings Array of fundings of the modified version of the proposal (in wei)
+    @param _finalReward Final reward on successful completion of all milestones of the modified version of proposal (in wei)
+    */
     function modifyProposal(
         bytes32 _proposalId,
         bytes32 _docIpfsHash,
@@ -101,13 +113,15 @@ contract Dao is DaoCommon, Claimable {
         daoStorage().editProposal(_proposalId, _docIpfsHash, _milestonesFundings, _finalReward);
     }
 
-    /// @notice Function to change the funding structure for a proposal
-    /// @dev Proposers can only change fundings for the subsequent milestones,
-    /// during the duration of an on-going milestone (so, cannot be during any voting phase)
-    /// @param _proposalId ID of the proposal
-    /// @param _milestonesFundings Array of fundings for milestones
-    /// @param _finalReward Final reward needed for completion of proposal
-    /// @param _currentMilestone the milestone number the proposal is currently in
+    /**
+    @notice Function to change the funding structure for a proposal
+    @dev Proposers can only change fundings for the subsequent milestones,
+    during the duration of an on-going milestone (so, cannot be during any voting phase)
+    @param _proposalId ID of the proposal
+    @param _milestonesFundings Array of fundings for milestones
+    @param _finalReward Final reward needed for completion of proposal
+    @param _currentMilestone the milestone number the proposal is currently in
+    */
     function changeFundings(
         bytes32 _proposalId,
         uint256[] _milestonesFundings,
@@ -142,9 +156,11 @@ contract Dao is DaoCommon, Claimable {
         daoStorage().changeFundings(_proposalId, _milestonesFundings, _finalReward);
     }
 
-    /// @notice Finalize a proposal
-    /// @dev After finalizing a proposal, it cannot be modified further
-    /// @param _proposalId ID of the proposal
+    /**
+    @notice Finalize a proposal
+    @dev After finalizing a proposal, it cannot be modified further
+    @param _proposalId ID of the proposal
+    */
     function finalizeProposal(bytes32 _proposalId)
         public
     {
@@ -161,6 +177,14 @@ contract Dao is DaoCommon, Claimable {
         daoStorage().setProposalDraftVotingTime(_proposalId, now);
     }
 
+    /**
+    @notice Function to set milestone to be completed
+    @dev This can only be called in the Main Phase of DigixDAO by the proposer. It sets the
+         voting time for the next milestone. If not enough time left in the current
+         quarter, then the next voting is postponed to the start of next quarter
+    @param _proposalId ID of the proposal
+    @param _milestoneIndex Index of the milestone. Index starts from 0 (for the first milestone)
+    */
     function finishMilestone(bytes32 _proposalId, uint256 _milestoneIndex)
         public
     {
@@ -180,6 +204,14 @@ contract Dao is DaoCommon, Claimable {
         ); // set the voting time of next voting
     }
 
+    /**
+    @notice Add IPFS docs to a proposal
+    @dev This is allowed only after a proposal is finalized. Before finalizing
+         a proposal, proposer must modifyProposal. After the proposal is finalized,
+         they can allProposalDoc to that proposal
+    @param _proposalId ID of the proposal
+    @param _newDoc hash of the new IPFS doc
+    */
     function addProposalDoc(bytes32 _proposalId, bytes32 _newDoc)
         public
     {
@@ -191,9 +223,10 @@ contract Dao is DaoCommon, Claimable {
         daoStorage().addProposalDoc(_proposalId, _newDoc);
     }
 
-    /// @notice Function to endorse a pre-proposal (can be called only by DAO Moderator)
-    /// @param _proposalId ID of the proposal (hash of IPFS doc of the first version of the proposal)
-    /// @return Whether the proposal was endorsed successfully or not
+    /**
+    @notice Function to endorse a pre-proposal (can be called only by DAO Moderator)
+    @param _proposalId ID of the proposal (hash of IPFS doc of the first version of the proposal)
+    */
     function endorseProposal(bytes32 _proposalId)
         public
         isProposalState(_proposalId, PROPOSAL_STATE_PREPROPOSAL)
@@ -203,10 +236,11 @@ contract Dao is DaoCommon, Claimable {
         daoStorage().updateProposalEndorse(_proposalId, msg.sender);
     }
 
-    /// @notice Function to update the PRL (regulatory status) status of a proposal
-    /// @param _proposalId ID of the proposal
-    /// @param _doc hash of IPFS uploaded document, containing details of PRL Action
-    /// @return _success Boolean, whether the PRL status was updated successfully
+    /**
+    @notice Function to update the PRL (regulatory status) status of a proposal
+    @param _proposalId ID of the proposal
+    @param _doc hash of IPFS uploaded document, containing details of PRL Action
+    */
     function updatePRL(
         bytes32 _proposalId,
         uint256 _action,
@@ -219,12 +253,16 @@ contract Dao is DaoCommon, Claimable {
         daoStorage().updateProposalPRL(_proposalId, _action, _doc, now);
     }
 
-    /// @notice Function to create a Special Proposal (can only be created by the founders)
-    /// @param _doc hash of the IPFS doc of the special proposal details
-    /// @param _uintConfigs Array of the new UINT256 configs
-    /// @param _addressConfigs Array of the new Address configs
-    /// @param _bytesConfigs Array of the new Bytes32 configs
-    /// @return _success true if created special successfully
+    /**
+    @notice Function to create a Special Proposal (can only be created by the founders)
+    @param _doc hash of the IPFS doc of the special proposal details
+    @param _uintConfigs Array of the new UINT256 configs
+    @param _addressConfigs Array of the new Address configs
+    @param _bytesConfigs Array of the new Bytes32 configs
+    @return {
+      "_success": "true if created special successfully"
+    }
+    */
     function createSpecialProposal(
         bytes32 _doc,
         uint256[] _uintConfigs,
@@ -247,9 +285,10 @@ contract Dao is DaoCommon, Claimable {
         _success = true;
     }
 
-    /// @notice Function to set start of voting round for special proposal
-    /// @param _proposalId ID of the special proposal
-    /// @return _success Boolean, true if voting time was set successfully
+    /**
+    @notice Function to set start of voting round for special proposal
+    @param _proposalId ID of the special proposal
+    */
     function startSpecialProposalVoting(
         bytes32 _proposalId
     )
@@ -262,10 +301,11 @@ contract Dao is DaoCommon, Claimable {
         daoSpecialStorage().setVotingTime(_proposalId, now);
     }
 
-    /// @notice Function to close proposal (also get back collateral)
-    /// @dev Can only be closed if the proposal has not been finalized yet
-    /// @param _proposalId ID of the proposal
-    /// @return _success Boolean, true if proposal was closed successfully
+    /**
+    @notice Function to close proposal (also get back collateral)
+    @dev Can only be closed if the proposal has not been finalized yet
+    @param _proposalId ID of the proposal
+    */
     function closeProposal(bytes32 _proposalId)
         public
     {
@@ -283,10 +323,11 @@ contract Dao is DaoCommon, Claimable {
         require(daoFundingManager().refundCollateral(msg.sender));
     }
 
-    /// @notice Function for founders to close all the dead proposals
-    /// @dev all proposals who are not yet finalized, and been there for more than the threshold time
-    /// @param _proposalIds Array of proposal IDs
-    /// @return _success Boolean, true if all proposals were closed successfully
+    /**
+    @notice Function for founders to close all the dead proposals
+    @dev all proposals who are not yet finalized, and been there for more than the threshold time
+    @param _proposalIds Array of proposal IDs
+    */
     function founderCloseProposals(bytes32[] _proposalIds)
         public
         if_founder()

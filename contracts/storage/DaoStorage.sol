@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 
 import "@digix/solidity-collections/contracts/abstract/BytesIteratorStorage.sol";
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
@@ -17,7 +17,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     mapping (bytes32 => DoublyLinkedList.Bytes) proposalsByState;
     mapping (uint256 => uint256) public proposalCountByQuarter;
 
-    function DaoStorage(address _resolver) public {
+    constructor(address _resolver) public {
         require(init(CONTRACT_STORAGE_DAO, _resolver));
     }
 
@@ -26,16 +26,16 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     /// @notice read all information and details of proposal
     /// @param _proposalId Proposal ID, i.e. hash of IPFS doc Proposal ID, i.e. hash of IPFS doc
     /// return {
-    ///   "_doc": "",
-    ///   "_proposer": "",
-    ///   "_endorser": "",
-    ///   "_state": "",
-    ///   "_timeCreated": "",
-    ///   "_nVersions": "",
-    ///   "_latestVersionDoc": "",
-    ///   "_finalVersion": "",
-    ///   "_paused": "",
-    ///   "_isDigixProposal": ""
+    ///   "_doc": "Original IPFS doc of proposal, also ID of proposal",
+    ///   "_proposer": "Address of the proposer",
+    ///   "_endorser": "Address of the moderator that endorsed the proposal",
+    ///   "_state": "Current state of the proposal",
+    ///   "_timeCreated": "UTC timestamp at which proposal was created",
+    ///   "_nVersions": "Number of versions of the proposal",
+    ///   "_latestVersionDoc": "IPFS doc hash of the latest version of this proposal",
+    ///   "_finalVersion": "If finalized, the version of the final proposal",
+    ///   "_paused": "If the proposal is paused or not at the moment",
+    ///   "_isDigixProposal": "If the proposal has been created by founder or not"
     /// }
     function readProposal(bytes32 _proposalId)
         public
@@ -87,7 +87,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         constant
         returns (uint256 _actionId, uint256 _time, bytes32 _doc)
     {
-        DaoStructs.PrlAction[] _actions = proposalsById[_proposalId].prlActions;
+        DaoStructs.PrlAction[] memory _actions = proposalsById[_proposalId].prlActions;
         require(_index < _actions.length);
         _actionId = _actions[_index].actionId;
         _time = _actions[_index].at;
@@ -403,6 +403,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
 
     function isDraftClaimed(bytes32 _proposalId)
         public
+        constant
         returns (bool _claimed)
     {
         _claimed = proposalsById[_proposalId].draftVoting.claimed;
@@ -410,6 +411,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
 
     function isClaimed(bytes32 _proposalId, uint256 _index)
         public
+        constant
         returns (bool _claimed)
     {
         _claimed = proposalsById[_proposalId].votingRounds[_index].claimed;
@@ -417,22 +419,31 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
 
     function readProposalCollateralStatus(bytes32 _proposalId)
         public
+        constant
         returns (uint256 _status)
     {
         _status = proposalsById[_proposalId].collateralStatus;
     }
 
-    ///////////////////////////// PRIVATE FUNCTIONS /////////////////////////////
+    function readProposalDocs(bytes32 _proposalId)
+        public
+        constant
+        returns (bytes32[] _moreDocs)
+    {
+        bytes32 _lastVersion = proposalsById[_proposalId].finalVersion;
+        _moreDocs = proposalsById[_proposalId].proposalVersions[_lastVersion].moreDocs;
+    }
+
+    function readIfMilestoneFunded(bytes32 _proposalId, uint256 _milestoneId)
+        public
+        constant
+        returns (bool _funded)
+    {
+        _funded = proposalsById[_proposalId].votingRounds[_milestoneId].funded;
+    }
 
     ////////////////////////////// WRITE FUNCTIONS //////////////////////////////
 
-    /// @notice add a new proposal, added to the PREPROPOSAL state
-    /// @param _doc hash of IPFS document
-    /// @param _proposer address of proposer of the proposal
-    /// @param _milestoneFundings array of required fundings for milestones
-    /// @return {
-    ///    "_success": "if pre-proposal was created successfully"
-    /// }
     function addProposal(
         bytes32 _doc,
         address _proposer,
@@ -454,12 +465,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         proposalsById[_doc].addProposalVersion(_doc, _milestoneFundings, _finalReward);
     }
 
-    /// @notice edit/modify a proposal
-    /// @param _proposalId Proposal ID
-    /// @param _newDoc hash of IPFS document for newer version
-    /// @return {
-    ///    "_success": "if proposal was edited successfully"
-    /// }
     function editProposal(
         bytes32 _proposalId,
         bytes32 _newDoc,
@@ -492,14 +497,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         proposalsById[_proposalId].proposalVersions[_lastVersion].moreDocs.push(_newDoc);
     }
 
-    function readProposalDocs(bytes32 _proposalId)
-        public
-        returns (bytes32[] _moreDocs)
-    {
-        bytes32 _lastVersion = proposalsById[_proposalId].finalVersion;
-        _moreDocs = proposalsById[_proposalId].proposalVersions[_lastVersion].moreDocs;
-    }
-
     function finalizeProposal(bytes32 _proposalId)
         public
     {
@@ -508,12 +505,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         proposalsById[_proposalId].finalVersion = getLastProposalVersion(_proposalId);
     }
 
-    /// @notice add an endorser for a pre-proposal
-    /// @param _proposalId Proposal ID
-    /// @param _endorser address of badge holding participant, endorsing pre-proposal
-    /// @return {
-    ///   "_success": "if proposal was endorsed successfully"
-    /// }
     function updateProposalEndorse(
         bytes32 _proposalId,
         address _endorser
@@ -603,10 +594,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         proposalsById[_proposalId].collateralStatus = _status;
     }
 
-    /// @notice update the PRL status of the voting in a proposal
-    /// @param _proposalId Proposal ID
-    /// @param _doc IPFS doc hash of the details regarding this PRL action
-    /// @param _time timestamp when PRL action was taken
     function updateProposalPRL(
         bytes32 _proposalId,
         uint256 _action,
@@ -641,14 +628,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         proposalsById[_proposalId].currentState = PROPOSAL_STATE_CLOSED;
     }
 
-    /// @notice add/update draft vote for an initial proposal
-    /// @param _proposalId Proposal ID
-    /// @param _voter address of participant/voter
-    /// @param _vote true if voting for, false if voting against
-    /// @param _weight weight of the vote, or number of badges staked in this case
-    /// @return {
-    ///   "_success": "if draft vote for proposal added/updated successfully"
-    /// }
     function addDraftVote(
         bytes32 _proposalId,
         address _voter,
@@ -673,14 +652,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         }
     }
 
-    /// @notice commit vote for a proposal in VOTING phase
-    /// @param _proposalId Proposal ID
-    /// @param _hash committed hash
-    /// @param _voter address of the participant/voter
-    /// @param _index index of voting round (0 for votingRRound, 1 onwards for interimvotingRound)
-    /// @return {
-    ///   "_success": "if vote was committed successfully"
-    /// }
     function commitVote(
         bytes32 _proposalId,
         bytes32 _hash,
@@ -694,15 +665,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         proposalsById[_proposalId].votingRounds[_index].commits[_voter] = _hash;
     }
 
-    /// @notice reveal vote for a proposal in VOTING phase
-    /// @param _proposalId Proposal ID
-    /// @param _voter address of the participant/voter
-    /// @param _vote true if voted for, false if voted against
-    /// @param _weight weight of the vote as of the reveal time
-    /// @param _index index of the voting round (0 for votingRound, 1 onwards for interim voting rounds)
-    /// @return {
-    ///   "_success": "if vote was counted successfully"
-    /// }
     function revealVote(
         bytes32 _proposalId,
         address _voter,
@@ -729,13 +691,6 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     {
         require(sender_is(CONTRACT_DAO));
         closeProposalInternal(_proposalId);
-    }
-
-    function readIfMilestoneFunded(bytes32 _proposalId, uint256 _milestoneId)
-        public
-        returns (bool _funded)
-    {
-        _funded = proposalsById[_proposalId].votingRounds[_milestoneId].funded;
     }
 
     function setMilestoneFunded(bytes32 _proposalId, uint256 _milestoneId)

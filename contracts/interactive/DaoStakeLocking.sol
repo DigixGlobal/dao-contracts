@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../lib/MathHelper.sol";
@@ -6,8 +6,10 @@ import "../common/DaoCommon.sol";
 import "../service/DaoCalculatorService.sol";
 import "./DaoRewardsManager.sol";
 
-/// @title Contract to handle staking/withdrawing of DGDs for participation in DAO
-/// @author Digix Holdings
+/**
+@title Contract to handle staking/withdrawing of DGDs for participation in DAO
+@author Digix Holdings
+*/
 contract DaoStakeLocking is DaoCommon {
 
     address public dgdToken;
@@ -19,7 +21,7 @@ contract DaoStakeLocking is DaoCommon {
         uint256 totalLockedDGDStake;
     }
 
-    function DaoStakeLocking(address _resolver, address _dgdToken, address _dgdBadgeToken) public {
+    constructor(address _resolver, address _dgdToken, address _dgdBadgeToken) public {
         require(init(CONTRACT_DAO_STAKE_LOCKING, _resolver));
         dgdToken = _dgdToken;
         dgdBadgeToken = _dgdBadgeToken;
@@ -27,6 +29,7 @@ contract DaoStakeLocking is DaoCommon {
 
     function daoCalculatorService()
         internal
+        constant
         returns (DaoCalculatorService _contract)
     {
         _contract = DaoCalculatorService(get_contract(CONTRACT_SERVICE_DAO_CALCULATOR));
@@ -34,14 +37,17 @@ contract DaoStakeLocking is DaoCommon {
 
     function daoRewardsManager()
         internal
+        constant
         returns (DaoRewardsManager _contract)
     {
         _contract = DaoRewardsManager(get_contract(CONTRACT_DAO_REWARDS_MANAGER));
     }
 
-    /// @notice Function to initially convert DGD Badge to Reputation Points
-    /// @dev Only 1 DGD Badge is accepted from an address, so multiple badge holders
-    /// should either sell their other badges or redeem reputation to another address
+    /**
+    @notice Function to initially convert DGD Badge to Reputation Points
+    @dev Only 1 DGD Badge is accepted from an address, so multiple badge holders
+         should either sell their other badges or redeem reputation to another address
+    */
     function redeemBadge()
         public
     {
@@ -66,10 +72,14 @@ contract DaoStakeLocking is DaoCommon {
         require(ERC20(dgdBadgeToken).transferFrom(msg.sender, address(this), 1));
     }
 
-    /// @notice Function to lock DGD tokens to participate in the DAO
-    /// @dev Users must `approve` the DaoStakeLocking contract to transfer DGDs from them
-    /// @param _amount Number of DGDs to lock
-    /// @return _success Boolean, true if the locking process is successful, false otherwise
+    /**
+    @notice Function to lock DGD tokens to participate in the DAO
+    @dev Users must `approve` the DaoStakeLocking contract to transfer DGDs from them
+    @param _amount Number of DGDs to lock
+    @return {
+      "_success": "Boolean, true if the locking process is successful, false otherwise"
+    }
+    */
     function lockDGD(uint256 _amount)
         public
         ifNotContract(msg.sender)
@@ -104,9 +114,13 @@ contract DaoStakeLocking is DaoCommon {
         _success = true;
     }
 
-    /// @notice Function to withdraw DGD tokens from this contract (can only be withdrawn in the locking phase of quarter)
-    /// @param _amount Number of DGD tokens to withdraw
-    /// @return _success Boolean, true if the withdrawal was successful, revert otherwise
+    /**
+    @notice Function to withdraw DGD tokens from this contract (can only be withdrawn in the locking phase of quarter)
+    @param _amount Number of DGD tokens to withdraw
+    @return {
+      "_success": "Boolean, true if the withdrawal was successful, revert otherwise"
+    }
+    */
     function withdrawDGD(uint256 _amount)
         public
         ifGlobalRewardsSet(currentQuarterIndex())
@@ -138,8 +152,10 @@ contract DaoStakeLocking is DaoCommon {
         _success = true;
     }
 
-    /// @notice Function to be called by someone who doesnt change their DGDStake for the next quarter to confirm that they're participating
-    /// @dev This can be done in the middle of the quarter as well
+    /**
+    @notice Function to be called by someone who doesnt change their DGDStake for the next quarter to confirm that they're participating
+    @dev This can be done in the middle of the quarter as well
+    */
     function confirmContinuedParticipation()
         public
         ifGlobalRewardsSet(currentQuarterIndex())
@@ -151,8 +167,10 @@ contract DaoStakeLocking is DaoCommon {
         daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
     }
 
-    /// @notice This function refreshes the DGD stake of a user before continuing participation next quarter
-    // has no difference if called in the lastParticipatedQuarter
+    /**
+    @notice This function refreshes the DGD stake of a user before continuing participation next quarter
+    @dev This has no difference if called in the lastParticipatedQuarter
+    */
     function refreshDGDStake(address _user, StakeInformation _infoBefore, bool _saveToStorage)
         internal
         returns (StakeInformation memory _infoAfter)
@@ -176,8 +194,10 @@ contract DaoStakeLocking is DaoCommon {
         }
     }
 
-    /// @notice This function refreshes the Moderator status of a user
-    // this takes the refreshed StakeInformation from refreshDGDStake as input
+    /**
+    @notice This function refreshes the Moderator status of a user
+    @dev This takes the refreshed StakeInformation from refreshDGDStake as input
+    */
     function refreshModeratorStatus(address _user, StakeInformation _infoBefore, StakeInformation _infoAfter)
         internal
     {
@@ -210,6 +230,7 @@ contract DaoStakeLocking is DaoCommon {
 
     function getStakeInformation(address _user)
         internal
+        constant
         returns (StakeInformation _info)
     {
         (_info.userActualLockedDGD, _info.userLockedDGDStake) = daoStakeStorage().readUserDGDStake(_user);

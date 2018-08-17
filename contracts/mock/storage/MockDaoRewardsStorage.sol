@@ -1,9 +1,10 @@
-pragma solidity^0.4.19;
+pragma solidity ^0.4.24;
 
 import "../../storage/DaoRewardsStorage.sol";
 
 contract MockDaoRewardsStorage is DaoRewardsStorage {
-    function MockDaoRewardsStorage(address _resolver) public DaoRewardsStorage(_resolver) {}
+
+    constructor(address _resolver) public DaoRewardsStorage(_resolver) {}
 
     function mock_set_last_participated_quarter(address _user, uint256 _quarterIndex)
         public

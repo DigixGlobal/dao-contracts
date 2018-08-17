@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../common/DaoCommon.sol";
@@ -6,8 +6,10 @@ import "../lib/DaoStructs.sol";
 import "../service/DaoCalculatorService.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
-/// @title Contract to manage DGX rewards
-/// @author Digix Holdings
+/**
+@title Contract to manage DGX rewards
+@author Digix Holdings
+*/
 contract DaoRewardsManager is DaoCommon {
     using MathHelper for MathHelper;
     using DaoStructs for DaoStructs.DaoQuarterInfo;
@@ -37,10 +39,20 @@ contract DaoRewardsManager is DaoCommon {
         address[] users;
     }
 
-    /// @notice Constructor (set the quarter info for the first quarter)
-    /// @param _resolver Address of the Contract Resolver contract
-    /// @param _dgxAddress Address of the Digix Gold Token contract
-    function DaoRewardsManager(address _resolver, address _dgxAddress)
+    function daoCalculatorService()
+        internal
+        constant
+        returns (DaoCalculatorService _contract)
+    {
+        _contract = DaoCalculatorService(get_contract(CONTRACT_SERVICE_DAO_CALCULATOR));
+    }
+
+    /**
+    @notice Constructor (set the quarter info for the first quarter)
+    @param _resolver Address of the Contract Resolver contract
+    @param _dgxAddress Address of the Digix Gold Token contract
+    */
+    constructor(address _resolver, address _dgxAddress)
         public
     {
         require(init(CONTRACT_DAO_REWARDS_MANAGER, _resolver));
@@ -61,15 +73,10 @@ contract DaoRewardsManager is DaoCommon {
         );
     }
 
-    function daoCalculatorService()
-        internal
-        returns (DaoCalculatorService _contract)
-    {
-        _contract = DaoCalculatorService(get_contract(CONTRACT_SERVICE_DAO_CALCULATOR));
-    }
-
-    /// @notice Function to claim the DGX rewards allocated to user
-    /// @dev Will revert if _claimableDGX <= MINIMUM_TRANSFER_AMOUNT of DGX
+    /**
+    @notice Function to claim the DGX rewards allocated to user
+    @dev Will revert if _claimableDGX <= MINIMUM_TRANSFER_AMOUNT of DGX
+    */
     function claimRewards()
         public
     {
@@ -101,8 +108,10 @@ contract DaoRewardsManager is DaoCommon {
         ERC20(ADDRESS_DGX_TOKEN).transfer(_user, _claimableDGX);
     }
 
-    /// @notice Function to update DGX rewards of user while locking/withdrawing DGDs, or continuing participation for new quarter
-    /// @param _user Address of the DAO participant
+    /**
+    @notice Function to update DGX rewards of user while locking/withdrawing DGDs, or continuing participation for new quarter
+    @param _user Address of the DAO participant
+    */
     function updateRewardsBeforeNewQuarter(address _user)
         public
     {
@@ -122,7 +131,6 @@ contract DaoRewardsManager is DaoCommon {
         uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(_user);
         uint256 _lastQuarterThatReputationWasUpdated = daoRewardsStorage().lastQuarterThatReputationWasUpdated(_user);
         uint256 _reputationDeduction;
-        uint256 _reputationAddition;
         if (currentQuarterIndex() <= _lastParticipatedQuarter) {
             return;
         }
@@ -288,7 +296,9 @@ contract DaoRewardsManager is DaoCommon {
         _valid = true;
     }
 
-    /// @notice Function called by the founder after transfering the DGX fees into the DAO at the beginning of the quarter
+    /**
+    @notice Function called by the founder after transfering the DGX fees into the DAO at the beginning of the quarter
+    */
     function calculateGlobalRewardsBeforeNewQuarter(uint256 _operations)
         if_founder()
         public
@@ -305,7 +315,7 @@ contract DaoRewardsManager is DaoCommon {
         (
             interResults.countedUntil,,,,
             info.totalEffectiveDGDLastQuarter
-        ) = intermediateResultsStorage().getIntermediateResults(keccak256(INTERMEDIATE_DGD_IDENTIFIER, info.previousQuarter));
+        ) = intermediateResultsStorage().getIntermediateResults(keccak256(abi.encodePacked(INTERMEDIATE_DGD_IDENTIFIER, info.previousQuarter)));
 
         _operations = sumEffectiveBalance(info, false, _operations, interResults);
         if (!info.doneCalculatingEffectiveBalance) { return false; }
@@ -313,7 +323,7 @@ contract DaoRewardsManager is DaoCommon {
         (
             interResults.countedUntil,,,,
             info.totalEffectiveModeratorDGDLastQuarter
-        ) = intermediateResultsStorage().getIntermediateResults(keccak256(INTERMEDIATE_MODERATOR_DGD_IDENTIFIER, info.previousQuarter));
+        ) = intermediateResultsStorage().getIntermediateResults(keccak256(abi.encodePacked(INTERMEDIATE_MODERATOR_DGD_IDENTIFIER, info.previousQuarter)));
 
         sumEffectiveBalance(info, true, _operations, interResults);
         if (!info.doneCalculatingModeratorEffectiveBalance) { return false; }
@@ -413,7 +423,7 @@ contract DaoRewardsManager is DaoCommon {
             info.doneCalculatingEffectiveBalance = true;
         }
         intermediateResultsStorage().setIntermediateResults(
-            keccak256(_badgeCalculation ? INTERMEDIATE_MODERATOR_DGD_IDENTIFIER : INTERMEDIATE_DGD_IDENTIFIER, info.previousQuarter),
+            keccak256(abi.encodePacked(_badgeCalculation ? INTERMEDIATE_MODERATOR_DGD_IDENTIFIER : INTERMEDIATE_DGD_IDENTIFIER, info.previousQuarter)),
             _lastAddress,
             0,0,0,
             _badgeCalculation ? info.totalEffectiveModeratorDGDLastQuarter : info.totalEffectiveDGDLastQuarter
@@ -424,19 +434,20 @@ contract DaoRewardsManager is DaoCommon {
 
     function readQuarterInfo(uint256 _quarterIndex)
         internal
+        constant
         returns (DaoStructs.DaoQuarterInfo _qInfo)
     {
         (
             _qInfo.minimalParticipationPoint,
             _qInfo.quarterPointScalingFactor,
             _qInfo.reputationPointScalingFactor,
-            _qInfo.totalEffectiveDGDLastQuarter,
+            _qInfo.totalEffectiveDGDLastQuarter
         ) = daoRewardsStorage().readQuarterParticipantInfo(_quarterIndex);
         (
             _qInfo.moderatorMinimalParticipationPoint,
             _qInfo.moderatorQuarterPointScalingFactor,
             _qInfo.moderatorReputationPointScalingFactor,
-            _qInfo.totalEffectiveModeratorDGDLastQuarter,
+            _qInfo.totalEffectiveModeratorDGDLastQuarter
         ) = daoRewardsStorage().readQuarterModeratorInfo(_quarterIndex);
         (
             _qInfo.dgxDistributionDay,

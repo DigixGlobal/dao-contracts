@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 
 import "./../mock/MockDgxDemurrageCalculator.sol";
 import "./../common/DaoCommon.sol";
@@ -10,15 +10,16 @@ contract DaoCalculatorService is DaoCommon {
 
     using MathHelper for MathHelper;
 
-    function DaoCalculatorService(address _resolver, address _dgxDemurrageCalculatorAddress)
-      public
+    constructor(address _resolver, address _dgxDemurrageCalculatorAddress)
+        public
     {
-      require(init(CONTRACT_SERVICE_DAO_CALCULATOR, _resolver));
-      dgxDemurrageCalculatorAddress = _dgxDemurrageCalculatorAddress;
+        require(init(CONTRACT_SERVICE_DAO_CALCULATOR, _resolver));
+        dgxDemurrageCalculatorAddress = _dgxDemurrageCalculatorAddress;
     }
 
     function calculateAdditionalLockedDGDStake(uint256 _additionalDgd)
         public
+        constant
         returns (uint256 _additionalLockedDGDStake)
     {
         // todo: change this to fixed quarter duration
@@ -27,7 +28,11 @@ contract DaoCalculatorService is DaoCommon {
                                     .div(get_uint_config(CONFIG_QUARTER_DURATION).sub(get_uint_config(CONFIG_LOCKING_PHASE_DURATION)));
     }
 
-    function minimumDraftQuorum(bytes32 _proposalId) public returns (uint256 _minQuorum) {
+    function minimumDraftQuorum(bytes32 _proposalId)
+        public
+        constant
+        returns (uint256 _minQuorum)
+    {
         uint256[] memory _fundings;
 
         (_fundings,) = daoStorage().readProposalFunding(_proposalId);
@@ -43,6 +48,7 @@ contract DaoCalculatorService is DaoCommon {
 
     function draftQuotaPass(uint256 _for, uint256 _against)
         public
+        constant
         returns (bool _passed)
     {
         if ((_for.mul(get_uint_config(CONFIG_DRAFT_QUOTA_DENOMINATOR))) >
@@ -53,6 +59,7 @@ contract DaoCalculatorService is DaoCommon {
 
     function minimumVotingQuorum(bytes32 _proposalId, uint256 _milestone_id)
         public
+        constant
         returns (uint256 _minQuorum)
     {
         uint256[] memory _ethAskedPerMilestone;
@@ -82,6 +89,7 @@ contract DaoCalculatorService is DaoCommon {
 
     function minimumVotingQuorumForSpecial()
         public
+        constant
         returns (uint256 _minQuorum)
     {
       _minQuorum = get_uint_config(CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR).mul(
@@ -93,6 +101,7 @@ contract DaoCalculatorService is DaoCommon {
 
     function votingQuotaPass(uint256 _for, uint256 _against)
         public
+        constant
         returns (bool _passed)
     {
         if ((_for.mul(get_uint_config(CONFIG_VOTING_QUOTA_DENOMINATOR))) >
@@ -103,6 +112,7 @@ contract DaoCalculatorService is DaoCommon {
 
     function votingQuotaForSpecialPass(uint256 _for, uint256 _against)
         public
+        constant
         returns (bool _passed)
     {
         if ((_for.mul(get_uint_config(CONFIG_SPECIAL_QUOTA_DENOMINATOR))) >
@@ -120,6 +130,7 @@ contract DaoCalculatorService is DaoCommon {
         uint256 _ethAsked
     )
         internal
+        constant
         returns (uint256 _minimumQuorum)
     {
         uint256 _ethInDao = get_contract(CONTRACT_DAO_FUNDING_MANAGER).balance;
