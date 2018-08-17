@@ -54,32 +54,6 @@ truffle test test/storage/*
 <strong>Note: </strong>The truffle configuration can be found in the
 `truffle.js` file. TestRPC running locally is the `development` network.
 
-#### Building documentation using [doxity](https://github.com/DigixGlobal/doxity/tree/doxity-latest)
-Doxity is a really cool tool to generate a static page for contract documentations.
-
-Install dependencies for the doxity project
-```
-cd scripts/doxity/
-npm install
-```
-
-After making modifications to the contracts (or adding [Natspec](https://github.com/ethereum/wiki/wiki/Ethereum-Natural-Specification-Format)), to compile the documentation from contracts
-```
-npm run docs:compile
-```
-
-To publish the compiled documentation into HTML pages
-```
-npm run docs:publish
-```
-
-To start the [Gatsby](https://www.npmjs.com/package/gatsby) server
-```
-npm run docs:server
-```
-
-You can now view the documentation at `http://localhost:8000`
-
 ## Understanding DigixDAO
 We post DigixDAO related updates fortnightly on our Medium channel. They
 should be a good place to start with. Here are the posts on our Governance model:
