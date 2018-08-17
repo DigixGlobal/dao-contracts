@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 
 import "../common/DaoConstants.sol";
 import "../common/DaoCommon.sol";
@@ -16,7 +16,7 @@ contract DaoWhitelisting is ResolverClient, DaoConstants, DaoCommon {
     @param _resolver Address of ContractResolver contract
     @param _initialWhitelist Array of addresses, initially whitelisted contracts
     */
-    function DaoWhitelisting(address _resolver, address[] _initialWhitelist)
+    constructor(address _resolver, address[] _initialWhitelist)
         public
     {
         require(init(CONTRACT_DAO_WHITELISTING, _resolver));

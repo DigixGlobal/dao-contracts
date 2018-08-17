@@ -1,4 +1,5 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
+
 import "../common/DaoCommon.sol";
 import "./Dao.sol";
 
@@ -8,11 +9,15 @@ import "./Dao.sol";
 */
 contract DaoFundingManager is DaoCommon {
 
-    function DaoFundingManager(address _resolver) public {
+    constructor(address _resolver) public {
         require(init(CONTRACT_DAO_FUNDING_MANAGER, _resolver));
     }
 
-    function dao() internal returns (Dao _contract) {
+    function dao()
+        internal
+        constant
+        returns (Dao _contract)
+    {
         _contract = Dao(get_contract(CONTRACT_DAO));
     }
 

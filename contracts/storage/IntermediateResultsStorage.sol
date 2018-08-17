@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../common/DaoConstants.sol";
@@ -7,7 +7,7 @@ import "../lib/DaoStructs.sol";
 contract IntermediateResultsStorage is ResolverClient, DaoConstants {
     using DaoStructs for DaoStructs.IntermediateResults;
 
-    function IntermediateResultsStorage(address _resolver) public {
+    constructor(address _resolver) public {
         require(init(CONTRACT_STORAGE_INTERMEDIATE_RESULTS, _resolver));
     }
 
@@ -15,6 +15,7 @@ contract IntermediateResultsStorage is ResolverClient, DaoConstants {
 
     function getIntermediateResults(bytes32 _key)
         public
+        constant
         returns (
             address _countedUntil,
             uint256 _currentForCount,

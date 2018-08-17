@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
 import "@digix/solidity-collections/contracts/abstract/AddressIteratorStorage.sol";
@@ -34,7 +34,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
     // reputation points for their DGD Badge
     mapping (address => bool) public redeemedBadge;
 
-    function DaoStakeStorage(address _resolver) public {
+    constructor(address _resolver) public {
         require(init(CONTRACT_STORAGE_DAO_STAKE, _resolver));
     }
 

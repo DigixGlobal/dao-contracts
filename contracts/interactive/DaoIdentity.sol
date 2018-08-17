@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 
 import "../storage/DaoIdentityStorage.sol";
 import "../common/IdentityCommon.sol";
@@ -13,7 +13,7 @@ contract DaoIdentity is IdentityCommon {
     @notice Constructor (create initial roles, groups)
     @param _resolver Address of Contract Resolver
     */
-    function DaoIdentity(address _resolver)
+    constructor(address _resolver)
         public
     {
         require(init(CONTRACT_DAO_IDENTITY, _resolver));

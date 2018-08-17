@@ -1,4 +1,4 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.4.24;
 
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
 import "../common/DaoStorageCommon.sol";
@@ -13,7 +13,7 @@ contract DaoSpecialStorage is DaoStorageCommon {
     DoublyLinkedList.Bytes proposals;
     mapping (bytes32 => DaoStructs.SpecialProposal) proposalsById;
 
-    function DaoSpecialStorage(address _resolver) public {
+    constructor(address _resolver) public {
         require(init(CONTRACT_STORAGE_DAO_SPECIAL, _resolver));
     }
 
@@ -34,11 +34,11 @@ contract DaoSpecialStorage is DaoStorageCommon {
         proposalsById[_proposalId].uintConfigs = _uintConfigs;
         proposalsById[_proposalId].addressConfigs = _addressConfigs;
         proposalsById[_proposalId].bytesConfigs = _bytesConfigs;
-        /* proposalsById[_proposalId].dissolveDao = _dissolveDao; */
     }
 
     function readProposal(bytes32 _proposalId)
         public
+        constant
         returns (
             bytes32 _id,
             address _proposer,
@@ -54,6 +54,7 @@ contract DaoSpecialStorage is DaoStorageCommon {
 
     function readProposalProposer(bytes32 _proposalId)
         public
+        constant
         returns (address _proposer)
     {
         _proposer = proposalsById[_proposalId].proposer;
@@ -61,6 +62,7 @@ contract DaoSpecialStorage is DaoStorageCommon {
 
     function readConfigs(bytes32 _proposalId)
         public
+        constant
         returns (
             uint256[] memory _uintConfigs,
             address[] memory _addressConfigs,
@@ -119,6 +121,7 @@ contract DaoSpecialStorage is DaoStorageCommon {
 
     function readVotingResult(bytes32 _proposalId)
         public
+        constant
         returns (bool _result)
     {
         require(isWhitelisted(msg.sender));
@@ -136,12 +139,13 @@ contract DaoSpecialStorage is DaoStorageCommon {
         public
     {
         require(sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS));
-        DaoStructs.SpecialProposal _proposal = proposalsById[_proposalId];
+        DaoStructs.SpecialProposal storage _proposal = proposalsById[_proposalId];
         _proposal.voting.claimed = _claimed;
     }
 
     function isClaimed(bytes32 _proposalId)
         public
+        constant
         returns (bool _claimed)
     {
         require(isWhitelisted(msg.sender));

@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../common/DaoConstants.sol";
@@ -8,7 +8,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
     mapping (bytes32 => address) public addressConfigs;
     mapping (bytes32 => bytes32) public bytesConfigs;
 
-    function DaoConfigsStorage(address _resolver)
+    constructor(address _resolver)
         public
     {
         require(init(CONTRACT_STORAGE_DAO_CONFIG, _resolver));
@@ -120,7 +120,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_QUARTER_POINT_INTERIM_VOTE] = _uintConfigs[20];
         uintConfigs[CONFIG_MINIMAL_PARTICIPATION_POINT] = _uintConfigs[21];
         uintConfigs[CONFIG_QUARTER_POINT_CLAIM_RESULT] = _uintConfigs[22];
-        uintConfigs[CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH] = uintConfigs[23];
+        uintConfigs[CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH] = _uintConfigs[23];
         uintConfigs[CONFIG_BONUS_REPUTATION_NUMERATOR] = _uintConfigs[24];
         uintConfigs[CONFIG_BONUS_REPUTATION_DENOMINATOR] = _uintConfigs[25];
         uintConfigs[CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE] = _uintConfigs[26];
@@ -160,6 +160,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
 
     function readUintConfigs()
         public
+        constant
         returns (uint256[])
     {
         uint256[] memory _uintConfigs = new uint256[](59);

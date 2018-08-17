@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../lib/MathHelper.sol";
@@ -21,7 +21,7 @@ contract DaoStakeLocking is DaoCommon {
         uint256 totalLockedDGDStake;
     }
 
-    function DaoStakeLocking(address _resolver, address _dgdToken, address _dgdBadgeToken) public {
+    constructor(address _resolver, address _dgdToken, address _dgdBadgeToken) public {
         require(init(CONTRACT_DAO_STAKE_LOCKING, _resolver));
         dgdToken = _dgdToken;
         dgdBadgeToken = _dgdBadgeToken;
@@ -29,6 +29,7 @@ contract DaoStakeLocking is DaoCommon {
 
     function daoCalculatorService()
         internal
+        constant
         returns (DaoCalculatorService _contract)
     {
         _contract = DaoCalculatorService(get_contract(CONTRACT_SERVICE_DAO_CALCULATOR));
@@ -36,6 +37,7 @@ contract DaoStakeLocking is DaoCommon {
 
     function daoRewardsManager()
         internal
+        constant
         returns (DaoRewardsManager _contract)
     {
         _contract = DaoRewardsManager(get_contract(CONTRACT_DAO_REWARDS_MANAGER));
@@ -228,6 +230,7 @@ contract DaoStakeLocking is DaoCommon {
 
     function getStakeInformation(address _user)
         internal
+        constant
         returns (StakeInformation _info)
     {
         (_info.userActualLockedDGD, _info.userLockedDGDStake) = daoStakeStorage().readUserDGDStake(_user);

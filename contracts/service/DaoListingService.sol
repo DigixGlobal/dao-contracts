@@ -1,4 +1,4 @@
-pragma solidity ^0.4.19;
+pragma solidity ^0.4.24;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "@digix/solidity-collections/contracts/abstract/AddressIteratorInteractive.sol";
@@ -22,7 +22,7 @@ contract DaoListingService is ResolverClient,
     @notice Constructor
     @param _resolver address of contract resolver
     */
-    function DaoListingService(address _resolver) public {
+    constructor(address _resolver) public {
         require(init(CONTRACT_SERVICE_DAO_LISTING, _resolver));
     }
 

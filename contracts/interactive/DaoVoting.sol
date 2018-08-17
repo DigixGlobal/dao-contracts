@@ -1,4 +1,4 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.4.24;
 
 import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
 import "../common/DaoCommon.sol";
@@ -9,7 +9,7 @@ import "../common/DaoCommon.sol";
 */
 contract DaoVoting is DaoCommon, Claimable {
 
-    function DaoVoting(address _resolver) public {
+    constructor(address _resolver) public {
         require(init(CONTRACT_DAO_VOTING, _resolver));
     }
 
@@ -83,7 +83,7 @@ contract DaoVoting is DaoCommon, Claimable {
         hasNotRevealedSpecial(_proposalId)
     {
         require(isParticipant(msg.sender));
-        require(keccak256(msg.sender, _vote, _salt) == daoSpecialStorage().readCommitVote(_proposalId, msg.sender));
+        require(keccak256(abi.encodePacked(msg.sender, _vote, _salt)) == daoSpecialStorage().readCommitVote(_proposalId, msg.sender));
         daoSpecialStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().readUserEffectiveDGDStake(msg.sender));
         daoPointsStorage().addQuarterPoint(msg.sender, get_uint_config(CONFIG_QUARTER_POINT_VOTE), currentQuarterIndex());
     }
@@ -129,7 +129,7 @@ contract DaoVoting is DaoCommon, Claimable {
         hasNotRevealed(_proposalId, _index)
     {
         require(isParticipant(msg.sender));
-        require(keccak256(msg.sender, _vote, _salt) == daoStorage().readCommitVote(_proposalId, _index, msg.sender));
+        require(keccak256(abi.encodePacked(msg.sender, _vote, _salt)) == daoStorage().readCommitVote(_proposalId, _index, msg.sender));
         daoStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().readUserEffectiveDGDStake(msg.sender), _index);
         daoPointsStorage().addQuarterPoint(
             msg.sender,

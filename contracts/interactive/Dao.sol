@@ -1,4 +1,4 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.4.24;
 
 import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
 import "../common/DaoCommon.sol";
@@ -11,12 +11,13 @@ import "./DaoVotingClaims.sol";
 */
 contract Dao is DaoCommon, Claimable {
 
-    function Dao(address _resolver) public {
+    constructor(address _resolver) public {
         require(init(CONTRACT_DAO, _resolver));
     }
 
     function daoFundingManager()
         internal
+        constant
         returns (DaoFundingManager _contract)
     {
         _contract = DaoFundingManager(get_contract(CONTRACT_DAO_FUNDING_MANAGER));
@@ -24,6 +25,7 @@ contract Dao is DaoCommon, Claimable {
 
     function daoVotingClaims()
         internal
+        constant
         returns (DaoVotingClaims _contract)
     {
         _contract = DaoVotingClaims(get_contract(CONTRACT_DAO_VOTING_CLAIMS));
