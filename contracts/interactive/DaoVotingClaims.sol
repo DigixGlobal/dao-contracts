@@ -49,6 +49,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     /**
     @notice Function to claim the draft voting result (can only be called by the proposal proposer)
     @param _proposalId ID of the proposal
+    @param _count Number of operations to do in this call
     @return {
       "_passed": "Boolean, true if the draft voting has passed, false if the claiming deadline has passed, revert otherwise"
     }
@@ -163,6 +164,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     @notice Function to claim the  voting round results (can only be called by the proposer)
     @param _proposalId ID of the proposal
     @param _index Index of the  voting round
+    @param _operations Number of operations to do in this call
     @return {
       "_passed": "Boolean, true if the  voting round passed, false if failed"
     }
