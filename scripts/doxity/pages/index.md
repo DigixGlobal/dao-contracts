@@ -80,6 +80,8 @@ npm run docs:server
 
 You can now view the documentation at `http://localhost:8000`
 
+The latest documentation based on the `master` branch is available [here](https://digixglobal.github.io/dao-contracts)
+
 ## Understanding DigixDAO
 We post DigixDAO related updates fortnightly on our Medium channel. They
 should be a good place to start with. Here are the posts on our Governance model:
