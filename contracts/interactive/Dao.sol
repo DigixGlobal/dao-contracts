@@ -11,6 +11,15 @@ import "./DaoVotingClaims.sol";
 */
 contract Dao is DaoCommon, Claimable {
 
+    event NewProposal(bytes32 _proposalId, address _proposer);
+    event ModifyProposal(bytes32 _proposalId, bytes32 _newDoc);
+    event ChangeProposalFunding(bytes32 _proposalId);
+    event FinalizeProposal(bytes32 _proposalId);
+    event FinishMilestone(bytes32 _proposalId, uint256 _milestoneIndex);
+    event AddProposalDoc(bytes32 _proposalId, bytes32 _newDoc);
+    event PRLAction(bytes32 _proposalId, uint256 _actionId, bytes32 _doc);
+    event StartSpecialProposal(bytes32 _specialProposalId);
+
     constructor(address _resolver) public {
         require(init(CONTRACT_DAO, _resolver));
     }
@@ -82,6 +91,8 @@ contract Dao is DaoCommon, Claimable {
 
         daoStorage().addProposal(_docIpfsHash, msg.sender, _milestonesFundings, _finalReward, _isFounder);
         daoStorage().setProposalCollateralStatus(_docIpfsHash, COLLATERAL_STATUS_UNLOCKED);
+
+        emit NewProposal(_docIpfsHash, msg.sender);
     }
 
     /**
@@ -111,6 +122,8 @@ contract Dao is DaoCommon, Claimable {
         checkNonDigixFundings(_milestonesFundings, _finalReward);
 
         daoStorage().editProposal(_proposalId, _docIpfsHash, _milestonesFundings, _finalReward);
+
+        emit ModifyProposal(_proposalId, _docIpfsHash);
     }
 
     /**
@@ -154,6 +167,8 @@ contract Dao is DaoCommon, Claimable {
         }
 
         daoStorage().changeFundings(_proposalId, _milestonesFundings, _finalReward);
+
+        emit ChangeProposalFunding(_proposalId);
     }
 
     /**
@@ -175,6 +190,8 @@ contract Dao is DaoCommon, Claimable {
         require(_endorser != EMPTY_ADDRESS);
         daoStorage().finalizeProposal(_proposalId);
         daoStorage().setProposalDraftVotingTime(_proposalId, now);
+
+        emit FinalizeProposal(_proposalId);
     }
 
     /**
@@ -202,6 +219,8 @@ contract Dao is DaoCommon, Claimable {
             _milestoneIndex.add(1),
             getTimelineForNextVote(_milestoneIndex.add(1), now)
         ); // set the voting time of next voting
+
+        emit FinishMilestone(_proposalId, _milestoneIndex);
     }
 
     /**
@@ -221,6 +240,8 @@ contract Dao is DaoCommon, Claimable {
         (,,,,,,,_finalVersion,,) = daoStorage().readProposal(_proposalId);
         require(_finalVersion != EMPTY_BYTES);
         daoStorage().addProposalDoc(_proposalId, _newDoc);
+
+        emit AddProposalDoc(_proposalId, _newDoc);
     }
 
     /**
@@ -251,6 +272,8 @@ contract Dao is DaoCommon, Claimable {
     {
         require(_action == PRL_ACTION_STOP || _action == PRL_ACTION_PAUSE || _action == PRL_ACTION_UNPAUSE);
         daoStorage().updateProposalPRL(_proposalId, _action, _doc, now);
+
+        emit PRLAction(_proposalId, _action, _doc);
     }
 
     /**
@@ -299,6 +322,8 @@ contract Dao is DaoCommon, Claimable {
         require(daoSpecialStorage().readVotingTime(_proposalId) == 0);
         require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
         daoSpecialStorage().setVotingTime(_proposalId, now);
+
+        emit StartSpecialProposal(_proposalId);
     }
 
     /**
