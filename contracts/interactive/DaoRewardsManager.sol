@@ -15,6 +15,8 @@ contract DaoRewardsManager is DaoCommon {
     using DaoStructs for DaoStructs.DaoQuarterInfo;
     using DaoStructs for DaoStructs.IntermediateResults;
 
+    event StartNewQuarter(uint256 _quarterId);
+
     address public ADDRESS_DGX_TOKEN;
 
     struct UserRewards {
@@ -330,6 +332,8 @@ contract DaoRewardsManager is DaoCommon {
         // save the quarter Info
         processGlobalRewardsUpdate(info);
         _done = true;
+
+        emit StartNewQuarter(currentQuarterIndex());
     }
 
     function processGlobalRewardsUpdate(QuarterRewardsInfo memory info) internal {

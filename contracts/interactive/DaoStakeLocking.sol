@@ -12,6 +12,10 @@ import "./DaoRewardsManager.sol";
 */
 contract DaoStakeLocking is DaoCommon {
 
+    event RedeemBadge(address _user);
+    event LockDGD(address _user, uint256 _amount, uint256 _effectiveAmount);
+    event WithdrawDGD(address _user, uint256 _amount);
+
     address public dgdToken;
     address public dgdBadgeToken;
 
@@ -70,6 +74,8 @@ contract DaoStakeLocking is DaoCommon {
 
         // transfer the badge to this contract
         require(ERC20(dgdBadgeToken).transferFrom(msg.sender, address(this), 1));
+
+        emit RedeemBadge(msg.sender);
     }
 
     /**
@@ -112,6 +118,8 @@ contract DaoStakeLocking is DaoCommon {
         // interaction happens last
         require(ERC20(dgdToken).transferFrom(msg.sender, address(this), _amount));
         _success = true;
+
+        emit LockDGD(msg.sender, _amount, _newInfo.userLockedDGDStake);
     }
 
     /**
@@ -150,6 +158,8 @@ contract DaoStakeLocking is DaoCommon {
 
         require(ERC20(dgdToken).transfer(msg.sender, _amount));
         _success = true;
+
+        emit WithdrawDGD(msg.sender, _amount);
     }
 
     /**
