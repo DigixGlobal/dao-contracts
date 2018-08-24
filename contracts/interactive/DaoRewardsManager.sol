@@ -76,12 +76,28 @@ contract DaoRewardsManager is DaoCommon {
     }
 
     /**
+    @notice Function to transfer the claimableDGXs to the new DaoRewardsManager
+    @dev This is done during the migrateToNewDao procedure
+    @param _newDaoRewardsManager Address of the new daoRewardsManager contract
+    */
+    function moveDGXsToNewDao(address _newDaoRewardsManager)
+        public
+    {
+        require(sender_is(CONTRACT_DAO));
+        uint256 _dgxBalance = ERC20(ADDRESS_DGX_TOKEN).balanceOf(address(this));
+        ERC20(ADDRESS_DGX_TOKEN).transfer(_newDaoRewardsManager, _dgxBalance);
+    }
+
+    /**
     @notice Function to claim the DGX rewards allocated to user
-    @dev Will revert if _claimableDGX <= MINIMUM_TRANSFER_AMOUNT of DGX
+    @dev Will revert if _claimableDGX <= MINIMUM_TRANSFER_AMOUNT of DGX.
+         This cannot be called once the current version of Dao contracts have been migrated to newer version
     */
     function claimRewards()
         public
     {
+        require(isDaoNotReplaced());
+
         address _user = msg.sender;
         uint256 _claimableDGX;
 

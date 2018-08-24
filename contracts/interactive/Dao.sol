@@ -3,6 +3,7 @@ pragma solidity ^0.4.24;
 import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
 import "../common/DaoCommon.sol";
 import "./DaoFundingManager.sol";
+import "./DaoRewardsManager.sol";
 import "./DaoVotingClaims.sol";
 
 /**
@@ -32,6 +33,14 @@ contract Dao is DaoCommon, Claimable {
         _contract = DaoFundingManager(get_contract(CONTRACT_DAO_FUNDING_MANAGER));
     }
 
+    function daoRewardsManager()
+        internal
+        constant
+        returns (DaoRewardsManager _contract)
+    {
+        _contract = DaoRewardsManager(get_contract(CONTRACT_DAO_REWARDS_MANAGER));
+    }
+
     function daoVotingClaims()
         internal
         constant
@@ -41,20 +50,54 @@ contract Dao is DaoCommon, Claimable {
     }
 
     /**
-    @notice Migrate this DAO to a new DAO contract
-    @param _newDaoFundingManager Address of the new DaoFundingManager contract, which would receive the remaining ETHs in this DAO
-    @param _newDaoContract Address of the new DAO contract
+    @notice Set addresses for the new Dao and DaoFundingManager contracts
+    @dev This is the first step of the 2-step migration
+    @param _newDaoContract Address of the new Dao contract
+    @param _newDaoFundingManager Address of the new DaoFundingManager contract
+    @param _newDaoRewardsManager Address of the new daoRewardsManager contract
     */
-    function migrateToNewDao(
+    function setNewDaoContracts(
+        address _newDaoContract,
         address _newDaoFundingManager,
-        address _newDaoContract
+        address _newDaoRewardsManager
     )
         public
         onlyOwner()
     {
         require(daoUpgradeStorage().isReplacedByNewDao() == false);
-        daoUpgradeStorage().updateForDaoMigration(_newDaoFundingManager, _newDaoContract);
+        daoUpgradeStorage().setNewContractAddresses(
+            _newDaoContract,
+            _newDaoFundingManager,
+            _newDaoRewardsManager
+        );
+    }
+
+    /**
+    @notice Migrate this DAO to a new DAO contract
+    @dev Migration can be done only during the locking phase, after the global rewards for current quarter are set
+    @param _newDaoContract Address of the new DAO contract
+    @param _newDaoFundingManager Address of the new DaoFundingManager contract, which would receive the remaining ETHs in this DaoFundingManager
+    @param _newDaoRewardsManager Address of the new daoRewardsManager contract, which would receive the claimableDGXs from this daoRewardsManager
+    */
+    function migrateToNewDao(
+        address _newDaoContract,
+        address _newDaoFundingManager,
+        address _newDaoRewardsManager
+    )
+        public
+        onlyOwner()
+        ifGlobalRewardsSet(currentQuarterIndex())
+    {
+        require(isLockingPhase());
+        require(daoUpgradeStorage().isReplacedByNewDao() == false);
+        require(
+          (daoUpgradeStorage().newDaoContract() == _newDaoContract) &&
+          (daoUpgradeStorage().newDaoFundingManager() == _newDaoFundingManager) &&
+          (daoUpgradeStorage().newDaoRewardsManager() == _newDaoRewardsManager)
+        );
+        daoUpgradeStorage().updateForDaoMigration();
         daoFundingManager().moveFundsToNewDao(_newDaoFundingManager);
+        daoRewardsManager().moveDGXsToNewDao(_newDaoRewardsManager);
     }
 
     /**
