@@ -440,6 +440,26 @@ contract('DaoRewardsManager', function (accounts) {
       const estimatedTransferFees = calculateTransferFees(userClaimableDgx.minus(bN(demurrageFees)).toNumber(), transferConfig[1].toNumber(), transferConfig[2].toNumber());
       assert.deepEqual(finalUserBalance, initialUserBalance.plus(userClaimableDgx).minus(bN(estimatedTransferFees)).minus(bN(demurrageFees)));
     });
+    it('[claim dgx after the dao has been migrated]: revert', async function () {
+      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+      await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(20 * (10 ** 9)));
+      const newDaoContract = randomAddress();
+      const newDaoFundingManager = await MockDaoFundingManager.new(contracts.daoFundingManager.address);
+      const newDaoRewardsManager = randomAddress();
+      await contracts.dao.setNewDaoContracts(
+        newDaoContract,
+        newDaoFundingManager.address,
+        newDaoRewardsManager,
+        { from: addressOf.root },
+      );
+      await contracts.dao.migrateToNewDao(
+        newDaoContract,
+        newDaoFundingManager.address,
+        newDaoRewardsManager,
+        { from: addressOf.root },
+      );
+      assert(await a.failure(contracts.daoRewardsManager.claimRewards.call({ from: addressOf.dgdHolders[1] })));
+    });
   });
 
   describe('calculateGlobalRewardsBeforeNewQuarter', function () {

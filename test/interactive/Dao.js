@@ -2551,7 +2551,7 @@ contract('Dao', function (accounts) {
         { from: proposals[1].proposer },
       )));
     });
-    it('[proposal not yet funded (unfinalized/draft/voting phase)]: revert', async function () {
+    it('[proposal not yet finalized, once in voting phase, change the next milestone funding]: revert', async function () {
       // consider the new proposal (proposals[0])
       assert(await a.failure(contracts.dao.changeFundings.call(
         proposals[0].id,
@@ -2573,7 +2573,7 @@ contract('Dao', function (accounts) {
       )));
 
       // wait for draft voting to get over
-      await waitFor(21, addressOf, web3);
+      await waitFor(6, addressOf, web3);
       const participants = getParticipants(addressOf, bN);
       await contracts.daoStorage.mock_put_past_votes(
         proposals[0].id,
@@ -2618,15 +2618,8 @@ contract('Dao', function (accounts) {
         [true, true, true, true],
         [participants[0].dgdToLock, participants[1].dgdToLock, participants[2].dgdToLock, participants[3].dgdToLock],
         bN(4),
-        bN(getCurrentTimestamp()).minus(bN(20)),
+        bN(getCurrentTimestamp()).minus(bN(21)),
       );
-      assert(await a.failure(contracts.dao.changeFundings.call(
-        proposals[0].id,
-        proposals[0].versions[1].milestoneFundings,
-        proposals[0].versions[1].finalReward,
-        bN(0),
-        { from: proposals[0].proposer },
-      )));
 
       // claim the voting results
       await contracts.daoVotingClaims.claimProposalVotingResult(
@@ -2635,23 +2628,8 @@ contract('Dao', function (accounts) {
         bN(10),
         { from: proposals[0].proposer },
       );
-      assert(await a.failure(contracts.dao.changeFundings.call(
-        proposals[0].id,
-        proposals[0].versions[1].milestoneFundings,
-        proposals[0].versions[1].finalReward,
-        bN(0),
-        { from: proposals[0].proposer },
-      )));
 
-      // now the proposer claims the funding
-      await contracts.daoFundingManager.claimFunding(
-        proposals[0].id,
-        bN(0),
-        { from: proposals[0].proposer },
-      );
-
-      // now finally they can change the funding structure for the subsequent milestones
-      assert.ok(await contracts.dao.changeFundings.call(
+      assert.ok(await contracts.dao.changeFundings(
         proposals[0].id,
         proposals[0].versions[1].milestoneFundings,
         proposals[0].versions[1].finalReward,
