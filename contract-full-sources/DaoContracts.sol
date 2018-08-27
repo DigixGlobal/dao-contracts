@@ -5534,20 +5534,20 @@ contract DaoCommon is IdentityCommon {
     }
 
     function isLockingPhase() internal returns (bool) {
-        require(currentTInQuarter() < get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
+        require(currentTimeInQuarter() < getUintConfig(CONFIG_LOCKING_PHASE_DURATION));
         return true;
     }
 
     function isMainPhase() internal returns (bool) {
         require(!daoUpgradeStorage().isReplacedByNewDao());
-        require(currentTInQuarter() >= get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
+        require(currentTimeInQuarter() >= getUintConfig(CONFIG_LOCKING_PHASE_DURATION));
         return true;
     }
 
     function isProposalPaused(bytes32 _proposalId) public constant returns (bool) {
-        bool _isPaused;
-        (,,,,,,,,_isPaused,) = daoStorage().readProposal(_proposalId);
-        return _isPaused;
+        bool _isPausedOrStopped;
+        (,,,,,,,,_isPausedOrStopped,) = daoStorage().readProposal(_proposalId);
+        return _isPausedOrStopped;
     }
 
     function isFromProposer(bytes32 _proposalId) internal returns (bool) {
@@ -5566,7 +5566,7 @@ contract DaoCommon is IdentityCommon {
         uint256 _start = daoStorage().readProposalDraftVotingTime(_proposalId);
         require(_start > 0);
         require(now > _start);
-        require(now.sub(_start) > get_uint_config(CONFIG_DRAFT_VOTING_PHASE));
+        require(now.sub(_start) > getUintConfig(CONFIG_DRAFT_VOTING_PHASE));
         _;
     }
 
@@ -5574,7 +5574,7 @@ contract DaoCommon is IdentityCommon {
         requireInPhase(
             daoStorage().readProposalVotingTime(_proposalId, _index),
             0,
-            get_uint_config(_index == 0 ? CONFIG_VOTING_COMMIT_PHASE : CONFIG_INTERIM_COMMIT_PHASE)
+            getUintConfig(_index == 0 ? CONFIG_VOTING_COMMIT_PHASE : CONFIG_INTERIM_COMMIT_PHASE)
         );
         _;
     }
@@ -5582,8 +5582,8 @@ contract DaoCommon is IdentityCommon {
     modifier ifRevealPhase(bytes32 _proposalId, uint256 _index) {
       requireInPhase(
           daoStorage().readProposalVotingTime(_proposalId, _index),
-          get_uint_config(_index == 0 ? CONFIG_VOTING_COMMIT_PHASE : CONFIG_INTERIM_COMMIT_PHASE),
-          get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL)
+          getUintConfig(_index == 0 ? CONFIG_VOTING_COMMIT_PHASE : CONFIG_INTERIM_COMMIT_PHASE),
+          getUintConfig(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL)
       );
       _;
     }
@@ -5591,7 +5591,7 @@ contract DaoCommon is IdentityCommon {
     modifier ifAfterProposalRevealPhase(bytes32 _proposalId, uint256 _index) {
       uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
       require(_start > 0);
-      require(now >= _start.add(get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL)));
+      require(now >= _start.add(getUintConfig(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL)));
       _;
     }
 
@@ -5599,7 +5599,7 @@ contract DaoCommon is IdentityCommon {
         requireInPhase(
             daoStorage().readProposalDraftVotingTime(_proposalId),
             0,
-            get_uint_config(CONFIG_DRAFT_VOTING_PHASE)
+            getUintConfig(CONFIG_DRAFT_VOTING_PHASE)
         );
         _;
     }
@@ -5666,7 +5666,7 @@ contract DaoCommon is IdentityCommon {
     modifier ifAfterRevealPhaseSpecial(bytes32 _proposalId) {
       uint256 _start = daoSpecialStorage().readVotingTime(_proposalId);
       require(_start > 0);
-      require(now.sub(_start) >= get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
+      require(now.sub(_start) >= getUintConfig(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
       _;
     }
 
@@ -5674,7 +5674,7 @@ contract DaoCommon is IdentityCommon {
         requireInPhase(
             daoSpecialStorage().readVotingTime(_proposalId),
             0,
-            get_uint_config(CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE)
+            getUintConfig(CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE)
         );
         _;
     }
@@ -5682,8 +5682,8 @@ contract DaoCommon is IdentityCommon {
     modifier ifRevealPhaseSpecial(bytes32 _proposalId) {
         requireInPhase(
             daoSpecialStorage().readVotingTime(_proposalId),
-            get_uint_config(CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE),
-            get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL)
+            getUintConfig(CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE),
+            getUintConfig(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL)
         );
         _;
     }
@@ -5716,20 +5716,20 @@ contract DaoCommon is IdentityCommon {
     }
 
     function getQuarterIndex(uint256 _time) internal returns (uint256 _index) {
-        _index = ((_time.sub(daoUpgradeStorage().startOfFirstQuarter())).div(get_uint_config(CONFIG_QUARTER_DURATION))).add(1);
+        _index = ((_time.sub(daoUpgradeStorage().startOfFirstQuarter())).div(getUintConfig(CONFIG_QUARTER_DURATION))).add(1);
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
     function timeInQuarter(uint256 _time) internal returns (uint256 _timeInQuarter) {
-        _timeInQuarter = (_time.sub(daoUpgradeStorage().startOfFirstQuarter())) % get_uint_config(CONFIG_QUARTER_DURATION);
+        _timeInQuarter = (_time.sub(daoUpgradeStorage().startOfFirstQuarter())) % getUintConfig(CONFIG_QUARTER_DURATION);
     }
 
-    function currentTInQuarter() public returns(uint256 _currentT) {
+    function currentTimeInQuarter() public returns(uint256 _currentT) {
         _currentT = timeInQuarter(now);
     }
 
     function getTimeLeftInQuarter(uint256 _time) internal returns(uint256 _timeLeftInQuarter) {
-        _timeLeftInQuarter = get_uint_config(CONFIG_QUARTER_DURATION).sub(timeInQuarter(_time));
+        _timeLeftInQuarter = getUintConfig(CONFIG_QUARTER_DURATION).sub(timeInQuarter(_time));
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
@@ -5787,7 +5787,7 @@ contract DaoCommon is IdentityCommon {
         _contract = DaoCollateralStorage(get_contract(CONTRACT_STORAGE_DAO_COLLATERAL));
     }
 
-    function get_uint_config(bytes32 _config_key)
+    function getUintConfig(bytes32 _config_key)
         public
         constant
         returns (uint256 _config_value)
@@ -5818,7 +5818,7 @@ contract DaoCommon is IdentityCommon {
     {
         if (
             (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex()) &&
-            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= get_uint_config(CONFIG_MINIMUM_LOCKED_DGD))
+            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_LOCKED_DGD))
         ) {
             _is = true;
         }
@@ -5831,8 +5831,8 @@ contract DaoCommon is IdentityCommon {
     {
         if (
             (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex()) &&
-            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= get_uint_config(CONFIG_MINIMUM_DGD_FOR_MODERATOR)) &&
-            (daoPointsStorage().getReputation(_user) >= get_uint_config(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR))
+            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_DGD_FOR_MODERATOR)) &&
+            (daoPointsStorage().getReputation(_user) >= getUintConfig(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR))
         ) {
             _is = true;
         }
@@ -5857,11 +5857,11 @@ contract DaoCommon is IdentityCommon {
         if (_milestoneIndex == 0) { // This is the 1st milestone, which starts after voting round 0
             _milestoneStart =
                 daoStorage().readProposalVotingTime(_proposalId, 0)
-                .add(get_uint_config(CONFIG_VOTING_PHASE_TOTAL));
+                .add(getUintConfig(CONFIG_VOTING_PHASE_TOTAL));
         } else { // if its the n-th milestone, it starts after voting round n-th
             _milestoneStart =
                 daoStorage().readProposalVotingTime(_proposalId, _milestoneIndex)
-                .add(get_uint_config(CONFIG_INTERIM_PHASE_TOTAL));
+                .add(getUintConfig(CONFIG_INTERIM_PHASE_TOTAL));
         }
     }
 
@@ -5887,14 +5887,14 @@ contract DaoCommon is IdentityCommon {
 >>>>>>> Stashed changes
     {
         uint256 _timeLeftInQuarter = getTimeLeftInQuarter(_votingTime);
-        uint256 _votingDuration = get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL);
-        if (timeInQuarter(_votingTime) < get_uint_config(CONFIG_LOCKING_PHASE_DURATION)) {
+        uint256 _votingDuration = getUintConfig(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL);
+        if (timeInQuarter(_votingTime) < getUintConfig(CONFIG_LOCKING_PHASE_DURATION)) {
             _votingTime = _votingTime.add(
-                get_uint_config(CONFIG_LOCKING_PHASE_DURATION).sub(timeInQuarter(_votingTime)).add(1)
+                getUintConfig(CONFIG_LOCKING_PHASE_DURATION).sub(timeInQuarter(_votingTime)).add(1)
             );
-        } else if (_timeLeftInQuarter < _votingDuration.add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE))) {
+        } else if (_timeLeftInQuarter < _votingDuration.add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE))) {
             _votingTime = _votingTime.add(
-                _timeLeftInQuarter.add(get_uint_config(CONFIG_LOCKING_PHASE_DURATION)).add(1)
+                _timeLeftInQuarter.add(getUintConfig(CONFIG_LOCKING_PHASE_DURATION)).add(1)
             );
         }
         return _votingTime;
@@ -7037,9 +7037,9 @@ contract DaoCalculatorService is DaoCommon {
         returns (uint256 _additionalLockedDGDStake)
     {
         // todo: change this to fixed quarter duration
-        /* _additionalLockedDGDStake = _additionalDgd.mul(QUARTER_DURATION.sub(currentTInQuarter())).div(QUARTER_DURATION.sub(get_uint_config(CONFIG_LOCKING_PHASE_DURATION))); */
-        _additionalLockedDGDStake = _additionalDgd.mul((get_uint_config(CONFIG_QUARTER_DURATION).sub(MathHelper.max(currentTInQuarter(), get_uint_config(CONFIG_LOCKING_PHASE_DURATION)))))
-                                    .div(get_uint_config(CONFIG_QUARTER_DURATION).sub(get_uint_config(CONFIG_LOCKING_PHASE_DURATION)));
+        /* _additionalLockedDGDStake = _additionalDgd.mul(QUARTER_DURATION.sub(currentTimeInQuarter())).div(QUARTER_DURATION.sub(getUintConfig(CONFIG_LOCKING_PHASE_DURATION))); */
+        _additionalLockedDGDStake = _additionalDgd.mul((getUintConfig(CONFIG_QUARTER_DURATION).sub(MathHelper.max(currentTimeInQuarter(), getUintConfig(CONFIG_LOCKING_PHASE_DURATION)))))
+                                    .div(getUintConfig(CONFIG_QUARTER_DURATION).sub(getUintConfig(CONFIG_LOCKING_PHASE_DURATION)));
     }
 
     function minimumDraftQuorum(bytes32 _proposalId) public returns (uint256 _minQuorum) {
@@ -7048,10 +7048,10 @@ contract DaoCalculatorService is DaoCommon {
         (_fundings,) = daoStorage().readProposalFunding(_proposalId);
         _minQuorum = calculateMinQuorum(
             daoStakeStorage().totalModeratorLockedDGDStake(),
-            get_uint_config(CONFIG_DRAFT_QUORUM_FIXED_PORTION_NUMERATOR),
-            get_uint_config(CONFIG_DRAFT_QUORUM_FIXED_PORTION_DENOMINATOR),
-            get_uint_config(CONFIG_DRAFT_QUORUM_SCALING_FACTOR_NUMERATOR),
-            get_uint_config(CONFIG_DRAFT_QUORUM_SCALING_FACTOR_DENOMINATOR),
+            getUintConfig(CONFIG_DRAFT_QUORUM_FIXED_PORTION_NUMERATOR),
+            getUintConfig(CONFIG_DRAFT_QUORUM_FIXED_PORTION_DENOMINATOR),
+            getUintConfig(CONFIG_DRAFT_QUORUM_SCALING_FACTOR_NUMERATOR),
+            getUintConfig(CONFIG_DRAFT_QUORUM_SCALING_FACTOR_DENOMINATOR),
             _fundings[0]
         );
     }
@@ -7060,8 +7060,8 @@ contract DaoCalculatorService is DaoCommon {
         public
         returns (bool _passed)
     {
-        if ((_for.mul(get_uint_config(CONFIG_DRAFT_QUOTA_DENOMINATOR))) >
-                (get_uint_config(CONFIG_DRAFT_QUOTA_NUMERATOR).mul(_for.add(_against)))) {
+        if ((_for.mul(getUintConfig(CONFIG_DRAFT_QUOTA_DENOMINATOR))) >
+                (getUintConfig(CONFIG_DRAFT_QUOTA_NUMERATOR).mul(_for.add(_against)))) {
             _passed = true;
         }
     }
@@ -7077,19 +7077,19 @@ contract DaoCalculatorService is DaoCommon {
         if (_milestone_id == _ethAskedPerMilestone.length) {
             _minQuorum = calculateMinQuorum(
                 daoStakeStorage().totalLockedDGDStake(),
-                get_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR),
-                get_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR),
-                get_uint_config(CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR),
-                get_uint_config(CONFIG_FINAL_REWARD_SCALING_FACTOR_DENOMINATOR),
+                getUintConfig(CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR),
+                getUintConfig(CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR),
+                getUintConfig(CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR),
+                getUintConfig(CONFIG_FINAL_REWARD_SCALING_FACTOR_DENOMINATOR),
                 _finalReward
             );
         } else {
             _minQuorum = calculateMinQuorum(
                 daoStakeStorage().totalLockedDGDStake(),
-                get_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR),
-                get_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR),
-                get_uint_config(CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR),
-                get_uint_config(CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR),
+                getUintConfig(CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR),
+                getUintConfig(CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR),
+                getUintConfig(CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR),
+                getUintConfig(CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR),
                 _ethAskedPerMilestone[_milestone_id]
             );
         }
@@ -7099,10 +7099,10 @@ contract DaoCalculatorService is DaoCommon {
         public
         returns (uint256 _minQuorum)
     {
-      _minQuorum = get_uint_config(CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR).mul(
+      _minQuorum = getUintConfig(CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR).mul(
                        daoStakeStorage().totalLockedDGDStake()
                    ).div(
-                       get_uint_config(CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR)
+                       getUintConfig(CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR)
                    );
     }
 
@@ -7110,8 +7110,8 @@ contract DaoCalculatorService is DaoCommon {
         public
         returns (bool _passed)
     {
-        if ((_for.mul(get_uint_config(CONFIG_VOTING_QUOTA_DENOMINATOR))) >
-                (get_uint_config(CONFIG_VOTING_QUOTA_NUMERATOR).mul(_for.add(_against)))) {
+        if ((_for.mul(getUintConfig(CONFIG_VOTING_QUOTA_DENOMINATOR))) >
+                (getUintConfig(CONFIG_VOTING_QUOTA_NUMERATOR).mul(_for.add(_against)))) {
             _passed = true;
         }
     }
@@ -7120,8 +7120,8 @@ contract DaoCalculatorService is DaoCommon {
         public
         returns (bool _passed)
     {
-        if ((_for.mul(get_uint_config(CONFIG_SPECIAL_QUOTA_DENOMINATOR))) >
-                (get_uint_config(CONFIG_SPECIAL_QUOTA_NUMERATOR).mul(_for.add(_against)))) {
+        if ((_for.mul(getUintConfig(CONFIG_SPECIAL_QUOTA_DENOMINATOR))) >
+                (getUintConfig(CONFIG_SPECIAL_QUOTA_NUMERATOR).mul(_for.add(_against)))) {
             _passed = true;
         }
     }
@@ -7253,13 +7253,13 @@ contract DaoRewardsManager is DaoCommon {
         ADDRESS_DGX_TOKEN = _dgxAddress;
         daoRewardsStorage().updateQuarterInfo(
             1,
-            get_uint_config(CONFIG_MINIMAL_PARTICIPATION_POINT),
-            get_uint_config(CONFIG_QUARTER_POINT_SCALING_FACTOR),
-            get_uint_config(CONFIG_REPUTATION_POINT_SCALING_FACTOR),
+            getUintConfig(CONFIG_MINIMAL_PARTICIPATION_POINT),
+            getUintConfig(CONFIG_QUARTER_POINT_SCALING_FACTOR),
+            getUintConfig(CONFIG_REPUTATION_POINT_SCALING_FACTOR),
             0,
-            get_uint_config(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
-            get_uint_config(CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR),
-            get_uint_config(CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR),
+            getUintConfig(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
+            getUintConfig(CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR),
+            getUintConfig(CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR),
             0,
             now,
             0,
@@ -7337,10 +7337,10 @@ contract DaoRewardsManager is DaoCommon {
             updateRPfromQP(
                 _user,
                 daoPointsStorage().getQuarterPoint(_user, _lastParticipatedQuarter),
-                get_uint_config(CONFIG_MINIMAL_PARTICIPATION_POINT),
-                get_uint_config(CONFIG_MAXIMUM_REPUTATION_DEDUCTION),
-                get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_NUM),
-                get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_DEN)
+                getUintConfig(CONFIG_MINIMAL_PARTICIPATION_POINT),
+                getUintConfig(CONFIG_MAXIMUM_REPUTATION_DEDUCTION),
+                getUintConfig(CONFIG_REPUTATION_PER_EXTRA_QP_NUM),
+                getUintConfig(CONFIG_REPUTATION_PER_EXTRA_QP_DEN)
             );
 
             // this user is not a Moderator for current quarter
@@ -7351,10 +7351,10 @@ contract DaoRewardsManager is DaoCommon {
                 updateRPfromQP(
                     _user,
                     daoPointsStorage().getQuarterModeratorPoint(_user, _lastParticipatedQuarter),
-                    get_uint_config(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
-                    get_uint_config(CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION),
-                    get_uint_config(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM),
-                    get_uint_config(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN)
+                    getUintConfig(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
+                    getUintConfig(CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION),
+                    getUintConfig(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM),
+                    getUintConfig(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN)
                 );
             }
         }
@@ -7362,8 +7362,8 @@ contract DaoRewardsManager is DaoCommon {
         _reputationDeduction =
             (currentQuarterIndex().sub(1).sub(_lastParticipatedQuarter))
             .mul(
-                get_uint_config(CONFIG_MAXIMUM_REPUTATION_DEDUCTION)
-                .add(get_uint_config(CONFIG_PUNISHMENT_FOR_NOT_LOCKING))
+                getUintConfig(CONFIG_MAXIMUM_REPUTATION_DEDUCTION)
+                .add(getUintConfig(CONFIG_PUNISHMENT_FOR_NOT_LOCKING))
             );
 
         if (_reputationDeduction > 0) daoPointsStorage().subtractReputation(_user, _reputationDeduction);
@@ -7459,13 +7459,13 @@ contract DaoRewardsManager is DaoCommon {
                     data.lastParticipatedQuarter.add(1)
                 ))
                 .mul(
-                    get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN)
-                    .sub(get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_NUM))
+                    getUintConfig(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN)
+                    .sub(getUintConfig(CONFIG_PORTION_TO_BADGE_HOLDERS_NUM))
                 )
                 .div(daoRewardsStorage().readTotalEffectiveDGDLastQuarter(
                     data.lastParticipatedQuarter.add(1)
                 ))
-                .div(get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN))
+                .div(getUintConfig(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN))
             );
         }
 
@@ -7476,12 +7476,12 @@ contract DaoRewardsManager is DaoCommon {
                     data.lastParticipatedQuarter.add(1)
                 ))
                 .mul(
-                     get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_NUM)
+                     getUintConfig(CONFIG_PORTION_TO_BADGE_HOLDERS_NUM)
                 )
                 .div(daoRewardsStorage().readTotalEffectiveModeratorDGDLastQuarter(
                     data.lastParticipatedQuarter.add(1)
                 ))
-                .div(get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN))
+                .div(getUintConfig(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN))
             );
         }
 
@@ -7537,14 +7537,14 @@ contract DaoRewardsManager is DaoCommon {
 
         daoRewardsStorage().updateQuarterInfo(
             info.previousQuarter.add(1),
-            get_uint_config(CONFIG_MINIMAL_PARTICIPATION_POINT),
-            get_uint_config(CONFIG_QUARTER_POINT_SCALING_FACTOR),
-            get_uint_config(CONFIG_REPUTATION_POINT_SCALING_FACTOR),
+            getUintConfig(CONFIG_MINIMAL_PARTICIPATION_POINT),
+            getUintConfig(CONFIG_QUARTER_POINT_SCALING_FACTOR),
+            getUintConfig(CONFIG_REPUTATION_POINT_SCALING_FACTOR),
             info.totalEffectiveDGDLastQuarter,
 
-            get_uint_config(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
-            get_uint_config(CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR),
-            get_uint_config(CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR),
+            getUintConfig(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
+            getUintConfig(CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR),
+            getUintConfig(CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR),
             info.totalEffectiveModeratorDGDLastQuarter,
 
             now,
@@ -7739,10 +7739,10 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
         // if after the claiming deadline, its auto failed
         if (now > daoStorage().readProposalDraftVotingTime(_proposalId)
-                    .add(get_uint_config(CONFIG_DRAFT_VOTING_PHASE))
-                    .add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE))) {
+                    .add(getUintConfig(CONFIG_DRAFT_VOTING_PHASE))
+                    .add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE))) {
             daoStorage().setProposalDraftPass(_proposalId, false);
-            daoCollateralStorage().unlockCollateral(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+            daoCollateralStorage().unlockCollateral(daoStorage().readProposalProposer(_proposalId), getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT));
             return false;
         }
         require(msg.sender == daoStorage().readProposalProposer(_proposalId));
@@ -7812,7 +7812,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
         // set startTime of first voting round
         // and the start of first milestone.
-        uint256 _idealClaimTime = daoStorage().readProposalDraftVotingTime(_proposalId).add(get_uint_config(CONFIG_DRAFT_VOTING_PHASE));
+        uint256 _idealClaimTime = daoStorage().readProposalDraftVotingTime(_proposalId).add(getUintConfig(CONFIG_DRAFT_VOTING_PHASE));
         daoStorage().setProposalVotingTime(
             _proposalId,
             0,
@@ -7839,7 +7839,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         // and the result will be failed by default
         _done = true;
         if (now < startOfMilestone(_proposalId, _index)
-                    .add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE)))
+                    .add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE)))
         {
             (_operations, _passed, _done) = countProposalVote(_proposalId, _index, _operations);
             if (!_done) return (_passed, false); // haven't done counting yet, return
@@ -7856,7 +7856,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             // failed voting in the first round
             // return the collateral
             if (_index == 0) {
-                daoCollateralStorage().unlockCollateral(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+                daoCollateralStorage().unlockCollateral(daoStorage().readProposalProposer(_proposalId), getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT));
             }
         }
         daoStorage().setVotingClaim(_proposalId, _index, true);
@@ -7875,7 +7875,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         // if this was the last milestone and final reward has been released
         // unlock their original collateral
         if (_funding == 0 && !isProposalPaused(_proposalId)) {
-            daoCollateralStorage().unlockCollateral(daoStorage().readProposalProposer(_proposalId), get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+            daoCollateralStorage().unlockCollateral(daoStorage().readProposalProposer(_proposalId), getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT));
         }
 
         bool _isDigixProposal;
@@ -7886,7 +7886,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
         daoPointsStorage().addQuarterPoint(
             daoStorage().readProposalProposer(_proposalId),
-            get_uint_config(CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH_PER_10000ETH).mul(_funding).div(10000 ether),
+            getUintConfig(CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH_PER_10000ETH).mul(_funding).div(10000 ether),
             currentQuarterIndex()
         );
     }
@@ -8006,13 +8006,13 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     function addBonusReputation(address[] _voters, uint256 _n)
         private
     {
-        uint256 _qp = get_uint_config(CONFIG_QUARTER_POINT_VOTE);
-        uint256 _rate = get_uint_config(CONFIG_BONUS_REPUTATION_NUMERATOR);
-        uint256 _base = get_uint_config(CONFIG_BONUS_REPUTATION_DENOMINATOR);
+        uint256 _qp = getUintConfig(CONFIG_QUARTER_POINT_VOTE);
+        uint256 _rate = getUintConfig(CONFIG_BONUS_REPUTATION_NUMERATOR);
+        uint256 _base = getUintConfig(CONFIG_BONUS_REPUTATION_DENOMINATOR);
 
-        uint256 _bonus = _qp.mul(_rate).mul(get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_NUM))
+        uint256 _bonus = _qp.mul(_rate).mul(getUintConfig(CONFIG_REPUTATION_PER_EXTRA_QP_NUM))
             .div(
-                _base.mul(get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_DEN))
+                _base.mul(getUintConfig(CONFIG_REPUTATION_PER_EXTRA_QP_DEN))
             );
 
         for (uint256 i = 0; i < _n; i++) {
@@ -8092,18 +8092,18 @@ contract Dao is DaoCommon, Claimable {
         require(isParticipant(msg.sender));
         bool _isFounder = is_founder();
 
-        require(msg.value >= get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        require(msg.value >= getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT));
         require(address(daoFundingManager()).call.value(msg.value)());
 
         if (!_isFounder) {
-            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
-            require(_milestonesFundings.length <= get_uint_config(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
+            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= getUintConfig(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
+            require(_milestonesFundings.length <= getUintConfig(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
         }
 
         address _proposer = msg.sender;
         require(identity_storage().is_kyc_approved(_proposer));
 
-        daoCollateralStorage().lockCollateral(msg.sender, get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        daoCollateralStorage().lockCollateral(msg.sender, getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT));
         daoStorage().addProposal(_docIpfsHash, _proposer, _milestonesFundings, _finalReward, _isFounder);
         _success = true;
     }
@@ -8134,8 +8134,8 @@ contract Dao is DaoCommon, Claimable {
         require(identity_storage().is_kyc_approved(msg.sender));
 
         if (!is_founder()) {
-            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
-            require(_milestonesFundings.length <= get_uint_config(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
+            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= getUintConfig(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
+            require(_milestonesFundings.length <= getUintConfig(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
         }
 
         daoStorage().editProposal(_proposalId, _docIpfsHash, _milestonesFundings, _finalReward);
@@ -8155,8 +8155,8 @@ contract Dao is DaoCommon, Claimable {
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
         require(identity_storage().is_kyc_approved(msg.sender));
         if (!is_founder()) {
-            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
-            require(_milestonesFundings.length <= get_uint_config(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
+            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= getUintConfig(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
+            require(_milestonesFundings.length <= getUintConfig(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
         }
         uint256[] memory _currentFundings;
         (_currentFundings, _finalReward) = daoStorage().readProposalFunding(_proposalId);
@@ -8188,9 +8188,9 @@ contract Dao is DaoCommon, Claimable {
         bool _isDigixProposal;
         (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
         if (!_isDigixProposal) {
-            require(daoStorage().proposalCountByQuarter(currentQuarterIndex()) < get_uint_config(CONFIG_PROPOSAL_CAP_PER_QUARTER));
+            require(daoStorage().proposalCountByQuarter(currentQuarterIndex()) < getUintConfig(CONFIG_PROPOSAL_CAP_PER_QUARTER));
         }
-        require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_DRAFT_VOTING_PHASE).add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE)));
+        require(getTimeLeftInQuarter(now) > getUintConfig(CONFIG_DRAFT_VOTING_PHASE).add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE)));
         address _endorser;
         (,,_endorser,,,,,,,) = daoStorage().readProposal(_proposalId);
         require(_endorser != EMPTY_ADDRESS);
@@ -8299,7 +8299,7 @@ contract Dao is DaoCommon, Claimable {
         require(isMainPhase());
         require(daoSpecialStorage().readProposalProposer(_proposalId) == msg.sender);
         require(daoSpecialStorage().readVotingTime(_proposalId) == 0);
-        require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
+        require(getTimeLeftInQuarter(now) > getUintConfig(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
         daoSpecialStorage().setVotingTime(_proposalId, now);
         _success = true;
     }
@@ -8367,7 +8367,7 @@ contract DaoFundingManager is DaoCommon {
         address _endorser;
         (,,_endorser,,,,,,,) = daoStorage().readProposal(_proposalId);
         require(
-            (_unlockedCollateral >= get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT)) ||
+            (_unlockedCollateral >= getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT)) ||
             (_endorser != EMPTY_ADDRESS)
         );
 
@@ -8474,18 +8474,18 @@ contract Dao is DaoCommon, Claimable {
         require(isParticipant(msg.sender));
         bool _isFounder = is_founder();
 
-        require(msg.value >= get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        require(msg.value >= getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT));
         require(address(daoFundingManager()).call.value(msg.value)());
 
         if (!_isFounder) {
-            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
-            require(_milestonesFundings.length <= get_uint_config(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
+            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= getUintConfig(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
+            require(_milestonesFundings.length <= getUintConfig(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
         }
 
         address _proposer = msg.sender;
         require(identity_storage().is_kyc_approved(_proposer));
 
-        daoCollateralStorage().lockCollateral(msg.sender, get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        daoCollateralStorage().lockCollateral(msg.sender, getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT));
         daoStorage().addProposal(_docIpfsHash, _proposer, _milestonesFundings, _finalReward, _isFounder);
         _success = true;
     }
@@ -8516,8 +8516,8 @@ contract Dao is DaoCommon, Claimable {
         require(identity_storage().is_kyc_approved(msg.sender));
 
         if (!is_founder()) {
-            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
-            require(_milestonesFundings.length <= get_uint_config(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
+            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= getUintConfig(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
+            require(_milestonesFundings.length <= getUintConfig(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
         }
 
         daoStorage().editProposal(_proposalId, _docIpfsHash, _milestonesFundings, _finalReward);
@@ -8537,8 +8537,8 @@ contract Dao is DaoCommon, Claimable {
         require(daoStorage().readProposalProposer(_proposalId) == msg.sender);
         require(identity_storage().is_kyc_approved(msg.sender));
         if (!is_founder()) {
-            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
-            require(_milestonesFundings.length <= get_uint_config(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
+            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= getUintConfig(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
+            require(_milestonesFundings.length <= getUintConfig(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
         }
         uint256[] memory _currentFundings;
         (_currentFundings, _finalReward) = daoStorage().readProposalFunding(_proposalId);
@@ -8570,9 +8570,9 @@ contract Dao is DaoCommon, Claimable {
         bool _isDigixProposal;
         (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
         if (!_isDigixProposal) {
-            require(daoStorage().proposalCountByQuarter(currentQuarterIndex()) < get_uint_config(CONFIG_PROPOSAL_CAP_PER_QUARTER));
+            require(daoStorage().proposalCountByQuarter(currentQuarterIndex()) < getUintConfig(CONFIG_PROPOSAL_CAP_PER_QUARTER));
         }
-        require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_DRAFT_VOTING_PHASE).add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE)));
+        require(getTimeLeftInQuarter(now) > getUintConfig(CONFIG_DRAFT_VOTING_PHASE).add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE)));
         address _endorser;
         (,,_endorser,,,,,,,) = daoStorage().readProposal(_proposalId);
         require(_endorser != EMPTY_ADDRESS);
@@ -8681,7 +8681,7 @@ contract Dao is DaoCommon, Claimable {
         require(isMainPhase());
         require(daoSpecialStorage().readProposalProposer(_proposalId) == msg.sender);
         require(daoSpecialStorage().readVotingTime(_proposalId) == 0);
-        require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
+        require(getTimeLeftInQuarter(now) > getUintConfig(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
         daoSpecialStorage().setVotingTime(_proposalId, now);
         _success = true;
     }
@@ -14283,7 +14283,7 @@ contract DaoCommon is IdentityCommon {
         constant
         returns (bool)
     {
-        require(currentTInQuarter() < get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
+        require(currentTimeInQuarter() < getUintConfig(CONFIG_LOCKING_PHASE_DURATION));
         return true;
     }
 
@@ -14293,7 +14293,7 @@ contract DaoCommon is IdentityCommon {
         returns (bool)
     {
         require(isDaoNotReplaced());
-        require(currentTInQuarter() >= get_uint_config(CONFIG_LOCKING_PHASE_DURATION));
+        require(currentTimeInQuarter() >= getUintConfig(CONFIG_LOCKING_PHASE_DURATION));
         return true;
     }
 
@@ -14302,9 +14302,9 @@ contract DaoCommon is IdentityCommon {
         constant
         returns (bool)
     {
-        bool _isPaused;
-        (,,,,,,,,_isPaused,) = daoStorage().readProposal(_proposalId);
-        return _isPaused;
+        bool _isPausedOrStopped;
+        (,,,,,,,,_isPausedOrStopped,) = daoStorage().readProposal(_proposalId);
+        return _isPausedOrStopped;
     }
 
     function isFromProposer(bytes32 _proposalId)
@@ -14330,7 +14330,7 @@ contract DaoCommon is IdentityCommon {
     modifier ifAfterDraftVotingPhase(bytes32 _proposalId) {
         uint256 _start = daoStorage().readProposalDraftVotingTime(_proposalId);
         require(_start > 0);
-        require(now > _start + get_uint_config(CONFIG_DRAFT_VOTING_PHASE));
+        require(now > _start + getUintConfig(CONFIG_DRAFT_VOTING_PHASE));
         _;
     }
 
@@ -14338,7 +14338,7 @@ contract DaoCommon is IdentityCommon {
         requireInPhase(
             daoStorage().readProposalVotingTime(_proposalId, _index),
             0,
-            get_uint_config(_index == 0 ? CONFIG_VOTING_COMMIT_PHASE : CONFIG_INTERIM_COMMIT_PHASE)
+            getUintConfig(_index == 0 ? CONFIG_VOTING_COMMIT_PHASE : CONFIG_INTERIM_COMMIT_PHASE)
         );
         _;
     }
@@ -14346,8 +14346,8 @@ contract DaoCommon is IdentityCommon {
     modifier ifRevealPhase(bytes32 _proposalId, uint256 _index) {
       requireInPhase(
           daoStorage().readProposalVotingTime(_proposalId, _index),
-          get_uint_config(_index == 0 ? CONFIG_VOTING_COMMIT_PHASE : CONFIG_INTERIM_COMMIT_PHASE),
-          get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL)
+          getUintConfig(_index == 0 ? CONFIG_VOTING_COMMIT_PHASE : CONFIG_INTERIM_COMMIT_PHASE),
+          getUintConfig(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL)
       );
       _;
     }
@@ -14355,7 +14355,7 @@ contract DaoCommon is IdentityCommon {
     modifier ifAfterProposalRevealPhase(bytes32 _proposalId, uint256 _index) {
       uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
       require(_start > 0);
-      require(now >= _start.add(get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL)));
+      require(now >= _start.add(getUintConfig(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL)));
       _;
     }
 
@@ -14363,7 +14363,7 @@ contract DaoCommon is IdentityCommon {
         requireInPhase(
             daoStorage().readProposalDraftVotingTime(_proposalId),
             0,
-            get_uint_config(CONFIG_DRAFT_VOTING_PHASE)
+            getUintConfig(CONFIG_DRAFT_VOTING_PHASE)
         );
         _;
     }
@@ -14412,7 +14412,7 @@ contract DaoCommon is IdentityCommon {
     modifier ifAfterRevealPhaseSpecial(bytes32 _proposalId) {
       uint256 _start = daoSpecialStorage().readVotingTime(_proposalId);
       require(_start > 0);
-      require(now.sub(_start) >= get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
+      require(now.sub(_start) >= getUintConfig(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
       _;
     }
 
@@ -14420,7 +14420,7 @@ contract DaoCommon is IdentityCommon {
         requireInPhase(
             daoSpecialStorage().readVotingTime(_proposalId),
             0,
-            get_uint_config(CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE)
+            getUintConfig(CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE)
         );
         _;
     }
@@ -14428,8 +14428,8 @@ contract DaoCommon is IdentityCommon {
     modifier ifRevealPhaseSpecial(bytes32 _proposalId) {
         requireInPhase(
             daoSpecialStorage().readVotingTime(_proposalId),
-            get_uint_config(CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE),
-            get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL)
+            getUintConfig(CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE),
+            getUintConfig(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL)
         );
         _;
     }
@@ -14473,7 +14473,7 @@ contract DaoCommon is IdentityCommon {
         constant
         returns (uint256 _index)
     {
-        _index = ((_time.sub(daoUpgradeStorage().startOfFirstQuarter())).div(get_uint_config(CONFIG_QUARTER_DURATION))).add(1);
+        _index = ((_time.sub(daoUpgradeStorage().startOfFirstQuarter())).div(getUintConfig(CONFIG_QUARTER_DURATION))).add(1);
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
@@ -14482,10 +14482,10 @@ contract DaoCommon is IdentityCommon {
         constant
         returns (uint256 _timeInQuarter)
     {
-        _timeInQuarter = (_time.sub(daoUpgradeStorage().startOfFirstQuarter())) % get_uint_config(CONFIG_QUARTER_DURATION);
+        _timeInQuarter = (_time.sub(daoUpgradeStorage().startOfFirstQuarter())) % getUintConfig(CONFIG_QUARTER_DURATION);
     }
 
-    function currentTInQuarter()
+    function currentTimeInQuarter()
         public
         constant
         returns (uint256 _currentT)
@@ -14498,7 +14498,7 @@ contract DaoCommon is IdentityCommon {
         constant
         returns (uint256 _timeLeftInQuarter)
     {
-        _timeLeftInQuarter = get_uint_config(CONFIG_QUARTER_DURATION).sub(timeInQuarter(_time));
+        _timeLeftInQuarter = getUintConfig(CONFIG_QUARTER_DURATION).sub(timeInQuarter(_time));
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
@@ -14590,7 +14590,7 @@ contract DaoCommon is IdentityCommon {
         _contract = IntermediateResultsStorage(get_contract(CONTRACT_STORAGE_INTERMEDIATE_RESULTS));
     }
 
-    function get_uint_config(bytes32 _config_key)
+    function getUintConfig(bytes32 _config_key)
         public
         constant
         returns (uint256 _config_value)
@@ -14621,7 +14621,7 @@ contract DaoCommon is IdentityCommon {
     {
         if (
             (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex()) &&
-            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= get_uint_config(CONFIG_MINIMUM_LOCKED_DGD))
+            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_LOCKED_DGD))
         ) {
             _is = true;
         }
@@ -14634,8 +14634,8 @@ contract DaoCommon is IdentityCommon {
     {
         if (
             (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex()) &&
-            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= get_uint_config(CONFIG_MINIMUM_DGD_FOR_MODERATOR)) &&
-            (daoPointsStorage().getReputation(_user) >= get_uint_config(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR))
+            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_DGD_FOR_MODERATOR)) &&
+            (daoPointsStorage().getReputation(_user) >= getUintConfig(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR))
         ) {
             _is = true;
         }
@@ -14649,11 +14649,11 @@ contract DaoCommon is IdentityCommon {
         if (_milestoneIndex == 0) { // This is the 1st milestone, which starts after voting round 0
             _milestoneStart =
                 daoStorage().readProposalVotingTime(_proposalId, 0)
-                .add(get_uint_config(CONFIG_VOTING_PHASE_TOTAL));
+                .add(getUintConfig(CONFIG_VOTING_PHASE_TOTAL));
         } else { // if its the n-th milestone, it starts after voting round n-th
             _milestoneStart =
                 daoStorage().readProposalVotingTime(_proposalId, _milestoneIndex)
-                .add(get_uint_config(CONFIG_INTERIM_PHASE_TOTAL));
+                .add(getUintConfig(CONFIG_INTERIM_PHASE_TOTAL));
         }
     }
 
@@ -14666,14 +14666,14 @@ contract DaoCommon is IdentityCommon {
         returns (uint256)
     {
         uint256 _timeLeftInQuarter = getTimeLeftInQuarter(_votingTime);
-        uint256 _votingDuration = get_uint_config(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL);
-        if (timeInQuarter(_votingTime) < get_uint_config(CONFIG_LOCKING_PHASE_DURATION)) {
+        uint256 _votingDuration = getUintConfig(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL);
+        if (timeInQuarter(_votingTime) < getUintConfig(CONFIG_LOCKING_PHASE_DURATION)) {
             _votingTime = _votingTime.add(
-                get_uint_config(CONFIG_LOCKING_PHASE_DURATION).sub(timeInQuarter(_votingTime)).add(1)
+                getUintConfig(CONFIG_LOCKING_PHASE_DURATION).sub(timeInQuarter(_votingTime)).add(1)
             );
-        } else if (_timeLeftInQuarter < _votingDuration.add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE))) {
+        } else if (_timeLeftInQuarter < _votingDuration.add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE))) {
             _votingTime = _votingTime.add(
-                _timeLeftInQuarter.add(get_uint_config(CONFIG_LOCKING_PHASE_DURATION)).add(1)
+                _timeLeftInQuarter.add(getUintConfig(CONFIG_LOCKING_PHASE_DURATION)).add(1)
             );
         }
         return _votingTime;
@@ -14686,7 +14686,7 @@ contract DaoCommon is IdentityCommon {
         bool _isDigixProposal;
         (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
         if (!_isDigixProposal) {
-            require(daoStorage().proposalCountByQuarter(currentQuarterIndex()) < get_uint_config(CONFIG_PROPOSAL_CAP_PER_QUARTER));
+            require(daoStorage().proposalCountByQuarter(currentQuarterIndex()) < getUintConfig(CONFIG_PROPOSAL_CAP_PER_QUARTER));
         }
     }
 
@@ -14695,8 +14695,8 @@ contract DaoCommon is IdentityCommon {
         constant
     {
         if (!is_founder()) {
-            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= get_uint_config(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
-            require(_milestonesFundings.length <= get_uint_config(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
+            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= getUintConfig(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
+            require(_milestonesFundings.length <= getUintConfig(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
         }
     }
 
@@ -15824,9 +15824,9 @@ contract DaoCalculatorService is DaoCommon {
         returns (uint256 _additionalLockedDGDStake)
     {
         // todo: change this to fixed quarter duration
-        /* _additionalLockedDGDStake = _additionalDgd.mul(QUARTER_DURATION.sub(currentTInQuarter())).div(QUARTER_DURATION.sub(get_uint_config(CONFIG_LOCKING_PHASE_DURATION))); */
-        _additionalLockedDGDStake = _additionalDgd.mul((get_uint_config(CONFIG_QUARTER_DURATION).sub(MathHelper.max(currentTInQuarter(), get_uint_config(CONFIG_LOCKING_PHASE_DURATION)))))
-                                    .div(get_uint_config(CONFIG_QUARTER_DURATION).sub(get_uint_config(CONFIG_LOCKING_PHASE_DURATION)));
+        /* _additionalLockedDGDStake = _additionalDgd.mul(QUARTER_DURATION.sub(currentTimeInQuarter())).div(QUARTER_DURATION.sub(getUintConfig(CONFIG_LOCKING_PHASE_DURATION))); */
+        _additionalLockedDGDStake = _additionalDgd.mul((getUintConfig(CONFIG_QUARTER_DURATION).sub(MathHelper.max(currentTimeInQuarter(), getUintConfig(CONFIG_LOCKING_PHASE_DURATION)))))
+                                    .div(getUintConfig(CONFIG_QUARTER_DURATION).sub(getUintConfig(CONFIG_LOCKING_PHASE_DURATION)));
     }
 
     function minimumDraftQuorum(bytes32 _proposalId)
@@ -15839,10 +15839,10 @@ contract DaoCalculatorService is DaoCommon {
         (_fundings,) = daoStorage().readProposalFunding(_proposalId);
         _minQuorum = calculateMinQuorum(
             daoStakeStorage().totalModeratorLockedDGDStake(),
-            get_uint_config(CONFIG_DRAFT_QUORUM_FIXED_PORTION_NUMERATOR),
-            get_uint_config(CONFIG_DRAFT_QUORUM_FIXED_PORTION_DENOMINATOR),
-            get_uint_config(CONFIG_DRAFT_QUORUM_SCALING_FACTOR_NUMERATOR),
-            get_uint_config(CONFIG_DRAFT_QUORUM_SCALING_FACTOR_DENOMINATOR),
+            getUintConfig(CONFIG_DRAFT_QUORUM_FIXED_PORTION_NUMERATOR),
+            getUintConfig(CONFIG_DRAFT_QUORUM_FIXED_PORTION_DENOMINATOR),
+            getUintConfig(CONFIG_DRAFT_QUORUM_SCALING_FACTOR_NUMERATOR),
+            getUintConfig(CONFIG_DRAFT_QUORUM_SCALING_FACTOR_DENOMINATOR),
             _fundings[0]
         );
     }
@@ -15852,8 +15852,8 @@ contract DaoCalculatorService is DaoCommon {
         constant
         returns (bool _passed)
     {
-        if ((_for.mul(get_uint_config(CONFIG_DRAFT_QUOTA_DENOMINATOR))) >
-                (get_uint_config(CONFIG_DRAFT_QUOTA_NUMERATOR).mul(_for.add(_against)))) {
+        if ((_for.mul(getUintConfig(CONFIG_DRAFT_QUOTA_DENOMINATOR))) >
+                (getUintConfig(CONFIG_DRAFT_QUOTA_NUMERATOR).mul(_for.add(_against)))) {
             _passed = true;
         }
     }
@@ -15870,19 +15870,19 @@ contract DaoCalculatorService is DaoCommon {
         if (_milestone_id == _ethAskedPerMilestone.length) {
             _minQuorum = calculateMinQuorum(
                 daoStakeStorage().totalLockedDGDStake(),
-                get_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR),
-                get_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR),
-                get_uint_config(CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR),
-                get_uint_config(CONFIG_FINAL_REWARD_SCALING_FACTOR_DENOMINATOR),
+                getUintConfig(CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR),
+                getUintConfig(CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR),
+                getUintConfig(CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR),
+                getUintConfig(CONFIG_FINAL_REWARD_SCALING_FACTOR_DENOMINATOR),
                 _finalReward
             );
         } else {
             _minQuorum = calculateMinQuorum(
                 daoStakeStorage().totalLockedDGDStake(),
-                get_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR),
-                get_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR),
-                get_uint_config(CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR),
-                get_uint_config(CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR),
+                getUintConfig(CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR),
+                getUintConfig(CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR),
+                getUintConfig(CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR),
+                getUintConfig(CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR),
                 _ethAskedPerMilestone[_milestone_id]
             );
         }
@@ -15893,10 +15893,10 @@ contract DaoCalculatorService is DaoCommon {
         constant
         returns (uint256 _minQuorum)
     {
-      _minQuorum = get_uint_config(CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR).mul(
+      _minQuorum = getUintConfig(CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR).mul(
                        daoStakeStorage().totalLockedDGDStake()
                    ).div(
-                       get_uint_config(CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR)
+                       getUintConfig(CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR)
                    );
     }
 
@@ -15905,8 +15905,8 @@ contract DaoCalculatorService is DaoCommon {
         constant
         returns (bool _passed)
     {
-        if ((_for.mul(get_uint_config(CONFIG_VOTING_QUOTA_DENOMINATOR))) >
-                (get_uint_config(CONFIG_VOTING_QUOTA_NUMERATOR).mul(_for.add(_against)))) {
+        if ((_for.mul(getUintConfig(CONFIG_VOTING_QUOTA_DENOMINATOR))) >
+                (getUintConfig(CONFIG_VOTING_QUOTA_NUMERATOR).mul(_for.add(_against)))) {
             _passed = true;
         }
     }
@@ -15916,8 +15916,8 @@ contract DaoCalculatorService is DaoCommon {
         constant
         returns (bool _passed)
     {
-        if ((_for.mul(get_uint_config(CONFIG_SPECIAL_QUOTA_DENOMINATOR))) >
-                (get_uint_config(CONFIG_SPECIAL_QUOTA_NUMERATOR).mul(_for.add(_against)))) {
+        if ((_for.mul(getUintConfig(CONFIG_SPECIAL_QUOTA_DENOMINATOR))) >
+                (getUintConfig(CONFIG_SPECIAL_QUOTA_NUMERATOR).mul(_for.add(_against)))) {
             _passed = true;
         }
     }
@@ -16070,13 +16070,13 @@ contract DaoRewardsManager is DaoCommon {
         ADDRESS_DGX_TOKEN = _dgxAddress;
         daoRewardsStorage().updateQuarterInfo(
             1,
-            get_uint_config(CONFIG_MINIMAL_PARTICIPATION_POINT),
-            get_uint_config(CONFIG_QUARTER_POINT_SCALING_FACTOR),
-            get_uint_config(CONFIG_REPUTATION_POINT_SCALING_FACTOR),
+            getUintConfig(CONFIG_MINIMAL_PARTICIPATION_POINT),
+            getUintConfig(CONFIG_QUARTER_POINT_SCALING_FACTOR),
+            getUintConfig(CONFIG_REPUTATION_POINT_SCALING_FACTOR),
             0,
-            get_uint_config(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
-            get_uint_config(CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR),
-            get_uint_config(CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR),
+            getUintConfig(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
+            getUintConfig(CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR),
+            getUintConfig(CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR),
             0,
             now,
             0,
@@ -16150,10 +16150,10 @@ contract DaoRewardsManager is DaoCommon {
             updateRPfromQP(
                 _user,
                 daoPointsStorage().getQuarterPoint(_user, _lastParticipatedQuarter),
-                get_uint_config(CONFIG_MINIMAL_PARTICIPATION_POINT),
-                get_uint_config(CONFIG_MAXIMUM_REPUTATION_DEDUCTION),
-                get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_NUM),
-                get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_DEN)
+                getUintConfig(CONFIG_MINIMAL_PARTICIPATION_POINT),
+                getUintConfig(CONFIG_MAXIMUM_REPUTATION_DEDUCTION),
+                getUintConfig(CONFIG_REPUTATION_PER_EXTRA_QP_NUM),
+                getUintConfig(CONFIG_REPUTATION_PER_EXTRA_QP_DEN)
             );
 
             // this user is not a Moderator for current quarter
@@ -16164,10 +16164,10 @@ contract DaoRewardsManager is DaoCommon {
                 updateRPfromQP(
                     _user,
                     daoPointsStorage().getQuarterModeratorPoint(_user, _lastParticipatedQuarter),
-                    get_uint_config(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
-                    get_uint_config(CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION),
-                    get_uint_config(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM),
-                    get_uint_config(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN)
+                    getUintConfig(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
+                    getUintConfig(CONFIG_MAXIMUM_MODERATOR_REPUTATION_DEDUCTION),
+                    getUintConfig(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM),
+                    getUintConfig(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN)
                 );
             }
         }
@@ -16175,8 +16175,8 @@ contract DaoRewardsManager is DaoCommon {
         _reputationDeduction =
             (currentQuarterIndex().sub(1).sub(MathHelper.max(_lastParticipatedQuarter, _lastQuarterThatReputationWasUpdated)))
             .mul(
-                get_uint_config(CONFIG_MAXIMUM_REPUTATION_DEDUCTION)
-                .add(get_uint_config(CONFIG_PUNISHMENT_FOR_NOT_LOCKING))
+                getUintConfig(CONFIG_MAXIMUM_REPUTATION_DEDUCTION)
+                .add(getUintConfig(CONFIG_PUNISHMENT_FOR_NOT_LOCKING))
             );
 
         if (_reputationDeduction > 0) daoPointsStorage().subtractReputation(_user, _reputationDeduction);
@@ -16272,13 +16272,13 @@ contract DaoRewardsManager is DaoCommon {
                     data.lastParticipatedQuarter.add(1)
                 ))
                 .mul(
-                    get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN)
-                    .sub(get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_NUM))
+                    getUintConfig(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN)
+                    .sub(getUintConfig(CONFIG_PORTION_TO_BADGE_HOLDERS_NUM))
                 )
                 .div(daoRewardsStorage().readTotalEffectiveDGDLastQuarter(
                     data.lastParticipatedQuarter.add(1)
                 ))
-                .div(get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN))
+                .div(getUintConfig(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN))
             );
         }
 
@@ -16289,12 +16289,12 @@ contract DaoRewardsManager is DaoCommon {
                     data.lastParticipatedQuarter.add(1)
                 ))
                 .mul(
-                     get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_NUM)
+                     getUintConfig(CONFIG_PORTION_TO_BADGE_HOLDERS_NUM)
                 )
                 .div(daoRewardsStorage().readTotalEffectiveModeratorDGDLastQuarter(
                     data.lastParticipatedQuarter.add(1)
                 ))
-                .div(get_uint_config(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN))
+                .div(getUintConfig(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN))
             );
         }
 
@@ -16352,14 +16352,14 @@ contract DaoRewardsManager is DaoCommon {
 
         daoRewardsStorage().updateQuarterInfo(
             info.previousQuarter.add(1),
-            get_uint_config(CONFIG_MINIMAL_PARTICIPATION_POINT),
-            get_uint_config(CONFIG_QUARTER_POINT_SCALING_FACTOR),
-            get_uint_config(CONFIG_REPUTATION_POINT_SCALING_FACTOR),
+            getUintConfig(CONFIG_MINIMAL_PARTICIPATION_POINT),
+            getUintConfig(CONFIG_QUARTER_POINT_SCALING_FACTOR),
+            getUintConfig(CONFIG_REPUTATION_POINT_SCALING_FACTOR),
             info.totalEffectiveDGDLastQuarter,
 
-            get_uint_config(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
-            get_uint_config(CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR),
-            get_uint_config(CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR),
+            getUintConfig(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
+            getUintConfig(CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR),
+            getUintConfig(CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR),
             info.totalEffectiveModeratorDGDLastQuarter,
 
             now,
@@ -16563,8 +16563,8 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
         // if after the claiming deadline, its auto failed
         if (now > daoStorage().readProposalDraftVotingTime(_proposalId)
-                    .add(get_uint_config(CONFIG_DRAFT_VOTING_PHASE))
-                    .add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE))) {
+                    .add(getUintConfig(CONFIG_DRAFT_VOTING_PHASE))
+                    .add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE))) {
             daoStorage().setProposalDraftPass(_proposalId, false);
             daoStorage().setDraftVotingClaim(_proposalId, true);
             handleRefundCollateral(_proposalId);
@@ -16642,7 +16642,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
             // set startTime of first voting round
             // and the start of first milestone.
-            uint256 _idealClaimTime = daoStorage().readProposalDraftVotingTime(_proposalId).add(get_uint_config(CONFIG_DRAFT_VOTING_PHASE));
+            uint256 _idealClaimTime = daoStorage().readProposalDraftVotingTime(_proposalId).add(getUintConfig(CONFIG_DRAFT_VOTING_PHASE));
             daoStorage().setProposalVotingTime(
                 _proposalId,
                 0,
@@ -16676,7 +16676,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         // and the result will be failed by default
         _done = true;
         if (now < startOfMilestone(_proposalId, _index)
-                    .add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE)))
+                    .add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE)))
         {
             (_operations, _passed, _done) = countProposalVote(_proposalId, _index, _operations);
             if (!_done) return (_passed, false); // haven't done counting yet, return
@@ -16729,7 +16729,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
         daoPointsStorage().addQuarterPoint(
             daoStorage().readProposalProposer(_proposalId),
-            get_uint_config(CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH).mul(_funding).div(10000 ether),
+            getUintConfig(CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH).mul(_funding).div(10000 ether),
             currentQuarterIndex()
         );
     }
@@ -16857,13 +16857,13 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     function addBonusReputation(address[] _voters, uint256 _n)
         private
     {
-        uint256 _qp = get_uint_config(CONFIG_QUARTER_POINT_VOTE);
-        uint256 _rate = get_uint_config(CONFIG_BONUS_REPUTATION_NUMERATOR);
-        uint256 _base = get_uint_config(CONFIG_BONUS_REPUTATION_DENOMINATOR);
+        uint256 _qp = getUintConfig(CONFIG_QUARTER_POINT_VOTE);
+        uint256 _rate = getUintConfig(CONFIG_BONUS_REPUTATION_NUMERATOR);
+        uint256 _base = getUintConfig(CONFIG_BONUS_REPUTATION_DENOMINATOR);
 
-        uint256 _bonus = _qp.mul(_rate).mul(get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_NUM))
+        uint256 _bonus = _qp.mul(_rate).mul(getUintConfig(CONFIG_REPUTATION_PER_EXTRA_QP_NUM))
             .div(
-                _base.mul(get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_DEN))
+                _base.mul(getUintConfig(CONFIG_REPUTATION_PER_EXTRA_QP_DEN))
             );
 
         for (uint256 i = 0; i < _n; i++) {
@@ -16949,7 +16949,7 @@ contract Dao is DaoCommon, Claimable {
         senderCanDoProposerOperations();
         bool _isFounder = is_founder();
 
-        require(msg.value == get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        require(msg.value == getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT));
         require(address(daoFundingManager()).call.value(msg.value)());
 
         checkNonDigixFundings(_milestonesFundings, _finalReward);
@@ -17043,7 +17043,7 @@ contract Dao is DaoCommon, Claimable {
         require(isEditable(_proposalId));
         checkNonDigixProposalLimit(_proposalId);
 
-        require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_DRAFT_VOTING_PHASE).add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE)));
+        require(getTimeLeftInQuarter(now) > getUintConfig(CONFIG_DRAFT_VOTING_PHASE).add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE)));
         address _endorser;
         (,,_endorser,,,,,,,) = daoStorage().readProposal(_proposalId);
         require(_endorser != EMPTY_ADDRESS);
@@ -17171,7 +17171,7 @@ contract Dao is DaoCommon, Claimable {
         require(isMainPhase());
         require(daoSpecialStorage().readProposalProposer(_proposalId) == msg.sender);
         require(daoSpecialStorage().readVotingTime(_proposalId) == 0);
-        require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
+        require(getTimeLeftInQuarter(now) > getUintConfig(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
         daoSpecialStorage().setVotingTime(_proposalId, now);
     }
 
@@ -17212,7 +17212,7 @@ contract Dao is DaoCommon, Claimable {
         for (uint256 _i = 0; _i < _length; _i++) {
             (,,,,_timeCreated,,,_finalVersion,,) = daoStorage().readProposal(_proposalIds[_i]);
             require(_finalVersion == EMPTY_BYTES);
-            require(now > _timeCreated.add(get_uint_config(CONFIG_PROPOSAL_DEAD_DURATION)));
+            require(now > _timeCreated.add(getUintConfig(CONFIG_PROPOSAL_DEAD_DURATION)));
             daoStorage().closeProposal(_proposalIds[_i]);
         }
     }
@@ -17286,8 +17286,8 @@ contract DaoFundingManager is DaoCommon {
     function refundCollateralInternal(address _receiver)
         internal
     {
-        daoFundingStorage().withdrawEth(get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
-        _receiver.transfer(get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        daoFundingStorage().withdrawEth(getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT));
+        _receiver.transfer(getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT));
     }
 
     /**
@@ -17387,7 +17387,7 @@ contract Dao is DaoCommon, Claimable {
         senderCanDoProposerOperations();
         bool _isFounder = is_founder();
 
-        require(msg.value == get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        require(msg.value == getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT));
         require(address(daoFundingManager()).call.value(msg.value)());
 
         checkNonDigixFundings(_milestonesFundings, _finalReward);
@@ -17481,7 +17481,7 @@ contract Dao is DaoCommon, Claimable {
         require(isEditable(_proposalId));
         checkNonDigixProposalLimit(_proposalId);
 
-        require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_DRAFT_VOTING_PHASE).add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE)));
+        require(getTimeLeftInQuarter(now) > getUintConfig(CONFIG_DRAFT_VOTING_PHASE).add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE)));
         address _endorser;
         (,,_endorser,,,,,,,) = daoStorage().readProposal(_proposalId);
         require(_endorser != EMPTY_ADDRESS);
@@ -17609,7 +17609,7 @@ contract Dao is DaoCommon, Claimable {
         require(isMainPhase());
         require(daoSpecialStorage().readProposalProposer(_proposalId) == msg.sender);
         require(daoSpecialStorage().readVotingTime(_proposalId) == 0);
-        require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
+        require(getTimeLeftInQuarter(now) > getUintConfig(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
         daoSpecialStorage().setVotingTime(_proposalId, now);
     }
 
@@ -17650,7 +17650,7 @@ contract Dao is DaoCommon, Claimable {
         for (uint256 _i = 0; _i < _length; _i++) {
             (,,,,_timeCreated,,,_finalVersion,,) = daoStorage().readProposal(_proposalIds[_i]);
             require(_finalVersion == EMPTY_BYTES);
-            require(now > _timeCreated.add(get_uint_config(CONFIG_PROPOSAL_DEAD_DURATION)));
+            require(now > _timeCreated.add(getUintConfig(CONFIG_PROPOSAL_DEAD_DURATION)));
             daoStorage().closeProposal(_proposalIds[_i]);
         }
     }

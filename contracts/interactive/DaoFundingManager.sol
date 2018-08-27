@@ -67,8 +67,8 @@ contract DaoFundingManager is DaoCommon {
     function refundCollateralInternal(address _receiver)
         internal
     {
-        daoFundingStorage().withdrawEth(get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
-        _receiver.transfer(get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        daoFundingStorage().withdrawEth(getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT));
+        _receiver.transfer(getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT));
     }
 
     /**

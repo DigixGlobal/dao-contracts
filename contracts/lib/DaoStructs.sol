@@ -46,7 +46,7 @@ library DaoStructs {
         mapping (bytes32 => ProposalVersion) proposalVersions;
         Voting draftVoting;
         mapping (uint256 => Voting) votingRounds;
-        bool isPaused;
+        bool isPausedOrStopped;
         bool isDigix;
         uint256 collateralStatus;
         bytes32 finalVersion;

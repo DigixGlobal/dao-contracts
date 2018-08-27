@@ -61,8 +61,8 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
     {
         require(isMainPhase());
         if (now > daoSpecialStorage().readVotingTime(_proposalId)
-                    .add(get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL))
-                    .add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE))) {
+                    .add(getUintConfig(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL))
+                    .add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE))) {
             daoSpecialStorage().setPass(_proposalId, false);
             return false;
         }

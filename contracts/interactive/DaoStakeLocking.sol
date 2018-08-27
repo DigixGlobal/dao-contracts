@@ -66,7 +66,7 @@ contract DaoStakeLocking is DaoCommon {
         );
 
         daoStakeStorage().redeemBadge(msg.sender);
-        daoPointsStorage().addReputation(msg.sender, get_uint_config(CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE));
+        daoPointsStorage().addReputation(msg.sender, getUintConfig(CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE));
 
         // update moderator status
         StakeInformation memory _info = getStakeInformation(msg.sender);
@@ -110,7 +110,7 @@ contract DaoStakeLocking is DaoCommon {
 
         //TODO: there might be a case when user locked in very small amount A that is less than Minimum locked DGD?
         // then, lock again in the middle of the quarter. This will not take into account that A was staked in earlier
-        if (_newInfo.userLockedDGDStake >= get_uint_config(CONFIG_MINIMUM_LOCKED_DGD)) {
+        if (_newInfo.userLockedDGDStake >= getUintConfig(CONFIG_MINIMUM_LOCKED_DGD)) {
             daoStakeStorage().addToParticipantList(msg.sender);
             daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
         }
@@ -147,7 +147,7 @@ contract DaoStakeLocking is DaoCommon {
         // This has to happen at least once before user can participate in next quarter
         daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
 
-        if (_newInfo.userLockedDGDStake < get_uint_config(CONFIG_MINIMUM_LOCKED_DGD)) {
+        if (_newInfo.userLockedDGDStake < getUintConfig(CONFIG_MINIMUM_LOCKED_DGD)) {
             daoStakeStorage().removeFromParticipantList(msg.sender);
         } else {
             daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
@@ -214,8 +214,8 @@ contract DaoStakeLocking is DaoCommon {
         // remove from moderator list if conditions not satisfied
         if (daoStakeStorage().isInModeratorsList(_user) == true) {
 
-            if (_infoAfter.userLockedDGDStake < get_uint_config(CONFIG_MINIMUM_DGD_FOR_MODERATOR) ||
-                daoPointsStorage().getReputation(_user) < get_uint_config(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR)) {
+            if (_infoAfter.userLockedDGDStake < getUintConfig(CONFIG_MINIMUM_DGD_FOR_MODERATOR) ||
+                daoPointsStorage().getReputation(_user) < getUintConfig(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR)) {
 
                     daoStakeStorage().removeFromModeratorList(_user);
                     daoStakeStorage().updateTotalModeratorLockedDGDs(
@@ -227,8 +227,8 @@ contract DaoStakeLocking is DaoCommon {
                 );
             }
         } else { // add to moderator list if conditions satisfied
-            if (_infoAfter.userLockedDGDStake >= get_uint_config(CONFIG_MINIMUM_DGD_FOR_MODERATOR) &&
-                daoPointsStorage().getReputation(_user) >= get_uint_config(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR)) {
+            if (_infoAfter.userLockedDGDStake >= getUintConfig(CONFIG_MINIMUM_DGD_FOR_MODERATOR) &&
+                daoPointsStorage().getReputation(_user) >= getUintConfig(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR)) {
 
                     daoStakeStorage().addToModeratorList(_user);
                     daoStakeStorage().updateTotalModeratorLockedDGDs(

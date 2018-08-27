@@ -66,8 +66,8 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
         // if after the claiming deadline, its auto failed
         if (now > daoStorage().readProposalDraftVotingTime(_proposalId)
-                    .add(get_uint_config(CONFIG_DRAFT_VOTING_PHASE))
-                    .add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE))) {
+                    .add(getUintConfig(CONFIG_DRAFT_VOTING_PHASE))
+                    .add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE))) {
             daoStorage().setProposalDraftPass(_proposalId, false);
             daoStorage().setDraftVotingClaim(_proposalId, true);
             handleRefundCollateral(_proposalId);
@@ -145,7 +145,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
             // set startTime of first voting round
             // and the start of first milestone.
-            uint256 _idealClaimTime = daoStorage().readProposalDraftVotingTime(_proposalId).add(get_uint_config(CONFIG_DRAFT_VOTING_PHASE));
+            uint256 _idealClaimTime = daoStorage().readProposalDraftVotingTime(_proposalId).add(getUintConfig(CONFIG_DRAFT_VOTING_PHASE));
             daoStorage().setProposalVotingTime(
                 _proposalId,
                 0,
@@ -180,7 +180,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         // and the result will be failed by default
         _done = true;
         if (now < startOfMilestone(_proposalId, _index)
-                    .add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE)))
+                    .add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE)))
         {
             (_operations, _passed, _done) = countProposalVote(_proposalId, _index, _operations);
             if (!_done) return (_passed, false); // haven't done counting yet, return
@@ -233,7 +233,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
         daoPointsStorage().addQuarterPoint(
             daoStorage().readProposalProposer(_proposalId),
-            get_uint_config(CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH).mul(_funding).div(10000 ether),
+            getUintConfig(CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH).mul(_funding).div(10000 ether),
             currentQuarterIndex()
         );
     }
@@ -361,13 +361,13 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     function addBonusReputation(address[] _voters, uint256 _n)
         private
     {
-        uint256 _qp = get_uint_config(CONFIG_QUARTER_POINT_VOTE);
-        uint256 _rate = get_uint_config(CONFIG_BONUS_REPUTATION_NUMERATOR);
-        uint256 _base = get_uint_config(CONFIG_BONUS_REPUTATION_DENOMINATOR);
+        uint256 _qp = getUintConfig(CONFIG_QUARTER_POINT_VOTE);
+        uint256 _rate = getUintConfig(CONFIG_BONUS_REPUTATION_NUMERATOR);
+        uint256 _base = getUintConfig(CONFIG_BONUS_REPUTATION_DENOMINATOR);
 
-        uint256 _bonus = _qp.mul(_rate).mul(get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_NUM))
+        uint256 _bonus = _qp.mul(_rate).mul(getUintConfig(CONFIG_REPUTATION_PER_EXTRA_QP_NUM))
             .div(
-                _base.mul(get_uint_config(CONFIG_REPUTATION_PER_EXTRA_QP_DEN))
+                _base.mul(getUintConfig(CONFIG_REPUTATION_PER_EXTRA_QP_DEN))
             );
 
         for (uint256 i = 0; i < _n; i++) {

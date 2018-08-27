@@ -593,6 +593,7 @@ const addProposal = async function (contracts, proposal) {
     proposal.versions[0].finalReward,
     { from: proposal.proposer, value: 2 * (10 ** 18) },
   );
+  console.log('Done adding proposal ', proposal.id);
 };
 
 const endorseProposal = async function (contracts, proposal) {

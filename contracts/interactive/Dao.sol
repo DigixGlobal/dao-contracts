@@ -127,7 +127,7 @@ contract Dao is DaoCommon, Claimable {
         senderCanDoProposerOperations();
         bool _isFounder = is_founder();
 
-        require(msg.value == get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT));
+        require(msg.value == getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT));
         require(address(daoFundingManager()).call.value(msg.value)());
 
         checkNonDigixFundings(_milestonesFundings, _finalReward);
@@ -227,7 +227,7 @@ contract Dao is DaoCommon, Claimable {
         require(isEditable(_proposalId));
         checkNonDigixProposalLimit(_proposalId);
 
-        require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_DRAFT_VOTING_PHASE).add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE)));
+        require(getTimeLeftInQuarter(now) > getUintConfig(CONFIG_DRAFT_VOTING_PHASE).add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE)));
         address _endorser;
         (,,_endorser,,,,,,,) = daoStorage().readProposal(_proposalId);
         require(_endorser != EMPTY_ADDRESS);
@@ -363,7 +363,7 @@ contract Dao is DaoCommon, Claimable {
         require(isMainPhase());
         require(daoSpecialStorage().readProposalProposer(_proposalId) == msg.sender);
         require(daoSpecialStorage().readVotingTime(_proposalId) == 0);
-        require(getTimeLeftInQuarter(now) > get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
+        require(getTimeLeftInQuarter(now) > getUintConfig(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
         daoSpecialStorage().setVotingTime(_proposalId, now);
 
         emit StartSpecialProposal(_proposalId);
@@ -406,7 +406,7 @@ contract Dao is DaoCommon, Claimable {
         for (uint256 _i = 0; _i < _length; _i++) {
             (,,,,_timeCreated,,,_finalVersion,,) = daoStorage().readProposal(_proposalIds[_i]);
             require(_finalVersion == EMPTY_BYTES);
-            require(now > _timeCreated.add(get_uint_config(CONFIG_PROPOSAL_DEAD_DURATION)));
+            require(now > _timeCreated.add(getUintConfig(CONFIG_PROPOSAL_DEAD_DURATION)));
             daoStorage().closeProposal(_proposalIds[_i]);
         }
     }
