@@ -13,6 +13,8 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
     uint256 public totalDGXsClaimed;
 
     mapping (address => uint256) public lastParticipatedQuarter;
+    mapping (address => uint256) public previousLastParticipatedQuarter;
+
     mapping (address => uint256) public lastQuarterThatRewardsWasUpdated;
     mapping (address => uint256) public lastQuarterThatReputationWasUpdated;
 
@@ -79,6 +81,13 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
     {
         require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         lastParticipatedQuarter[_user] = _lastQuarter;
+    }
+
+    function updatePreviousLastParticipatedQuarter(address _user, uint256 _lastQuarter)
+        public
+    {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
+        previousLastParticipatedQuarter[_user] = _lastQuarter;
     }
 
     function updateLastQuarterThatRewardsWasUpdated(address _user, uint256 _lastQuarter)

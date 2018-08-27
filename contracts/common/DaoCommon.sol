@@ -457,7 +457,7 @@ contract DaoCommon is IdentityCommon {
         _configValue = daoConfigsStorage().uintConfigs(_configKey);
     }
 
-    function get_address_config(bytes32 _configKey)
+    function getAddressConfig(bytes32 _configKey)
         public
         constant
         returns (address _configValue)
@@ -465,7 +465,7 @@ contract DaoCommon is IdentityCommon {
         _configValue = daoConfigsStorage().addressConfigs(_configKey);
     }
 
-    function get_bytes_config(bytes32 _configKey)
+    function getBytesConfig(bytes32 _configKey)
         public
         constant
         returns (bytes32 _configValue)

@@ -108,11 +108,19 @@ contract DaoStakeLocking is DaoCommon {
         // This has to happen at least once before user can participate in next quarter
         daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
 
+        uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(msg.sender);
+        uint256 _currentQuarter = currentQuarterIndex();
+
         //TODO: there might be a case when user locked in very small amount A that is less than Minimum locked DGD?
         // then, lock again in the middle of the quarter. This will not take into account that A was staked in earlier
         if (_newInfo.userLockedDGDStake >= getUintConfig(CONFIG_MINIMUM_LOCKED_DGD)) {
             daoStakeStorage().addToParticipantList(msg.sender);
-            daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
+            // if this is the first time we lock/unlock/continue in this quarter, save the previous lastParticipatedQuarter
+            if (_lastParticipatedQuarter < _currentQuarter) {
+                daoRewardsStorage().updatePreviousLastParticipatedQuarter(msg.sender, _lastParticipatedQuarter);
+            }
+
+            daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, _currentQuarter);
         }
 
         // interaction happens last
@@ -147,10 +155,23 @@ contract DaoStakeLocking is DaoCommon {
         // This has to happen at least once before user can participate in next quarter
         daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
 
-        if (_newInfo.userLockedDGDStake < getUintConfig(CONFIG_MINIMUM_LOCKED_DGD)) {
+        uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(msg.sender);
+        uint256 _currentQuarter = currentQuarterIndex();
+
+        if (_newInfo.userLockedDGDStake < getUintConfig(CONFIG_MINIMUM_LOCKED_DGD)) { // this participant doesnt have enough DGD to be a participant
+            // if this participant has lock/unlock/continue in this quarter before, we need to revert the lastParticipatedQuarter to the previousLastParticipatedQuarter
+            if (_lastParticipatedQuarter == _currentQuarter) {
+                daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, daoRewardsStorage().previousLastParticipatedQuarter(msg.sender));
+            }
+
             daoStakeStorage().removeFromParticipantList(msg.sender);
         } else {
-            daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
+            // if this is the first time we lock/unlock/continue in this quarter, save the previous lastParticipatedQuarter
+            if (_lastParticipatedQuarter < _currentQuarter) {
+                daoRewardsStorage().updatePreviousLastParticipatedQuarter(msg.sender, _lastParticipatedQuarter);
+            }
+
+            daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, _currentQuarter);
         }
 
         daoStakeStorage().updateUserDGDStake(msg.sender, _newInfo.userActualLockedDGD, _newInfo.userLockedDGDStake);
@@ -174,7 +195,15 @@ contract DaoStakeLocking is DaoCommon {
         daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
         StakeInformation memory _infoAfter = refreshDGDStake(msg.sender, _info, true);
         refreshModeratorStatus(msg.sender, _info, _infoAfter);
-        daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, currentQuarterIndex());
+
+        uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(msg.sender);
+        uint256 _currentQuarter = currentQuarterIndex();
+
+        // if this is the first time we lock/unlock/continue in this quarter, save the previous lastParticipatedQuarter
+        if (_lastParticipatedQuarter < _currentQuarter) {
+            daoRewardsStorage().updatePreviousLastParticipatedQuarter(msg.sender, _lastParticipatedQuarter);
+        }
+        daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, _currentQuarter);
     }
 
     /**
