@@ -4,6 +4,7 @@ import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "@digix/cdap/contracts/storage/DirectoryStorage.sol";
 import "../common/DaoConstants.sol";
 
+//done
 contract DaoIdentityStorage is ResolverClient, DaoConstants, DirectoryStorage {
     struct KycDetails {
         bytes32 doc;

@@ -15,6 +15,7 @@ import "../storage/DaoWhitelistingStorage.sol";
 import "../storage/IntermediateResultsStorage.sol";
 import "../lib/MathHelper.sol";
 
+//done
 contract DaoCommon is IdentityCommon {
 
     using MathHelper for MathHelper;
@@ -398,7 +399,7 @@ contract DaoCommon is IdentityCommon {
         constant
         returns (DaoUpgradeStorage _contract)
     {
-        _contract = DaoUpgradeStorage(get_contract(CONTRACT_STORAGE_DAO_UPGRADABLE));
+        _contract = DaoUpgradeStorage(get_contract(CONTRACT_STORAGE_DAO_UPGRADE));
     }
 
     function daoSpecialStorage()
@@ -473,33 +474,39 @@ contract DaoCommon is IdentityCommon {
         _configValue = daoConfigsStorage().bytesConfigs(_configKey);
     }
 
+    //done
+    /**
+    @notice Check if a user is a participant in the current quarter
+    */
     function isParticipant(address _user)
         public
         constant
         returns (bool _is)
     {
-        if (
-            (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex()) &&
-            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_LOCKED_DGD))
-        ) {
-            _is = true;
-        }
+        _is =
+            (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex())
+            && (daoStakeStorage().readUserEffectiveDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_LOCKED_DGD));
     }
 
+    //done
+    /**
+    @notice Check if a user is a moderator in the current quarter
+    */
     function isModerator(address _user)
         public
         constant
         returns (bool _is)
     {
-        if (
-            (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex()) &&
-            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_DGD_FOR_MODERATOR)) &&
-            (daoPointsStorage().getReputation(_user) >= getUintConfig(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR))
-        ) {
-            _is = true;
-        }
+        _is =
+            (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex())
+            && (daoStakeStorage().readUserEffectiveDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_DGD_FOR_MODERATOR))
+            && (daoPointsStorage().getReputation(_user) >= getUintConfig(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR));
     }
 
+    //done
+    /**
+    @notice Calculate the start of a specific milestone of a specific proposal
+    */
     function startOfMilestone(bytes32 _proposalId, uint256 _milestoneIndex)
         internal
         constant
@@ -544,6 +551,11 @@ contract DaoCommon is IdentityCommon {
         }
     }
 
+    //done
+    /**
+    @notice Check if we can add another non-Digix proposal in this quarter
+    @dev There is a max cap to the number of non-Digix proposals CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER
+    */
     function checkNonDigixProposalLimit(bytes32 _proposalId)
         internal
         constant
@@ -551,10 +563,15 @@ contract DaoCommon is IdentityCommon {
         bool _isDigixProposal;
         (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
         if (!_isDigixProposal) {
-            require(daoStorage().proposalCountByQuarter(currentQuarterIndex()) < getUintConfig(CONFIG_PROPOSAL_CAP_PER_QUARTER));
+            require(daoStorage().proposalCountByQuarter(currentQuarterIndex()) < getUintConfig(CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER));
         }
     }
 
+    //done
+    /**
+    @notice If its a non-Digix proposal, check if the fundings are within limit
+    @dev There is a max cap to the fundings and number of milestones for non-Digix proposals
+    */
     function checkNonDigixFundings(uint256[] _milestonesFundings, uint256 _finalReward)
         internal
         constant
@@ -565,6 +582,11 @@ contract DaoCommon is IdentityCommon {
         }
     }
 
+    //done
+    /**
+    @notice Check if msg.sender can do operations as a proposer
+    @dev Note that this function does not check if he is the proposer of the proposal
+    */
     function senderCanDoProposerOperations()
         internal
         constant

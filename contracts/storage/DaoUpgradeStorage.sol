@@ -12,7 +12,7 @@ contract DaoUpgradeStorage is ResolverClient, DaoConstants {
     address public newDaoRewardsManager;
 
     constructor(address _resolver) public {
-        require(init(CONTRACT_STORAGE_DAO_UPGRADABLE, _resolver));
+        require(init(CONTRACT_STORAGE_DAO_UPGRADE, _resolver));
     }
 
     function setStartOfFirstQuarter(uint256 _start)

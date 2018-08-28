@@ -4,7 +4,7 @@ import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "./../storage/DaoIdentityStorage.sol";
 import "./DaoConstants.sol";
 
-// done 
+// done
 contract IdentityCommon is ResolverClient, DaoConstants {
 
   modifier if_root() {

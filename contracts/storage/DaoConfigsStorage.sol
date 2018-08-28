@@ -14,7 +14,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         require(init(CONTRACT_STORAGE_DAO_CONFIG, _resolver));
 
         uintConfigs[CONFIG_LOCKING_PHASE_DURATION] = 10 days;
-        uintConfigs[CONFIG_QUARTER_DURATION] = 90 days; // TODO: make it a fixed constant instead of a config
+        uintConfigs[CONFIG_QUARTER_DURATION] = QUARTER_DURATION;
         uintConfigs[CONFIG_VOTING_COMMIT_PHASE] = 3 weeks;
         uintConfigs[CONFIG_VOTING_PHASE_TOTAL] = 4 weeks;
         uintConfigs[CONFIG_INTERIM_COMMIT_PHASE] = 7 days;
@@ -65,8 +65,8 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR] = 10;
         uintConfigs[CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR] = 10;
 
-        uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM] = 5; //5% of DGX to Badge holder voting activity
-        uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_DEN] = 100;
+        uintConfigs[CONFIG_PORTION_TO_MODERATORS_NUM] = 5; //5% of DGX to Badge holder voting activity
+        uintConfigs[CONFIG_PORTION_TO_MODERATORS_DEN] = 100;
 
         uintConfigs[CONFIG_DRAFT_VOTING_PHASE] = 2 weeks;
         uintConfigs[CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE] = 1000;
@@ -88,7 +88,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
 
         uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX] = 20 ether;
         uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX] = 2;
-        uintConfigs[CONFIG_PROPOSAL_CAP_PER_QUARTER] = 10;
+        uintConfigs[CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER] = 10;
 
         uintConfigs[CONFIG_PROPOSAL_DEAD_DURATION] = 180 days;
     }
@@ -98,7 +98,10 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
     {
         require(sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS));
         uintConfigs[CONFIG_LOCKING_PHASE_DURATION] = _uintConfigs[0];
+        /*
+        This used to be a config that can be changed. Now, _uintConfigs[1] is just a dummy config that doesnt do anything
         uintConfigs[CONFIG_QUARTER_DURATION] = _uintConfigs[1];
+        */
         uintConfigs[CONFIG_VOTING_COMMIT_PHASE] = _uintConfigs[2];
         uintConfigs[CONFIG_VOTING_PHASE_TOTAL] = _uintConfigs[3];
         uintConfigs[CONFIG_INTERIM_COMMIT_PHASE] = _uintConfigs[4];
@@ -138,8 +141,8 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_MODERATOR_MINIMAL_QUARTER_POINT] = _uintConfigs[38];
         uintConfigs[CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR] = _uintConfigs[39];
         uintConfigs[CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR] = _uintConfigs[40];
-        uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM] = _uintConfigs[41];
-        uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_DEN] = _uintConfigs[42];
+        uintConfigs[CONFIG_PORTION_TO_MODERATORS_NUM] = _uintConfigs[41];
+        uintConfigs[CONFIG_PORTION_TO_MODERATORS_DEN] = _uintConfigs[42];
         uintConfigs[CONFIG_DRAFT_VOTING_PHASE] = _uintConfigs[43];
         uintConfigs[CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE] = _uintConfigs[44];
         uintConfigs[CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR] = _uintConfigs[45];
@@ -154,7 +157,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT] = _uintConfigs[54];
         uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX] = _uintConfigs[55];
         uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX] = _uintConfigs[56];
-        uintConfigs[CONFIG_PROPOSAL_CAP_PER_QUARTER] = _uintConfigs[57];
+        uintConfigs[CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER] = _uintConfigs[57];
         uintConfigs[CONFIG_PROPOSAL_DEAD_DURATION] = _uintConfigs[58];
     }
 
@@ -205,8 +208,8 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         _uintConfigs[38] = uintConfigs[CONFIG_MODERATOR_MINIMAL_QUARTER_POINT];
         _uintConfigs[39] = uintConfigs[CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR];
         _uintConfigs[40] = uintConfigs[CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR];
-        _uintConfigs[41] = uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM];
-        _uintConfigs[42] = uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_DEN];
+        _uintConfigs[41] = uintConfigs[CONFIG_PORTION_TO_MODERATORS_NUM];
+        _uintConfigs[42] = uintConfigs[CONFIG_PORTION_TO_MODERATORS_DEN];
         _uintConfigs[43] = uintConfigs[CONFIG_DRAFT_VOTING_PHASE];
         _uintConfigs[44] = uintConfigs[CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE];
         _uintConfigs[45] = uintConfigs[CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR];
@@ -221,7 +224,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         _uintConfigs[54] = uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT];
         _uintConfigs[55] = uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX];
         _uintConfigs[56] = uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX];
-        _uintConfigs[57] = uintConfigs[CONFIG_PROPOSAL_CAP_PER_QUARTER];
+        _uintConfigs[57] = uintConfigs[CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER];
         _uintConfigs[58] = uintConfigs[CONFIG_PROPOSAL_DEAD_DURATION];
         return _uintConfigs;
     }

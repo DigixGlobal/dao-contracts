@@ -127,7 +127,7 @@ contract DaoRewardsManager is DaoCommon {
     }
 
     /**
-    @notice Function to update DGX rewards of user while locking/withdrawing DGDs, or continuing participation for new quarter
+    @notice Function to update DGX rewards of user. This is only called during locking/withdrawing DGDs, or continuing participation for new quarter
     @param _user Address of the DAO participant
     */
     function updateRewardsBeforeNewQuarter(address _user)
@@ -281,13 +281,13 @@ contract DaoRewardsManager is DaoCommon {
                     data.lastParticipatedQuarter.add(1)
                 ))
                 .mul(
-                    getUintConfig(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN)
-                    .sub(getUintConfig(CONFIG_PORTION_TO_BADGE_HOLDERS_NUM))
+                    getUintConfig(CONFIG_PORTION_TO_MODERATORS_DEN)
+                    .sub(getUintConfig(CONFIG_PORTION_TO_MODERATORS_NUM))
                 )
                 .div(daoRewardsStorage().readTotalEffectiveDGDLastQuarter(
                     data.lastParticipatedQuarter.add(1)
                 ))
-                .div(getUintConfig(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN))
+                .div(getUintConfig(CONFIG_PORTION_TO_MODERATORS_DEN))
             );
         }
 
@@ -298,12 +298,12 @@ contract DaoRewardsManager is DaoCommon {
                     data.lastParticipatedQuarter.add(1)
                 ))
                 .mul(
-                     getUintConfig(CONFIG_PORTION_TO_BADGE_HOLDERS_NUM)
+                     getUintConfig(CONFIG_PORTION_TO_MODERATORS_NUM)
                 )
                 .div(daoRewardsStorage().readTotalEffectiveModeratorDGDLastQuarter(
                     data.lastParticipatedQuarter.add(1)
                 ))
-                .div(getUintConfig(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN))
+                .div(getUintConfig(CONFIG_PORTION_TO_MODERATORS_DEN))
             );
         }
 

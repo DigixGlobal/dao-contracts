@@ -34,7 +34,7 @@ contract('DaoUpgradeStorage', function (accounts) {
 
   describe('Initialization', function () {
     it('[verify key]', async function () {
-      assert.deepEqual(await contracts.resolver.get_contract.call('storage:dao:upgradable'), contracts.daoUpgradeStorage.address);
+      assert.deepEqual(await contracts.resolver.get_contract.call('storage:dao:upgrade'), contracts.daoUpgradeStorage.address);
     });
   });
 

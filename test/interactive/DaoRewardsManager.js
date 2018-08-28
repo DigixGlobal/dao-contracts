@@ -176,8 +176,8 @@ contract('DaoRewardsManager', function (accounts) {
         calculatedRewards.push(bN(calculateDgxRewards(
           effectiveDGDBalances[i],
           effectiveModeratorDGDBalances[i],
-          daoConstantsValues(bN).CONFIG_PORTION_TO_BADGE_HOLDERS_NUM,
-          daoConstantsValues(bN).CONFIG_PORTION_TO_BADGE_HOLDERS_DEN,
+          daoConstantsValues(bN).CONFIG_PORTION_TO_MODERATORS_NUM,
+          daoConstantsValues(bN).CONFIG_PORTION_TO_MODERATORS_DEN,
           await contracts.daoRewardsStorage.readRewardsPoolOfLastQuarter(lastParticipatedQuarter.plus(bN(1))),
           await contracts.daoRewardsStorage.readTotalEffectiveDGDLastQuarter(lastParticipatedQuarter.plus(bN(1))),
           await contracts.daoRewardsStorage.readTotalEffectiveModeratorDGDLastQuarter(lastParticipatedQuarter.plus(bN(1))),
@@ -352,8 +352,8 @@ contract('DaoRewardsManager', function (accounts) {
         ))).plus(bN(calculateDgxRewards(
           effectiveDGDBalance[i],
           effectiveModeratorDGDBalance[i],
-          daoConstantsValues(bN).CONFIG_PORTION_TO_BADGE_HOLDERS_NUM,
-          daoConstantsValues(bN).CONFIG_PORTION_TO_BADGE_HOLDERS_DEN,
+          daoConstantsValues(bN).CONFIG_PORTION_TO_MODERATORS_NUM,
+          daoConstantsValues(bN).CONFIG_PORTION_TO_MODERATORS_DEN,
           await contracts.daoRewardsStorage.readRewardsPoolOfLastQuarter.call(bN(5)),
           await contracts.daoRewardsStorage.readTotalEffectiveDGDLastQuarter.call(bN(5)),
           await contracts.daoRewardsStorage.readTotalEffectiveModeratorDGDLastQuarter.call(bN(5)),

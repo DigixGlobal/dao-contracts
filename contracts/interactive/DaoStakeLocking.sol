@@ -20,8 +20,15 @@ contract DaoStakeLocking is DaoCommon {
     address public dgdBadgeToken;
 
     struct StakeInformation {
+        // this is the amount of DGDs that a user has actualy locked up
         uint256 userActualLockedDGD;
+
+        // this is the DGDStake that the user get from locking up their DGDs.
+        // this amount might be smaller than the userActualLockedDGD, because the user has locked some DGDs in the middle of the quarter
+        // and those DGDs will not fetch as much DGDStake
         uint256 userLockedDGDStake;
+
+        // this is the sum of everyone's DGD Stake
         uint256 totalLockedDGDStake;
     }
 
@@ -48,21 +55,21 @@ contract DaoStakeLocking is DaoCommon {
     }
 
     /**
-    @notice Function to initially convert DGD Badge to Reputation Points
-    @dev Only 1 DGD Badge is accepted from an address, so multiple badge holders
+    @notice Function to convert a DGD Badge to Reputation Points
+    @dev Only 1 DGD Badge is accepted from an address, so holders with multiple badges
          should either sell their other badges or redeem reputation to another address
     */
     function redeemBadge()
         public
     {
-        // should not have redeemed a badge already
+        // should not have redeemed a badge
         require(!daoStakeStorage().redeemedBadge(msg.sender));
-        // should not redeem just before updating last quarter's rewards/reputation
-        // this condition makes sure that the reputation and rewards are at the most updated stage
-        // only exception is, if its their first participation ever
+
+        // Can only redeem a badge if the reputation has been updated to the previous quarter.
+        // In other words, this holder must have called either lockDGD/withdrawDGD/confirmContinuedParticipation in this quarter
+        // Note that after lockDGD/withdrawDGD/confirmContinuedParticipation is called, the reputation is always updated to the previous quarter
         require(
-            (daoRewardsStorage().lastParticipatedQuarter(msg.sender) == 0) ||
-            (daoRewardsStorage().lastQuarterThatReputationWasUpdated(msg.sender) == (currentQuarterIndex() - 1))
+            daoRewardsStorage().lastQuarterThatReputationWasUpdated(msg.sender) == (currentQuarterIndex() - 1)
         );
 
         daoStakeStorage().redeemBadge(msg.sender);
@@ -90,7 +97,6 @@ contract DaoStakeLocking is DaoCommon {
         public
         ifNotContract(msg.sender)
         ifGlobalRewardsSet(currentQuarterIndex())
-        returns (bool _success)
     {
         StakeInformation memory _info = getStakeInformation(msg.sender);
         StakeInformation memory _newInfo = refreshDGDStake(msg.sender, _info, false);
@@ -103,10 +109,12 @@ contract DaoStakeLocking is DaoCommon {
 
         daoStakeStorage().updateUserDGDStake(msg.sender, _newInfo.userActualLockedDGD, _newInfo.userLockedDGDStake);
         daoStakeStorage().updateTotalLockedDGDStake(_newInfo.totalLockedDGDStake);
-        refreshModeratorStatus(msg.sender, _info, _newInfo);
 
         // This has to happen at least once before user can participate in next quarter
         daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
+
+
+        refreshModeratorStatus(msg.sender, _info, _newInfo);
 
         uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(msg.sender);
         uint256 _currentQuarter = currentQuarterIndex();
@@ -125,8 +133,6 @@ contract DaoStakeLocking is DaoCommon {
 
         // interaction happens last
         require(ERC20(dgdToken).transferFrom(msg.sender, address(this), _amount));
-        _success = true;
-
         emit LockDGD(msg.sender, _amount, _newInfo.userLockedDGDStake);
     }
 
@@ -151,9 +157,10 @@ contract DaoStakeLocking is DaoCommon {
         _newInfo.userLockedDGDStake = _newInfo.userLockedDGDStake.sub(_amount);
         _newInfo.totalLockedDGDStake = _newInfo.totalLockedDGDStake.sub(_amount);
 
-        refreshModeratorStatus(msg.sender, _info, _newInfo);
         // This has to happen at least once before user can participate in next quarter
         daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
+
+        refreshModeratorStatus(msg.sender, _info, _newInfo);
 
         uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(msg.sender);
         uint256 _currentQuarter = currentQuarterIndex();
@@ -233,9 +240,11 @@ contract DaoStakeLocking is DaoCommon {
         }
     }
 
+    //done
     /**
-    @notice This function refreshes the Moderator status of a user
-    @dev This takes the refreshed StakeInformation from refreshDGDStake as input
+    @notice This function refreshes the Moderator status of a user, to be done right after ANY STEP where a user's reputation or DGDStake is changed
+    @dev _infoBefore is the stake information of the user before this transaction, _infoAfter is the stake information after this transaction
+         This function needs to adjust the totalModeratorLockedDGDStake accordingly as well
     */
     function refreshModeratorStatus(address _user, StakeInformation _infoBefore, StakeInformation _infoAfter)
         internal
@@ -250,7 +259,7 @@ contract DaoStakeLocking is DaoCommon {
                     daoStakeStorage().updateTotalModeratorLockedDGDs(
                         daoStakeStorage().totalModeratorLockedDGDStake().sub(_infoBefore.userLockedDGDStake)
                     );
-            } else { // update if everything is the same (but may not have locked in locking phase, so actual !== effective)
+            } else { // If the moderator status is the same, we still need to update totalModeratorLockedDGDStake if the lockedDGDStake has changed, (e.g. user may not have locked in locking phase, so actual !== effective)
                 daoStakeStorage().updateTotalModeratorLockedDGDs(
                     daoStakeStorage().totalModeratorLockedDGDStake().sub(_infoBefore.userLockedDGDStake).add(_infoAfter.userLockedDGDStake)
                 );
@@ -267,6 +276,10 @@ contract DaoStakeLocking is DaoCommon {
         }
     }
 
+    //done
+    /**
+    @notice Get the actualLockedDGD and lockedDGDStake of a user, as well as the totalLockedDGDStake of all users
+    */
     function getStakeInformation(address _user)
         internal
         constant
