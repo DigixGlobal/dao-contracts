@@ -74,7 +74,8 @@ contract Dao is DaoCommon, Claimable {
 
     /**
     @notice Migrate this DAO to a new DAO contract
-    @dev Migration can be done only during the locking phase, after the global rewards for current quarter are set
+    @dev Migration can be done only during the locking phase, after the global rewards for current quarter are set.
+         This is to make sure that there is no rewards calculation pending before the DAO is migrated to new contracts
     @param _newDaoContract Address of the new DAO contract
     @param _newDaoFundingManager Address of the new DaoFundingManager contract, which would receive the remaining ETHs in this DaoFundingManager
     @param _newDaoRewardsManager Address of the new daoRewardsManager contract, which would receive the claimableDGXs from this daoRewardsManager

@@ -77,7 +77,7 @@ contract DaoSpecialStorage is DaoStorageCommon {
     function readVotingCount(bytes32 _proposalId, address[] _allUsers)
         public
         constant
-        returns (uint256 _for, uint256 _against, uint256 _quorum)
+        returns (uint256 _for, uint256 _against)
     {
         require(isWhitelisted(msg.sender));
         return proposalsById[_proposalId].voting.countVotes(_allUsers);

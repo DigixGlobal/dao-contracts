@@ -276,12 +276,6 @@ contract('Dao', function (accounts) {
         { from: addressOf.badgeHolders[0] },
       )));
     });
-    after(async function () {
-      // withdraw stakes
-      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
-      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
-      await withdrawDGDs(web3, contracts, bN, getParticipants(addressOf, bN));
-    });
   });
 
   describe('modifyProposal', async function () {
@@ -1290,7 +1284,7 @@ contract('Dao', function (accounts) {
     it('[if locking phase]: revert', async function () {
       const voteCount0 = await contracts.daoStorage.readDraftVotingCount.call(proposals[0].id, addressOf.allParticipants);
       const minimumDraftQuorum = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[0].id);
-      assert.isAtLeast(voteCount0[2].toNumber(), minimumDraftQuorum.toNumber());
+      assert.isAtLeast(voteCount0[0].plus(voteCount0[1]).toNumber(), minimumDraftQuorum.toNumber());
       assert.deepEqual(await contracts.daoCalculatorService.draftQuotaPass.call(voteCount0[0], voteCount0[1]), true);
       assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[0].id, { from: proposals[0].proposer })));
     });
@@ -1346,7 +1340,7 @@ contract('Dao', function (accounts) {
 
       const voteCount3 = await contracts.daoStorage.readDraftVotingCount.call(proposals[3].id, addressOf.allParticipants);
       const minimumDraftQuorum = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[3].id);
-      assert.isBelow(voteCount3[2].toNumber(), minimumDraftQuorum.toNumber());
+      assert.isBelow(voteCount3[0].plus(voteCount3[1]).toNumber(), minimumDraftQuorum.toNumber());
       const ethBalanceBefore = await web3.eth.getBalance(proposals[3].proposer);
       const tx = await contracts.daoVotingClaims.claimDraftVotingResult(proposals[3].id, bN(20), { from: proposals[3].proposer, gasPrice: web3.toWei(20, 'gwei') });
       const gasUsed = tx.receipt.gasUsed * web3.toWei(20, 'gwei');
@@ -1358,7 +1352,7 @@ contract('Dao', function (accounts) {
     it('[if quota is not met]: claimed true, passed false, collateral refunded', async function () {
       const voteCount2 = await contracts.daoStorage.readDraftVotingCount.call(proposals[2].id, addressOf.allParticipants);
       const minimumDraftQuorum = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[2].id);
-      assert.isAtLeast(voteCount2[2].toNumber(), minimumDraftQuorum.toNumber());
+      assert.isAtLeast(voteCount2[0].plus(voteCount2[1]).toNumber(), minimumDraftQuorum.toNumber());
       assert.deepEqual(await contracts.daoCalculatorService.draftQuotaPass.call(voteCount2[0], voteCount2[1]), false);
       const ethBalanceBefore = await web3.eth.getBalance(proposals[2].proposer);
       const tx = await contracts.daoVotingClaims.claimDraftVotingResult(proposals[2].id, bN(20), { from: proposals[2].proposer, gasPrice: web3.toWei(20, 'gwei') });
@@ -1391,7 +1385,7 @@ contract('Dao', function (accounts) {
 
       const voteCount0 = await contracts.daoStorage.readDraftVotingCount.call(proposals[0].id, addressOf.allParticipants);
       const minimumDraftQuorum = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[0].id);
-      assert.isAtLeast(voteCount0[2].toNumber(), minimumDraftQuorum.toNumber());
+      assert.isAtLeast(voteCount0[0].plus(voteCount0[1]).toNumber(), minimumDraftQuorum.toNumber());
       assert.deepEqual(await contracts.daoCalculatorService.draftQuotaPass.call(voteCount0[0], voteCount0[1]), true);
       assert.deepEqual(await contracts.daoStorage.readProposalDraftVotingResult.call(proposals[0].id), false);
 

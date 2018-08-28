@@ -129,7 +129,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     function readDraftVotingCount(bytes32 _proposalId, address[] memory _allUsers)
         public
         constant
-        returns (uint256 _for, uint256 _against, uint256 _quorum)
+        returns (uint256 _for, uint256 _against)
     {
         return proposalsById[_proposalId].draftVoting.countVotes(_allUsers);
     }
@@ -137,7 +137,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     function readVotingCount(bytes32 _proposalId, uint256 _index, address[] _allUsers)
         public
         constant
-        returns (uint256 _for, uint256 _against, uint256 _quorum)
+        returns (uint256 _for, uint256 _against)
     {
         return proposalsById[_proposalId].votingRounds[_index].countVotes(_allUsers);
     }

@@ -20,14 +20,12 @@ contract IntermediateResultsStorage is ResolverClient, DaoConstants {
             address _countedUntil,
             uint256 _currentForCount,
             uint256 _currentAgainstCount,
-            uint256 _currentQuorum,
             uint256 _currentSumOfEffectiveBalance
         )
     {
         _countedUntil = allIntermediateResults[_key].countedUntil;
         _currentForCount = allIntermediateResults[_key].currentForCount;
         _currentAgainstCount = allIntermediateResults[_key].currentAgainstCount;
-        _currentQuorum = allIntermediateResults[_key].currentQuorum;
         _currentSumOfEffectiveBalance = allIntermediateResults[_key].currentSumOfEffectiveBalance;
     }
 
@@ -43,7 +41,6 @@ contract IntermediateResultsStorage is ResolverClient, DaoConstants {
         address _countedUntil,
         uint256 _currentForCount,
         uint256 _currentAgainstCount,
-        uint256 _currentQuorum,
         uint256 _currentSumOfEffectiveBalance
     )
         public
@@ -52,7 +49,6 @@ contract IntermediateResultsStorage is ResolverClient, DaoConstants {
         allIntermediateResults[_key].countedUntil = _countedUntil;
         allIntermediateResults[_key].currentForCount = _currentForCount;
         allIntermediateResults[_key].currentAgainstCount = _currentAgainstCount;
-        allIntermediateResults[_key].currentQuorum = _currentQuorum;
         allIntermediateResults[_key].currentSumOfEffectiveBalance = _currentSumOfEffectiveBalance;
     }
 }

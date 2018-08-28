@@ -14,7 +14,6 @@ import "../lib/DaoStructs.sol";
 */
 contract DaoVotingClaims is DaoCommon, Claimable {
     using DaoIntermediateStructs for DaoIntermediateStructs.VotingCount;
-    using DaoIntermediateStructs for DaoIntermediateStructs.MilestoneInfo;
     using DaoIntermediateStructs for DaoIntermediateStructs.Users;
     using DaoStructs for DaoStructs.IntermediateResults;
 
@@ -84,7 +83,6 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             _currentResults.countedUntil,
             _currentResults.currentForCount,
             _currentResults.currentAgainstCount,
-            _currentResults.currentQuorum,
         ) = intermediateResultsStorage().getIntermediateResults(_proposalId);
 
         // get first address based on intermediate state
@@ -107,12 +105,11 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
         // count the votes for this batch of moderators
         DaoIntermediateStructs.VotingCount memory _voteCount;
-        (_voteCount.forCount, _voteCount.againstCount, _voteCount.quorum) = daoStorage().readDraftVotingCount(_proposalId, _moderators);
+        (_voteCount.forCount, _voteCount.againstCount) = daoStorage().readDraftVotingCount(_proposalId, _moderators);
 
         _currentResults.countedUntil = _moderator;
         _currentResults.currentForCount = _currentResults.currentForCount.add(_voteCount.forCount);
         _currentResults.currentAgainstCount = _currentResults.currentAgainstCount.add(_voteCount.againstCount);
-        _currentResults.currentQuorum = _currentResults.currentQuorum.add(_voteCount.quorum);
 
         if (_moderator == daoStakeStorage().readLastModerator()) {
             // this is the last iteration
@@ -128,7 +125,6 @@ contract DaoVotingClaims is DaoCommon, Claimable {
                 _currentResults.countedUntil,
                 _currentResults.currentForCount,
                 _currentResults.currentAgainstCount,
-                _currentResults.currentQuorum,
                 0
             );
         }
@@ -138,7 +134,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         internal
     {
         if (
-            (_currentResults.currentQuorum > daoCalculatorService().minimumDraftQuorum(_proposalId)) &&
+            (_currentResults.currentForCount.add(_currentResults.currentAgainstCount) > daoCalculatorService().minimumDraftQuorum(_proposalId)) &&
             (daoCalculatorService().draftQuotaPass(_currentResults.currentForCount, _currentResults.currentAgainstCount))
         ) {
             daoStorage().setProposalDraftPass(_proposalId, true);
@@ -244,7 +240,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     {
         if (_operations == 0) return false;
         address _countedUntil;
-        (_countedUntil,,,,) = intermediateResultsStorage().getIntermediateResults(_proposalId);
+        (_countedUntil,,,) = intermediateResultsStorage().getIntermediateResults(_proposalId);
 
         address[] memory _voterBatch;
         if (_countedUntil == EMPTY_ADDRESS) {
@@ -281,7 +277,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             _done = true;
         } else {
             // this is not the last iteration yet
-            intermediateResultsStorage().setIntermediateResults(_proposalId, _lastVoter, 0, 0, 0, 0);
+            intermediateResultsStorage().setIntermediateResults(_proposalId, _lastVoter, 0, 0, 0);
         }
     }
 
@@ -297,7 +293,6 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             _currentResults.countedUntil,
             _currentResults.currentForCount,
             _currentResults.currentAgainstCount,
-            _currentResults.currentQuorum,
         ) = intermediateResultsStorage().getIntermediateResults(_proposalId);
         address[] memory _voters;
         if (_currentResults.countedUntil == EMPTY_ADDRESS) {
@@ -321,17 +316,15 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         address _lastVoter = _voters[_voters.length - 1];
 
         DaoIntermediateStructs.VotingCount memory _count;
-        (_count.forCount, _count.againstCount, _count.quorum) = daoStorage().readVotingCount(_proposalId, _index, _voters);
+        (_count.forCount, _count.againstCount) = daoStorage().readVotingCount(_proposalId, _index, _voters);
 
         _currentResults.currentForCount = _currentResults.currentForCount.add(_count.forCount);
         _currentResults.currentAgainstCount = _currentResults.currentAgainstCount.add(_count.againstCount);
-        _currentResults.currentQuorum = _currentResults.currentQuorum.add(_count.quorum);
         intermediateResultsStorage().setIntermediateResults(
             _proposalId,
             _lastVoter,
             _currentResults.currentForCount,
             _currentResults.currentAgainstCount,
-            _currentResults.currentQuorum,
             0
         );
 
@@ -344,7 +337,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         _operationsLeft = _operations.sub(_voters.length);
         _done = true;
 
-        if ((_currentResults.currentQuorum > daoCalculatorService().minimumVotingQuorum(_proposalId, _index)) &&
+        if ((_currentResults.currentForCount.add(_currentResults.currentAgainstCount) > daoCalculatorService().minimumVotingQuorum(_proposalId, _index)) &&
             (daoCalculatorService().votingQuotaPass(_currentResults.currentForCount, _currentResults.currentAgainstCount)))
         {
             _passed = true;

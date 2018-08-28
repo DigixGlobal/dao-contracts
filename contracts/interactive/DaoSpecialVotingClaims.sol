@@ -14,7 +14,6 @@ import "../lib/DaoStructs.sol";
 */
 contract DaoSpecialVotingClaims is DaoCommon, Claimable {
     using DaoIntermediateStructs for DaoIntermediateStructs.VotingCount;
-    using DaoIntermediateStructs for DaoIntermediateStructs.MilestoneInfo;
     using DaoIntermediateStructs for DaoIntermediateStructs.Users;
     using DaoStructs for DaoStructs.IntermediateResults;
 
@@ -73,7 +72,6 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
             _currentResults.countedUntil,
             _currentResults.currentForCount,
             _currentResults.currentAgainstCount,
-            _currentResults.currentQuorum,
         ) = intermediateResultsStorage().getIntermediateResults(_proposalId);
 
         address[] memory _voters;
@@ -93,16 +91,15 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
         address _lastVoter = _voters[_voters.length - 1];
 
         DaoIntermediateStructs.VotingCount memory _voteCount;
-        (_voteCount.forCount, _voteCount.againstCount, _voteCount.quorum) = daoSpecialStorage().readVotingCount(_proposalId, _voters);
+        (_voteCount.forCount, _voteCount.againstCount) = daoSpecialStorage().readVotingCount(_proposalId, _voters);
 
         _currentResults.countedUntil = _lastVoter;
         _currentResults.currentForCount = _currentResults.currentForCount.add(_voteCount.forCount);
         _currentResults.currentAgainstCount = _currentResults.currentAgainstCount.add(_voteCount.againstCount);
-        _currentResults.currentQuorum = _currentResults.currentQuorum.add(_voteCount.quorum);
 
         if (_lastVoter == daoStakeStorage().readLastParticipant()) {
             if (
-                (_currentResults.currentQuorum > daoCalculatorService().minimumVotingQuorumForSpecial()) &&
+                (_currentResults.currentForCount.add(_currentResults.currentAgainstCount) > daoCalculatorService().minimumVotingQuorumForSpecial()) &&
                 (daoCalculatorService().votingQuotaForSpecialPass(_currentResults.currentForCount, _currentResults.currentAgainstCount))
             ) {
                 _passed = true;
@@ -118,7 +115,6 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
                 _currentResults.countedUntil,
                 _currentResults.currentForCount,
                 _currentResults.currentAgainstCount,
-                _currentResults.currentQuorum,
                 0
             );
         }

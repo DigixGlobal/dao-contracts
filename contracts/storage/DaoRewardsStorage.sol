@@ -58,17 +58,6 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         allQuartersInfo[_quarterIndex].sumRewardsFromBeginning = _sumRewardsFromBeginning;
     }
 
-    function updateReputationPointAtQuarter(
-        address _user,
-        uint256 _quarterIndex,
-        uint256 _reputationPoint
-    )
-        public
-    {
-        require(sender_is(CONTRACT_DAO_REWARDS_MANAGER));
-        allQuartersInfo[_quarterIndex].reputationPoint[_user] = _reputationPoint;
-    }
-
     function updateClaimableDGX(address _user, uint256 _newClaimableDGX)
         public
     {
@@ -220,13 +209,4 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
     {
         _rewardsPool = allQuartersInfo[_quarterIndex].dgxRewardsPoolLastQuarter;
     }
-
-    function readReputationPointAtQuarter(address _user, uint256 _quarterIndex)
-        public
-        constant
-        returns (uint256 _reputationPoint)
-    {
-        _reputationPoint = allQuartersInfo[_quarterIndex].reputationPoint[_user];
-    }
-
 }

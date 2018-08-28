@@ -8,55 +8,106 @@ library DaoStructs {
     using SafeMath for uint256;
 
     struct PrlAction {
+        // UTC timestamp at which the PRL action was done
         uint256 at;
+        // IPFS hash of the document summarizing the action
         bytes32 doc;
+        // Type of action
+        // check PRL_ACTION_* in "./../common/DaoConstants.sol"
         uint256 actionId;
     }
 
     struct Voting {
+        // UTC timestamp at which the voting round will start
         uint256 startTime;
+        // Mapping of whether a commit was used in this voting round
         mapping (bytes32 => bool) usedCommits;
+        // Mapping of commits by address. These are the commits during the commit phase in a voting round
+        // This only stores the most recent commit in the voting round
+        // In case a vote is edited, the previous commit is overwritten by the new commit
+        // Only this new commit is verified by the salt at the reveal phase
         mapping (address => bytes32) commits;
+        // This mapping is updated after the reveal phase, when votes are revealed
+        // It is a mapping of address to weight of vote
+        // Weight implies the lockedDGDStake of the address
+        // If the address voted "NO", or didn't vote, this would be 0
         mapping (address => uint256) yesVotes;
+        // This mapping is updated after the reveal phase, when votes are revealed
+        // It is a mapping of address to weight of vote
+        // Weight implies the lockedDGDStake of the address
+        // If the address voted "YES", or didn't vote, this would be 0
         mapping (address => uint256) noVotes;
+        // Boolean whether the voting round passed or not
         bool passed;
+        // Boolean whether the voting round results were claimed or not
+        // refer the claimProposalVotingResult function in "./../interative/DaoVotingClaims.sol"
         bool claimed;
+        // Boolean whether the milestone following this voting round was funded or not
+        // A milestone is funded when the proposer calls claimFunding in "./../interactive/DaoFundingManager.sol"
         bool funded;
     }
 
     struct ProposalVersion {
+        // IPFS doc hash of this version of the proposal
         bytes32 docIpfsHash;
+        // UTC timestamp at which this version was created
         uint256 created;
+        // The number of milestones in the proposal as per this version
         uint256 milestoneCount;
+        // List of fundings required by the proposal as per this version
+        // The numbers are in gwei
         uint256[] milestoneFundings;
+        // The final reward asked by the proposer for completion of the entire proposal
         uint256 finalReward;
+        // When a proposal is finalized, the proposer can no longer add versions
+        // but in order to make changes to the funding structure, they can add
+        // more IPFS docs explaining the rationale. This is the list of those doc hashes
         bytes32[] moreDocs;
     }
 
-    // Each Proposal can have different versions.
     struct Proposal {
-        // This is a bytes32 that is used to identify proposals
-        // It is also the docIpfsHash of the first ProposalVersion
+        // ID of the proposal. Also the IPFS hash of the first version
         bytes32 proposalId;
+        // Address of the user who created the proposal
         address proposer;
+        // Address of the moderator who endorsed the proposal
         address endorser;
+        // current state of the proposal
+        // refer PROPOSAL_STATE_* in "./../common/DaoConstants.sol"
         bytes32 currentState;
+        // UTC timestamp at which the proposal was created
         uint256 timeCreated;
+        // DoublyLinkedList of IPFS doc hashes of the various versions of the proposal
         DoublyLinkedList.Bytes proposalVersionDocs;
+        // Mapping of version (IPFS doc hash) to ProposalVersion struct
         mapping (bytes32 => ProposalVersion) proposalVersions;
+        // Voting struct for the draft voting round
         Voting draftVoting;
+        // Mapping of voting round index (starts from 0) to Voting struct
         mapping (uint256 => Voting) votingRounds;
+        // Boolean whether the proposal is paused/stopped at the moment
         bool isPausedOrStopped;
+        // Boolean whether the proposal was created from a Digix address
+        // founder addresses in DaoIdentity are Digix addresses
         bool isDigix;
+        // Every proposal has a collateral tied to it with a value of
+        // CONFIG_PREPROPOSAL_DEPOSIT (refer "./../storage/DaoConfigsStorage.sol")
+        // Collateral can be in different states
+        // refer COLLATERAL_STATUS_* in "./../common/DaoConstants.sol"
         uint256 collateralStatus;
+        // The final version of the proposal
+        // Every proposal needs to be finalized before it can be voted on
+        // This is the IPFS doc hash of the final version
         bytes32 finalVersion;
+        // List of PrlAction structs
+        // These are all the actions done by the PRL on the proposal
         PrlAction[] prlActions;
     }
 
     function countVotes(Voting storage _voting, address[] memory _allUsers)
         public
         constant
-        returns (uint256 _for, uint256 _against, uint256 _quorum)
+        returns (uint256 _for, uint256 _against)
     {
         uint256 _n = _allUsers.length;
         for (uint256 i = 0; i < _n; i++) {
@@ -66,7 +117,6 @@ library DaoStructs {
                 _against = _against.add(_voting.noVotes[_allUsers[i]]);
             }
         }
-        _quorum = _for.add(_against);
     }
 
     function listVotes(Voting storage _voting, address[] _allUsers, bool _vote)
@@ -172,38 +222,72 @@ library DaoStructs {
     }
 
     struct SpecialProposal {
+        // ID of the special proposal
+        // This is the IPFS doc hash of the proposal
         bytes32 proposalId;
+        // Address of the user who created the special proposal
+        // This address should also be in the ROLES_FOUNDERS group
+        // refer "./../storage/DaoIdentityStorage.sol"
         address proposer;
+        // UTC timestamp at which the proposal was created
         uint256 timeCreated;
+        // Voting struct for the special proposal
         Voting voting;
+        // List of the new uint256 configs as per the special proposal
         uint256[] uintConfigs;
+        // List of the new address configs as per the special proposal
         address[] addressConfigs;
+        // List of the new bytes32 configs as per the special proposal
         bytes32[] bytesConfigs;
     }
 
+    // All configs are as per the DaoConfigsStorage values at the time when
+    // calculateGlobalRewardsBeforeNewQuarter is called by founder in that quarter
     struct DaoQuarterInfo {
+        // The minimum quarter points required
+        // below this, reputation will be deducted
         uint256 minimalParticipationPoint;
+        // The scaling factor for quarter point
         uint256 quarterPointScalingFactor;
+        // The scaling factor for reputation point
         uint256 reputationPointScalingFactor;
+        // The summation of effectiveDGDs in the previous quarter
+        // The effectiveDGDs represents the effective participation in DigixDAO in a quarter
+        // Which depends of lockedDGDStake, quarter point and reputation point
+        // This value is the summation of all participant effectiveDGDs
+        // used as a whole to find the fraction of effective participation by an address
         uint256 totalEffectiveDGDLastQuarter;
-
+        // The minimum moderator quarter point required
+        // below this, reputation will be deducted for moderators
         uint256 moderatorMinimalParticipationPoint;
+        // the scaling factor for moderator quarter point
         uint256 moderatorQuarterPointScalingFactor;
+        // the scaling factor for moderator reputation point
         uint256 moderatorReputationPointScalingFactor;
+        // The summation of effectiveDGDs (only specific to moderators)
         uint256 totalEffectiveModeratorDGDLastQuarter;
-
-        uint256 dgxDistributionDay; // the timestamp when DGX rewards is distributable to Holders
+        // UTC timestamp at which the DGX rewards are distributable to Holders
+        uint256 dgxDistributionDay;
+        // The DGX that enters DigixDAO at the start of the quarter
+        // This is the rewards pool for the previous quarter
         uint256 dgxRewardsPoolLastQuarter;
+        // The summation of all dgxRewardsPoolLastQuarter up until this quarter
         uint256 sumRewardsFromBeginning;
-        mapping (address => uint256) reputationPoint;
     }
 
+    // The intermediate results are stored in IntermediateResultsStorage
+    // There are many function calls where all calculations/summations cannot be done
+    // and require multiple iterations. But since calculation depends on some values of the
+    // previous iteration, we store the intermediate results. This is a generalized
+    // struct, and is used in multiple function calls
     struct IntermediateResults {
+        // Address of user until which the calculation has been done
         address countedUntil;
+        // weight of "FOR" votes counted up until the iteration of calculation
         uint256 currentForCount;
+        // weight of "AGAINST" votes counted up until the iteration of calculation
         uint256 currentAgainstCount;
-        uint256 currentQuorum;
-
+        // summation of effectiveDGDs up until the iteration of calculation
         uint256 currentSumOfEffectiveBalance;
     }
 }

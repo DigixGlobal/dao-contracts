@@ -238,15 +238,17 @@ contract DaoRewardsManager is DaoCommon {
 
         // now we "deduct the demurrage" from the claimable DGXs for time period from
         // dgxDistributionDay of lastQuarterThatRewardsWasUpdated + 1 to dgxDistributionDay of lastParticipatedQuarter + 1
+        // this deducted demurrage is then added to the totalDGXsClaimed
+        // the demurrage is effectively collected into totalDGXsClaimed whenever it is deducted from claimableDGXs
         uint256 _days_elapsed = daoRewardsStorage().readDgxDistributionDay(data.lastParticipatedQuarter.add(1))
             .sub(daoRewardsStorage().readDgxDistributionDay(data.lastQuarterThatRewardsWasUpdated.add(1)))
             .div(1 days);
-        _userClaimableDgx = _userClaimableDgx.sub(
-            daoCalculatorService().calculateDemurrage(
-                _userClaimableDgx,
-                _days_elapsed
-            )
+        uint256 _demurrageFees = daoCalculatorService().calculateDemurrage(
+            _userClaimableDgx,
+            _days_elapsed
         );
+        _userClaimableDgx = _userClaimableDgx.sub(_demurrageFees);
+        daoRewardsStorage().addToTotalDgxClaimed(_demurrageFees);
 
         // RP has been updated at the beginning of the lastParticipatedQuarter in
         // a call to updateRewardsBeforeNewQuarter();
@@ -325,6 +327,7 @@ contract DaoRewardsManager is DaoCommon {
         require(isDaoNotReplaced());
         require(daoUpgradeStorage().startOfFirstQuarter() != 0); // start of first quarter must have been set already
         require(isLockingPhase());
+        require(daoRewardsStorage().readDgxDistributionDay(currentQuarterIndex()) == 0);
         QuarterRewardsInfo memory info;
         info.previousQuarter = currentQuarterIndex().sub(1);
         require(info.previousQuarter > 0); // throw if this is the first quarter
@@ -332,7 +335,7 @@ contract DaoRewardsManager is DaoCommon {
 
         DaoStructs.IntermediateResults memory interResults;
         (
-            interResults.countedUntil,,,,
+            interResults.countedUntil,,,
             info.totalEffectiveDGDLastQuarter
         ) = intermediateResultsStorage().getIntermediateResults(keccak256(abi.encodePacked(INTERMEDIATE_DGD_IDENTIFIER, info.previousQuarter)));
 
@@ -340,7 +343,7 @@ contract DaoRewardsManager is DaoCommon {
         if (!info.doneCalculatingEffectiveBalance) { return false; }
 
         (
-            interResults.countedUntil,,,,
+            interResults.countedUntil,,,
             info.totalEffectiveModeratorDGDLastQuarter
         ) = intermediateResultsStorage().getIntermediateResults(keccak256(abi.encodePacked(INTERMEDIATE_MODERATOR_DGD_IDENTIFIER, info.previousQuarter)));
 
@@ -446,7 +449,7 @@ contract DaoRewardsManager is DaoCommon {
         intermediateResultsStorage().setIntermediateResults(
             keccak256(abi.encodePacked(_badgeCalculation ? INTERMEDIATE_MODERATOR_DGD_IDENTIFIER : INTERMEDIATE_DGD_IDENTIFIER, info.previousQuarter)),
             _lastAddress,
-            0,0,0,
+            0,0,
             _badgeCalculation ? info.totalEffectiveModeratorDGDLastQuarter : info.totalEffectiveDGDLastQuarter
         );
 
