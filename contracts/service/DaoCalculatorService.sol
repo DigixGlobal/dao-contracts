@@ -17,15 +17,31 @@ contract DaoCalculatorService is DaoCommon {
         dgxDemurrageCalculatorAddress = _dgxDemurrageCalculatorAddress;
     }
 
+    //done
+    /**
+    @notice Calculate the additional lockedDGDStake, given the DGDs that the user has just locked in
+    @dev The earlier the locking happens, the more lockedDGDStake the user will get
+         The formula is: additionalLockedDGDStake = (90 - t)/80 * additionalDGD if t is more than 10. If t<=10, additionalLockedDGDStake = additionalDGD
+    */
     function calculateAdditionalLockedDGDStake(uint256 _additionalDgd)
         public
         constant
         returns (uint256 _additionalLockedDGDStake)
     {
-        // todo: change this to fixed quarter duration
-        /* _additionalLockedDGDStake = _additionalDgd.mul(QUARTER_DURATION.sub(currentTimeInQuarter())).div(QUARTER_DURATION.sub(getUintConfig(CONFIG_LOCKING_PHASE_DURATION))); */
-        _additionalLockedDGDStake = _additionalDgd.mul((getUintConfig(CONFIG_QUARTER_DURATION).sub(MathHelper.max(currentTimeInQuarter(), getUintConfig(CONFIG_LOCKING_PHASE_DURATION)))))
-                                    .div(getUintConfig(CONFIG_QUARTER_DURATION).sub(getUintConfig(CONFIG_LOCKING_PHASE_DURATION)));
+        _additionalLockedDGDStake =
+            _additionalDgd.mul(
+                getUintConfig(CONFIG_QUARTER_DURATION)
+                .sub(
+                    MathHelper.max(
+                        currentTimeInQuarter(),
+                        getUintConfig(CONFIG_LOCKING_PHASE_DURATION)
+                    )
+                )
+            )
+            .div(
+                getUintConfig(CONFIG_QUARTER_DURATION)
+                .sub(getUintConfig(CONFIG_LOCKING_PHASE_DURATION))
+            );
     }
 
     function minimumDraftQuorum(bytes32 _proposalId)

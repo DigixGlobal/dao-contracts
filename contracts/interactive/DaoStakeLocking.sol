@@ -54,9 +54,11 @@ contract DaoStakeLocking is DaoCommon {
         _contract = DaoRewardsManager(get_contract(CONTRACT_DAO_REWARDS_MANAGER));
     }
 
+    //done
     /**
     @notice Function to convert a DGD Badge to Reputation Points
-    @dev Only 1 DGD Badge is accepted from an address, so holders with multiple badges
+    @dev The participant must either lock/withdraw/continue in the current quarter first, before he can redeem a badge
+         Only 1 DGD Badge is accepted from an address, so holders with multiple badges
          should either sell their other badges or redeem reputation to another address
     */
     function redeemBadge()
@@ -88,10 +90,8 @@ contract DaoStakeLocking is DaoCommon {
     /**
     @notice Function to lock DGD tokens to participate in the DAO
     @dev Users must `approve` the DaoStakeLocking contract to transfer DGDs from them
+         Contracts are not allowed to participate in DigixDAO
     @param _amount Number of DGDs to lock
-    @return {
-      "_success": "Boolean, true if the locking process is successful, false otherwise"
-    }
     */
     function lockDGD(uint256 _amount)
         public
@@ -213,9 +213,15 @@ contract DaoStakeLocking is DaoCommon {
         daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, _currentQuarter);
     }
 
+    //done
     /**
-    @notice This function refreshes the DGD stake of a user before continuing participation next quarter
-    @dev This has no difference if called in the lastParticipatedQuarter
+    @notice This function refreshes the DGD stake of a user before doing any staking action(locking/withdrawing/continuing) in a new quarter
+    @dev We need to do this because sometimes, the user locked DGDs in the middle of the previous quarter. Hence, his DGDStake in the record now
+         is not correct. Note that this function might be called in the middle of the current quarter as well.
+
+        This has no effect if the user has already done some staking action in the current quarter
+         _infoBefore has the user's current stake information
+         _infoAfter will be the user's stake information after refreshing
     */
     function refreshDGDStake(address _user, StakeInformation _infoBefore, bool _saveToStorage)
         internal

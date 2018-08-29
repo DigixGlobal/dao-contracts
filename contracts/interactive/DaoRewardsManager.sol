@@ -91,6 +91,7 @@ contract DaoRewardsManager is DaoCommon {
     /**
     @notice Function to claim the DGX rewards allocated to user
     @dev Will revert if _claimableDGX <= MINIMUM_TRANSFER_AMOUNT of DGX.
+         Can only be called after calculateGlobalRewardsBeforeNewQuarter() has been called in the quarter right after the lastParticipatedQuarter
          This cannot be called once the current version of Dao contracts have been migrated to newer version
     */
     function claimRewards()
