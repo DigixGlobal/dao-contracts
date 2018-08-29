@@ -62,6 +62,7 @@ const MockDgxStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDgx
 const BADGE_HOLDER_COUNT = 4;
 const DGD_HOLDER_COUNT = 6;
 
+// Deploy library contracts
 const deployLibraries = async function (libs) {
   libs.doublyLinkedList = await DoublyLinkedList.new();
   await DaoStructs.link('DoublyLinkedList', libs.doublyLinkedList.address);
@@ -69,10 +70,13 @@ const deployLibraries = async function (libs) {
   return libs;
 };
 
+// Deploy new Contract Resolver for the DigixDAO contracts
 const deployNewContractResolver = async function (contracts) {
   contracts.resolver = await ContractResolver.new();
 };
 
+// Returns the `addressOf` object, addresses of all important roles
+// in the DigixDAO test scenario
 const getAccountsAndAddressOf = function (accounts, addressOf) {
   const addressOfTemp = {
     root: accounts[0],
@@ -100,6 +104,8 @@ const printProposalDetails = async (contracts, proposal, votingRound = 0) => {
   console.log('\t\t\tVoting time start :', await contracts.daoStorage.readProposalVotingTime(proposal.id, votingRound));
 };
 
+// Returns list of addresses of all participants
+// addressOf.badgeHolders and addressOf.dgdHolders
 const getAllParticipantAddresses = function (accounts) {
   const addresses = [];
   for (const i of indexRange(3, 14)) {
@@ -108,6 +114,7 @@ const getAllParticipantAddresses = function (accounts) {
   return addresses;
 };
 
+// Deploy storage layer contracts
 const deployStorage = async function (libs, contracts, resolver) {
   DaoIdentityStorage.link('DoublyLinkedList', libs.doublyLinkedList.address);
   contracts.daoWhitelistingStorage = await DaoWhitelistingStorage.new(resolver.address);
@@ -122,13 +129,16 @@ const deployStorage = async function (libs, contracts, resolver) {
   DaoSpecialStorage.link('DaoStructs', libs.daoStructs.address);
   contracts.daoUpgradeStorage = await DaoUpgradeStorage.new(resolver.address);
   contracts.daoStorage = await DaoStorage.new(resolver.address);
-  // console.log('tx = ', await web3.eth.getTransactionReceipt(contracts.daoStorage.transactionHash));
   contracts.daoSpecialStorage = await DaoSpecialStorage.new(resolver.address);
   contracts.daoFundingStorage = await DaoFundingStorage.new(resolver.address);
   contracts.daoRewardsStorage = await DaoRewardsStorage.new(resolver.address);
   contracts.intermediateResultsStorage = await IntermediateResultsStorage.new(resolver.address);
 };
 
+// This is done only in case of testing the storage layer
+// where the calling contract needs to be tested for
+// registering the interactive contracts as accounts[0]
+// we can then get to call storage functions from accounts[0]
 const registerInteractive = async function (resolver, addressOf) {
   const callingKeys = [
     'dao:identity',
@@ -144,11 +154,13 @@ const registerInteractive = async function (resolver, addressOf) {
   await a.map(callingKeys, 10, key => resolver.register_contract(key, addressOf.root));
 };
 
+// Deploy service layer contracts
 const deployServices = async function (libs, contracts, resolver) {
   contracts.daoListingService = await DaoListingService.new(resolver.address);
   contracts.daoCalculatorService = await DaoCalculatorService.new(resolver.address, contracts.dgxDemurrageReporter.address);
 };
 
+// Deploy the interactive contracts
 const deployInteractive = async function (libs, contracts, resolver) {
   contracts.daoStakeLocking = await DaoStakeLocking.new(resolver.address, contracts.dgdToken.address, contracts.badgeToken.address);
   contracts.daoIdentity = await DaoIdentity.new(resolver.address);
@@ -171,6 +183,8 @@ const deployInteractive = async function (libs, contracts, resolver) {
   ]);
 };
 
+// Function to transfer some DGD and DGD badges to the dummy participant accounts
+// This is like bootstrapping their accounts with an amount of tokens
 const initialTransferTokens = async function (contracts, addressOf, bN) {
   await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (index) => {
     await contracts.dgdToken.transfer(addressOf.allParticipants[index], sampleStakeWeights(bN)[index]);
@@ -181,6 +195,9 @@ const initialTransferTokens = async function (contracts, addressOf, bN) {
   });
 };
 
+// Javascript object to maintain proposal params and details
+// This is designed to be similar to the Struct in the smart contracts
+// This function is called by the `getTestProposals` function
 const getProposalStruct = function (bN, proposer, endorser, versions, generateRandom = false) {
   if (generateRandom) {
     versions = [];
@@ -202,6 +219,7 @@ const getProposalStruct = function (bN, proposer, endorser, versions, generateRa
   };
 };
 
+// Test scenario structs for proposals
 const getTestProposals = function (bN, addressOf) {
   return [
     getProposalStruct(
@@ -294,6 +312,8 @@ const getTestProposals = function (bN, addressOf) {
   ];
 };
 
+// Assigns true votes, salts and corresponding commits
+// This is used during any test/simulating voting round
 const assignVotesAndCommits = function (addressOf, proposalCount = 4, voterCount = BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT, voterAddresses = null) {
   if (!voterAddresses) voterAddresses = addressOf.allParticipants;
 
@@ -312,6 +332,8 @@ const assignVotesAndCommits = function (addressOf, proposalCount = 4, voterCount
   return { salts, votes, votingCommits };
 };
 
+// We set a dummy config for DigixDAO for the tests
+// Basically, changing the time scale to something more feasible for the test suite
 const setDummyConfig = async function (contracts, bN) {
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION, bN(10));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_QUARTER_DURATION, bN(60));
@@ -325,6 +347,10 @@ const setDummyConfig = async function (contracts, bN) {
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE, bN(5));
 };
 
+// Initialise DigixDAO
+// This function adds members (PRL, Founder and KYC Admin) to their respective groups
+// This function sends some Ethers into the DaoFundingManager contract
+// This function sets the start of the first quarter (marking the start of DigixDAO)
 const initDao = async function (contracts, addressOf, bN, web3) {
   await contracts.daoIdentity.addGroupUser(bN(2), addressOf.founderBadgeHolder, '', { from: addressOf.root });
   await contracts.daoIdentity.addGroupUser(bN(3), addressOf.prl, '', { from: addressOf.root });
@@ -337,6 +363,8 @@ const initDao = async function (contracts, addressOf, bN, web3) {
   });
 };
 
+// Function to wait for some timeToWait seconds
+// This will send some tiny dummyu transactions from A to B to spend time and return
 const waitFor = async function (timeToWait, addressOf, web3) {
   const timeThen = getCurrentTimestamp();
   async function wait() {
@@ -383,6 +411,9 @@ const phaseCorrection = async function (web3, contracts, addressOf, phaseToEndIn
   }
 };
 
+// Reads the start time of the voting round
+// calculates the time to wait for the reveal phase, and spends that much time
+// before returning
 const waitForRevealPhase = async function (contracts, addressOf, proposalId, index, bN, web3) {
   const votingStartTime = await contracts.daoStorage.readProposalVotingTime.call(proposalId, index);
   let timeToWaitFor;
@@ -395,6 +426,9 @@ const waitForRevealPhase = async function (contracts, addressOf, proposalId, ind
   await waitFor(timeToWaitFor, addressOf, web3);
 };
 
+// Reads the start time of a voting round
+// spends time waiting for the reveal phase to get over
+// before returning
 const waitForRevealPhaseToGetOver = async function (contracts, addressOf, proposalId, index, bN, web3) {
   const votingStartTime = await contracts.daoStorage.readProposalVotingTime.call(proposalId, index);
   let timeToWaitFor;
@@ -407,6 +441,11 @@ const waitForRevealPhaseToGetOver = async function (contracts, addressOf, propos
   await waitFor(timeToWaitFor, addressOf, web3);
 };
 
+// Function to deploy a fresh DigixDAO
+// Deploys all contracts, dummy token contracts
+// Also initializes DigixDAO (set the start time of the first quarter)
+// Sets dummy config for DigixDAO
+// Funds the DaoFundingManager contract with some ether to start with
 const deployFreshDao = async (libs, contracts, addressOf, accounts, bN, web3) => {
   await deployLibraries(libs);
   await deployNewContractResolver(contracts);
@@ -427,6 +466,7 @@ const deployFreshDao = async (libs, contracts, addressOf, accounts, bN, web3) =>
   console.log('\tDeployed fresh DAO');
 };
 
+// Function to transfer ether to the DaoFundingManager contract
 const fundDao = async function (web3, accounts, contracts) {
   await web3.eth.sendTransaction({
     from: accounts[0],
@@ -462,6 +502,11 @@ const printDaoDetails = async (bN, contracts) => {
   // TODO: print more stuff
 };
 
+// Function to withdraw tokens from `participants`
+// This can only be called in the Locking Phase
+// Its usually called at the end of the test case
+// so that tokens go back to the accounts of the participants
+// before a new set of contracts are deployed
 const withdrawDGDs = async (web3, contracts, bN, participants) => {
   for (const participant of participants) {
     console.log('\nAbout to withdraw DGD for ', participant.address);
@@ -472,6 +517,8 @@ const withdrawDGDs = async (web3, contracts, bN, participants) => {
   });
 };
 
+// Function to lock DGD tokens into the DaoStakeLocking contract
+// This will enable the `participants` to be participants/moderators of DigixDAO
 const lockDGDs = async (web3, contracts, bN, participants, addressOf) => {
   await a.map(participants, 20, async (participant) => {
     await contracts.daoStakeLocking.lockDGD(participant.dgdToLock, { from: participant.address });
@@ -479,6 +526,7 @@ const lockDGDs = async (web3, contracts, bN, participants, addressOf) => {
   await contracts.daoStakeLocking.lockDGD(participants[0].dgdToLock, { from: addressOf.founderBadgeHolder });
 };
 
+// Function to redeem a DGD Badge for reputation points by `participants`
 const redeemBadges = async (web3, contracts, bN, participants) => {
   await a.map(participants, 20, async (participant) => {
     if (participant.redeemingBadge) {
@@ -487,6 +535,8 @@ const redeemBadges = async (web3, contracts, bN, participants) => {
   });
 };
 
+// Function to transfer tokens (DGD and DGD Badge) to `participants`
+// Also these users then approve the DaoStakeLocking contract to access the tokens on their behalf
 const fundUserAndApproveForStakeLocking = async (web3, contracts, bN, participants, addressOf) => {
   const ENOUGH_DGD = bN(1000e9);
   const ENOUGH_BADGE = bN(5);
@@ -502,6 +552,7 @@ const fundUserAndApproveForStakeLocking = async (web3, contracts, bN, participan
   await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(2 ** 255), { from: addressOf.founderBadgeHolder });
 };
 
+// Get a dummy list of participants
 const getParticipants = (addressOf, bN) => {
   const participants = [
     {
@@ -552,6 +603,8 @@ const getParticipants = (addressOf, bN) => {
   return participants;
 };
 
+// Function to update the KYC deadlines for `participants`
+// Their respective KYC info is taken from the struct returned by `getParticipants`
 const updateKyc = async function (contracts, addressOf, participants) {
   await a.map(participants, 20, async (participant) => {
     await contracts.daoIdentity.updateKyc(
@@ -586,6 +639,7 @@ const setupParticipantsStates = async (web3, contracts, addressOf, bN, participa
   await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
 };
 
+// This function adds a proposal as preproposals into DigixDAO
 const addProposal = async function (contracts, proposal) {
   console.log('adding proposal ', proposal.id);
   await contracts.dao.submitPreproposal(
@@ -597,11 +651,15 @@ const addProposal = async function (contracts, proposal) {
   console.log('Done adding proposal ', proposal.id);
 };
 
+// This function makes a moderator endorse a preproposal
 const endorseProposal = async function (contracts, proposal) {
   console.log('endorsing proposal ', proposal.id);
   await contracts.dao.endorseProposal(proposal.id, { from: proposal.endorser });
 };
 
+// Function to modify a proposal
+// Basically add a `nextVersion` to the existing proposal
+// This can only be done before the proposal is finalized
 const modifyProposal = async function (contracts, proposal, nextVersion) {
   await contracts.dao.modifyProposal(
     proposal.id,
