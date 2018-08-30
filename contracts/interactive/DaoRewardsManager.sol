@@ -158,7 +158,14 @@ contract DaoRewardsManager is DaoCommon {
             return;
         }
 
-        if (_lastQuarterThatReputationWasUpdated == _lastParticipatedQuarter.sub(1)) {
+        // there are only 2 cases when the reputation needs to be added/subtracted
+        // 1: If the _lastQuarterThatReputationWasUpdated = 0 (which means they may have locked tokens in Q > 1, and now coming back)
+        // example, one locks tokens in Q=3 for the first time, and now is confirming participation in Q=4 (here the _lastQuarterThatReputationWasUpdated=0)
+        // 2: If _lastQuarterThatReputationWasUpdated == _lastParticipatedQuarter - 1 (which means the reputation can be updated for this additional participated quarter)
+        if (
+            (_lastQuarterThatReputationWasUpdated == 0) ||
+            (_lastQuarterThatReputationWasUpdated == _lastParticipatedQuarter.sub(1))
+        ) {
             updateRPfromQP(
                 _user,
                 daoPointsStorage().getQuarterPoint(_user, _lastParticipatedQuarter),

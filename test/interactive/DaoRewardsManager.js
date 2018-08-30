@@ -43,10 +43,7 @@ contract('DaoRewardsManager', function (accounts) {
   const contracts = {};
   const addressOf = {};
 
-  const resetBeforeEach = async function () {
-    await deployFreshDao(libs, contracts, addressOf, accounts, bN, web3);
-    await contracts.daoIdentity.addGroupUser(bN(3), addressOf.prl, randomBytes32());
-    await contracts.daoIdentity.addGroupUser(bN(4), addressOf.kycadmin, randomBytes32());
+  const setMockValues = async function () {
     const mockStakes = randomBigNumbers(bN, DGD_HOLDER_COUNT, 50 * (10 ** 9));
     const mockModeratorStakes = randomBigNumbers(bN, BADGE_HOLDER_COUNT, 3000 * (10 ** 9));
     await contracts.daoStakeStorage.mock_add_participants(addressOf.allParticipants.slice(BADGE_HOLDER_COUNT, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT), mockStakes);
@@ -74,6 +71,13 @@ contract('DaoRewardsManager', function (accounts) {
     await contracts.daoPointsStorage.mock_set_moderator_qp(addressOf.badgeHolders, mockModeratorQPs, quarterIndex);
     await contracts.daoPointsStorage.mock_set_rp(addressOf.dgdHolders, mockRPs);
     await contracts.daoPointsStorage.mock_set_rp(addressOf.badgeHolders, mockModeratorRPs);
+  };
+
+  const resetBeforeEach = async function () {
+    await deployFreshDao(libs, contracts, addressOf, accounts, bN, web3);
+    await contracts.daoIdentity.addGroupUser(bN(3), addressOf.prl, randomBytes32());
+    await contracts.daoIdentity.addGroupUser(bN(4), addressOf.kycadmin, randomBytes32());
+    await setMockValues();
   };
 
   const readReputationPoints = async function () {
@@ -415,7 +419,6 @@ contract('DaoRewardsManager', function (accounts) {
       const newDaoContract = randomAddress();
       const newDaoFundingManager = await MockDaoFundingManager.new(contracts.daoFundingManager.address);
       const newDaoRewardsManager = randomAddress();
-      assert.deepEqual(await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter.call(bN(20), { from: addressOf.founderBadgeHolder }), true);
       await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
       await contracts.dao.setNewDaoContracts(
         newDaoContract,

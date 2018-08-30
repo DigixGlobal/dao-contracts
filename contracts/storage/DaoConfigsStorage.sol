@@ -92,7 +92,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
 
         uintConfigs[CONFIG_PROPOSAL_DEAD_DURATION] = 180 days;
 
-        uintConfigs[CONFIG_CARBON_VOTE_REPUTATION_BONUS] = 250;
+        uintConfigs[CONFIG_CARBON_VOTE_REPUTATION_BONUS] = 35;
     }
 
     function updateUintConfigs(uint256[] _uintConfigs)
