@@ -10,7 +10,11 @@ contract DaoSpecialStorage is DaoStorageCommon {
     using DaoStructs for DaoStructs.SpecialProposal;
     using DaoStructs for DaoStructs.Voting;
 
+    // List of all the special proposals ever created in DigixDAO
     DoublyLinkedList.Bytes proposals;
+
+    // mapping of the SpecialProposal struct by its ID
+    // ID is also the IPFS doc hash of the proposal
     mapping (bytes32 => DaoStructs.SpecialProposal) proposalsById;
 
     constructor(address _resolver) public {

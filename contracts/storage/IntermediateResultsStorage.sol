@@ -11,6 +11,13 @@ contract IntermediateResultsStorage is ResolverClient, DaoConstants {
         require(init(CONTRACT_STORAGE_INTERMEDIATE_RESULTS, _resolver));
     }
 
+    // There are scenarios in which we must loop across all participants/moderators
+    // in a function call. For a big number of operations, the function call may be short of gas
+    // To tackle this, we use an IntermediateResults struct to store the intermediate results
+    // The same function is then called multiple times until all operations are completed
+    // If the operations cannot be done in that iteration, the intermediate results are stored
+    // else, the final outcome is returned
+    // Please check the lib/DaoStructs for docs on this struct
     mapping (bytes32 => DaoStructs.IntermediateResults) allIntermediateResults;
 
     function getIntermediateResults(bytes32 _key)

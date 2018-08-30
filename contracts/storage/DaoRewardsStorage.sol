@@ -8,14 +8,44 @@ import "../lib/DaoStructs.sol";
 contract DaoRewardsStorage is ResolverClient, DaoConstants {
     using DaoStructs for DaoStructs.DaoQuarterInfo;
 
+    // DaoQuarterInfo is a struct that stores the quarter specific information
+    // regarding totalEffectiveDGDs, DGX distribution day, etc. pls check
+    // docs in lib/DaoStructs
     mapping(uint256 => DaoStructs.DaoQuarterInfo) public allQuartersInfo;
+
+    // Mapping that stores the DGX that can be claimed as rewards by
+    // an address (a participant of DigixDAO)
     mapping(address => uint256) public claimableDGXs;
+
+    // This stores the total DGX value that has been claimed by participants
+    // this can be done by calling the DaoRewardsManager.claimRewards method
+    // Note that this value is the only outgoing DGX from DaoRewardsManager contract
+    // Note that this value also takes into account the demurrage that has been paid
+    // by participants for simply holding their DGXs in the DaoRewardsManager contract
     uint256 public totalDGXsClaimed;
 
+    // The Quarter ID in which the user last participated in
+    // To participate means they had locked more than CONFIG_MINIMUM_LOCKED_DGD
+    // DGD tokens. In addition, they should not have withdrawn those tokens in the same
+    // quarter. Basically, in the main phase of the quarter, if DaoCommon.isParticipant(_user)
+    // was true, they were participants. And that quarter was their lastParticipatedQuarter
     mapping (address => uint256) public lastParticipatedQuarter;
+
+    // This mapping is only used to update the lastParticipatedQuarter to the
+    // previousLastParticipatedQuarter in case users lock and withdraw DGDs
+    // within the same quarter's locking phase
     mapping (address => uint256) public previousLastParticipatedQuarter;
 
+    // This number marks the Quarter in which the rewards were last updated for that user
+    // Since the rewards calculation for a specific quarter is only done once that
+    // quarter is completed, we need this value to note the last quarter when the rewards were updated
+    // We then start adding the rewards for all quarters after that quarter, until the current quarter
     mapping (address => uint256) public lastQuarterThatRewardsWasUpdated;
+
+    // Similar as the lastQuarterThatRewardsWasUpdated, but this is for reputation updates
+    // Note that reputation can also be deducted for no participation (not locking DGDs)
+    // This value is used to update the reputation based on all quarters from the lastQuarterThatReputationWasUpdated
+    // to the current quarter
     mapping (address => uint256) public lastQuarterThatReputationWasUpdated;
 
     constructor(address _resolver)

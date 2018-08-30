@@ -4,8 +4,17 @@ import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../common/DaoConstants.sol";
 
 contract DaoConfigsStorage is ResolverClient, DaoConstants {
+
+    // mapping of config name to config value
+    // config names can be found in DaoConstants contract
     mapping (bytes32 => uint256) public uintConfigs;
+
+    // mapping of config name to config value
+    // config names can be found in DaoConstants contract
     mapping (bytes32 => address) public addressConfigs;
+
+    // mapping of config name to config value
+    // config names can be found in DaoConstants contract
     mapping (bytes32 => bytes32) public bytesConfigs;
 
     constructor(address _resolver)

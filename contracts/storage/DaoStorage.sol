@@ -12,9 +12,20 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     using DaoStructs for DaoStructs.Proposal;
     using DaoStructs for DaoStructs.ProposalVersion;
 
+    // List of all the proposals ever created in DigixDAO
     DoublyLinkedList.Bytes allProposals;
+
+    // mapping of Proposal struct by its ID
+    // ID is also the IPFS doc hash of the first ever version of this proposal
     mapping (bytes32 => DaoStructs.Proposal) proposalsById;
+
+    // mapping from state of a proposal to list of all proposals in that state
+    // proposals are added/removed from the state's list as their states change
+    // eg. when proposal is endorsed, when proposal is funded, etc
     mapping (bytes32 => DoublyLinkedList.Bytes) proposalsByState;
+
+    // This is to mark the number of proposals that have been funded in a specific quarter
+    // this is to take care of the cap on the number of funded proposals in a quarter
     mapping (uint256 => uint256) public proposalCountByQuarter;
 
     constructor(address _resolver) public {
