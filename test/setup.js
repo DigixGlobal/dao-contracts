@@ -58,6 +58,8 @@ const MockBadge = process.env.SIMULATION ? 0 : artifacts.require('./MockBadge.so
 const MockDgxDemurrageReporter = process.env.SIMULATION ? 0 : artifacts.require('./MockDgxDemurrageReporter.sol');
 const MockDgx = process.env.SIMULATION ? 0 : artifacts.require('./MockDgx.sol');
 const MockDgxStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDgxStorage.sol');
+const MockNumberCarbonVoting1 = process.env.SIMULATION ? 0 : artifacts.require('./NumberCarbonVoting1.sol');
+const MockNumberCarbonVoting2 = process.env.SIMULATION ? 0 : artifacts.require('./NumberCarbonVoting2.sol');
 
 const BADGE_HOLDER_COUNT = 4;
 const DGD_HOLDER_COUNT = 6;
@@ -162,7 +164,13 @@ const deployServices = async function (libs, contracts, resolver) {
 
 // Deploy the interactive contracts
 const deployInteractive = async function (libs, contracts, resolver) {
-  contracts.daoStakeLocking = await DaoStakeLocking.new(resolver.address, contracts.dgdToken.address, contracts.badgeToken.address);
+  contracts.daoStakeLocking = await DaoStakeLocking.new(
+    resolver.address,
+    contracts.dgdToken.address,
+    contracts.badgeToken.address,
+    contracts.carbonVoting1.address,
+    contracts.carbonVoting2.address,
+  );
   contracts.daoIdentity = await DaoIdentity.new(resolver.address);
   contracts.daoFundingManager = await DaoFundingManager.new(resolver.address);
   contracts.dao = await Dao.new(resolver.address);
@@ -456,6 +464,8 @@ const deployFreshDao = async (libs, contracts, addressOf, accounts, bN, web3) =>
   contracts.dgxToken = await MockDgx.new(contracts.dgxStorage.address, addressOf.feesadmin);
   await contracts.dgxStorage.setInteractive(contracts.dgxToken.address);
   contracts.dgxDemurrageReporter = await MockDgxDemurrageReporter.new(contracts.dgxToken.address);
+  contracts.carbonVoting1 = await MockNumberCarbonVoting1.new('carbonVoting1');
+  contracts.carbonVoting2 = await MockNumberCarbonVoting2.new('carbonVoting2');
   await deployStorage(libs, contracts, contracts.resolver);
   await deployServices(libs, contracts, contracts.resolver);
   await deployInteractive(libs, contracts, contracts.resolver);

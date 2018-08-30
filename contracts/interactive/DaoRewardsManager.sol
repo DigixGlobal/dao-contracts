@@ -137,7 +137,11 @@ contract DaoRewardsManager is DaoCommon {
         require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         uint256 _currentQuarter = currentQuarterIndex();
         // do nothing if the rewards was already updated for the previous quarter
-        if (daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user).add(1) >= _currentQuarter) {
+        // do nothing if this is the first quarter that the user is participating
+        if (
+            (daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user).add(1) >= _currentQuarter) ||
+            (daoRewardsStorage().lastParticipatedQuarter(_user) == 0)
+        ) {
             return;
         }
         calculateUserRewardsLastQuarter(_user);

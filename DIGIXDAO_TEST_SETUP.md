@@ -57,5 +57,5 @@ For instance, the `calculateGlobalRewardsBeforeNewQuarter` function in the `DaoR
 The `IntermediateResultsStorage.sol` contract is used to store intermediate results after every iteration of the loop. An example to briefly explain what it does is: While summing up the numbers in the list `[1, 4, 6, 2, 3, 7, 8]`, and every function call consisting of 3 operations, the intermediate result after the first function call could be `{ countedUntil: 6, sum: 11 }`. In the next iteration of this function call, it sums up `2, 3 and 7` and stores `{ countedUntil: 7, sum: 23 }`. Finally in the last function call, the entire operation is completed.
 
 These step-by-step calls have been tested for functions in `DaoVotingClaims.sol`, `DaoRewardsManager.sol` and `DaoSpecialVotingClaims.sol`. Some test cases for the relevant functions are:
-* [claimProposalVotingResult](https://github.com/DigixGlobal/dao-contracts/blob/master/test/interactive/Dao.js#L2210)
-* [calculateGlobalRewardsBeforeNewQuarter](https://github.com/DigixGlobal/dao-contracts/blob/master/test/interactive/DaoRewardsManager.js#L510)
+* [claimProposalVotingResult](https://github.com/DigixGlobal/dao-contracts/blob/final-changes/test/interactive/Dao.js#L2210)
+* [calculateGlobalRewardsBeforeNewQuarter](https://github.com/DigixGlobal/dao-contracts/blob/final-changes/test/interactive/DaoRewardsManager.js#L510)

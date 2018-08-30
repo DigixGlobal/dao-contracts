@@ -91,6 +91,8 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER] = 10;
 
         uintConfigs[CONFIG_PROPOSAL_DEAD_DURATION] = 180 days;
+
+        uintConfigs[CONFIG_CARBON_VOTE_REPUTATION_BONUS] = 250;
     }
 
     function updateUintConfigs(uint256[] _uintConfigs)
@@ -159,6 +161,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX] = _uintConfigs[56];
         uintConfigs[CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER] = _uintConfigs[57];
         uintConfigs[CONFIG_PROPOSAL_DEAD_DURATION] = _uintConfigs[58];
+        uintConfigs[CONFIG_CARBON_VOTE_REPUTATION_BONUS] = _uintConfigs[59];
     }
 
     function readUintConfigs()
@@ -166,7 +169,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         constant
         returns (uint256[])
     {
-        uint256[] memory _uintConfigs = new uint256[](59);
+        uint256[] memory _uintConfigs = new uint256[](60);
         _uintConfigs[0] = uintConfigs[CONFIG_LOCKING_PHASE_DURATION];
         _uintConfigs[1] = uintConfigs[CONFIG_QUARTER_DURATION];
         _uintConfigs[2] = uintConfigs[CONFIG_VOTING_COMMIT_PHASE];
@@ -226,6 +229,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         _uintConfigs[56] = uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX];
         _uintConfigs[57] = uintConfigs[CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER];
         _uintConfigs[58] = uintConfigs[CONFIG_PROPOSAL_DEAD_DURATION];
+        _uintConfigs[59] = uintConfigs[CONFIG_CARBON_VOTE_REPUTATION_BONUS];
         return _uintConfigs;
     }
 }

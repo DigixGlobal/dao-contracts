@@ -149,4 +149,5 @@ contract DaoConstants {
     bytes32 CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER = "config_nonDigix_proposal_cap";
 
     bytes32 CONFIG_PROPOSAL_DEAD_DURATION = "config_dead_duration";
+    bytes32 CONFIG_CARBON_VOTE_REPUTATION_BONUS = "config_cv_reputation";
 }

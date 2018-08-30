@@ -8,6 +8,8 @@ const {
   setupParticipantsStates,
   getParticipants,
   updateKyc,
+  DGD_HOLDER_COUNT,
+  BADGE_HOLDER_COUNT,
 } = require('../setup');
 
 const {
@@ -23,6 +25,7 @@ const {
   getCurrentTimestamp,
   timeIsRecent,
   randomBytes32,
+  indexRange,
 } = require('@digix/helpers/lib/helpers');
 
 const bN = web3.toBigNumber;
@@ -40,6 +43,12 @@ contract('DaoStakeLocking', function (accounts) {
 
   const resetBeforeEach = async function () {
     await deployFreshDao(libs, contracts, addressOf, accounts, bN, web3);
+
+    // set that addressOf.dgdHolders[0] and [1] participated in carbon voting 1,2 and 1 respectively
+    await contracts.carbonVoting1.mock_set_voted(addressOf.dgdHolders[0]);
+    await contracts.carbonVoting1.mock_set_voted(addressOf.dgdHolders[1]);
+    await contracts.carbonVoting2.mock_set_voted(addressOf.dgdHolders[0]);
+
     await setupParticipantsStates(web3, contracts, addressOf, bN);
     await contracts.daoIdentity.addGroupUser(bN(3), addressOf.prl, randomBytes32());
     await contracts.daoIdentity.addGroupUser(bN(4), addressOf.kycadmin, randomBytes32());
@@ -382,6 +391,95 @@ contract('DaoStakeLocking', function (accounts) {
 
       // try to continue participation
       assert(await a.failure(contracts.daoStakeLocking.confirmContinuedParticipation({ from: participants[1].address })));
+    });
+    it('[lock and withdraw all DGDs within locking phase of the same quarter]: lastParticipatedQuarter should be the previous one', async function () {
+      // say the participant never participated in quarter 1
+      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+
+      // mark beginning of new quarter
+      await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(15 * (10 ** 9)));
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
+
+      // everybody continues participation in DigixDAO
+      const participants = getParticipants(addressOf, bN);
+      await a.map(indexRange(0, participants.length), 20, async (index) => {
+        await contracts.daoStakeLocking.confirmContinuedParticipation({ from: participants[index].address });
+      });
+
+      // wait for the next quarter's locking phase
+      await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
+      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+
+      // mark beginning of new quarter
+      await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(15 * (10 ** 9)));
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
+
+      // addressOf.dgdHolders[5] now tries to lock DGDs
+      await contracts.dgdToken.transfer(addressOf.dgdHolders[5], bN(2 * (10 ** 9)));
+      // has not participated yet
+      assert.deepEqual(await contracts.daoRewardsStorage.lastParticipatedQuarter.call(addressOf.dgdHolders[5]), bN(0));
+      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(2 * (10 ** 9)), { from: addressOf.dgdHolders[5] });
+      await contracts.daoStakeLocking.lockDGD(bN(2 * (10 ** 9)), { from: addressOf.dgdHolders[5] });
+      // has locked DGDs, so lastParticipatedQuarter should be 2
+      assert.deepEqual(await contracts.daoRewardsStorage.lastParticipatedQuarter.call(addressOf.dgdHolders[5]), bN(3));
+
+      await contracts.daoStakeLocking.withdrawDGD(bN(2 * (10 ** 9)), { from: addressOf.dgdHolders[5] });
+      // has withdrawn in the same quarter, the lastParticipatedQuarter must be 0 again
+      assert.deepEqual(await contracts.daoRewardsStorage.lastParticipatedQuarter.call(addressOf.dgdHolders[5]), bN(0));
+    });
+    it('[locking DGDs, after participation in carbonvotings]: verify bonus reputation rewarded', async function () {
+      // accounts[14] voted in carbonvoting1 and 2, locking enough DGDs to be participant
+      // accounts[15] voted in carbonvoting1, locking less than minimum DGDs, then locking enough DGDs to be participant
+      // accounts[16] did not vote in carbonvotings, locking enough DGDs to be participant
+
+      // transfer tokens and approve
+      await contracts.dgdToken.transfer(accounts[14], bN(10 * (10 ** 9)));
+      await contracts.dgdToken.transfer(accounts[15], bN(10 * (10 ** 9)));
+      await contracts.dgdToken.transfer(accounts[16], bN(10 * (10 ** 9)));
+      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10 * (10 ** 9)), { from: accounts[14] });
+      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10 * (10 ** 9)), { from: accounts[15] });
+      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10 * (10 ** 9)), { from: accounts[16] });
+
+      // set initial carbonvoting states
+      await contracts.carbonVoting1.mock_set_voted(accounts[14]);
+      await contracts.carbonVoting2.mock_set_voted(accounts[14]);
+      await contracts.carbonVoting1.mock_set_voted(accounts[15]);
+
+      // wait for the next quarter, initialize next quarter
+      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+      await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(10 * (10 ** 9)));
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
+
+      // mark initial states
+      const rep14 = await contracts.daoPointsStorage.getReputation.call(accounts[14]);
+      const rep15 = await contracts.daoPointsStorage.getReputation.call(accounts[15]);
+      const rep16 = await contracts.daoPointsStorage.getReputation.call(accounts[16]);
+
+      // accounts[14] tries to lock tokens
+      await contracts.daoStakeLocking.lockDGD(bN(5 * (10 ** 9)), { from: accounts[14] });
+
+      // accounts[15] tries to lock very less tokens (not enough to be participant)
+      await contracts.daoStakeLocking.lockDGD(bN(10000), { from: accounts[15] });
+
+      // accounts[16] locks enough tokens
+      await contracts.daoStakeLocking.lockDGD(bN(5 * (10 ** 9)), { from: accounts[16] });
+
+      // verify new reputation (250 reputation is awarded for every carbonvote)
+      assert.deepEqual(await contracts.daoPointsStorage.getReputation.call(accounts[14]), rep14.plus(bN(500)));
+      assert.deepEqual(await contracts.daoPointsStorage.getReputation.call(accounts[15]), rep15);
+      assert.deepEqual(await contracts.daoPointsStorage.getReputation.call(accounts[16]), rep16);
+
+      // now accounts[15] locks some more tokens (enough to be participant)
+      // will get 250 reputation for their single carbonvote activity
+      await contracts.daoStakeLocking.lockDGD(bN(2 * (10 ** 9)), { from: accounts[15] });
+      assert.deepEqual(await contracts.daoPointsStorage.getReputation.call(accounts[15]), rep15.plus(bN(250)));
+
+      // even if accounts[14] or [15] lock more tokens, they don't get any additional reputation
+      // because they have already once received it
+      await contracts.daoStakeLocking.lockDGD(bN(2 * (10 ** 9)), { from: accounts[14] });
+      await contracts.daoStakeLocking.lockDGD(bN(2 * (10 ** 9)), { from: accounts[15] });
+      assert.deepEqual(await contracts.daoPointsStorage.getReputation.call(accounts[14]), rep14.plus(bN(500)));
+      assert.deepEqual(await contracts.daoPointsStorage.getReputation.call(accounts[15]), rep15.plus(bN(250)));
     });
   });
 

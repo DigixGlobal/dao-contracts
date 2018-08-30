@@ -5,6 +5,7 @@ import "../lib/MathHelper.sol";
 import "../common/DaoCommon.sol";
 import "../service/DaoCalculatorService.sol";
 import "./DaoRewardsManager.sol";
+import "./../interface/NumberCarbonVoting.sol";
 
 /**
 @title Contract to handle staking/withdrawing of DGDs for participation in DAO
@@ -18,6 +19,8 @@ contract DaoStakeLocking is DaoCommon {
 
     address public dgdToken;
     address public dgdBadgeToken;
+    address public carbonVoting1;
+    address public carbonVoting2;
 
     struct StakeInformation {
         // this is the amount of DGDs that a user has actualy locked up
@@ -32,10 +35,18 @@ contract DaoStakeLocking is DaoCommon {
         uint256 totalLockedDGDStake;
     }
 
-    constructor(address _resolver, address _dgdToken, address _dgdBadgeToken) public {
+    constructor(
+        address _resolver,
+        address _dgdToken,
+        address _dgdBadgeToken,
+        address _carbonVoting1,
+        address _carbonVoting2
+    ) public {
         require(init(CONTRACT_DAO_STAKE_LOCKING, _resolver));
         dgdToken = _dgdToken;
         dgdBadgeToken = _dgdBadgeToken;
+        carbonVoting1 = _carbonVoting1;
+        carbonVoting2 = _carbonVoting2;
     }
 
     function daoCalculatorService()
@@ -113,7 +124,6 @@ contract DaoStakeLocking is DaoCommon {
         // This has to happen at least once before user can participate in next quarter
         daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
 
-
         refreshModeratorStatus(msg.sender, _info, _newInfo);
 
         uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(msg.sender);
@@ -123,12 +133,17 @@ contract DaoStakeLocking is DaoCommon {
         // then, lock again in the middle of the quarter. This will not take into account that A was staked in earlier
         if (_newInfo.userLockedDGDStake >= getUintConfig(CONFIG_MINIMUM_LOCKED_DGD)) {
             daoStakeStorage().addToParticipantList(msg.sender);
+
             // if this is the first time we lock/unlock/continue in this quarter, save the previous lastParticipatedQuarter
             if (_lastParticipatedQuarter < _currentQuarter) {
                 daoRewardsStorage().updatePreviousLastParticipatedQuarter(msg.sender, _lastParticipatedQuarter);
             }
 
             daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, _currentQuarter);
+
+            // if this is the first time they're locking tokens
+            // reward them with bonus for carbon voting activity
+            if (_lastParticipatedQuarter == 0) rewardCarbonVotingBonus(msg.sender);
         }
 
         // interaction happens last
@@ -293,5 +308,20 @@ contract DaoStakeLocking is DaoCommon {
     {
         (_info.userActualLockedDGD, _info.userLockedDGDStake) = daoStakeStorage().readUserDGDStake(_user);
         _info.totalLockedDGDStake = daoStakeStorage().totalLockedDGDStake();
+    }
+
+    /**
+    @notice Reward the voters of carbon voting rounds with initial bonus reputation
+    @dev This is only called when they're locking tokens for the first time, enough tokens to be a participant
+    */
+    function rewardCarbonVotingBonus(address _user)
+        internal
+    {
+        if (NumberCarbonVoting(carbonVoting1).voted(_user)) {
+            daoPointsStorage().addReputation(_user, getUintConfig(CONFIG_CARBON_VOTE_REPUTATION_BONUS));
+        }
+        if (NumberCarbonVoting(carbonVoting2).voted(_user)) {
+            daoPointsStorage().addReputation(_user, getUintConfig(CONFIG_CARBON_VOTE_REPUTATION_BONUS));
+        }
     }
 }

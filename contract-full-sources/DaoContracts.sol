@@ -263,6 +263,113 @@ contract Constants {
 
 
 
+/// @title Contract Resolver Interface
+/// @author DigixGlobal
+
+contract ResolverClient {
+
+  /// The address of the resolver contract for this project
+  address public resolver;
+  bytes32 public key;
+
+  /// Make our own address available to us as a constant
+  address public CONTRACT_ADDRESS;
+
+  /// Function modifier to check if msg.sender corresponds to the resolved address of a given key
+  /// @param _contract The resolver key
+  modifier if_sender_is(bytes32 _contract) {
+    require(sender_is(_contract));
+    _;
+  }
+
+  function sender_is(bytes32 _contract) internal view returns (bool _isFrom) {
+    _isFrom = msg.sender == ContractResolver(resolver).get_contract(_contract);
+  }
+
+  modifier if_sender_is_from(bytes32[3] _contracts) {
+    require(sender_is_from(_contracts));
+    _;
+  }
+
+  function sender_is_from(bytes32[3] _contracts) internal view returns (bool _isFrom) {
+    uint256 _n = _contracts.length;
+    for (uint256 i = 0; i < _n; i++) {
+      if (_contracts[i] == bytes32(0x0)) continue;
+      if (msg.sender == ContractResolver(resolver).get_contract(_contracts[i])) {
+        _isFrom = true;
+      }
+    }
+  }
+
+  /// Function modifier to check resolver's locking status.
+  modifier unless_resolver_is_locked() {
+    require(is_locked() == false);
+    _;
+  }
+
+  /// @dev Initialize new contract
+  /// @param _key the resolver key for this contract
+  /// @return _success if the initialization is successful
+  function init(bytes32 _key, address _resolver)
+           internal
+           returns (bool _success)
+  {
+    bool _is_locked = ContractResolver(_resolver).locked();
+    if (_is_locked == false) {
+      CONTRACT_ADDRESS = address(this);
+      resolver = _resolver;
+      key = _key;
+      require(ContractResolver(resolver).init_register_contract(key, CONTRACT_ADDRESS));
+      _success = true;
+    }  else {
+      _success = false;
+    }
+  }
+
+  /// @dev Destroy the contract and unregister self from the ContractResolver
+  /// @dev Can only be called by the owner of ContractResolver
+  /* function destroy()
+           public
+           returns (bool _success)
+  {
+    bool _is_locked = ContractResolver(resolver).locked();
+    require(!_is_locked);
+
+    address _owner_of_contract_resolver = ContractResolver(resolver).owner();
+    require(msg.sender == _owner_of_contract_resolver);
+
+    _success = ContractResolver(resolver).unregister_contract(key);
+    require(_success);
+
+    selfdestruct(_owner_of_contract_resolver);
+  } */
+
+  /// @dev Check if resolver is locked
+  /// @return _locked if the resolver is currently locked
+  function is_locked()
+           private
+           constant
+           returns (bool _locked)
+  {
+    _locked = ContractResolver(resolver).locked();
+  }
+
+  /// @dev Get the address of a contract
+  /// @param _key the resolver key to look up
+  /// @return _contract the address of the contract
+  function get_contract(bytes32 _key)
+           public
+           constant
+           returns (address _contract)
+  {
+    _contract = ContractResolver(resolver).get_contract(_key);
+  }
+}
+
+
+
+
+
 /// @title Contract Name Registry
 /// @author DigixGlobal
 
@@ -422,113 +529,6 @@ contract ContractResolver is ACGroups, Constants {
     groups["nsadmins"].members[owner] = false;
     groups["nsadmins"].members[new_owner] = true;
     _success = super.claim_ownership();
-  }
-}
-
-
-
-
-
-/// @title Contract Resolver Interface
-/// @author DigixGlobal
-
-contract ResolverClient {
-
-  /// The address of the resolver contract for this project
-  address public resolver;
-  bytes32 public key;
-
-  /// Make our own address available to us as a constant
-  address public CONTRACT_ADDRESS;
-
-  /// Function modifier to check if msg.sender corresponds to the resolved address of a given key
-  /// @param _contract The resolver key
-  modifier if_sender_is(bytes32 _contract) {
-    require(sender_is(_contract));
-    _;
-  }
-
-  function sender_is(bytes32 _contract) internal view returns (bool _isFrom) {
-    _isFrom = msg.sender == ContractResolver(resolver).get_contract(_contract);
-  }
-
-  modifier if_sender_is_from(bytes32[3] _contracts) {
-    require(sender_is_from(_contracts));
-    _;
-  }
-
-  function sender_is_from(bytes32[3] _contracts) internal view returns (bool _isFrom) {
-    uint256 _n = _contracts.length;
-    for (uint256 i = 0; i < _n; i++) {
-      if (_contracts[i] == bytes32(0x0)) continue;
-      if (msg.sender == ContractResolver(resolver).get_contract(_contracts[i])) {
-        _isFrom = true;
-      }
-    }
-  }
-
-  /// Function modifier to check resolver's locking status.
-  modifier unless_resolver_is_locked() {
-    require(is_locked() == false);
-    _;
-  }
-
-  /// @dev Initialize new contract
-  /// @param _key the resolver key for this contract
-  /// @return _success if the initialization is successful
-  function init(bytes32 _key, address _resolver)
-           internal
-           returns (bool _success)
-  {
-    bool _is_locked = ContractResolver(_resolver).locked();
-    if (_is_locked == false) {
-      CONTRACT_ADDRESS = address(this);
-      resolver = _resolver;
-      key = _key;
-      require(ContractResolver(resolver).init_register_contract(key, CONTRACT_ADDRESS));
-      _success = true;
-    }  else {
-      _success = false;
-    }
-  }
-
-  /// @dev Destroy the contract and unregister self from the ContractResolver
-  /// @dev Can only be called by the owner of ContractResolver
-  /* function destroy()
-           public
-           returns (bool _success)
-  {
-    bool _is_locked = ContractResolver(resolver).locked();
-    require(!_is_locked);
-
-    address _owner_of_contract_resolver = ContractResolver(resolver).owner();
-    require(msg.sender == _owner_of_contract_resolver);
-
-    _success = ContractResolver(resolver).unregister_contract(key);
-    require(_success);
-
-    selfdestruct(_owner_of_contract_resolver);
-  } */
-
-  /// @dev Check if resolver is locked
-  /// @return _locked if the resolver is currently locked
-  function is_locked()
-           private
-           constant
-           returns (bool _locked)
-  {
-    _locked = ContractResolver(resolver).locked();
-  }
-
-  /// @dev Get the address of a contract
-  /// @param _key the resolver key to look up
-  /// @return _contract the address of the contract
-  function get_contract(bytes32 _key)
-           public
-           constant
-           returns (address _contract)
-  {
-    _contract = ContractResolver(resolver).get_contract(_key);
   }
 }
 
@@ -2245,6 +2245,7 @@ library SafeMath {
 
 
 
+//done
 contract DaoConstants {
     using SafeMath for uint256;
     bytes32 EMPTY_BYTES = bytes32(0x0);
@@ -2287,7 +2288,7 @@ contract DaoConstants {
 
     // storage contracts
     bytes32 CONTRACT_STORAGE_DAO = "storage:dao";
-    bytes32 CONTRACT_STORAGE_DAO_UPGRADABLE = "storage:dao:upgradable";
+    bytes32 CONTRACT_STORAGE_DAO_UPGRADE = "storage:dao:upgrade";
     bytes32 CONTRACT_STORAGE_DAO_IDENTITY = "storage:dao:identity";
     bytes32 CONTRACT_STORAGE_DAO_POINTS = "storage:dao:points";
     bytes32 CONTRACT_STORAGE_DAO_SPECIAL = "storage:dao:special";
@@ -2337,13 +2338,13 @@ contract DaoConstants {
     bytes32 CONFIG_VOTING_QUOTA_NUMERATOR = "voting_quota_numerator";
     bytes32 CONFIG_VOTING_QUOTA_DENOMINATOR = "voting_quota_denominator";
 
-    bytes32 CONFIG_MINIMAL_PARTICIPATION_POINT = "CONFIG_MINIMAL_QP";
+    bytes32 CONFIG_MINIMAL_PARTICIPATION_POINT = "minimal_qp";
     bytes32 CONFIG_QUARTER_POINT_SCALING_FACTOR = "quarter_point_scaling_factor";
     bytes32 CONFIG_REPUTATION_POINT_SCALING_FACTOR = "rep_point_scaling_factor";
 
-    bytes32 CONFIG_MODERATOR_MINIMAL_QUARTER_POINT = "CONFIG_MINIMAL_B_QP";
-    bytes32 CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR = "b_qp_scaling_factor";
-    bytes32 CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR = "b_rep_point_scaling_factor";
+    bytes32 CONFIG_MODERATOR_MINIMAL_QUARTER_POINT = "minimal_mod_qp";
+    bytes32 CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR = "mod_qp_scaling_factor";
+    bytes32 CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR = "mod_rep_point_scaling_factor";
 
     bytes32 CONFIG_QUARTER_POINT_DRAFT_VOTE = "quarter_point_draft_vote";
     bytes32 CONFIG_QUARTER_POINT_VOTE = "quarter_point_vote";
@@ -2375,8 +2376,8 @@ contract DaoConstants {
     bytes32 CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM = "config_rep_per_extra_m_qp_num";
     bytes32 CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN = "config_rep_per_extra_m_qp_den";
 
-    bytes32 CONFIG_PORTION_TO_BADGE_HOLDERS_NUM = "config_bholder_portion_num";
-    bytes32 CONFIG_PORTION_TO_BADGE_HOLDERS_DEN = "config_bholder_portion_den";
+    bytes32 CONFIG_PORTION_TO_MODERATORS_NUM = "config_mod_portion_num";
+    bytes32 CONFIG_PORTION_TO_MODERATORS_DEN = "config_mod_portion_den";
 
     bytes32 CONFIG_DRAFT_VOTING_PHASE = "config_draft_voting_phase";
 
@@ -2388,9 +2389,10 @@ contract DaoConstants {
 
     bytes32 CONFIG_MAX_FUNDING_FOR_NON_DIGIX = "config_max_funding_nonDigix";
     bytes32 CONFIG_MAX_MILESTONES_FOR_NON_DIGIX = "config_max_milestones_nonDigix";
-    bytes32 CONFIG_PROPOSAL_CAP_PER_QUARTER = "config_proposal_cap";
+    bytes32 CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER = "config_nonDigix_proposal_cap";
 
     bytes32 CONFIG_PROPOSAL_DEAD_DURATION = "config_dead_duration";
+    bytes32 CONFIG_CARBON_VOTE_REPUTATION_BONUS = "config_cv_reputation";
 }
 
 
@@ -2420,6 +2422,7 @@ contract DaoWhitelistingStorage is ResolverClient, DaoConstants {
 
 
 
+//done
 contract DaoStorageCommon is ResolverClient, DaoConstants {
 
     function daoWhitelistingStorage()
@@ -2430,30 +2433,33 @@ contract DaoStorageCommon is ResolverClient, DaoConstants {
         _contract = DaoWhitelistingStorage(get_contract(CONTRACT_STORAGE_DAO_WHITELISTING));
     }
 
+    //done
     function isContract(address _address)
         internal
         constant
-        returns (bool)
+        returns (bool _isContract)
     {
         uint size;
         assembly {
             size := extcodesize(_address)
         }
-        if (size > 0) {
-            return true;
-        }
-        return false;
+        _isContract = size > 0;
     }
 
+    //done
+    /**
+    @notice Check if a certain address is whitelisted to read sensitive information in the storage layer
+    @dev if the address is an account, it is allowed to read. If the address is a contract, it has to be in the whitelist
+    */
     function isWhitelisted(address _address)
         internal
         constant
-        returns (bool)
+        returns (bool _isWhitelisted)
     {
         if (isContract(_address)) {
             require(daoWhitelistingStorage().whitelist(_address));
         }
-        return true;
+        _isWhitelisted = true;
     }
 }
 
@@ -4637,6 +4643,7 @@ contract DirectoryStorage is IndexedAddressIteratorStorage, UintIteratorStorage 
 
 
 
+//done
 contract DaoIdentityStorage is ResolverClient, DaoConstants, DirectoryStorage {
     struct KycDetails {
         bytes32 doc;
@@ -4721,7 +4728,7 @@ contract DaoIdentityStorage is ResolverClient, DaoConstants, DirectoryStorage {
 
 
 
-// done 
+// done
 contract IdentityCommon is ResolverClient, DaoConstants {
 
   modifier if_root() {
@@ -4776,7 +4783,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         require(init(CONTRACT_STORAGE_DAO_CONFIG, _resolver));
 
         uintConfigs[CONFIG_LOCKING_PHASE_DURATION] = 10 days;
-        uintConfigs[CONFIG_QUARTER_DURATION] = 90 days; // TODO: make it a fixed constant instead of a config
+        uintConfigs[CONFIG_QUARTER_DURATION] = QUARTER_DURATION;
         uintConfigs[CONFIG_VOTING_COMMIT_PHASE] = 3 weeks;
         uintConfigs[CONFIG_VOTING_PHASE_TOTAL] = 4 weeks;
         uintConfigs[CONFIG_INTERIM_COMMIT_PHASE] = 7 days;
@@ -4827,8 +4834,8 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR] = 10;
         uintConfigs[CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR] = 10;
 
-        uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM] = 5; //5% of DGX to Badge holder voting activity
-        uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_DEN] = 100;
+        uintConfigs[CONFIG_PORTION_TO_MODERATORS_NUM] = 5; //5% of DGX to Badge holder voting activity
+        uintConfigs[CONFIG_PORTION_TO_MODERATORS_DEN] = 100;
 
         uintConfigs[CONFIG_DRAFT_VOTING_PHASE] = 2 weeks;
         uintConfigs[CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE] = 1000;
@@ -4850,9 +4857,11 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
 
         uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX] = 20 ether;
         uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX] = 2;
-        uintConfigs[CONFIG_PROPOSAL_CAP_PER_QUARTER] = 10;
+        uintConfigs[CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER] = 10;
 
         uintConfigs[CONFIG_PROPOSAL_DEAD_DURATION] = 180 days;
+
+        uintConfigs[CONFIG_CARBON_VOTE_REPUTATION_BONUS] = 250;
     }
 
     function updateUintConfigs(uint256[] _uintConfigs)
@@ -4860,7 +4869,10 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
     {
         require(sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS));
         uintConfigs[CONFIG_LOCKING_PHASE_DURATION] = _uintConfigs[0];
+        /*
+        This used to be a config that can be changed. Now, _uintConfigs[1] is just a dummy config that doesnt do anything
         uintConfigs[CONFIG_QUARTER_DURATION] = _uintConfigs[1];
+        */
         uintConfigs[CONFIG_VOTING_COMMIT_PHASE] = _uintConfigs[2];
         uintConfigs[CONFIG_VOTING_PHASE_TOTAL] = _uintConfigs[3];
         uintConfigs[CONFIG_INTERIM_COMMIT_PHASE] = _uintConfigs[4];
@@ -4900,8 +4912,8 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_MODERATOR_MINIMAL_QUARTER_POINT] = _uintConfigs[38];
         uintConfigs[CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR] = _uintConfigs[39];
         uintConfigs[CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR] = _uintConfigs[40];
-        uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM] = _uintConfigs[41];
-        uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_DEN] = _uintConfigs[42];
+        uintConfigs[CONFIG_PORTION_TO_MODERATORS_NUM] = _uintConfigs[41];
+        uintConfigs[CONFIG_PORTION_TO_MODERATORS_DEN] = _uintConfigs[42];
         uintConfigs[CONFIG_DRAFT_VOTING_PHASE] = _uintConfigs[43];
         uintConfigs[CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE] = _uintConfigs[44];
         uintConfigs[CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR] = _uintConfigs[45];
@@ -4916,8 +4928,9 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT] = _uintConfigs[54];
         uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX] = _uintConfigs[55];
         uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX] = _uintConfigs[56];
-        uintConfigs[CONFIG_PROPOSAL_CAP_PER_QUARTER] = _uintConfigs[57];
+        uintConfigs[CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER] = _uintConfigs[57];
         uintConfigs[CONFIG_PROPOSAL_DEAD_DURATION] = _uintConfigs[58];
+        uintConfigs[CONFIG_CARBON_VOTE_REPUTATION_BONUS] = _uintConfigs[59];
     }
 
     function readUintConfigs()
@@ -4925,7 +4938,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         constant
         returns (uint256[])
     {
-        uint256[] memory _uintConfigs = new uint256[](59);
+        uint256[] memory _uintConfigs = new uint256[](60);
         _uintConfigs[0] = uintConfigs[CONFIG_LOCKING_PHASE_DURATION];
         _uintConfigs[1] = uintConfigs[CONFIG_QUARTER_DURATION];
         _uintConfigs[2] = uintConfigs[CONFIG_VOTING_COMMIT_PHASE];
@@ -4967,8 +4980,8 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         _uintConfigs[38] = uintConfigs[CONFIG_MODERATOR_MINIMAL_QUARTER_POINT];
         _uintConfigs[39] = uintConfigs[CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR];
         _uintConfigs[40] = uintConfigs[CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR];
-        _uintConfigs[41] = uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_NUM];
-        _uintConfigs[42] = uintConfigs[CONFIG_PORTION_TO_BADGE_HOLDERS_DEN];
+        _uintConfigs[41] = uintConfigs[CONFIG_PORTION_TO_MODERATORS_NUM];
+        _uintConfigs[42] = uintConfigs[CONFIG_PORTION_TO_MODERATORS_DEN];
         _uintConfigs[43] = uintConfigs[CONFIG_DRAFT_VOTING_PHASE];
         _uintConfigs[44] = uintConfigs[CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE];
         _uintConfigs[45] = uintConfigs[CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR];
@@ -4983,8 +4996,9 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         _uintConfigs[54] = uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT];
         _uintConfigs[55] = uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX];
         _uintConfigs[56] = uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX];
-        _uintConfigs[57] = uintConfigs[CONFIG_PROPOSAL_CAP_PER_QUARTER];
+        _uintConfigs[57] = uintConfigs[CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER];
         _uintConfigs[58] = uintConfigs[CONFIG_PROPOSAL_DEAD_DURATION];
+        _uintConfigs[59] = uintConfigs[CONFIG_CARBON_VOTE_REPUTATION_BONUS];
         return _uintConfigs;
     }
 }
@@ -5002,7 +5016,7 @@ contract DaoUpgradeStorage is ResolverClient, DaoConstants {
     address public newDaoRewardsManager;
 
     constructor(address _resolver) public {
-        require(init(CONTRACT_STORAGE_DAO_UPGRADABLE, _resolver));
+        require(init(CONTRACT_STORAGE_DAO_UPGRADE, _resolver));
     }
 
     function setStartOfFirstQuarter(uint256 _start)
@@ -5677,6 +5691,7 @@ library MathHelper {
 
 
 
+//done
 contract DaoCommon is IdentityCommon {
 
     using MathHelper for MathHelper;
@@ -6060,7 +6075,7 @@ contract DaoCommon is IdentityCommon {
         constant
         returns (DaoUpgradeStorage _contract)
     {
-        _contract = DaoUpgradeStorage(get_contract(CONTRACT_STORAGE_DAO_UPGRADABLE));
+        _contract = DaoUpgradeStorage(get_contract(CONTRACT_STORAGE_DAO_UPGRADE));
     }
 
     function daoSpecialStorage()
@@ -6135,33 +6150,39 @@ contract DaoCommon is IdentityCommon {
         _configValue = daoConfigsStorage().bytesConfigs(_configKey);
     }
 
+    //done
+    /**
+    @notice Check if a user is a participant in the current quarter
+    */
     function isParticipant(address _user)
         public
         constant
         returns (bool _is)
     {
-        if (
-            (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex()) &&
-            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_LOCKED_DGD))
-        ) {
-            _is = true;
-        }
+        _is =
+            (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex())
+            && (daoStakeStorage().readUserEffectiveDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_LOCKED_DGD));
     }
 
+    //done
+    /**
+    @notice Check if a user is a moderator in the current quarter
+    */
     function isModerator(address _user)
         public
         constant
         returns (bool _is)
     {
-        if (
-            (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex()) &&
-            (daoStakeStorage().readUserEffectiveDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_DGD_FOR_MODERATOR)) &&
-            (daoPointsStorage().getReputation(_user) >= getUintConfig(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR))
-        ) {
-            _is = true;
-        }
+        _is =
+            (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex())
+            && (daoStakeStorage().readUserEffectiveDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_DGD_FOR_MODERATOR))
+            && (daoPointsStorage().getReputation(_user) >= getUintConfig(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR));
     }
 
+    //done
+    /**
+    @notice Calculate the start of a specific milestone of a specific proposal
+    */
     function startOfMilestone(bytes32 _proposalId, uint256 _milestoneIndex)
         internal
         constant
@@ -6206,6 +6227,11 @@ contract DaoCommon is IdentityCommon {
         }
     }
 
+    //done
+    /**
+    @notice Check if we can add another non-Digix proposal in this quarter
+    @dev There is a max cap to the number of non-Digix proposals CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER
+    */
     function checkNonDigixProposalLimit(bytes32 _proposalId)
         internal
         constant
@@ -6213,10 +6239,15 @@ contract DaoCommon is IdentityCommon {
         bool _isDigixProposal;
         (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
         if (!_isDigixProposal) {
-            require(daoStorage().proposalCountByQuarter(currentQuarterIndex()) < getUintConfig(CONFIG_PROPOSAL_CAP_PER_QUARTER));
+            require(daoStorage().proposalCountByQuarter(currentQuarterIndex()) < getUintConfig(CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER));
         }
     }
 
+    //done
+    /**
+    @notice If its a non-Digix proposal, check if the fundings are within limit
+    @dev There is a max cap to the fundings and number of milestones for non-Digix proposals
+    */
     function checkNonDigixFundings(uint256[] _milestonesFundings, uint256 _finalReward)
         internal
         constant
@@ -6227,6 +6258,11 @@ contract DaoCommon is IdentityCommon {
         }
     }
 
+    //done
+    /**
+    @notice Check if msg.sender can do operations as a proposer
+    @dev Note that this function does not check if he is the proposer of the proposal
+    */
     function senderCanDoProposerOperations()
         internal
         constant
@@ -7665,7 +7701,7 @@ contract DaoRewardsManager is DaoCommon {
     }
 
     /**
-    @notice Function to update DGX rewards of user while locking/withdrawing DGDs, or continuing participation for new quarter
+    @notice Function to update DGX rewards of user. This is only called during locking/withdrawing DGDs, or continuing participation for new quarter
     @param _user Address of the DAO participant
     */
     function updateRewardsBeforeNewQuarter(address _user)
@@ -7674,7 +7710,11 @@ contract DaoRewardsManager is DaoCommon {
         require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         uint256 _currentQuarter = currentQuarterIndex();
         // do nothing if the rewards was already updated for the previous quarter
-        if (daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user).add(1) >= _currentQuarter) {
+        // do nothing if this is the first quarter that the user is participating
+        if (
+            (daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user).add(1) >= _currentQuarter) ||
+            (daoRewardsStorage().lastParticipatedQuarter(_user) == 0)
+        ) {
             return;
         }
         calculateUserRewardsLastQuarter(_user);
@@ -7819,13 +7859,13 @@ contract DaoRewardsManager is DaoCommon {
                     data.lastParticipatedQuarter.add(1)
                 ))
                 .mul(
-                    getUintConfig(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN)
-                    .sub(getUintConfig(CONFIG_PORTION_TO_BADGE_HOLDERS_NUM))
+                    getUintConfig(CONFIG_PORTION_TO_MODERATORS_DEN)
+                    .sub(getUintConfig(CONFIG_PORTION_TO_MODERATORS_NUM))
                 )
                 .div(daoRewardsStorage().readTotalEffectiveDGDLastQuarter(
                     data.lastParticipatedQuarter.add(1)
                 ))
-                .div(getUintConfig(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN))
+                .div(getUintConfig(CONFIG_PORTION_TO_MODERATORS_DEN))
             );
         }
 
@@ -7836,12 +7876,12 @@ contract DaoRewardsManager is DaoCommon {
                     data.lastParticipatedQuarter.add(1)
                 ))
                 .mul(
-                     getUintConfig(CONFIG_PORTION_TO_BADGE_HOLDERS_NUM)
+                     getUintConfig(CONFIG_PORTION_TO_MODERATORS_NUM)
                 )
                 .div(daoRewardsStorage().readTotalEffectiveModeratorDGDLastQuarter(
                     data.lastParticipatedQuarter.add(1)
                 ))
-                .div(getUintConfig(CONFIG_PORTION_TO_BADGE_HOLDERS_DEN))
+                .div(getUintConfig(CONFIG_PORTION_TO_MODERATORS_DEN))
             );
         }
 

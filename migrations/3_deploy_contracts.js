@@ -2,6 +2,8 @@ const DGDToken = artifacts.require('./MockDgd.sol');
 const DGDBadgeToken = artifacts.require('./MockBadge.sol');
 const MockDgx = artifacts.require('./MockDgx.sol');
 const MockDgxDemurrageReporter = artifacts.require('./MockDgxDemurrageReporter.sol');
+const MockNumberCarbonVoting1 = artifacts.require('./NumberCarbonVoting1.sol');
+const MockNumberCarbonVoting2 = artifacts.require('./NumberCarbonVoting2.sol');
 
 const ContractResolver = artifacts.require('ContractResolver.sol');
 const DoublyLinkedList = artifacts.require('DoublyLinkedList.sol');
@@ -69,7 +71,14 @@ module.exports = async function (deployer, network) {
       return deployer.deploy(DaoCalculatorService, ContractResolver.address, MockDgxDemurrageReporter.address);
     })
     .then(() => {
-      deployer.deploy(DaoStakeLocking, ContractResolver.address, DGDToken.address, DGDBadgeToken.address);
+      deployer.deploy(
+        DaoStakeLocking,
+        ContractResolver.address,
+        DGDToken.address,
+        DGDBadgeToken.address,
+        MockNumberCarbonVoting1.address,
+        MockNumberCarbonVoting2.address,
+      );
       deployer.deploy(DaoIdentity, ContractResolver.address);
       deployer.deploy(DaoFundingManager, ContractResolver.address);
       deployer.deploy(Dao, ContractResolver.address);
