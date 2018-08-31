@@ -112,14 +112,14 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
     function updateLastQuarterThatRewardsWasUpdated(address _user, uint256 _lastQuarter)
         public
     {
-        require(sender_is(CONTRACT_DAO_REWARDS_MANAGER));
+        require(sender_is_from([CONTRACT_DAO_REWARDS_MANAGER, CONTRACT_DAO_STAKE_LOCKING, EMPTY_BYTES]));
         lastQuarterThatRewardsWasUpdated[_user] = _lastQuarter;
     }
 
     function updateLastQuarterThatReputationWasUpdated(address _user, uint256 _lastQuarter)
         public
     {
-        require(sender_is(CONTRACT_DAO_REWARDS_MANAGER));
+        require(sender_is_from([CONTRACT_DAO_REWARDS_MANAGER, CONTRACT_DAO_STAKE_LOCKING, EMPTY_BYTES]));
         lastQuarterThatReputationWasUpdated[_user] = _lastQuarter;
     }
 

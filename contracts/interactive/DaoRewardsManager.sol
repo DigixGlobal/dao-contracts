@@ -135,12 +135,14 @@ contract DaoRewardsManager is DaoCommon {
         public
     {
         require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
-        uint256 _currentQuarter = currentQuarterIndex();
-        // do nothing if the rewards was already updated for the previous quarter
-        // do nothing if this is the first quarter that the user is participating
+
+        // do nothing if this is the first time the user is participating
+        // note that the last participated quarter can be zero, with the other values being non-zero (consider the case of locking and withdrawing in the same quarter)
+        // so we will skip the entire updating process only when this is ACTUALLY their first visit to DigixDAO
         if (
-            (daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user).add(1) >= _currentQuarter) ||
-            (daoRewardsStorage().lastParticipatedQuarter(_user) == 0)
+            (daoRewardsStorage().lastParticipatedQuarter(_user) == 0) &&
+            (daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user) == 0) &&
+            (daoRewardsStorage().lastQuarterThatReputationWasUpdated(_user) == 0)
         ) {
             return;
         }
@@ -154,17 +156,23 @@ contract DaoRewardsManager is DaoCommon {
         uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(_user);
         uint256 _lastQuarterThatReputationWasUpdated = daoRewardsStorage().lastQuarterThatReputationWasUpdated(_user);
         uint256 _reputationDeduction;
-        if (currentQuarterIndex() <= _lastParticipatedQuarter) {
+
+        // if the participant is already participating in this quarter
+        // or if the reputation was already updated in this quarter
+        // nothing needs to be done
+        if (
+            (_lastParticipatedQuarter == currentQuarterIndex()) ||
+            (_lastQuarterThatReputationWasUpdated.add(1) >= currentQuarterIndex())
+        ) {
             return;
         }
 
-        // there are only 2 cases when the reputation needs to be added/subtracted
-        // 1: If the _lastQuarterThatReputationWasUpdated = 0 (which means they may have locked tokens in Q > 1, and now coming back)
-        // example, one locks tokens in Q=3 for the first time, and now is confirming participation in Q=4 (here the _lastQuarterThatReputationWasUpdated=0)
-        // 2: If _lastQuarterThatReputationWasUpdated == _lastParticipatedQuarter - 1 (which means the reputation can be updated for this additional participated quarter)
+        // the reputation is added/deducted after participation
+        // only if the last quarter that reputation was updated is one behind the last participated quarter
+        // basically this updateRPfromQP should only count for one quarter, the last one they participated in (and has not been accounted for)
+        // also if this is the first quarter they are participating in, no need to do this
         if (
-            (_lastQuarterThatReputationWasUpdated == 0) ||
-            (_lastQuarterThatReputationWasUpdated == _lastParticipatedQuarter.sub(1))
+            (_lastQuarterThatReputationWasUpdated.add(1) == _lastParticipatedQuarter)
         ) {
             updateRPfromQP(
                 _user,
@@ -191,6 +199,10 @@ contract DaoRewardsManager is DaoCommon {
             }
         }
 
+        // we always need to check if reputation has to be deducted for not locking tokens
+        // this case if already avoided if it was their first ever participation
+        // but sometimes, they may lock and withdraw tokens in the same quarter, to keep pushing up the last quarter that reputation was updated
+        // in this case, they must be fined for not locking tokens in that very quarter they skipped
         _reputationDeduction =
             (currentQuarterIndex().sub(1).sub(MathHelper.max(_lastParticipatedQuarter, _lastQuarterThatReputationWasUpdated)))
             .mul(
@@ -241,7 +253,13 @@ contract DaoRewardsManager is DaoCommon {
         data.lastQuarterThatRewardsWasUpdated = daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user);
 
         _userClaimableDgx = daoRewardsStorage().claimableDGXs(_user);
-        if (currentQuarterIndex() <= data.lastParticipatedQuarter || data.lastParticipatedQuarter <= data.lastQuarterThatRewardsWasUpdated) {
+
+        // if this is the same quarter in which they are participating, nothing to do
+        // also if this quarter has already been accounted for in terms of updating rewards, again nothing to do
+        if (
+            (currentQuarterIndex() == data.lastParticipatedQuarter) ||
+            (data.lastParticipatedQuarter <= data.lastQuarterThatRewardsWasUpdated)
+        ) {
             return (false, _userClaimableDgx);
         }
 

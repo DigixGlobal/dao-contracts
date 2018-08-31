@@ -34,6 +34,10 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
     // reputation points for their DGD Badge
     mapping (address => bool) public redeemedBadge;
 
+    // mapping to note whether an address has claimed their
+    // reputation bonus for carbon vote participation
+    mapping (address => bool) public carbonVoteBonusClaimed;
+
     constructor(address _resolver) public {
         require(init(CONTRACT_STORAGE_DAO_STAKE, _resolver));
     }
@@ -43,6 +47,13 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
     {
         require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
         redeemedBadge[_user] = true;
+    }
+
+    function setCarbonVoteBonusClaimed(address _user)
+        public
+    {
+        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
+        carbonVoteBonusClaimed[_user] = true;
     }
 
     function updateTotalLockedDGDStake(uint256 _totalLockedDGDStake)
