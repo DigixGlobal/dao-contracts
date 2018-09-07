@@ -139,13 +139,13 @@ contract DaoRewardsManager is DaoCommon {
         // do nothing if this is the first time the user is participating
         // note that the last participated quarter can be zero, with the other values being non-zero (consider the case of locking and withdrawing in the same quarter)
         // so we will skip the entire updating process only when this is ACTUALLY their first visit to DigixDAO
-        if (
+        /* if (
             (daoRewardsStorage().lastParticipatedQuarter(_user) == 0) &&
             (daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user) == 0) &&
             (daoRewardsStorage().lastQuarterThatReputationWasUpdated(_user) == 0)
         ) {
             return;
-        }
+        } */
         calculateUserRewardsLastQuarter(_user);
         calculateUserReputationLastQuarter(_user);
     }

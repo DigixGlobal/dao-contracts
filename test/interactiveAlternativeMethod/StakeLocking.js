@@ -77,10 +77,10 @@ contract('DaoStakeLocking', function (accounts) {
       assert.deepEqual(await contracts.daoStakeLocking.isParticipant.call(addressOf.dgdHolders[2]), true);
       assert.deepEqual(await contracts.daoStakeStorage.lockedDGDStake.call(addressOf.dgdHolders[2]), amount);
       assert.deepEqual(await contracts.daoStakeStorage.actualLockedDGD.call(addressOf.dgdHolders[2]), amount);
-      assert.deepEqual(await contracts.daoRewardsStorage.lastQuarterThatRewardsWasUpdated.call(addressOf.dgdHolders[2]), bN(1));
+      // assert.deepEqual(await contracts.daoRewardsStorage.lastQuarterThatRewardsWasUpdated.call(addressOf.dgdHolders[2]), bN(1));
       assert.deepEqual(await contracts.daoRewardsStorage.lastQuarterThatReputationWasUpdated.call(addressOf.dgdHolders[2]), bN(1));
     });
-    it('[lockDGD in Q2 | withdraw in Q2 | lock in Q4]', async function () {
+    it('[lockDGD in Q2 | withdraw in Q2 | lock in Q3]', async function () {
       // this user has participated in carbon voting 1
       await contracts.carbonVoting1.mock_set_voted(addressOf.dgdHolders[3]);
       const amount = bN(1 * (10 ** 9));
@@ -90,13 +90,13 @@ contract('DaoStakeLocking', function (accounts) {
       await contracts.daoStakeLocking.lockDGD(amount, { from: addressOf.dgdHolders[3] });
       const repAfterLock = await contracts.daoPointsStorage.getReputation.call(addressOf.dgdHolders[3]);
       assert.deepEqual(await contracts.daoRewardsStorage.lastParticipatedQuarter.call(addressOf.dgdHolders[3]), bN(2));
-      assert.deepEqual(await contracts.daoRewardsStorage.lastQuarterThatRewardsWasUpdated.call(addressOf.dgdHolders[3]), bN(1));
+      assert.deepEqual(await contracts.daoRewardsStorage.lastQuarterThatRewardsWasUpdated.call(addressOf.dgdHolders[3]), bN(0));
       assert.deepEqual(await contracts.daoRewardsStorage.lastQuarterThatReputationWasUpdated.call(addressOf.dgdHolders[3]), bN(1));
       assert.deepEqual(await contracts.daoStakeLocking.isParticipant.call(addressOf.dgdHolders[3]), true);
       await contracts.daoStakeLocking.withdrawDGD(amount, { from: addressOf.dgdHolders[3] });
       const repAfterWithdraw = await contracts.daoPointsStorage.getReputation.call(addressOf.dgdHolders[3]);
       assert.deepEqual(await contracts.daoRewardsStorage.lastParticipatedQuarter.call(addressOf.dgdHolders[3]), bN(0));
-      assert.deepEqual(await contracts.daoRewardsStorage.lastQuarterThatRewardsWasUpdated.call(addressOf.dgdHolders[3]), bN(1));
+      assert.deepEqual(await contracts.daoRewardsStorage.lastQuarterThatRewardsWasUpdated.call(addressOf.dgdHolders[3]), bN(0));
       assert.deepEqual(await contracts.daoRewardsStorage.lastQuarterThatReputationWasUpdated.call(addressOf.dgdHolders[3]), bN(1));
       assert.deepEqual(await contracts.daoStakeLocking.isParticipant.call(addressOf.dgdHolders[3]), false);
 
