@@ -35,7 +35,7 @@ const DaoWhitelistingStorage = process.env.SIMULATION ? 0 : artifacts.require('.
 const IntermediateResultsStorage = process.env.SIMULATION ? 0 : artifacts.require('./IntermediateResultsStorage.sol');
 
 const DaoStructs = process.env.SIMULATION ? 0 : artifacts.require('./DaoStructs.sol');
-const DaoUpgradeStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoUpgradeStorage.sol');
+const DaoUpgradeStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoUpgradeStorage.sol');
 const DaoSpecialStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoSpecialStorage.sol');
 const DaoFundingStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoFundingStorage.sol');
 const DaoRewardsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoRewardsStorage.sol');
@@ -355,6 +355,12 @@ const setDummyConfig = async function (contracts, bN) {
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE, bN(5));
 };
 
+// read the set dummy config
+const readDummyConfig = async function (contracts) {
+  const configs = await contracts.daoConfigsStorage.readUintConfigs.call();
+  return configs;
+};
+
 // Initialise DigixDAO
 // This function adds members (PRL, Founder and KYC Admin) to their respective groups
 // This function sends some Ethers into the DaoFundingManager contract
@@ -483,6 +489,27 @@ const fundDao = async function (web3, accounts, contracts) {
     to: contracts.daoFundingManager.address,
     value: web3.toWei(1000, 'ether'),
   });
+};
+
+// this function provides a hypothetical startOfFirstQuarter value
+// for the DAO to be in the _phase phase of _quarterIndex quarter
+const getStartOfFirstQuarterFor = function (_quarterIndex, _phase, _lockingPhaseDuration, _quarterDuration, _timeNow, bN) {
+  const _gap = (_phase === phases.LOCKING_PHASE) ? _quarterDuration.times(_quarterIndex.minus(bN(1))) :
+    (_quarterDuration.times(_quarterIndex.minus(bN(1)))).plus(_lockingPhaseDuration);
+  const _startOfFirstQuarter = _timeNow.minus(_gap.plus(bN(1)));
+  return _startOfFirstQuarter;
+};
+
+// this will set the startOfFirstQuarter to the value provided
+// can effectively change which quarter and phase you are in
+const setStartOfFirstQuarterTo = async function (contracts, addressOf, startOfFirstQuarter) {
+  await contracts.daoUpgradeStorage.mock_set_start_of_quarter(startOfFirstQuarter, { from: addressOf.founderBadgeHolder });
+};
+
+// set the dgx distribution of a quarter to given time
+// dummy mark the start of quarter
+const initQuarter = async function (contracts, quarterIndex, dgxDistributionDay) {
+  await contracts.daoRewardsStorage.mock_set_dgx_distribution_day(quarterIndex, dgxDistributionDay);
 };
 
 const printParticipantDetails = async (bN, contracts, address) => {
@@ -712,6 +739,10 @@ module.exports = {
   updateKyc,
   printDaoDetails,
   printParticipantDetails,
+  getStartOfFirstQuarterFor,
+  setStartOfFirstQuarterTo,
+  initQuarter,
+  readDummyConfig,
   BADGE_HOLDER_COUNT,
   DGD_HOLDER_COUNT,
 };

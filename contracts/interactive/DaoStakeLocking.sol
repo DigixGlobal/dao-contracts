@@ -140,10 +140,13 @@ contract DaoStakeLocking is DaoCommon {
             }
 
             daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, _currentQuarter);
+            /* daoRewardsStorage().updateLastQuarterThatRewardsWasUpdated(msg.sender, _currentQuarter.sub(1)); */
 
             // if this is the first time they're locking tokens
             // reward them with bonus for carbon voting activity
-            if (_lastParticipatedQuarter == 0) rewardCarbonVotingBonus(msg.sender);
+            if (_lastParticipatedQuarter == 0) {
+                rewardCarbonVotingBonus(msg.sender);
+            }
         }
 
         // interaction happens last
@@ -317,11 +320,21 @@ contract DaoStakeLocking is DaoCommon {
     function rewardCarbonVotingBonus(address _user)
         internal
     {
+        // if the bonus has already been given out once to this user, return
+        if (daoStakeStorage().carbonVoteBonusClaimed(_user)) return;
+
+        // for carbon voting 1, if voted, give out a bonus
         if (NumberCarbonVoting(carbonVoting1).voted(_user)) {
             daoPointsStorage().addReputation(_user, getUintConfig(CONFIG_CARBON_VOTE_REPUTATION_BONUS));
         }
+        // for carbon voting 2, if voted, give out a bonus
         if (NumberCarbonVoting(carbonVoting2).voted(_user)) {
             daoPointsStorage().addReputation(_user, getUintConfig(CONFIG_CARBON_VOTE_REPUTATION_BONUS));
         }
+
+        daoRewardsStorage().updateLastQuarterThatReputationWasUpdated(msg.sender, currentQuarterIndex().sub(1));
+
+        // set that this user's carbon voting bonus has been given out
+        daoStakeStorage().setCarbonVoteBonusClaimed(_user);
     }
 }
