@@ -2012,6 +2012,7 @@ contract('Dao', function (accounts) {
       // the claimed boolean must be set to true coz its claimed now
       assert.deepEqual(await contracts.daoStorage.isClaimed.call(proposals[2].id, bN(0)), true);
     });
+
     it('[valid claim, check bonuses]: verify read functions', async function () {
       // now wait for the interim phase to get over
       const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);

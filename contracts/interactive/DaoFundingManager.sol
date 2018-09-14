@@ -38,8 +38,7 @@ contract DaoFundingManager is DaoCommon {
         require(daoStorage().readProposalVotingResult(_proposalId, _index));
         require(daoStorage().isClaimed(_proposalId, _index));
 
-        uint256 _funding;
-        (, _funding) = daoStorage().readProposalMilestone(_proposalId, _index);
+        uint256 _funding = daoStorage().readProposalMilestone(_proposalId, _index);
 
         daoFundingStorage().withdrawEth(_funding);
         daoStorage().setMilestoneFunded(_proposalId, _index);

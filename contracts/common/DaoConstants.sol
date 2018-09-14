@@ -95,7 +95,7 @@ contract DaoConstants {
     bytes32 CONFIG_VOTING_QUOTA_NUMERATOR = "voting_quota_numerator";
     bytes32 CONFIG_VOTING_QUOTA_DENOMINATOR = "voting_quota_denominator";
 
-    bytes32 CONFIG_MINIMAL_PARTICIPATION_POINT = "minimal_qp";
+    bytes32 CONFIG_MINIMAL_QUARTER_POINT = "minimal_qp";
     bytes32 CONFIG_QUARTER_POINT_SCALING_FACTOR = "quarter_point_scaling_factor";
     bytes32 CONFIG_REPUTATION_POINT_SCALING_FACTOR = "rep_point_scaling_factor";
 

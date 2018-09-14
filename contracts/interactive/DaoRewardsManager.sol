@@ -15,10 +15,14 @@ contract DaoRewardsManager is DaoCommon {
     using DaoStructs for DaoStructs.DaoQuarterInfo;
     using DaoStructs for DaoStructs.IntermediateResults;
 
+    // is emitted when calculateGlobalRewardsBeforeNewQuarter has been done in the beginning of the quarter
+    // after which, all the other DAO activities could happen
     event StartNewQuarter(uint256 _quarterId);
 
     address public ADDRESS_DGX_TOKEN;
 
+    // this is a struct that store information relevant for calculating the user rewards
+    // for the last participating quarter
     struct UserRewards {
         uint256 lastParticipatedQuarter;
         uint256 lastQuarterThatRewardsWasUpdated;
@@ -27,9 +31,10 @@ contract DaoRewardsManager is DaoCommon {
         uint256 effectiveModeratorDGDBalance;
     }
 
+    // struct to store variables needed in the execution of calculateGlobalRewardsBeforeNewQuarter
     struct QuarterRewardsInfo {
         uint256 previousQuarter;
-        uint256 totalEffectiveDGDLastQuarter;
+        uint256 totalEffectiveDGDPreviousQuarter;
         bool doneCalculatingEffectiveBalance;
         bool doneCalculatingModeratorEffectiveBalance;
         uint256 totalEffectiveModeratorDGDLastQuarter;
@@ -49,8 +54,9 @@ contract DaoRewardsManager is DaoCommon {
         _contract = DaoCalculatorService(get_contract(CONTRACT_SERVICE_DAO_CALCULATOR));
     }
 
+    //done
     /**
-    @notice Constructor (set the quarter info for the first quarter)
+    @notice Constructor (set the DaoQuarterInfo struct for the first quarter)
     @param _resolver Address of the Contract Resolver contract
     @param _dgxAddress Address of the Digix Gold Token contract
     */
@@ -59,22 +65,30 @@ contract DaoRewardsManager is DaoCommon {
     {
         require(init(CONTRACT_DAO_REWARDS_MANAGER, _resolver));
         ADDRESS_DGX_TOKEN = _dgxAddress;
+
+        // set the DaoQuarterInfo for the first quarter
         daoRewardsStorage().updateQuarterInfo(
             1,
-            getUintConfig(CONFIG_MINIMAL_PARTICIPATION_POINT),
+            getUintConfig(CONFIG_MINIMAL_QUARTER_POINT),
             getUintConfig(CONFIG_QUARTER_POINT_SCALING_FACTOR),
             getUintConfig(CONFIG_REPUTATION_POINT_SCALING_FACTOR),
-            0,
+            0, // totalEffectiveDGDPreviousQuarter, Not Applicable, this value should not be used ever
             getUintConfig(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
             getUintConfig(CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR),
             getUintConfig(CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR),
-            0,
+            0, // _totalEffectiveModeratorDGDLastQuarter , Not applicable, this value should not be used ever
+
+            // _dgxDistributionDay, Not applicable, there shouldnt be any DGX rewards in the DAO now. The actual DGX fees that have been collected
+            // before the deployment of DigixDAO contracts would be counted as part of the DGX fees incurred in the first quarter
+            // this value should not be used ever
             now,
-            0,
-            0
+
+            0, // _dgxRewardsPoolLastQuarter, not applicable, this value should not be used ever
+            0 // sumRewardsFromBeginning, which is 0
         );
     }
 
+    //done
     /**
     @notice Function to transfer the claimableDGXs to the new DaoRewardsManager
     @dev This is done during the migrateToNewDao procedure
@@ -88,14 +102,16 @@ contract DaoRewardsManager is DaoCommon {
         ERC20(ADDRESS_DGX_TOKEN).transfer(_newDaoRewardsManager, _dgxBalance);
     }
 
+    //done
     /**
-    @notice Function to claim the DGX rewards allocated to user
-    @dev Will revert if _claimableDGX <= MINIMUM_TRANSFER_AMOUNT of DGX.
-         Can only be called after calculateGlobalRewardsBeforeNewQuarter() has been called in the quarter right after the lastParticipatedQuarter
+    @notice Function for users to claim the claimable DGX rewards
+    @dev Will revert if _claimableDGX < MINIMUM_TRANSFER_AMOUNT of DGX.
+         Can only be called after calculateGlobalRewardsBeforeNewQuarter() has been called in the current quarter
          This cannot be called once the current version of Dao contracts have been migrated to newer version
     */
     function claimRewards()
         public
+        ifGlobalRewardsSet(currentQuarterIndex())
     {
         require(isDaoNotReplaced());
 
@@ -103,20 +119,24 @@ contract DaoRewardsManager is DaoCommon {
         uint256 _claimableDGX;
 
         // update rewards for the quarter that he last participated in
-        (, _claimableDGX) = calculateUserRewardsLastQuarter(_user);
+        (, _claimableDGX) = updateUserRewardsForLastParticipatingQuarter(_user);
 
         // withdraw from his claimableDGXs
         // This has to take into account demurrage
         // Basically, the value of claimableDGXs in the contract is for the dgxDistributionDay of (lastParticipatedQuarter + 1)
+        // if now is after that, we need to deduct demurrage
         uint256 _days_elapsed = now
             .sub(
                 daoRewardsStorage().readDgxDistributionDay(
-                    daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user).add(1)
+                    daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user).add(1) // lastQuarterThatRewardsWasUpdated should be the same as lastParticipatedQuarter now
                 )
             )
             .div(1 days);
 
+         // similar logic as in the similar step in updateUserRewardsForLastParticipatingQuarter.
+         // it is as if the user has withdrawn all _claimableDGX, and the demurrage is paid back into the DAO immediately
         daoRewardsStorage().addToTotalDgxClaimed(_claimableDGX);
+
         _claimableDGX = _claimableDGX.sub(
             daoCalculatorService().calculateDemurrage(
                 _claimableDGX,
@@ -125,47 +145,47 @@ contract DaoRewardsManager is DaoCommon {
 
         daoRewardsStorage().updateClaimableDGX(_user, 0);
         ERC20(ADDRESS_DGX_TOKEN).transfer(_user, _claimableDGX);
+        // the _demurrageFees is implicitly "transfered" back into the DAO, and would be counted in the dgxRewardsPool of this quarter (in other words, dgxRewardsPoolLastQuarter of next quarter)
     }
 
+    //done
     /**
     @notice Function to update DGX rewards of user. This is only called during locking/withdrawing DGDs, or continuing participation for new quarter
     @param _user Address of the DAO participant
     */
-    function updateRewardsBeforeNewQuarter(address _user)
+    function updateRewardsAndReputationBeforeNewQuarter(address _user)
         public
     {
         require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
 
-        // do nothing if this is the first time the user is participating
-        // note that the last participated quarter can be zero, with the other values being non-zero (consider the case of locking and withdrawing in the same quarter)
-        // so we will skip the entire updating process only when this is ACTUALLY their first visit to DigixDAO
-        /* if (
-            (daoRewardsStorage().lastParticipatedQuarter(_user) == 0) &&
-            (daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user) == 0) &&
-            (daoRewardsStorage().lastQuarterThatReputationWasUpdated(_user) == 0)
-        ) {
-            return;
-        } */
-        calculateUserRewardsLastQuarter(_user);
-        calculateUserReputationLastQuarter(_user);
+        updateUserRewardsForLastParticipatingQuarter(_user);
+        updateUserReputationUntilPreviousQuarter(_user);
     }
 
-    function calculateUserReputationLastQuarter (address _user)
+    // This function would ALWAYS make sure that the user's Reputation Point is updated for ALL activities that has happened
+    // BEFORE this current quarter. These activities include:
+    //  - Reputation bonus/penalty due to participation in all of the previous quarters
+    //  - Reputation penalty for not participating for a few quarters, up until and including the previous quarter
+    //  - Badges redemption and carbon vote reputation redemption (that happens in the first time locking)
+    // As such, after this function is called on quarter N, the updated reputation point of the user would tentatively be used to calculate the rewards for quarter N
+    // Its tentative because the user can also redeem a badge during the period of quarter N to add to his reputation point.
+    function updateUserReputationUntilPreviousQuarter (address _user)
         private
     {
         uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(_user);
         uint256 _lastQuarterThatReputationWasUpdated = daoRewardsStorage().lastQuarterThatReputationWasUpdated(_user);
         uint256 _reputationDeduction;
 
-        // if the participant is already participating in this quarter
-        // or if the reputation was already updated in this quarter
+        // If the reputation was already updated until the previous quarter
         // nothing needs to be done
         if (
-            (_lastParticipatedQuarter == currentQuarterIndex()) ||
-            (_lastQuarterThatReputationWasUpdated.add(1) >= currentQuarterIndex())
+            _lastQuarterThatReputationWasUpdated.add(1) >= currentQuarterIndex()
         ) {
             return;
         }
+
+        //TODO
+
 
         // the reputation is added/deducted after participation
         // only if the last quarter that reputation was updated is one behind the last participated quarter
@@ -177,7 +197,7 @@ contract DaoRewardsManager is DaoCommon {
             updateRPfromQP(
                 _user,
                 daoPointsStorage().getQuarterPoint(_user, _lastParticipatedQuarter),
-                getUintConfig(CONFIG_MINIMAL_PARTICIPATION_POINT),
+                getUintConfig(CONFIG_MINIMAL_QUARTER_POINT),
                 getUintConfig(CONFIG_MAXIMUM_REPUTATION_DEDUCTION),
                 getUintConfig(CONFIG_REPUTATION_PER_EXTRA_QP_NUM),
                 getUintConfig(CONFIG_REPUTATION_PER_EXTRA_QP_DEN)
@@ -241,21 +261,29 @@ contract DaoRewardsManager is DaoCommon {
         }
     }
 
-    function calculateUserRewardsLastQuarter(address _user)
-        private
+    //done
+    // get the struct for the relevant information for calculating a user's DGX rewards for the last participated quarter
+    function getUserRewardsStruct(address _user) internal constant returns (UserRewards memory _data) {
+        _data.lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(_user);
+        _data.lastQuarterThatRewardsWasUpdated = daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user);
+        _data.qInfo = readQuarterInfo(_data.lastParticipatedQuarter);
+    }
+
+    //done
+    // if the DGX rewards has not been calculated for the user's lastParticipatedQuarter, calculate and update it
+    function updateUserRewardsForLastParticipatingQuarter(address _user)
+        internal
         returns (bool _valid, uint256 _userClaimableDgx)
     {
-        UserRewards memory data;
-        // the last participating quarter must be:
-        // - over
-        // - after the lastQuarterThatRewardsWasUpdated
-        data.lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(_user);
-        data.lastQuarterThatRewardsWasUpdated = daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user);
-
+        UserRewards memory data = getUserRewardsStruct(_user);
         _userClaimableDgx = daoRewardsStorage().claimableDGXs(_user);
 
-        // if this is the same quarter in which they are participating, nothing to do
-        // also if this quarter has already been accounted for in terms of updating rewards, again nothing to do
+        // There is nothing to do if:
+        //   - The participant is already participating this quarter and hence this function has been called in this quarter
+        //   - We have updated the rewards to the lastParticipatedQuarter
+        // In ANY other cases: it means that the lastParticipatedQuarter is NOT this quarter, and its greater than lastQuarterThatRewardsWasUpdated, hence
+        // This also means that this participant has ALREADY PARTICIPATED at least once IN THE PAST, and we have not calculated for this quarter
+        // Thus, we need to calculate the Rewards for the lastParticipatedQuarter
         if (
             (currentQuarterIndex() == data.lastParticipatedQuarter) ||
             (data.lastParticipatedQuarter <= data.lastQuarterThatRewardsWasUpdated)
@@ -264,12 +292,10 @@ contract DaoRewardsManager is DaoCommon {
         }
 
         // now we will calculate the user rewards based on info of the data.lastParticipatedQuarter
-        data.qInfo = readQuarterInfo(data.lastParticipatedQuarter);
 
-        // now we "deduct the demurrage" from the claimable DGXs for time period from
-        // dgxDistributionDay of lastQuarterThatRewardsWasUpdated + 1 to dgxDistributionDay of lastParticipatedQuarter + 1
-        // this deducted demurrage is then added to the totalDGXsClaimed
-        // the demurrage is effectively collected into totalDGXsClaimed whenever it is deducted from claimableDGXs
+        // first we "deduct the demurrage" for the existing claimable DGXs for time period from
+        // dgxDistributionDay of (lastQuarterThatRewardsWasUpdated + 1) to dgxDistributionDay of (lastParticipatedQuarter + 1)
+        // (note that, when people participate in quarter n, the DGX rewards for quarter n is only released at the dgxDistributionDay of (n+1)th quarter)
         uint256 _days_elapsed = daoRewardsStorage().readDgxDistributionDay(data.lastParticipatedQuarter.add(1))
             .sub(daoRewardsStorage().readDgxDistributionDay(data.lastQuarterThatRewardsWasUpdated.add(1)))
             .div(1 days);
@@ -278,20 +304,52 @@ contract DaoRewardsManager is DaoCommon {
             _days_elapsed
         );
         _userClaimableDgx = _userClaimableDgx.sub(_demurrageFees);
+        // this demurrage fees will not be accurate to the hours, but we will leave it as this.
+
+        // this deducted demurrage is then added to the totalDGXsClaimed
+        // This is as if, the user claims exactly _demurrageFees DGXs, which would be used immediately to pay for the demurrage on his claimableDGXs,
+        // from dgxDistributionDay of (lastQuarterThatRewardsWasUpdated + 1) to dgxDistributionDay of (lastParticipatedQuarter + 1)
+        // This is done as such, so that this _demurrageFees would "flow back into the DAO" and be counted in the dgxRewardsPool of this current quarter (in other words, dgxRewardsPoolLastQuarter of the next quarter, as will be calculated in calculateGlobalRewardsBeforeNewQuarter of the next quarter)
+        // this is not 100% techinally correct as a demurrage concept, because this demurrage fees could have been incurred for the duration of the quarters in the past, but we will account them this way, as if its demurrage fees for this quarter, for simplicity.
         daoRewardsStorage().addToTotalDgxClaimed(_demurrageFees);
 
-        // RP has been updated at the beginning of the lastParticipatedQuarter in
-        // a call to updateRewardsBeforeNewQuarter();
+        uint256 _dgxRewardsAsParticipant;
+        uint256 _dgxRewardsAsModerator;
+        (_dgxRewardsAsParticipant, _dgxRewardsAsModerator) = calculateUserRewardsForLastParticipatingQuarter(_user);
+        _userClaimableDgx = _userClaimableDgx.add(_dgxRewardsAsParticipant).add(_dgxRewardsAsModerator);
 
-        // calculate dgx rewards; This is basically the DGXs that user can withdraw on the dgxDistributionDay of the last participated quarter
-        // when user actually withdraw some time after that, he will be deducted demurrage.
+        // update claimableDGXs. The calculation just now should have taken into account demurrage
+        // such that the demurrage has been paid until dgxDistributionDay of (lastParticipatedQuarter + 1)
+        daoRewardsStorage().updateClaimableDGX(_user, _userClaimableDgx);
+
+        // update lastQuarterThatRewardsWasUpdated
+        daoRewardsStorage().updateLastQuarterThatRewardsWasUpdated(_user, data.lastParticipatedQuarter);
+        _valid = true;
+    }
+
+    // done
+    // calculate dgx rewards; This is basically the DGXs that user has earned from participating in lastParticipatedQuarter, and can be withdrawn on the dgxDistributionDay of the (lastParticipatedQuarter + 1)
+    // when user actually withdraw some time after that, he will be deducted demurrage.
+    function calculateUserRewardsForLastParticipatingQuarter(address _user)
+        public
+        constant
+        returns (uint256 _dgxRewardsAsParticipant, uint256 _dgxRewardsAsModerator)
+    {
+        UserRewards memory data = getUserRewardsStruct(_user);
 
         data.effectiveDGDBalance = daoCalculatorService().calculateUserEffectiveBalance(
             data.qInfo.minimalParticipationPoint,
             data.qInfo.quarterPointScalingFactor,
             data.qInfo.reputationPointScalingFactor,
             daoPointsStorage().getQuarterPoint(_user, data.lastParticipatedQuarter),
+
+            // RP has been updated at the beginning of the lastParticipatedQuarter in
+            // a call to updateRewardsAndReputationBeforeNewQuarter(); It should not have changed since then
             daoPointsStorage().getReputation(_user),
+
+            // lockedDGDStake should have stayed the same throughout since the lastParticipatedQuarter
+            // if this participant has done anything (lock/unlock/continue) to change the lockedDGDStake,
+            // updateUserRewardsForLastParticipatingQuarter, and hence this function, would have been called first before the lockedDGDStake is changed
             daoStakeStorage().lockedDGDStake(_user)
         );
 
@@ -300,12 +358,20 @@ contract DaoRewardsManager is DaoCommon {
             data.qInfo.moderatorQuarterPointScalingFactor,
             data.qInfo.moderatorReputationPointScalingFactor,
             daoPointsStorage().getQuarterModeratorPoint(_user, data.lastParticipatedQuarter),
+
+            // RP has been updated at the beginning of the lastParticipatedQuarter in
+            // a call to updateRewardsAndReputationBeforeNewQuarter();
             daoPointsStorage().getReputation(_user),
+
+            // lockedDGDStake should have stayed the same throughout since the lastParticipatedQuarter
+            // if this participant has done anything (lock/unlock/continue) to change the lockedDGDStake,
+            // updateUserRewardsForLastParticipatingQuarter would have been called first before the lockedDGDStake is changed
             daoStakeStorage().lockedDGDStake(_user)
         );
 
+        // will not need to calculate if the totalEffectiveDGDLastQuarter is 0 (no one participated)
         if (daoRewardsStorage().readTotalEffectiveDGDLastQuarter(data.lastParticipatedQuarter.add(1)) > 0) {
-            _userClaimableDgx = _userClaimableDgx.add(
+            _dgxRewardsAsParticipant =
                 data.effectiveDGDBalance
                 .mul(daoRewardsStorage().readRewardsPoolOfLastQuarter(
                     data.lastParticipatedQuarter.add(1)
@@ -317,12 +383,12 @@ contract DaoRewardsManager is DaoCommon {
                 .div(daoRewardsStorage().readTotalEffectiveDGDLastQuarter(
                     data.lastParticipatedQuarter.add(1)
                 ))
-                .div(getUintConfig(CONFIG_PORTION_TO_MODERATORS_DEN))
-            );
+                .div(getUintConfig(CONFIG_PORTION_TO_MODERATORS_DEN));
         }
 
+        // will not need to calculate if the totalEffectiveModeratorDGDLastQuarter is 0 (no one participated)
         if (daoRewardsStorage().readTotalEffectiveModeratorDGDLastQuarter(data.lastParticipatedQuarter.add(1)) > 0) {
-            _userClaimableDgx = _userClaimableDgx.add(
+            _dgxRewardsAsModerator =
                 data.effectiveModeratorDGDBalance
                 .mul(daoRewardsStorage().readRewardsPoolOfLastQuarter(
                     data.lastParticipatedQuarter.add(1)
@@ -333,17 +399,8 @@ contract DaoRewardsManager is DaoCommon {
                 .div(daoRewardsStorage().readTotalEffectiveModeratorDGDLastQuarter(
                     data.lastParticipatedQuarter.add(1)
                 ))
-                .div(getUintConfig(CONFIG_PORTION_TO_MODERATORS_DEN))
-            );
+                .div(getUintConfig(CONFIG_PORTION_TO_MODERATORS_DEN));
         }
-
-        // update claimableDGXs. The calculation needs to take into account demurrage since the
-        // dgxDistributionDay of the last quarter as well
-        daoRewardsStorage().updateClaimableDGX(_user, _userClaimableDgx);
-
-        // update lastQuarterThatRewardsWasUpdated
-        daoRewardsStorage().updateLastQuarterThatRewardsWasUpdated(_user, data.lastParticipatedQuarter);
-        _valid = true;
     }
 
     /**
@@ -366,7 +423,7 @@ contract DaoRewardsManager is DaoCommon {
         DaoStructs.IntermediateResults memory interResults;
         (
             interResults.countedUntil,,,
-            info.totalEffectiveDGDLastQuarter
+            info.totalEffectiveDGDPreviousQuarter
         ) = intermediateResultsStorage().getIntermediateResults(keccak256(abi.encodePacked(INTERMEDIATE_DGD_IDENTIFIER, info.previousQuarter)));
 
         _operations = sumEffectiveBalance(info, false, _operations, interResults);
@@ -395,10 +452,10 @@ contract DaoRewardsManager is DaoCommon {
 
         daoRewardsStorage().updateQuarterInfo(
             info.previousQuarter.add(1),
-            getUintConfig(CONFIG_MINIMAL_PARTICIPATION_POINT),
+            getUintConfig(CONFIG_MINIMAL_QUARTER_POINT),
             getUintConfig(CONFIG_QUARTER_POINT_SCALING_FACTOR),
             getUintConfig(CONFIG_REPUTATION_POINT_SCALING_FACTOR),
-            info.totalEffectiveDGDLastQuarter,
+            info.totalEffectiveDGDPreviousQuarter,
 
             getUintConfig(CONFIG_MODERATOR_MINIMAL_QUARTER_POINT),
             getUintConfig(CONFIG_MODERATOR_QUARTER_POINT_SCALING_FACTOR),
@@ -458,7 +515,7 @@ contract DaoRewardsManager is DaoCommon {
                     daoStakeStorage().lockedDGDStake(info.currentUser)
                 ));
             } else {
-                info.totalEffectiveDGDLastQuarter = info.totalEffectiveDGDLastQuarter.add(daoCalculatorService().calculateUserEffectiveBalance(
+                info.totalEffectiveDGDPreviousQuarter = info.totalEffectiveDGDPreviousQuarter.add(daoCalculatorService().calculateUserEffectiveBalance(
                     info.qInfo.minimalParticipationPoint,
                     info.qInfo.quarterPointScalingFactor,
                     info.qInfo.reputationPointScalingFactor,
@@ -480,7 +537,7 @@ contract DaoRewardsManager is DaoCommon {
             keccak256(abi.encodePacked(_badgeCalculation ? INTERMEDIATE_MODERATOR_DGD_IDENTIFIER : INTERMEDIATE_DGD_IDENTIFIER, info.previousQuarter)),
             _lastAddress,
             0,0,
-            _badgeCalculation ? info.totalEffectiveModeratorDGDLastQuarter : info.totalEffectiveDGDLastQuarter
+            _badgeCalculation ? info.totalEffectiveModeratorDGDLastQuarter : info.totalEffectiveDGDPreviousQuarter
         );
 
         _operationsLeft = _operations.sub(info.userCount);
@@ -495,7 +552,7 @@ contract DaoRewardsManager is DaoCommon {
             _qInfo.minimalParticipationPoint,
             _qInfo.quarterPointScalingFactor,
             _qInfo.reputationPointScalingFactor,
-            _qInfo.totalEffectiveDGDLastQuarter
+            _qInfo.totalEffectiveDGDPreviousQuarter
         ) = daoRewardsStorage().readQuarterParticipantInfo(_quarterIndex);
         (
             _qInfo.moderatorMinimalParticipationPoint,

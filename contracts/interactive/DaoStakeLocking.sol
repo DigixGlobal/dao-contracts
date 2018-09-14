@@ -19,8 +19,18 @@ contract DaoStakeLocking is DaoCommon {
 
     address public dgdToken;
     address public dgdBadgeToken;
+
+    // carbonVoting1 refers to this carbon vote: https://digix.global/carbonvote/1/#/
+    // the contract is at: https://etherscan.io/address/0x9f56f330bceb9d4e756be94581298673e94ed592#code
     address public carbonVoting1;
+
+    // carbonVoting2 refers to this carbon vote: https://digix.global/carbonvote/2/#/
+    // the contract is at: https://etherscan.io/address/0xdec6c0dc7004ba23940c9ee7cb4a0528ec4c0580#code
     address public carbonVoting2;
+
+    // The two carbon votes implement the NumberCarbonVoting interface, which has a voted(address) function to find out
+    // whether an address has voted in the carbon vote.
+    // Addresses will be awarded a fixed amount of Reputation Point (CONFIG_CARBON_VOTE_REPUTATION_BONUS) for every carbon votes that they participated in
 
     struct StakeInformation {
         // this is the amount of DGDs that a user has actualy locked up
@@ -35,6 +45,7 @@ contract DaoStakeLocking is DaoCommon {
         uint256 totalLockedDGDStake;
     }
 
+    //done
     constructor(
         address _resolver,
         address _dgdToken,
@@ -79,7 +90,9 @@ contract DaoStakeLocking is DaoCommon {
         require(!daoStakeStorage().redeemedBadge(msg.sender));
 
         // Can only redeem a badge if the reputation has been updated to the previous quarter.
-        // In other words, this holder must have called either lockDGD/withdrawDGD/confirmContinuedParticipation in this quarter
+        // In other words, this holder must have called either lockDGD/withdrawDGD/confirmContinuedParticipation in this quarter (hence, rewards for last quarter was already calculated)
+        // This is to prevent users from changing the Reputation point that would be used to calculate their rewards for the previous quarter.
+
         // Note that after lockDGD/withdrawDGD/confirmContinuedParticipation is called, the reputation is always updated to the previous quarter
         require(
             daoRewardsStorage().lastQuarterThatReputationWasUpdated(msg.sender) == (currentQuarterIndex() - 1)
@@ -122,7 +135,7 @@ contract DaoStakeLocking is DaoCommon {
         daoStakeStorage().updateTotalLockedDGDStake(_newInfo.totalLockedDGDStake);
 
         // This has to happen at least once before user can participate in next quarter
-        daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
+        daoRewardsManager().updateRewardsAndReputationBeforeNewQuarter(msg.sender);
 
         refreshModeratorStatus(msg.sender, _info, _newInfo);
 
@@ -176,7 +189,7 @@ contract DaoStakeLocking is DaoCommon {
         _newInfo.totalLockedDGDStake = _newInfo.totalLockedDGDStake.sub(_amount);
 
         // This has to happen at least once before user can participate in next quarter
-        daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
+        daoRewardsManager().updateRewardsAndReputationBeforeNewQuarter(msg.sender);
 
         refreshModeratorStatus(msg.sender, _info, _newInfo);
 
@@ -217,7 +230,7 @@ contract DaoStakeLocking is DaoCommon {
         ifGlobalRewardsSet(currentQuarterIndex())
     {
         StakeInformation memory _info = getStakeInformation(msg.sender);
-        daoRewardsManager().updateRewardsBeforeNewQuarter(msg.sender);
+        daoRewardsManager().updateRewardsAndReputationBeforeNewQuarter(msg.sender);
         StakeInformation memory _infoAfter = refreshDGDStake(msg.sender, _info, true);
         refreshModeratorStatus(msg.sender, _info, _infoAfter);
 

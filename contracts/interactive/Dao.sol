@@ -49,6 +49,7 @@ contract Dao is DaoCommon, Claimable {
         _contract = DaoVotingClaims(get_contract(CONTRACT_DAO_VOTING_CLAIMS));
     }
 
+    //done
     /**
     @notice Set addresses for the new Dao and DaoFundingManager contracts
     @dev This is the first step of the 2-step migration
@@ -74,8 +75,10 @@ contract Dao is DaoCommon, Claimable {
 
     /**
     @notice Migrate this DAO to a new DAO contract
-    @dev Migration can be done only during the locking phase, after the global rewards for current quarter are set.
+    @dev This is the second step of the 2-step migration
+         Migration can only be done during the locking phase, after the global rewards for current quarter are set.
          This is to make sure that there is no rewards calculation pending before the DAO is migrated to new contracts
+         The addresses of the new Dao contracts have to be provided again, and be double checked against the addresses that were set in setNewDaoContracts()
     @param _newDaoContract Address of the new DAO contract
     @param _newDaoFundingManager Address of the new DaoFundingManager contract, which would receive the remaining ETHs in this DaoFundingManager
     @param _newDaoRewardsManager Address of the new daoRewardsManager contract, which would receive the claimableDGXs from this daoRewardsManager

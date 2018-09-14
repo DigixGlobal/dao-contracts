@@ -487,7 +487,7 @@ const fundDao = async function (web3, accounts, contracts) {
   await web3.eth.sendTransaction({
     from: accounts[0],
     to: contracts.daoFundingManager.address,
-    value: web3.toWei(1000, 'ether'),
+    value: web3.toWei(10000, 'ether'),
   });
 };
 

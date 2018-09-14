@@ -59,9 +59,9 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         uint256 _minimalParticipationPoint,
         uint256 _quarterPointScalingFactor,
         uint256 _reputationPointScalingFactor,
-        uint256 _totalEffectiveDGDLastQuarter,
+        uint256 _totalEffectiveDGDPreviousQuarter,
 
-        uint256 _moderatorMinimalParticipationPoint,
+        uint256 _moderatorMinimalQuarterPoint,
         uint256 _moderatorQuarterPointScalingFactor,
         uint256 _moderatorReputationPointScalingFactor,
         uint256 _totalEffectiveModeratorDGDLastQuarter,
@@ -76,9 +76,9 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         allQuartersInfo[_quarterIndex].minimalParticipationPoint = _minimalParticipationPoint;
         allQuartersInfo[_quarterIndex].quarterPointScalingFactor = _quarterPointScalingFactor;
         allQuartersInfo[_quarterIndex].reputationPointScalingFactor = _reputationPointScalingFactor;
-        allQuartersInfo[_quarterIndex].totalEffectiveDGDLastQuarter = _totalEffectiveDGDLastQuarter;
+        allQuartersInfo[_quarterIndex].totalEffectiveDGDPreviousQuarter = _totalEffectiveDGDPreviousQuarter;
 
-        allQuartersInfo[_quarterIndex].moderatorMinimalParticipationPoint = _moderatorMinimalParticipationPoint;
+        allQuartersInfo[_quarterIndex].moderatorMinimalParticipationPoint = _moderatorMinimalQuarterPoint;
         allQuartersInfo[_quarterIndex].moderatorQuarterPointScalingFactor = _moderatorQuarterPointScalingFactor;
         allQuartersInfo[_quarterIndex].moderatorReputationPointScalingFactor = _moderatorReputationPointScalingFactor;
         allQuartersInfo[_quarterIndex].totalEffectiveModeratorDGDLastQuarter = _totalEffectiveModeratorDGDLastQuarter;
@@ -137,9 +137,9 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
             uint256 _minimalParticipationPoint,
             uint256 _quarterPointScalingFactor,
             uint256 _reputationPointScalingFactor,
-            uint256 _totalEffectiveDGDLastQuarter,
+            uint256 _totalEffectiveDGDPreviousQuarter,
 
-            uint256 _moderatorMinimalParticipationPoint,
+            uint256 _moderatorMinimalQuarterPoint,
             uint256 _moderatorQuarterPointScalingFactor,
             uint256 _moderatorReputationPointScalingFactor,
             uint256 _totalEffectiveModeratorDGDLastQuarter,
@@ -152,8 +152,8 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         _minimalParticipationPoint = allQuartersInfo[_quarterIndex].minimalParticipationPoint;
         _quarterPointScalingFactor = allQuartersInfo[_quarterIndex].quarterPointScalingFactor;
         _reputationPointScalingFactor = allQuartersInfo[_quarterIndex].reputationPointScalingFactor;
-        _totalEffectiveDGDLastQuarter = allQuartersInfo[_quarterIndex].totalEffectiveDGDLastQuarter;
-        _moderatorMinimalParticipationPoint = allQuartersInfo[_quarterIndex].moderatorMinimalParticipationPoint;
+        _totalEffectiveDGDPreviousQuarter = allQuartersInfo[_quarterIndex].totalEffectiveDGDPreviousQuarter;
+        _moderatorMinimalQuarterPoint = allQuartersInfo[_quarterIndex].moderatorMinimalParticipationPoint;
         _moderatorQuarterPointScalingFactor = allQuartersInfo[_quarterIndex].moderatorQuarterPointScalingFactor;
         _moderatorReputationPointScalingFactor = allQuartersInfo[_quarterIndex].moderatorReputationPointScalingFactor;
         _totalEffectiveModeratorDGDLastQuarter = allQuartersInfo[_quarterIndex].totalEffectiveModeratorDGDLastQuarter;
@@ -180,13 +180,13 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         public
         constant
         returns (
-            uint256 _moderatorMinimalParticipationPoint,
+            uint256 _moderatorMinimalQuarterPoint,
             uint256 _moderatorQuarterPointScalingFactor,
             uint256 _moderatorReputationPointScalingFactor,
             uint256 _totalEffectiveModeratorDGDLastQuarter
         )
     {
-        _moderatorMinimalParticipationPoint = allQuartersInfo[_quarterIndex].moderatorMinimalParticipationPoint;
+        _moderatorMinimalQuarterPoint = allQuartersInfo[_quarterIndex].moderatorMinimalParticipationPoint;
         _moderatorQuarterPointScalingFactor = allQuartersInfo[_quarterIndex].moderatorQuarterPointScalingFactor;
         _moderatorReputationPointScalingFactor = allQuartersInfo[_quarterIndex].moderatorReputationPointScalingFactor;
         _totalEffectiveModeratorDGDLastQuarter = allQuartersInfo[_quarterIndex].totalEffectiveModeratorDGDLastQuarter;
@@ -199,13 +199,13 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
             uint256 _minimalParticipationPoint,
             uint256 _quarterPointScalingFactor,
             uint256 _reputationPointScalingFactor,
-            uint256 _totalEffectiveDGDLastQuarter
+            uint256 _totalEffectiveDGDPreviousQuarter
         )
     {
         _minimalParticipationPoint = allQuartersInfo[_quarterIndex].minimalParticipationPoint;
         _quarterPointScalingFactor = allQuartersInfo[_quarterIndex].quarterPointScalingFactor;
         _reputationPointScalingFactor = allQuartersInfo[_quarterIndex].reputationPointScalingFactor;
-        _totalEffectiveDGDLastQuarter = allQuartersInfo[_quarterIndex].totalEffectiveDGDLastQuarter;
+        _totalEffectiveDGDPreviousQuarter = allQuartersInfo[_quarterIndex].totalEffectiveDGDPreviousQuarter;
     }
 
     function readDgxDistributionDay(uint256 _quarterIndex)
@@ -219,9 +219,9 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
     function readTotalEffectiveDGDLastQuarter(uint256 _quarterIndex)
         public
         view
-        returns (uint256 _totalEffectiveDGDLastQuarter)
+        returns (uint256 _totalEffectiveDGDPreviousQuarter)
     {
-        _totalEffectiveDGDLastQuarter = allQuartersInfo[_quarterIndex].totalEffectiveDGDLastQuarter;
+        _totalEffectiveDGDPreviousQuarter = allQuartersInfo[_quarterIndex].totalEffectiveDGDPreviousQuarter;
     }
 
     function readTotalEffectiveModeratorDGDLastQuarter(uint256 _quarterIndex)

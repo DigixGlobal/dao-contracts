@@ -211,8 +211,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     function allocateFunding(bytes32 _proposalId, uint256 _index)
         internal
     {
-        uint256 _funding;
-        (, _funding) = daoStorage().readProposalMilestone(_proposalId, _index);
+        uint256 _funding = daoStorage().readProposalMilestone(_proposalId, _index);
         uint256[] memory _milestoneFundings;
         (_milestoneFundings,) = daoStorage().readProposalFunding(_proposalId);
 

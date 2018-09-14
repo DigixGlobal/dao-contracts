@@ -259,8 +259,8 @@ const claimDraftVotingResult = async function (contracts) {
 const votingCommitRound = async function (contracts, addressOf) {
   console.log('now = ', getCurrentTimestamp());
   await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
-    await printProposalDetails(contracts, proposals[proposalIndex]);
     if (proposalIndex === 1) return;
+    await printProposalDetails(contracts, proposals[proposalIndex]);
     await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
       await contracts.daoVoting.commitVoteOnProposal(
         proposals[proposalIndex].id,
@@ -381,7 +381,11 @@ const interimVotingRevealRound = async function (contracts, addressOf) {
 const interimvotingRoundClaim = async function (contracts) {
   await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
     if (proposalIndex === 1) return;
+    console.log('isMainPhase? ', await contracts.daoRewardsManager.isMainPhase.call());
+    console.log('interim voting claim for proposal ', proposalIndex, ' id = ', proposals[proposalIndex].id, ' from proposer ', proposals[proposalIndex].proposer);
+    await printProposalDetails(contracts, proposals[proposalIndex]);
     await contracts.daoVotingClaims.claimProposalVotingResult(proposals[proposalIndex].id, bN(1), bN(30), { from: proposals[proposalIndex].proposer });
+    console.log('Done interim voting claim for proposal ', proposalIndex);
   });
 };
 
@@ -660,7 +664,7 @@ module.exports = async function () {
     await interimVotingRevealRound(contracts, addressOf);
     console.log('done with interim voting reveal round');
 
-    await waitForRevealPhaseToGetOver(contracts, addressOf, proposals[0].id, bN(1), bN, web3);
+    await waitForRevealPhaseToGetOver(contracts, addressOf, proposals[3].id, bN(1), bN, web3);
     console.log('done waitForRevealPhaseToGetOver');
     await interimvotingRoundClaim(contracts);
     console.log('done with claiming interim round voting');

@@ -26,7 +26,7 @@ contract DaoCommon is IdentityCommon {
     @return _isReplaced true if it is already replaced
     */
     function isDaoNotReplaced()
-        internal
+        public
         constant
         returns (bool _isNotReplaced)
     {
@@ -40,7 +40,7 @@ contract DaoCommon is IdentityCommon {
     @return _isLockingPhase true if it is in the locking phase
     */
     function isLockingPhase()
-        internal
+        public
         constant
         returns (bool _isLockingPhase)
     {
@@ -54,7 +54,7 @@ contract DaoCommon is IdentityCommon {
     @return _isMainPhase true if it is in a main phase
     */
     function isMainPhase()
-        internal
+        public
         constant
         returns (bool _isMainPhase)
     {
