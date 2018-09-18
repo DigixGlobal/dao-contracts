@@ -33,3 +33,9 @@ moderator rewards pool (CONFIG_PORTION_TO_MODERATORS_NUM/CONFIG_PORTION_TO_MODER
     - withdraw all their DGDs in any locking phase, or after the DAO is migrated
     - lock DGDs and participate in DAO activities (creating proposals/voting) in any quarter.
     - withdraw all of their claimableDGXs, minus the appropriate demurrage fees
+
+1. The collateral can only be claimed back in these scenarios:
+    * Before the proposal is finalized, by calling closeProposal()
+    * After all milestones are done and the final voting round is passed
+
+1. The number of non-Digix proposals that goes through the Voting Round (VotingRound index 0) in a particular quarter must be <= get_uint_config(CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER)

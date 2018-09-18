@@ -46,6 +46,7 @@ contract DaoFundingManager is DaoCommon {
         msg.sender.transfer(_funding);
     }
 
+    //done
     /**
     @notice Function to refund the collateral to _receiver
     @dev Can only be called from the Dao contract
@@ -54,22 +55,25 @@ contract DaoFundingManager is DaoCommon {
       "_success": "Boolean, true if refund was successful"
     }
     */
-    function refundCollateral(address _receiver)
+    function refundCollateral(address _receiver, bytes32 _proposalId)
         public
         returns (bool _success)
     {
         require(sender_is_from([CONTRACT_DAO, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES]));
-        refundCollateralInternal(_receiver);
+        refundCollateralInternal(_receiver, _proposalId);
         _success = true;
     }
 
-    function refundCollateralInternal(address _receiver)
+    //done
+    function refundCollateralInternal(address _receiver, bytes32 _proposalId)
         internal
     {
-        daoFundingStorage().withdrawEth(getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT));
-        _receiver.transfer(getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT));
+        uint256 _collateralAmount = daoStorage().readProposalCollateralAmount(_proposalId);
+        daoFundingStorage().withdrawEth(_collateralAmount);
+        _receiver.transfer(_collateralAmount);
     }
 
+    //done
     /**
     @notice Function to move funds to a new DAO
     @param _destinationForDaoFunds Ethereum contract address of the new DaoFundingManager

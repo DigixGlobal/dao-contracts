@@ -301,7 +301,6 @@ contract('DaoStakeLocking', function (accounts) {
       const contractBalanceBefore = await contracts.dgdToken.balanceOf.call(contracts.daoStakeLocking.address);
       const totalLockedDGDBefore = await contracts.daoStakeStorage.totalLockedDGDStake.call();
 
-      assert.deepEqual(await contracts.daoStakeLocking.withdrawDGD.call(withdrawAmount, { from: addressOf.dgdHolders[1] }), true);
       await contracts.daoStakeLocking.withdrawDGD(withdrawAmount, { from: addressOf.dgdHolders[1] });
 
       // verify that dgdHolders[1] is still a participant
@@ -326,7 +325,6 @@ contract('DaoStakeLocking', function (accounts) {
       const contractBalanceBefore = await contracts.dgdToken.balanceOf.call(contracts.daoStakeLocking.address);
       const totalLockedDGDBefore = await contracts.daoStakeStorage.totalLockedDGDStake.call();
 
-      assert.deepEqual(await contracts.daoStakeLocking.withdrawDGD.call(withdrawAmount, { from: addressOf.dgdHolders[1] }), true);
       await contracts.daoStakeLocking.withdrawDGD(withdrawAmount, { from: addressOf.dgdHolders[1] });
 
       // verify that dgdHolders[1] is still a participant
@@ -423,6 +421,7 @@ contract('DaoStakeLocking', function (accounts) {
       assert.deepEqual(await contracts.daoRewardsStorage.lastParticipatedQuarter.call(addressOf.dgdHolders[1]), bN(2));
       assert.deepEqual(await contracts.daoRewardsStorage.previousLastParticipatedQuarter.call(addressOf.dgdHolders[1]), bN(1));
       // now they withdraw everything
+
       await contracts.daoStakeLocking.withdrawDGD(stake1, { from: addressOf.dgdHolders[1] });
       // the lastParticipatedQuarter should be set back to 1
       assert.deepEqual(await contracts.daoRewardsStorage.lastParticipatedQuarter.call(addressOf.dgdHolders[1]), bN(1));
@@ -430,6 +429,8 @@ contract('DaoStakeLocking', function (accounts) {
       // everybody continues participation in DigixDAO
       const participants = getParticipants(addressOf, bN);
       await a.map(indexRange(0, participants.length), 20, async (index) => {
+        const stakeTemp = await contracts.daoStakeStorage.actualLockedDGD.call(participants[index].address);
+        if (stakeTemp.toNumber() === 0) return;
         await contracts.daoStakeLocking.confirmContinuedParticipation({ from: participants[index].address });
       });
 

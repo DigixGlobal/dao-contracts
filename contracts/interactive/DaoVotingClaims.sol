@@ -347,7 +347,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         internal
     {
         daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_CLAIMED);
-        require(daoFundingManager().refundCollateral(daoStorage().readProposalProposer(_proposalId)));
+        require(daoFundingManager().refundCollateral(daoStorage().readProposalProposer(_proposalId), _proposalId));
     }
 
     function addBonusReputation(address[] _voters, uint256 _n)

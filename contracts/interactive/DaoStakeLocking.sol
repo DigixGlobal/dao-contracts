@@ -7,6 +7,7 @@ import "../service/DaoCalculatorService.sol";
 import "./DaoRewardsManager.sol";
 import "./../interface/NumberCarbonVoting.sol";
 
+//done
 /**
 @title Contract to handle staking/withdrawing of DGDs for participation in DAO
 @author Digix Holdings
@@ -14,7 +15,7 @@ import "./../interface/NumberCarbonVoting.sol";
 contract DaoStakeLocking is DaoCommon {
 
     event RedeemBadge(address _user);
-    event LockDGD(address _user, uint256 _amount, uint256 _effectiveAmount);
+    event LockDGD(address _user, uint256 _amount, uint256 _currentLockedDGDStake);
     event WithdrawDGD(address _user, uint256 _amount);
 
     address public dgdToken;
@@ -111,11 +112,12 @@ contract DaoStakeLocking is DaoCommon {
         emit RedeemBadge(msg.sender);
     }
 
+    //done
     /**
     @notice Function to lock DGD tokens to participate in the DAO
     @dev Users must `approve` the DaoStakeLocking contract to transfer DGDs from them
          Contracts are not allowed to participate in DigixDAO
-    @param _amount Number of DGDs to lock
+    @param _amount Amount of DGDs to lock
     */
     function lockDGD(uint256 _amount)
         public
@@ -137,25 +139,28 @@ contract DaoStakeLocking is DaoCommon {
         // This has to happen at least once before user can participate in next quarter
         daoRewardsManager().updateRewardsAndReputationBeforeNewQuarter(msg.sender);
 
+        //since Reputation is updated, we need to refresh moderator status
         refreshModeratorStatus(msg.sender, _info, _newInfo);
 
         uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(msg.sender);
         uint256 _currentQuarter = currentQuarterIndex();
 
-        //TODO: there might be a case when user locked in very small amount A that is less than Minimum locked DGD?
-        // then, lock again in the middle of the quarter. This will not take into account that A was staked in earlier
+        // Note: there might be a case when user locked in very small amount A that is less than Minimum locked DGD
+        // then, lock again in the middle of the quarter. This will not take into account that A was staked in earlier. Its as if A is only staked in now.
+        // Its not ideal, but we will keep it this way.
         if (_newInfo.userLockedDGDStake >= getUintConfig(CONFIG_MINIMUM_LOCKED_DGD)) {
-            daoStakeStorage().addToParticipantList(msg.sender);
+            daoStakeStorage().addToParticipantList(msg.sender); // this will not add a second duplicate of the address if its already there
 
             // if this is the first time we lock/unlock/continue in this quarter, save the previous lastParticipatedQuarter
+            // the purpose of the previousLastParticipatedQuarter is so that, if this participant withdraw all his DGD after locking in,
+            // we will revert his lastParticipatedQuarter to the previousLastParticipatedQuarter, so as to not screw up any calculation
+            // that uses the lastParticipatedQuarter (for example, for calculating the Reputation penalty for not participating in a number of quarters)
             if (_lastParticipatedQuarter < _currentQuarter) {
                 daoRewardsStorage().updatePreviousLastParticipatedQuarter(msg.sender, _lastParticipatedQuarter);
+                daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, _currentQuarter);
             }
 
-            daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, _currentQuarter);
-            /* daoRewardsStorage().updateLastQuarterThatRewardsWasUpdated(msg.sender, _currentQuarter.sub(1)); */
-
-            // if this is the first time they're locking tokens
+            // if this is the first time they're locking tokens, ever,
             // reward them with bonus for carbon voting activity
             if (_lastParticipatedQuarter == 0) {
                 rewardCarbonVotingBonus(msg.sender);
@@ -167,6 +172,7 @@ contract DaoStakeLocking is DaoCommon {
         emit LockDGD(msg.sender, _amount, _newInfo.userLockedDGDStake);
     }
 
+    //done
     /**
     @notice Function to withdraw DGD tokens from this contract (can only be withdrawn in the locking phase of quarter)
     @param _amount Number of DGD tokens to withdraw
@@ -177,11 +183,15 @@ contract DaoStakeLocking is DaoCommon {
     function withdrawDGD(uint256 _amount)
         public
         ifGlobalRewardsSet(currentQuarterIndex())
-        returns (bool _success)
     {
-        require(isLockingPhase() || daoUpgradeStorage().isReplacedByNewDao());
+        require(isLockingPhase() || daoUpgradeStorage().isReplacedByNewDao()); // If the DAO is already replaced, everyone is free to withdraw their DGDs anytime
         StakeInformation memory _info = getStakeInformation(msg.sender);
         StakeInformation memory _newInfo = refreshDGDStake(msg.sender, _info, false);
+
+        // This address must have at least some DGDs locked in, to withdraw
+        // Otherwise, its meaningless anw
+        // This also makes sure that the first participation ever must be a lockDGD() call, to avoid unnecessary complications
+        require(_info.userActualLockedDGD > 0);
 
         require(_info.userActualLockedDGD >= _amount);
         _newInfo.userActualLockedDGD = _newInfo.userActualLockedDGD.sub(_amount);
@@ -191,6 +201,7 @@ contract DaoStakeLocking is DaoCommon {
         // This has to happen at least once before user can participate in next quarter
         daoRewardsManager().updateRewardsAndReputationBeforeNewQuarter(msg.sender);
 
+        //since Reputation is updated, we need to refresh moderator status
         refreshModeratorStatus(msg.sender, _info, _newInfo);
 
         uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(msg.sender);
@@ -207,41 +218,48 @@ contract DaoStakeLocking is DaoCommon {
             // if this is the first time we lock/unlock/continue in this quarter, save the previous lastParticipatedQuarter
             if (_lastParticipatedQuarter < _currentQuarter) {
                 daoRewardsStorage().updatePreviousLastParticipatedQuarter(msg.sender, _lastParticipatedQuarter);
+                daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, _currentQuarter);
             }
 
-            daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, _currentQuarter);
         }
 
         daoStakeStorage().updateUserDGDStake(msg.sender, _newInfo.userActualLockedDGD, _newInfo.userLockedDGDStake);
         daoStakeStorage().updateTotalLockedDGDStake(_newInfo.totalLockedDGDStake);
 
         require(ERC20(dgdToken).transfer(msg.sender, _amount));
-        _success = true;
 
         emit WithdrawDGD(msg.sender, _amount);
     }
 
+    //done
     /**
     @notice Function to be called by someone who doesnt change their DGDStake for the next quarter to confirm that they're participating
-    @dev This can be done in the middle of the quarter as well
+    @dev This can be done in the middle of the quarter as well.
+         If someone just lets their DGDs sit in the DAO, and don't call this function, they are not counted as a participant in the quarter.
     */
     function confirmContinuedParticipation()
         public
         ifGlobalRewardsSet(currentQuarterIndex())
     {
         StakeInformation memory _info = getStakeInformation(msg.sender);
-        daoRewardsManager().updateRewardsAndReputationBeforeNewQuarter(msg.sender);
+
+        // This address must have at least some DGDs locked in, to confirmContinuedParticipation
+        // Otherwise, its meaningless anw
+        // This also makes sure that the first participation ever must be a lockDGD() call, to avoid unnecessary complications
+        require(_info.userActualLockedDGD > 0);
+
         StakeInformation memory _infoAfter = refreshDGDStake(msg.sender, _info, true);
+        daoRewardsManager().updateRewardsAndReputationBeforeNewQuarter(msg.sender);
         refreshModeratorStatus(msg.sender, _info, _infoAfter);
 
         uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(msg.sender);
         uint256 _currentQuarter = currentQuarterIndex();
 
-        // if this is the first time we lock/unlock/continue in this quarter, save the previous lastParticipatedQuarter
+        // if this is the first time we lock/unlock/continue in this quarter, save the previous lastParticipatedQuarter and update the lastParticipatedQuarter
         if (_lastParticipatedQuarter < _currentQuarter) {
             daoRewardsStorage().updatePreviousLastParticipatedQuarter(msg.sender, _lastParticipatedQuarter);
+            daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, _currentQuarter);
         }
-        daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, _currentQuarter);
     }
 
     //done
@@ -326,6 +344,7 @@ contract DaoStakeLocking is DaoCommon {
         _info.totalLockedDGDStake = daoStakeStorage().totalLockedDGDStake();
     }
 
+    //done
     /**
     @notice Reward the voters of carbon voting rounds with initial bonus reputation
     @dev This is only called when they're locking tokens for the first time, enough tokens to be a participant
@@ -345,6 +364,11 @@ contract DaoStakeLocking is DaoCommon {
             daoPointsStorage().addReputation(_user, getUintConfig(CONFIG_CARBON_VOTE_REPUTATION_BONUS));
         }
 
+        // we changed reputation, so we need to update the last quarter that reputation was updated
+        // This is to take care of this situation:
+        // Holder A locks DGD for the first time in quarter 5, gets some bonus RP for the carbon votes
+        // Then, A withdraw all his DGDs right away. Essentially, he's not participating in quarter 5 anymore
+        // Now, when he comes back at quarter 10, he should be deducted reputation for 5 quarters that he didnt participated in: from quarter 5 to quarter 9
         daoRewardsStorage().updateLastQuarterThatReputationWasUpdated(msg.sender, currentQuarterIndex().sub(1));
 
         // set that this user's carbon voting bonus has been given out

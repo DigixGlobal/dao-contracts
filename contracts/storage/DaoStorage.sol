@@ -348,6 +348,22 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         _finalReward = proposalsById[_proposalId].proposalVersions[_finalVersion].finalReward;
     }
 
+    /**
+    @notice Read the number of milestones of a finalized proposal
+    @return {
+        "_milestoneCount": "the number of milestones"
+    }
+    */
+    function readMilestoneCount(bytes32 _proposalId)
+        public
+        constant
+        returns (uint256 _milestoneCount)
+    {
+        bytes32 _finalVersion = proposalsById[_proposalId].finalVersion;
+        require(_finalVersion != EMPTY_BYTES);
+        _milestoneCount = proposalsById[_proposalId].proposalVersions[_finalVersion].milestoneFundings.length;
+    }
+
     function readProposalMilestone(bytes32 _proposalId, uint256 _index)
         public
         constant
@@ -442,6 +458,14 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         returns (uint256 _status)
     {
         _status = proposalsById[_proposalId].collateralStatus;
+    }
+
+    function readProposalCollateralAmount(bytes32 _proposalId)
+        public
+        constant
+        returns (uint256 _amount)
+    {
+        _amount = proposalsById[_proposalId].collateralAmount;
     }
 
     /// @notice Read the additional docs that are added after the proposal is finalized
@@ -619,6 +643,13 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     {
         require(sender_is_from([CONTRACT_DAO_VOTING_CLAIMS, CONTRACT_DAO_FUNDING_MANAGER, CONTRACT_DAO]));
         proposalsById[_proposalId].collateralStatus = _status;
+    }
+
+    function setProposalCollateralAmount(bytes32 _proposalId, uint256 _amount)
+        public
+    {
+        require(sender_is(CONTRACT_DAO));
+        proposalsById[_proposalId].collateralAmount = _amount;
     }
 
     function updateProposalPRL(

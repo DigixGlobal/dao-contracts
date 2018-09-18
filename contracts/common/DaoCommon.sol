@@ -505,20 +505,28 @@ contract DaoCommon is IdentityCommon {
 
     //done
     /**
-    @notice Calculate the start of a specific milestone of a specific proposal
+    @notice Calculate the start of a specific milestone of a specific proposal.
+    @dev This is calculated from the voting start of the voting round preceding the milestone
+         This would throw if the voting start is 0 (the voting round has not started yet)
+         Note that if the milestoneIndex is exactly the same as the number of milestones,
+         This will just return the end of the last voting round.
     */
     function startOfMilestone(bytes32 _proposalId, uint256 _milestoneIndex)
         internal
         constant
         returns (uint256 _milestoneStart)
     {
+        uint256 _startOfPrecedingVotingRound = daoStorage().readProposalVotingTime(_proposalId, _milestoneIndex);
+        require(_startOfPrecedingVotingRound > 0);
+        // the preceding voting round must have started
+
         if (_milestoneIndex == 0) { // This is the 1st milestone, which starts after voting round 0
             _milestoneStart =
-                daoStorage().readProposalVotingTime(_proposalId, 0)
+                _startOfPrecedingVotingRound
                 .add(getUintConfig(CONFIG_VOTING_PHASE_TOTAL));
         } else { // if its the n-th milestone, it starts after voting round n-th
             _milestoneStart =
-                daoStorage().readProposalVotingTime(_proposalId, _milestoneIndex)
+                _startOfPrecedingVotingRound
                 .add(getUintConfig(CONFIG_INTERIM_PHASE_TOTAL));
         }
     }

@@ -127,6 +127,7 @@ library DaoStructs {
         // Collateral can be in different states
         // refer COLLATERAL_STATUS_* in "./../common/DaoConstants.sol"
         uint256 collateralStatus;
+        uint256 collateralAmount;
 
         // The final version of the proposal
         // Every proposal needs to be finalized before it can be voted on

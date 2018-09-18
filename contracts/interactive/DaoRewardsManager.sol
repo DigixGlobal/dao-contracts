@@ -6,6 +6,7 @@ import "../lib/DaoStructs.sol";
 import "../service/DaoCalculatorService.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
+//done
 /**
 @title Contract to manage DGX rewards
 @author Digix Holdings
@@ -162,6 +163,7 @@ contract DaoRewardsManager is DaoCommon {
         updateUserReputationUntilPreviousQuarter(_user);
     }
 
+    //done
     // This function would ALWAYS make sure that the user's Reputation Point is updated for ALL activities that has happened
     // BEFORE this current quarter. These activities include:
     //  - Reputation bonus/penalty due to participation in all of the previous quarters
@@ -184,13 +186,8 @@ contract DaoRewardsManager is DaoCommon {
             return;
         }
 
-        //TODO
-
-
-        // the reputation is added/deducted after participation
-        // only if the last quarter that reputation was updated is one behind the last participated quarter
-        // basically this updateRPfromQP should only count for one quarter, the last one they participated in (and has not been accounted for)
-        // also if this is the first quarter they are participating in, no need to do this
+        // first, we calculate and update the reputation change due to the user's governance activities in lastParticipatedQuarter, if it is not already updated.
+        // reputation is not updated for lastParticipatedQuarter yet is equivalent to _lastQuarterThatReputationWasUpdated == _lastParticipatedQuarter - 1
         if (
             (_lastQuarterThatReputationWasUpdated.add(1) == _lastParticipatedQuarter)
         ) {
@@ -217,14 +214,18 @@ contract DaoRewardsManager is DaoCommon {
                     getUintConfig(CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN)
                 );
             }
+            _lastQuarterThatReputationWasUpdated = _lastParticipatedQuarter;
         }
 
-        // we always need to check if reputation has to be deducted for not locking tokens
-        // this case if already avoided if it was their first ever participation
-        // but sometimes, they may lock and withdraw tokens in the same quarter, to keep pushing up the last quarter that reputation was updated
-        // in this case, they must be fined for not locking tokens in that very quarter they skipped
+        // at this point, the _lastQuarterThatReputationWasUpdated MUST be at least the _lastParticipatedQuarter already
+        // Hence, any quarters between the _lastQuarterThatReputationWasUpdated and now must be a non-participating quarter,
+        // and this participant should be penalized for those.
+
+        // If this is their first ever participation, It is fine as well, as the reputation would be still be 0 after this step.
+        // note that the carbon vote's reputation bonus will be added after this, so its fine
+
         _reputationDeduction =
-            (currentQuarterIndex().sub(1).sub(MathHelper.max(_lastParticipatedQuarter, _lastQuarterThatReputationWasUpdated)))
+            (currentQuarterIndex().sub(1).sub(_lastQuarterThatReputationWasUpdated))
             .mul(
                 getUintConfig(CONFIG_MAXIMUM_REPUTATION_DEDUCTION)
                 .add(getUintConfig(CONFIG_PUNISHMENT_FOR_NOT_LOCKING))
@@ -234,6 +235,8 @@ contract DaoRewardsManager is DaoCommon {
         daoRewardsStorage().updateLastQuarterThatReputationWasUpdated(_user, currentQuarterIndex().sub(1));
     }
 
+    //done
+    // update ReputationPoint of a participant based on QuarterPoint/ModeratorQuarterPoint in a quarter
     function updateRPfromQP (
         address _user,
         uint256 _userQP,
@@ -403,8 +406,20 @@ contract DaoRewardsManager is DaoCommon {
         }
     }
 
+
+    //done
     /**
     @notice Function called by the founder after transfering the DGX fees into the DAO at the beginning of the quarter
+    @dev This function needs to do lots of calculation, so it might not fit into one transaction
+         As such, it could be done in multiple transactions, each time passing _operations which is the number of operations we want to calculate.
+         When the value of _done is finally true, that's when the calculation is done.
+         Only after this function runs, any other activities in the DAO could happen.
+
+         Basically, if there were M participants and N moderators in the previous quarter, it takes M+N "operations".
+
+         In summary, the function populates the DaoQuarterInfo of this quarter.
+         The bulk of the calculation is to go through every participant in the previous quarter to calculate their effectiveDGDBalance and sum them to get the
+         totalEffectiveDGDLastQuarter
     */
     function calculateGlobalRewardsBeforeNewQuarter(uint256 _operations)
         if_founder()
@@ -414,7 +429,8 @@ contract DaoRewardsManager is DaoCommon {
         require(isDaoNotReplaced());
         require(daoUpgradeStorage().startOfFirstQuarter() != 0); // start of first quarter must have been set already
         require(isLockingPhase());
-        require(daoRewardsStorage().readDgxDistributionDay(currentQuarterIndex()) == 0);
+        require(daoRewardsStorage().readDgxDistributionDay(currentQuarterIndex()) == 0); // throw if this function has already finished running this quarter
+
         QuarterRewardsInfo memory info;
         info.previousQuarter = currentQuarterIndex().sub(1);
         require(info.previousQuarter > 0); // throw if this is the first quarter
@@ -424,25 +440,47 @@ contract DaoRewardsManager is DaoCommon {
         (
             interResults.countedUntil,,,
             info.totalEffectiveDGDPreviousQuarter
-        ) = intermediateResultsStorage().getIntermediateResults(keccak256(abi.encodePacked(INTERMEDIATE_DGD_IDENTIFIER, info.previousQuarter)));
+        ) = intermediateResultsStorage().getIntermediateResults(
+            getIntermediateResultsIdForGlobalRewards(info.previousQuarter, false)
+        );
 
         _operations = sumEffectiveBalance(info, false, _operations, interResults);
+        // now we are left with _operations operations
+        // the results is saved in interResults
+
+        // if we have not done with calculating the effective balance, quit.
         if (!info.doneCalculatingEffectiveBalance) { return false; }
 
         (
             interResults.countedUntil,,,
             info.totalEffectiveModeratorDGDLastQuarter
-        ) = intermediateResultsStorage().getIntermediateResults(keccak256(abi.encodePacked(INTERMEDIATE_MODERATOR_DGD_IDENTIFIER, info.previousQuarter)));
+        ) = intermediateResultsStorage().getIntermediateResults(
+            getIntermediateResultsIdForGlobalRewards(info.previousQuarter, true)
+        );
 
         sumEffectiveBalance(info, true, _operations, interResults);
+
+        // if we have not done with calculating the moderator effective balance, quit.
         if (!info.doneCalculatingModeratorEffectiveBalance) { return false; }
-        // save the quarter Info
+
+        // we have done the heavey calculation, now save the quarter info
         processGlobalRewardsUpdate(info);
         _done = true;
 
         emit StartNewQuarter(currentQuarterIndex());
     }
 
+    //done
+    // get the Id for the intermediateResult for a quarter's global rewards calculation
+    function getIntermediateResultsIdForGlobalRewards(uint256 _quarterId, bool _forModerator) internal view returns (bytes32 _id) {
+        _id = keccak256(abi.encodePacked(
+            _forModerator ? INTERMEDIATE_MODERATOR_DGD_IDENTIFIER : INTERMEDIATE_DGD_IDENTIFIER,
+            _quarterId
+        ));
+    }
+
+    //done
+    // final step in calculateGlobalRewardsBeforeNewQuarter, which is to save the DaoQuarterInfo struct for this quarter
     function processGlobalRewardsUpdate(QuarterRewardsInfo memory info) internal {
         // calculate how much DGX rewards we got for this quarter
         info.dgxRewardsPoolLastQuarter =
@@ -468,18 +506,22 @@ contract DaoRewardsManager is DaoCommon {
         );
     }
 
+    //done
+    // Sum the effective balance (could be effectiveDGDBalance or effectiveModeratorDGDBalance), given that we have _operations left
     function sumEffectiveBalance (
         QuarterRewardsInfo memory info,
-        bool _badgeCalculation,
+        bool _badgeCalculation, // false if this is the first step, true if its the second step
         uint256 _operations,
         DaoStructs.IntermediateResults memory _interResults
     )
         internal
         returns (uint _operationsLeft)
     {
-        if (_operations == 0) return _operations;
+        if (_operations == 0) return _operations; // no more operations left, quit
 
         if (_interResults.countedUntil == EMPTY_ADDRESS) {
+            // if this is the first time we are doing this calculation, we need to
+            // get the list of the participants to calculate by querying the first _operations participants
             info.users = _badgeCalculation ?
                 daoListingService().listModerators(_operations, true)
                 : daoListingService().listParticipants(_operations, true);
@@ -488,7 +530,7 @@ contract DaoRewardsManager is DaoCommon {
                 daoListingService().listModeratorsFrom(_interResults.countedUntil, _operations, true)
                 : daoListingService().listParticipantsFrom(_interResults.countedUntil, _operations, true);
 
-            // if the address is the already the last, it means this is the first step, and its already done;
+            // if this list is the already empty, it means this is the first step (calculating effective balance), and its already done;
             if (info.users.length == 0) {
                 info.doneCalculatingEffectiveBalance = true;
                 return _operations;
@@ -502,7 +544,7 @@ contract DaoRewardsManager is DaoCommon {
         for (info.i=0;info.i<info.userCount;info.i++) {
             info.currentUser = info.users[info.i];
             // check if this participant really did participate in the previous quarter
-            if (daoRewardsStorage().lastParticipatedQuarter(info.currentUser) < info.previousQuarter) {
+            if (daoRewardsStorage().lastParticipatedQuarter(info.currentUser) != info.previousQuarter) {
                 continue;
             }
             if (_badgeCalculation) {
@@ -533,8 +575,9 @@ contract DaoRewardsManager is DaoCommon {
         if (_lastAddress == daoStakeStorage().readLastParticipant() && !_badgeCalculation) {
             info.doneCalculatingEffectiveBalance = true;
         }
+        // save to the intermediateResult storage
         intermediateResultsStorage().setIntermediateResults(
-            keccak256(abi.encodePacked(_badgeCalculation ? INTERMEDIATE_MODERATOR_DGD_IDENTIFIER : INTERMEDIATE_DGD_IDENTIFIER, info.previousQuarter)),
+            getIntermediateResultsIdForGlobalRewards(info.previousQuarter, _badgeCalculation),
             _lastAddress,
             0,0,
             _badgeCalculation ? info.totalEffectiveModeratorDGDLastQuarter : info.totalEffectiveDGDPreviousQuarter
@@ -543,6 +586,8 @@ contract DaoRewardsManager is DaoCommon {
         _operationsLeft = _operations.sub(info.userCount);
     }
 
+    //done
+    // read the DaoQuarterInfo struct of a certain quarter
     function readQuarterInfo(uint256 _quarterIndex)
         internal
         constant
