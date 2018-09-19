@@ -3,6 +3,7 @@ pragma solidity ^0.4.24;
 import "../common/DaoCommon.sol";
 import "./Dao.sol";
 
+//done
 /**
 @title Contract to manage DAO funds
 @author Digix Holdings
@@ -21,14 +22,17 @@ contract DaoFundingManager is DaoCommon {
         _contract = Dao(get_contract(CONTRACT_DAO));
     }
 
+    //done
     /**
-    @notice Call function to claim ETH allocated by DAO (transferred to caller)
+    @notice Call function to claim the ETH funding for a certain milestone
+    @dev Note that the proposer can do this anytime, even in the locking phase
     @param _proposalId ID of the proposal
-    @param _index Index of the proposal voting round
+    @param _index Index of the proposal voting round that they got passed, which is also the same as the milestone index
     */
     function claimFunding(bytes32 _proposalId, uint256 _index)
         public
     {
+        require(identity_storage().is_kyc_approved(msg.sender));
         require(isFromProposer(_proposalId));
 
         // proposal should not be paused/stopped
@@ -87,6 +91,7 @@ contract DaoFundingManager is DaoCommon {
         _destinationForDaoFunds.transfer(_remainingBalance);
     }
 
+    //done
     /**
     @notice Payable function to receive ETH funds from DigixDAO crowdsale contract
     */

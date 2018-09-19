@@ -2923,7 +2923,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     /// @return {
     ///   "_commitHash": ""
     /// }
-    function readCommitVote(bytes32 _proposalId, uint256 _index, address _voter)
+    function readComittedVote(bytes32 _proposalId, uint256 _index, address _voter)
         public
         constant
         returns (bytes32 _commitHash)
@@ -3452,7 +3452,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         proposalsById[_proposalId].votingRounds[_index].revealVote(_voter, _vote, _weight);
     }
 
-    function addProposalCountInQuarter(uint256 _quarterIndex)
+    function addNonDigixProposalCountInQuarter(uint256 _quarterIndex)
         public
     {
         require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
@@ -3637,7 +3637,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
         _lockedDGDStake = lockedDGDStake[_user];
     }
 
-    function readUserEffectiveDGDStake(address _user)
+    function lockedDGDStake(address _user)
         public
         constant
         returns (uint256 _stake)
@@ -5151,7 +5151,7 @@ contract DaoSpecialStorage is DaoStorageCommon {
         proposalsById[_proposalId].voting.commits[_voter] = _hash;
     }
 
-    function readCommitVote(bytes32 _proposalId, address _voter)
+    function readComittedVote(bytes32 _proposalId, address _voter)
         public
         constant
         returns (bytes32 _commitHash)
@@ -5255,7 +5255,7 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
         _newTotalPoint = quarterPoint[_quarterId].totalSupply;
     }
 
-    function addQuarterModeratorPoint(address _participant, uint256 _point, uint256 _quarterId)
+    function addModeratorQuarterPoint(address _participant, uint256 _point, uint256 _quarterId)
         public
         returns (uint256 _newPoint, uint256 _newTotalPoint)
     {
@@ -6161,7 +6161,7 @@ contract DaoCommon is IdentityCommon {
     {
         _is =
             (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex())
-            && (daoStakeStorage().readUserEffectiveDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_LOCKED_DGD));
+            && (daoStakeStorage().lockedDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_LOCKED_DGD));
     }
 
     //done
@@ -6175,7 +6175,7 @@ contract DaoCommon is IdentityCommon {
     {
         _is =
             (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex())
-            && (daoStakeStorage().readUserEffectiveDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_DGD_FOR_MODERATOR))
+            && (daoStakeStorage().lockedDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_DGD_FOR_MODERATOR))
             && (daoPointsStorage().getReputation(_user) >= getUintConfig(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR));
     }
 
@@ -8151,7 +8151,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
                     .add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE))) {
             daoStorage().setProposalDraftPass(_proposalId, false);
             daoStorage().setDraftVotingClaim(_proposalId, true);
-            handleRefundCollateral(_proposalId);
+            processCollateralRefund(_proposalId);
             return false;
         }
         require(isFromProposer(_proposalId));
@@ -8230,7 +8230,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
                 getTimelineForNextVote(0, _idealClaimTime)
             );
         } else {
-            handleRefundCollateral(_proposalId);
+            processCollateralRefund(_proposalId);
         }
 
         daoStorage().setDraftVotingClaim(_proposalId, true);
@@ -8276,7 +8276,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
                     COLLATERAL_STATUS_LOCKED
                 );
             } else {
-                handleRefundCollateral(_proposalId);
+                processCollateralRefund(_proposalId);
             }
 
             checkNonDigixProposalLimit(_proposalId);
@@ -8300,13 +8300,13 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
         // if this was the last milestone, unlock their original collateral
         if ((_index == _milestoneFundings.length) && !isProposalPaused(_proposalId)) {
-            handleRefundCollateral(_proposalId);
+            processCollateralRefund(_proposalId);
         }
 
         bool _isDigixProposal;
         (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
         if (_index == 0 && !_isDigixProposal) {
-            daoStorage().addProposalCountInQuarter(currentQuarterIndex());
+            daoStorage().addNonDigixProposalCountInQuarter(currentQuarterIndex());
         }
 
         daoPointsStorage().addQuarterPoint(
@@ -8426,7 +8426,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         }
     }
 
-    function handleRefundCollateral(bytes32 _proposalId)
+    function processCollateralRefund(bytes32 _proposalId)
         internal
     {
         daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_CLAIMED);

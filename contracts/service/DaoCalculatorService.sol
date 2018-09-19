@@ -44,6 +44,8 @@ contract DaoCalculatorService is DaoCommon {
             );
     }
 
+    //done
+    // Quorum is in terms of lockedDGDStake
     function minimumDraftQuorum(bytes32 _proposalId)
         public
         constant
@@ -62,17 +64,18 @@ contract DaoCalculatorService is DaoCommon {
         );
     }
 
+    //done
     function draftQuotaPass(uint256 _for, uint256 _against)
         public
         constant
         returns (bool _passed)
     {
-        if ((_for.mul(getUintConfig(CONFIG_DRAFT_QUOTA_DENOMINATOR))) >
-                (getUintConfig(CONFIG_DRAFT_QUOTA_NUMERATOR).mul(_for.add(_against)))) {
-            _passed = true;
-        }
+        _passed = _for.mul(getUintConfig(CONFIG_DRAFT_QUOTA_DENOMINATOR))
+                > getUintConfig(CONFIG_DRAFT_QUOTA_NUMERATOR).mul(_for.add(_against));
     }
 
+    //done
+    // Quorum is in terms of lockedDGDStake
     function minimumVotingQuorum(bytes32 _proposalId, uint256 _milestone_id)
         public
         constant
@@ -83,6 +86,7 @@ contract DaoCalculatorService is DaoCommon {
         (_ethAskedPerMilestone,_finalReward) = daoStorage().readProposalFunding(_proposalId);
         require(_milestone_id <= _ethAskedPerMilestone.length);
         if (_milestone_id == _ethAskedPerMilestone.length) {
+            // calculate quorum for the final voting round
             _minQuorum = calculateMinQuorum(
                 daoStakeStorage().totalLockedDGDStake(),
                 getUintConfig(CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR),
@@ -92,6 +96,7 @@ contract DaoCalculatorService is DaoCommon {
                 _finalReward
             );
         } else {
+            // calculate quorum for a voting round
             _minQuorum = calculateMinQuorum(
                 daoStakeStorage().totalLockedDGDStake(),
                 getUintConfig(CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR),
@@ -103,6 +108,8 @@ contract DaoCalculatorService is DaoCommon {
         }
     }
 
+    //done
+    // Quorum is in terms of lockedDGDStake
     function minimumVotingQuorumForSpecial()
         public
         constant
@@ -115,28 +122,27 @@ contract DaoCalculatorService is DaoCommon {
                    );
     }
 
+    //done
     function votingQuotaPass(uint256 _for, uint256 _against)
         public
         constant
         returns (bool _passed)
     {
-        if ((_for.mul(getUintConfig(CONFIG_VOTING_QUOTA_DENOMINATOR))) >
-                (getUintConfig(CONFIG_VOTING_QUOTA_NUMERATOR).mul(_for.add(_against)))) {
-            _passed = true;
-        }
+        _passed = _for.mul(getUintConfig(CONFIG_VOTING_QUOTA_DENOMINATOR))
+                > getUintConfig(CONFIG_VOTING_QUOTA_NUMERATOR).mul(_for.add(_against));
     }
 
+    //done
     function votingQuotaForSpecialPass(uint256 _for, uint256 _against)
         public
         constant
         returns (bool _passed)
     {
-        if ((_for.mul(getUintConfig(CONFIG_SPECIAL_QUOTA_DENOMINATOR))) >
-                (getUintConfig(CONFIG_SPECIAL_QUOTA_NUMERATOR).mul(_for.add(_against)))) {
-            _passed = true;
-        }
+        _passed =_for.mul(getUintConfig(CONFIG_SPECIAL_QUOTA_DENOMINATOR))
+                > getUintConfig(CONFIG_SPECIAL_QUOTA_NUMERATOR).mul(_for.add(_against));
     }
 
+    //done
     function calculateMinQuorum(
         uint256 _totalStake,
         uint256 _fixedQuorumPortionNumerator,
@@ -157,6 +163,7 @@ contract DaoCalculatorService is DaoCommon {
         _minimumQuorum = _minimumQuorum.add(_totalStake.mul(_ethAsked.mul(_scalingFactorNumerator)).div(_ethInDao.mul(_scalingFactorDenominator)));
     }
 
+    //done
     function calculateUserEffectiveBalance(
         uint256 _minimalParticipationPoint,
         uint256 _quarterPointScalingFactor,

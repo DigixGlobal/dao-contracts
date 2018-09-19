@@ -14,7 +14,6 @@ import "../lib/DaoStructs.sol";
 */
 contract DaoSpecialVotingClaims is DaoCommon, Claimable {
     using DaoIntermediateStructs for DaoIntermediateStructs.VotingCount;
-    using DaoIntermediateStructs for DaoIntermediateStructs.Users;
     using DaoStructs for DaoStructs.IntermediateResults;
 
     function daoCalculatorService()
@@ -45,6 +44,7 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
         require(init(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS, _resolver));
     }
 
+    //done
     /**
     @notice Function to claim the voting result on special proposal
     @param _proposalId ID of the special proposal
@@ -98,6 +98,8 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
         _currentResults.currentAgainstCount = _currentResults.currentAgainstCount.add(_voteCount.againstCount);
 
         if (_lastVoter == daoStakeStorage().readLastParticipant()) {
+            // this is already the last transaction, we have counted all the votes
+
             if (
                 (_currentResults.currentForCount.add(_currentResults.currentAgainstCount) > daoCalculatorService().minimumVotingQuorumForSpecial()) &&
                 (daoCalculatorService().votingQuotaForSpecialPass(_currentResults.currentForCount, _currentResults.currentAgainstCount))
@@ -107,8 +109,6 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
             }
             daoSpecialStorage().setPass(_proposalId, _passed);
             daoSpecialStorage().setVotingClaim(_proposalId, true);
-
-            intermediateResultsStorage().resetIntermediateResults(_proposalId);
         } else {
             intermediateResultsStorage().setIntermediateResults(
                 _proposalId,
@@ -120,6 +120,7 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
         }
     }
 
+    //done
     function setConfigs(bytes32 _proposalId)
         private
     {

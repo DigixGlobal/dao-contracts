@@ -90,14 +90,6 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
         _lockedDGDStake = lockedDGDStake[_user];
     }
 
-    function readUserEffectiveDGDStake(address _user)
-        public
-        constant
-        returns (uint256 _stake)
-    {
-        _stake = lockedDGDStake[_user];
-    }
-
     function addToParticipantList(address _user)
         public
         returns (bool _success)
@@ -135,12 +127,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
         constant
         returns (bool _is)
     {
-        uint256 _index = allParticipants.find(_user);
-        if (_index == 0) {
-            _is = false;
-        } else {
-            _is = true;
-        }
+        _is = allParticipants.find(_user) != 0;
     }
 
     function isInModeratorsList(address _user)
@@ -148,12 +135,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
         constant
         returns (bool _is)
     {
-        uint256 _index = allModerators.find(_user);
-        if (_index == 0) {
-            _is = false;
-        } else {
-            _is = true;
-        }
+        _is = allModerators.find(_user) != 0;
     }
 
     function readFirstModerator()

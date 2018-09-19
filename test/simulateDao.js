@@ -330,9 +330,25 @@ const confirmContinuedParticipation = async function (contracts, addressOf) {
 };
 
 const claimDGXs = async function (contracts, addressOf) {
+  let total = 0;
+  // let totalLockedDGDStake = 0;
+  // let totalModeratorLockedDGDStake = 0;
   await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (index) => {
+    console.log('Claiming rewards for holder index ', index);
+    const claimableDGX = (await contracts.daoRewardsStorage.claimableDGXs.call(addressOf.allParticipants[index])).toNumber();
+    // const dgdStake = (await contracts.daoStakeStorage.lockedDGDStake.call(addressOf.allParticipants[index])).toNumber();
+    // const isMod = await contracts.dao.isModerator.call(addressOf.allParticipants[index]);
+    total += claimableDGX;
+    // totalLockedDGDStake += dgdStake;
+    // if (isMod) totalModeratorLockedDGDStake += dgdStake;
+    console.log('Claimable DGXs = ', claimableDGX);
+    // console.log('lockedDGDStake = ', dgdStake);
+
     await contracts.daoRewardsManager.claimRewards({ from: addressOf.allParticipants[index] });
   });
+  console.log('\t\tTotal claimable DGXs = ', total);
+  // console.log('totalLockedDGDStake = ', totalLockedDGDStake);
+  // console.log('totalModeratorLockedDGDStake = ', totalModeratorLockedDGDStake);
 };
 
 const interimVotingCommitRound = async function (contracts, addressOf) {
@@ -577,7 +593,6 @@ module.exports = async function () {
     console.log('locked more dgds in main phase');
 
 
-    // until here
     await waitFor(((await contracts.daoStorage.readProposalDraftVotingTime.call(proposals[3].id)).toNumber()
       + 6) - getCurrentTimestamp(), addressOf, web3);
 
@@ -613,10 +628,13 @@ module.exports = async function () {
     console.log('in the second quarter (quarterId = 2), locking phase');
 
     // call the global rewards calculation
-    await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(20 * (10 ** 9)));
+    await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(200 * (10 ** 9)));
     console.log('transferred dgx to rewards manager');
     await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(50), { from: addressOf.founderBadgeHolder });
     console.log('updated the rewards for previous quarter (quarterId = 1)');
+    console.log('DGX rewards pool = ', await contracts.daoRewardsStorage.readRewardsPoolOfLastQuarter.call(2));
+    console.log('totalEffectiveDGDLastQuarter = ', await contracts.daoRewardsStorage.readTotalEffectiveDGDLastQuarter.call(2));
+    console.log('totalEffectiveModeratorDGDLastQuarter = ', await contracts.daoRewardsStorage.readTotalEffectiveModeratorDGDLastQuarter.call(2));
 
     console.log('\t\t#### Info of users for last quarter: ');
     const printStake = async (user, userString) => {

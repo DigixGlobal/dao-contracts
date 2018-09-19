@@ -133,11 +133,12 @@ contract DaoStakeLocking is DaoCommon {
         _newInfo.userLockedDGDStake = _newInfo.userLockedDGDStake.add(_additionalStake);
         _newInfo.totalLockedDGDStake = _newInfo.totalLockedDGDStake.add(_additionalStake);
 
+        // This has to happen at least once before user can participate in next quarter
+        daoRewardsManager().updateRewardsAndReputationBeforeNewQuarter(msg.sender);
+
         daoStakeStorage().updateUserDGDStake(msg.sender, _newInfo.userActualLockedDGD, _newInfo.userLockedDGDStake);
         daoStakeStorage().updateTotalLockedDGDStake(_newInfo.totalLockedDGDStake);
 
-        // This has to happen at least once before user can participate in next quarter
-        daoRewardsManager().updateRewardsAndReputationBeforeNewQuarter(msg.sender);
 
         //since Reputation is updated, we need to refresh moderator status
         refreshModeratorStatus(msg.sender, _info, _newInfo);
@@ -248,8 +249,9 @@ contract DaoStakeLocking is DaoCommon {
         // This also makes sure that the first participation ever must be a lockDGD() call, to avoid unnecessary complications
         require(_info.userActualLockedDGD > 0);
 
-        StakeInformation memory _infoAfter = refreshDGDStake(msg.sender, _info, true);
         daoRewardsManager().updateRewardsAndReputationBeforeNewQuarter(msg.sender);
+
+        StakeInformation memory _infoAfter = refreshDGDStake(msg.sender, _info, true);
         refreshModeratorStatus(msg.sender, _info, _infoAfter);
 
         uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(msg.sender);

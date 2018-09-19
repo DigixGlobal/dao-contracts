@@ -42,7 +42,7 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
         _newTotalPoint = quarterPoint[_quarterId].totalSupply;
     }
 
-    function addQuarterModeratorPoint(address _participant, uint256 _point, uint256 _quarterId)
+    function addModeratorQuarterPoint(address _participant, uint256 _point, uint256 _quarterId)
         public
         returns (uint256 _newPoint, uint256 _newTotalPoint)
     {

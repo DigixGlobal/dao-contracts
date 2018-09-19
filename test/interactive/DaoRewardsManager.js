@@ -153,7 +153,7 @@ contract('DaoRewardsManager', function (accounts) {
           daoConstantsValues(bN).CONFIG_REPUTATION_POINT_SCALING_FACTOR,
           await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.badgeHolders[i], lastParticipatedQuarter),
           await contracts.daoPointsStorage.getReputation.call(addressOf.badgeHolders[i]),
-          await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.badgeHolders[i]),
+          await contracts.daoStakeStorage.lockedDGDStake.call(addressOf.badgeHolders[i]),
         ));
         effectiveModeratorDGDBalances.push(calculateUserEffectiveBalance(
           daoConstantsValues(bN).CONFIG_MODERATOR_MINIMAL_QUARTER_POINT,
@@ -161,7 +161,7 @@ contract('DaoRewardsManager', function (accounts) {
           daoConstantsValues(bN).CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR,
           await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[i], lastParticipatedQuarter),
           await contracts.daoPointsStorage.getReputation.call(addressOf.badgeHolders[i]),
-          await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.badgeHolders[i]),
+          await contracts.daoStakeStorage.lockedDGDStake.call(addressOf.badgeHolders[i]),
         ));
       }
 
@@ -172,7 +172,7 @@ contract('DaoRewardsManager', function (accounts) {
           daoConstantsValues(bN).CONFIG_REPUTATION_POINT_SCALING_FACTOR,
           await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.dgdHolders[i], lastParticipatedQuarter),
           await contracts.daoPointsStorage.getReputation.call(addressOf.dgdHolders[i]),
-          await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.dgdHolders[i]),
+          await contracts.daoStakeStorage.lockedDGDStake.call(addressOf.dgdHolders[i]),
         ));
         effectiveModeratorDGDBalances.push(0); // since not moderators
       }
@@ -331,7 +331,7 @@ contract('DaoRewardsManager', function (accounts) {
           daoConstantsValues(bN).CONFIG_REPUTATION_POINT_SCALING_FACTOR,
           await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.allParticipants[i], bN(4)),
           await contracts.daoPointsStorage.getReputation.call(addressOf.allParticipants[i]),
-          await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.allParticipants[i]),
+          await contracts.daoStakeStorage.lockedDGDStake.call(addressOf.allParticipants[i]),
         ));
         effectiveModeratorDGDBalance[i] = (i >= BADGE_HOLDER_COUNT) ? 0 : calculateUserEffectiveBalance(
           daoConstantsValues(bN).CONFIG_MODERATOR_MINIMAL_QUARTER_POINT,
@@ -339,7 +339,7 @@ contract('DaoRewardsManager', function (accounts) {
           daoConstantsValues(bN).CONFIG_MODERATOR_REPUTATION_POINT_SCALING_FACTOR,
           await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.allParticipants[i], bN(4)),
           await contracts.daoPointsStorage.getReputation.call(addressOf.allParticipants[i]),
-          await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.allParticipants[i]),
+          await contracts.daoStakeStorage.lockedDGDStake.call(addressOf.allParticipants[i]),
         );
       }
 

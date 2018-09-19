@@ -123,7 +123,7 @@ contract('DaoStakeLocking', function (accounts) {
       assert.deepEqual(await contracts.daoStakeStorage.totalLockedDGDStake.call(), initialTotalLocked.plus(amount));
       assert.deepEqual(await contracts.daoRewardsStorage.lastParticipatedQuarter.call(addressOf.dgdHolders[1]), bN(1));
       assert.deepEqual(await contracts.daoRewardsStorage.lastQuarterThatRewardsWasUpdated.call(addressOf.dgdHolders[1]), bN(0));
-      const effectiveLocked = await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.dgdHolders[1]);
+      const effectiveLocked = await contracts.daoStakeStorage.lockedDGDStake.call(addressOf.dgdHolders[1]);
       assert.isAtLeast(effectiveLocked.toNumber(), daoConstantsValues(bN).CONFIG_MINIMUM_LOCKED_DGD.toNumber());
       assert.deepEqual(await contracts.daoStakeLocking.isParticipant.call(addressOf.dgdHolders[1]), true);
 
@@ -162,20 +162,20 @@ contract('DaoStakeLocking', function (accounts) {
       const startOfDao = await contracts.daoUpgradeStorage.startOfFirstQuarter.call();
       const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
       const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
-      const initialStake1 = await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.badgeHolders[1]);
-      const initialStake2 = await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.badgeHolders[2]);
+      const initialStake1 = await contracts.daoStakeStorage.lockedDGDStake.call(addressOf.badgeHolders[1]);
+      const initialStake2 = await contracts.daoStakeStorage.lockedDGDStake.call(addressOf.badgeHolders[2]);
       const totalLockedDGDStake = await contracts.daoStakeStorage.totalLockedDGDStake.call();
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
       await waitFor(2, addressOf, web3);
       const timeToNextPhase1 = getTimeToNextPhase(getCurrentTimestamp(), startOfDao.toNumber(), lockingPhaseDuration.toNumber(), quarterDuration.toNumber());
       await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 9)), { from: addressOf.badgeHolders[1] });
-      const stakeNow1 = await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.badgeHolders[1]);
+      const stakeNow1 = await contracts.daoStakeStorage.lockedDGDStake.call(addressOf.badgeHolders[1]);
 
       await waitFor(2, addressOf, web3);
       const timeToNextPhase2 = getTimeToNextPhase(getCurrentTimestamp(), startOfDao.toNumber(), lockingPhaseDuration.toNumber(), quarterDuration.toNumber());
       await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10 * (10 ** 9)), { from: addressOf.badgeHolders[2] });
       await contracts.daoStakeLocking.lockDGD(bN(10 * (10 ** 9)), { from: addressOf.badgeHolders[2] });
-      const stakeNow2 = await contracts.daoStakeStorage.readUserEffectiveDGDStake.call(addressOf.badgeHolders[2]);
+      const stakeNow2 = await contracts.daoStakeStorage.lockedDGDStake.call(addressOf.badgeHolders[2]);
 
       const sentAmount = 10 * (10 ** 9);
       const added1 = bN(Math.floor((sentAmount * timeToNextPhase1) / 50));

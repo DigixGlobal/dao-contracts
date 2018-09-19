@@ -102,9 +102,9 @@ contract('DaoSpecialStorage', function (accounts) {
     it('[valid call]: read commit vote', async function () {
       await contracts.daoSpecialStorage.commitVote(doc, votingObj.votingCommits[0][0], addressOf.dgdHolders[0]);
       await contracts.daoSpecialStorage.commitVote(doc, votingObj.votingCommits[0][1], addressOf.dgdHolders[1]);
-      assert.deepEqual(await contracts.daoSpecialStorage.readCommitVote.call(doc, addressOf.dgdHolders[0]), votingObj.votingCommits[0][0]);
-      assert.deepEqual(await contracts.daoSpecialStorage.readCommitVote.call(doc, addressOf.dgdHolders[1]), votingObj.votingCommits[0][1]);
-      assert.deepEqual(await contracts.daoSpecialStorage.readCommitVote.call(doc, addressOf.dgdHolders[2]), EMPTY_BYTES);
+      assert.deepEqual(await contracts.daoSpecialStorage.readComittedVote.call(doc, addressOf.dgdHolders[0]), votingObj.votingCommits[0][0]);
+      assert.deepEqual(await contracts.daoSpecialStorage.readComittedVote.call(doc, addressOf.dgdHolders[1]), votingObj.votingCommits[0][1]);
+      assert.deepEqual(await contracts.daoSpecialStorage.readComittedVote.call(doc, addressOf.dgdHolders[2]), EMPTY_BYTES);
     });
   });
 

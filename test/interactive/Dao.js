@@ -802,8 +802,8 @@ contract('Dao', function (accounts) {
         votesAndCommits.votingCommits[0][1],
         { from: participants[1].address },
       );
-      assert.deepEqual(await contracts.daoSpecialStorage.readCommitVote.call(specialProposalId, participants[0].address), votesAndCommits.votingCommits[0][0]);
-      assert.deepEqual(await contracts.daoSpecialStorage.readCommitVote.call(specialProposalId, participants[1].address), votesAndCommits.votingCommits[0][1]);
+      assert.deepEqual(await contracts.daoSpecialStorage.readComittedVote.call(specialProposalId, participants[0].address), votesAndCommits.votingCommits[0][0]);
+      assert.deepEqual(await contracts.daoSpecialStorage.readComittedVote.call(specialProposalId, participants[1].address), votesAndCommits.votingCommits[0][1]);
     });
     it('[within commit phase, modify commit]: success', async function () {
       const randomHash = randomBytes32();
@@ -812,7 +812,7 @@ contract('Dao', function (accounts) {
         randomHash,
         { from: participants[1].address },
       );
-      assert.deepEqual(await contracts.daoSpecialStorage.readCommitVote.call(specialProposalId, participants[1].address), randomHash);
+      assert.deepEqual(await contracts.daoSpecialStorage.readComittedVote.call(specialProposalId, participants[1].address), randomHash);
     });
     it('[if commit after the commit phase]: revert', async function () {
       await waitFor(11, addressOf, web3);
@@ -1398,7 +1398,10 @@ contract('Dao', function (accounts) {
       assert.deepEqual(await contracts.daoStorage.readProposalDraftVotingResult.call(proposals[0].id), false);
 
       // conditions met, claim the draft voting results
-      assert.deepEqual(await contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[0].id, bN(50), { from: proposals[0].proposer }), true);
+      const returnValues = await contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[0].id, bN(50), { from: proposals[0].proposer });
+      assert.deepEqual(returnValues[0], true);
+      assert.deepEqual(returnValues[1], true);
+
       await contracts.daoVotingClaims.claimDraftVotingResult(proposals[0].id, bN(50), { from: proposals[0].proposer });
 
       // draft voting result set
@@ -1459,12 +1462,12 @@ contract('Dao', function (accounts) {
       await waitFor(5, addressOf, web3);
 
       // before the deadline, founder/other participants try to claim
-      assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(
+      assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult(
         proposals[0].id,
         bN(20),
         { from: addressOf.founderBadgeHolder },
       )));
-      assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(
+      assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult(
         proposals[0].id,
         bN(20),
         { from: proposals[1].proposer },
@@ -1496,9 +1499,9 @@ contract('Dao', function (accounts) {
         bN(20),
         { from: proposals[1].proposer },
       );
-      assert.deepEqual(claimResultProposer, false);
-      assert.deepEqual(claimResultFounder, false);
-      assert.deepEqual(claimResultParticipant, false);
+      assert.deepEqual(claimResultProposer, [false, true]);
+      assert.deepEqual(claimResultFounder, [false, true]);
+      assert.deepEqual(claimResultParticipant, [false, true]);
 
       const ethBalanceBefore = await web3.eth.getBalance(proposals[0].proposer);
       await contracts.daoVotingClaims.claimDraftVotingResult(
@@ -1597,8 +1600,8 @@ contract('Dao', function (accounts) {
         { from: addressOf.allParticipants[1] },
       );
       // verify if the commited votes have been stored correctly
-      assert.deepEqual(await contracts.daoStorage.readCommitVote.call(proposals[0].id, bN(0), addressOf.allParticipants[0]), votesAndCommits.votingCommits[0][0]);
-      assert.deepEqual(await contracts.daoStorage.readCommitVote.call(proposals[1].id, bN(0), addressOf.allParticipants[1]), votesAndCommits.votingCommits[1][1]);
+      assert.deepEqual(await contracts.daoStorage.readComittedVote.call(proposals[0].id, bN(0), addressOf.allParticipants[0]), votesAndCommits.votingCommits[0][0]);
+      assert.deepEqual(await contracts.daoStorage.readComittedVote.call(proposals[1].id, bN(0), addressOf.allParticipants[1]), votesAndCommits.votingCommits[1][1]);
 
       // commit vote interim round
       await contracts.daoVoting.commitVoteOnProposal(
@@ -1630,7 +1633,7 @@ contract('Dao', function (accounts) {
       );
       // verify that the commit is the latest commit
       // overwrites the previous commit
-      assert.deepEqual(await contracts.daoStorage.readCommitVote.call(proposals[0].id, bN(0), addressOf.allParticipants[0]), commitPrime);
+      assert.deepEqual(await contracts.daoStorage.readComittedVote.call(proposals[0].id, bN(0), addressOf.allParticipants[0]), commitPrime);
     });
     it('[if not voting commit phase]: revert', async function () {
       // wait for commit phase to get over

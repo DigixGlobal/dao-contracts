@@ -45,37 +45,40 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         require(init(CONTRACT_DAO_VOTING_CLAIMS, _resolver));
     }
 
+    //done
     /**
     @notice Function to claim the draft voting result (can only be called by the proposal proposer)
+    @dev The founder/or anyone is supposed to call this function after the claiming deadline has passed, to clean it up and close this proposal.
+         If this voting fails, the collateral will be refunded
     @param _proposalId ID of the proposal
-    @param _count Number of operations to do in this call
+    @param _operations Number of operations to do in this call
     @return {
-      "_passed": "Boolean, true if the draft voting has passed, false if the claiming deadline has passed, revert otherwise"
+      "_passed": "Boolean, true if the draft voting has passed, false if the claiming deadline has passed or the voting has failed",
+      "_done": "Boolean, true if the calculation has finished"
     }
     */
     function claimDraftVotingResult(
         bytes32 _proposalId,
-        uint256 _count
+        uint256 _operations
     )
         public
         ifDraftNotClaimed(_proposalId)
         ifAfterDraftVotingPhase(_proposalId)
-        returns (bool _passed)
+        returns (bool _passed, bool _done)
     {
-
-        // if after the claiming deadline, its auto failed
+        // if after the claiming deadline, or the limit for non-digix proposals is reached, its auto failed
         if (now > daoStorage().readProposalDraftVotingTime(_proposalId)
                     .add(getUintConfig(CONFIG_DRAFT_VOTING_PHASE))
-                    .add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE))) {
+                    .add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE))
+            || !isNonDigixProposalsWithinLimit(_proposalId))
+        {
             daoStorage().setProposalDraftPass(_proposalId, false);
             daoStorage().setDraftVotingClaim(_proposalId, true);
-            handleRefundCollateral(_proposalId);
-            return false;
+            processCollateralRefund(_proposalId);
+            return (false, true);
         }
         require(isFromProposer(_proposalId));
         senderCanDoProposerOperations();
-        checkNonDigixProposalLimit(_proposalId);
-
 
         // get the previously stored intermediary state
         DaoStructs.IntermediateResults memory _currentResults;
@@ -85,38 +88,35 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             _currentResults.currentAgainstCount,
         ) = intermediateResultsStorage().getIntermediateResults(_proposalId);
 
-        // get first address based on intermediate state
+        // get the moderators to calculate in this transaction, based on intermediate state
         address[] memory _moderators;
         if (_currentResults.countedUntil == EMPTY_ADDRESS) {
             _moderators = daoListingService().listModerators(
-                _count,
+                _operations,
                 true
             );
         } else {
             _moderators = daoListingService().listModeratorsFrom(
                _currentResults.countedUntil,
-               _count,
+               _operations,
                true
            );
         }
-
-        // get moderators
-        address _moderator = _moderators[_moderators.length-1];
 
         // count the votes for this batch of moderators
         DaoIntermediateStructs.VotingCount memory _voteCount;
         (_voteCount.forCount, _voteCount.againstCount) = daoStorage().readDraftVotingCount(_proposalId, _moderators);
 
-        _currentResults.countedUntil = _moderator;
+        _currentResults.countedUntil = _moderators[_moderators.length-1];
         _currentResults.currentForCount = _currentResults.currentForCount.add(_voteCount.forCount);
         _currentResults.currentAgainstCount = _currentResults.currentAgainstCount.add(_voteCount.againstCount);
 
-        if (_moderator == daoStakeStorage().readLastModerator()) {
+        if (_moderators[_moderators.length-1] == daoStakeStorage().readLastModerator()) {
             // this is the last iteration
-            _passed = true;
-            processDraftVotingClaim(_proposalId, _currentResults);
+            _passed = processDraftVotingClaim(_proposalId, _currentResults);
+            _done = true;
 
-            // reset intermediate result for the proposal
+            // reset intermediate result for the proposal.
             intermediateResultsStorage().resetIntermediateResults(_proposalId);
         } else {
             // update intermediate results
@@ -130,8 +130,10 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         }
     }
 
+    //done
     function processDraftVotingClaim(bytes32 _proposalId, DaoStructs.IntermediateResults _currentResults)
         internal
+        returns (bool _passed)
     {
         if (
             (_currentResults.currentForCount.add(_currentResults.currentAgainstCount) > daoCalculatorService().minimumDraftQuorum(_proposalId)) &&
@@ -141,14 +143,16 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
             // set startTime of first voting round
             // and the start of first milestone.
-            uint256 _idealClaimTime = daoStorage().readProposalDraftVotingTime(_proposalId).add(getUintConfig(CONFIG_DRAFT_VOTING_PHASE));
+            uint256 _idealStartTime = daoStorage().readProposalDraftVotingTime(_proposalId).add(getUintConfig(CONFIG_DRAFT_VOTING_PHASE));
             daoStorage().setProposalVotingTime(
                 _proposalId,
                 0,
-                getTimelineForNextVote(0, _idealClaimTime)
+                getTimelineForNextVote(0, _idealStartTime)
             );
+            _passed = true;
         } else {
-            handleRefundCollateral(_proposalId);
+            daoStorage().setProposalDraftPass(_proposalId, false);
+            processCollateralRefund(_proposalId);
         }
 
         daoStorage().setDraftVotingClaim(_proposalId, true);
@@ -156,8 +160,20 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
     /// NOTE: Voting round i-th is before milestone index i-th
 
+    //TODO
     /**
-    @notice Function to claim the  voting round results (can only be called by the proposer)
+    @notice Function to claim the  voting round results
+    @dev This function has two major steps:
+         - Counting the votes
+            + There is no need for this step if there are some conditions that makes the proposal auto failed
+            + The number of operations needed for this step is the number of participants in the quarter
+         - Calculating the bonus for the voters in the preceding round
+            + We can skip this step if this is the Voting round 0 (there is no preceding voting round to calculate bonus)
+            + The number of operations needed for this step is the number of participants who voted "correctly" in the preceding voting round
+         Step 1 will have to finish first before step 2. The proposer is supposed to call this function repeatedly,
+         until _done is true
+
+         If the voting round fails, the collateral will be returned back to the proposer
     @param _proposalId ID of the proposal
     @param _index Index of the  voting round
     @param _operations Number of operations to do in this call
@@ -172,60 +188,77 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         returns (bool _passed, bool _done)
     {
         require(isMainPhase());
-        // anyone can claim after the claiming deadline is over;
-        // and the result will be failed by default
+
+        // STEP 1
+        // If the claiming deadline is over, the proposal is auto failed, and anyone can call this function
+        // Here, _done is refering to whether STEP 1 is done
         _done = true;
+        _passed = false; // redundant, put here just to emphasize that its false
+        // In other words, we only need to do Step 1 if its before the deadline
         if (now < startOfMilestone(_proposalId, _index)
                     .add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE)))
         {
             (_operations, _passed, _done) = countProposalVote(_proposalId, _index, _operations);
-            if (!_done) return (_passed, false); // haven't done counting yet, return
+            // from here on, _operations is the number of operations left, after Step 1 is done
+            if (!_done) return (_passed, false); // haven't done Step 1 yet, return. The value of _passed here is irrelevant
         }
+
+        // STEP 2
+        // from this point onwards, _done refers to step 2
         _done = false;
 
-        if (_index > 0) { // We only need to do bonus calculation if its the interim voting round
+
+        //TODO: until here
+        if (_index > 0) { // We only need to do bonus calculation if its a interim voting round
             _done = calculateVoterBonus(_proposalId, _index, _operations, _passed);
-            if (!_done) return (_passed, false);
+            if (!_done) return (_passed, false); // Step 2 is not done yet, return
         } else {
-            // its the first voting round, we unlock the collateral if it fails, locks if it passes
+            // its the first voting round, we return the collateral if it fails, locks if it passes
+
+            _passed = _passed && isNonDigixProposalsWithinLimit(_proposalId); // can only pass if its within the non-digix proposal limit
             if (_passed) {
                 daoStorage().setProposalCollateralStatus(
                     _proposalId,
                     COLLATERAL_STATUS_LOCKED
                 );
-            } else {
-                handleRefundCollateral(_proposalId);
-            }
 
-            checkNonDigixProposalLimit(_proposalId);
+            } else {
+                processCollateralRefund(_proposalId);
+            }
         }
 
         if (_passed) {
-            allocateFunding(_proposalId, _index);
+            processSuccessfulVotingClaim(_proposalId, _index);
         }
         daoStorage().setVotingClaim(_proposalId, _index, true);
         daoStorage().setProposalPass(_proposalId, _index, _passed);
         _done = true;
     }
 
-    function allocateFunding(bytes32 _proposalId, uint256 _index)
+    //done
+    // do the necessary steps after a successful voting round.
+    function processSuccessfulVotingClaim(bytes32 _proposalId, uint256 _index)
         internal
     {
-        uint256 _funding = daoStorage().readProposalMilestone(_proposalId, _index);
+        // clear the intermediate results for the proposal, so that next voting rounds can reuse the same key <proposal_id> for the intermediate results
+        intermediateResultsStorage().resetIntermediateResults(_proposalId);
+
+        // if this was the final voting round, unlock their original collateral
         uint256[] memory _milestoneFundings;
         (_milestoneFundings,) = daoStorage().readProposalFunding(_proposalId);
-
-        // if this was the last milestone, unlock their original collateral
-        if ((_index == _milestoneFundings.length) && !isProposalPaused(_proposalId)) {
-            handleRefundCollateral(_proposalId);
+        if (_index == _milestoneFundings.length) {
+            processCollateralRefund(_proposalId);
         }
 
+        // increase the non-digix proposal count accordingly
         bool _isDigixProposal;
         (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
         if (_index == 0 && !_isDigixProposal) {
-            daoStorage().addProposalCountInQuarter(currentQuarterIndex());
+            daoStorage().addNonDigixProposalCountInQuarter(currentQuarterIndex());
         }
 
+        // Add quarter point for the proposer
+        uint256 _funding = daoStorage().readProposalMilestone(_proposalId, _index);
         daoPointsStorage().addQuarterPoint(
             daoStorage().readProposalProposer(_proposalId),
             getUintConfig(CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH).mul(_funding).div(10000 ether),
@@ -233,13 +266,25 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         );
     }
 
+    //done
+    function getInterResultKeyForBonusCalculation(bytes32 _proposalId) public view returns (bytes32 _key) {
+        _key = keccak256(abi.encodePacked(
+            _proposalId,
+            INTERMEDIATE_BONUS_CALCULATION_IDENTIFIER
+        ));
+    }
+
+    //done
+    // calculate and update the bonuses for voters who voted "correctly" in the preceding voting round
     function calculateVoterBonus(bytes32 _proposalId, uint256 _index, uint256 _operations, bool _passed)
         internal
         returns (bool _done)
     {
         if (_operations == 0) return false;
         address _countedUntil;
-        (_countedUntil,,,) = intermediateResultsStorage().getIntermediateResults(_proposalId);
+        (_countedUntil,,,) = intermediateResultsStorage().getIntermediateResults(
+            getInterResultKeyForBonusCalculation(_proposalId)
+        );
 
         address[] memory _voterBatch;
         if (_countedUntil == EMPTY_ADDRESS) {
@@ -254,7 +299,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
                 true
             );
         }
-        address _lastVoter = _voterBatch[_voterBatch.length - 1]; // this will fail if _voterBatch is empty
+        address _lastVoter = _voterBatch[_voterBatch.length - 1]; // this will fail if _voterBatch is empty. However, there is at least the proposer as a participant in the quarter.
 
         DaoIntermediateStructs.Users memory _bonusVoters;
         if (_passed) {
@@ -267,19 +312,31 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             // voted NO in the previous round
             (_bonusVoters.users, _bonusVoters.usersLength) = daoStorage().readVotingRoundVotes(_proposalId, _index.sub(1), _voterBatch, false);
         }
+        //TODO: to here
         if (_bonusVoters.usersLength > 0) addBonusReputation(_bonusVoters.users, _bonusVoters.usersLength);
 
         if (_lastVoter == daoStakeStorage().readLastParticipant()) {
             // this is the last iteration
 
-            intermediateResultsStorage().resetIntermediateResults(_proposalId);
+            intermediateResultsStorage().resetIntermediateResults(
+                getInterResultKeyForBonusCalculation(_proposalId)
+            );
             _done = true;
         } else {
-            // this is not the last iteration yet
-            intermediateResultsStorage().setIntermediateResults(_proposalId, _lastVoter, 0, 0, 0);
+            // this is not the last iteration yet, save the intermediate results
+            intermediateResultsStorage().setIntermediateResults(
+                getInterResultKeyForBonusCalculation(_proposalId),
+                _lastVoter, 0, 0, 0
+            );
         }
     }
 
+    //done
+    // Count the votes for a Voting Round and find out if its passed
+    /// @return _operationsLeft The number of operations left after the calculations in this function
+    /// @return _passed Whether this voting round passed
+    /// @return _done Whether the calculation for this step 1 is already done. If its not done, this function will need to run again in subsequent transactions
+    /// until _done is true
     function countProposalVote(bytes32 _proposalId, uint256 _index, uint256 _operations)
         internal
         returns (uint256 _operationsLeft, bool _passed, bool _done)
@@ -294,7 +351,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             _currentResults.currentAgainstCount,
         ) = intermediateResultsStorage().getIntermediateResults(_proposalId);
         address[] memory _voters;
-        if (_currentResults.countedUntil == EMPTY_ADDRESS) {
+        if (_currentResults.countedUntil == EMPTY_ADDRESS) { // This is the first transaction to count votes for this voting round
             _voters = daoListingService().listParticipants(
                 _operations,
                 true
@@ -306,9 +363,14 @@ contract DaoVotingClaims is DaoCommon, Claimable {
                 true
             );
 
-            // There's no more operations to be done, or there's no voters to count
-            if (_operations == 0 || _voters.length == 0) {
-                return (_operations, false, true);
+            // If there's no voters left to count, this means that STEP 1 is already done, just return whether it was passed
+            // Note that _currentResults should already be storing the final tally of votes for this voting round, as already calculated in previous iterations of this function
+            if (_voters.length == 0) {
+                return (
+                    _operations,
+                    isVoteCountPassed(_currentResults, _proposalId, _index),
+                    true
+                );
             }
         }
 
@@ -328,28 +390,39 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         );
 
         if (_lastVoter != daoStakeStorage().readLastParticipant()) {
-            return (0, false, false); // hasn't done counting yet
+            return (0, false, false); // hasn't done STEP 1 yet. The parent function (claimProposalVotingResult) should return after this. More transactions are needed to continue the calculation
         }
 
-        // this means all votes have already been counted
-        intermediateResultsStorage().resetIntermediateResults(_proposalId);
+        // If it comes to here, this means all votes have already been counted
+        // From this point, the IntermediateResults struct will store the total tally of the votes for this voting round until processSuccessfulVotingClaim() is called,
+        // which will reset it.
+
         _operationsLeft = _operations.sub(_voters.length);
         _done = true;
 
-        if ((_currentResults.currentForCount.add(_currentResults.currentAgainstCount) > daoCalculatorService().minimumVotingQuorum(_proposalId, _index)) &&
-            (daoCalculatorService().votingQuotaPass(_currentResults.currentForCount, _currentResults.currentAgainstCount)))
-        {
-            _passed = true;
-        }
+        _passed = isVoteCountPassed(_currentResults, _proposalId, _index);
     }
 
-    function handleRefundCollateral(bytes32 _proposalId)
+    //done
+    function isVoteCountPassed(DaoStructs.IntermediateResults _currentResults, bytes32 _proposalId, uint256 _index)
+        internal
+        view
+        returns (bool _passed)
+    {
+        _passed = (_currentResults.currentForCount.add(_currentResults.currentAgainstCount) > daoCalculatorService().minimumVotingQuorum(_proposalId, _index))
+                && (daoCalculatorService().votingQuotaPass(_currentResults.currentForCount, _currentResults.currentAgainstCount));
+    }
+
+    //done
+    function processCollateralRefund(bytes32 _proposalId)
         internal
     {
         daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_CLAIMED);
         require(daoFundingManager().refundCollateral(daoStorage().readProposalProposer(_proposalId), _proposalId));
     }
 
+    //done
+    // add bonus reputation for voters that voted "correctly" in the preceding voting round
     function addBonusReputation(address[] _voters, uint256 _n)
         private
     {

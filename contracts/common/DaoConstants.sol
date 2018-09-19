@@ -24,6 +24,7 @@ contract DaoConstants {
 
     bytes32 INTERMEDIATE_DGD_IDENTIFIER = "inter_dgd_id";
     bytes32 INTERMEDIATE_MODERATOR_DGD_IDENTIFIER = "inter_mod_dgd_id";
+    bytes32 INTERMEDIATE_BONUS_CALCULATION_IDENTIFIER = "inter_bonus_calculation_id";
 
     // interactive contracts
     bytes32 CONTRACT_DAO = "dao";

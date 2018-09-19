@@ -506,16 +506,16 @@ contract('DaoStorage', function (accounts) {
         addressOf.dgdHolders[1], bN(0),
       );
       // verify commit votes
-      assert.deepEqual(await contracts.daoStorage.readCommitVote.call(doc, bN(0), addressOf.badgeHolders[0]), randomCommits[1]);
-      assert.deepEqual(await contracts.daoStorage.readCommitVote.call(doc, bN(0), addressOf.dgdHolders[0]), randomCommits[2]);
-      assert.deepEqual(await contracts.daoStorage.readCommitVote.call(doc, bN(0), addressOf.dgdHolders[1]), randomCommits[3]);
+      assert.deepEqual(await contracts.daoStorage.readComittedVote.call(doc, bN(0), addressOf.badgeHolders[0]), randomCommits[1]);
+      assert.deepEqual(await contracts.daoStorage.readComittedVote.call(doc, bN(0), addressOf.dgdHolders[0]), randomCommits[2]);
+      assert.deepEqual(await contracts.daoStorage.readComittedVote.call(doc, bN(0), addressOf.dgdHolders[1]), randomCommits[3]);
 
       await contracts.daoStorage.commitVote(
         doc, randomCommits[6],
         addressOf.dgdHolders[1], bN(1),
       );
       // verify commit votes
-      assert.deepEqual(await contracts.daoStorage.readCommitVote.call(doc, bN(1), addressOf.dgdHolders[1]), randomCommits[6]);
+      assert.deepEqual(await contracts.daoStorage.readComittedVote.call(doc, bN(1), addressOf.dgdHolders[1]), randomCommits[6]);
     });
   });
 
@@ -585,18 +585,18 @@ contract('DaoStorage', function (accounts) {
     });
   });
 
-  describe('addProposalCountInQuarter', function () {
+  describe('addNonDigixProposalCountInQuarter', function () {
     it('[not called by CONTRACT_DAO_VOTING_CLAIMS]: revert', async function () {
-      assert(await a.failure(contracts.daoStorage.addProposalCountInQuarter.call(bN(1), { from: accounts[2] })));
+      assert(await a.failure(contracts.daoStorage.addNonDigixProposalCountInQuarter.call(bN(1), { from: accounts[2] })));
     });
     it('[valid call]: increment the count', async function () {
       assert.deepEqual(await contracts.daoStorage.proposalCountByQuarter.call(bN(1)), bN(0));
-      await contracts.daoStorage.addProposalCountInQuarter(bN(1));
+      await contracts.daoStorage.addNonDigixProposalCountInQuarter(bN(1));
       assert.deepEqual(await contracts.daoStorage.proposalCountByQuarter.call(bN(1)), bN(1));
-      await contracts.daoStorage.addProposalCountInQuarter(bN(1));
-      await contracts.daoStorage.addProposalCountInQuarter(bN(2));
-      await contracts.daoStorage.addProposalCountInQuarter(bN(2));
-      await contracts.daoStorage.addProposalCountInQuarter(bN(2));
+      await contracts.daoStorage.addNonDigixProposalCountInQuarter(bN(1));
+      await contracts.daoStorage.addNonDigixProposalCountInQuarter(bN(2));
+      await contracts.daoStorage.addNonDigixProposalCountInQuarter(bN(2));
+      await contracts.daoStorage.addNonDigixProposalCountInQuarter(bN(2));
       assert.deepEqual(await contracts.daoStorage.proposalCountByQuarter.call(bN(1)), bN(2));
       assert.deepEqual(await contracts.daoStorage.proposalCountByQuarter.call(bN(2)), bN(3));
     });

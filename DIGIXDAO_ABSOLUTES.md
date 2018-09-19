@@ -25,6 +25,8 @@
 
 1. The sum of all users' DGX rewards for quarter N, calculated using `calculateUserRewardsForLastParticipatingQuarter()` when their `lastParticipatedQuarter == N`, must be exactly equal to the `dgxRewardsPoolLastQuarter` of quarter N+1 (in other words, the dgx rewards pool of quarter N). Likewise, the sum of all users' dgxRewardsAsModerator should add up to the
 moderator rewards pool (CONFIG_PORTION_TO_MODERATORS_NUM/CONFIG_PORTION_TO_MODERATORS_DEN * dgxRewardsPool)
+    * There will be rounding error, which must only be in the order of 1e-9
+
 
 1. When a participant's rewards is calculated for a quarter N that that he last participated in, his current `Reputation` and `lockedDGDStake` must be exactly the same as his `Reputation` and `lockedDGDStake` when calculateGlobalRewardsBeforeNewQuarter() was called in quarter N.
     * Otherwise, the previous invariant will not hold
@@ -36,6 +38,9 @@ moderator rewards pool (CONFIG_PORTION_TO_MODERATORS_NUM/CONFIG_PORTION_TO_MODER
 
 1. The collateral can only be claimed back in these scenarios:
     * Before the proposal is finalized, by calling closeProposal()
+    * The proposal is failed in either Draft Voting phase or Voting phase (index 0)
     * After all milestones are done and the final voting round is passed
 
 1. The number of non-Digix proposals that goes through the Voting Round (VotingRound index 0) in a particular quarter must be <= get_uint_config(CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER)
+
+1. The balance of DaoFundingManager is always exactly the same as DaoFundingStorage.ethInDao()

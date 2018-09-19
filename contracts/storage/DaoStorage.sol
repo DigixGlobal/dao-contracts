@@ -177,7 +177,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
     /// @return {
     ///   "_commitHash": ""
     /// }
-    function readCommitVote(bytes32 _proposalId, uint256 _index, address _voter)
+    function readComittedVote(bytes32 _proposalId, uint256 _index, address _voter)
         public
         constant
         returns (bytes32 _commitHash)
@@ -737,7 +737,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         proposalsById[_proposalId].votingRounds[_index].revealVote(_voter, _vote, _weight);
     }
 
-    function addProposalCountInQuarter(uint256 _quarterIndex)
+    function addNonDigixProposalCountInQuarter(uint256 _quarterIndex)
         public
     {
         require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));

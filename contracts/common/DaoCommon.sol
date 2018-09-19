@@ -204,7 +204,7 @@ contract DaoCommon is IdentityCommon {
     modifier hasNotRevealedSpecial(bytes32 _proposalId) {
         uint256 _weight;
         (,_weight) = daoSpecialStorage().readVote(_proposalId, msg.sender);
-        require(_weight == uint(0));
+        require(_weight == uint256(0));
         _;
     }
 
@@ -485,7 +485,7 @@ contract DaoCommon is IdentityCommon {
     {
         _is =
             (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex())
-            && (daoStakeStorage().readUserEffectiveDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_LOCKED_DGD));
+            && (daoStakeStorage().lockedDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_LOCKED_DGD));
     }
 
     //done
@@ -499,7 +499,7 @@ contract DaoCommon is IdentityCommon {
     {
         _is =
             (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex())
-            && (daoStakeStorage().readUserEffectiveDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_DGD_FOR_MODERATOR))
+            && (daoStakeStorage().lockedDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_DGD_FOR_MODERATOR))
             && (daoPointsStorage().getReputation(_user) >= getUintConfig(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR));
     }
 
@@ -568,10 +568,19 @@ contract DaoCommon is IdentityCommon {
         internal
         constant
     {
+        require(isNonDigixProposalsWithinLimit(_proposalId));
+    }
+
+    function isNonDigixProposalsWithinLimit(bytes32 _proposalId)
+        internal
+        constant
+        returns (bool _withinLimit)
+    {
         bool _isDigixProposal;
         (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
+        _withinLimit = true;
         if (!_isDigixProposal) {
-            require(daoStorage().proposalCountByQuarter(currentQuarterIndex()) < getUintConfig(CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER));
+            _withinLimit = daoStorage().proposalCountByQuarter(currentQuarterIndex()) < getUintConfig(CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER);
         }
     }
 

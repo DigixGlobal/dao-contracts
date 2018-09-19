@@ -107,7 +107,7 @@ contract DaoSpecialStorage is DaoStorageCommon {
         proposalsById[_proposalId].voting.commits[_voter] = _hash;
     }
 
-    function readCommitVote(bytes32 _proposalId, address _voter)
+    function readComittedVote(bytes32 _proposalId, address _voter)
         public
         constant
         returns (bytes32 _commitHash)
