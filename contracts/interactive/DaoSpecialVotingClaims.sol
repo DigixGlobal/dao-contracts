@@ -8,6 +8,7 @@ import "./DaoRewardsManager.sol";
 import "../lib/DaoIntermediateStructs.sol";
 import "../lib/DaoStructs.sol";
 
+//done
 /**
 @title Contract to claim voting results
 @author Digix Holdings

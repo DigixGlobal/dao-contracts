@@ -8,6 +8,7 @@ import "./DaoRewardsManager.sol";
 import "../lib/DaoIntermediateStructs.sol";
 import "../lib/DaoStructs.sol";
 
+//done
 /**
 @title Contract to claim voting results
 @author Digix Holdings
@@ -160,7 +161,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
     /// NOTE: Voting round i-th is before milestone index i-th
 
-    //TODO
+    //done
     /**
     @notice Function to claim the  voting round results
     @dev This function has two major steps:

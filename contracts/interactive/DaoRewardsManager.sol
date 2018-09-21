@@ -488,6 +488,10 @@ contract DaoRewardsManager is DaoCommon {
             .add(daoRewardsStorage().totalDGXsClaimed())
             .sub(info.qInfo.sumRewardsFromBeginning);
 
+        // starting new quarter, no one locked in DGDs yet
+        daoStakeStorage().updateTotalLockedDGDStake(0);
+        daoStakeStorage().updateTotalModeratorLockedDGDs(0);
+
         daoRewardsStorage().updateQuarterInfo(
             info.previousQuarter.add(1),
             getUintConfig(CONFIG_MINIMAL_QUARTER_POINT),

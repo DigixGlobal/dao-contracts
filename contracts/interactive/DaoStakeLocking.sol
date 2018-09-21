@@ -112,24 +112,29 @@ contract DaoStakeLocking is DaoCommon {
         emit RedeemBadge(msg.sender);
     }
 
-    //done
+    function lockDGD(uint256 _amount) public {
+        require(_amount > 0);
+        lockDGDInternal(_amount);
+    }
+
+    //donedone
     /**
     @notice Function to lock DGD tokens to participate in the DAO
     @dev Users must `approve` the DaoStakeLocking contract to transfer DGDs from them
          Contracts are not allowed to participate in DigixDAO
     @param _amount Amount of DGDs to lock
     */
-    function lockDGD(uint256 _amount)
-        public
+    function lockDGDInternal(uint256 _amount)
+        internal
         ifNotContract(msg.sender)
         ifGlobalRewardsSet(currentQuarterIndex())
     {
         StakeInformation memory _info = getStakeInformation(msg.sender);
         StakeInformation memory _newInfo = refreshDGDStake(msg.sender, _info, false);
 
-        require(_amount > 0);
-        _newInfo.userActualLockedDGD = _newInfo.userActualLockedDGD.add(_amount);
         uint256 _additionalStake = daoCalculatorService().calculateAdditionalLockedDGDStake(_amount);
+
+        _newInfo.userActualLockedDGD = _newInfo.userActualLockedDGD.add(_amount);
         _newInfo.userLockedDGDStake = _newInfo.userLockedDGDStake.add(_additionalStake);
         _newInfo.totalLockedDGDStake = _newInfo.totalLockedDGDStake.add(_additionalStake);
 
@@ -137,7 +142,6 @@ contract DaoStakeLocking is DaoCommon {
         daoRewardsManager().updateRewardsAndReputationBeforeNewQuarter(msg.sender);
 
         daoStakeStorage().updateUserDGDStake(msg.sender, _newInfo.userActualLockedDGD, _newInfo.userLockedDGDStake);
-        daoStakeStorage().updateTotalLockedDGDStake(_newInfo.totalLockedDGDStake);
 
 
         //since Reputation is updated, we need to refresh moderator status
@@ -166,7 +170,18 @@ contract DaoStakeLocking is DaoCommon {
             if (_lastParticipatedQuarter == 0) {
                 rewardCarbonVotingBonus(msg.sender);
             }
+        } else { // this participant doesnt have enough DGD to be a participant
+            // Absolute: The lastParticipatedQuarter of this participant WILL NEVER be the current quarter
+            // Otherwise, his lockedDGDStake must be above the CONFIG_MINIMUM_LOCKED_DGDd
+
+            // Hence, the refreshDGDStake() function must have added _newInfo.userLockedDGDStake to _newInfo.totalLockedDGDStake
+
+            // Since this participant is not counted as a participant, we need to deduct _newInfo.userLockedDGDStake from _newInfo.totalLockedDGDStake
+            _newInfo.totalLockedDGDStake = _newInfo.totalLockedDGDStake.sub(_newInfo.userLockedDGDStake);
+            daoStakeStorage().removeFromParticipantList(msg.sender);
         }
+
+        daoStakeStorage().updateTotalLockedDGDStake(_newInfo.totalLockedDGDStake);
 
         // interaction happens last
         require(ERC20(dgdToken).transferFrom(msg.sender, address(this), _amount));
@@ -199,6 +214,8 @@ contract DaoStakeLocking is DaoCommon {
         _newInfo.userLockedDGDStake = _newInfo.userLockedDGDStake.sub(_amount);
         _newInfo.totalLockedDGDStake = _newInfo.totalLockedDGDStake.sub(_amount);
 
+        //_newInfo.totalLockedDGDStake = _newInfo.totalLockedDGDStake.sub(_amount);
+
         // This has to happen at least once before user can participate in next quarter
         daoRewardsManager().updateRewardsAndReputationBeforeNewQuarter(msg.sender);
 
@@ -214,14 +231,18 @@ contract DaoStakeLocking is DaoCommon {
                 daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, daoRewardsStorage().previousLastParticipatedQuarter(msg.sender));
             }
 
+            // if this participant is not counted as a participant, the totalLockedDGDStake should not take into account the userLockedDGDStake at all
+            _newInfo.totalLockedDGDStake = _newInfo.totalLockedDGDStake.sub(_newInfo.userLockedDGDStake);
+
             daoStakeStorage().removeFromParticipantList(msg.sender);
-        } else {
+        } else { // This participant still remains as a participant
             // if this is the first time we lock/unlock/continue in this quarter, save the previous lastParticipatedQuarter
             if (_lastParticipatedQuarter < _currentQuarter) {
                 daoRewardsStorage().updatePreviousLastParticipatedQuarter(msg.sender, _lastParticipatedQuarter);
                 daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, _currentQuarter);
-            }
 
+            }
+            // the totalLockedDGDStake after refreshDGDStake() should decrease by _amount, since this guy withdraws _amount
         }
 
         daoStakeStorage().updateUserDGDStake(msg.sender, _newInfo.userActualLockedDGD, _newInfo.userLockedDGDStake);
@@ -240,9 +261,10 @@ contract DaoStakeLocking is DaoCommon {
     */
     function confirmContinuedParticipation()
         public
-        ifGlobalRewardsSet(currentQuarterIndex())
+        /* ifGlobalRewardsSet(currentQuarterIndex()) */
     {
-        StakeInformation memory _info = getStakeInformation(msg.sender);
+        lockDGDInternal(0);
+        /* StakeInformation memory _info = getStakeInformation(msg.sender);
 
         // This address must have at least some DGDs locked in, to confirmContinuedParticipation
         // Otherwise, its meaningless anw
@@ -251,17 +273,36 @@ contract DaoStakeLocking is DaoCommon {
 
         daoRewardsManager().updateRewardsAndReputationBeforeNewQuarter(msg.sender);
 
-        StakeInformation memory _infoAfter = refreshDGDStake(msg.sender, _info, true);
-        refreshModeratorStatus(msg.sender, _info, _infoAfter);
+        StakeInformation memory _newInfo = refreshDGDStake(msg.sender, _info, false);
+        refreshModeratorStatus(msg.sender, _info, _newInfo);
 
         uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(msg.sender);
         uint256 _currentQuarter = currentQuarterIndex();
 
-        // if this is the first time we lock/unlock/continue in this quarter, save the previous lastParticipatedQuarter and update the lastParticipatedQuarter
-        if (_lastParticipatedQuarter < _currentQuarter) {
-            daoRewardsStorage().updatePreviousLastParticipatedQuarter(msg.sender, _lastParticipatedQuarter);
-            daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, _currentQuarter);
+        if (_newInfo.userLockedDGDStake < getUintConfig(CONFIG_MINIMUM_LOCKED_DGD)) { // this participant doesnt have enough DGD to be a participant
+            // Absolute: The lastParticipatedQuarter of this participant WILL NEVER be the current quarter
+            // Otherwise, his lockedDGDStake must be above the CONFIG_MINIMUM_LOCKED_DGDd
+
+            // Hence, the refreshDGDStake() function must have added _newInfo.userLockedDGDStake to _newInfo.totalLockedDGDStake
+
+            // Since this participant is not counted as a participant, we need to deduct _newInfo.userLockedDGDStake from _newInfo.totalLockedDGDStake
+            _newInfo.totalLockedDGDStake = _newInfo.totalLockedDGDStake.sub(_newInfo.userLockedDGDStake);
+
+            daoStakeStorage().removeFromParticipantList(msg.sender);
+        } else { // this participant's new lockedDGDStake is above the minimum, but we are not sure if he is in the participant list yet
+            daoStakeStorage().addToParticipantList(msg.sender); // this will not add a second duplicate of the address if its already there
+            daoStakeStorage().updateTotalLockedDGDStake(_newInfo.totalLockedDGDStake);
+
+            // if this is the first time we lock/unlock/continue in this quarter, save the previous lastParticipatedQuarter
+            if (_lastParticipatedQuarter < _currentQuarter) {
+                daoRewardsStorage().updatePreviousLastParticipatedQuarter(msg.sender, _lastParticipatedQuarter);
+                daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, _currentQuarter);
+            }
+
         }
+
+        daoStakeStorage().updateUserDGDStake(msg.sender, _newInfo.userActualLockedDGD, _newInfo.userLockedDGDStake);
+        daoStakeStorage().updateTotalLockedDGDStake(_newInfo.totalLockedDGDStake); */
     }
 
     //done
@@ -273,6 +314,10 @@ contract DaoStakeLocking is DaoCommon {
         This has no effect if the user has already done some staking action in the current quarter
          _infoBefore has the user's current stake information
          _infoAfter will be the user's stake information after refreshing
+
+         This function updates the totalLockedDGDStake as if, the _user is participating in this quarter
+         Therefore, if the _user actually will not qualify as a participant, the caller of this function needs to deduct
+         _infoAfter.userLockedDGDStake from _infoAfter.totalLockedDGDStake
     */
     function refreshDGDStake(address _user, StakeInformation _infoBefore, bool _saveToStorage)
         internal
@@ -288,7 +333,7 @@ contract DaoStakeLocking is DaoCommon {
             _infoAfter.userLockedDGDStake = daoCalculatorService().calculateAdditionalLockedDGDStake(_infoBefore.userActualLockedDGD);
 
             _infoAfter.totalLockedDGDStake = _infoAfter.totalLockedDGDStake.add(
-                _infoAfter.userLockedDGDStake.sub(_infoBefore.userLockedDGDStake)
+                _infoAfter.userLockedDGDStake
             );
             if (_saveToStorage) {
                 daoStakeStorage().updateUserDGDStake(_user, _infoAfter.userActualLockedDGD, _infoAfter.userLockedDGDStake);
@@ -306,29 +351,43 @@ contract DaoStakeLocking is DaoCommon {
     function refreshModeratorStatus(address _user, StakeInformation _infoBefore, StakeInformation _infoAfter)
         internal
     {
-        // remove from moderator list if conditions not satisfied
+        bool _alreadyParticipatedInThisQuarter = daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex();
+        uint256 _currentTotalModeratorLockedDGDs = daoStakeStorage().totalModeratorLockedDGDStake();
+
         if (daoStakeStorage().isInModeratorsList(_user) == true) {
+            // this participant was already in the moderator list
 
             if (_infoAfter.userLockedDGDStake < getUintConfig(CONFIG_MINIMUM_DGD_FOR_MODERATOR) ||
                 daoPointsStorage().getReputation(_user) < getUintConfig(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR)) {
 
-                    daoStakeStorage().removeFromModeratorList(_user);
+                daoStakeStorage().removeFromModeratorList(_user);
+
+                // only need to deduct the dgdStake from the totalModeratorLockedDGDStake if this participant has participated in the quarter before this transaction
+                if (_alreadyParticipatedInThisQuarter) {
                     daoStakeStorage().updateTotalModeratorLockedDGDs(
-                        daoStakeStorage().totalModeratorLockedDGDStake().sub(_infoBefore.userLockedDGDStake)
+                        _currentTotalModeratorLockedDGDs.sub(_infoBefore.userLockedDGDStake)
                     );
-            } else { // If the moderator status is the same, we still need to update totalModeratorLockedDGDStake if the lockedDGDStake has changed, (e.g. user may not have locked in locking phase, so actual !== effective)
-                daoStakeStorage().updateTotalModeratorLockedDGDs(
-                    daoStakeStorage().totalModeratorLockedDGDStake().sub(_infoBefore.userLockedDGDStake).add(_infoAfter.userLockedDGDStake)
-                );
+                }
+
+            } else { // this moderator still remains a moderator
+                if (_alreadyParticipatedInThisQuarter) { // if already participated in this quarter, just account for the difference in dgdStake
+                    daoStakeStorage().updateTotalModeratorLockedDGDs(
+                        _currentTotalModeratorLockedDGDs.sub(_infoBefore.userLockedDGDStake).add(_infoAfter.userLockedDGDStake)
+                    );
+                } else { // has not participated in this quarter before this transaction
+                    daoStakeStorage().updateTotalModeratorLockedDGDs(
+                        _currentTotalModeratorLockedDGDs.add(_infoAfter.userLockedDGDStake)
+                    );
+                }
             }
-        } else { // add to moderator list if conditions satisfied
+        } else { // was not in moderator list
             if (_infoAfter.userLockedDGDStake >= getUintConfig(CONFIG_MINIMUM_DGD_FOR_MODERATOR) &&
                 daoPointsStorage().getReputation(_user) >= getUintConfig(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR)) {
 
-                    daoStakeStorage().addToModeratorList(_user);
-                    daoStakeStorage().updateTotalModeratorLockedDGDs(
-                        daoStakeStorage().totalModeratorLockedDGDStake().add(_infoAfter.userLockedDGDStake)
-                    );
+                daoStakeStorage().addToModeratorList(_user);
+                daoStakeStorage().updateTotalModeratorLockedDGDs(
+                    _currentTotalModeratorLockedDGDs.add(_infoAfter.userLockedDGDStake)
+                );
             }
         }
     }

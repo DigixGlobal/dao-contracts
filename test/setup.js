@@ -93,6 +93,29 @@ const getAccountsAndAddressOf = function (accounts, addressOf) {
   for (const key in addressOfTemp) addressOf[key] = addressOfTemp[key];
 };
 
+const checkDgdStakeConsistency = async function (contracts, bN) {
+  console.log('\tChecking for lockedDGDStake consistency');
+  // console.log('\tChecking if sum of all lockedDGDStake is the same as totalLockedDGDStake');
+  // console.log('\t& Checking if sum of all moderators lockedDGDStake is the same as totalModeratorLockedDGDStake');
+  const allParticipants = await contracts.daoListingService.listParticipants.call(bN(1000), true);
+  let sumOfDgdStakes = bN(0);
+  let sumOfModeratorDgdStakes = bN(0);
+  await a.map(allParticipants, 20, async (participant) => {
+    const isModerator = await contracts.dao.isModerator.call(participant);
+    const isParticipant = await contracts.dao.isParticipant.call(participant);
+    const stake = await contracts.daoStakeStorage.lockedDGDStake.call(participant);
+    if (isParticipant) sumOfDgdStakes = sumOfDgdStakes.plus(stake);
+    if (isModerator) sumOfModeratorDgdStakes = sumOfModeratorDgdStakes.plus(stake);
+  });
+  const totalLockedDGDStakeFromContract = await contracts.daoStakeStorage.totalLockedDGDStake.call();
+  const totalModeratorLockedDGDStakeFromContract = await contracts.daoStakeStorage.totalModeratorLockedDGDStake.call();
+  console.log(`\t\t\tsumOfDgdStakes = ${sumOfDgdStakes}, while totalLockedDGDStakeFromContract = ${totalLockedDGDStakeFromContract}`);
+  console.log(`\t\t\tsumOfModeratorDgdStakes = ${sumOfModeratorDgdStakes}, while totalModeratorLockedDGDStakeFromContract = ${totalModeratorLockedDGDStakeFromContract}`);
+  assert.deepEqual(sumOfDgdStakes, totalLockedDGDStakeFromContract);
+  assert.deepEqual(sumOfModeratorDgdStakes, totalModeratorLockedDGDStakeFromContract);
+  console.log('\t\tDone checking DGD Stake consistency');
+};
+
 const printProposalDetails = async (contracts, proposal, votingRound = 0) => {
   console.log('\tPrinting details for proposal ', proposal.id);
   const proposalDetails = await contracts.daoStorage.readProposal(proposal.id);
@@ -344,7 +367,7 @@ const assignVotesAndCommits = function (addressOf, proposalCount = 4, voterCount
 // Basically, changing the time scale to something more feasible for the test suite
 const setDummyConfig = async function (contracts, bN) {
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION, bN(10));
-  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_QUARTER_DURATION, bN(60));
+  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_QUARTER_DURATION, bN(20));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTING_COMMIT_PHASE, bN(10));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTING_PHASE_TOTAL, bN(20));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_INTERIM_COMMIT_PHASE, bN(10));
@@ -533,9 +556,10 @@ const printDaoDetails = async (bN, contracts) => {
   console.log('Printing DAO details');
   const qIndex = await contracts.dao.currentQuarterIndex.call();
   console.log('\tCurrent Quarter: ', qIndex);
+  console.log('\tisLockingPhase? ', await contracts.dao.isLockingPhase.call());
   console.log('\tDGX distribution day: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex));
-  console.log('\tDGX distribution day last quarter: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex.minus(1)));
-  console.log('\tDGX distribution day last last quarter: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex.minus(2)));
+  // console.log('\tDGX distribution day last quarter: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex.minus(1)));
+  // console.log('\tDGX distribution day last last quarter: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex.minus(2)));
   // TODO: print more stuff
 };
 
@@ -575,7 +599,7 @@ const redeemBadges = async (web3, contracts, bN, participants) => {
 // Function to transfer tokens (DGD and DGD Badge) to `participants`
 // Also these users then approve the DaoStakeLocking contract to access the tokens on their behalf
 const fundUserAndApproveForStakeLocking = async (web3, contracts, bN, participants, addressOf) => {
-  const ENOUGH_DGD = bN(1000e9);
+  const ENOUGH_DGD = bN(2000e9);
   const ENOUGH_BADGE = bN(5);
   await a.map(participants, 20, async (participant) => {
     await contracts.dgdToken.transfer(participant.address, ENOUGH_DGD);
@@ -716,6 +740,7 @@ module.exports = {
   getAllParticipantAddresses,
   deployStorage,
   registerInteractive,
+  checkDgdStakeConsistency,
   deployServices,
   deployInteractive,
   initialTransferTokens,
