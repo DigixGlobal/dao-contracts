@@ -132,7 +132,6 @@ contract('DaoSpecialStorage', function (accounts) {
       const votingCount = await contracts.daoSpecialStorage.readVotingCount.call(doc, addressOf.allParticipants);
       assert.deepEqual(votingCount[0], bN(8));
       assert.deepEqual(votingCount[1], bN(5));
-      assert.deepEqual(votingCount[2], bN(13));
     });
   });
 

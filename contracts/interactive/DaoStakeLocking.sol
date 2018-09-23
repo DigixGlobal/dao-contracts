@@ -346,7 +346,9 @@ contract DaoStakeLocking is DaoCommon {
     /**
     @notice This function refreshes the Moderator status of a user, to be done right after ANY STEP where a user's reputation or DGDStake is changed
     @dev _infoBefore is the stake information of the user before this transaction, _infoAfter is the stake information after this transaction
-         This function needs to adjust the totalModeratorLockedDGDStake accordingly as well
+         This function needs to:
+            - add/remove addresses from the moderator list accordingly
+            - adjust the totalModeratorLockedDGDStake accordingly as well
     */
     function refreshModeratorStatus(address _user, StakeInformation _infoBefore, StakeInformation _infoAfter)
         internal
@@ -359,17 +361,21 @@ contract DaoStakeLocking is DaoCommon {
 
             if (_infoAfter.userLockedDGDStake < getUintConfig(CONFIG_MINIMUM_DGD_FOR_MODERATOR) ||
                 daoPointsStorage().getReputation(_user) < getUintConfig(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR)) {
+                // this participant is no longer a moderator this quarter, should be removed
+
+                // Throw if this is the last moderator. There must be at least one moderator in the moderator list. Otherwise calculateGlobalRewardsBeforeNewQuarter() will fail.
+                require(daoStakeStorage().readTotalModerators() > 1);
 
                 daoStakeStorage().removeFromModeratorList(_user);
 
-                // only need to deduct the dgdStake from the totalModeratorLockedDGDStake if this participant has participated in the quarter before this transaction
+                // only need to deduct the dgdStake from the totalModeratorLockedDGDStake if this participant has participated in this quarter before this transaction
                 if (_alreadyParticipatedInThisQuarter) {
                     daoStakeStorage().updateTotalModeratorLockedDGDs(
                         _currentTotalModeratorLockedDGDs.sub(_infoBefore.userLockedDGDStake)
                     );
                 }
 
-            } else { // this moderator still remains a moderator
+            } else { // this moderator was in the moderator list and still remains a moderator now
                 if (_alreadyParticipatedInThisQuarter) { // if already participated in this quarter, just account for the difference in dgdStake
                     daoStakeStorage().updateTotalModeratorLockedDGDs(
                         _currentTotalModeratorLockedDGDs.sub(_infoBefore.userLockedDGDStake).add(_infoAfter.userLockedDGDStake)

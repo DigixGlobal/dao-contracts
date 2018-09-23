@@ -5,6 +5,9 @@ const {
   phaseCorrection,
   updateKyc,
   getParticipants,
+  printDaoDetails,
+  printHolderDetails,
+  printBadgeHolderDetails,
   BADGE_HOLDER_COUNT,
   DGD_HOLDER_COUNT,
 } = require('../setup');
@@ -74,7 +77,7 @@ contract('DaoRewardsManager', function (accounts) {
   };
 
   const resetBeforeEach = async function () {
-    await deployFreshDao(libs, contracts, addressOf, accounts, bN, web3);
+    await deployFreshDao(libs, contracts, addressOf, accounts, bN, web3, 15, 15);
     await contracts.daoIdentity.addGroupUser(bN(3), addressOf.prl, randomBytes32());
     await contracts.daoIdentity.addGroupUser(bN(4), addressOf.kycadmin, randomBytes32());
     await setMockValues();
@@ -453,7 +456,7 @@ contract('DaoRewardsManager', function (accounts) {
     let mockModeratorStakes;
     let mockParticipantStakes;
     beforeEach(async function () {
-      await deployFreshDao(libs, contracts, addressOf, accounts, bN, web3);
+      await deployFreshDao(libs, contracts, addressOf, accounts, bN, web3, 15, 15);
       await contracts.daoIdentity.addGroupUser(bN(3), addressOf.prl, randomBytes32());
       await contracts.daoIdentity.addGroupUser(bN(4), addressOf.kycadmin, randomBytes32());
       await updateKyc(contracts, addressOf, getParticipants(addressOf, bN));
@@ -518,13 +521,20 @@ contract('DaoRewardsManager', function (accounts) {
       );
       assert(await a.failure(contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(10), { from: addressOf.founderBadgeHolder })));
     });
+
     it('[check step by step process]: verify quarter info', async function () {
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
       await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(20 * (10 ** 9)));
+      await printDaoDetails(bN, contracts);
+
       const N_PARTICIPANTS = await contracts.daoStakeStorage.readTotalParticipant.call();
       const N_MODERATORS = await contracts.daoStakeStorage.readTotalModerators.call();
       const N_CYCLES = Math.floor((N_PARTICIPANTS.toNumber() + N_MODERATORS.toNumber()) / 10);
+      console.log(`\t\tN_PARTICIPANTS = ${N_PARTICIPANTS}, N_MODERATORS=${N_MODERATORS}, N_CYCLES=${N_CYCLES}`);
       for (const i of indexRange(0, N_CYCLES + 1)) {
+        if (i==5) await printDaoDetails(bN, contracts);
+
+        console.log('\t\tstep id (i) = ', i);
         if (i < N_CYCLES) {
           assert.deepEqual(await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter.call(
             bN(10),
@@ -647,5 +657,6 @@ contract('DaoRewardsManager', function (accounts) {
       await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
       assert(await a.failure(contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter.call(bN(10), { from: addressOf.founderBadgeHolder })));
     });
+
   });
 });
