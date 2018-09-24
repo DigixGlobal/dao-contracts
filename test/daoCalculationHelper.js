@@ -223,6 +223,23 @@ const getBonusReputation = function (
     (_reputationPerExtraDen * _bonusReputationDenominator));
 };
 
+/**
+  Calculate the scaled DGD based on how much time is left in the main phase.
+*/
+const scaledDgd = function (
+  _timeNow,
+  _startOfFirstQuarter,
+  _lockingPhaseDuration,
+  _quarterDuration,
+  _amount,
+) {
+  const _timeInQuarter = (_timeNow - _startOfFirstQuarter) % _quarterDuration;
+  if (_timeInQuarter < _lockingPhaseDuration) {
+    return _amount;
+  }
+  return Math.floor((_amount * (_quarterDuration - _timeInQuarter)) / (_quarterDuration - _lockingPhaseDuration));
+};
+
 module.exports = {
   calculateMinQuorum,
   calculateQuota,
@@ -231,5 +248,6 @@ module.exports = {
   calculateDgxRewards,
   calculateReputation,
   getBonusReputation,
+  scaledDgd,
   SECONDS_IN_A_DAY,
 };
