@@ -255,8 +255,6 @@ contract('DaoStakeLocking', function (accounts) {
     });
   });
 
-
-
   describe('withdrawDGD', function () {
     before(async function () {
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
@@ -456,10 +454,10 @@ contract('DaoStakeLocking', function (accounts) {
 
       await checkDgdStakeConsistency(contracts, bN);
 
-      //// setup for next test case: one of the two moderators withdraw his DGD
+      // setup for next test case: one of the two moderators withdraw his DGD
       const stakeHolder0 = await contracts.daoStakeStorage.readUserDGDStake.call(addressOf.badgeHolders[0]);
       await contracts.daoStakeLocking.withdrawDGD(stakeHolder0[0], { from: addressOf.badgeHolders[0] });
-      //// End setup for next test case
+      // End setup for next test case
 
       // now, lets teleport to the middle  of Mainphase of quarter N+1;
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);

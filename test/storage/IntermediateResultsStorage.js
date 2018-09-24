@@ -29,7 +29,6 @@ contract('IntermediateResultsStorage', function (accounts) {
   const forCount = randomBigNumbers(bN, 2);
   const againstCount = randomBigNumbers(bN, 2);
   const quorum = randomBigNumbers(bN, 2);
-  const sum = randomBigNumbers(bN, 2);
 
   before(async function () {
     contracts = {};

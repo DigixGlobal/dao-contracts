@@ -483,7 +483,7 @@ const waitForRevealPhaseToGetOver = async function (contracts, addressOf, propos
 // Also initializes DigixDAO (set the start time of the first quarter)
 // Sets dummy config for DigixDAO
 // Funds the DaoFundingManager contract with some ether to start with
-const deployFreshDao = async (libs, contracts, addressOf, accounts, bN, web3, lockingPhase=10, mainPhase=50) => {
+const deployFreshDao = async (libs, contracts, addressOf, accounts, bN, web3, lockingPhase = 10, mainPhase = 50) => {
   await deployLibraries(libs);
   await deployNewContractResolver(contracts);
   await getAccountsAndAddressOf(accounts, addressOf);

@@ -6,8 +6,6 @@ const {
   updateKyc,
   getParticipants,
   printDaoDetails,
-  printHolderDetails,
-  printBadgeHolderDetails,
   BADGE_HOLDER_COUNT,
   DGD_HOLDER_COUNT,
 } = require('../setup');
@@ -532,7 +530,7 @@ contract('DaoRewardsManager', function (accounts) {
       const N_CYCLES = Math.floor((N_PARTICIPANTS.toNumber() + N_MODERATORS.toNumber()) / 10);
       console.log(`\t\tN_PARTICIPANTS = ${N_PARTICIPANTS}, N_MODERATORS=${N_MODERATORS}, N_CYCLES=${N_CYCLES}`);
       for (const i of indexRange(0, N_CYCLES + 1)) {
-        if (i==5) await printDaoDetails(bN, contracts);
+        if (i === 5) await printDaoDetails(bN, contracts);
 
         console.log('\t\tstep id (i) = ', i);
         if (i < N_CYCLES) {
@@ -657,6 +655,5 @@ contract('DaoRewardsManager', function (accounts) {
       await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
       assert(await a.failure(contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter.call(bN(10), { from: addressOf.founderBadgeHolder })));
     });
-
   });
 });

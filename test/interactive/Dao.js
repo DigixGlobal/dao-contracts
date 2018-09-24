@@ -7,7 +7,6 @@ const {
   setupParticipantsStates,
   getTestProposals,
   phaseCorrection,
-  withdrawDGDs,
   getParticipants,
   addProposal,
   endorseProposal,

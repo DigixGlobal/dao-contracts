@@ -112,7 +112,7 @@ contract DaoRewardsManager is DaoCommon {
     */
     function claimRewards()
         public
-        /* ifGlobalRewardsSet(currentQuarterIndex()) */
+        ifGlobalRewardsSet(currentQuarterIndex())
     {
         require(isDaoNotReplaced());
 

@@ -36,7 +36,8 @@ contract('DaoFundingManager', function (accounts) {
       bN(getCurrentTimestamp() + (3600)),
       { from: addressOf.kycadmin },
     );
-  }
+  };
+
   const resetBeforeEach = async function () {
     contracts = {};
     libs = {};
