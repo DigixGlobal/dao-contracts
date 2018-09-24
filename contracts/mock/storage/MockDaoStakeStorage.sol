@@ -16,6 +16,7 @@ contract MockDaoStakeStorage is DaoStakeStorage {
             lockedDGDStake[_moderators[i]] = _dgdStake[i];
             totalModeratorLockedDGDStake += _dgdStake[i];
         }
+        mock_add_participants(_moderators, _dgdStake);
     }
 
     function mock_add_participants(address[] _participants, uint256[] _dgdStake)

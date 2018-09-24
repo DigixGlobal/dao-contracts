@@ -8,7 +8,7 @@ import "./../storage/DaoStorage.sol";
 import "./../storage/DaoStakeStorage.sol";
 import "./../common/DaoConstants.sol";
 
-//done
+
 /**
 @title Contract to list various storage states from DigixDAO
 @author Digix Holdings

@@ -4,13 +4,13 @@
 
 1. `lastParticipatedQuarter` is always the most recent quarter that a user has participated/is participating. It is only set when user `lockDGD/withdrawDGD/confirmContinuedParticipation`
 
-1. sum of everyone's `lockedDGDStake` must be exactly the same as `totalLockedDGDStake` (in `DaoStakeStorage` contract)
+1. as long as calculateGlobalRewardsBeforeNewQuarter() has finished in a quarter, sum of all participants' `lockedDGDStake` must always be exactly the same as `totalLockedDGDStake` (in `DaoStakeStorage` contract)
 
-1. sum of all moderators' `lockedDGDStake` must be exactly the same as `totalModeratorLockedDGDStake`
+1. as long as calculateGlobalRewardsBeforeNewQuarter() has finished in a quarter, sum of all moderators' `lockedDGDStake` must be exactly the same as `totalModeratorLockedDGDStake`
 
 1. after ANY step where a participant's Reputation or DGDStake is changed, except for when user locks in DGDs the first time (and hence getting the bonus reputation from carbon votes), `refreshModeratorStatus()` must be called
 
-1. after ANY step where a participant's DGD stake is changed, `refreshDGDStake` must be called
+1. before ANY step where a participant's DGD stake is changed, `refreshDGDStake` must be called
 
 1. In a quarter, `calculateGlobalRewardsBeforeNewQuarter()` must finish first (returns true) before ANY other activities in the DAO can happen
 
@@ -44,3 +44,11 @@ moderator rewards pool (CONFIG_PORTION_TO_MODERATORS_NUM/CONFIG_PORTION_TO_MODER
 1. The number of non-Digix proposals that goes through the Voting Round (VotingRound index 0) in a particular quarter must be <= get_uint_config(CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER)
 
 1. The balance of DaoFundingManager is always exactly the same as DaoFundingStorage.ethInDao()
+
+1. Except for the whitelisted contracts in DaoWhitelistingStorage, no other contracts can read any information that gives away:
+    * whether any voting round is passed or not.
+    * whether a participant has voted yes or no in a particular voting round
+
+    This is to prevent bribing contracts from verifying on-chain that a vote seller has indeed voted as instructed/ a voting has indeed passed/failed
+
+1. As long as the Dao is not replaced yet, calculateGlobalRewardsBeforeNewQuarter() must always be able to run in the beginning of the quarter and every DGD holders who have locked in DGDs at some point will be able to withdraw all of their DGDs

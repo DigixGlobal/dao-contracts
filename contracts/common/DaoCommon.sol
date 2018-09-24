@@ -15,7 +15,7 @@ import "../storage/DaoWhitelistingStorage.sol";
 import "../storage/IntermediateResultsStorage.sol";
 import "../lib/MathHelper.sol";
 
-//done
+
 contract DaoCommon is IdentityCommon {
 
     using MathHelper for MathHelper;
@@ -33,7 +33,7 @@ contract DaoCommon is IdentityCommon {
         _isNotReplaced = !daoUpgradeStorage().isReplacedByNewDao();
     }
 
-    //done
+
     /**
     @notice Check if it is currently in the locking phase
     @dev No governance activities can happen in the locking phase. The locking phase is from t=0 to t=CONFIG_LOCKING_PHASE_DURATION-1
@@ -47,7 +47,7 @@ contract DaoCommon is IdentityCommon {
         _isLockingPhase = currentTimeInQuarter() < getUintConfig(CONFIG_LOCKING_PHASE_DURATION);
     }
 
-    //done
+
     /**
     @notice Check if it is currently in a main phase.
     @dev The main phase is where all the governance activities could take plase. If the DAO is replaced, there can never be any more main phase.
@@ -63,7 +63,7 @@ contract DaoCommon is IdentityCommon {
             currentTimeInQuarter() >= getUintConfig(CONFIG_LOCKING_PHASE_DURATION);
     }
 
-    //done
+
     /**
     @notice Check if a proposal is currently paused/stopped
     @dev If a proposal is paused/stopped (by the PRLs): proposer cannot call for voting, a current on-going voting round can still pass, but no funding can be withdrawn.
@@ -79,7 +79,7 @@ contract DaoCommon is IdentityCommon {
         (,,,,,,,,_isPausedOrStopped,) = daoStorage().readProposal(_proposalId);
     }
 
-    //done
+
     /**
     @notice Check if the transaction is called by the proposer of a proposal
     @return _isFromProposer true if the caller is the proposer
@@ -92,7 +92,7 @@ contract DaoCommon is IdentityCommon {
         _isFromProposer = msg.sender == daoStorage().readProposalProposer(_proposalId);
     }
 
-    //done
+
     /**
     @notice Check if the proposal can still be "editted", or in other words, added more versions
     @dev Once the proposal is finalized, it can no longer be editted. The proposer will still be able to add docs and change fundings though.
@@ -108,7 +108,7 @@ contract DaoCommon is IdentityCommon {
         _isEditable = _finalVersion == EMPTY_BYTES;
     }
 
-    //done
+
     /**
     @notice Check if it is after the draft voting phase of the proposal
     */
@@ -119,7 +119,7 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    //done
+
     modifier ifCommitPhase(bytes32 _proposalId, uint8 _index) {
         requireInPhase(
             daoStorage().readProposalVotingTime(_proposalId, _index),
@@ -129,7 +129,7 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    //done
+
     modifier ifRevealPhase(bytes32 _proposalId, uint256 _index) {
       requireInPhase(
           daoStorage().readProposalVotingTime(_proposalId, _index),
@@ -139,7 +139,7 @@ contract DaoCommon is IdentityCommon {
       _;
     }
 
-    //done
+
     modifier ifAfterProposalRevealPhase(bytes32 _proposalId, uint256 _index) {
       uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
       require(_start > 0);
@@ -147,7 +147,7 @@ contract DaoCommon is IdentityCommon {
       _;
     }
 
-    //done
+
     modifier ifDraftVotingPhase(bytes32 _proposalId) {
         requireInPhase(
             daoStorage().readProposalDraftVotingTime(_proposalId),
@@ -157,7 +157,7 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    //done
+
     modifier isProposalState(bytes32 _proposalId, bytes32 _STATE) {
         bytes32 _currentState;
         (,,,_currentState,,,,,,) = daoStorage().readProposal(_proposalId);
@@ -165,7 +165,7 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    //done
+
     /**
     @notice Check if the DAO has enough ETHs for a particular funding request
     */
@@ -174,25 +174,25 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    //done
+
     modifier ifDraftNotClaimed(bytes32 _proposalId) {
         require(daoStorage().isDraftClaimed(_proposalId) == false);
         _;
     }
 
-    //done
+
     modifier ifNotClaimed(bytes32 _proposalId, uint256 _index) {
         require(daoStorage().isClaimed(_proposalId, _index) == false);
         _;
     }
 
-    //done
+
     modifier ifNotClaimedSpecial(bytes32 _proposalId) {
         require(daoSpecialStorage().isClaimed(_proposalId) == false);
         _;
     }
 
-    //done
+
     modifier hasNotRevealed(bytes32 _proposalId, uint256 _index) {
         uint256 _voteWeight;
         (, _voteWeight) = daoStorage().readVote(_proposalId, _index, msg.sender);
@@ -200,7 +200,7 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    //done
+
     modifier hasNotRevealedSpecial(bytes32 _proposalId) {
         uint256 _weight;
         (,_weight) = daoSpecialStorage().readVote(_proposalId, msg.sender);
@@ -208,7 +208,7 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    //done
+
     modifier ifAfterRevealPhaseSpecial(bytes32 _proposalId) {
       uint256 _start = daoSpecialStorage().readVotingTime(_proposalId);
       require(_start > 0);
@@ -216,7 +216,7 @@ contract DaoCommon is IdentityCommon {
       _;
     }
 
-    //done
+
     modifier ifCommitPhaseSpecial(bytes32 _proposalId) {
         requireInPhase(
             daoSpecialStorage().readVotingTime(_proposalId),
@@ -226,7 +226,7 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    //done
+
     modifier ifRevealPhaseSpecial(bytes32 _proposalId) {
         requireInPhase(
             daoSpecialStorage().readVotingTime(_proposalId),
@@ -236,7 +236,7 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    //done
+
     modifier ifNotContract(address _address) {
         uint size;
         assembly {
@@ -246,7 +246,7 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    //done
+
     /**
     @notice Check if the calculateGlobalRewardsBeforeNewQuarter function has been done for a certain quarter
     @dev However, there is no need to run calculateGlobalRewardsBeforeNewQuarter for the first quarter
@@ -258,7 +258,7 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-    //done
+
     /**
     @notice require that it is currently during a phase, which is within _relativePhaseStart and _relativePhaseEnd seconds, after the _startingPoint
     */
@@ -271,7 +271,7 @@ contract DaoCommon is IdentityCommon {
         require(now >= _startingPoint.add(_relativePhaseStart));
     }
 
-    //done
+
     /**
     @notice Get the current quarter index
     @dev Quarter indexes starts from 1
@@ -286,7 +286,7 @@ contract DaoCommon is IdentityCommon {
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
-    //done
+
     /**
     @notice Get the quarter index of a timestamp
     @dev Quarter indexes starts from 1
@@ -305,7 +305,7 @@ contract DaoCommon is IdentityCommon {
         //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
-    //done
+
     /**
     @notice Get the relative time in quarter of a timestamp
     @dev For example, the timeInQuarter of the first second of any quarter n-th is always 1
@@ -322,7 +322,7 @@ contract DaoCommon is IdentityCommon {
             % getUintConfig(CONFIG_QUARTER_DURATION);
     }
 
-    //done
+
     /**
     @notice Check if the start of first quarter is already set
     @return _isSet true if start of first quarter is already set
@@ -335,7 +335,7 @@ contract DaoCommon is IdentityCommon {
         _isSet = daoUpgradeStorage().startOfFirstQuarter() != 0;
     }
 
-    //done
+
     /**
     @notice Get the current relative time in the quarter
     @dev For example: the currentTimeInQuarter of the first second of any quarter is 1
@@ -349,7 +349,7 @@ contract DaoCommon is IdentityCommon {
         _currentT = timeInQuarter(now);
     }
 
-    //done
+
     /**
     @notice Get the time remaining in the quarter
     */
@@ -474,7 +474,7 @@ contract DaoCommon is IdentityCommon {
         _configValue = daoConfigsStorage().bytesConfigs(_configKey);
     }
 
-    //done
+
     /**
     @notice Check if a user is a participant in the current quarter
     */
@@ -488,7 +488,7 @@ contract DaoCommon is IdentityCommon {
             && (daoStakeStorage().lockedDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_LOCKED_DGD));
     }
 
-    //done
+
     /**
     @notice Check if a user is a moderator in the current quarter
     */
@@ -503,7 +503,7 @@ contract DaoCommon is IdentityCommon {
             && (daoPointsStorage().getReputation(_user) >= getUintConfig(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR));
     }
 
-    //done
+
     /**
     @notice Calculate the start of a specific milestone of a specific proposal.
     @dev This is calculated from the voting start of the voting round preceding the milestone
@@ -531,7 +531,7 @@ contract DaoCommon is IdentityCommon {
         }
     }
 
-    //done
+
     /**
     @notice Calculate the actual voting start for a voting round, given the tentative start
     @dev The tentative start is the ideal start. For example, when a proposer finish a milestone, it should be now
@@ -559,7 +559,7 @@ contract DaoCommon is IdentityCommon {
         }
     }
 
-    //done
+
     /**
     @notice Check if we can add another non-Digix proposal in this quarter
     @dev There is a max cap to the number of non-Digix proposals CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER
@@ -584,7 +584,7 @@ contract DaoCommon is IdentityCommon {
         }
     }
 
-    //done
+
     /**
     @notice If its a non-Digix proposal, check if the fundings are within limit
     @dev There is a max cap to the fundings and number of milestones for non-Digix proposals
@@ -599,7 +599,7 @@ contract DaoCommon is IdentityCommon {
         }
     }
 
-    //done
+
     /**
     @notice Check if msg.sender can do operations as a proposer
     @dev Note that this function does not check if he is the proposer of the proposal

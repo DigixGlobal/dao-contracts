@@ -253,44 +253,6 @@ contract('DaoRewardsStorage', function (accounts) {
     });
   });
 
-  describe('updateReputationPointAtQuarter', function () {
-    it('[valid call]: verify read function', async function () {
-      const reputationPoint = bN(10);
-      assert.ok(await contracts.daoRewardsStorage.updateReputationPointAtQuarter.call(
-        addressOf.dgdHolders[2],
-        bN(1),
-        reputationPoint,
-        { from: accounts[0] },
-      ));
-      await contracts.daoRewardsStorage.updateReputationPointAtQuarter(
-        addressOf.dgdHolders[2],
-        bN(1),
-        reputationPoint,
-        { from: accounts[0] },
-      );
-      assert.deepEqual(await contracts.daoRewardsStorage.readReputationPointAtQuarter.call(addressOf.dgdHolders[2], bN(1)), reputationPoint);
-      const reputationPoint2 = bN(12);
-      await contracts.daoRewardsStorage.updateReputationPointAtQuarter(
-        addressOf.dgdHolders[2],
-        bN(1),
-        reputationPoint2,
-        { from: accounts[0] },
-      );
-      assert.deepEqual(await contracts.daoRewardsStorage.readReputationPointAtQuarter.call(addressOf.dgdHolders[2], bN(1)), reputationPoint2);
-    });
-    it('[not called by DAO_REWARDS_MANAGER]: revert', async function () {
-      const reputationPoint = bN(8);
-      for (let i = 1; i < 20; i++) {
-        assert(await a.failure(contracts.daoRewardsStorage.updateReputationPointAtQuarter.call(
-          addressOf.dgdHolders[2],
-          bN(1),
-          reputationPoint,
-          { from: accounts[i] },
-        )));
-      }
-    });
-  });
-
   describe('updateClaimableDGX', function () {
     it('[valid call]: verify read function', async function () {
       const value = bN(2 * (10 ** 9));

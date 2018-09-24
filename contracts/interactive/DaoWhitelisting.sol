@@ -4,6 +4,7 @@ import "../common/DaoConstants.sol";
 import "../common/DaoCommon.sol";
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 
+
 /**
 @title Interactive DAO contract for whitelisting/blacklisting contracts from reading from Storage layer contracts
 @author Digix Holdings

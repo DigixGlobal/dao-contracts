@@ -59,14 +59,14 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
     function updateTotalLockedDGDStake(uint256 _totalLockedDGDStake)
         public
     {
-        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
+        require(sender_is_from([CONTRACT_DAO_STAKE_LOCKING, CONTRACT_DAO_REWARDS_MANAGER, EMPTY_BYTES]));
         totalLockedDGDStake = _totalLockedDGDStake;
     }
 
     function updateTotalModeratorLockedDGDs(uint256 _totalLockedDGDStake)
         public
     {
-        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
+        require(sender_is_from([CONTRACT_DAO_STAKE_LOCKING, CONTRACT_DAO_REWARDS_MANAGER, EMPTY_BYTES]));
         totalModeratorLockedDGDStake = _totalLockedDGDStake;
     }
 

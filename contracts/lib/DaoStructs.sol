@@ -3,13 +3,13 @@ pragma solidity ^0.4.24;
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
 import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
 
-//done
+
 library DaoStructs {
     using DoublyLinkedList for DoublyLinkedList.Bytes;
     using SafeMath for uint256;
     bytes32 constant EMPTY_BYTES = bytes32(0x0);
 
-    //done
+    
     struct PrlAction {
         // UTC timestamp at which the PRL action was done
         uint256 at;
@@ -22,7 +22,7 @@ library DaoStructs {
         uint256 actionId;
     }
 
-    //done
+    
     struct Voting {
         // UTC timestamp at which the voting round starts
         uint256 startTime;
@@ -60,7 +60,7 @@ library DaoStructs {
         bool funded;
     }
 
-    //done
+    
     struct ProposalVersion {
         // IPFS doc hash of this version of the proposal
         bytes32 docIpfsHash;
@@ -84,7 +84,7 @@ library DaoStructs {
         bytes32[] moreDocs;
     }
 
-    //done
+    
     struct Proposal {
         // ID of the proposal. Also the IPFS hash of the first ProposalVersion
         bytes32 proposalId;
@@ -139,7 +139,7 @@ library DaoStructs {
         PrlAction[] prlActions;
     }
 
-    //done
+    
     function countVotes(Voting storage _voting, address[] memory _allUsers)
         public
         constant
@@ -155,7 +155,7 @@ library DaoStructs {
         }
     }
 
-    //done
+    
     // get the list of voters who voted _vote (true-yes/false-no)
     function listVotes(Voting storage _voting, address[] _allUsers, bool _vote)
         public
@@ -183,7 +183,7 @@ library DaoStructs {
         }
     }
 
-    //done
+    
     function readVote(Voting storage _voting, address _voter)
         public
         constant
@@ -198,7 +198,7 @@ library DaoStructs {
         }
     }
 
-    //done
+    
     function revealVote(
         Voting storage _voting,
         address _voter,
@@ -214,7 +214,7 @@ library DaoStructs {
         }
     }
 
-    //done
+    
     function readVersion(ProposalVersion storage _version)
         public
         constant
@@ -231,7 +231,7 @@ library DaoStructs {
         _finalReward = _version.finalReward;
     }
 
-    //done
+    
     // read the funding for a particular milestone of a finalized proposal
     // if _milestoneId is the same as _milestoneCount, it returns the final reward
     function readProposalMilestone(Proposal storage _proposal, uint256 _milestoneIndex)
@@ -251,7 +251,7 @@ library DaoStructs {
         }
     }
 
-    //done
+    
     function addProposalVersion(
         Proposal storage _proposal,
         bytes32 _newDoc,
@@ -268,7 +268,7 @@ library DaoStructs {
         _proposal.proposalVersions[_newDoc].finalReward = _finalReward;
     }
 
-    //done
+    
     struct SpecialProposal {
         // ID of the special proposal
         // This is the IPFS doc hash of the proposal
@@ -295,7 +295,7 @@ library DaoStructs {
         bytes32[] bytesConfigs;
     }
 
-    //done
+    
     // All configs are as per the DaoConfigsStorage values at the time when
     // calculateGlobalRewardsBeforeNewQuarter is called by founder in that quarter
     struct DaoQuarterInfo {
@@ -342,7 +342,7 @@ library DaoStructs {
         uint256 sumRewardsFromBeginning;
     }
 
-    //done
+    
     // There are many function calls where all calculations/summations cannot be done in one transaction
     // and require multiple transactions.
     // This struct stores the intermediate results in between the calculating transactions

@@ -2,7 +2,7 @@ pragma solidity ^0.4.24;
 
 import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
 
-//done
+
 contract DaoConstants {
     using SafeMath for uint256;
     bytes32 EMPTY_BYTES = bytes32(0x0);

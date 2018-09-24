@@ -7,7 +7,6 @@ const {
   setupParticipantsStates,
   getTestProposals,
   phaseCorrection,
-  withdrawDGDs,
   getParticipants,
   addProposal,
   endorseProposal,
@@ -224,11 +223,6 @@ contract('Dao', function (accounts) {
         { from: addressOf.dgdHolders[0], value: bN(2 * (10 ** 18)) },
       )));
     });
-    after(async function () {
-      // withdraw stakes
-      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
-      await withdrawDGDs(web3, contracts, bN, getParticipants(addressOf, bN));
-    });
   });
 
   describe('endorseProposal', function () {
@@ -397,11 +391,6 @@ contract('Dao', function (accounts) {
         { from: addressOf.dgdHolders[1] },
       )));
     });
-    after(async function () {
-      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
-      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
-      await withdrawDGDs(web3, contracts, bN, getParticipants(addressOf, bN));
-    });
   });
 
   describe('finalizeProposal', function () {
@@ -539,12 +528,6 @@ contract('Dao', function (accounts) {
       );
       await waitFor((timeToLockingPhase + 1) - (draftVotingDuration.toNumber() + claimDeadline.toNumber()), addressOf, web3);
       assert(await a.failure(contracts.dao.finalizeProposal(proposals[1].id, { from: proposals[1].proposer })));
-    });
-    after(async function () {
-      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
-      await printDaoDetails(bN, contracts);
-      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
-      await withdrawDGDs(web3, contracts, bN, getParticipants(addressOf, bN));
     });
   });
 
@@ -2365,31 +2348,34 @@ contract('Dao', function (accounts) {
       // wait for draft voting phase to get done
       await waitFor(5, addressOf, web3);
       await contracts.daoVotingClaims.claimDraftVotingResult(proposals[0].id, bN(20), { from: proposals[0].proposer });
+      // set a rediculous claiming deadline so it wont be exceeded in claiming voting result
+      await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE, bN(50));
     });
-    it('[non-prl calls function]: revert', async function () {
-      // only the prl account can call the prl functions
-      // in case of others it should revert
-      for (const i of indexRange(2, 10)) {
-        assert(await a.failure(contracts.dao.updatePRL(
-          proposals[0].id,
-          bN(1),
-          'some:bytes',
-          { from: accounts[i] },
-        )));
-      }
-    });
-    it('[if action is not stop/pause/unpause]: revert', async function () {
-      // Stop    --> 1,
-      // Pause   --> 2,
-      // Unpause --> 3
-      // in case of any other action, the function call must revert
-      assert(await a.failure(contracts.dao.updatePRL(
-        proposals[0].id,
-        bN(4),
-        'some:bytes',
-        { from: addressOf.prl },
-      )));
-    });
+    // it('[non-prl calls function]: revert', async function () {
+    //   // only the prl account can call the prl functions
+    //   // in case of others it should revert
+    //   for (const i of indexRange(2, 10)) {
+    //     assert(await a.failure(contracts.dao.updatePRL(
+    //       proposals[0].id,
+    //       bN(1),
+    //       'some:bytes',
+    //       { from: accounts[i] },
+    //     )));
+    //   }
+    // });
+    // it('[if action is not stop/pause/unpause]: revert', async function () {
+    //   // Stop    --> 1,
+    //   // Pause   --> 2,
+    //   // Unpause --> 3
+    //   // in case of any other action, the function call must revert
+    //   assert(await a.failure(contracts.dao.updatePRL(
+    //     proposals[0].id,
+    //     bN(4),
+    //     'some:bytes',
+    //     { from: addressOf.prl },
+    //   )));
+    // });
+
     it('[pause a proposal during voting phase]: cannot claim eth | milestone starts at unpause time', async function () {
       // get votes, salts and commits
       const votesAndCommits = assignVotesAndCommits(addressOf);
@@ -2457,6 +2443,8 @@ contract('Dao', function (accounts) {
       // wait for reveal phase to get over
       await waitFor(10, addressOf, web3);
 
+      console.log('\t\tProposal count = ', await contracts.daoStorage.proposalCountByQuarter(bN(2)));
+
       // claim the voting result
       await contracts.daoVotingClaims.claimProposalVotingResult(
         proposals[0].id,
@@ -2465,7 +2453,11 @@ contract('Dao', function (accounts) {
         { from: proposals[0].proposer },
       );
 
+      console.log('\t\tVoting result = ', await contracts.daoStorage.readProposalVotingResult.call(proposals[0].id, bN(0)));
+      console.log('\t\tIs claimed = ', await contracts.daoStorage.isClaimed.call(proposals[0].id, bN(0)));
+
       // proposer shouldn't be able to claim eth (since proposal paused)
+
       assert(await a.failure(contracts.daoFundingManager.claimFunding(
         proposals[0].id,
         bN(0),
@@ -2484,6 +2476,8 @@ contract('Dao', function (accounts) {
       );
 
       // can now claim ether
+      console.log('Before claimFunding');
+      await printDaoDetails(bN, contracts);
       assert.ok(await contracts.daoFundingManager.claimFunding.call(
         proposals[0].id,
         bN(0),
@@ -2966,10 +2960,14 @@ contract('Dao', function (accounts) {
       // to check that the voting time is within 5 seconds from getCurrentTimestamp
       assert.deepEqual(timeIsRecent(votingTime, 5), true);
     });
-    it('[finish first milestone when time left in quarter is not enough to conduct voting round]: verify next voting time', async function () {
-      // wait for some time
-      await waitFor(45, addressOf, web3);
 
+    it('[finish first milestone when time left in quarter is not enough to conduct voting round]: verify next voting time', async function () {
+      // wait for some time, so that there is less than CONFIG_VOTE_CLAIMING_DEADLINE (= 5s) left in the quarter
+      const currentTimeInQuarter = await contracts.dao.currentTimeInQuarter.call();
+      console.log('\t\tcurrentTimeInQuarter = ', currentTimeInQuarter);
+      await waitFor(60 - currentTimeInQuarter.toNumber() - 4, addressOf, web3);
+
+      await printDaoDetails(bN, contracts);
       // finish the milestone
       await contracts.dao.finishMilestone(
         proposals[1].id,

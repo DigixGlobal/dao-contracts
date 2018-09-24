@@ -8,6 +8,7 @@ import "./DaoRewardsManager.sol";
 import "../lib/DaoIntermediateStructs.sol";
 import "../lib/DaoStructs.sol";
 
+
 /**
 @title Contract to claim voting results
 @author Digix Holdings
@@ -45,7 +46,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         require(init(CONTRACT_DAO_VOTING_CLAIMS, _resolver));
     }
 
-    //done
+
     /**
     @notice Function to claim the draft voting result (can only be called by the proposal proposer)
     @dev The founder/or anyone is supposed to call this function after the claiming deadline has passed, to clean it up and close this proposal.
@@ -130,7 +131,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         }
     }
 
-    //done
+
     function processDraftVotingClaim(bytes32 _proposalId, DaoStructs.IntermediateResults _currentResults)
         internal
         returns (bool _passed)
@@ -160,7 +161,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
 
     /// NOTE: Voting round i-th is before milestone index i-th
 
-    //TODO
+
     /**
     @notice Function to claim the  voting round results
     @dev This function has two major steps:
@@ -235,7 +236,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         _done = true;
     }
 
-    //done
+
     // do the necessary steps after a successful voting round.
     function processSuccessfulVotingClaim(bytes32 _proposalId, uint256 _index)
         internal
@@ -266,7 +267,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         );
     }
 
-    //done
+
     function getInterResultKeyForBonusCalculation(bytes32 _proposalId) public view returns (bytes32 _key) {
         _key = keccak256(abi.encodePacked(
             _proposalId,
@@ -274,7 +275,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         ));
     }
 
-    //done
+
     // calculate and update the bonuses for voters who voted "correctly" in the preceding voting round
     function calculateVoterBonus(bytes32 _proposalId, uint256 _index, uint256 _operations, bool _passed)
         internal
@@ -331,7 +332,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         }
     }
 
-    //done
+
     // Count the votes for a Voting Round and find out if its passed
     /// @return _operationsLeft The number of operations left after the calculations in this function
     /// @return _passed Whether this voting round passed
@@ -403,7 +404,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         _passed = isVoteCountPassed(_currentResults, _proposalId, _index);
     }
 
-    //done
+
     function isVoteCountPassed(DaoStructs.IntermediateResults _currentResults, bytes32 _proposalId, uint256 _index)
         internal
         view
@@ -413,7 +414,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
                 && (daoCalculatorService().votingQuotaPass(_currentResults.currentForCount, _currentResults.currentAgainstCount));
     }
 
-    //done
+
     function processCollateralRefund(bytes32 _proposalId)
         internal
     {
@@ -421,7 +422,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
         require(daoFundingManager().refundCollateral(daoStorage().readProposalProposer(_proposalId), _proposalId));
     }
 
-    //done
+
     // add bonus reputation for voters that voted "correctly" in the preceding voting round
     function addBonusReputation(address[] _voters, uint256 _n)
         private

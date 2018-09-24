@@ -93,6 +93,29 @@ const getAccountsAndAddressOf = function (accounts, addressOf) {
   for (const key in addressOfTemp) addressOf[key] = addressOfTemp[key];
 };
 
+const checkDgdStakeConsistency = async function (contracts, bN) {
+  console.log('\t\tChecking for lockedDGDStake consistency');
+  // console.log('\tChecking if sum of all lockedDGDStake is the same as totalLockedDGDStake');
+  // console.log('\t& Checking if sum of all moderators lockedDGDStake is the same as totalModeratorLockedDGDStake');
+  const allParticipants = await contracts.daoListingService.listParticipants.call(bN(1000), true);
+  let sumOfDgdStakes = bN(0);
+  let sumOfModeratorDgdStakes = bN(0);
+  await a.map(allParticipants, 20, async (participant) => {
+    const isModerator = await contracts.dao.isModerator.call(participant);
+    const isParticipant = await contracts.dao.isParticipant.call(participant);
+    const stake = await contracts.daoStakeStorage.lockedDGDStake.call(participant);
+    if (isParticipant) sumOfDgdStakes = sumOfDgdStakes.plus(stake);
+    if (isModerator) sumOfModeratorDgdStakes = sumOfModeratorDgdStakes.plus(stake);
+  });
+  const totalLockedDGDStakeFromContract = await contracts.daoStakeStorage.totalLockedDGDStake.call();
+  const totalModeratorLockedDGDStakeFromContract = await contracts.daoStakeStorage.totalModeratorLockedDGDStake.call();
+  console.log(`\t\t\tsumOfDgdStakes = ${sumOfDgdStakes}, while totalLockedDGDStakeFromContract = ${totalLockedDGDStakeFromContract}`);
+  console.log(`\t\t\tsumOfModeratorDgdStakes = ${sumOfModeratorDgdStakes}, while totalModeratorLockedDGDStakeFromContract = ${totalModeratorLockedDGDStakeFromContract}`);
+  assert.deepEqual(sumOfDgdStakes, totalLockedDGDStakeFromContract);
+  assert.deepEqual(sumOfModeratorDgdStakes, totalModeratorLockedDGDStakeFromContract);
+  console.log('\t\tDone checking DGD Stake consistency');
+};
+
 const printProposalDetails = async (contracts, proposal, votingRound = 0) => {
   console.log('\tPrinting details for proposal ', proposal.id);
   const proposalDetails = await contracts.daoStorage.readProposal(proposal.id);
@@ -342,9 +365,9 @@ const assignVotesAndCommits = function (addressOf, proposalCount = 4, voterCount
 
 // We set a dummy config for DigixDAO for the tests
 // Basically, changing the time scale to something more feasible for the test suite
-const setDummyConfig = async function (contracts, bN) {
-  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION, bN(10));
-  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_QUARTER_DURATION, bN(60));
+const setDummyConfig = async function (contracts, bN, lockingPhase, mainPhase) {
+  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION, bN(lockingPhase));
+  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_QUARTER_DURATION, bN(mainPhase + lockingPhase));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTING_COMMIT_PHASE, bN(10));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTING_PHASE_TOTAL, bN(20));
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_INTERIM_COMMIT_PHASE, bN(10));
@@ -436,7 +459,7 @@ const waitForRevealPhase = async function (contracts, addressOf, proposalId, ind
   } else {
     timeToWaitFor = (await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_COMMIT_PHASE)).toNumber() - (getCurrentTimestamp() - votingStartTime.toNumber());
   }
-  console.log('will wait for ', timeToWaitFor, ' seconds');
+  console.log('\t\twill wait for ', timeToWaitFor, ' seconds');
   await waitFor(timeToWaitFor, addressOf, web3);
 };
 
@@ -451,7 +474,7 @@ const waitForRevealPhaseToGetOver = async function (contracts, addressOf, propos
   } else {
     timeToWaitFor = (await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL)).toNumber() - (getCurrentTimestamp() - votingStartTime.toNumber());
   }
-  console.log('will wait for ', timeToWaitFor, ' seconds');
+  console.log('\t\twill wait for ', timeToWaitFor, ' seconds');
   await waitFor(timeToWaitFor, addressOf, web3);
 };
 
@@ -460,7 +483,7 @@ const waitForRevealPhaseToGetOver = async function (contracts, addressOf, propos
 // Also initializes DigixDAO (set the start time of the first quarter)
 // Sets dummy config for DigixDAO
 // Funds the DaoFundingManager contract with some ether to start with
-const deployFreshDao = async (libs, contracts, addressOf, accounts, bN, web3) => {
+const deployFreshDao = async (libs, contracts, addressOf, accounts, bN, web3, lockingPhase = 10, mainPhase = 50) => {
   await deployLibraries(libs);
   await deployNewContractResolver(contracts);
   await getAccountsAndAddressOf(accounts, addressOf);
@@ -477,7 +500,7 @@ const deployFreshDao = async (libs, contracts, addressOf, accounts, bN, web3) =>
   await deployInteractive(libs, contracts, contracts.resolver);
   await contracts.daoIdentity.addGroupUser(bN(2), addressOf.founderBadgeHolder, '');
   await contracts.dao.setStartOfFirstQuarter(getCurrentTimestamp(), { from: addressOf.founderBadgeHolder });
-  await setDummyConfig(contracts, bN);
+  await setDummyConfig(contracts, bN, lockingPhase, mainPhase);
   await fundDao(web3, accounts, contracts);
   console.log('\tDeployed fresh DAO');
 };
@@ -513,30 +536,57 @@ const initQuarter = async function (contracts, quarterIndex, dgxDistributionDay)
 };
 
 const printParticipantDetails = async (bN, contracts, address) => {
-  console.log('Printing details for ', address);
-  console.log('\tPoints: ', address);
-  console.log('\t\tQP = ', await contracts.daoPointsStorage.getQuarterPoint.call(address, bN(1)));
-  console.log('\t\tModerator QP = ', await contracts.daoPointsStorage.getQuarterModeratorPoint.call(address, bN(1)));
-  console.log('\t\tRP = ', await contracts.daoPointsStorage.getReputation.call(address));
-  console.log('\tStake: ');
-  console.log('\t\tActual locked DGDs: ', await contracts.daoStakeStorage.actualLockedDGD.call(address));
-  console.log('\t\tLocked DGD Stake: ', await contracts.daoStakeStorage.lockedDGDStake.call(address));
-  console.log('\tRewards: ');
-  console.log('\t\tClaimable DGX  = ', await contracts.daoRewardsStorage.claimableDGXs.call(address));
-  console.log('\t\tLast participated quarter = ', await contracts.daoRewardsStorage.lastParticipatedQuarter.call(address));
-  console.log('\t\tlastQuarterThatRewardsWasUpdated = ', await contracts.daoRewardsStorage.lastQuarterThatRewardsWasUpdated.call(address));
-  console.log('\t\tlastQuarterThatReputationWasUpdated = ', await contracts.daoRewardsStorage.lastQuarterThatReputationWasUpdated.call(address));
+  console.log('\tPrinting details for ', address);
+  console.log('\t\tPoints: ', address);
+  console.log('\t\t\tQP = ', await contracts.daoPointsStorage.getQuarterPoint.call(address, bN(1)));
+  console.log('\t\t\tModerator QP = ', await contracts.daoPointsStorage.getQuarterModeratorPoint.call(address, bN(1)));
+  console.log('\t\t\tRP = ', await contracts.daoPointsStorage.getReputation.call(address));
+  console.log('\t\tStake: ');
+  console.log('\t\t\tActual locked DGDs: ', await contracts.daoStakeStorage.actualLockedDGD.call(address));
+  console.log('\t\t\tLocked DGD Stake: ', await contracts.daoStakeStorage.lockedDGDStake.call(address));
+  console.log('\t\tRewards: ');
+  console.log('\t\t\tClaimable DGX  = ', await contracts.daoRewardsStorage.claimableDGXs.call(address));
+  console.log('\t\t\tLast participated quarter = ', await contracts.daoRewardsStorage.lastParticipatedQuarter.call(address));
+  console.log('\t\t\tlastQuarterThatRewardsWasUpdated = ', await contracts.daoRewardsStorage.lastQuarterThatRewardsWasUpdated.call(address));
+  console.log('\t\t\tlastQuarterThatReputationWasUpdated = ', await contracts.daoRewardsStorage.lastQuarterThatReputationWasUpdated.call(address));
   console.log();
 };
 
 const printDaoDetails = async (bN, contracts) => {
-  console.log('Printing DAO details');
-  const qIndex = await contracts.dao.currentQuarterIndex.call();
-  console.log('\tCurrent Quarter: ', qIndex);
-  console.log('\tDGX distribution day: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex));
-  console.log('\tDGX distribution day last quarter: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex.minus(1)));
-  console.log('\tDGX distribution day last last quarter: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex.minus(2)));
+  console.log('\tPrinting DAO details');
+  const qIndex = await contracts.daoFundingManager.currentQuarterIndex.call();
+  console.log('\t\tCurrent Quarter: ', qIndex);
+  console.log('\t\tisLockingPhase? ', await contracts.daoFundingManager.isLockingPhase.call());
+  console.log('\t\tDGX distribution day: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex));
+  // console.log('\tDGX distribution day last quarter: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex.minus(1)));
+  // console.log('\tDGX distribution day last last quarter: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex.minus(2)));
   // TODO: print more stuff
+};
+
+const printBadgeHolderDetails = async (contracts, addressOf) => {
+  console.log('\tCurrent Quarter = ', await contracts.dao.currentQuarterIndex.call());
+  for (const index of indexRange(0, 4)) {
+    const participant = addressOf.badgeHolders[index];
+    console.log(`\tPrinting details for badgeHolders[${index}]`);
+    console.log(`\t\tDgd stake = ${await contracts.daoStakeStorage.lockedDGDStake.call(participant)}`);
+    console.log(`\t\tActual DGD locked = ${await contracts.daoStakeStorage.actualLockedDGD.call(participant)}`);
+    console.log(`\t\tLastParticipatedQuarter = ${await contracts.daoRewardsStorage.lastParticipatedQuarter.call(participant)}`);
+    console.log(`\t\tDGD balance = ${await contracts.dgdToken.balanceOf.call(participant)}`);
+    console.log();
+  }
+};
+
+const printHolderDetails = async (contracts, addressOf) => {
+  console.log('\tCurrent Quarter = ', await contracts.dao.currentQuarterIndex.call());
+  for (const index of indexRange(0, 5)) {
+    const participant = addressOf.dgdHolders[index];
+    console.log(`\tPrinting details for dgdHolders[${index}]`);
+    console.log(`\t\tDgd stake = ${await contracts.daoStakeStorage.lockedDGDStake.call(participant)}`);
+    console.log(`\t\tActual DGD locked = ${await contracts.daoStakeStorage.actualLockedDGD.call(participant)}`);
+    console.log(`\t\tLastParticipatedQuarter = ${await contracts.daoRewardsStorage.lastParticipatedQuarter.call(participant)}`);
+    console.log(`\t\tDGD balance = ${await contracts.dgdToken.balanceOf.call(participant)}`);
+    console.log();
+  }
 };
 
 // Function to withdraw tokens from `participants`
@@ -575,7 +625,7 @@ const redeemBadges = async (web3, contracts, bN, participants) => {
 // Function to transfer tokens (DGD and DGD Badge) to `participants`
 // Also these users then approve the DaoStakeLocking contract to access the tokens on their behalf
 const fundUserAndApproveForStakeLocking = async (web3, contracts, bN, participants, addressOf) => {
-  const ENOUGH_DGD = bN(1000e9);
+  const ENOUGH_DGD = bN(2000e9);
   const ENOUGH_BADGE = bN(5);
   await a.map(participants, 20, async (participant) => {
     await contracts.dgdToken.transfer(participant.address, ENOUGH_DGD);
@@ -678,19 +728,19 @@ const setupParticipantsStates = async (web3, contracts, addressOf, bN, participa
 
 // This function adds a proposal as preproposals into DigixDAO
 const addProposal = async function (contracts, proposal) {
-  console.log('adding proposal ', proposal.id);
+  console.log('\t\tadding proposal ', proposal.id);
   await contracts.dao.submitPreproposal(
     proposal.id,
     proposal.versions[0].milestoneFundings,
     proposal.versions[0].finalReward,
     { from: proposal.proposer, value: 2 * (10 ** 18) },
   );
-  console.log('Done adding proposal ', proposal.id);
+  console.log('\t\tDone adding proposal ', proposal.id);
 };
 
 // This function makes a moderator endorse a preproposal
 const endorseProposal = async function (contracts, proposal) {
-  console.log('endorsing proposal ', proposal.id);
+  console.log('\t\tendorsing proposal ', proposal.id);
   await contracts.dao.endorseProposal(proposal.id, { from: proposal.endorser });
 };
 
@@ -716,6 +766,7 @@ module.exports = {
   getAllParticipantAddresses,
   deployStorage,
   registerInteractive,
+  checkDgdStakeConsistency,
   deployServices,
   deployInteractive,
   initialTransferTokens,
@@ -736,6 +787,8 @@ module.exports = {
   setDummyConfig,
   deployFreshDao,
   printProposalDetails,
+  printHolderDetails,
+  printBadgeHolderDetails,
   updateKyc,
   printDaoDetails,
   printParticipantDetails,

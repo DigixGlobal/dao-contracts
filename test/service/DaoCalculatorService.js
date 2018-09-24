@@ -1,398 +1,152 @@
-// const a = require('awaiting');
-
-const MockDgd = artifacts.require('./MockDgd.sol');
-const MockBadge = artifacts.require('./MockBadge.sol');
+const a = require('awaiting');
 
 const {
   calculateMinQuorum,
   calculateQuota,
+  scaledDgd,
+  calculateUserEffectiveBalance,
 } = require('../daoCalculationHelper');
 
 const {
-  deployLibraries,
-  deployNewContractResolver,
   getAccountsAndAddressOf,
-  deployStorage,
-  // registerInteractive,
-  deployServices,
-  deployInteractive,
+  deployFreshDao,
+  getTestProposals,
+  addProposal,
+  endorseProposal,
+  getParticipants,
+  setupParticipantsStates,
+  updateKyc,
+  waitFor,
 } = require('../setup');
 
 const {
   daoConstantsKeys,
   daoConstantsValues,
-  phases,
-  getPhase,
-  getTimeToNextPhase,
 } = require('../daoHelpers');
 
 const {
+  randomBytes32,
   getCurrentTimestamp,
-  randomBytes32s,
-  randomAddresses,
 } = require('@digix/helpers/lib/helpers');
 
 const bN = web3.toBigNumber;
 
-const proposalIds = randomBytes32s(4);
-const proposers = randomAddresses(4);
-const moreVersions = {
-  firstProposal: randomBytes32s(2),
-  secondProposal: randomBytes32s(3),
-  thirdProposal: randomBytes32s(1),
-  fourthProposal: [proposalIds[3]],
-};
-const milestoneFundings = {
-  firstProposal: {
-    versionOne: [bN(10 * (10 ** 18)), bN(15 * (10 ** 18)), bN(20 * (10 ** 18))],
-    versionTwo: [bN(10 * (10 ** 18)), bN(20 * (10 ** 18)), bN(25 * (10 ** 18))],
-    versionThree: [bN(10 * (10 ** 18)), bN(15 * (10 ** 18)), bN(15 * (10 ** 18)), bN(20 * (10 ** 18))],
-  },
-  secondProposal: {
-    versionOne: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
-    versionTwo: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
-    versionThree: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
-    versionFour: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18)), bN(3 * (10 ** 18))],
-  },
-  thirdProposal: {
-    versionOne: [bN(20 * (10 ** 18)), bN(30 * (10 ** 18))],
-    versionTwo: [bN(25 * (10 ** 18)), bN(25 * (10 ** 18))],
-  },
-  fourthProposal: {
-    versionOne: [bN(1 * (10 ** 18)), bN(1 * (10 ** 18)), bN(2 * (10 ** 18)), bN(2 * (10 ** 18))],
-  },
-};
-const milestoneDurations = {
-  firstProposal: {
-    versionOne: [bN(1000), bN(1500), bN(2000)],
-    versionTwo: [bN(1000), bN(2000), bN(2500)],
-    versionThree: [bN(1000), bN(1500), bN(1500), bN(2000)],
-  },
-  secondProposal: {
-    versionOne: [bN(500), bN(700), bN(300)],
-    versionTwo: [bN(500), bN(700), bN(300)],
-    versionThree: [bN(500), bN(700), bN(300)],
-    versionFour: [bN(500), bN(700), bN(300)],
-  },
-  thirdProposal: {
-    versionOne: [bN(2000), bN(3000)],
-    versionTwo: [bN(2500), bN(2500)],
-  },
-  fourthProposal: {
-    versionOne: [bN(100), bN(100), bN(200), bN(200)],
-  },
-};
-
 contract('DaoCalculatorService', function (accounts) {
-  let libs;
-  let resolver;
-  let contracts;
-  let addressOf;
+  const libs = {};
+  const contracts = {};
+  const addressOf = {};
+  let proposals;
+
+  const addAndEndorseProposals = async function (contracts, proposals) {
+    await a.map(proposals, 20, async (proposal) => {
+      await addProposal(contracts, proposal);
+      await endorseProposal(contracts, proposal);
+      await contracts.dao.finalizeProposal(proposal.id, { from: proposal.proposer });
+    });
+  };
 
   before(async function () {
-    libs = await deployLibraries();
-    resolver = await deployNewContractResolver();
-    addressOf = await getAccountsAndAddressOf(accounts);
-    contracts = {};
-    await deployStorage(libs, contracts, resolver, addressOf);
-    await deployServices(libs, contracts, resolver, addressOf);
-    contracts.dgdToken = await MockDgd.at(process.env.DGD_ADDRESS);
-    contracts.badgeToken = await MockBadge.at(process.env.DGD_BADGE_ADDRESS);
-    await deployInteractive(libs, contracts, resolver, addressOf);
-    await resolver.register_contract('dao', accounts[0]);
-    await resolver.register_contract('c:config:controller', accounts[0]);
-    await contracts.daoStorage.setStartOfFirstQuarter(getCurrentTimestamp());
-
-    await createDummyDaoData();
-    await dummyStake();
-    await fundDao();
-
-    await setDummyConfig();
+    getAccountsAndAddressOf(accounts, addressOf);
+    await deployFreshDao(libs, contracts, addressOf, accounts, bN, web3);
+    await setupParticipantsStates(web3, contracts, addressOf, bN);
+    await contracts.daoIdentity.addGroupUser(bN(3), addressOf.prl, randomBytes32());
+    await contracts.daoIdentity.addGroupUser(bN(4), addressOf.kycadmin, randomBytes32());
+    await updateKyc(contracts, addressOf, getParticipants(addressOf, bN));
+    proposals = getTestProposals(bN, addressOf);
+    await addAndEndorseProposals(contracts, proposals);
   });
-
-  after(async function () {
-    await phaseCorrection(phases.LOCKING_PHASE);
-    await withdrawDummyStake();
-  });
-
-  const setDummyConfig = async function () {
-    // set locking phase to be 10 seconds
-    // set quarter phase to be 20 seconds
-    // for testing purpose
-    await contracts.daoConfigsStorage.set_uint_config(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION, bN(10));
-    await contracts.daoConfigsStorage.set_uint_config(daoConstantsKeys().CONFIG_QUARTER_DURATION, bN(20));
-  };
-
-  const waitFor = async function (timeToWait) {
-    const timeThen = getCurrentTimestamp();
-    async function wait() {
-      await web3.eth.sendTransaction({ from: accounts[0], to: accounts[19], value: web3.toWei(0.0001, 'ether') });
-      if ((getCurrentTimestamp() - timeThen) > timeToWait) return;
-      await wait();
-    }
-    console.log('       waiting for next phase...');
-    await wait();
-  };
-
-  /**
-   * Wait for time to pass, end in the phaseToEndIn phase
-   * @param phaseToEndIn : The phase in which to land (phases.LOCKING_PHASE or phases.MAIN_PHASE)
-   */
-  const phaseCorrection = async function (phaseToEndIn) {
-    const startOfDao = await contracts.daoStorage.startOfFirstQuarter.call();
-    const lockingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION);
-    const quarterDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_QUARTER_DURATION);
-    const currentPhase = getPhase(
-      getCurrentTimestamp(),
-      startOfDao.toNumber(),
-      lockingPhaseDuration.toNumber(),
-      quarterDuration.toNumber(),
-    );
-    if (currentPhase !== phaseToEndIn) {
-      const timeToNextPhase = getTimeToNextPhase(getCurrentTimestamp(), startOfDao.toNumber(), lockingPhaseDuration.toNumber(), quarterDuration.toNumber());
-      await waitFor(timeToNextPhase);
-    }
-  };
-
-  const fundDao = async function () {
-    await web3.eth.sendTransaction({
-      from: accounts[0],
-      to: contracts.daoFundingManager.address,
-      value: web3.toWei(1000, 'ether'),
-    });
-    assert.deepEqual(await contracts.daoFundingStorage.ethInDao.call(), bN(web3.toWei(1000, 'ether')));
-  };
-
-  const dummyStake = async function () {
-    await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(5), { from: addressOf.badgeHolder1 });
-    await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(8), { from: addressOf.badgeHolder2 });
-    await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(11), { from: addressOf.badgeHolder3 });
-    await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(6), { from: addressOf.badgeHolder4 });
-    await contracts.daoStakeLocking.lockBadge(bN(5), { from: addressOf.badgeHolder1 });
-    await contracts.daoStakeLocking.lockBadge(bN(8), { from: addressOf.badgeHolder2 });
-    await contracts.daoStakeLocking.lockBadge(bN(11), { from: addressOf.badgeHolder3 });
-    await contracts.daoStakeLocking.lockBadge(bN(6), { from: addressOf.badgeHolder4 });
-
-    await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(50), { from: addressOf.badgeHolder1 });
-    await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(62), { from: addressOf.badgeHolder2 });
-    await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(75), { from: addressOf.badgeHolder3 });
-    await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(40), { from: addressOf.badgeHolder4 });
-    await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(15), { from: addressOf.dgdHolder1 });
-    await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(17), { from: addressOf.dgdHolder2 });
-    await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(20), { from: addressOf.dgdHolder3 });
-    await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(25), { from: addressOf.dgdHolder4 });
-    await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(30), { from: addressOf.dgdHolder5 });
-    await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(40), { from: addressOf.dgdHolder6 });
-    await contracts.daoStakeLocking.lockDGD(bN(50), { from: addressOf.badgeHolder1 });
-    await contracts.daoStakeLocking.lockDGD(bN(62), { from: addressOf.badgeHolder2 });
-    await contracts.daoStakeLocking.lockDGD(bN(75), { from: addressOf.badgeHolder3 });
-    await contracts.daoStakeLocking.lockDGD(bN(40), { from: addressOf.badgeHolder4 });
-    await contracts.daoStakeLocking.lockDGD(bN(15), { from: addressOf.dgdHolder1 });
-    await contracts.daoStakeLocking.lockDGD(bN(17), { from: addressOf.dgdHolder2 });
-    await contracts.daoStakeLocking.lockDGD(bN(20), { from: addressOf.dgdHolder3 });
-    await contracts.daoStakeLocking.lockDGD(bN(25), { from: addressOf.dgdHolder4 });
-    await contracts.daoStakeLocking.lockDGD(bN(30), { from: addressOf.dgdHolder5 });
-    await contracts.daoStakeLocking.lockDGD(bN(40), { from: addressOf.dgdHolder6 });
-  };
-
-  const withdrawDummyStake = async function () {
-    await contracts.daoStakeLocking.withdrawBadge(bN(5), { from: addressOf.badgeHolder1 });
-    await phaseCorrection(phases.LOCKING_PHASE);
-    await contracts.daoStakeLocking.withdrawBadge(bN(8), { from: addressOf.badgeHolder2 });
-    await phaseCorrection(phases.LOCKING_PHASE);
-    await contracts.daoStakeLocking.withdrawBadge(bN(13), { from: addressOf.badgeHolder3 });
-    await phaseCorrection(phases.LOCKING_PHASE);
-    await contracts.daoStakeLocking.withdrawBadge(bN(8), { from: addressOf.badgeHolder4 });
-    await phaseCorrection(phases.LOCKING_PHASE);
-
-    await contracts.daoStakeLocking.withdrawDGD(bN(50), { from: addressOf.badgeHolder1 });
-    await phaseCorrection(phases.LOCKING_PHASE);
-    await contracts.daoStakeLocking.withdrawDGD(bN(62), { from: addressOf.badgeHolder2 });
-    await phaseCorrection(phases.LOCKING_PHASE);
-    await contracts.daoStakeLocking.withdrawDGD(bN(75), { from: addressOf.badgeHolder3 });
-    await phaseCorrection(phases.LOCKING_PHASE);
-    await contracts.daoStakeLocking.withdrawDGD(bN(40), { from: addressOf.badgeHolder4 });
-    await phaseCorrection(phases.LOCKING_PHASE);
-    await contracts.daoStakeLocking.withdrawDGD(bN(15), { from: addressOf.dgdHolder1 });
-    await phaseCorrection(phases.LOCKING_PHASE);
-    await contracts.daoStakeLocking.withdrawDGD(bN(27), { from: addressOf.dgdHolder2 });
-    await phaseCorrection(phases.LOCKING_PHASE);
-    await contracts.daoStakeLocking.withdrawDGD(bN(28), { from: addressOf.dgdHolder3 });
-    await phaseCorrection(phases.LOCKING_PHASE);
-    await contracts.daoStakeLocking.withdrawDGD(bN(25), { from: addressOf.dgdHolder4 });
-    await phaseCorrection(phases.LOCKING_PHASE);
-    await contracts.daoStakeLocking.withdrawDGD(bN(30), { from: addressOf.dgdHolder5 });
-    await phaseCorrection(phases.LOCKING_PHASE);
-    await contracts.daoStakeLocking.withdrawDGD(bN(40), { from: addressOf.dgdHolder6 });
-  };
-
-  const createDummyDaoData = async function () {
-    // create and edit proposals (only 1 edit for proposal 1)
-    await contracts.daoStorage.addProposal(
-      proposalIds[0],
-      proposers[0], milestoneDurations.firstProposal.versionOne,
-      milestoneFundings.firstProposal.versionOne,
-    );
-    await contracts.daoStorage.editProposal(
-      proposalIds[0],
-      moreVersions.firstProposal[0], milestoneDurations.firstProposal.versionTwo,
-      milestoneFundings.firstProposal.versionTwo,
-    );
-    await contracts.daoStorage.addProposal(
-      proposalIds[1],
-      proposers[1], milestoneDurations.secondProposal.versionOne,
-      milestoneFundings.secondProposal.versionOne,
-    );
-    await contracts.daoStorage.editProposal(
-      proposalIds[1],
-      moreVersions.secondProposal[0], milestoneDurations.secondProposal.versionTwo,
-      milestoneFundings.secondProposal.versionTwo,
-    );
-    await contracts.daoStorage.editProposal(
-      proposalIds[1],
-      moreVersions.secondProposal[1], milestoneDurations.secondProposal.versionThree,
-      milestoneFundings.secondProposal.versionThree,
-    );
-    await contracts.daoStorage.editProposal(
-      proposalIds[1],
-      moreVersions.secondProposal[2], milestoneDurations.secondProposal.versionFour,
-      milestoneFundings.secondProposal.versionFour,
-    );
-    await contracts.daoStorage.addProposal(
-      proposalIds[2],
-      proposers[2], milestoneDurations.thirdProposal.versionOne,
-      milestoneFundings.thirdProposal.versionOne,
-    );
-    await contracts.daoStorage.editProposal(
-      proposalIds[2],
-      moreVersions.thirdProposal[0], milestoneDurations.thirdProposal.versionTwo,
-      milestoneFundings.thirdProposal.versionTwo,
-    );
-    await contracts.daoStorage.addProposal(
-      proposalIds[3],
-      proposers[3], milestoneDurations.fourthProposal.versionOne,
-      milestoneFundings.fourthProposal.versionOne,
-    );
-    // endorse proposals
-    await contracts.daoStorage.updateProposalEndorse(proposalIds[0], addressOf.badgeHolder1);
-    await contracts.daoStorage.updateProposalEndorse(proposalIds[1], addressOf.badgeHolder2);
-    await contracts.daoStorage.updateProposalEndorse(proposalIds[2], addressOf.badgeHolder3);
-    await contracts.daoStorage.updateProposalEndorse(proposalIds[3], addressOf.badgeHolder4);
-  };
 
   describe('minimumDraftQuorum', function () {
-    it('[draft quorum]', async function () {
-      // proposal 1
-      const quorumFromService = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposalIds[0]);
-      await contracts.daoCalculatorService.minimumDraftQuorum(proposalIds[0]);
+    it('[proposal 1]', async function () {
+      const ethInDao = await contracts.daoFundingStorage.ethInDao.call();
+      const quorumFromService = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[0].id);
       const quorumFromHelper = calculateMinQuorum(
-        30,
+        230 * (10 ** 9),
         (daoConstantsValues(bN).CONFIG_DRAFT_QUORUM_FIXED_PORTION_NUMERATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_DRAFT_QUORUM_FIXED_PORTION_DENOMINATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_DRAFT_QUORUM_SCALING_FACTOR_NUMERATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_DRAFT_QUORUM_SCALING_FACTOR_DENOMINATOR).toNumber(),
-        55 * (10 ** 18),
-        1000 * (10 ** 18),
+        2 * (10 ** 18),
+        ethInDao.toNumber(),
       );
       assert.deepEqual(quorumFromService.toNumber(), quorumFromHelper);
-
-      // add another version of proposal 1
-      await contracts.daoStorage.editProposal(
-        proposalIds[0],
-        moreVersions.firstProposal[1], milestoneDurations.firstProposal.versionThree,
-        milestoneFundings.firstProposal.versionThree,
-      );
-      // stake more badges
-      await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(2), { from: addressOf.badgeHolder4 });
-      await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(2), { from: addressOf.badgeHolder3 });
-      assert.deepEqual(await contracts.daoStakeLocking.isLockingPhase.call(), true);
-      // console.log(addressOf.badgeHolder1);
-      // console.log(addressOf.badgeHolder2);
-      await contracts.daoStakeLocking.lockBadge(bN(2), { from: addressOf.badgeHolder4 });
-      await contracts.daoStakeLocking.lockBadge(bN(2), { from: addressOf.badgeHolder3 });
-
-      const quorumFromService2 = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposalIds[0]);
-      await contracts.daoCalculatorService.minimumDraftQuorum(proposalIds[0]);
-      const quorumFromHelper2 = calculateMinQuorum(
-        34,
+    });
+    it('[proposal 2]', async function () {
+      const ethInDao = await contracts.daoFundingStorage.ethInDao.call();
+      const quorumFromService = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[1].id);
+      const quorumFromHelper = calculateMinQuorum(
+        230 * (10 ** 9),
         (daoConstantsValues(bN).CONFIG_DRAFT_QUORUM_FIXED_PORTION_NUMERATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_DRAFT_QUORUM_FIXED_PORTION_DENOMINATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_DRAFT_QUORUM_SCALING_FACTOR_NUMERATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_DRAFT_QUORUM_SCALING_FACTOR_DENOMINATOR).toNumber(),
-        60 * (10 ** 18),
-        1000 * (10 ** 18),
+        5 * (10 ** 18),
+        ethInDao.toNumber(),
       );
-      assert.deepEqual(quorumFromService2.toNumber(), quorumFromHelper2);
+      assert.deepEqual(quorumFromService.toNumber(), quorumFromHelper);
     });
   });
 
   describe('minimumVotingQuorum', function () {
-    it('milestone 1', async function () {
-      // check for milestone 1
-      const quorumFromService = await contracts.daoCalculatorService.minimumVotingQuorum.call(proposalIds[0], bN(0));
-      await contracts.daoCalculatorService.minimumVotingQuorum(proposalIds[0], bN(0));
+    it('[proposal 1, milestone 1]', async function () {
+      const quorumFromService = await contracts.daoCalculatorService.minimumVotingQuorum.call(proposals[0].id, bN(0));
+      await contracts.daoCalculatorService.minimumVotingQuorum(proposals[0].id, bN(0));
+      const ethInDao = await contracts.daoFundingStorage.ethInDao.call();
       const quorumFromHelper = calculateMinQuorum(
-        374,
+        380 * (10 ** 9),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR).toNumber(),
-        10 * (10 ** 18),
-        1000 * (10 ** 18),
+        2 * (10 ** 18),
+        ethInDao.toNumber(),
       );
       assert.deepEqual(quorumFromService.toNumber(), quorumFromHelper);
     });
-    it('milestone 2', async function () {
-      // check for milestone 2
-      const quorumFromService2 = await contracts.daoCalculatorService.minimumVotingQuorum.call(proposalIds[0], bN(1));
-      await contracts.daoCalculatorService.minimumVotingQuorum(proposalIds[0], bN(1));
+    it('[proposal 1, milestone 2]', async function () {
+      const quorumFromService2 = await contracts.daoCalculatorService.minimumVotingQuorum.call(proposals[0].id, bN(1));
+      await contracts.daoCalculatorService.minimumVotingQuorum(proposals[0].id, bN(1));
+      const ethInDao = await contracts.daoFundingStorage.ethInDao.call();
       const quorumFromHelper2 = calculateMinQuorum(
-        374,
+        380 * (10 ** 9),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR).toNumber(),
-        15 * (10 ** 18),
-        1000 * (10 ** 18),
+        3 * (10 ** 18),
+        ethInDao.toNumber(),
       );
       assert.deepEqual(quorumFromService2.toNumber(), quorumFromHelper2);
     });
-    it('milestone 3', async function () {
-      // check for milestone 3
-      const quorumFromService3 = await contracts.daoCalculatorService.minimumVotingQuorum.call(proposalIds[0], bN(2));
-      await contracts.daoCalculatorService.minimumVotingQuorum(proposalIds[0], bN(2));
-      const quorumFromHelper3 = calculateMinQuorum(
-        374,
+    it('[proposal 2, milestone 1]', async function () {
+      const quorumFromService = await contracts.daoCalculatorService.minimumVotingQuorum.call(proposals[1].id, bN(0));
+      await contracts.daoCalculatorService.minimumVotingQuorum(proposals[1].id, bN(0));
+      const ethInDao = await contracts.daoFundingStorage.ethInDao.call();
+      const quorumFromHelper = calculateMinQuorum(
+        380 * (10 ** 9),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR).toNumber(),
-        15 * (10 ** 18),
-        1000 * (10 ** 18),
+        5 * (10 ** 18),
+        ethInDao.toNumber(),
       );
-      assert.deepEqual(quorumFromService3.toNumber(), quorumFromHelper3);
+      assert.deepEqual(quorumFromService.toNumber(), quorumFromHelper);
     });
-    it('milestone 4', async function () {
-      // stake more DGDs
-      await phaseCorrection(phases.LOCKING_PHASE);
-      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(10), { from: addressOf.dgdHolder2 });
-      await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(8), { from: addressOf.dgdHolder3 });
-      await contracts.daoStakeLocking.lockDGD(bN(10), { from: addressOf.dgdHolder2 });
-      await contracts.daoStakeLocking.lockDGD(bN(8), { from: addressOf.dgdHolder3 });
-
-      // check for milestone 4
-      const quorumFromService4 = await contracts.daoCalculatorService.minimumVotingQuorum.call(proposalIds[0], bN(3));
-      await contracts.daoCalculatorService.minimumVotingQuorum(proposalIds[0], bN(3));
-      const quorumFromHelper4 = calculateMinQuorum(
-        392,
+    it('[proposal 2, milestone 2]', async function () {
+      const quorumFromService2 = await contracts.daoCalculatorService.minimumVotingQuorum.call(proposals[1].id, bN(1));
+      await contracts.daoCalculatorService.minimumVotingQuorum(proposals[1].id, bN(1));
+      const ethInDao = await contracts.daoFundingStorage.ethInDao.call();
+      const quorumFromHelper2 = calculateMinQuorum(
+        380 * (10 ** 9),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR).toNumber(),
-        20 * (10 ** 18),
-        1000 * (10 ** 18),
+        7 * (10 ** 18),
+        ethInDao.toNumber(),
       );
-      assert.deepEqual(quorumFromService4.toNumber(), quorumFromHelper4);
+      assert.deepEqual(quorumFromService2.toNumber(), quorumFromHelper2);
     });
   });
 
@@ -418,12 +172,12 @@ contract('DaoCalculatorService', function (accounts) {
     });
     it('[set req quota to 29/100]: 30% is now pass', async function () {
       // modify 30% to 29% and the above should pass
-      await contracts.daoConfigsStorage.set_uint_config(daoConstantsKeys().CONFIG_DRAFT_QUOTA_NUMERATOR, bN(29));
+      await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_DRAFT_QUOTA_NUMERATOR, bN(29));
       const quotaFromService = await contracts.daoCalculatorService.draftQuotaPass.call(bN(15), bN(35));
       assert.deepEqual(quotaFromService, true);
     });
     after(async function () {
-      await contracts.daoConfigsStorage.set_uint_config(daoConstantsKeys().CONFIG_DRAFT_QUOTA_NUMERATOR, bN(30));
+      await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_DRAFT_QUOTA_NUMERATOR, bN(30));
     });
   });
 
@@ -449,12 +203,247 @@ contract('DaoCalculatorService', function (accounts) {
     });
     it('[lower the req quota]: pass', async function () {
       // modify 30% to 29% and the above should pass
-      await contracts.daoConfigsStorage.set_uint_config(daoConstantsKeys().CONFIG_VOTING_QUOTA_NUMERATOR, bN(29));
+      await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTING_QUOTA_NUMERATOR, bN(29));
       const quotaFromService = await contracts.daoCalculatorService.votingQuotaPass.call(bN(15), bN(35));
       assert.deepEqual(quotaFromService, true);
     });
-    before(async function () {
-      await contracts.daoConfigsStorage.set_uint_config(daoConstantsKeys().CONFIG_VOTING_QUOTA_NUMERATOR, bN(30));
+    after(async function () {
+      await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTING_QUOTA_NUMERATOR, bN(30));
+    });
+  });
+
+  describe('calculateAdditionalLockedDGDStake', function () {
+    const mockSetStartOfDao = async function (contracts, start) {
+      await contracts.daoUpgradeStorage.mock_set_start_of_quarter(start);
+    };
+    it('[In beginning of locking phase]: additional = amount', async function () {
+      // the dao has just begun
+      const start = bN(getCurrentTimestamp());
+      await mockSetStartOfDao(contracts, start);
+      // wait for 1 second
+      await waitFor(1, addressOf, web3);
+      // check for 100 DGDs
+      const amount = bN(100 * (10 ** 9));
+      const additional = await contracts.daoCalculatorService.calculateAdditionalLockedDGDStake.call(amount);
+      assert.deepEqual(amount, additional);
+
+      // locking phase of quarter 2
+      await mockSetStartOfDao(contracts, bN(getCurrentTimestamp()).minus(bN(60)));
+      // wait for 1 second
+      await waitFor(1, addressOf, web3);
+      // check for 110 DGDs
+      const amount2 = bN(110 * (10 ** 9));
+      const additional2 = await contracts.daoCalculatorService.calculateAdditionalLockedDGDStake.call(amount2);
+      assert.deepEqual(amount2, additional2);
+    });
+    it('[Just before the end of the locking phase]: additional = amount', async function () {
+      await mockSetStartOfDao(contracts, bN(getCurrentTimestamp()).minus(bN(9)));
+      // check for 100 DGDs
+      const amount = bN(100 * (10 ** 9));
+      const additional = await contracts.daoCalculatorService.calculateAdditionalLockedDGDStake.call(amount);
+      assert.deepEqual(amount, additional);
+
+      // almost end of locking phase of quarter 4
+      await mockSetStartOfDao(contracts, bN(getCurrentTimestamp()).minus(bN(189)));
+      // check for 100 DGDs
+      const amount2 = bN(110 * (10 ** 9));
+      const additional2 = await contracts.daoCalculatorService.calculateAdditionalLockedDGDStake.call(amount2);
+      assert.deepEqual(amount2, additional2);
+    });
+    it('[Just after the end of the locking phase, i.e. main phase]: additional != amount, scales by the time remaining', async function () {
+      await mockSetStartOfDao(contracts, bN(getCurrentTimestamp()).minus(bN(11)));
+      // check for 100 DGDs
+      const amount = bN(100 * (10 ** 9));
+      const additional = await contracts.daoCalculatorService.calculateAdditionalLockedDGDStake.call(amount);
+      assert.isBelow(additional.toNumber(), amount.toNumber());
+
+      // almost end of locking phase of quarter 4
+      await mockSetStartOfDao(contracts, bN(getCurrentTimestamp()).minus(bN(191)));
+      // check for 100 DGDs
+      const amount2 = bN(110 * (10 ** 9));
+      const additional2 = await contracts.daoCalculatorService.calculateAdditionalLockedDGDStake.call(amount2);
+      assert.isBelow(additional2.toNumber(), amount2.toNumber());
+    });
+    it('[During the main phase]: scales by the time remaining', async function () {
+      const timeNow1 = getCurrentTimestamp();
+      const start1 = bN(timeNow1).minus(bN(20));
+      await mockSetStartOfDao(contracts, start1);
+      const amount1 = bN(100 * (10 ** 9));
+      const additional1Contract = await contracts.daoCalculatorService.calculateAdditionalLockedDGDStake.call(amount1);
+      const additional1Helper = scaledDgd(timeNow1, start1.toNumber(), 10, 60, 100 * (10 ** 9));
+      assert.deepEqual(additional1Contract, bN(additional1Helper));
+
+      const timeNow2 = getCurrentTimestamp();
+      const start2 = bN(timeNow2).minus(bN(35));
+      await mockSetStartOfDao(contracts, start2);
+      const amount2 = bN(100 * (10 ** 9));
+      const additional2Contract = await contracts.daoCalculatorService.calculateAdditionalLockedDGDStake.call(amount2);
+      const additional2Helper = scaledDgd(timeNow2, start2.toNumber(), 10, 60, 100 * (10 ** 9));
+      assert.deepEqual(additional2Contract, bN(additional2Helper));
+
+      // q2
+      const timeNow3 = getCurrentTimestamp();
+      const start3 = bN(timeNow3).minus(bN(95));
+      await mockSetStartOfDao(contracts, start3);
+      const amount3 = bN(100 * (10 ** 9));
+      const additional3Contract = await contracts.daoCalculatorService.calculateAdditionalLockedDGDStake.call(amount3);
+      const additional3Helper = scaledDgd(timeNow3, start3.toNumber(), 10, 60, 100 * (10 ** 9));
+      assert.deepEqual(additional3Contract, bN(additional3Helper));
+
+      // q3
+      const timeNow4 = getCurrentTimestamp();
+      const start4 = bN(timeNow4).minus(bN(170));
+      await mockSetStartOfDao(contracts, start4);
+      const amount4 = bN(100 * (10 ** 9));
+      const additional4Contract = await contracts.daoCalculatorService.calculateAdditionalLockedDGDStake.call(amount4);
+      const additional4Helper = scaledDgd(timeNow4, start4.toNumber(), 10, 60, 100 * (10 ** 9));
+      assert.deepEqual(additional4Contract, bN(additional4Helper));
+    });
+    it('[Just before end of the main phase]: additional tends to 0', async function () {
+      const timeNow1 = getCurrentTimestamp();
+      const start1 = bN(timeNow1).minus(bN(58));
+      await mockSetStartOfDao(contracts, start1);
+      const amount1 = bN(100 * (10 ** 9));
+      const additional1Contract = await contracts.daoCalculatorService.calculateAdditionalLockedDGDStake.call(amount1);
+      const additional1Helper = scaledDgd(timeNow1, start1.toNumber(), 10, 60, 100 * (10 ** 9));
+      assert.deepEqual(additional1Contract, bN(additional1Helper));
+
+      const timeNow2 = getCurrentTimestamp();
+      const start2 = bN(timeNow1).minus(bN(118));
+      await mockSetStartOfDao(contracts, start2);
+      const amount2 = bN(100 * (10 ** 9));
+      const additional2Contract = await contracts.daoCalculatorService.calculateAdditionalLockedDGDStake.call(amount2);
+      const additional2Helper = scaledDgd(timeNow2, start2.toNumber(), 10, 60, 100 * (10 ** 9));
+      assert.deepEqual(additional2Contract, bN(additional2Helper));
+    });
+  });
+
+  describe('calculateUserEffectiveBalance', function () {
+    it('[quarter point < minimal participation]', async function () {
+      const fromHelper = calculateUserEffectiveBalance(
+        daoConstantsValues(bN).CONFIG_MINIMAL_QUARTER_POINT,
+        daoConstantsValues(bN).CONFIG_QUARTER_POINT_SCALING_FACTOR,
+        daoConstantsValues(bN).CONFIG_REPUTATION_POINT_SCALING_FACTOR,
+        bN(1),
+        bN(30),
+        bN(100 * (10 ** 9)),
+      );
+      const fromContract = await contracts.daoCalculatorService.calculateUserEffectiveBalance.call(
+        daoConstantsValues(bN).CONFIG_MINIMAL_QUARTER_POINT,
+        daoConstantsValues(bN).CONFIG_QUARTER_POINT_SCALING_FACTOR,
+        daoConstantsValues(bN).CONFIG_REPUTATION_POINT_SCALING_FACTOR,
+        bN(1),
+        bN(30),
+        bN(100 * (10 ** 9)),
+      );
+
+      const fromHelper2 = calculateUserEffectiveBalance(
+        daoConstantsValues(bN).CONFIG_MINIMAL_QUARTER_POINT,
+        daoConstantsValues(bN).CONFIG_QUARTER_POINT_SCALING_FACTOR,
+        daoConstantsValues(bN).CONFIG_REPUTATION_POINT_SCALING_FACTOR,
+        bN(2),
+        bN(45),
+        bN(73 * (10 ** 9)),
+      );
+      const fromContract2 = await contracts.daoCalculatorService.calculateUserEffectiveBalance.call(
+        daoConstantsValues(bN).CONFIG_MINIMAL_QUARTER_POINT,
+        daoConstantsValues(bN).CONFIG_QUARTER_POINT_SCALING_FACTOR,
+        daoConstantsValues(bN).CONFIG_REPUTATION_POINT_SCALING_FACTOR,
+        bN(2),
+        bN(45),
+        bN(73 * (10 ** 9)),
+      );
+
+      const fromHelper3 = calculateUserEffectiveBalance(
+        daoConstantsValues(bN).CONFIG_MINIMAL_QUARTER_POINT,
+        daoConstantsValues(bN).CONFIG_QUARTER_POINT_SCALING_FACTOR,
+        daoConstantsValues(bN).CONFIG_REPUTATION_POINT_SCALING_FACTOR,
+        bN(0),
+        bN(42),
+        bN(64 * (10 ** 9)),
+      );
+      const fromContract3 = await contracts.daoCalculatorService.calculateUserEffectiveBalance.call(
+        daoConstantsValues(bN).CONFIG_MINIMAL_QUARTER_POINT,
+        daoConstantsValues(bN).CONFIG_QUARTER_POINT_SCALING_FACTOR,
+        daoConstantsValues(bN).CONFIG_REPUTATION_POINT_SCALING_FACTOR,
+        bN(0),
+        bN(42),
+        bN(64 * (10 ** 9)),
+      );
+
+      assert.deepEqual(bN(fromHelper), fromContract);
+      assert.deepEqual(bN(fromHelper2), fromContract2);
+      assert.deepEqual(bN(fromHelper3), fromContract3);
+    });
+    it('[quarter point >= minimal participation]', async function () {
+      const fromHelper = calculateUserEffectiveBalance(
+        daoConstantsValues(bN).CONFIG_MINIMAL_QUARTER_POINT,
+        daoConstantsValues(bN).CONFIG_QUARTER_POINT_SCALING_FACTOR,
+        daoConstantsValues(bN).CONFIG_REPUTATION_POINT_SCALING_FACTOR,
+        bN(4),
+        bN(25),
+        bN(110 * (10 ** 9)),
+      );
+      const fromContract = await contracts.daoCalculatorService.calculateUserEffectiveBalance.call(
+        daoConstantsValues(bN).CONFIG_MINIMAL_QUARTER_POINT,
+        daoConstantsValues(bN).CONFIG_QUARTER_POINT_SCALING_FACTOR,
+        daoConstantsValues(bN).CONFIG_REPUTATION_POINT_SCALING_FACTOR,
+        bN(4),
+        bN(25),
+        bN(110 * (10 ** 9)),
+      );
+
+      const fromHelper2 = calculateUserEffectiveBalance(
+        daoConstantsValues(bN).CONFIG_MINIMAL_QUARTER_POINT,
+        daoConstantsValues(bN).CONFIG_QUARTER_POINT_SCALING_FACTOR,
+        daoConstantsValues(bN).CONFIG_REPUTATION_POINT_SCALING_FACTOR,
+        bN(7),
+        bN(65),
+        bN(97 * (10 ** 9)),
+      );
+      const fromContract2 = await contracts.daoCalculatorService.calculateUserEffectiveBalance.call(
+        daoConstantsValues(bN).CONFIG_MINIMAL_QUARTER_POINT,
+        daoConstantsValues(bN).CONFIG_QUARTER_POINT_SCALING_FACTOR,
+        daoConstantsValues(bN).CONFIG_REPUTATION_POINT_SCALING_FACTOR,
+        bN(7),
+        bN(65),
+        bN(97 * (10 ** 9)),
+      );
+
+      assert.deepEqual(bN(fromHelper), fromContract);
+      assert.deepEqual(bN(fromHelper2), fromContract2);
+    });
+  });
+
+  describe('Special Proposals', function () {
+    it('[minimumVotingQuorumForSpecial]', async function () {
+      const totalLockedDGDStake = await contracts.daoStakeStorage.totalLockedDGDStake.call();
+      const quorumCalculated = daoConstantsValues(bN).CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR
+        .times(totalLockedDGDStake)
+        .dividedToIntegerBy(daoConstantsValues(bN).CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR);
+
+      assert.deepEqual(await contracts.daoCalculatorService.minimumVotingQuorumForSpecial.call(), quorumCalculated);
+    });
+    it('[votingQuotaForSpecialPass]', async function () {
+      // 51% should fail
+      assert.deepEqual(await contracts.daoCalculatorService.votingQuotaForSpecialPass.call(bN(51), bN(49)), false);
+
+      // 52% should pass
+      assert.deepEqual(await contracts.daoCalculatorService.votingQuotaForSpecialPass.call(bN(52), bN(48)), true);
+
+      // > 51% should pass
+      assert.deepEqual(await contracts.daoCalculatorService.votingQuotaForSpecialPass.call(bN(53), bN(47)), true);
+      assert.deepEqual(await contracts.daoCalculatorService.votingQuotaForSpecialPass.call(bN(63), bN(37)), true);
+      assert.deepEqual(await contracts.daoCalculatorService.votingQuotaForSpecialPass.call(bN(90), bN(10)), true);
+      assert.deepEqual(await contracts.daoCalculatorService.votingQuotaForSpecialPass.call(bN(99), bN(1)), true);
+      assert.deepEqual(await contracts.daoCalculatorService.votingQuotaForSpecialPass.call(bN(100), bN(0)), true);
+
+      // < 51% should fail
+      assert.deepEqual(await contracts.daoCalculatorService.votingQuotaForSpecialPass.call(bN(50), bN(50)), false);
+      assert.deepEqual(await contracts.daoCalculatorService.votingQuotaForSpecialPass.call(bN(40), bN(60)), false);
+      assert.deepEqual(await contracts.daoCalculatorService.votingQuotaForSpecialPass.call(bN(25), bN(75)), false);
+      assert.deepEqual(await contracts.daoCalculatorService.votingQuotaForSpecialPass.call(bN(1), bN(99)), false);
+      assert.deepEqual(await contracts.daoCalculatorService.votingQuotaForSpecialPass.call(bN(0), bN(100)), false);
     });
   });
 });

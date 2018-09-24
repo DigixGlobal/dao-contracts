@@ -554,7 +554,7 @@ module.exports = async function () {
     console.log('got the deployed contracts');
 
     // set dummy config for testing
-    await setDummyConfig(contracts, bN);
+    await setDummyConfig(contracts, bN, 10, 50);
     console.log('setup dummy config');
 
     // start dao and fund dao
@@ -563,6 +563,7 @@ module.exports = async function () {
 
     await fundUserAndApproveForStakeLocking(web3, contracts, bN, participants, addressOf);
     console.log('\tfunded users DGDs and Badges');
+    await waitFor(2, addressOf, web3);
     await lockDGDs(web3, contracts, bN, participants, addressOf);
     console.log('\tusers locked DGDs for first quarter');
     await redeemBadges(web3, contracts, bN, participants);
