@@ -20,10 +20,9 @@ contract DaoCommon is IdentityCommon {
 
     using MathHelper for MathHelper;
 
-    //almostdone
     /**
     @notice Check if the DAO contracts have been replaced by a new set of contracts
-    @return _isReplaced true if it is already replaced
+    @return _isNotReplaced true if it is not replaced, false if it has already been replaced
     */
     function isDaoNotReplaced()
         public
