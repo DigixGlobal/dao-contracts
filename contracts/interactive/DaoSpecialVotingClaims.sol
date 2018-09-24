@@ -8,7 +8,7 @@ import "./DaoRewardsManager.sol";
 import "../lib/DaoIntermediateStructs.sol";
 import "../lib/DaoStructs.sol";
 
-//done
+
 /**
 @title Contract to claim voting results
 @author Digix Holdings
@@ -45,7 +45,7 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
         require(init(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS, _resolver));
     }
 
-    //done
+    
     /**
     @notice Function to claim the voting result on special proposal
     @param _proposalId ID of the special proposal
@@ -121,7 +121,7 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
         }
     }
 
-    //done
+    
     function setConfigs(bytes32 _proposalId)
         private
     {

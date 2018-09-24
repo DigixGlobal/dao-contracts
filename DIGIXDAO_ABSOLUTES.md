@@ -50,3 +50,5 @@ moderator rewards pool (CONFIG_PORTION_TO_MODERATORS_NUM/CONFIG_PORTION_TO_MODER
     * whether a participant has voted yes or no in a particular voting round
 
     This is to prevent bribing contracts from verifying on-chain that a vote seller has indeed voted as instructed/ a voting has indeed passed/failed
+
+1. As long as the Dao is not replaced yet, calculateGlobalRewardsBeforeNewQuarter() must always be able to run in the beginning of the quarter and every DGD holders who have locked in DGDs at some point will be able to withdraw all of their DGDs

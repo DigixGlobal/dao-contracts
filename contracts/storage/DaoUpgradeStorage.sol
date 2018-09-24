@@ -42,7 +42,7 @@ contract DaoUpgradeStorage is ResolverClient, DaoConstants {
         startOfFirstQuarter = _start;
     }
 
-    //done
+    
     function setNewContractAddresses(
         address _newDaoContract,
         address _newDaoFundingManager,
@@ -56,7 +56,7 @@ contract DaoUpgradeStorage is ResolverClient, DaoConstants {
         newDaoRewardsManager = _newDaoRewardsManager;
     }
 
-    //done
+    
     function updateForDaoMigration()
         public
     {

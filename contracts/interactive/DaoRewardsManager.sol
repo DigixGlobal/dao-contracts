@@ -6,7 +6,7 @@ import "../lib/DaoStructs.sol";
 import "../service/DaoCalculatorService.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
-//done
+
 /**
 @title Contract to manage DGX rewards
 @author Digix Holdings
@@ -55,7 +55,7 @@ contract DaoRewardsManager is DaoCommon {
         _contract = DaoCalculatorService(get_contract(CONTRACT_SERVICE_DAO_CALCULATOR));
     }
 
-    //done
+
     /**
     @notice Constructor (set the DaoQuarterInfo struct for the first quarter)
     @param _resolver Address of the Contract Resolver contract
@@ -89,7 +89,7 @@ contract DaoRewardsManager is DaoCommon {
         );
     }
 
-    //done
+
     /**
     @notice Function to transfer the claimableDGXs to the new DaoRewardsManager
     @dev This is done during the migrateToNewDao procedure
@@ -103,7 +103,7 @@ contract DaoRewardsManager is DaoCommon {
         ERC20(ADDRESS_DGX_TOKEN).transfer(_newDaoRewardsManager, _dgxBalance);
     }
 
-    //done
+
     /**
     @notice Function for users to claim the claimable DGX rewards
     @dev Will revert if _claimableDGX < MINIMUM_TRANSFER_AMOUNT of DGX.
@@ -149,7 +149,7 @@ contract DaoRewardsManager is DaoCommon {
         // the _demurrageFees is implicitly "transfered" back into the DAO, and would be counted in the dgxRewardsPool of this quarter (in other words, dgxRewardsPoolLastQuarter of next quarter)
     }
 
-    //done
+
     /**
     @notice Function to update DGX rewards of user. This is only called during locking/withdrawing DGDs, or continuing participation for new quarter
     @param _user Address of the DAO participant
@@ -163,7 +163,7 @@ contract DaoRewardsManager is DaoCommon {
         updateUserReputationUntilPreviousQuarter(_user);
     }
 
-    //done
+
     // This function would ALWAYS make sure that the user's Reputation Point is updated for ALL activities that has happened
     // BEFORE this current quarter. These activities include:
     //  - Reputation bonus/penalty due to participation in all of the previous quarters
@@ -235,7 +235,7 @@ contract DaoRewardsManager is DaoCommon {
         daoRewardsStorage().updateLastQuarterThatReputationWasUpdated(_user, currentQuarterIndex().sub(1));
     }
 
-    //done
+
     // update ReputationPoint of a participant based on QuarterPoint/ModeratorQuarterPoint in a quarter
     function updateRPfromQP (
         address _user,
@@ -264,7 +264,7 @@ contract DaoRewardsManager is DaoCommon {
         }
     }
 
-    //done
+
     // get the struct for the relevant information for calculating a user's DGX rewards for the last participated quarter
     function getUserRewardsStruct(address _user) internal constant returns (UserRewards memory _data) {
         _data.lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(_user);
@@ -272,7 +272,7 @@ contract DaoRewardsManager is DaoCommon {
         _data.qInfo = readQuarterInfo(_data.lastParticipatedQuarter);
     }
 
-    //done
+
     // if the DGX rewards has not been calculated for the user's lastParticipatedQuarter, calculate and update it
     function updateUserRewardsForLastParticipatingQuarter(address _user)
         internal
@@ -407,7 +407,7 @@ contract DaoRewardsManager is DaoCommon {
     }
 
 
-    //done
+
     /**
     @notice Function called by the founder after transfering the DGX fees into the DAO at the beginning of the quarter
     @dev This function needs to do lots of calculation, so it might not fit into one transaction
@@ -470,7 +470,7 @@ contract DaoRewardsManager is DaoCommon {
         emit StartNewQuarter(currentQuarterIndex());
     }
 
-    //done
+
     // get the Id for the intermediateResult for a quarter's global rewards calculation
     function getIntermediateResultsIdForGlobalRewards(uint256 _quarterId, bool _forModerator) internal view returns (bytes32 _id) {
         _id = keccak256(abi.encodePacked(
@@ -479,7 +479,7 @@ contract DaoRewardsManager is DaoCommon {
         ));
     }
 
-    //done
+
     // final step in calculateGlobalRewardsBeforeNewQuarter, which is to save the DaoQuarterInfo struct for this quarter
     function processGlobalRewardsUpdate(QuarterRewardsInfo memory info) internal {
         // calculate how much DGX rewards we got for this quarter
@@ -510,7 +510,7 @@ contract DaoRewardsManager is DaoCommon {
         );
     }
 
-    //done
+
     // Sum the effective balance (could be effectiveDGDBalance or effectiveModeratorDGDBalance), given that we have _operations left
     function sumEffectiveBalance (
         QuarterRewardsInfo memory info,
@@ -590,7 +590,7 @@ contract DaoRewardsManager is DaoCommon {
         _operationsLeft = _operations.sub(info.userCount);
     }
 
-    //done
+
     // read the DaoQuarterInfo struct of a certain quarter
     function readQuarterInfo(uint256 _quarterIndex)
         internal

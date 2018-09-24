@@ -3,7 +3,7 @@ pragma solidity ^0.4.24;
 import "../storage/DaoIdentityStorage.sol";
 import "../common/IdentityCommon.sol";
 
-//done
+
 /**
 @title Contract to manage the admin roles in DAO (founders, prls, kyc admins)
 @author Digix Holdings

@@ -4,7 +4,7 @@ import "./../interface/DgxDemurrageCalculator.sol";
 import "./../common/DaoCommon.sol";
 import "./../lib/MathHelper.sol";
 
-//done
+
 contract DaoCalculatorService is DaoCommon {
 
     address public dgxDemurrageCalculatorAddress;
@@ -18,7 +18,7 @@ contract DaoCalculatorService is DaoCommon {
         dgxDemurrageCalculatorAddress = _dgxDemurrageCalculatorAddress;
     }
 
-    //done
+    
     /**
     @notice Calculate the additional lockedDGDStake, given the DGDs that the user has just locked in
     @dev The earlier the locking happens, the more lockedDGDStake the user will get
@@ -45,7 +45,7 @@ contract DaoCalculatorService is DaoCommon {
             );
     }
 
-    //done
+    
     // Quorum is in terms of lockedDGDStake
     function minimumDraftQuorum(bytes32 _proposalId)
         public
@@ -65,7 +65,7 @@ contract DaoCalculatorService is DaoCommon {
         );
     }
 
-    //done
+    
     function draftQuotaPass(uint256 _for, uint256 _against)
         public
         constant
@@ -75,7 +75,7 @@ contract DaoCalculatorService is DaoCommon {
                 > getUintConfig(CONFIG_DRAFT_QUOTA_NUMERATOR).mul(_for.add(_against));
     }
 
-    //done
+    
     // Quorum is in terms of lockedDGDStake
     function minimumVotingQuorum(bytes32 _proposalId, uint256 _milestone_id)
         public
@@ -109,7 +109,7 @@ contract DaoCalculatorService is DaoCommon {
         }
     }
 
-    //done
+    
     // Quorum is in terms of lockedDGDStake
     function minimumVotingQuorumForSpecial()
         public
@@ -123,7 +123,7 @@ contract DaoCalculatorService is DaoCommon {
                    );
     }
 
-    //done
+    
     function votingQuotaPass(uint256 _for, uint256 _against)
         public
         constant
@@ -133,7 +133,7 @@ contract DaoCalculatorService is DaoCommon {
                 > getUintConfig(CONFIG_VOTING_QUOTA_NUMERATOR).mul(_for.add(_against));
     }
 
-    //done
+    
     function votingQuotaForSpecialPass(uint256 _for, uint256 _against)
         public
         constant
@@ -143,7 +143,7 @@ contract DaoCalculatorService is DaoCommon {
                 > getUintConfig(CONFIG_SPECIAL_QUOTA_NUMERATOR).mul(_for.add(_against));
     }
 
-    //done
+    
     function calculateMinQuorum(
         uint256 _totalStake,
         uint256 _fixedQuorumPortionNumerator,
@@ -164,7 +164,7 @@ contract DaoCalculatorService is DaoCommon {
         _minimumQuorum = _minimumQuorum.add(_totalStake.mul(_ethAsked.mul(_scalingFactorNumerator)).div(_ethInDao.mul(_scalingFactorDenominator)));
     }
 
-    //done
+    
     function calculateUserEffectiveBalance(
         uint256 _minimalParticipationPoint,
         uint256 _quarterPointScalingFactor,
@@ -185,7 +185,7 @@ contract DaoCalculatorService is DaoCommon {
             .div(_quarterPointScalingFactor.mul(_reputationPointScalingFactor));
     }
 
-    //done
+    
     function calculateDemurrage(uint256 _balance, uint256 _daysElapsed)
         public
         view

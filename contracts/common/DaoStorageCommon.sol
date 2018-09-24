@@ -4,7 +4,7 @@ import "./DaoConstants.sol";
 import "../storage/DaoWhitelistingStorage.sol";
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 
-//done
+
 contract DaoStorageCommon is ResolverClient, DaoConstants {
 
     function daoWhitelistingStorage()
@@ -15,7 +15,7 @@ contract DaoStorageCommon is ResolverClient, DaoConstants {
         _contract = DaoWhitelistingStorage(get_contract(CONTRACT_STORAGE_DAO_WHITELISTING));
     }
 
-    //done
+    
     function isContract(address _address)
         internal
         constant
@@ -28,7 +28,7 @@ contract DaoStorageCommon is ResolverClient, DaoConstants {
         _isContract = size > 0;
     }
 
-    //done
+    
     /**
     @notice Check if a certain address is whitelisted to read sensitive information in the storage layer
     @dev if the address is an account, it is allowed to read. If the address is a contract, it has to be in the whitelist

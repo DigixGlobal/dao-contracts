@@ -7,7 +7,7 @@ import "../service/DaoCalculatorService.sol";
 import "./DaoRewardsManager.sol";
 import "./../interface/NumberCarbonVoting.sol";
 
-//done
+
 /**
 @title Contract to handle staking/withdrawing of DGDs for participation in DAO
 @author Digix Holdings
@@ -46,7 +46,7 @@ contract DaoStakeLocking is DaoCommon {
         uint256 totalLockedDGDStake;
     }
 
-    //done
+
     constructor(
         address _resolver,
         address _dgdToken,
@@ -77,10 +77,11 @@ contract DaoStakeLocking is DaoCommon {
         _contract = DaoRewardsManager(get_contract(CONTRACT_DAO_REWARDS_MANAGER));
     }
 
-    //done
+
     /**
     @notice Function to convert a DGD Badge to Reputation Points
-    @dev The participant must either lock/withdraw/continue in the current quarter first, before he can redeem a badge
+    @dev The Badge holder can redeem the Badge anytime in the first quarter, or
+         Otherwise, the participant must either lock/withdraw/continue in the current quarter first, before he can redeem a badge
          Only 1 DGD Badge is accepted from an address, so holders with multiple badges
          should either sell their other badges or redeem reputation to another address
     */
@@ -117,7 +118,7 @@ contract DaoStakeLocking is DaoCommon {
         lockDGDInternal(_amount);
     }
 
-    //donedone
+
     /**
     @notice Function to lock DGD tokens to participate in the DAO
     @dev Users must `approve` the DaoStakeLocking contract to transfer DGDs from them
@@ -188,7 +189,7 @@ contract DaoStakeLocking is DaoCommon {
         emit LockDGD(msg.sender, _amount, _newInfo.userLockedDGDStake);
     }
 
-    //done
+
     /**
     @notice Function to withdraw DGD tokens from this contract (can only be withdrawn in the locking phase of quarter)
     @param _amount Number of DGD tokens to withdraw
@@ -253,7 +254,7 @@ contract DaoStakeLocking is DaoCommon {
         emit WithdrawDGD(msg.sender, _amount);
     }
 
-    //done
+
     /**
     @notice Function to be called by someone who doesnt change their DGDStake for the next quarter to confirm that they're participating
     @dev This can be done in the middle of the quarter as well.
@@ -261,51 +262,11 @@ contract DaoStakeLocking is DaoCommon {
     */
     function confirmContinuedParticipation()
         public
-        /* ifGlobalRewardsSet(currentQuarterIndex()) */
     {
         lockDGDInternal(0);
-        /* StakeInformation memory _info = getStakeInformation(msg.sender);
-
-        // This address must have at least some DGDs locked in, to confirmContinuedParticipation
-        // Otherwise, its meaningless anw
-        // This also makes sure that the first participation ever must be a lockDGD() call, to avoid unnecessary complications
-        require(_info.userActualLockedDGD > 0);
-
-        daoRewardsManager().updateRewardsAndReputationBeforeNewQuarter(msg.sender);
-
-        StakeInformation memory _newInfo = refreshDGDStake(msg.sender, _info, false);
-        refreshModeratorStatus(msg.sender, _info, _newInfo);
-
-        uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(msg.sender);
-        uint256 _currentQuarter = currentQuarterIndex();
-
-        if (_newInfo.userLockedDGDStake < getUintConfig(CONFIG_MINIMUM_LOCKED_DGD)) { // this participant doesnt have enough DGD to be a participant
-            // Absolute: The lastParticipatedQuarter of this participant WILL NEVER be the current quarter
-            // Otherwise, his lockedDGDStake must be above the CONFIG_MINIMUM_LOCKED_DGDd
-
-            // Hence, the refreshDGDStake() function must have added _newInfo.userLockedDGDStake to _newInfo.totalLockedDGDStake
-
-            // Since this participant is not counted as a participant, we need to deduct _newInfo.userLockedDGDStake from _newInfo.totalLockedDGDStake
-            _newInfo.totalLockedDGDStake = _newInfo.totalLockedDGDStake.sub(_newInfo.userLockedDGDStake);
-
-            daoStakeStorage().removeFromParticipantList(msg.sender);
-        } else { // this participant's new lockedDGDStake is above the minimum, but we are not sure if he is in the participant list yet
-            daoStakeStorage().addToParticipantList(msg.sender); // this will not add a second duplicate of the address if its already there
-            daoStakeStorage().updateTotalLockedDGDStake(_newInfo.totalLockedDGDStake);
-
-            // if this is the first time we lock/unlock/continue in this quarter, save the previous lastParticipatedQuarter
-            if (_lastParticipatedQuarter < _currentQuarter) {
-                daoRewardsStorage().updatePreviousLastParticipatedQuarter(msg.sender, _lastParticipatedQuarter);
-                daoRewardsStorage().updateLastParticipatedQuarter(msg.sender, _currentQuarter);
-            }
-
-        }
-
-        daoStakeStorage().updateUserDGDStake(msg.sender, _newInfo.userActualLockedDGD, _newInfo.userLockedDGDStake);
-        daoStakeStorage().updateTotalLockedDGDStake(_newInfo.totalLockedDGDStake); */
     }
 
-    //done
+
     /**
     @notice This function refreshes the DGD stake of a user before doing any staking action(locking/withdrawing/continuing) in a new quarter
     @dev We need to do this because sometimes, the user locked DGDs in the middle of the previous quarter. Hence, his DGDStake in the record now
@@ -342,7 +303,7 @@ contract DaoStakeLocking is DaoCommon {
         }
     }
 
-    //done
+
     /**
     @notice This function refreshes the Moderator status of a user, to be done right after ANY STEP where a user's reputation or DGDStake is changed
     @dev _infoBefore is the stake information of the user before this transaction, _infoAfter is the stake information after this transaction
@@ -398,7 +359,7 @@ contract DaoStakeLocking is DaoCommon {
         }
     }
 
-    //done
+
     /**
     @notice Get the actualLockedDGD and lockedDGDStake of a user, as well as the totalLockedDGDStake of all users
     */
@@ -411,7 +372,7 @@ contract DaoStakeLocking is DaoCommon {
         _info.totalLockedDGDStake = daoStakeStorage().totalLockedDGDStake();
     }
 
-    //done
+
     /**
     @notice Reward the voters of carbon voting rounds with initial bonus reputation
     @dev This is only called when they're locking tokens for the first time, enough tokens to be a participant
