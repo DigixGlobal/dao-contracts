@@ -34,12 +34,12 @@ npm run test:simulate
 This runs the `test/simulateDao.js` code. Re-usable javascript functions can
 be located in `test/setup.js` and `test/daoHelpers.js`.
 
-#### Testing the smart contracts logic
+#### Testing
 We are in progress of improving the test coverage of DigixDAO contracts. All tests can be
 located in the `test` directory, segregated by the `storage`, `service` and
-`interactive` layer.
+`interactive` layer. You can refer to [this](DIGIXDAO_TEST_SETUP) for an overview of how the tests work.
 
-Before running any tests, you need to run Ganache, an development Ethereum instance, in a separate terminal:
+Before running any tests, you need to run Ganache, a development Ethereum instance, in a separate terminal:
 ```
 npm run ganache
 ```
@@ -91,13 +91,18 @@ To understand how DigixDAO works, the best place to start is reading  the [Gover
 Feel free to join our [Discord channel](https://discord.gg/mBdKTjY), `dgdao-governance` room, to talk about DigixDAO governance.
 
 ## Auditing of DigixDAO contract codes
-[These](DIGIXDAO_ABSOLUTES.md) are the absolutes/invariants of DigixDAO contracts. If you can make any of these absolutes false, you have found a bug in our contracts. Feel free to do so and please contact us if you successfully find a bug.
+[These](DIGIXDAO_ABSOLUTES.md) are the absolutes/invariants of DigixDAO contracts. If you can make any of these absolutes false, you have found a bug in our contracts.
+
+The contracts' functions have also been extensively commented on their purpose and expected behaviour. If those comments do not hold, it's highly likely that you have found a bug in our contracts.
+
+Feel free to try to break our contracts and please contact us if you successfully find a bug.
 
 ## Contributing
 We welcome pull requests from developers. We highly recommend interested
 developers to go through the [DigixDAO Governance Model](doc/GovernanceModel.pdf).
 
 ## Smart Contract Architecture
+Most of our contracts have been documented extensively in their codes. This is an overview of what each contract does:
 ##### Contract Resolver
 Most contracts implement the [Resolver Client](https://github.com/DigixGlobal/cacp-contracts/blob/dao/contracts/ResolverClient.sol) contract, whose addresses are securely fetched from one [Contract Resolver](https://github.com/DigixGlobal/cacp-contracts/blob/dao/contracts/ContractResolver.sol).
 
