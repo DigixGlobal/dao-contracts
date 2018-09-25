@@ -4,6 +4,8 @@ const MockDgxStorage = artifacts.require('./MockDgxStorage.sol');
 const MockDgx = artifacts.require('./MockDgx.sol');
 const Types = artifacts.require('./Types.sol');
 const MockDgxDemurrageReporter = artifacts.require('./MockDgxDemurrageReporter.sol');
+const MockNumberCarbonVoting1 = artifacts.require('./NumberCarbonVoting1.sol');
+const MockNumberCarbonVoting2 = artifacts.require('./NumberCarbonVoting2.sol');
 
 module.exports = async function (deployer, network, accounts) {
   if ((network !== 'development') || process.env.SKIP) { return null; }
@@ -25,5 +27,9 @@ module.exports = async function (deployer, network, accounts) {
     })
     .then(() => {
       return deployer.deploy(MockDgxDemurrageReporter, MockDgx.address);
+    })
+    .then(() => {
+      deployer.deploy(MockNumberCarbonVoting1, 'carbonVoting1');
+      return deployer.deploy(MockNumberCarbonVoting2, 'carbonVoting2');
     });
 };

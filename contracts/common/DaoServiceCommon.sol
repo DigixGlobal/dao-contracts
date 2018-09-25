@@ -6,6 +6,7 @@ import "./../storage/DaoConfigsStorage.sol";
 import "./../storage/DaoStakeStorage.sol";
 import "./../storage/DaoStorage.sol";
 
+
 contract DaoServiceCommon is DaoConstants, ResolverClient {
 
     function daoConfigsStorage()

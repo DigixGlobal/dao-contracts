@@ -41,6 +41,7 @@ contract MockDaoStorage is DaoStorage {
         proposalsById[_proposalId].proposalVersions[_proposalId].finalReward = _finalReward;
         proposalsById[_proposalId].endorser = _endorser;
         proposalsById[_proposalId].finalVersion = _proposalId;
+        proposalsById[_proposalId].collateralAmount = 2 ether;
         if (_isDraftPhase) {
             proposalsByState[PROPOSAL_STATE_DRAFT].append(_proposalId);
             proposalsById[_proposalId].currentState = PROPOSAL_STATE_DRAFT;

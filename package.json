@@ -7,6 +7,7 @@
     "test": "test"
   },
   "scripts": {
+    "compile": "node_modules/.bin/truffle compile",
     "test": "bash scripts/unit-test.sh",
     "test:simulate": "bash scripts/simulate-dao.sh",
     "lint": "./node_modules/.bin/eslint test/",
@@ -28,6 +29,7 @@
   "dependencies": {
     "@digix/cacp-contracts-dao": "^1.0.6",
     "@digix/cdap": "^0.1.0",
+    "@digix/doxity-solc": "0.6.0",
     "@digix/helpers": "^1.0.1",
     "@digix/lite-dgx-contract": "1.0.1",
     "@digix/multi-hash": "0.0.2",
@@ -36,7 +38,6 @@
     "@digix/solidity-statemachine": "^0.2.0",
     "@digix/tempo": "^0.2.0",
     "@digix/truffle-lightwallet-provider": "^0.1.4",
-    "@digix/doxity-solc": "0.6.0",
     "awaiting": "^3.0.0",
     "canvas": "^1.6.7",
     "canvas-to-buffer": "^1.0.9",
@@ -48,6 +49,7 @@
     "ethereumjs-testrpc": "^3.9.2",
     "ganache-cli": "6.1.0",
     "openzeppelin-solidity": "^1.12.0",
+    "truffle": "^4.1.14",
     "web3-utils": "^1.0.0-beta.34"
   },
   "author": "DigixGlobal",

@@ -49,7 +49,7 @@ contract MockWhitelistedContract {
         );
     }
 
-    function mock_call_readCommitVote(
+    function mock_call_readComittedVote(
         address _daoStorageAddress,
         bytes32 _proposalId,
         uint256 _index,
@@ -59,7 +59,7 @@ contract MockWhitelistedContract {
         constant
     {
         bytes32 _bytesValue;
-        _bytesValue = DaoStorageInterface(_daoStorageAddress).readCommitVote(
+        _bytesValue = DaoStorageInterface(_daoStorageAddress).readComittedVote(
             _proposalId,
             _index,
             _voter
@@ -98,7 +98,7 @@ contract MockWhitelistedContract {
         );
     }
 
-    function mock_call_special_readCommitVote(
+    function mock_call_special_readComittedVote(
         address _daoSpecialStorageAddress,
         bytes32 _proposalId,
         address _voter
@@ -107,7 +107,7 @@ contract MockWhitelistedContract {
         constant
     {
         bytes32 _bytesValue;
-        _bytesValue = DaoSpecialStorageInterface(_daoSpecialStorageAddress).readCommitVote(
+        _bytesValue = DaoSpecialStorageInterface(_daoSpecialStorageAddress).readComittedVote(
             _proposalId,
             _voter
         );

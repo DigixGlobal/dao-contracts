@@ -34,6 +34,10 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
     // reputation points for their DGD Badge
     mapping (address => bool) public redeemedBadge;
 
+    // mapping to note whether an address has claimed their
+    // reputation bonus for carbon vote participation
+    mapping (address => bool) public carbonVoteBonusClaimed;
+
     constructor(address _resolver) public {
         require(init(CONTRACT_STORAGE_DAO_STAKE, _resolver));
     }
@@ -45,17 +49,24 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
         redeemedBadge[_user] = true;
     }
 
-    function updateTotalLockedDGDStake(uint256 _totalLockedDGDStake)
+    function setCarbonVoteBonusClaimed(address _user)
         public
     {
         require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
+        carbonVoteBonusClaimed[_user] = true;
+    }
+
+    function updateTotalLockedDGDStake(uint256 _totalLockedDGDStake)
+        public
+    {
+        require(sender_is_from([CONTRACT_DAO_STAKE_LOCKING, CONTRACT_DAO_REWARDS_MANAGER, EMPTY_BYTES]));
         totalLockedDGDStake = _totalLockedDGDStake;
     }
 
     function updateTotalModeratorLockedDGDs(uint256 _totalLockedDGDStake)
         public
     {
-        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
+        require(sender_is_from([CONTRACT_DAO_STAKE_LOCKING, CONTRACT_DAO_REWARDS_MANAGER, EMPTY_BYTES]));
         totalModeratorLockedDGDStake = _totalLockedDGDStake;
     }
 
@@ -77,14 +88,6 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
     {
         _actualLockedDGD = actualLockedDGD[_user];
         _lockedDGDStake = lockedDGDStake[_user];
-    }
-
-    function readUserEffectiveDGDStake(address _user)
-        public
-        constant
-        returns (uint256 _stake)
-    {
-        _stake = lockedDGDStake[_user];
     }
 
     function addToParticipantList(address _user)
@@ -124,12 +127,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
         constant
         returns (bool _is)
     {
-        uint256 _index = allParticipants.find(_user);
-        if (_index == 0) {
-            _is = false;
-        } else {
-            _is = true;
-        }
+        _is = allParticipants.find(_user) != 0;
     }
 
     function isInModeratorsList(address _user)
@@ -137,12 +135,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
         constant
         returns (bool _is)
     {
-        uint256 _index = allModerators.find(_user);
-        if (_index == 0) {
-            _is = false;
-        } else {
-            _is = true;
-        }
+        _is = allModerators.find(_user) != 0;
     }
 
     function readFirstModerator()

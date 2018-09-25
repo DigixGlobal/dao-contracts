@@ -134,7 +134,7 @@ contract('DaoWhitelisting', function (accounts) {
         doc,
         addressOf.badgeHolders[0],
       ));
-      assert.ok(await contracts.whitelistedContracts[0].mock_call_readCommitVote.call(
+      assert.ok(await contracts.whitelistedContracts[0].mock_call_readComittedVote.call(
         contracts.daoStorage.address,
         doc,
         bN(0),
@@ -146,7 +146,7 @@ contract('DaoWhitelisting', function (accounts) {
         bN(0),
         addressOf.badgeHolders[0],
       ));
-      assert.ok(await contracts.whitelistedContracts[1].mock_call_special_readCommitVote.call(
+      assert.ok(await contracts.whitelistedContracts[1].mock_call_special_readComittedVote.call(
         contracts.daoSpecialStorage.address,
         doc,
         addressOf.badgeHolders[0],
@@ -179,7 +179,7 @@ contract('DaoWhitelisting', function (accounts) {
         doc,
         addressOf.badgeHolders[0],
       )));
-      assert(await a.failure(contracts.whitelistedContracts[1].mock_call_readCommitVote.call(
+      assert(await a.failure(contracts.whitelistedContracts[1].mock_call_readComittedVote.call(
         contracts.daoStorage.address,
         doc,
         bN(0),
@@ -191,7 +191,7 @@ contract('DaoWhitelisting', function (accounts) {
         bN(0),
         addressOf.badgeHolders[0],
       )));
-      assert(await a.failure(contracts.whitelistedContracts[0].mock_call_special_readCommitVote.call(
+      assert(await a.failure(contracts.whitelistedContracts[0].mock_call_special_readComittedVote.call(
         contracts.daoSpecialStorage.address,
         doc,
         addressOf.badgeHolders[0],

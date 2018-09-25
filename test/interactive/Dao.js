@@ -7,7 +7,6 @@ const {
   setupParticipantsStates,
   getTestProposals,
   phaseCorrection,
-  withdrawDGDs,
   getParticipants,
   addProposal,
   endorseProposal,
@@ -55,6 +54,10 @@ contract('Dao', function (accounts) {
   const addressOf = {};
   let proposals;
 
+  // this function deploys new instances of all contracts and starts the first quarter of DAO
+  // this also sets up the initial states for some participants by transferring tokens and
+  // locking them
+  // finally get some test proposals and add users to the groups
   const resetBeforeEach = async function () {
     await deployFreshDao(libs, contracts, addressOf, accounts, bN, web3);
     await setupParticipantsStates(web3, contracts, addressOf, bN);
@@ -220,11 +223,6 @@ contract('Dao', function (accounts) {
         { from: addressOf.dgdHolders[0], value: bN(2 * (10 ** 18)) },
       )));
     });
-    after(async function () {
-      // withdraw stakes
-      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
-      await withdrawDGDs(web3, contracts, bN, getParticipants(addressOf, bN));
-    });
   });
 
   describe('endorseProposal', function () {
@@ -275,12 +273,6 @@ contract('Dao', function (accounts) {
         proposals[1].id,
         { from: addressOf.badgeHolders[0] },
       )));
-    });
-    after(async function () {
-      // withdraw stakes
-      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
-      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
-      await withdrawDGDs(web3, contracts, bN, getParticipants(addressOf, bN));
     });
   });
 
@@ -398,11 +390,6 @@ contract('Dao', function (accounts) {
         proposals[1].versions[2].finalReward,
         { from: addressOf.dgdHolders[1] },
       )));
-    });
-    after(async function () {
-      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
-      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
-      await withdrawDGDs(web3, contracts, bN, getParticipants(addressOf, bN));
     });
   });
 
@@ -542,55 +529,137 @@ contract('Dao', function (accounts) {
       await waitFor((timeToLockingPhase + 1) - (draftVotingDuration.toNumber() + claimDeadline.toNumber()), addressOf, web3);
       assert(await a.failure(contracts.dao.finalizeProposal(proposals[1].id, { from: proposals[1].proposer })));
     });
-    after(async function () {
+  });
+
+  describe('setNewDaoContracts', function () {
+    let newDaoContract;
+    let newDaoFundingManager;
+    let newDaoRewardsManager;
+    before(async function () {
+      await resetBeforeEach();
+      await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(10 * (10 ** 9)));
+      newDaoContract = randomAddress();
+      newDaoFundingManager = await MockDaoFundingManager.new(contracts.daoFundingManager.address);
+      newDaoRewardsManager = randomAddress();
+    });
+    it('[not called by owner]: revert', async function () {
+      assert(await a.failure(contracts.dao.setNewDaoContracts.call(
+        newDaoContract,
+        newDaoFundingManager.address,
+        newDaoRewardsManager,
+        { from: accounts[1] },
+      )));
+    });
+    it('[set the contract addresses]', async function () {
+      await contracts.dao.setNewDaoContracts(
+        newDaoContract,
+        newDaoFundingManager.address,
+        newDaoRewardsManager,
+        { from: addressOf.root },
+      );
+      assert.deepEqual(await contracts.daoUpgradeStorage.newDaoContract.call(), newDaoContract);
+      assert.deepEqual(await contracts.daoUpgradeStorage.newDaoFundingManager.call(), newDaoFundingManager.address);
+      assert.deepEqual(await contracts.daoUpgradeStorage.newDaoRewardsManager.call(), newDaoRewardsManager);
+    });
+    it('[try to set the contract addresses after the dao is already migrated]: revert', async function () {
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
-      await printDaoDetails(bN, contracts);
       await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
-      await withdrawDGDs(web3, contracts, bN, getParticipants(addressOf, bN));
+      await contracts.dao.migrateToNewDao(
+        newDaoContract,
+        newDaoFundingManager.address,
+        newDaoRewardsManager,
+        { from: addressOf.root },
+      );
+      assert(await a.failure(contracts.dao.setNewDaoContracts.call(
+        randomAddress(),
+        randomAddress(),
+        randomAddress(),
+        { from: addressOf.root },
+      )));
     });
   });
 
   describe('migrateToNewDao', function () {
+    let newDaoContract;
+    let newDaoFundingManager;
+    let newDaoRewardsManager;
     before(async function () {
       await resetBeforeEach();
+      await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(10 * (10 ** 9)));
+      newDaoContract = randomAddress();
+      newDaoFundingManager = await MockDaoFundingManager.new(contracts.daoFundingManager.address);
+      newDaoRewardsManager = randomAddress();
+      await contracts.dao.setNewDaoContracts(newDaoContract, newDaoFundingManager.address, newDaoRewardsManager);
+      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+    });
+    it('[if global rewards are not calculated]: revert', async function () {
+      assert(await a.failure(contracts.dao.migrateToNewDao.call(
+        newDaoContract,
+        newDaoFundingManager.address,
+        newDaoRewardsManager,
+      )));
+
+      // now calculate the global rewards
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
     });
     it('[if not called by owner/root]: revert', async function () {
-      const newDaoContract = randomAddress();
-      const newDaoFundingManager = randomAddress();
       for (const i of indexRange(1, 20)) {
         assert(await a.failure(contracts.dao.migrateToNewDao(
-          newDaoFundingManager,
           newDaoContract,
+          newDaoFundingManager.address,
+          newDaoRewardsManager,
           { from: accounts[i] },
         )));
       }
     });
-    it('[valid migration to a new contract]', async function () {
-      const newDaoContract = randomAddress();
-      const newDaoFundingManager = await MockDaoFundingManager.new(contracts.daoFundingManager.address);
-      const fundsBefore = await web3.eth.getBalance(contracts.daoFundingManager.address);
-      await contracts.dao.migrateToNewDao(
-        newDaoFundingManager.address,
+    it('[one of the contract addresses does not match]: revert', async function () {
+      assert(await a.failure(contracts.dao.migrateToNewDao(
         newDaoContract,
+        newDaoFundingManager.address,
+        randomAddress(),
+      )));
+      assert(await a.failure(contracts.dao.migrateToNewDao(
+        randomAddress(),
+        newDaoFundingManager.address,
+        newDaoRewardsManager,
+      )));
+      const dummyFundingManager = await MockDaoFundingManager.new(contracts.daoFundingManager.address);
+      assert(await a.failure(contracts.dao.migrateToNewDao(
+        newDaoContract,
+        dummyFundingManager.address,
+        newDaoRewardsManager,
+      )));
+    });
+    it('[valid migration to a new contract]', async function () {
+      const fundsBefore = await web3.eth.getBalance(contracts.daoFundingManager.address);
+      const dgxBalanceBefore = await contracts.dgxToken.balanceOf.call(contracts.daoRewardsManager.address);
+      await contracts.dao.migrateToNewDao(
+        newDaoContract,
+        newDaoFundingManager.address,
+        newDaoRewardsManager,
         { from: addressOf.root },
       );
+      const transferConfigs = await contracts.dgxStorage.read_transfer_config.call();
+      const transferFees = transferConfigs[2].times(dgxBalanceBefore).dividedToIntegerBy(transferConfigs[1]);
       assert.deepEqual(await contracts.daoUpgradeStorage.isReplacedByNewDao.call(), true);
-      assert.deepEqual(await contracts.daoUpgradeStorage.newDaoContract.call(), newDaoContract);
-      assert.deepEqual(await contracts.daoUpgradeStorage.newDaoFundingManager.call(), newDaoFundingManager.address);
       assert.deepEqual(await web3.eth.getBalance(contracts.daoFundingManager.address), bN(0));
       assert.deepEqual(await web3.eth.getBalance(newDaoFundingManager.address), fundsBefore);
+      assert.deepEqual(await contracts.dgxToken.balanceOf.call(contracts.daoRewardsManager.address), bN(0));
+      assert.deepEqual(await contracts.dgxToken.balanceOf.call(newDaoRewardsManager), dgxBalanceBefore.minus(transferFees));
     });
     it('[re-try migrating to new dao (to falsify info)]: revert', async function () {
-      const newDaoContractAddress = randomAddress();
-      const newDaoFundingManager = await MockDaoFundingManager.new(contracts.daoFundingManager.address);
+      const newDaoContractAddress2 = randomAddress();
+      const newDaoFundingManager2 = await MockDaoFundingManager.new(contracts.daoFundingManager.address);
+      const newDaoRewardsManager2 = randomAddress();
       await web3.eth.sendTransaction({
         from: accounts[0],
         to: contracts.daoFundingManager.address,
         value: web3.toWei(1, 'ether'),
       });
       assert(await a.failure(contracts.dao.migrateToNewDao(
-        newDaoFundingManager.address,
-        newDaoContractAddress,
+        newDaoContractAddress2,
+        newDaoFundingManager2.address,
+        newDaoRewardsManager2,
         { from: addressOf.root },
       )));
     });
@@ -716,8 +785,8 @@ contract('Dao', function (accounts) {
         votesAndCommits.votingCommits[0][1],
         { from: participants[1].address },
       );
-      assert.deepEqual(await contracts.daoSpecialStorage.readCommitVote.call(specialProposalId, participants[0].address), votesAndCommits.votingCommits[0][0]);
-      assert.deepEqual(await contracts.daoSpecialStorage.readCommitVote.call(specialProposalId, participants[1].address), votesAndCommits.votingCommits[0][1]);
+      assert.deepEqual(await contracts.daoSpecialStorage.readComittedVote.call(specialProposalId, participants[0].address), votesAndCommits.votingCommits[0][0]);
+      assert.deepEqual(await contracts.daoSpecialStorage.readComittedVote.call(specialProposalId, participants[1].address), votesAndCommits.votingCommits[0][1]);
     });
     it('[within commit phase, modify commit]: success', async function () {
       const randomHash = randomBytes32();
@@ -726,7 +795,7 @@ contract('Dao', function (accounts) {
         randomHash,
         { from: participants[1].address },
       );
-      assert.deepEqual(await contracts.daoSpecialStorage.readCommitVote.call(specialProposalId, participants[1].address), randomHash);
+      assert.deepEqual(await contracts.daoSpecialStorage.readComittedVote.call(specialProposalId, participants[1].address), randomHash);
     });
     it('[if commit after the commit phase]: revert', async function () {
       await waitFor(11, addressOf, web3);
@@ -1041,10 +1110,12 @@ contract('Dao', function (accounts) {
   describe('voteOnDraft', function () {
     before(async function () {
       await resetBeforeEach();
+      // add some dummy proposals and endorse them
       await addProposal(contracts, proposals[0]);
       await addProposal(contracts, proposals[1]);
       await endorseProposal(contracts, proposals[0]);
       await endorseProposal(contracts, proposals[1]);
+      // modify proposals[0] to the next version, i.e. versions[1]
       await modifyProposal(contracts, proposals[0], 1);
     });
     it('[if latest proposal version is not finalized]: revert', async function () {
@@ -1068,10 +1139,12 @@ contract('Dao', function (accounts) {
     });
     it('[valid vote]: success | verify read functions', async function () {
       const currentQuarterIndex = bN(1);
+      // note the moderator quarter points before voting in this draft voting round
       const qpBefore0 = await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[0], currentQuarterIndex);
       const qpBefore1 = await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[1], currentQuarterIndex);
 
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
+      // put votes
       await contracts.daoVoting.voteOnDraft(
         proposals[0].id,
         true,
@@ -1202,7 +1275,7 @@ contract('Dao', function (accounts) {
     it('[if locking phase]: revert', async function () {
       const voteCount0 = await contracts.daoStorage.readDraftVotingCount.call(proposals[0].id, addressOf.allParticipants);
       const minimumDraftQuorum = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[0].id);
-      assert.isAtLeast(voteCount0[2].toNumber(), minimumDraftQuorum.toNumber());
+      assert.isAtLeast(voteCount0[0].plus(voteCount0[1]).toNumber(), minimumDraftQuorum.toNumber());
       assert.deepEqual(await contracts.daoCalculatorService.draftQuotaPass.call(voteCount0[0], voteCount0[1]), true);
       assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[0].id, { from: proposals[0].proposer })));
     });
@@ -1258,7 +1331,7 @@ contract('Dao', function (accounts) {
 
       const voteCount3 = await contracts.daoStorage.readDraftVotingCount.call(proposals[3].id, addressOf.allParticipants);
       const minimumDraftQuorum = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[3].id);
-      assert.isBelow(voteCount3[2].toNumber(), minimumDraftQuorum.toNumber());
+      assert.isBelow(voteCount3[0].plus(voteCount3[1]).toNumber(), minimumDraftQuorum.toNumber());
       const ethBalanceBefore = await web3.eth.getBalance(proposals[3].proposer);
       const tx = await contracts.daoVotingClaims.claimDraftVotingResult(proposals[3].id, bN(20), { from: proposals[3].proposer, gasPrice: web3.toWei(20, 'gwei') });
       const gasUsed = tx.receipt.gasUsed * web3.toWei(20, 'gwei');
@@ -1270,7 +1343,7 @@ contract('Dao', function (accounts) {
     it('[if quota is not met]: claimed true, passed false, collateral refunded', async function () {
       const voteCount2 = await contracts.daoStorage.readDraftVotingCount.call(proposals[2].id, addressOf.allParticipants);
       const minimumDraftQuorum = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[2].id);
-      assert.isAtLeast(voteCount2[2].toNumber(), minimumDraftQuorum.toNumber());
+      assert.isAtLeast(voteCount2[0].plus(voteCount2[1]).toNumber(), minimumDraftQuorum.toNumber());
       assert.deepEqual(await contracts.daoCalculatorService.draftQuotaPass.call(voteCount2[0], voteCount2[1]), false);
       const ethBalanceBefore = await web3.eth.getBalance(proposals[2].proposer);
       const tx = await contracts.daoVotingClaims.claimDraftVotingResult(proposals[2].id, bN(20), { from: proposals[2].proposer, gasPrice: web3.toWei(20, 'gwei') });
@@ -1303,12 +1376,15 @@ contract('Dao', function (accounts) {
 
       const voteCount0 = await contracts.daoStorage.readDraftVotingCount.call(proposals[0].id, addressOf.allParticipants);
       const minimumDraftQuorum = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[0].id);
-      assert.isAtLeast(voteCount0[2].toNumber(), minimumDraftQuorum.toNumber());
+      assert.isAtLeast(voteCount0[0].plus(voteCount0[1]).toNumber(), minimumDraftQuorum.toNumber());
       assert.deepEqual(await contracts.daoCalculatorService.draftQuotaPass.call(voteCount0[0], voteCount0[1]), true);
       assert.deepEqual(await contracts.daoStorage.readProposalDraftVotingResult.call(proposals[0].id), false);
 
       // conditions met, claim the draft voting results
-      assert.deepEqual(await contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[0].id, bN(50), { from: proposals[0].proposer }), true);
+      const returnValues = await contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[0].id, bN(50), { from: proposals[0].proposer });
+      assert.deepEqual(returnValues[0], true);
+      assert.deepEqual(returnValues[1], true);
+
       await contracts.daoVotingClaims.claimDraftVotingResult(proposals[0].id, bN(50), { from: proposals[0].proposer });
 
       // draft voting result set
@@ -1369,12 +1445,12 @@ contract('Dao', function (accounts) {
       await waitFor(5, addressOf, web3);
 
       // before the deadline, founder/other participants try to claim
-      assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(
+      assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult(
         proposals[0].id,
         bN(20),
         { from: addressOf.founderBadgeHolder },
       )));
-      assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult.call(
+      assert(await a.failure(contracts.daoVotingClaims.claimDraftVotingResult(
         proposals[0].id,
         bN(20),
         { from: proposals[1].proposer },
@@ -1406,9 +1482,9 @@ contract('Dao', function (accounts) {
         bN(20),
         { from: proposals[1].proposer },
       );
-      assert.deepEqual(claimResultProposer, false);
-      assert.deepEqual(claimResultFounder, false);
-      assert.deepEqual(claimResultParticipant, false);
+      assert.deepEqual(claimResultProposer, [false, true]);
+      assert.deepEqual(claimResultFounder, [false, true]);
+      assert.deepEqual(claimResultParticipant, [false, true]);
 
       const ethBalanceBefore = await web3.eth.getBalance(proposals[0].proposer);
       await contracts.daoVotingClaims.claimDraftVotingResult(
@@ -1471,7 +1547,9 @@ contract('Dao', function (accounts) {
       votesAndCommits = assignVotesAndCommits(addressOf);
     });
     it('[if invalid proposal state for voting round]: revert', async function () {
+      // the voter is a participant
       assert.deepEqual(await contracts.daoStakeStorage.isInParticipantList.call(addressOf.allParticipants[0]), true);
+      // the commitvote call reverts as the proposal is not in the voting phase
       assert(await a.failure(contracts.daoVoting.commitVoteOnProposal(
         proposals[2].id,
         bN(0),
@@ -1480,7 +1558,9 @@ contract('Dao', function (accounts) {
       )));
     });
     it('[if called by non-participant]: revert', async function () {
+      // if the account trying to vote is not a participant
       assert.deepEqual(await contracts.daoStakeStorage.isInParticipantList.call(addressOf.allParticipants[2]), false);
+      // this call should revert for a proposal which is in the voting commit phase
       assert(await a.failure(contracts.daoVoting.commitVoteOnProposal(
         proposals[0].id,
         bN(0),
@@ -1489,6 +1569,7 @@ contract('Dao', function (accounts) {
       )));
     });
     it('[valid commit vote]: verify read functions', async function () {
+      // valid commits
       await contracts.daoVoting.commitVoteOnProposal(
         proposals[0].id,
         bN(0),
@@ -1501,8 +1582,9 @@ contract('Dao', function (accounts) {
         votesAndCommits.votingCommits[1][1],
         { from: addressOf.allParticipants[1] },
       );
-      assert.deepEqual(await contracts.daoStorage.readCommitVote.call(proposals[0].id, bN(0), addressOf.allParticipants[0]), votesAndCommits.votingCommits[0][0]);
-      assert.deepEqual(await contracts.daoStorage.readCommitVote.call(proposals[1].id, bN(0), addressOf.allParticipants[1]), votesAndCommits.votingCommits[1][1]);
+      // verify if the commited votes have been stored correctly
+      assert.deepEqual(await contracts.daoStorage.readComittedVote.call(proposals[0].id, bN(0), addressOf.allParticipants[0]), votesAndCommits.votingCommits[0][0]);
+      assert.deepEqual(await contracts.daoStorage.readComittedVote.call(proposals[1].id, bN(0), addressOf.allParticipants[1]), votesAndCommits.votingCommits[1][1]);
 
       // commit vote interim round
       await contracts.daoVoting.commitVoteOnProposal(
@@ -1525,20 +1607,25 @@ contract('Dao', function (accounts) {
         { t: 'bool', v: false },
         { t: 'uint256', v: randomSaltPrime },
       );
+      // update the previously committed vote
       await contracts.daoVoting.commitVoteOnProposal(
         proposals[0].id,
         bN(0),
         commitPrime,
         { from: addressOf.allParticipants[0] },
       );
-      assert.deepEqual(await contracts.daoStorage.readCommitVote.call(proposals[0].id, bN(0), addressOf.allParticipants[0]), commitPrime);
+      // verify that the commit is the latest commit
+      // overwrites the previous commit
+      assert.deepEqual(await contracts.daoStorage.readComittedVote.call(proposals[0].id, bN(0), addressOf.allParticipants[0]), commitPrime);
     });
     it('[if not voting commit phase]: revert', async function () {
       // wait for commit phase to get over
       const commitPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_VOTING_COMMIT_PHASE);
       const timeToWaitFor = commitPhaseDuration.toNumber() - (getCurrentTimestamp() - startTime);
       await waitFor(timeToWaitFor, addressOf, web3);
+      // the voter is a participant
       assert.deepEqual(await contracts.daoStakeStorage.isInParticipantList.call(addressOf.allParticipants[4]), true);
+      // since the commit phase has ended, calling commitVote will revert
       assert(await a.failure(contracts.daoVoting.commitVoteOnProposal(
         proposals[0].id,
         bN(0),
@@ -1627,6 +1714,7 @@ contract('Dao', function (accounts) {
     });
     it('[if not the voting reveal phase]: revert', async function () {
       // before the reveal phase begins, reveal the correct vote
+      // revert since its before the reveal phase begins
       assert(await a.failure(contracts.daoVoting.revealVoteOnProposal(
         proposals[0].id,
         bN(0),
@@ -1736,6 +1824,7 @@ contract('Dao', function (accounts) {
       assert.deepEqual(readInterimVote1[0], votesAndCommits.votes[3][1]);
     });
     it('[revealing vote again]: revert', async function () {
+      // since this vote has already been revealed, this should revert
       assert(await a.failure(contracts.daoVoting.revealVoteOnProposal(
         proposals[0].id,
         bN(0),
@@ -1750,6 +1839,7 @@ contract('Dao', function (accounts) {
     let participants;
     beforeEach(async function () {
       await resetBeforeEach();
+      // set a high number for the vote claiming deadline, just to be sure it does not interfere with the test cases
       await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE, bN(300000));
       participants = getParticipants(addressOf, bN);
       /**
@@ -1847,6 +1937,8 @@ contract('Dao', function (accounts) {
       );
     });
     it('[if claiming before reveal phase ends]: revert', async function () {
+      // voting result can only be claimed after the reveal phase
+      // and before the vote claiming deadline
       assert(await a.failure(contracts.daoVotingClaims.claimProposalVotingResult(
         proposals[0].id,
         bN(1),
@@ -1859,6 +1951,8 @@ contract('Dao', function (accounts) {
       const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);
       await waitFor(interimVotingPhaseDuration.toNumber() + 1, addressOf, web3);
 
+      // within the deadline, only the proposer can claim the voting result
+      // if anybody else tries to claim the result, it should revert
       await a.map(indexRange(1, 6), 20, async (i) => {
         if (addressOf.allParticipants[i] === proposals[0].proposer) return;
         assert(await a.failure(contracts.daoVotingClaims.claimProposalVotingResult(
@@ -1881,8 +1975,11 @@ contract('Dao', function (accounts) {
       const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);
       await waitFor(interimVotingPhaseDuration.toNumber() + 1, addressOf, web3);
 
+      // note that the proposal voting has not been claimed yet
       assert.deepEqual(await contracts.daoStorage.isClaimed.call(proposals[2].id, bN(0)), false);
 
+      // claim the voting result
+      // it should return false coz the quota is not met
       const claimRes = await contracts.daoVotingClaims.claimProposalVotingResult.call(
         proposals[2].id,
         bN(0),
@@ -1898,8 +1995,10 @@ contract('Dao', function (accounts) {
         { from: proposals[2].proposer },
       );
 
+      // the claimed boolean must be set to true coz its claimed now
       assert.deepEqual(await contracts.daoStorage.isClaimed.call(proposals[2].id, bN(0)), true);
     });
+
     it('[valid claim, check bonuses]: verify read functions', async function () {
       // now wait for the interim phase to get over
       const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);
@@ -1933,8 +2032,10 @@ contract('Dao', function (accounts) {
         daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_NUM,
         daoConstantsValues(bN).CONFIG_REPUTATION_PER_EXTRA_QP_DEN,
       );
+      // since 4 and 5 did not vote correctly, there is no boost for reputation
       assert.deepEqual(await contracts.daoPointsStorage.getReputation.call(addressOf.allParticipants[4]), qpBefore4);
       assert.deepEqual(await contracts.daoPointsStorage.getReputation.call(addressOf.allParticipants[5]), qpBefore5);
+      // since 0 and 1 voted correctly, there is a boost of reputation
       assert.deepEqual(await contracts.daoPointsStorage.getReputation.call(addressOf.allParticipants[0]), qpBefore0.plus(bN(bonusRP)));
       assert.deepEqual(await contracts.daoPointsStorage.getReputation.call(addressOf.allParticipants[1]), qpBefore1.plus(bN(bonusRP)));
     });
@@ -1989,13 +2090,17 @@ contract('Dao', function (accounts) {
         bN(getCurrentTimestamp()),
       );
 
+      // wait for the interim voting phase to get over
       const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);
       await waitFor(interimVotingPhaseDuration.toNumber() + 1, addressOf, web3);
 
+      // set the vote claiming deadline to be a high number
       await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE, bN(1000000));
 
+      // note the quarter point before
       const qpBefore = await contracts.daoPointsStorage.getQuarterPoint.call(proposals[3].proposer, bN(1));
 
+      // note the eth balance before
       const ethBalanceBefore = await web3.eth.getBalance(proposals[3].proposer);
       const tx = await contracts.daoVotingClaims.claimProposalVotingResult(
         proposals[3].id,
@@ -2005,16 +2110,20 @@ contract('Dao', function (accounts) {
       );
 
       const gasUsed = tx.receipt.gasUsed * web3.toWei(20, 'gwei');
+      // since it was the final voting round, and the voting is passing, the eth collateral should be released back
       assert.deepEqual(await web3.eth.getBalance(proposals[3].proposer), ethBalanceBefore.plus(bN(2 * (10 ** 18))).minus(bN(gasUsed)));
 
+      // also the proposer should get the quarter point for milestone completion
       assert(await contracts.daoPointsStorage.getQuarterPoint.call(proposals[3].proposer, bN(1)), qpBefore.plus(daoConstantsValues(bN).CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH));
     });
     it('[re-claim same voting round]: revert', async function () {
       const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);
       await waitFor(interimVotingPhaseDuration.toNumber() + 1, addressOf, web3);
+      // claim both voting rounds
       await contracts.daoVotingClaims.claimProposalVotingResult(proposals[0].id, bN(1), bN(10), { from: proposals[0].proposer });
       await contracts.daoVotingClaims.claimProposalVotingResult(proposals[1].id, bN(1), bN(10), { from: proposals[1].proposer });
 
+      // reverts if tried to reclaim the proposal voting result
       assert(await a.failure(contracts.daoVotingClaims.claimProposalVotingResult(
         proposals[0].id,
         bN(1),
@@ -2144,6 +2253,7 @@ contract('Dao', function (accounts) {
       const votingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_VOTING_PHASE_TOTAL);
       await waitFor(votingPhaseDuration.toNumber() + 1, addressOf, web3);
 
+      // make sure that all operations are done, and voting is failing
       const claimResult = await contracts.daoVotingClaims.claimProposalVotingResult.call(
         proposals[2].id,
         bN(0),
@@ -2161,14 +2271,17 @@ contract('Dao', function (accounts) {
         { from: proposals[2].proposer, gasPrice: web3.toWei(20, 'gwei') },
       );
       const gasUsed = tx.receipt.gasUsed * web3.toWei(20, 'gwei');
+      // proposer gets back the collateral
       assert.deepEqual(await web3.eth.getBalance(proposals[2].proposer), ethBalanceBefore.plus(bN(2 * (10 ** 18))).minus(gasUsed));
 
+      // voting result is set to false, it is claimed and the collateral has been claimed also
       assert.deepEqual(await contracts.daoStorage.readProposalVotingResult.call(proposals[2].id, bN(0)), false);
       assert.deepEqual(await contracts.daoStorage.isClaimed.call(proposals[2].id, bN(0)), true);
       assert.deepEqual(await contracts.daoStorage.readProposalCollateralStatus.call(proposals[2].id), collateralStatus(bN).COLLATERAL_STATUS_CLAIMED);
     });
     it('[if first round of voting passes, the collateral is locked]', async function () {
       const participants = getParticipants(addressOf, bN);
+      // add a proposal in the first voting round
       await contracts.daoStorage.mock_put_proposal_as(
         proposals[3].id,
         bN(0),
@@ -2178,6 +2291,7 @@ contract('Dao', function (accounts) {
         proposals[3].versions[0].milestoneFundings,
         proposals[3].versions[0].finalReward,
       );
+      // add some dummy votes
       await contracts.daoStorage.mock_put_past_votes(
         proposals[3].id,
         bN(0),
@@ -2189,6 +2303,8 @@ contract('Dao', function (accounts) {
         bN(getCurrentTimestamp()).minus(bN(20)),
       );
 
+      // claim the proposal, the collateral should be locked (since it is passing)
+      // this collateral can be freed only if the proposer finishes all milestones
       await contracts.daoVotingClaims.claimProposalVotingResult(
         proposals[3].id,
         bN(0),
@@ -2196,6 +2312,7 @@ contract('Dao', function (accounts) {
         { from: proposals[3].proposer },
       );
 
+      // verify the read functions
       assert.deepEqual(await contracts.daoStorage.readProposalVotingResult.call(proposals[3].id, bN(0)), true);
       assert.deepEqual(await contracts.daoStorage.isClaimed.call(proposals[3].id, bN(0)), true);
       assert.deepEqual(await contracts.daoStorage.readProposalCollateralStatus.call(proposals[3].id), collateralStatus(bN).COLLATERAL_STATUS_LOCKED);
@@ -2207,6 +2324,7 @@ contract('Dao', function (accounts) {
     beforeEach(async function () {
       await resetBeforeEach();
       participants = getParticipants(addressOf, bN);
+      // create a dummy proposal in the draft voting phase
       await contracts.daoStorage.mock_put_proposal_as(
         proposals[0].id,
         bN(0),
@@ -2216,6 +2334,7 @@ contract('Dao', function (accounts) {
         proposals[0].versions[1].milestoneFundings,
         proposals[0].versions[1].finalReward,
       );
+      // add votes for the draft voting round
       await contracts.daoStorage.mock_put_past_votes(
         proposals[0].id,
         bN(0),
@@ -2226,31 +2345,39 @@ contract('Dao', function (accounts) {
         bN(4),
         bN(0),
       );
-      await waitFor(5, addressOf, web3); //  wait for draft voting phase to get done
+      // wait for draft voting phase to get done
+      await waitFor(5, addressOf, web3);
       await contracts.daoVotingClaims.claimDraftVotingResult(proposals[0].id, bN(20), { from: proposals[0].proposer });
+      // set a rediculous claiming deadline so it wont be exceeded in claiming voting result
+      await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE, bN(50));
     });
-    it('[non-prl calls function]: revert', async function () {
-      for (const i of indexRange(2, 10)) {
-        assert(await a.failure(contracts.dao.updatePRL(
-          proposals[0].id,
-          bN(1),
-          'some:bytes',
-          { from: accounts[i] },
-        )));
-      }
-    });
-    it('[if action is not stop/pause/unpause]: revert', async function () {
-      // Stop    --> 1,
-      // Pause   --> 2,
-      // Unpause --> 3
-      assert(await a.failure(contracts.dao.updatePRL(
-        proposals[0].id,
-        bN(4),
-        'some:bytes',
-        { from: addressOf.prl },
-      )));
-    });
+    // it('[non-prl calls function]: revert', async function () {
+    //   // only the prl account can call the prl functions
+    //   // in case of others it should revert
+    //   for (const i of indexRange(2, 10)) {
+    //     assert(await a.failure(contracts.dao.updatePRL(
+    //       proposals[0].id,
+    //       bN(1),
+    //       'some:bytes',
+    //       { from: accounts[i] },
+    //     )));
+    //   }
+    // });
+    // it('[if action is not stop/pause/unpause]: revert', async function () {
+    //   // Stop    --> 1,
+    //   // Pause   --> 2,
+    //   // Unpause --> 3
+    //   // in case of any other action, the function call must revert
+    //   assert(await a.failure(contracts.dao.updatePRL(
+    //     proposals[0].id,
+    //     bN(4),
+    //     'some:bytes',
+    //     { from: addressOf.prl },
+    //   )));
+    // });
+
     it('[pause a proposal during voting phase]: cannot claim eth | milestone starts at unpause time', async function () {
+      // get votes, salts and commits
       const votesAndCommits = assignVotesAndCommits(addressOf);
 
       // put some commits
@@ -2306,7 +2433,7 @@ contract('Dao', function (accounts) {
         { from: addressOf.prl },
       );
 
-      // asserts
+      // verify that the above prl action has been stored correctly
       assert.deepEqual(await contracts.daoStorage.readTotalPrlActions.call(proposals[0].id), bN(1));
       const action0 = await contracts.daoStorage.readPrlAction.call(proposals[0].id, bN(0));
       assert.deepEqual(action0[0], bN(2)); // pause
@@ -2316,6 +2443,8 @@ contract('Dao', function (accounts) {
       // wait for reveal phase to get over
       await waitFor(10, addressOf, web3);
 
+      console.log('\t\tProposal count = ', await contracts.daoStorage.proposalCountByQuarter(bN(2)));
+
       // claim the voting result
       await contracts.daoVotingClaims.claimProposalVotingResult(
         proposals[0].id,
@@ -2324,7 +2453,11 @@ contract('Dao', function (accounts) {
         { from: proposals[0].proposer },
       );
 
+      console.log('\t\tVoting result = ', await contracts.daoStorage.readProposalVotingResult.call(proposals[0].id, bN(0)));
+      console.log('\t\tIs claimed = ', await contracts.daoStorage.isClaimed.call(proposals[0].id, bN(0)));
+
       // proposer shouldn't be able to claim eth (since proposal paused)
+
       assert(await a.failure(contracts.daoFundingManager.claimFunding(
         proposals[0].id,
         bN(0),
@@ -2343,6 +2476,8 @@ contract('Dao', function (accounts) {
       );
 
       // can now claim ether
+      console.log('Before claimFunding');
+      await printDaoDetails(bN, contracts);
       assert.ok(await contracts.daoFundingManager.claimFunding.call(
         proposals[0].id,
         bN(0),
@@ -2366,10 +2501,12 @@ contract('Dao', function (accounts) {
       // claim the result
       await contracts.daoVotingClaims.claimProposalVotingResult(proposals[0].id, bN(0), bN(10), { from: proposals[0].proposer });
 
-      // unpause the proposal
+      // stop the proposal
+      // after its stopped, the proposer should not be allowed to claim any funding
       await contracts.dao.updatePRL(proposals[0].id, bN(1), 'stop:proposal[0]', { from: addressOf.prl });
 
       // claim the funding
+      // this should revert as the proposal is stopped
       assert(await a.failure(contracts.daoFundingManager.claimFunding(
         proposals[0].id,
         bN(0),
@@ -2378,8 +2515,11 @@ contract('Dao', function (accounts) {
       )));
     });
     it('[stop a proposal]', async function () {
+      // check that the proposal is in moderated phase
       assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates().PROPOSAL_STATE_MODERATED), proposals[0].id);
+      // prl stops the proposal
       await contracts.dao.updatePRL(proposals[0].id, bN(1), 'stop:proposal', { from: addressOf.prl });
+      // verify that the proposal has been moved to the closed state
       const readProposal = await contracts.daoStorage.readProposal.call(proposals[0].id);
       assert.deepEqual(readProposal[3], paddedHex(web3, proposalStates().PROPOSAL_STATE_CLOSED));
       assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates().PROPOSAL_STATE_MODERATED), EMPTY_BYTES);
@@ -2463,7 +2603,7 @@ contract('Dao', function (accounts) {
         { from: proposals[1].proposer },
       )));
     });
-    it('[proposal not yet funded (unfinalized/draft/voting phase)]: revert', async function () {
+    it('[proposal not yet finalized, once in voting phase, change the next milestone funding]: revert', async function () {
       // consider the new proposal (proposals[0])
       assert(await a.failure(contracts.dao.changeFundings.call(
         proposals[0].id,
@@ -2476,6 +2616,7 @@ contract('Dao', function (accounts) {
       // finalize the proposal
       await contracts.dao.finalizeProposal(proposals[0].id, { from: proposals[0].proposer });
 
+      // since its only finalized yet, the function call must revert
       assert(await a.failure(contracts.dao.changeFundings.call(
         proposals[0].id,
         proposals[0].versions[1].milestoneFundings,
@@ -2485,7 +2626,7 @@ contract('Dao', function (accounts) {
       )));
 
       // wait for draft voting to get over
-      await waitFor(21, addressOf, web3);
+      await waitFor(6, addressOf, web3);
       const participants = getParticipants(addressOf, bN);
       await contracts.daoStorage.mock_put_past_votes(
         proposals[0].id,
@@ -2504,7 +2645,6 @@ contract('Dao', function (accounts) {
         bN(0),
         { from: proposals[0].proposer },
       )));
-
 
       // claim the draft voting phase
       await contracts.daoVotingClaims.claimDraftVotingResult(
@@ -2530,15 +2670,8 @@ contract('Dao', function (accounts) {
         [true, true, true, true],
         [participants[0].dgdToLock, participants[1].dgdToLock, participants[2].dgdToLock, participants[3].dgdToLock],
         bN(4),
-        bN(getCurrentTimestamp()).minus(bN(20)),
+        bN(getCurrentTimestamp()).minus(bN(21)),
       );
-      assert(await a.failure(contracts.dao.changeFundings.call(
-        proposals[0].id,
-        proposals[0].versions[1].milestoneFundings,
-        proposals[0].versions[1].finalReward,
-        bN(0),
-        { from: proposals[0].proposer },
-      )));
 
       // claim the voting results
       await contracts.daoVotingClaims.claimProposalVotingResult(
@@ -2547,23 +2680,12 @@ contract('Dao', function (accounts) {
         bN(10),
         { from: proposals[0].proposer },
       );
-      assert(await a.failure(contracts.dao.changeFundings.call(
-        proposals[0].id,
-        proposals[0].versions[1].milestoneFundings,
-        proposals[0].versions[1].finalReward,
-        bN(0),
-        { from: proposals[0].proposer },
-      )));
 
-      // now the proposer claims the funding
-      await contracts.daoFundingManager.claimFunding(
-        proposals[0].id,
-        bN(0),
-        { from: proposals[0].proposer },
-      );
-
-      // now finally they can change the funding structure for the subsequent milestones
-      assert.ok(await contracts.dao.changeFundings.call(
+      // after the voting is claimed, the proposer must be allowed to change fundings
+      // this function call should go through because according to the new version of fundings
+      // the funding for milestone 1 is still the same
+      // only the funding for subsequent milestones has been changed
+      assert.ok(await contracts.dao.changeFundings(
         proposals[0].id,
         proposals[0].versions[1].milestoneFundings,
         proposals[0].versions[1].finalReward,
@@ -2631,6 +2753,8 @@ contract('Dao', function (accounts) {
       assert.deepEqual(readLatestVersion[3], bN(4 * (10 ** 18)));
     });
     it('[proposer tries to add a third milestone]: revert', async function () {
+      // since non-digix proposals cannot have more than capped milestones (which is 2 in the test suite)
+      // adding a third milestone will revert
       assert(await a.failure(contracts.dao.changeFundings.call(
         proposals[1].id,
         [proposals[1].versions[0].milestoneFundings[0], bN(2 * (10 ** 18)), bN(2 * (10 ** 18))],
@@ -2640,6 +2764,9 @@ contract('Dao', function (accounts) {
       )));
     });
     it('[if the changed fundings are above the capped values]: revert', async function () {
+      // also there is a max cap on the fundings that can be received by non-digix proposals
+      // in the test suite, we set it to 20 ETH
+      // trying to set a funding above that value should revert
       assert(await a.failure(contracts.dao.changeFundings.call(
         proposals[1].id,
         [proposals[1].versions[0].milestoneFundings[0], bN(15 * (10 ** 18))],
@@ -2657,6 +2784,8 @@ contract('Dao', function (accounts) {
       await endorseProposal(contracts, proposals[0]);
     });
     it('[if adding more docs to a non-finalized proposal]: revert', async function () {
+      // if the proposal is not finalized yet, it should be modified
+      // docs are added only when a proposal is already finalized
       assert(await a.failure(contracts.dao.addProposalDoc.call(
         proposals[0].id,
         randomBytes32(),
@@ -2670,6 +2799,8 @@ contract('Dao', function (accounts) {
         { from: proposals[0].proposer },
       );
 
+      // if the proposer does not call the function
+      // the call should revert
       assert(await a.failure(contracts.dao.addProposalDoc.call(
         proposals[0].id,
         randomBytes32(),
@@ -2677,17 +2808,20 @@ contract('Dao', function (accounts) {
       )));
     });
     it('[if kyc has expired of the proposer]: revert', async function () {
+      // expire the KYC of this proposer
       await contracts.daoIdentity.updateKyc(
         proposals[0].proposer,
         'expiring',
         bN(getCurrentTimestamp()).minus(bN(1)),
         { from: addressOf.kycadmin },
       );
+      // any function call should revert due to the expired KYC
       assert(await a.failure(contracts.dao.addProposalDoc.call(
         proposals[0].id,
         randomBytes32(),
         { from: proposals[0].proposer },
       )));
+      // update the KYC back to be valid
       await contracts.daoIdentity.updateKyc(
         proposals[0].proposer,
         'expiring',
@@ -2696,12 +2830,15 @@ contract('Dao', function (accounts) {
       );
     });
     it('[for finalized proposal, add docs]: verify newly added docs', async function () {
+      // some docs
       const moreDocs = randomBytes32s(3);
+      // verify that the addProposalDoc function call is success
       assert.ok(await contracts.dao.addProposalDoc.call(
         proposals[0].id,
         moreDocs[0],
         { from: proposals[0].proposer },
       ));
+      // add some docs
       await contracts.dao.addProposalDoc(
         proposals[0].id,
         moreDocs[0],
@@ -2713,6 +2850,7 @@ contract('Dao', function (accounts) {
         { from: proposals[0].proposer },
       );
 
+      // read and verify that the docs were appended correctly to the list
       const readMoreDocs = await contracts.daoStorage.readProposalDocs.call(proposals[0].id);
       assert.deepEqual(readMoreDocs[0], moreDocs[0]);
       assert.deepEqual(readMoreDocs[1], moreDocs[1]);
@@ -2722,6 +2860,8 @@ contract('Dao', function (accounts) {
   describe('finishMilestone', function () {
     beforeEach(async function () {
       await resetBeforeEach();
+      // add proposal in endorsed state
+      // this proposal hasn't been voted on yet
       await addProposal(contracts, proposals[0]);
       await endorseProposal(contracts, proposals[0]);
 
@@ -2748,6 +2888,7 @@ contract('Dao', function (accounts) {
       );
     });
     it('[in the first milestone, not called by proposer]: revert', async function () {
+      // only the proposer of the proposal can finish the milestone
       assert(await a.failure(contracts.dao.finishMilestone.call(
         proposals[1].id,
         bN(0),
@@ -2755,12 +2896,14 @@ contract('Dao', function (accounts) {
       )));
     });
     it('[in the first milestone, proposer\'s KYC has expired]: revert', async function () {
+      // expire the KYC of the proposer
       await contracts.daoIdentity.updateKyc(
         proposals[1].proposer,
         'expiry',
         bN(getCurrentTimestamp()).minus(bN(20)),
         { from: addressOf.kycadmin },
       );
+      // any operation by this account must be reverted until the KYC is renewed
       assert(await a.failure(contracts.dao.finishMilestone.call(
         proposals[1].id,
         bN(0),
@@ -2768,6 +2911,9 @@ contract('Dao', function (accounts) {
       )));
     });
     it('[in the first milestone, trying to finish second milestone]: revert', async function () {
+      // only the current milestone can be finished
+      // if the proposer tries to call the finishMilestone function on upcoming milestones
+      // the function call must be reverted
       assert(await a.failure(contracts.dao.finishMilestone.call(
         proposals[1].id,
         bN(1),
@@ -2775,6 +2921,7 @@ contract('Dao', function (accounts) {
       )));
     });
     it('[in the second milestone, trying to finish first milestone]: revert', async function () {
+      // trying to finish the past milestones should also be reverted
       assert(await a.failure(contracts.dao.finishMilestone.call(
         proposals[2].id,
         bN(0),
@@ -2782,6 +2929,9 @@ contract('Dao', function (accounts) {
       )));
     });
     it('[not yet started first milestone, trying to finish any milestone]: revert', async function () {
+      // the first milestone starts only when the draft voting and voting round pass
+      // before that, proposals[0] is still not begun the milestone 1
+      // finishing the first milestone should revert
       assert(await a.failure(contracts.dao.finishMilestone.call(
         proposals[0].id,
         bN(0),
@@ -2789,11 +2939,13 @@ contract('Dao', function (accounts) {
       )));
     });
     it('[finish first milestone]: verify read functions', async function () {
+      // verify that the finish milestone for proposal in milestone 1 is success
       assert.ok(await contracts.dao.finishMilestone.call(
         proposals[1].id,
         bN(0),
         { from: proposals[1].proposer },
       ));
+      // finish the milestone
       await contracts.dao.finishMilestone(
         proposals[1].id,
         bN(0),
@@ -2801,14 +2953,22 @@ contract('Dao', function (accounts) {
       );
 
       // verify voting time and status
+      // there is enough time left in this current quarter for a whole voting phase to be completed
+      // so the voting time for the next milestone (milestone 2) set should be NOW
+      // Note: index of milestones starts from 0
       const votingTime = await contracts.daoStorage.readProposalVotingTime.call(proposals[1].id, bN(1));
-      console.log('voting time = ', votingTime);
+      // to check that the voting time is within 5 seconds from getCurrentTimestamp
       assert.deepEqual(timeIsRecent(votingTime, 5), true);
     });
-    it('[finish first milestone when time left in quarter is not enough to conduct voting round]: verify next voting time', async function () {
-      // wait for some time
-      await waitFor(45, addressOf, web3);
 
+    it('[finish first milestone when time left in quarter is not enough to conduct voting round]: verify next voting time', async function () {
+      // wait for some time, so that there is less than CONFIG_VOTE_CLAIMING_DEADLINE (= 5s) left in the quarter
+      const currentTimeInQuarter = await contracts.dao.currentTimeInQuarter.call();
+      console.log('\t\tcurrentTimeInQuarter = ', currentTimeInQuarter);
+      await waitFor(60 - currentTimeInQuarter.toNumber() - 4, addressOf, web3);
+
+      await printDaoDetails(bN, contracts);
+      // finish the milestone
       await contracts.dao.finishMilestone(
         proposals[1].id,
         bN(0),
@@ -2816,6 +2976,9 @@ contract('Dao', function (accounts) {
       );
 
       // verify delayed voting time
+      // since we waited for 45 seconds in the 50 second main phase
+      // there is not enough time left for the 20 seconds voting round to get completed
+      // hence the voting time for the next milestone should be pushed forward to start of the next main phase
       const votingTime = await contracts.daoStorage.readProposalVotingTime.call(proposals[1].id, bN(1));
       const startOfFirstQuarter = await contracts.daoUpgradeStorage.startOfFirstQuarter.call();
       assert.deepEqual(votingTime, startOfFirstQuarter.plus(bN(60)).plus(bN(10)).plus(bN(1)));
@@ -2829,39 +2992,56 @@ contract('Dao', function (accounts) {
       await endorseProposal(contracts, proposals[0]);
     });
     it('[if not proposer]: revert', async function () {
+      // only the proposer account can close the proposal (other than founder, but there are other conditions for founders)
+      // if somebody else tries to close the proposal, the function call should revert
       assert(await a.failure(contracts.dao.closeProposal.call(proposals[0].id, { from: proposals[1].proposer })));
     });
     it('[if proposer\'s KYC is expired]: revert', async function () {
+      // update the KYC of the proposer to be invalid
       await contracts.daoIdentity.updateKyc(
         proposals[0].proposer,
         'expiry',
         bN(getCurrentTimestamp()).minus(bN(20)),
         { from: addressOf.kycadmin },
       );
+      // if the proposer's KYC validity has expired
+      // any operation done by that proposer should be reverted until they
+      // re-KYC
       assert(await a.failure(contracts.dao.closeProposal.call(proposals[0].id, { from: proposals[1].proposer })));
     });
     it('[if proposal has been finalized]: revert', async function () {
+      // finalize the proposal
       await contracts.dao.finalizeProposal(proposals[0].id, { from: proposals[0].proposer });
+      // a finalized proposal cannot be closed, even by the proposer account
+      // proposals can be close only before being finalized
       assert(await a.failure(contracts.dao.closeProposal.call(proposals[0].id, { from: proposals[1].proposer })));
     });
     it('[close a proposal]: verify read functions', async function () {
+      // check that the close proposal function runs without reverting
       assert.ok(await contracts.dao.closeProposal.call(
         proposals[0].id,
         { from: proposals[0].proposer },
       ));
+      // note the eth balance of the proposer before
+      // because at the time of proposal creation, the proposer needs to pay a collateral
       const ethBalanceBefore = await web3.eth.getBalance(proposals[0].proposer);
       const price = web3.toWei(20, 'gwei');
+      // close the proposal and compute the gas spent in this txn
       const tx = await contracts.dao.closeProposal(proposals[0].id, { from: proposals[0].proposer, gasPrice: price });
       const gasUsed = tx.receipt.gasUsed * price;
 
-      // verify
+      // verify that the proposal state is now closed, and it is added to the list of closed proposals
       const readProposal = await contracts.daoStorage.readProposal.call(proposals[0].id);
       assert.deepEqual(readProposal[3], paddedHex(web3, proposalStates(bN).PROPOSAL_STATE_CLOSED));
       assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates(bN).PROPOSAL_STATE_CLOSED), paddedHex(web3, proposals[0].id));
+      // verify that the proposer has received their collateral of 2 ETH back (minus the gas spent for the above txn)
       assert.deepEqual(await web3.eth.getBalance(proposals[0].proposer), ethBalanceBefore.plus(bN(2 * (10 ** 18))).minus(gasUsed));
     });
     it('[if proposal is already closed]: revert', async function () {
+      // close the proposal
       await contracts.dao.closeProposal(proposals[0].id, { from: proposals[0].proposer });
+      // a closed proposal cannot be closed again
+      // this operation will revert
       assert(await a.failure(contracts.dao.closeProposal.call(proposals[0].id, { from: proposals[1].proposer })));
     });
   });
@@ -2869,9 +3049,10 @@ contract('Dao', function (accounts) {
   describe('founderCloseProposals', function () {
     before(async function () {
       await resetBeforeEach();
-      // proposal can be closed after 15 seconds
+      // proposal can be closed after 15 seconds. this is the proposal_dead_duration
       await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_PROPOSAL_DEAD_DURATION, bN(15));
 
+      // add some dummy proposals and get them endorsed
       await addProposal(contracts, proposals[0]);
       await addProposal(contracts, proposals[1]);
       await addProposal(contracts, proposals[2]);
@@ -2879,10 +3060,14 @@ contract('Dao', function (accounts) {
       await endorseProposal(contracts, proposals[1]);
       await endorseProposal(contracts, proposals[2]);
 
-      // finalize proposals[2]
+      // finalize proposals[2]. At this point in time, proposals[0] and [1] are not finalised
       await contracts.dao.finalizeProposal(proposals[2].id, { from: proposals[2].proposer });
     });
-    it('[proposal list contains a proposal that is not crossed the deadline]: revert', async function () {
+    it('[proposal list contains a proposal that has not crossed the deadline]: revert', async function () {
+      // both proposal[0] and proposal[1] have not been finalised
+      // but the 15 seconds of proposal_dead_duration has not been crossed
+      // so if the founder tries to close either/both of these proposals
+      // the function call must revert
       assert(await a.failure(contracts.dao.founderCloseProposals.call(
         [proposals[0].id, proposals[1].id],
         { from: addressOf.founderBadgeHolder },
@@ -2892,18 +3077,25 @@ contract('Dao', function (accounts) {
       // wait for 15 seconds
       await waitFor(15, addressOf, web3);
 
+      // now that we have waited for 15 seconds
+      // but the call is not made from a founder account
+      // so the function call must revert
       assert(await a.failure(contracts.dao.founderCloseProposals.call(
         [proposals[0].id, proposals[1].id],
         { from: addressOf.root },
       )));
     });
     it('[proposal list contains an already finalized proposal]: revert', async function () {
+      // if the list of proposal IDs contains even one finalized proposal
+      // the function call must be reverted
+      // because finalized proposals cannot be closed by founders
       assert(await a.failure(contracts.dao.founderCloseProposals.call(
         [proposals[0].id, proposals[1].id, proposals[2].id],
         { from: addressOf.founderBadgeHolder },
       )));
     });
     it('[valid inputs]: close all proposals', async function () {
+      // if everything is fine, the non-finalised proposals can be closed
       assert.ok(await contracts.dao.founderCloseProposals.call(
         [proposals[0].id, proposals[1].id],
         { from: addressOf.founderBadgeHolder },
@@ -2913,7 +3105,7 @@ contract('Dao', function (accounts) {
         { from: addressOf.founderBadgeHolder },
       );
 
-      // verify
+      // verify that the state of these proposals is closed
       const readProposal0 = await contracts.daoStorage.readProposal(proposals[0].id);
       const readProposal1 = await contracts.daoStorage.readProposal(proposals[1].id);
       assert.deepEqual(readProposal0[3], paddedHex(web3, proposalStates(bN).PROPOSAL_STATE_CLOSED));

@@ -42,7 +42,7 @@ contract('DaoRewardsStorage', function (accounts) {
       const minimalParticipationPoint = bN(4);
       const quarterPointScalingFactor = bN(30);
       const reputationPointScalingFactor = bN(40);
-      const totalEffectiveDGDLastQuarter = bN(50 * (10 ** 18));
+      const totalEffectiveDGDPreviousQuarter = bN(50 * (10 ** 18));
       const badgeMinimalParticipationPoint = bN(2);
       const badgeQuarterPointScalingFactor = bN(24);
       const badgeReputationPointScalingFactor = bN(32);
@@ -55,7 +55,7 @@ contract('DaoRewardsStorage', function (accounts) {
         minimalParticipationPoint,
         quarterPointScalingFactor,
         reputationPointScalingFactor,
-        totalEffectiveDGDLastQuarter,
+        totalEffectiveDGDPreviousQuarter,
         badgeMinimalParticipationPoint,
         badgeQuarterPointScalingFactor,
         badgeReputationPointScalingFactor,
@@ -70,7 +70,7 @@ contract('DaoRewardsStorage', function (accounts) {
         minimalParticipationPoint,
         quarterPointScalingFactor,
         reputationPointScalingFactor,
-        totalEffectiveDGDLastQuarter,
+        totalEffectiveDGDPreviousQuarter,
         badgeMinimalParticipationPoint,
         badgeQuarterPointScalingFactor,
         badgeReputationPointScalingFactor,
@@ -84,7 +84,7 @@ contract('DaoRewardsStorage', function (accounts) {
       assert.deepEqual(quarterInfo[0], minimalParticipationPoint);
       assert.deepEqual(quarterInfo[1], quarterPointScalingFactor);
       assert.deepEqual(quarterInfo[2], reputationPointScalingFactor);
-      assert.deepEqual(quarterInfo[3], totalEffectiveDGDLastQuarter);
+      assert.deepEqual(quarterInfo[3], totalEffectiveDGDPreviousQuarter);
       assert.deepEqual(quarterInfo[4], badgeMinimalParticipationPoint);
       assert.deepEqual(quarterInfo[5], badgeQuarterPointScalingFactor);
       assert.deepEqual(quarterInfo[6], badgeReputationPointScalingFactor);
@@ -97,7 +97,7 @@ contract('DaoRewardsStorage', function (accounts) {
         minimalParticipationPoint.plus(bN(1)),
         quarterPointScalingFactor.plus(bN(5)),
         reputationPointScalingFactor,
-        totalEffectiveDGDLastQuarter,
+        totalEffectiveDGDPreviousQuarter,
         badgeMinimalParticipationPoint,
         badgeQuarterPointScalingFactor,
         badgeReputationPointScalingFactor.plus(bN(15)),
@@ -111,7 +111,7 @@ contract('DaoRewardsStorage', function (accounts) {
       assert.deepEqual(quarterInfo2[0], minimalParticipationPoint.plus(bN(1)));
       assert.deepEqual(quarterInfo2[1], quarterPointScalingFactor.plus(bN(5)));
       assert.deepEqual(quarterInfo2[2], reputationPointScalingFactor);
-      assert.deepEqual(quarterInfo2[3], totalEffectiveDGDLastQuarter);
+      assert.deepEqual(quarterInfo2[3], totalEffectiveDGDPreviousQuarter);
       assert.deepEqual(quarterInfo2[4], badgeMinimalParticipationPoint);
       assert.deepEqual(quarterInfo2[5], badgeQuarterPointScalingFactor);
       assert.deepEqual(quarterInfo2[6], badgeReputationPointScalingFactor.plus(bN(15)));
@@ -125,7 +125,7 @@ contract('DaoRewardsStorage', function (accounts) {
       const minimalParticipationPoint = bN(4);
       const quarterPointScalingFactor = bN(30);
       const reputationPointScalingFactor = bN(40);
-      const totalEffectiveDGDLastQuarter = bN(50 * (10 ** 18));
+      const totalEffectiveDGDPreviousQuarter = bN(50 * (10 ** 18));
       const badgeMinimalParticipationPoint = bN(2);
       const badgeQuarterPointScalingFactor = bN(24);
       const badgeReputationPointScalingFactor = bN(32);
@@ -139,7 +139,7 @@ contract('DaoRewardsStorage', function (accounts) {
           minimalParticipationPoint,
           quarterPointScalingFactor,
           reputationPointScalingFactor,
-          totalEffectiveDGDLastQuarter,
+          totalEffectiveDGDPreviousQuarter,
           badgeMinimalParticipationPoint,
           badgeQuarterPointScalingFactor,
           badgeReputationPointScalingFactor,
@@ -156,7 +156,7 @@ contract('DaoRewardsStorage', function (accounts) {
       const minimalParticipationPoint2 = bN(4);
       const quarterPointScalingFactor2 = bN(30);
       const reputationPointScalingFactor2 = bN(40);
-      const totalEffectiveDGDLastQuarter2 = bN(50 * (10 ** 18));
+      const totalEffectiveDGDPreviousQuarter2 = bN(50 * (10 ** 18));
       const badgeMinimalParticipationPoint2 = bN(2);
       const badgeQuarterPointScalingFactor2 = bN(24);
       const badgeReputationPointScalingFactor2 = bN(32);
@@ -168,7 +168,7 @@ contract('DaoRewardsStorage', function (accounts) {
       const minimalParticipationPoint3 = bN(3);
       const quarterPointScalingFactor3 = bN(33);
       const reputationPointScalingFactor3 = bN(42);
-      const totalEffectiveDGDLastQuarter3 = bN(51 * (10 ** 18));
+      const totalEffectiveDGDPreviousQuarter3 = bN(51 * (10 ** 18));
       const badgeMinimalParticipationPoint3 = bN(3);
       const badgeQuarterPointScalingFactor3 = bN(22);
       const badgeReputationPointScalingFactor3 = bN(31);
@@ -181,7 +181,7 @@ contract('DaoRewardsStorage', function (accounts) {
         minimalParticipationPoint2,
         quarterPointScalingFactor2,
         reputationPointScalingFactor2,
-        totalEffectiveDGDLastQuarter2,
+        totalEffectiveDGDPreviousQuarter2,
         badgeMinimalParticipationPoint2,
         badgeQuarterPointScalingFactor2,
         badgeReputationPointScalingFactor2,
@@ -196,7 +196,7 @@ contract('DaoRewardsStorage', function (accounts) {
         minimalParticipationPoint3,
         quarterPointScalingFactor3,
         reputationPointScalingFactor3,
-        totalEffectiveDGDLastQuarter3,
+        totalEffectiveDGDPreviousQuarter3,
         badgeMinimalParticipationPoint3,
         badgeQuarterPointScalingFactor3,
         badgeReputationPointScalingFactor3,
@@ -237,57 +237,19 @@ contract('DaoRewardsStorage', function (accounts) {
       assert.deepEqual(readQuarterParticipantInfo2[0], minimalParticipationPoint2);
       assert.deepEqual(readQuarterParticipantInfo2[1], quarterPointScalingFactor2);
       assert.deepEqual(readQuarterParticipantInfo2[2], reputationPointScalingFactor2);
-      assert.deepEqual(readQuarterParticipantInfo2[3], totalEffectiveDGDLastQuarter2);
+      assert.deepEqual(readQuarterParticipantInfo2[3], totalEffectiveDGDPreviousQuarter2);
       assert.deepEqual(readQuarterParticipantInfo3[0], minimalParticipationPoint3);
       assert.deepEqual(readQuarterParticipantInfo3[1], quarterPointScalingFactor3);
       assert.deepEqual(readQuarterParticipantInfo3[2], reputationPointScalingFactor3);
-      assert.deepEqual(readQuarterParticipantInfo3[3], totalEffectiveDGDLastQuarter3);
+      assert.deepEqual(readQuarterParticipantInfo3[3], totalEffectiveDGDPreviousQuarter3);
       assert.deepEqual(readDgxDistributionDay2, bN(dgxDistributionDay2));
       assert.deepEqual(readDgxDistributionDay3, bN(dgxDistributionDay3));
-      assert.deepEqual(readTotalEffectiveDGDLastQuarter2, totalEffectiveDGDLastQuarter2);
-      assert.deepEqual(readTotalEffectiveDGDLastQuarter3, totalEffectiveDGDLastQuarter3);
+      assert.deepEqual(readTotalEffectiveDGDLastQuarter2, totalEffectiveDGDPreviousQuarter2);
+      assert.deepEqual(readTotalEffectiveDGDLastQuarter3, totalEffectiveDGDPreviousQuarter3);
       assert.deepEqual(readTotalEffectiveBadgeLastQuarter2, totalEffectiveBadgeLastQuarter2);
       assert.deepEqual(readTotalEffectiveBadgeLastQuarter3, totalEffectiveBadgeLastQuarter3);
       assert.deepEqual(readRewardsPoolOfLastQuarter2, dgxRewardsPoolLastQuarter2);
       assert.deepEqual(readRewardsPoolOfLastQuarter3, dgxRewardsPoolLastQuarter3);
-    });
-  });
-
-  describe('updateReputationPointAtQuarter', function () {
-    it('[valid call]: verify read function', async function () {
-      const reputationPoint = bN(10);
-      assert.ok(await contracts.daoRewardsStorage.updateReputationPointAtQuarter.call(
-        addressOf.dgdHolders[2],
-        bN(1),
-        reputationPoint,
-        { from: accounts[0] },
-      ));
-      await contracts.daoRewardsStorage.updateReputationPointAtQuarter(
-        addressOf.dgdHolders[2],
-        bN(1),
-        reputationPoint,
-        { from: accounts[0] },
-      );
-      assert.deepEqual(await contracts.daoRewardsStorage.readReputationPointAtQuarter.call(addressOf.dgdHolders[2], bN(1)), reputationPoint);
-      const reputationPoint2 = bN(12);
-      await contracts.daoRewardsStorage.updateReputationPointAtQuarter(
-        addressOf.dgdHolders[2],
-        bN(1),
-        reputationPoint2,
-        { from: accounts[0] },
-      );
-      assert.deepEqual(await contracts.daoRewardsStorage.readReputationPointAtQuarter.call(addressOf.dgdHolders[2], bN(1)), reputationPoint2);
-    });
-    it('[not called by DAO_REWARDS_MANAGER]: revert', async function () {
-      const reputationPoint = bN(8);
-      for (let i = 1; i < 20; i++) {
-        assert(await a.failure(contracts.daoRewardsStorage.updateReputationPointAtQuarter.call(
-          addressOf.dgdHolders[2],
-          bN(1),
-          reputationPoint,
-          { from: accounts[i] },
-        )));
-      }
     });
   });
 

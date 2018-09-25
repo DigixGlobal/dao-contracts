@@ -5,6 +5,7 @@ import "../common/DaoConstants.sol";
 
 contract DaoFundingStorage is ResolverClient, DaoConstants {
 
+    // Represents the number of Ether in the DaoFundingManager contract
     uint256 public ethInDao;
 
     constructor(address _resolver) public {

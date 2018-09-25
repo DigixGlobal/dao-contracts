@@ -10,7 +10,11 @@ contract DaoSpecialStorage is DaoStorageCommon {
     using DaoStructs for DaoStructs.SpecialProposal;
     using DaoStructs for DaoStructs.Voting;
 
+    // List of all the special proposals ever created in DigixDAO
     DoublyLinkedList.Bytes proposals;
+
+    // mapping of the SpecialProposal struct by its ID
+    // ID is also the IPFS doc hash of the proposal
     mapping (bytes32 => DaoStructs.SpecialProposal) proposalsById;
 
     constructor(address _resolver) public {
@@ -77,7 +81,7 @@ contract DaoSpecialStorage is DaoStorageCommon {
     function readVotingCount(bytes32 _proposalId, address[] _allUsers)
         public
         constant
-        returns (uint256 _for, uint256 _against, uint256 _quorum)
+        returns (uint256 _for, uint256 _against)
     {
         require(isWhitelisted(msg.sender));
         return proposalsById[_proposalId].voting.countVotes(_allUsers);
@@ -103,7 +107,7 @@ contract DaoSpecialStorage is DaoStorageCommon {
         proposalsById[_proposalId].voting.commits[_voter] = _hash;
     }
 
-    function readCommitVote(bytes32 _proposalId, address _voter)
+    function readComittedVote(bytes32 _proposalId, address _voter)
         public
         constant
         returns (bytes32 _commitHash)

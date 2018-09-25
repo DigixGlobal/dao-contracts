@@ -173,18 +173,18 @@ contract('DaoStorage', function (accounts) {
         { from: accounts[3] },
       )));
     });
-    it('[finalize proposal valid]: success, read functions', async function () {
+    it('[Before finalized, tries to readProposalMilestone]: revert', async function () {
       // since final version is not set, milestone values will all be zero
-      const milestoneInfoBefore = await contracts.daoStorage.readProposalMilestone.call(doc, bN(0));
+      assert.ok(await a.failure(contracts.daoStorage.readProposalMilestone.call(doc, bN(0))));
+    });
+    it('[finalize proposal valid]: success, read functions', async function () {
       const finalVersionBefore = (await contracts.daoStorage.readProposal.call(doc))[7];
       assert.deepEqual(finalVersionBefore, EMPTY_BYTES);
       await contracts.daoStorage.finalizeProposal(doc, { from: accounts[0] });
       const finalVersionAfter = (await contracts.daoStorage.readProposal.call(doc))[7];
       assert.deepEqual(finalVersionAfter, newDoc);
       const milestoneInfoAfter = await contracts.daoStorage.readProposalMilestone.call(doc, bN(0));
-      assert.deepEqual(milestoneInfoBefore[1], bN(0));
-      assert.deepEqual(milestoneInfoBefore[1], bN(0));
-      assert.deepEqual(milestoneInfoAfter[1], newFundings[0]);
+      assert.deepEqual(milestoneInfoAfter, newFundings[0]);
     });
   });
 
@@ -379,7 +379,6 @@ contract('DaoStorage', function (accounts) {
       const againstWeight = badgeWeightOf[1];
       assert.deepEqual(readDraftVotingCountRes[0], forWeight);
       assert.deepEqual(readDraftVotingCountRes[1], againstWeight);
-      assert.deepEqual(readDraftVotingCountRes[2], forWeight.plus(againstWeight));
     });
     it('[edit votes]: verify read functions', async function () {
       // badgeHolder3 changes vote to false
@@ -400,7 +399,6 @@ contract('DaoStorage', function (accounts) {
       const againstWeight = badgeWeightOf[1].plus(badgeWeightOf[2]);
       assert.deepEqual(readDraftVotingCountRes[0], forWeight);
       assert.deepEqual(readDraftVotingCountRes[1], againstWeight);
-      assert.deepEqual(readDraftVotingCountRes[2], forWeight.plus(againstWeight));
     });
   });
 
@@ -506,16 +504,16 @@ contract('DaoStorage', function (accounts) {
         addressOf.dgdHolders[1], bN(0),
       );
       // verify commit votes
-      assert.deepEqual(await contracts.daoStorage.readCommitVote.call(doc, bN(0), addressOf.badgeHolders[0]), randomCommits[1]);
-      assert.deepEqual(await contracts.daoStorage.readCommitVote.call(doc, bN(0), addressOf.dgdHolders[0]), randomCommits[2]);
-      assert.deepEqual(await contracts.daoStorage.readCommitVote.call(doc, bN(0), addressOf.dgdHolders[1]), randomCommits[3]);
+      assert.deepEqual(await contracts.daoStorage.readComittedVote.call(doc, bN(0), addressOf.badgeHolders[0]), randomCommits[1]);
+      assert.deepEqual(await contracts.daoStorage.readComittedVote.call(doc, bN(0), addressOf.dgdHolders[0]), randomCommits[2]);
+      assert.deepEqual(await contracts.daoStorage.readComittedVote.call(doc, bN(0), addressOf.dgdHolders[1]), randomCommits[3]);
 
       await contracts.daoStorage.commitVote(
         doc, randomCommits[6],
         addressOf.dgdHolders[1], bN(1),
       );
       // verify commit votes
-      assert.deepEqual(await contracts.daoStorage.readCommitVote.call(doc, bN(1), addressOf.dgdHolders[1]), randomCommits[6]);
+      assert.deepEqual(await contracts.daoStorage.readComittedVote.call(doc, bN(1), addressOf.dgdHolders[1]), randomCommits[6]);
     });
   });
 
@@ -585,18 +583,18 @@ contract('DaoStorage', function (accounts) {
     });
   });
 
-  describe('addProposalCountInQuarter', function () {
+  describe('addNonDigixProposalCountInQuarter', function () {
     it('[not called by CONTRACT_DAO_VOTING_CLAIMS]: revert', async function () {
-      assert(await a.failure(contracts.daoStorage.addProposalCountInQuarter.call(bN(1), { from: accounts[2] })));
+      assert(await a.failure(contracts.daoStorage.addNonDigixProposalCountInQuarter.call(bN(1), { from: accounts[2] })));
     });
     it('[valid call]: increment the count', async function () {
       assert.deepEqual(await contracts.daoStorage.proposalCountByQuarter.call(bN(1)), bN(0));
-      await contracts.daoStorage.addProposalCountInQuarter(bN(1));
+      await contracts.daoStorage.addNonDigixProposalCountInQuarter(bN(1));
       assert.deepEqual(await contracts.daoStorage.proposalCountByQuarter.call(bN(1)), bN(1));
-      await contracts.daoStorage.addProposalCountInQuarter(bN(1));
-      await contracts.daoStorage.addProposalCountInQuarter(bN(2));
-      await contracts.daoStorage.addProposalCountInQuarter(bN(2));
-      await contracts.daoStorage.addProposalCountInQuarter(bN(2));
+      await contracts.daoStorage.addNonDigixProposalCountInQuarter(bN(1));
+      await contracts.daoStorage.addNonDigixProposalCountInQuarter(bN(2));
+      await contracts.daoStorage.addNonDigixProposalCountInQuarter(bN(2));
+      await contracts.daoStorage.addNonDigixProposalCountInQuarter(bN(2));
       assert.deepEqual(await contracts.daoStorage.proposalCountByQuarter.call(bN(1)), bN(2));
       assert.deepEqual(await contracts.daoStorage.proposalCountByQuarter.call(bN(2)), bN(3));
     });

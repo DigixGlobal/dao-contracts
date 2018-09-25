@@ -29,7 +29,6 @@ contract('IntermediateResultsStorage', function (accounts) {
   const forCount = randomBigNumbers(bN, 2);
   const againstCount = randomBigNumbers(bN, 2);
   const quorum = randomBigNumbers(bN, 2);
-  const sum = randomBigNumbers(bN, 2);
 
   before(async function () {
     contracts = {};
@@ -56,7 +55,6 @@ contract('IntermediateResultsStorage', function (accounts) {
         forCount[0],
         againstCount[0],
         quorum[0],
-        sum[0],
         { from: accounts[2] },
       )));
     });
@@ -67,14 +65,12 @@ contract('IntermediateResultsStorage', function (accounts) {
         forCount[0],
         againstCount[0],
         quorum[0],
-        sum[0],
       );
       const getResult = await contracts.intermediateResultsStorage.getIntermediateResults.call(key[0]);
       assert.deepEqual(getResult[0], countedUntil[0]);
       assert.deepEqual(getResult[1], forCount[0]);
       assert.deepEqual(getResult[2], againstCount[0]);
       assert.deepEqual(getResult[3], quorum[0]);
-      assert.deepEqual(getResult[4], sum[0]);
 
       await contracts.intermediateResultsStorage.setIntermediateResults(
         key[1],
@@ -82,14 +78,12 @@ contract('IntermediateResultsStorage', function (accounts) {
         forCount[1],
         againstCount[1],
         quorum[1],
-        sum[1],
       );
       const getResult1 = await contracts.intermediateResultsStorage.getIntermediateResults.call(key[1]);
       assert.deepEqual(getResult1[0], countedUntil[1]);
       assert.deepEqual(getResult1[1], forCount[1]);
       assert.deepEqual(getResult1[2], againstCount[1]);
       assert.deepEqual(getResult1[3], quorum[1]);
-      assert.deepEqual(getResult1[4], sum[1]);
     });
   });
 

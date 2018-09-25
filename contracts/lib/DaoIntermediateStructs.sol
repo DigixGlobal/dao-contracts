@@ -2,28 +2,21 @@ pragma solidity ^0.4.24;
 
 library DaoIntermediateStructs {
 
+    // Struct used in large functions to cut down on variables
+    // store the summation of weights "FOR" proposal
+    // store the summation of weights "AGAINST" proposal
     struct VotingCount {
+        // weight of votes "FOR" the voting round
         uint256 forCount;
+        // weight of votes "AGAINST" the voting round
         uint256 againstCount;
-        uint256 quorum;
     }
 
-    struct MilestoneInfo {
-        uint256 index;
-        uint256 duration;
-        uint256 funding;
-        uint256 finalReward;
-        uint256 milestoneStart;
-    }
-
+    // Struct used in large functions to cut down on variables
     struct Users {
+        // List of addresses, participants of DigixDAO
         address[] users;
+        // Length of the above list
         uint256 usersLength;
-    }
-
-    struct CountIntermediaryStruct {
-        address countedUntil;
-        uint256 forCount;
-        uint256 againstCount;
     }
 }

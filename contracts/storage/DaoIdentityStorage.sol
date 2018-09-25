@@ -5,11 +5,18 @@ import "@digix/cdap/contracts/storage/DirectoryStorage.sol";
 import "../common/DaoConstants.sol";
 
 contract DaoIdentityStorage is ResolverClient, DaoConstants, DirectoryStorage {
+
+    // struct for KYC details
+    // doc is the IPFS doc hash for any information regarding this KYC
+    // id_expiration is the UTC timestamp at which this KYC will expire
+    // at any time after this, the user's KYC is invalid, and that user
+    // MUST re-KYC before doing any proposer related operation in DigixDAO
     struct KycDetails {
         bytes32 doc;
         uint256 id_expiration;
     }
 
+    // a mapping of address to the KYC details
     mapping (address => KycDetails) kycInfo;
 
     constructor(address _resolver)

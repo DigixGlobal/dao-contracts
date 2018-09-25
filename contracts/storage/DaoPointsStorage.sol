@@ -5,12 +5,22 @@ import "../common/DaoConstants.sol";
 
 contract DaoPointsStorage is ResolverClient, DaoConstants {
 
+    // struct for a non-transferrable token
     struct Token {
         mapping (address => uint256) balance;
         uint256 totalSupply;
     }
+
+    // the reputation point token
+    // since reputation is cumulative, we only need to store one value
     Token reputationPoint;
+
+    // since quarter points are specific to quarters, we need a mapping from
+    // quarter number to the quarter point token for that quarter
     mapping (uint256 => Token) quarterPoint;
+
+    // the same is the case with quarter moderator points
+    // these are specific to quarters
     mapping (uint256 => Token) quarterModeratorPoint;
 
     constructor(address _resolver)
@@ -32,7 +42,7 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
         _newTotalPoint = quarterPoint[_quarterId].totalSupply;
     }
 
-    function addQuarterModeratorPoint(address _participant, uint256 _point, uint256 _quarterId)
+    function addModeratorQuarterPoint(address _participant, uint256 _point, uint256 _quarterId)
         public
         returns (uint256 _newPoint, uint256 _newTotalPoint)
     {

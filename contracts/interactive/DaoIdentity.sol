@@ -3,8 +3,9 @@ pragma solidity ^0.4.24;
 import "../storage/DaoIdentityStorage.sol";
 import "../common/IdentityCommon.sol";
 
+
 /**
-@title Contract to manage directory in DAO (roles, groups)
+@title Contract to manage the admin roles in DAO (founders, prls, kyc admins)
 @author Digix Holdings
 */
 contract DaoIdentity is IdentityCommon {
@@ -17,6 +18,11 @@ contract DaoIdentity is IdentityCommon {
         public
     {
         require(init(CONTRACT_DAO_IDENTITY, _resolver));
+        // create the three roles and the three corresponding groups
+        // the root role, and root group are already created, with only the contract deployer in it
+        // After deployment, the contract deployer will call addGroupUser to add a multi-sig to be another root
+        // The multi-sig will then call removeGroupUser to remove the contract deployer from root role
+        // From then on, the multi-sig will be the only root account
         identity_storage().create_role(ROLES_FOUNDERS, "founders");
         identity_storage().create_role(ROLES_PRLS, "prls");
         identity_storage().create_role(ROLES_KYC_ADMINS, "kycadmins");
@@ -26,10 +32,10 @@ contract DaoIdentity is IdentityCommon {
     }
 
     /**
-    @notice Function to add an address to a directory group (only root can call this function)
+    @notice Function to add an address to a group (only root can call this function)
     @param _group_id ID of the group to be added in
     @param _user Ethereum address of the user
-    @param _doc hash of IPFS doc containing details of this user and role and group
+    @param _doc hash of IPFS doc containing details of this user
     */
     function addGroupUser(uint256 _group_id, address _user, bytes32 _doc)
         public
