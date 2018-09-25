@@ -15,20 +15,6 @@ contract DaoStorageCommon is ResolverClient, DaoConstants {
         _contract = DaoWhitelistingStorage(get_contract(CONTRACT_STORAGE_DAO_WHITELISTING));
     }
 
-    
-    function isContract(address _address)
-        internal
-        constant
-        returns (bool _isContract)
-    {
-        uint size;
-        assembly {
-            size := extcodesize(_address)
-        }
-        _isContract = size > 0;
-    }
-
-    
     /**
     @notice Check if a certain address is whitelisted to read sensitive information in the storage layer
     @dev if the address is an account, it is allowed to read. If the address is a contract, it has to be in the whitelist
@@ -38,9 +24,10 @@ contract DaoStorageCommon is ResolverClient, DaoConstants {
         constant
         returns (bool _isWhitelisted)
     {
-        if (isContract(_address)) {
-            require(daoWhitelistingStorage().whitelist(_address));
+        uint size;
+        assembly {
+            size := extcodesize(_address)
         }
-        _isWhitelisted = true;
+        _isWhitelisted = size == 0 || daoWhitelistingStorage().whitelist(_address);
     }
 }

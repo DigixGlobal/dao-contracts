@@ -203,6 +203,7 @@ const deployInteractive = async function (libs, contracts, resolver) {
   contracts.daoRewardsManager = await DaoRewardsManager.new(resolver.address, contracts.dgxToken.address);
   contracts.daoWhitelisting = await DaoWhitelisting.new(resolver.address, [
     contracts.daoStakeLocking.address,
+    contracts.daoRewardsManager.address,
     contracts.daoIdentity.address,
     contracts.daoFundingManager.address,
     contracts.dao.address,

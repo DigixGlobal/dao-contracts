@@ -3,6 +3,7 @@ const a = require('awaiting');
 const DaoFundingManager = artifacts.require('./DaoFundingManager.sol');
 const DaoIdentity = artifacts.require('./DaoIdentity.sol');
 const MockDaoFundingManager = artifacts.require('./MockDaoFundingManager.sol');
+const DaoWhitelisting = process.env.SIMULATION ? 0 : artifacts.require('./DaoWhitelisting.sol');
 
 const {
   deployLibraries,
@@ -50,6 +51,8 @@ contract('DaoFundingManager', function (accounts) {
 
     contracts.daoIdentity = await DaoIdentity.new(contracts.resolver.address);
     contracts.daoFundingManager = await DaoFundingManager.new(contracts.resolver.address);
+
+    await DaoWhitelisting.new(contracts.resolver.address, [contracts.daoFundingManager.address]);
 
     await contracts.daoIdentity.addGroupUser(bN(4), addressOf.kycadmin, '');
     await kycApproveUser(addressOf.dgdHolders[2]);

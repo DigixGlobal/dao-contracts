@@ -64,6 +64,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
             bool _isDigixProposal
         )
     {
+        require(isWhitelisted(msg.sender));
         DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
         _doc = _proposal.proposalId;
         _proposer = _proposal.proposer;
@@ -110,6 +111,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         constant
         returns (bool _result)
     {
+        require(isWhitelisted(msg.sender));
         _result = proposalsById[_proposalId].draftVoting.passed;
     }
 
@@ -118,6 +120,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         constant
         returns (bool _result)
     {
+        require(isWhitelisted(msg.sender));
         _result = proposalsById[_proposalId].votingRounds[_index].passed;
     }
 
@@ -134,6 +137,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         constant
         returns (uint256 _start)
     {
+        require(isWhitelisted(msg.sender));
         _start = proposalsById[_proposalId].votingRounds[_index].startTime;
     }
 
@@ -142,6 +146,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         constant
         returns (uint256 _for, uint256 _against)
     {
+        require(isWhitelisted(msg.sender));
         return proposalsById[_proposalId].draftVoting.countVotes(_allUsers);
     }
 
@@ -150,6 +155,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         constant
         returns (uint256 _for, uint256 _against)
     {
+        require(isWhitelisted(msg.sender));
         return proposalsById[_proposalId].votingRounds[_index].countVotes(_allUsers);
     }
 
@@ -354,7 +360,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         "_milestoneCount": "the number of milestones"
     }
     */
-    function readMilestoneCount(bytes32 _proposalId)
+    /* function readMilestoneCount(bytes32 _proposalId)
         public
         constant
         returns (uint256 _milestoneCount)
@@ -362,7 +368,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         bytes32 _finalVersion = proposalsById[_proposalId].finalVersion;
         require(_finalVersion != EMPTY_BYTES);
         _milestoneCount = proposalsById[_proposalId].proposalVersions[_finalVersion].milestoneFundings.length;
-    }
+    } */
 
     function readProposalMilestone(bytes32 _proposalId, uint256 _index)
         public
