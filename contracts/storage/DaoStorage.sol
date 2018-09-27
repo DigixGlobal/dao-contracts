@@ -2,11 +2,11 @@ pragma solidity ^0.4.24;
 
 import "@digix/solidity-collections/contracts/abstract/BytesIteratorStorage.sol";
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
-import "../common/DaoStorageCommon.sol";
+import "../common/DaoWhitelistingCommon.sol";
 import "../lib/DaoStructs.sol";
 import "./DaoWhitelistingStorage.sol";
 
-contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
+contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     using DoublyLinkedList for DoublyLinkedList.Bytes;
     using DaoStructs for DaoStructs.Voting;
     using DaoStructs for DaoStructs.Proposal;
@@ -267,6 +267,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         constant
         returns (bytes32 _id)
     {
+        require(isWhitelisted(msg.sender));
         _id = read_first_from_bytesarray(proposalsByState[_stateId]);
     }
 
@@ -280,6 +281,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         constant
         returns (bytes32 _id)
     {
+        require(isWhitelisted(msg.sender));
         _id = read_last_from_bytesarray(proposalsByState[_stateId]);
     }
 
@@ -293,6 +295,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         constant
         returns (bytes32 _id)
     {
+        require(isWhitelisted(msg.sender));
         _id = read_next_from_bytesarray(
             proposalsByState[_stateId],
             _proposalId
@@ -309,6 +312,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         constant
         returns (bytes32 _id)
     {
+        require(isWhitelisted(msg.sender));
         _id = read_previous_from_bytesarray(
             proposalsByState[_stateId],
             _proposalId
@@ -348,33 +352,19 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         constant
         returns (uint256[] memory _fundings, uint256 _finalReward)
     {
+        require(isWhitelisted(msg.sender));
         bytes32 _finalVersion = proposalsById[_proposalId].finalVersion;
         require(_finalVersion != EMPTY_BYTES);
         _fundings = proposalsById[_proposalId].proposalVersions[_finalVersion].milestoneFundings;
         _finalReward = proposalsById[_proposalId].proposalVersions[_finalVersion].finalReward;
     }
 
-    /**
-    @notice Read the number of milestones of a finalized proposal
-    @return {
-        "_milestoneCount": "the number of milestones"
-    }
-    */
-    /* function readMilestoneCount(bytes32 _proposalId)
-        public
-        constant
-        returns (uint256 _milestoneCount)
-    {
-        bytes32 _finalVersion = proposalsById[_proposalId].finalVersion;
-        require(_finalVersion != EMPTY_BYTES);
-        _milestoneCount = proposalsById[_proposalId].proposalVersions[_finalVersion].milestoneFundings.length;
-    } */
-
     function readProposalMilestone(bytes32 _proposalId, uint256 _index)
         public
         constant
         returns (uint256 _funding)
     {
+        require(isWhitelisted(msg.sender));
         _funding = proposalsById[_proposalId].readProposalMilestone(_index);
     }
 
@@ -463,6 +453,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         constant
         returns (uint256 _status)
     {
+        require(isWhitelisted(msg.sender));
         _status = proposalsById[_proposalId].collateralStatus;
     }
 
@@ -491,6 +482,7 @@ contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
         constant
         returns (bool _funded)
     {
+        require(isWhitelisted(msg.sender));
         _funded = proposalsById[_proposalId].votingRounds[_milestoneId].funded;
     }
 

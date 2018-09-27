@@ -1,10 +1,10 @@
 pragma solidity ^0.4.24;
 
-import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
+/* import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol"; */
 import "./../storage/DaoIdentityStorage.sol";
-import "./DaoConstants.sol";
+import "./../common/DaoWhitelistingCommon.sol";
 
-contract IdentityCommon is ResolverClient, DaoConstants {
+contract IdentityCommon is DaoWhitelistingCommon {
 
   modifier if_root() {
     require(identity_storage().read_user_role_id(msg.sender) == ROLES_ROOT);

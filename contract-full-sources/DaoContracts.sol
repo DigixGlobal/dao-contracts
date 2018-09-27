@@ -2423,7 +2423,7 @@ contract DaoWhitelistingStorage is ResolverClient, DaoConstants {
 
 
 //done
-contract DaoStorageCommon is ResolverClient, DaoConstants {
+contract DaoWhitelistingCommon is ResolverClient, DaoConstants {
 
     function daoWhitelistingStorage()
         internal
@@ -2763,7 +2763,7 @@ library DaoStructs {
 
 
 
-contract DaoStorage is DaoStorageCommon, BytesIteratorStorage {
+contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     using DoublyLinkedList for DoublyLinkedList.Bytes;
     using DaoStructs for DaoStructs.Voting;
     using DaoStructs for DaoStructs.Proposal;
@@ -5053,7 +5053,7 @@ contract DaoUpgradeStorage is ResolverClient, DaoConstants {
 
 
 
-contract DaoSpecialStorage is DaoStorageCommon {
+contract DaoSpecialStorage is DaoWhitelistingCommon {
     using DoublyLinkedList for DoublyLinkedList.Bytes;
     using DaoStructs for DaoStructs.SpecialProposal;
     using DaoStructs for DaoStructs.Voting;

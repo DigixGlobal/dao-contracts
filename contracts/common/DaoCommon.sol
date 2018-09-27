@@ -11,7 +11,6 @@ import "../storage/DaoSpecialStorage.sol";
 import "../storage/DaoPointsStorage.sol";
 import "../storage/DaoFundingStorage.sol";
 import "../storage/DaoRewardsStorage.sol";
-import "../storage/DaoWhitelistingStorage.sol";
 import "../storage/IntermediateResultsStorage.sol";
 import "../lib/MathHelper.sol";
 
@@ -45,7 +44,6 @@ contract DaoCommon is IdentityCommon {
     {
         _isLockingPhase = currentTimeInQuarter() < getUintConfig(CONFIG_LOCKING_PHASE_DURATION);
     }
-
 
     /**
     @notice Check if it is currently in a main phase.

@@ -21,3 +21,20 @@ The contracts to be audited are:
 * The contracts' functions have been extensively documented, on their purpose and expected behaviors. If any of these do not hold, it is potentially a bug. The auditor could double confirm with Digix on these, as some functions' comments could be outdated.
 
 In short, the first two sources (Governance model and the absolutes/invariants) should be strictly followed, while the comments in the code are more guidelines that should hold.
+
+## Testing
+All the tests in the following folders are working and passing:
+* `test/interactive`
+* `test/interactiveAlternativeMethod`
+* `test/service`
+* `test/storage`
+
+There is a script to test a simulation of the DAO, which is also working:
+```
+npm run test:simulate
+```
+
+There is also test for the deployment of the DAO and transfering important keys to a multisig:
+```
+npm run test:deployment
+```

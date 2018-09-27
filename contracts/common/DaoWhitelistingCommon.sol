@@ -5,7 +5,7 @@ import "../storage/DaoWhitelistingStorage.sol";
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 
 
-contract DaoStorageCommon is ResolverClient, DaoConstants {
+contract DaoWhitelistingCommon is ResolverClient, DaoConstants {
 
     function daoWhitelistingStorage()
         internal

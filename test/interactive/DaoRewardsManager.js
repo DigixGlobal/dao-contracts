@@ -6,6 +6,7 @@ const {
   updateKyc,
   getParticipants,
   printDaoDetails,
+  printParticipantDetails,
   BADGE_HOLDER_COUNT,
   DGD_HOLDER_COUNT,
 } = require('../setup');
@@ -130,6 +131,24 @@ contract('DaoRewardsManager', function (accounts) {
         assert.deepEqual(rewardsBefore[i], rewardsEvenAfter[i]);
       }
     });
+
+    const printDifferences = function (pointsBefore, pointsAfter, calculatedReputation, pointsName) {
+      console.log('\t\t------ ', pointsName, '(before) ------');
+      for (const i of indexRange(0, 5)) {
+        console.log('\t\tdgdHolders[', i, '] : ', pointsBefore[i]);
+      }
+      console.log('\t\t------ ', pointsName, '(after) ------');
+      for (const i of indexRange(0, 5)) {
+        console.log('\t\tdgdHolders[', i, '] : ', pointsAfter[i]);
+      }
+      console.log('\t\t------ ', pointsName, '(calculated) ------');
+      for (const i of indexRange(0, 5)) {
+        console.log('\t\tdgdHolders[', i, '] : ', calculatedReputation[i]);
+      }
+      console.log('');
+    };
+
+
     it('[Q2]', async function () {
       // await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
@@ -217,6 +236,8 @@ contract('DaoRewardsManager', function (accounts) {
 
       const pointsAfter = await readReputationPoints();
       const rewardsAfter = await readClaimableDgx();
+      printDifferences(pointsBefore, pointsAfter, calculatedReputation, 'Reputation points');
+      printDifferences(rewardsBefore, rewardsAfter, calculatedRewards, 'Rewards');
 
       await a.map(indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT), 20, async (i) => {
         if (addressOf.allParticipants[i] !== addressOf.dgdHolders[4]) {
@@ -244,10 +265,12 @@ contract('DaoRewardsManager', function (accounts) {
       await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
       console.log('Current quarter = ', await contracts.dao.currentQuarterIndex.call());
 
+      await printParticipantDetails(bN, contracts, addressOf.dgdHolders[4]);
       await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.dgdHolders[4] });
 
+      await printParticipantDetails(bN, contracts, addressOf.dgdHolders[4]);
       const pointsAfter = await contracts.daoPointsStorage.getReputation.call(addressOf.dgdHolders[4]);
-
+      console.log('\tpointAfter = ', pointsAfter);
       const calculatedValue = calculateReputation(
         bN(3),
         bN(1),

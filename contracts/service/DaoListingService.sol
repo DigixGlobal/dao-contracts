@@ -1,12 +1,12 @@
 pragma solidity ^0.4.24;
 
-import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
+/* import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol"; */
 import "@digix/solidity-collections/contracts/abstract/AddressIteratorInteractive.sol";
 import "@digix/solidity-collections/contracts/abstract/BytesIteratorInteractive.sol";
 import "@digix/solidity-collections/contracts/abstract/IndexedBytesIteratorInteractive.sol";
 import "./../storage/DaoStorage.sol";
 import "./../storage/DaoStakeStorage.sol";
-import "./../common/DaoConstants.sol";
+import "./../common/DaoWhitelistingCommon.sol";
 
 
 /**
@@ -14,11 +14,10 @@ import "./../common/DaoConstants.sol";
 @author Digix Holdings
 */
 contract DaoListingService is
-    ResolverClient,
-    DaoConstants,
     AddressIteratorInteractive,
     BytesIteratorInteractive,
-    IndexedBytesIteratorInteractive
+    IndexedBytesIteratorInteractive,
+    DaoWhitelistingCommon
 {
 
     /**
@@ -43,6 +42,30 @@ contract DaoListingService is
         returns (DaoStorage _contract)
     {
         _contract = DaoStorage(get_contract(CONTRACT_STORAGE_DAO));
+    }
+
+    function daoWhitelistingStorage()
+        internal
+        constant
+        returns (DaoWhitelistingStorage _contract)
+    {
+        _contract = DaoWhitelistingStorage(get_contract(CONTRACT_STORAGE_DAO_WHITELISTING));
+    }
+
+    /**
+    @notice Check if a certain address is whitelisted to read sensitive information in the storage layer
+    @dev if the address is an account, it is allowed to read. If the address is a contract, it has to be in the whitelist
+    */
+    function isWhitelisted(address _address)
+        internal
+        constant
+        returns (bool _isWhitelisted)
+    {
+        uint size;
+        assembly {
+            size := extcodesize(_address)
+        }
+        _isWhitelisted = size == 0 || daoWhitelistingStorage().whitelist(_address);
     }
 
     /**
@@ -252,6 +275,7 @@ contract DaoListingService is
         constant
         returns (bytes32[] _proposals)
     {
+        require(isWhitelisted(msg.sender));
         _proposals = list_indexed_bytesarray(
             _stateId,
             _count,
@@ -283,6 +307,7 @@ contract DaoListingService is
         constant
         returns (bytes32[] _proposals)
     {
+        require(isWhitelisted(msg.sender));
         _proposals = list_indexed_bytesarray_from(
             _stateId,
             _currentProposal,

@@ -18,10 +18,9 @@
   * `Dao.updatePRL()`
   * `Dao.setNewDaoContracts()`
   * `Dao.founderCloseProposals()`
-
 1. `updateRewardsAndReputationBeforeNewQuarter()` can only and must be called by the 3 staking functions (lock/withdraw/continue).
 
-1. After a participant doing ANY action in a locking phase of a quarter (except for `claimRewards`), the `lastQuarterThatReputationWasUpdated` is ALWAYS `currentQuarter - 1`
+1. After a participant doing ANY action using `DaoStakeLocking` contract in a locking phase of a quarter, his `lastQuarterThatReputationWasUpdated` is ALWAYS `currentQuarter - 1`
 
 1. `lastQuarterThatRewardsWasUpdated` is either:
     * 0, when a user has not participated at all, or has participated for quarter X but the rewards calculation for quarter X has not been done (`updateUserRewardsForLastParticipatingQuarter` has not been called in a subsequent quarter after X)

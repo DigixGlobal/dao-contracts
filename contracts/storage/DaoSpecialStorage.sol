@@ -1,11 +1,11 @@
 pragma solidity ^0.4.24;
 
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
-import "../common/DaoStorageCommon.sol";
+import "../common/DaoWhitelistingCommon.sol";
 import "../lib/DaoStructs.sol";
 import "./DaoWhitelistingStorage.sol";
 
-contract DaoSpecialStorage is DaoStorageCommon {
+contract DaoSpecialStorage is DaoWhitelistingCommon {
     using DoublyLinkedList for DoublyLinkedList.Bytes;
     using DaoStructs for DaoStructs.SpecialProposal;
     using DaoStructs for DaoStructs.Voting;
