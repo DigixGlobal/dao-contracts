@@ -37,7 +37,7 @@ be located in `test/setup.js` and `test/daoHelpers.js`.
 #### Testing
 We are in progress of improving the test coverage of DigixDAO contracts. All tests can be
 located in the `test` directory, segregated by the `storage`, `service` and
-`interactive` layer. You can refer to [this](DIGIXDAO_TEST_SETUP) for an overview of how the tests work.
+`interactive` layer. You can refer to [this](DIGIXDAO_TEST_SETUP.md) for an overview of how the tests work.
 
 Before running any tests, you need to run Ganache, a development Ethereum instance, in a separate terminal:
 ```

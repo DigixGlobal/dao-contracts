@@ -8,11 +8,16 @@
 
 1. As long as calculateGlobalRewardsBeforeNewQuarter() has finished in a quarter, sum of all moderators' `lockedDGDStake` must be exactly the same as `totalModeratorLockedDGDStake`
 
-1. After ANY step where a participant's Reputation or DGDStake is changed, except for when user locks in DGDs the first time (and hence getting the bonus reputation from carbon votes), `refreshModeratorStatus()` must be called
+1. After ANY step where a participant's Reputation or DGDStake is changed, except for when a user receives a bonus from voting, or when user locks in DGDs the first time (and hence getting the bonus reputation from carbon votes), `refreshModeratorStatus()` must be called
 
 1. Before ANY step where a participant's DGD stake is changed, `refreshDGDStake` must be called
 
-1. In a quarter, `calculateGlobalRewardsBeforeNewQuarter()` must finish first (returns true) before ANY other activities in the DAO can happen
+1. In any quarter after the first quarter, `calculateGlobalRewardsBeforeNewQuarter()` must finish first (returns true) before ANY other activities in the DAO can happen, except for:
+  * `DaoFundingManager.claimFunding()`
+  * functions in `DaoIdentity` and `DaoWhitelisting`
+  * `Dao.updatePRL()`
+  * `Dao.setNewDaoContracts()`
+  * `Dao.founderCloseProposals()`
 
 1. `updateRewardsAndReputationBeforeNewQuarter()` can only and must be called by the 3 staking functions (lock/withdraw/continue).
 
