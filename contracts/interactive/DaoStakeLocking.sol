@@ -131,7 +131,7 @@ contract DaoStakeLocking is DaoCommon {
         ifGlobalRewardsSet(currentQuarterIndex())
     {
         StakeInformation memory _info = getStakeInformation(msg.sender);
-        StakeInformation memory _newInfo = refreshDGDStake(msg.sender, _info, false);
+        StakeInformation memory _newInfo = refreshDGDStake(msg.sender, _info);
 
         uint256 _additionalStake = daoCalculatorService().calculateAdditionalLockedDGDStake(_amount);
 
@@ -203,7 +203,7 @@ contract DaoStakeLocking is DaoCommon {
     {
         require(isLockingPhase() || daoUpgradeStorage().isReplacedByNewDao()); // If the DAO is already replaced, everyone is free to withdraw their DGDs anytime
         StakeInformation memory _info = getStakeInformation(msg.sender);
-        StakeInformation memory _newInfo = refreshDGDStake(msg.sender, _info, false);
+        StakeInformation memory _newInfo = refreshDGDStake(msg.sender, _info);
 
         // This address must have at least some DGDs locked in, to withdraw
         // Otherwise, its meaningless anw
@@ -280,8 +280,9 @@ contract DaoStakeLocking is DaoCommon {
          Therefore, if the _user actually will not qualify as a participant, the caller of this function needs to deduct
          _infoAfter.userLockedDGDStake from _infoAfter.totalLockedDGDStake
     */
-    function refreshDGDStake(address _user, StakeInformation _infoBefore, bool _saveToStorage)
+    function refreshDGDStake(address _user, StakeInformation _infoBefore)
         internal
+        view
         returns (StakeInformation memory _infoAfter)
     {
         _infoAfter.userLockedDGDStake = _infoBefore.userLockedDGDStake;
@@ -296,10 +297,6 @@ contract DaoStakeLocking is DaoCommon {
             _infoAfter.totalLockedDGDStake = _infoAfter.totalLockedDGDStake.add(
                 _infoAfter.userLockedDGDStake
             );
-            if (_saveToStorage) {
-                daoStakeStorage().updateUserDGDStake(_user, _infoAfter.userActualLockedDGD, _infoAfter.userLockedDGDStake);
-                daoStakeStorage().updateTotalLockedDGDStake(_infoAfter.totalLockedDGDStake);
-            }
         }
     }
 
