@@ -59,7 +59,7 @@ module.exports = {
       host: 'localhost',
       port: 8545,
       network_id: '*',
-      gas: 8000000,
+      gas: 10000000, // need more than 8mil gas to deploy the Mock contracts. All the non-mock contracts should fit in 8mil gas
     },
   },
   solc: {
