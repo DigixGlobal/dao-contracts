@@ -54,7 +54,7 @@ contract('DaoSpecialStorage', function (accounts) {
   });
 
   describe('addSpecialProposal', function () {
-    it('[not called from CONTRACT_DAO]: revert', async function () {
+    it('[not called from CONTRACT_DAO_SPECIAL_PROPOSAL]: revert', async function () {
       for (const i of indexRange(1, 20)) {
         assert(await a.failure(contracts.daoSpecialStorage.addSpecialProposal.call(
           doc,

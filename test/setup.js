@@ -45,12 +45,14 @@ const DaoCalculatorService = process.env.SIMULATION ? 0 : artifacts.require('./D
 
 const DaoIdentity = process.env.SIMULATION ? 0 : artifacts.require('./DaoIdentity.sol');
 const Dao = process.env.SIMULATION ? 0 : artifacts.require('./Dao.sol');
+const DaoSpecialProposal = process.env.SIMULATION ? 0 : artifacts.require('./DaoSpecialProposal.sol');
 const DaoVoting = process.env.SIMULATION ? 0 : artifacts.require('./DaoVoting.sol');
 const DaoVotingClaims = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoVotingClaims.sol');
 const DaoSpecialVotingClaims = process.env.SIMULATION ? 0 : artifacts.require('./DaoSpecialVotingClaims.sol');
 const DaoStakeLocking = process.env.SIMULATION ? 0 : artifacts.require('./DaoStakeLocking.sol');
 const DaoFundingManager = process.env.SIMULATION ? 0 : artifacts.require('./DaoFundingManager.sol');
 const DaoRewardsManager = process.env.SIMULATION ? 0 : artifacts.require('./DaoRewardsManager.sol');
+const DaoRewardsManagerExtras = process.env.SIMULATION ? 0 : artifacts.require('./DaoRewardsManagerExtras.sol');
 const DaoWhitelisting = process.env.SIMULATION ? 0 : artifacts.require('./DaoWhitelisting.sol');
 
 const MockDgd = process.env.SIMULATION ? 0 : artifacts.require('./MockDgd.sol');
@@ -169,6 +171,7 @@ const registerInteractive = async function (resolver, addressOf) {
     'dao:identity',
     'dao:stake-locking',
     'dao',
+    'dao:special:proposal',
     'dao:voting',
     'dao:voting:claims',
     'dao:svoting:claims',
@@ -197,16 +200,20 @@ const deployInteractive = async function (libs, contracts, resolver) {
   contracts.daoIdentity = await DaoIdentity.new(resolver.address);
   contracts.daoFundingManager = await DaoFundingManager.new(resolver.address);
   contracts.dao = await Dao.new(resolver.address);
+  contracts.daoSpecialProposal = await DaoSpecialProposal.new(resolver.address);
   contracts.daoVoting = await DaoVoting.new(resolver.address);
   contracts.daoVotingClaims = await DaoVotingClaims.new(resolver.address);
   contracts.daoSpecialVotingClaims = await DaoSpecialVotingClaims.new(resolver.address);
   contracts.daoRewardsManager = await DaoRewardsManager.new(resolver.address, contracts.dgxToken.address);
+  contracts.daoRewardsManagerExtras = await DaoRewardsManagerExtras.new(resolver.address);
   contracts.daoWhitelisting = await DaoWhitelisting.new(resolver.address, [
     contracts.daoStakeLocking.address,
     contracts.daoRewardsManager.address,
+    contracts.daoRewardsManagerExtras.address,
     contracts.daoIdentity.address,
     contracts.daoFundingManager.address,
     contracts.dao.address,
+    contracts.daoSpecialProposal.address,
     contracts.daoVoting.address,
     contracts.daoVotingClaims.address,
     contracts.daoSpecialVotingClaims.address,

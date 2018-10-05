@@ -3,8 +3,8 @@ pragma solidity ^0.4.24;
 import "openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol";
 
 contract MockDgd is StandardToken {
-  string public constant name = "MockDigixDao";
-  string public constant symbol = "MDGD";
+  string public constant name = "Kovan DigixDao Token";
+  string public constant symbol = "KDGD";
   uint8 public constant decimals = 9;
 
   uint256 public constant INITIAL_SUPPLY = 3000000 * (10 ** 9);

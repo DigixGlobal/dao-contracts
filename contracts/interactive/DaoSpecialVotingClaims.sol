@@ -1,6 +1,5 @@
 pragma solidity ^0.4.24;
 
-import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
 import "../common/DaoCommon.sol";
 import "../service/DaoCalculatorService.sol";
 import "./DaoFundingManager.sol";
@@ -8,12 +7,11 @@ import "./DaoRewardsManager.sol";
 import "../lib/DaoIntermediateStructs.sol";
 import "../lib/DaoStructs.sol";
 
-
 /**
 @title Contract to claim voting results
 @author Digix Holdings
 */
-contract DaoSpecialVotingClaims is DaoCommon, Claimable {
+contract DaoSpecialVotingClaims is DaoCommon {
     using DaoIntermediateStructs for DaoIntermediateStructs.VotingCount;
     using DaoStructs for DaoStructs.IntermediateResults;
 
@@ -45,7 +43,7 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
         require(init(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS, _resolver));
     }
 
-    
+
     /**
     @notice Function to claim the voting result on special proposal
     @param _proposalId ID of the special proposal
@@ -121,7 +119,7 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
         }
     }
 
-    
+
     function setConfigs(bytes32 _proposalId)
         private
     {

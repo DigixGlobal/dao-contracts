@@ -8,7 +8,7 @@ const MockNumberCarbonVoting1 = artifacts.require('./NumberCarbonVoting1.sol');
 const MockNumberCarbonVoting2 = artifacts.require('./NumberCarbonVoting2.sol');
 
 module.exports = async function (deployer, network, accounts) {
-  if ((network !== 'development') || process.env.SKIP) { return null; }
+  if ((network !== 'development' && network !== 'kovan') || process.env.SKIP) { return null; }
   deployer.deploy(DGDToken)
     .then(() => {
       return deployer.deploy(DGDBadgeToken);

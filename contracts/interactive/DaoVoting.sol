@@ -1,20 +1,18 @@
 pragma solidity ^0.4.24;
 
-import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
 import "../common/DaoCommon.sol";
-
 
 /**
 @title Contract for all voting operations of DAO
 @author Digix Holdings
 */
-contract DaoVoting is DaoCommon, Claimable {
+contract DaoVoting is DaoCommon {
 
     constructor(address _resolver) public {
         require(init(CONTRACT_DAO_VOTING, _resolver));
     }
 
-    
+
     /**
     @notice Function to vote on draft proposal (only Moderators can vote)
     @param _proposalId ID of the proposal
@@ -42,7 +40,7 @@ contract DaoVoting is DaoCommon, Claimable {
         }
     }
 
-    
+
     /**
     @notice Function to commit a vote on special proposal
     @param _proposalId ID of the proposal
@@ -62,7 +60,7 @@ contract DaoVoting is DaoCommon, Claimable {
         daoSpecialStorage().commitVote(_proposalId, _commitHash, msg.sender);
     }
 
-    
+
     /**
     @notice Function to reveal a committed vote on special proposal
     @dev The lockedDGDStake that would be counted behind a participant's vote is his lockedDGDStake when this function is called
@@ -85,7 +83,7 @@ contract DaoVoting is DaoCommon, Claimable {
         daoPointsStorage().addQuarterPoint(msg.sender, getUintConfig(CONFIG_QUARTER_POINT_VOTE), currentQuarterIndex());
     }
 
-    
+
     /**
     @notice Function to commit a vote on proposal (Voting Round)
     @param _proposalId ID of the proposal
@@ -104,7 +102,7 @@ contract DaoVoting is DaoCommon, Claimable {
         daoStorage().commitVote(_proposalId, _commitHash, msg.sender, _index);
     }
 
-    
+
     /**
     @notice Function to reveal a committed vote on proposal (Voting Round)
     @dev The lockedDGDStake that would be counted behind a participant's vote is his lockedDGDStake when this function is called

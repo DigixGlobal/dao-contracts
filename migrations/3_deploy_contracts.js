@@ -28,13 +28,15 @@ const DaoStakeLocking = artifacts.require('DaoStakeLocking.sol');
 const DaoIdentity = artifacts.require('DaoIdentity.sol');
 const DaoFundingManager = artifacts.require('DaoFundingManager.sol');
 const Dao = artifacts.require('Dao.sol');
+const DaoSpecialProposal = artifacts.require('DaoSpecialProposal.sol');
 const DaoVoting = artifacts.require('DaoVoting.sol');
 const DaoVotingClaims = artifacts.require('DaoVotingClaims.sol');
 const DaoSpecialVotingClaims = artifacts.require('DaoSpecialVotingClaims.sol');
 const DaoRewardsManager = artifacts.require('DaoRewardsManager.sol');
+const DaoRewardsManagerExtras = artifacts.require('DaoRewardsManagerExtras.sol');
 
 module.exports = async function (deployer, network) {
-  if ((network !== 'development') || process.env.SKIP) { return null; }
+  if ((network !== 'development' && network !== 'kovan') || process.env.SKIP) { return null; }
   deployer.deploy(ContractResolver)
     .then(() => {
       return deployer.deploy(DoublyLinkedList);
@@ -81,11 +83,13 @@ module.exports = async function (deployer, network) {
       );
       deployer.deploy(DaoIdentity, ContractResolver.address);
       deployer.deploy(DaoFundingManager, ContractResolver.address);
-      deployer.deploy(Dao, ContractResolver.address);
       deployer.deploy(DaoVoting, ContractResolver.address);
+      deployer.deploy(Dao, ContractResolver.address);
+      deployer.deploy(DaoSpecialProposal, ContractResolver.address);
       deployer.deploy(DaoVotingClaims, ContractResolver.address);
-      deployer.deploy(DaoSpecialVotingClaims, ContractResolver.address);
-      return deployer.deploy(DaoRewardsManager, ContractResolver.address, MockDgx.address);
+      deployer.deploy(DaoRewardsManager, ContractResolver.address, MockDgx.address);
+      deployer.deploy(DaoRewardsManagerExtras, ContractResolver.address);
+      return deployer.deploy(DaoSpecialVotingClaims, ContractResolver.address);
     })
     .then(() => {
       console.log('Deployment Completed');

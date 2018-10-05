@@ -1,6 +1,5 @@
 pragma solidity ^0.4.24;
 
-import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
 import "../common/DaoCommon.sol";
 import "../service/DaoCalculatorService.sol";
 import "./DaoFundingManager.sol";
@@ -13,7 +12,7 @@ import "../lib/DaoStructs.sol";
 @title Contract to claim voting results
 @author Digix Holdings
 */
-contract DaoVotingClaims is DaoCommon, Claimable {
+contract DaoVotingClaims is DaoCommon {
     using DaoIntermediateStructs for DaoIntermediateStructs.VotingCount;
     using DaoIntermediateStructs for DaoIntermediateStructs.Users;
     using DaoStructs for DaoStructs.IntermediateResults;

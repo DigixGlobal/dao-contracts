@@ -26,6 +26,7 @@ const DaoCalculatorService = artifacts.require('./DaoCalculatorService.sol');
 
 const DaoIdentity = artifacts.require('./DaoIdentity.sol');
 const Dao = artifacts.require('./Dao.sol');
+const DaoSpecialProposal = artifacts.require('./DaoSpecialProposal.sol');
 const DaoVoting = artifacts.require('./DaoVoting.sol');
 const DaoVotingClaims = artifacts.require('./DaoVotingClaims.sol');
 const DaoSpecialVotingClaims = artifacts.require('./DaoSpecialVotingClaims.sol');
@@ -188,6 +189,7 @@ const assignDeployedContracts = async function (contracts, libs) {
   contracts.daoIdentity = await DaoIdentity.deployed();
   contracts.daoFundingManager = await DaoFundingManager.deployed();
   contracts.dao = await Dao.deployed();
+  contracts.daoSpecialProposal = await DaoSpecialProposal.deployed();
   contracts.daoVoting = await DaoVoting.deployed();
   contracts.daoVotingClaims = await DaoVotingClaims.deployed();
   contracts.daoSpecialVotingClaims = await DaoSpecialVotingClaims.deployed();
@@ -746,7 +748,7 @@ module.exports = async function () {
     uintConfigs[24] = bN(5);
     uintConfigs[25] = bN(3);
     uintConfigs[40] = bN(2);
-    await contracts.dao.createSpecialProposal(
+    await contracts.daoSpecialProposal.createSpecialProposal(
       specialProposalId,
       uintConfigs,
       [],
@@ -755,7 +757,7 @@ module.exports = async function () {
     );
     console.log('created special proposal');
     // vote on special proposal everybody
-    await contracts.dao.startSpecialProposalVoting(specialProposalId, { from: addressOf.founderBadgeHolder });
+    await contracts.daoSpecialProposal.startSpecialProposalVoting(specialProposalId, { from: addressOf.founderBadgeHolder });
     await waitFor(2, addressOf, web3); // wait for a couple of seconds
     await specialProposalVoting(contracts, addressOf, specialProposalId);
     const uintConfigs2 = await contracts.daoConfigsStorage.readUintConfigs.call();

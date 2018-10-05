@@ -1,17 +1,17 @@
 pragma solidity ^0.4.24;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
-import "../common/DaoCommon.sol";
+import "../common/DaoRewardsManagerCommon.sol";
 import "../lib/DaoStructs.sol";
 import "../service/DaoCalculatorService.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
-
+import "./DaoRewardsManagerExtras.sol";
 
 /**
 @title Contract to manage DGX rewards
 @author Digix Holdings
 */
-contract DaoRewardsManager is DaoCommon {
+contract DaoRewardsManager is DaoRewardsManagerCommon {
     using MathHelper for MathHelper;
     using DaoStructs for DaoStructs.DaoQuarterInfo;
     using DaoStructs for DaoStructs.IntermediateResults;
@@ -22,31 +22,6 @@ contract DaoRewardsManager is DaoCommon {
 
     address public ADDRESS_DGX_TOKEN;
 
-    // this is a struct that store information relevant for calculating the user rewards
-    // for the last participating quarter
-    struct UserRewards {
-        uint256 lastParticipatedQuarter;
-        uint256 lastQuarterThatRewardsWasUpdated;
-        DaoStructs.DaoQuarterInfo qInfo;
-        uint256 effectiveDGDBalance;
-        uint256 effectiveModeratorDGDBalance;
-    }
-
-    // struct to store variables needed in the execution of calculateGlobalRewardsBeforeNewQuarter
-    struct QuarterRewardsInfo {
-        uint256 previousQuarter;
-        uint256 totalEffectiveDGDPreviousQuarter;
-        bool doneCalculatingEffectiveBalance;
-        bool doneCalculatingModeratorEffectiveBalance;
-        uint256 totalEffectiveModeratorDGDLastQuarter;
-        uint256 dgxRewardsPoolLastQuarter;
-        DaoStructs.DaoQuarterInfo qInfo;
-        address currentUser;
-        uint256 userCount;
-        uint256 i;
-        address[] users;
-    }
-
     function daoCalculatorService()
         internal
         constant
@@ -55,6 +30,13 @@ contract DaoRewardsManager is DaoCommon {
         _contract = DaoCalculatorService(get_contract(CONTRACT_SERVICE_DAO_CALCULATOR));
     }
 
+    function daoRewardsManagerExtras()
+        internal
+        constant
+        returns (DaoRewardsManagerExtras _contract)
+    {
+        _contract = DaoRewardsManagerExtras(get_contract(CONTRACT_DAO_REWARDS_MANAGER_EXTRAS));
+    }
 
     /**
     @notice Constructor (set the DaoQuarterInfo struct for the first quarter)
@@ -265,12 +247,16 @@ contract DaoRewardsManager is DaoCommon {
     }
 
 
-    // get the struct for the relevant information for calculating a user's DGX rewards for the last participated quarter
-    function getUserRewardsStruct(address _user) internal constant returns (UserRewards memory _data) {
+    /* // get the struct for the relevant information for calculating a user's DGX rewards for the last participated quarter
+    function getUserRewardsStruct(address _user)
+        internal
+        constant
+        returns (UserRewards memory _data)
+    {
         _data.lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(_user);
         _data.lastQuarterThatRewardsWasUpdated = daoRewardsStorage().lastQuarterThatRewardsWasUpdated(_user);
         _data.qInfo = readQuarterInfo(_data.lastParticipatedQuarter);
-    }
+    } */
 
 
     // if the DGX rewards has not been calculated for the user's lastParticipatedQuarter, calculate and update it
@@ -318,7 +304,7 @@ contract DaoRewardsManager is DaoCommon {
 
         uint256 _dgxRewardsAsParticipant;
         uint256 _dgxRewardsAsModerator;
-        (_dgxRewardsAsParticipant, _dgxRewardsAsModerator) = calculateUserRewardsForLastParticipatingQuarter(_user);
+        (_dgxRewardsAsParticipant, _dgxRewardsAsModerator) = daoRewardsManagerExtras().calculateUserRewardsForLastParticipatingQuarter(_user);
         _userClaimableDgx = _userClaimableDgx.add(_dgxRewardsAsParticipant).add(_dgxRewardsAsModerator);
 
         // update claimableDGXs. The calculation just now should have taken into account demurrage
@@ -333,7 +319,7 @@ contract DaoRewardsManager is DaoCommon {
     // done
     // calculate dgx rewards; This is basically the DGXs that user has earned from participating in lastParticipatedQuarter, and can be withdrawn on the dgxDistributionDay of the (lastParticipatedQuarter + 1)
     // when user actually withdraw some time after that, he will be deducted demurrage.
-    function calculateUserRewardsForLastParticipatingQuarter(address _user)
+    /* function calculateUserRewardsForLastParticipatingQuarter(address _user)
         public
         constant
         returns (uint256 _dgxRewardsAsParticipant, uint256 _dgxRewardsAsModerator)
@@ -404,9 +390,7 @@ contract DaoRewardsManager is DaoCommon {
                 ))
                 .div(getUintConfig(CONFIG_PORTION_TO_MODERATORS_DEN));
         }
-    }
-
-
+    } */
 
     /**
     @notice Function called by the founder after transfering the DGX fees into the DAO at the beginning of the quarter
@@ -591,7 +575,7 @@ contract DaoRewardsManager is DaoCommon {
     }
 
 
-    // read the DaoQuarterInfo struct of a certain quarter
+    /* // read the DaoQuarterInfo struct of a certain quarter
     function readQuarterInfo(uint256 _quarterIndex)
         internal
         constant
@@ -614,5 +598,5 @@ contract DaoRewardsManager is DaoCommon {
             _qInfo.dgxRewardsPoolLastQuarter,
             _qInfo.sumRewardsFromBeginning
         ) = daoRewardsStorage().readQuarterGeneralInfo(_quarterIndex);
-    }
+    } */
 }
