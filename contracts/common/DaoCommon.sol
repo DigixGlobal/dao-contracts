@@ -1,11 +1,9 @@
 pragma solidity ^0.4.24;
 
-import "./DaoConstants.sol";
-import "./IdentityCommon.sol";
 import "./DaoCommonMini.sol";
 import "../lib/MathHelper.sol";
 
-contract DaoCommon is IdentityCommon, DaoCommonMini {
+contract DaoCommon is DaoCommonMini {
 
     using MathHelper for MathHelper;
 
