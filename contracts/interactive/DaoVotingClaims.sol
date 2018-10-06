@@ -422,7 +422,7 @@ contract DaoVotingClaims is DaoCommon {
     }
 
 
-    // add bonus reputation for voters that voted "correctly" in the preceding voting round
+    // add bonus reputation for voters that voted "correctly" in the preceding voting round AND is currently participating this quarter
     function addBonusReputation(address[] _voters, uint256 _n)
         private
     {
@@ -436,7 +436,9 @@ contract DaoVotingClaims is DaoCommon {
             );
 
         for (uint256 i = 0; i < _n; i++) {
-            daoPointsStorage().addReputation(_voters[i], _bonus);
+            if (isParticipant(_voters[i])) { // only give bonus reputation to current participants
+                daoPointsStorage().addReputation(_voters[i], _bonus);
+            }
         }
     }
 
