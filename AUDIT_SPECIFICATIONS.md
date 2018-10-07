@@ -1,6 +1,6 @@
 ## Contracts
 The contracts to be audited are:
-* All the contracts in the following folders of this repository at commit `76b12e0aee05f68ff52723db8c9651be75b75920` ([link](https://github.com/DigixGlobal/dao-contracts/tree/76b12e0aee05f68ff52723db8c9651be75b75920)):
+* All the contracts in the following folders of this repository at commit `81ca6846d8965effc0c652274401808bb13f5869` ([link](https://github.com/DigixGlobal/dao-contracts/tree/81ca6846d8965effc0c652274401808bb13f5869)):
   * `contracts/common`
   * `contracts/interactive`
   * `contracts/lib`
