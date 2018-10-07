@@ -477,7 +477,7 @@ contract('DaoRewardsManager', function (accounts) {
     let mockModeratorStakes;
     let mockParticipantStakes;
     beforeEach(async function () {
-      await deployFreshDao(libs, contracts, addressOf, accounts, bN, web3, 15, 15);
+      await deployFreshDao(libs, contracts, addressOf, accounts, bN, web3, 20, 15);
       await contracts.daoIdentity.addGroupUser(bN(3), addressOf.prl, randomBytes32());
       await contracts.daoIdentity.addGroupUser(bN(4), addressOf.kycadmin, randomBytes32());
       await updateKyc(contracts, addressOf, getParticipants(addressOf, bN));

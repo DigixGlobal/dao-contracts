@@ -16,7 +16,7 @@ module.exports = {
         pollingInterval: 2000,
         // debug: true,
       }),
-      gas: 6850000,
+      gas: 8000000,
       gasPrice: 20 * (10 ** 9),
       network_id: '42',
     },
@@ -59,7 +59,7 @@ module.exports = {
       host: 'localhost',
       port: 8545,
       network_id: '*',
-      gas: 22000000,
+      gas: 10000000, // need more than 8mil gas to deploy the Mock contracts. All the non-mock contracts should fit in 8mil gas
     },
   },
   solc: {

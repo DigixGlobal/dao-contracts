@@ -1,65 +1,11 @@
 pragma solidity ^0.4.24;
 
-import "../service/DaoListingService.sol";
-import "./DaoConstants.sol";
-import "./IdentityCommon.sol";
-import "../storage/DaoConfigsStorage.sol";
-import "../storage/DaoStakeStorage.sol";
-import "../storage/DaoStorage.sol";
-import "../storage/DaoUpgradeStorage.sol";
-import "../storage/DaoSpecialStorage.sol";
-import "../storage/DaoPointsStorage.sol";
-import "../storage/DaoFundingStorage.sol";
-import "../storage/DaoRewardsStorage.sol";
-import "../storage/IntermediateResultsStorage.sol";
+import "./DaoCommonMini.sol";
 import "../lib/MathHelper.sol";
 
-
-contract DaoCommon is IdentityCommon {
+contract DaoCommon is DaoCommonMini {
 
     using MathHelper for MathHelper;
-
-    /**
-    @notice Check if the DAO contracts have been replaced by a new set of contracts
-    @return _isNotReplaced true if it is not replaced, false if it has already been replaced
-    */
-    function isDaoNotReplaced()
-        public
-        constant
-        returns (bool _isNotReplaced)
-    {
-        _isNotReplaced = !daoUpgradeStorage().isReplacedByNewDao();
-    }
-
-
-    /**
-    @notice Check if it is currently in the locking phase
-    @dev No governance activities can happen in the locking phase. The locking phase is from t=0 to t=CONFIG_LOCKING_PHASE_DURATION-1
-    @return _isLockingPhase true if it is in the locking phase
-    */
-    function isLockingPhase()
-        public
-        constant
-        returns (bool _isLockingPhase)
-    {
-        _isLockingPhase = currentTimeInQuarter() < getUintConfig(CONFIG_LOCKING_PHASE_DURATION);
-    }
-
-    /**
-    @notice Check if it is currently in a main phase.
-    @dev The main phase is where all the governance activities could take plase. If the DAO is replaced, there can never be any more main phase.
-    @return _isMainPhase true if it is in a main phase
-    */
-    function isMainPhase()
-        public
-        constant
-        returns (bool _isMainPhase)
-    {
-        _isMainPhase =
-            isDaoNotReplaced() &&
-            currentTimeInQuarter() >= getUintConfig(CONFIG_LOCKING_PHASE_DURATION);
-    }
-
 
     /**
     @notice Check if a proposal is currently paused/stopped
@@ -76,7 +22,6 @@ contract DaoCommon is IdentityCommon {
         (,,,,,,,,_isPausedOrStopped,) = daoStorage().readProposal(_proposalId);
     }
 
-
     /**
     @notice Check if the transaction is called by the proposer of a proposal
     @return _isFromProposer true if the caller is the proposer
@@ -88,7 +33,6 @@ contract DaoCommon is IdentityCommon {
     {
         _isFromProposer = msg.sender == daoStorage().readProposalProposer(_proposalId);
     }
-
 
     /**
     @notice Check if the proposal can still be "editted", or in other words, added more versions
@@ -105,7 +49,6 @@ contract DaoCommon is IdentityCommon {
         _isEditable = _finalVersion == EMPTY_BYTES;
     }
 
-
     /**
     @notice Check if it is after the draft voting phase of the proposal
     */
@@ -116,7 +59,6 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-
     modifier ifCommitPhase(bytes32 _proposalId, uint8 _index) {
         requireInPhase(
             daoStorage().readProposalVotingTime(_proposalId, _index),
@@ -125,7 +67,6 @@ contract DaoCommon is IdentityCommon {
         );
         _;
     }
-
 
     modifier ifRevealPhase(bytes32 _proposalId, uint256 _index) {
       requireInPhase(
@@ -136,14 +77,12 @@ contract DaoCommon is IdentityCommon {
       _;
     }
 
-
     modifier ifAfterProposalRevealPhase(bytes32 _proposalId, uint256 _index) {
       uint256 _start = daoStorage().readProposalVotingTime(_proposalId, _index);
       require(_start > 0);
       require(now >= _start.add(getUintConfig(_index == 0 ? CONFIG_VOTING_PHASE_TOTAL : CONFIG_INTERIM_PHASE_TOTAL)));
       _;
     }
-
 
     modifier ifDraftVotingPhase(bytes32 _proposalId) {
         requireInPhase(
@@ -154,14 +93,12 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-
     modifier isProposalState(bytes32 _proposalId, bytes32 _STATE) {
         bytes32 _currentState;
         (,,,_currentState,,,,,,) = daoStorage().readProposal(_proposalId);
         require(_currentState == _STATE);
         _;
     }
-
 
     /**
     @notice Check if the DAO has enough ETHs for a particular funding request
@@ -171,24 +108,20 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-
     modifier ifDraftNotClaimed(bytes32 _proposalId) {
         require(daoStorage().isDraftClaimed(_proposalId) == false);
         _;
     }
-
 
     modifier ifNotClaimed(bytes32 _proposalId, uint256 _index) {
         require(daoStorage().isClaimed(_proposalId, _index) == false);
         _;
     }
 
-
     modifier ifNotClaimedSpecial(bytes32 _proposalId) {
         require(daoSpecialStorage().isClaimed(_proposalId) == false);
         _;
     }
-
 
     modifier hasNotRevealed(bytes32 _proposalId, uint256 _index) {
         uint256 _voteWeight;
@@ -197,7 +130,6 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-
     modifier hasNotRevealedSpecial(bytes32 _proposalId) {
         uint256 _weight;
         (,_weight) = daoSpecialStorage().readVote(_proposalId, msg.sender);
@@ -205,14 +137,12 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-
     modifier ifAfterRevealPhaseSpecial(bytes32 _proposalId) {
       uint256 _start = daoSpecialStorage().readVotingTime(_proposalId);
       require(_start > 0);
       require(now.sub(_start) >= getUintConfig(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
       _;
     }
-
 
     modifier ifCommitPhaseSpecial(bytes32 _proposalId) {
         requireInPhase(
@@ -223,7 +153,6 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-
     modifier ifRevealPhaseSpecial(bytes32 _proposalId) {
         requireInPhase(
             daoSpecialStorage().readVotingTime(_proposalId),
@@ -233,226 +162,12 @@ contract DaoCommon is IdentityCommon {
         _;
     }
 
-
-    modifier ifNotContract(address _address) {
-        uint size;
-        assembly {
-            size := extcodesize(_address)
-        }
-        require(size == 0);
-        _;
-    }
-
-
-    /**
-    @notice Check if the calculateGlobalRewardsBeforeNewQuarter function has been done for a certain quarter
-    @dev However, there is no need to run calculateGlobalRewardsBeforeNewQuarter for the first quarter
-    */
-    modifier ifGlobalRewardsSet(uint256 _quarterIndex) {
-        if (_quarterIndex > 1) {
-            require(daoRewardsStorage().readDgxDistributionDay(_quarterIndex) > 0);
-        }
-        _;
-    }
-
-
-    /**
-    @notice require that it is currently during a phase, which is within _relativePhaseStart and _relativePhaseEnd seconds, after the _startingPoint
-    */
-    function requireInPhase(uint256 _startingPoint, uint256 _relativePhaseStart, uint256 _relativePhaseEnd)
-        internal
-        constant
-    {
-        require(_startingPoint > 0);
-        require(now < _startingPoint.add(_relativePhaseEnd));
-        require(now >= _startingPoint.add(_relativePhaseStart));
-    }
-
-
-    /**
-    @notice Get the current quarter index
-    @dev Quarter indexes starts from 1
-    @return _quarterIndex the current quarter index
-    */
-    function currentQuarterIndex()
-        public
-        constant
-        returns(uint256 _quarterIndex)
-    {
-        _quarterIndex = getQuarterIndex(now);
-        //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
-    }
-
-
-    /**
-    @notice Get the quarter index of a timestamp
-    @dev Quarter indexes starts from 1
-    @return _index the quarter index
-    */
-    function getQuarterIndex(uint256 _time)
-        internal
-        constant
-        returns (uint256 _index)
-    {
-        require(startOfFirstQuarterIsSet());
-        _index =
-            _time.sub(daoUpgradeStorage().startOfFirstQuarter())
-            .div(getUintConfig(CONFIG_QUARTER_DURATION))
-            .add(1);
-        //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
-    }
-
-
-    /**
-    @notice Get the relative time in quarter of a timestamp
-    @dev For example, the timeInQuarter of the first second of any quarter n-th is always 1
-    @return _isMainPhase true if it's in a main phase
-    */
-    function timeInQuarter(uint256 _time)
-        internal
-        constant
-        returns (uint256 _timeInQuarter)
-    {
-        require(startOfFirstQuarterIsSet()); // must be already set
-        _timeInQuarter =
-            _time.sub(daoUpgradeStorage().startOfFirstQuarter())
-            % getUintConfig(CONFIG_QUARTER_DURATION);
-    }
-
-
-    /**
-    @notice Check if the start of first quarter is already set
-    @return _isSet true if start of first quarter is already set
-    */
-    function startOfFirstQuarterIsSet()
-        internal
-        constant
-        returns (bool _isSet)
-    {
-        _isSet = daoUpgradeStorage().startOfFirstQuarter() != 0;
-    }
-
-
-    /**
-    @notice Get the current relative time in the quarter
-    @dev For example: the currentTimeInQuarter of the first second of any quarter is 1
-    @return _currentT the current relative time in the quarter
-    */
-    function currentTimeInQuarter()
-        public
-        constant
-        returns (uint256 _currentT)
-    {
-        _currentT = timeInQuarter(now);
-    }
-
-
-    /**
-    @notice Get the time remaining in the quarter
-    */
-    function getTimeLeftInQuarter(uint256 _time)
-        internal
-        constant
-        returns (uint256 _timeLeftInQuarter)
-    {
-        _timeLeftInQuarter = getUintConfig(CONFIG_QUARTER_DURATION).sub(timeInQuarter(_time));
-        //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
-    }
-
-    function daoListingService()
-        internal
-        constant
-        returns (DaoListingService _contract)
-    {
-        _contract = DaoListingService(get_contract(CONTRACT_SERVICE_DAO_LISTING));
-    }
-
-    function daoConfigsStorage()
-        internal
-        constant
-        returns (DaoConfigsStorage _contract)
-    {
-        _contract = DaoConfigsStorage(get_contract(CONTRACT_STORAGE_DAO_CONFIG));
-    }
-
-    function daoStakeStorage()
-        internal
-        constant
-        returns (DaoStakeStorage _contract)
-    {
-        _contract = DaoStakeStorage(get_contract(CONTRACT_STORAGE_DAO_STAKE));
-    }
-
-    function daoStorage()
-        internal
-        constant
-        returns (DaoStorage _contract)
-    {
-        _contract = DaoStorage(get_contract(CONTRACT_STORAGE_DAO));
-    }
-
-    function daoUpgradeStorage()
-        internal
-        constant
-        returns (DaoUpgradeStorage _contract)
-    {
-        _contract = DaoUpgradeStorage(get_contract(CONTRACT_STORAGE_DAO_UPGRADE));
-    }
-
-    function daoSpecialStorage()
-        internal
-        constant
-        returns (DaoSpecialStorage _contract)
-    {
-        _contract = DaoSpecialStorage(get_contract(CONTRACT_STORAGE_DAO_SPECIAL));
-    }
-
-    function daoPointsStorage()
-        internal
-        constant
-        returns (DaoPointsStorage _contract)
-    {
-        _contract = DaoPointsStorage(get_contract(CONTRACT_STORAGE_DAO_POINTS));
-    }
-
-    function daoFundingStorage()
-        internal
-        constant
-        returns (DaoFundingStorage _contract)
-    {
-        _contract = DaoFundingStorage(get_contract(CONTRACT_STORAGE_DAO_FUNDING));
-    }
-
-    function daoRewardsStorage()
-        internal
-        constant
-        returns (DaoRewardsStorage _contract)
-    {
-        _contract = DaoRewardsStorage(get_contract(CONTRACT_STORAGE_DAO_REWARDS));
-    }
-
     function daoWhitelistingStorage()
         internal
         constant
         returns (DaoWhitelistingStorage _contract)
     {
         _contract = DaoWhitelistingStorage(get_contract(CONTRACT_STORAGE_DAO_WHITELISTING));
-    }
-
-    function intermediateResultsStorage()
-        internal
-        constant
-        returns (IntermediateResultsStorage _contract)
-    {
-        _contract = IntermediateResultsStorage(get_contract(CONTRACT_STORAGE_INTERMEDIATE_RESULTS));
-    }
-
-    function getUintConfig(bytes32 _configKey)
-        public
-        constant
-        returns (uint256 _configValue)
-    {
-        _configValue = daoConfigsStorage().uintConfigs(_configKey);
     }
 
     function getAddressConfig(bytes32 _configKey)
@@ -471,7 +186,6 @@ contract DaoCommon is IdentityCommon {
         _configValue = daoConfigsStorage().bytesConfigs(_configKey);
     }
 
-
     /**
     @notice Check if a user is a participant in the current quarter
     */
@@ -484,7 +198,6 @@ contract DaoCommon is IdentityCommon {
             (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex())
             && (daoStakeStorage().lockedDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_LOCKED_DGD));
     }
-
 
     /**
     @notice Check if a user is a moderator in the current quarter
@@ -499,7 +212,6 @@ contract DaoCommon is IdentityCommon {
             && (daoStakeStorage().lockedDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_DGD_FOR_MODERATOR))
             && (daoPointsStorage().getReputation(_user) >= getUintConfig(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR));
     }
-
 
     /**
     @notice Calculate the start of a specific milestone of a specific proposal.
@@ -528,7 +240,6 @@ contract DaoCommon is IdentityCommon {
         }
     }
 
-
     /**
     @notice Calculate the actual voting start for a voting round, given the tentative start
     @dev The tentative start is the ideal start. For example, when a proposer finish a milestone, it should be now
@@ -556,7 +267,6 @@ contract DaoCommon is IdentityCommon {
         }
     }
 
-
     /**
     @notice Check if we can add another non-Digix proposal in this quarter
     @dev There is a max cap to the number of non-Digix proposals CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER
@@ -581,7 +291,6 @@ contract DaoCommon is IdentityCommon {
         }
     }
 
-
     /**
     @notice If its a non-Digix proposal, check if the fundings are within limit
     @dev There is a max cap to the fundings and number of milestones for non-Digix proposals
@@ -596,7 +305,6 @@ contract DaoCommon is IdentityCommon {
         }
     }
 
-
     /**
     @notice Check if msg.sender can do operations as a proposer
     @dev Note that this function does not check if he is the proposer of the proposal
@@ -609,5 +317,4 @@ contract DaoCommon is IdentityCommon {
         require(isParticipant(msg.sender));
         require(identity_storage().is_kyc_approved(msg.sender));
     }
-
 }

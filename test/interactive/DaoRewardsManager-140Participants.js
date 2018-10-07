@@ -16,8 +16,8 @@ const {
 
 const bN = web3.toBigNumber;
 const ACCEPTABLE_ROUNDING_ERROR = 1e-9;
-const DGD_HOLDER_COUNT = 120;
-const BADGE_HOLDER_COUNT = 20;
+const DGD_HOLDER_COUNT = 40;
+const BADGE_HOLDER_COUNT = 5;
 
 contract('DaoRewardsManager', function (accounts) {
   const libs = {};
@@ -75,7 +75,7 @@ contract('DaoRewardsManager', function (accounts) {
       let sumOfParticipantsRewards = bN(0);
       let sumOfModeratorsRewards = bN(0);
       await a.map(indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT), 20, async (i) => {
-        const calculatedRewards = await contracts.daoRewardsManager.calculateUserRewardsForLastParticipatingQuarter(accounts[i]);
+        const calculatedRewards = await contracts.daoRewardsManagerExtras.calculateUserRewardsForLastParticipatingQuarter(accounts[i]);
         sumOfParticipantsRewards = sumOfParticipantsRewards.add(calculatedRewards[0]);
         sumOfModeratorsRewards = sumOfModeratorsRewards.add(calculatedRewards[1]);
       });

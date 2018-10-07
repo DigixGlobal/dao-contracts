@@ -1,6 +1,5 @@
 pragma solidity ^0.4.24;
 
-import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
 import "../common/DaoCommon.sol";
 import "../service/DaoCalculatorService.sol";
 import "./DaoFundingManager.sol";
@@ -13,7 +12,7 @@ import "../lib/DaoStructs.sol";
 @title Contract to claim voting results
 @author Digix Holdings
 */
-contract DaoVotingClaims is DaoCommon, Claimable {
+contract DaoVotingClaims is DaoCommon {
     using DaoIntermediateStructs for DaoIntermediateStructs.VotingCount;
     using DaoIntermediateStructs for DaoIntermediateStructs.Users;
     using DaoStructs for DaoStructs.IntermediateResults;
@@ -423,7 +422,7 @@ contract DaoVotingClaims is DaoCommon, Claimable {
     }
 
 
-    // add bonus reputation for voters that voted "correctly" in the preceding voting round
+    // add bonus reputation for voters that voted "correctly" in the preceding voting round AND is currently participating this quarter
     function addBonusReputation(address[] _voters, uint256 _n)
         private
     {
@@ -437,7 +436,9 @@ contract DaoVotingClaims is DaoCommon, Claimable {
             );
 
         for (uint256 i = 0; i < _n; i++) {
-            daoPointsStorage().addReputation(_voters[i], _bonus);
+            if (isParticipant(_voters[i])) { // only give bonus reputation to current participants
+                daoPointsStorage().addReputation(_voters[i], _bonus);
+            }
         }
     }
 

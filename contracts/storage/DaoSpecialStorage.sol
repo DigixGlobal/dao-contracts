@@ -30,7 +30,7 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
     )
         public
     {
-        require(sender_is(CONTRACT_DAO));
+        require(sender_is(CONTRACT_DAO_SPECIAL_PROPOSAL));
         proposals.append(_proposalId);
         proposalsById[_proposalId].proposalId = _proposalId;
         proposalsById[_proposalId].proposer = _proposer;
@@ -119,7 +119,7 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
     function setVotingTime(bytes32 _proposalId, uint256 _time)
         public
     {
-        require(sender_is(CONTRACT_DAO));
+        require(sender_is(CONTRACT_DAO_SPECIAL_PROPOSAL));
         proposalsById[_proposalId].voting.startTime = _time;
     }
 
