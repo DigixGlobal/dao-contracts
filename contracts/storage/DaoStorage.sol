@@ -129,6 +129,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         constant
         returns (uint256 _start)
     {
+        require(isWhitelisted(msg.sender));
         _start = proposalsById[_proposalId].draftVoting.startTime;
     }
 
