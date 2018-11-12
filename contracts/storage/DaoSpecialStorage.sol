@@ -31,6 +31,10 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
         public
     {
         require(sender_is(CONTRACT_DAO_SPECIAL_PROPOSAL));
+        require(
+          (proposalsById[_proposalId].proposalId == EMPTY_BYTES) &&
+          (_proposalId != EMPTY_BYTES)
+        );
         proposals.append(_proposalId);
         proposalsById[_proposalId].proposalId = _proposalId;
         proposalsById[_proposalId].proposer = _proposer;
