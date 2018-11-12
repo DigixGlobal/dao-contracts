@@ -9,7 +9,6 @@ import "../storage/DaoStorage.sol";
 import "../storage/DaoUpgradeStorage.sol";
 import "../storage/DaoSpecialStorage.sol";
 import "../storage/DaoPointsStorage.sol";
-import "../storage/DaoFundingStorage.sol";
 import "../storage/DaoRewardsStorage.sol";
 import "../storage/IntermediateResultsStorage.sol";
 import "../lib/MathHelper.sol";
@@ -228,14 +227,6 @@ contract DaoCommonMini is IdentityCommon {
         returns (DaoPointsStorage _contract)
     {
         _contract = DaoPointsStorage(get_contract(CONTRACT_STORAGE_DAO_POINTS));
-    }
-
-    function daoFundingStorage()
-        internal
-        constant
-        returns (DaoFundingStorage _contract)
-    {
-        _contract = DaoFundingStorage(get_contract(CONTRACT_STORAGE_DAO_FUNDING));
     }
 
     function daoRewardsStorage()

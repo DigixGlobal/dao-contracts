@@ -58,7 +58,7 @@ contract('DaoCalculatorService', function (accounts) {
 
   describe('minimumDraftQuorum', function () {
     it('[proposal 1]', async function () {
-      const ethInDao = await contracts.daoFundingStorage.ethInDao.call();
+      const weiInDao = await web3.eth.getBalance(contracts.daoFundingManager.address);
       const quorumFromService = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[0].id);
       const quorumFromHelper = calculateMinQuorum(
         230 * (10 ** 9),
@@ -67,12 +67,12 @@ contract('DaoCalculatorService', function (accounts) {
         (daoConstantsValues(bN).CONFIG_DRAFT_QUORUM_SCALING_FACTOR_NUMERATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_DRAFT_QUORUM_SCALING_FACTOR_DENOMINATOR).toNumber(),
         2 * (10 ** 18),
-        ethInDao.toNumber(),
+        weiInDao.toNumber(),
       );
       assert.deepEqual(quorumFromService.toNumber(), quorumFromHelper);
     });
     it('[proposal 2]', async function () {
-      const ethInDao = await contracts.daoFundingStorage.ethInDao.call();
+      const weiInDao = await web3.eth.getBalance(contracts.daoFundingManager.address);
       const quorumFromService = await contracts.daoCalculatorService.minimumDraftQuorum.call(proposals[1].id);
       const quorumFromHelper = calculateMinQuorum(
         230 * (10 ** 9),
@@ -81,7 +81,7 @@ contract('DaoCalculatorService', function (accounts) {
         (daoConstantsValues(bN).CONFIG_DRAFT_QUORUM_SCALING_FACTOR_NUMERATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_DRAFT_QUORUM_SCALING_FACTOR_DENOMINATOR).toNumber(),
         5 * (10 ** 18),
-        ethInDao.toNumber(),
+        weiInDao.toNumber(),
       );
       assert.deepEqual(quorumFromService.toNumber(), quorumFromHelper);
     });
@@ -91,7 +91,7 @@ contract('DaoCalculatorService', function (accounts) {
     it('[proposal 1, milestone 1]', async function () {
       const quorumFromService = await contracts.daoCalculatorService.minimumVotingQuorum.call(proposals[0].id, bN(0));
       await contracts.daoCalculatorService.minimumVotingQuorum(proposals[0].id, bN(0));
-      const ethInDao = await contracts.daoFundingStorage.ethInDao.call();
+      const weiInDao = await web3.eth.getBalance(contracts.daoFundingManager.address);
       const quorumFromHelper = calculateMinQuorum(
         380 * (10 ** 9),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR).toNumber(),
@@ -99,14 +99,14 @@ contract('DaoCalculatorService', function (accounts) {
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR).toNumber(),
         2 * (10 ** 18),
-        ethInDao.toNumber(),
+        weiInDao.toNumber(),
       );
       assert.deepEqual(quorumFromService.toNumber(), quorumFromHelper);
     });
     it('[proposal 1, milestone 2]', async function () {
       const quorumFromService2 = await contracts.daoCalculatorService.minimumVotingQuorum.call(proposals[0].id, bN(1));
       await contracts.daoCalculatorService.minimumVotingQuorum(proposals[0].id, bN(1));
-      const ethInDao = await contracts.daoFundingStorage.ethInDao.call();
+      const weiInDao = await web3.eth.getBalance(contracts.daoFundingManager.address);
       const quorumFromHelper2 = calculateMinQuorum(
         380 * (10 ** 9),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR).toNumber(),
@@ -114,14 +114,14 @@ contract('DaoCalculatorService', function (accounts) {
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR).toNumber(),
         3 * (10 ** 18),
-        ethInDao.toNumber(),
+        weiInDao.toNumber(),
       );
       assert.deepEqual(quorumFromService2.toNumber(), quorumFromHelper2);
     });
     it('[proposal 2, milestone 1]', async function () {
       const quorumFromService = await contracts.daoCalculatorService.minimumVotingQuorum.call(proposals[1].id, bN(0));
       await contracts.daoCalculatorService.minimumVotingQuorum(proposals[1].id, bN(0));
-      const ethInDao = await contracts.daoFundingStorage.ethInDao.call();
+      const weiInDao = await web3.eth.getBalance(contracts.daoFundingManager.address);
       const quorumFromHelper = calculateMinQuorum(
         380 * (10 ** 9),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR).toNumber(),
@@ -129,14 +129,14 @@ contract('DaoCalculatorService', function (accounts) {
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR).toNumber(),
         5 * (10 ** 18),
-        ethInDao.toNumber(),
+        weiInDao.toNumber(),
       );
       assert.deepEqual(quorumFromService.toNumber(), quorumFromHelper);
     });
     it('[proposal 2, milestone 2]', async function () {
       const quorumFromService2 = await contracts.daoCalculatorService.minimumVotingQuorum.call(proposals[1].id, bN(1));
       await contracts.daoCalculatorService.minimumVotingQuorum(proposals[1].id, bN(1));
-      const ethInDao = await contracts.daoFundingStorage.ethInDao.call();
+      const weiInDao = await web3.eth.getBalance(contracts.daoFundingManager.address);
       const quorumFromHelper2 = calculateMinQuorum(
         380 * (10 ** 9),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR).toNumber(),
@@ -144,7 +144,7 @@ contract('DaoCalculatorService', function (accounts) {
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR).toNumber(),
         (daoConstantsValues(bN).CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR).toNumber(),
         7 * (10 ** 18),
-        ethInDao.toNumber(),
+        weiInDao.toNumber(),
       );
       assert.deepEqual(quorumFromService2.toNumber(), quorumFromHelper2);
     });

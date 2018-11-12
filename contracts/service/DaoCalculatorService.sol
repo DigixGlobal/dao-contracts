@@ -83,11 +83,11 @@ contract DaoCalculatorService is DaoCommon {
         returns (uint256 _minQuorum)
     {
         require(isWhitelisted(msg.sender));
-        uint256[] memory _ethAskedPerMilestone;
+        uint256[] memory _weiAskedPerMilestone;
         uint256 _finalReward;
-        (_ethAskedPerMilestone,_finalReward) = daoStorage().readProposalFunding(_proposalId);
-        require(_milestone_id <= _ethAskedPerMilestone.length);
-        if (_milestone_id == _ethAskedPerMilestone.length) {
+        (_weiAskedPerMilestone,_finalReward) = daoStorage().readProposalFunding(_proposalId);
+        require(_milestone_id <= _weiAskedPerMilestone.length);
+        if (_milestone_id == _weiAskedPerMilestone.length) {
             // calculate quorum for the final voting round
             _minQuorum = calculateMinQuorum(
                 daoStakeStorage().totalLockedDGDStake(),
@@ -105,7 +105,7 @@ contract DaoCalculatorService is DaoCommon {
                 getUintConfig(CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR),
                 getUintConfig(CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR),
                 getUintConfig(CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR),
-                _ethAskedPerMilestone[_milestone_id]
+                _weiAskedPerMilestone[_milestone_id]
             );
         }
     }
@@ -151,18 +151,18 @@ contract DaoCalculatorService is DaoCommon {
         uint256 _fixedQuorumPortionDenominator,
         uint256 _scalingFactorNumerator,
         uint256 _scalingFactorDenominator,
-        uint256 _ethAsked
+        uint256 _weiAsked
     )
         internal
         constant
         returns (uint256 _minimumQuorum)
     {
-        uint256 _ethInDao = get_contract(CONTRACT_DAO_FUNDING_MANAGER).balance;
+        uint256 _weiInDao = weiInDao();
         // add the fixed portion of the quorum
         _minimumQuorum = (_totalStake.mul(_fixedQuorumPortionNumerator)).div(_fixedQuorumPortionDenominator);
 
         // add the dynamic portion of the quorum
-        _minimumQuorum = _minimumQuorum.add(_totalStake.mul(_ethAsked.mul(_scalingFactorNumerator)).div(_ethInDao.mul(_scalingFactorDenominator)));
+        _minimumQuorum = _minimumQuorum.add(_totalStake.mul(_weiAsked.mul(_scalingFactorNumerator)).div(_weiInDao.mul(_scalingFactorDenominator)));
     }
 
 

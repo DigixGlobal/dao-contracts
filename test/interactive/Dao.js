@@ -107,13 +107,13 @@ contract('Dao', function (accounts) {
         { from: addressOf.dgdHolders[4], value: bN(2 * (10 ** 18)) },
       )));
     });
-    it('[if milestone fundings exceed ethInDao]: revert', async function () {
+    it('[if milestone fundings exceed weiInDao]: revert', async function () {
       // fundings and durations are unequal in length: revert
       assert.deepEqual(await contracts.daoStakeStorage.isInParticipantList.call(addressOf.dgdHolders[0]), true);
 
-      // total funding required crosses the ethInDao: revert
-      const ethInDao = await contracts.daoFundingStorage.ethInDao.call();
-      const funding1 = ethInDao.minus(bN(10 * (10 ** 18)));
+      // total funding required crosses the weiInDao: revert
+      const weiInDao = await web3.eth.getBalance(contracts.daoFundingManager.address);
+      const funding1 = weiInDao.minus(bN(10 * (10 ** 18)));
       const funding2 = bN(20 * (10 ** 18));
       assert(await a.failure(contracts.dao.submitPreproposal(
         proposals[0].id,
@@ -539,7 +539,7 @@ contract('Dao', function (accounts) {
       await resetBeforeEach();
       await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(10 * (10 ** 9)));
       newDaoContract = randomAddress();
-      newDaoFundingManager = await MockDaoFundingManager.new(contracts.daoFundingManager.address);
+      newDaoFundingManager = await MockDaoFundingManager.new();
       newDaoRewardsManager = randomAddress();
     });
     it('[not called by owner]: revert', async function () {
@@ -587,7 +587,7 @@ contract('Dao', function (accounts) {
       await resetBeforeEach();
       await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(10 * (10 ** 9)));
       newDaoContract = randomAddress();
-      newDaoFundingManager = await MockDaoFundingManager.new(contracts.daoFundingManager.address);
+      newDaoFundingManager = await MockDaoFundingManager.new();
       newDaoRewardsManager = randomAddress();
       await contracts.dao.setNewDaoContracts(newDaoContract, newDaoFundingManager.address, newDaoRewardsManager);
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
@@ -623,7 +623,7 @@ contract('Dao', function (accounts) {
         newDaoFundingManager.address,
         newDaoRewardsManager,
       )));
-      const dummyFundingManager = await MockDaoFundingManager.new(contracts.daoFundingManager.address);
+      const dummyFundingManager = await MockDaoFundingManager.new();
       assert(await a.failure(contracts.dao.migrateToNewDao(
         newDaoContract,
         dummyFundingManager.address,
@@ -649,7 +649,7 @@ contract('Dao', function (accounts) {
     });
     it('[re-try migrating to new dao (to falsify info)]: revert', async function () {
       const newDaoContractAddress2 = randomAddress();
-      const newDaoFundingManager2 = await MockDaoFundingManager.new(contracts.daoFundingManager.address);
+      const newDaoFundingManager2 = await MockDaoFundingManager.new();
       const newDaoRewardsManager2 = randomAddress();
       await web3.eth.sendTransaction({
         from: accounts[0],

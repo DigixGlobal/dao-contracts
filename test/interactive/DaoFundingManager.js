@@ -69,7 +69,7 @@ contract('DaoFundingManager', function (accounts) {
       to: contracts.daoFundingManager.address,
       value: web3.toWei(1000, 'ether'),
     });
-    assert.deepEqual(await contracts.daoFundingStorage.ethInDao.call(), bN(web3.toWei(1000, 'ether')));
+    assert.deepEqual(await web3.eth.getBalance(contracts.daoFundingManager.address), bN(web3.toWei(1000, 'ether')));
   };
 
   describe('claimFunding', function () {
@@ -111,7 +111,7 @@ contract('DaoFundingManager', function (accounts) {
       const ethBalanceProposerBefore = await web3.eth.getBalance(addressOf.dgdHolders[2]);
       const ethBalanceFundingManagerBefore = await web3.eth.getBalance(contracts.daoFundingManager.address);
       const claim = fundings[0];
-      const ethInDaoBefore = await contracts.daoFundingStorage.ethInDao.call();
+      const weiInDaoBefore = await web3.eth.getBalance(contracts.daoFundingManager.address);
       await printDaoDetails(bN, contracts);
 
       const tx = await contracts.daoFundingManager.claimFunding(doc, bN(0), { from: addressOf.dgdHolders[2], gasPrice: web3.toWei(20, 'gwei') });
@@ -122,8 +122,8 @@ contract('DaoFundingManager', function (accounts) {
       const bbb = await web3.eth.getBalance(addressOf.dgdHolders[2]);
       assert.deepEqual(aaa, ethBalanceFundingManagerBefore.minus(claim));
       assert.deepEqual(bbb, ethBalanceProposerBefore.plus(claim).minus(totalWeiUsed));
-      const ethInDaoAfter = await contracts.daoFundingStorage.ethInDao.call();
-      assert.deepEqual(ethInDaoBefore, ethInDaoAfter.plus(claim));
+      const weiInDaoAfter = await web3.eth.getBalance(contracts.daoFundingManager.address);
+      assert.deepEqual(weiInDaoBefore, weiInDaoAfter.plus(claim));
     });
     it('[cannot claim funding for milestone after it has already been claimed]', async function () {
       assert(await a.failure(contracts.daoFundingManager.claimFunding(
@@ -141,10 +141,10 @@ contract('DaoFundingManager', function (accounts) {
     it('[valid call]: success', async function () {
       assert.deepEqual(await contracts.daoFundingManager.refundCollateral.call(addressOf.dgdHolders[3], doc), true);
       const balanceBefore = await web3.eth.getBalance(addressOf.dgdHolders[3]);
-      const ethInDaoBefore = await contracts.daoFundingStorage.ethInDao.call();
+      const weiInDaoBefore = await web3.eth.getBalance(contracts.daoFundingManager.address);
       await contracts.daoFundingManager.refundCollateral(addressOf.dgdHolders[3], doc);
       assert.deepEqual(await web3.eth.getBalance(addressOf.dgdHolders[3]), balanceBefore.plus(bN(2 * (10 ** 18))));
-      assert.deepEqual(await contracts.daoFundingStorage.ethInDao.call(), ethInDaoBefore.minus(bN(2 * (10 ** 18))));
+      assert.deepEqual(await web3.eth.getBalance(contracts.daoFundingManager.address), weiInDaoBefore.minus(bN(2 * (10 ** 18))));
     });
   });
 
@@ -152,7 +152,7 @@ contract('DaoFundingManager', function (accounts) {
     let newDaoFundingManager;
     before(async function () {
       // deploy another funding manager for, say, DAO 2.0
-      newDaoFundingManager = await MockDaoFundingManager.new(contracts.daoFundingManager.address);
+      newDaoFundingManager = await MockDaoFundingManager.new();
     });
     it('[not called by CONTRACT_DAO]: revert', async function () {
       for (const i of indexRange(1, 20)) {
@@ -167,19 +167,16 @@ contract('DaoFundingManager', function (accounts) {
       const balanceInitialNew = await web3.eth.getBalance(newDaoFundingManager.address);
       assert.deepEqual(balanceInitialNew, bN(0));
       await contracts.daoFundingManager.moveFundsToNewDao(newDaoFundingManager.address, { from: addressOf.root });
-      await newDaoFundingManager.updateEthInDao();
       const balanceNowOld = await web3.eth.getBalance(contracts.daoFundingManager.address);
       const balanceNowNew = await web3.eth.getBalance(newDaoFundingManager.address);
-      assert.deepEqual(await contracts.daoFundingStorage.ethInDao.call(), bN(0));
-      assert.deepEqual(await newDaoFundingManager.ethInDao.call(), balanceNowNew);
       assert.deepEqual(balanceNowOld, bN(0));
       assert.deepEqual(balanceNowNew, balanceInitialOld);
     });
     it('[can receive ether from other people also]', async function () {
       const balanceBefore = await web3.eth.getBalance(newDaoFundingManager.address);
       const sentValue = web3.toWei(40, 'ether');
-      await newDaoFundingManager.manuallyFundDao({ from: addressOf.root, value: sentValue });
-      assert.deepEqual(await newDaoFundingManager.ethInDao.call(), balanceBefore.plus(sentValue));
+      await web3.eth.sendTransaction({ from: addressOf.root, to: newDaoFundingManager.address, value: sentValue });
+      assert.deepEqual(await web3.eth.getBalance(newDaoFundingManager.address), balanceBefore.plus(sentValue));
     });
   });
 });

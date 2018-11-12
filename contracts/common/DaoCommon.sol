@@ -50,6 +50,17 @@ contract DaoCommon is DaoCommonMini {
     }
 
     /**
+    @notice returns the balance of DaoFundingManager, which is the wei in DigixDAO
+    */
+    function weiInDao()
+        internal
+        constant
+        returns (uint256 _wei)
+    {
+        _wei = get_contract(CONTRACT_DAO_FUNDING_MANAGER).balance;
+    }
+
+    /**
     @notice Check if it is after the draft voting phase of the proposal
     */
     modifier ifAfterDraftVotingPhase(bytes32 _proposalId) {
@@ -104,7 +115,7 @@ contract DaoCommon is DaoCommonMini {
     @notice Check if the DAO has enough ETHs for a particular funding request
     */
     modifier ifFundingPossible(uint256[] _fundings, uint256 _finalReward) {
-        require(MathHelper.sumNumbers(_fundings).add(_finalReward) <= daoFundingStorage().ethInDao());
+        require(MathHelper.sumNumbers(_fundings).add(_finalReward) <= weiInDao());
         _;
     }
 

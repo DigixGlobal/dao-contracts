@@ -8,8 +8,8 @@
   @param _scalingFactorNumerator Numerator of the scaling factor that scales up the quorum
         requirement as per the increase in funding demanded by proposal
   @param _scalingFactorDenominator Denominator of the scaling factor
-  @param _ethAsked Ethers asked by the proposal as funding
-  @param _ethInDao Ethers in DigixDAO at the moment
+  @param _weiAsked Wei asked by the proposal as funding
+  @param _weiInDao Wei in DigixDAO at the moment
 */
 const calculateMinQuorum = function (
   _totalStake,
@@ -17,11 +17,11 @@ const calculateMinQuorum = function (
   _fixedQuorumPortionDenominator,
   _scalingFactorNumerator,
   _scalingFactorDenominator,
-  _ethAsked,
-  _ethInDao,
+  _weiAsked,
+  _weiInDao,
 ) {
   const _minQuorum = Math.floor((_totalStake * _fixedQuorumPortionNumerator) / _fixedQuorumPortionDenominator)
-                        + Math.floor((_totalStake * _ethAsked * _scalingFactorNumerator) / (_ethInDao * _scalingFactorDenominator));
+                        + Math.floor((_totalStake * _weiAsked * _scalingFactorNumerator) / (_weiInDao * _scalingFactorDenominator));
   return _minQuorum;
 };
 
