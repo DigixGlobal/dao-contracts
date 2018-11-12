@@ -499,6 +499,10 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         public
     {
         require(sender_is(CONTRACT_DAO));
+        require(
+          (proposalsById[_doc].proposalId == EMPTY_BYTES) &&
+          (_doc != EMPTY_BYTES)
+        );
 
         allProposals.append(_doc);
         proposalsByState[PROPOSAL_STATE_PREPROPOSAL].append(_doc);
