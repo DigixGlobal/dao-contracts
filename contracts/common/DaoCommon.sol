@@ -55,7 +55,7 @@ contract DaoCommon is DaoCommonMini {
     modifier ifAfterDraftVotingPhase(bytes32 _proposalId) {
         uint256 _start = daoStorage().readProposalDraftVotingTime(_proposalId);
         require(_start > 0); // Draft voting must have started. In other words, proposer must have finalized the proposal
-        require(now >= _start + getUintConfig(CONFIG_DRAFT_VOTING_PHASE));
+        require(now >= _start.add(getUintConfig(CONFIG_DRAFT_VOTING_PHASE)));
         _;
     }
 
