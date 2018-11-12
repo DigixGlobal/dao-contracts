@@ -125,6 +125,24 @@ contract('DaoStorage', function (accounts) {
       assert.deepEqual(readProposalVersionRes[2][2], fundings[2]);
       assert.deepEqual(readProposalVersionRes[3], finalReward);
     });
+    it('[create new proposal with 0x0 proposalId]: revert', async function () {
+      assert(await a.failure(contracts.daoStorage.addProposal.call(
+        '0x0',
+        proposer,
+        fundings,
+        finalReward,
+        false,
+      )));
+    });
+    it('[create new proposal with same ID/try to overwrite a proposal]: revert', async function () {
+      assert(await a.failure(contracts.daoStorage.addProposal.call(
+        doc,
+        proposer,
+        fundings,
+        finalReward,
+        false,
+      )));
+    });
   });
 
   describe('editProposal', function () {
