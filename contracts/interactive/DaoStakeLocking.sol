@@ -133,7 +133,8 @@ contract DaoStakeLocking is DaoCommon {
         StakeInformation memory _info = getStakeInformation(msg.sender);
         StakeInformation memory _newInfo = refreshDGDStake(msg.sender, _info);
 
-        uint256 _additionalStake = daoCalculatorService().calculateAdditionalLockedDGDStake(_amount);
+        uint256 _additionalStake = 0;
+        if (_amount > 0) _additionalStake = daoCalculatorService().calculateAdditionalLockedDGDStake(_amount);
 
         _newInfo.userActualLockedDGD = _newInfo.userActualLockedDGD.add(_amount);
         _newInfo.userLockedDGDStake = _newInfo.userLockedDGDStake.add(_additionalStake);
