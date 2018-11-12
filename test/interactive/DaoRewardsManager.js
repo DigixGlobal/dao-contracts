@@ -447,7 +447,7 @@ contract('DaoRewardsManager', function (accounts) {
 
       await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(20 * (10 ** 9)));
       const newDaoContract = randomAddress();
-      const newDaoFundingManager = await MockDaoFundingManager.new(contracts.daoFundingManager.address);
+      const newDaoFundingManager = await MockDaoFundingManager.new();
       const newDaoRewardsManager = randomAddress();
 
       await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
@@ -521,7 +521,7 @@ contract('DaoRewardsManager', function (accounts) {
     });
     it('[after dao is migrated]: revert', async function () {
       const newDaoContract = randomAddress();
-      const newDaoFundingManager = await MockDaoFundingManager.new(contracts.daoFundingManager.address);
+      const newDaoFundingManager = await MockDaoFundingManager.new();
       const newDaoRewardsManager = randomAddress();
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
       await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(10 * (10 ** 9)));

@@ -46,8 +46,6 @@ moderator rewards pool (CONFIG_PORTION_TO_MODERATORS_NUM/CONFIG_PORTION_TO_MODER
 
 1. The number of non-Digix proposals that goes through the Voting Round (VotingRound index 0) in a particular quarter must be <= get_uint_config(CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER)
 
-1. The balance of `DaoFundingManager` is always exactly the same as `DaoFundingStorage.ethInDao()`
-
 1. Except for the whitelisted contracts in `DaoWhitelistingStorage`, no other contracts can read any information that gives away:
     * whether any voting round is passed or not.
     * whether a participant has voted yes or no in a particular voting round
