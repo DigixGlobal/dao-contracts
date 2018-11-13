@@ -134,8 +134,8 @@ library DaoStructs {
         PrlAction[] prlActions;
     }
 
-    function countVotes(Voting storage _voting, address[] memory _allUsers)
-        public
+    function countVotes(Voting storage _voting, address[] _allUsers)
+        external
         view
         returns (uint256 _for, uint256 _against)
     {
@@ -151,7 +151,7 @@ library DaoStructs {
 
     // get the list of voters who voted _vote (true-yes/false-no)
     function listVotes(Voting storage _voting, address[] _allUsers, bool _vote)
-        public
+        external
         view
         returns (address[] memory _voters, uint256 _length)
     {

@@ -83,7 +83,7 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
     }
 
     function readVotingCount(bytes32 _proposalId, address[] _allUsers)
-        public
+        external
         view
         returns (uint256 _for, uint256 _against)
     {
