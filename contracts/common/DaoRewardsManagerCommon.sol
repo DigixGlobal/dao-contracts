@@ -1,4 +1,4 @@
-pragma solidity 0.4.24;
+pragma solidity 0.4.25;
 
 import "./DaoCommonMini.sol";
 import "./../lib/DaoStructs.sol";
@@ -35,7 +35,7 @@ contract DaoRewardsManagerCommon is DaoCommonMini {
     // get the struct for the relevant information for calculating a user's DGX rewards for the last participated quarter
     function getUserRewardsStruct(address _user)
         internal
-        constant
+        view
         returns (UserRewards memory _data)
     {
         _data.lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(_user);
@@ -46,7 +46,7 @@ contract DaoRewardsManagerCommon is DaoCommonMini {
     // read the DaoQuarterInfo struct of a certain quarter
     function readQuarterInfo(uint256 _quarterIndex)
         internal
-        constant
+        view
         returns (DaoStructs.DaoQuarterInfo _qInfo)
     {
         (

@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "../common/DaoCommon.sol";
 import "./DaoFundingManager.sol";
@@ -25,7 +25,7 @@ contract Dao is DaoCommon {
 
     function daoFundingManager()
         internal
-        constant
+        view
         returns (DaoFundingManager _contract)
     {
         _contract = DaoFundingManager(get_contract(CONTRACT_DAO_FUNDING_MANAGER));
@@ -33,7 +33,7 @@ contract Dao is DaoCommon {
 
     function daoRewardsManager()
         internal
-        constant
+        view
         returns (DaoRewardsManager _contract)
     {
         _contract = DaoRewardsManager(get_contract(CONTRACT_DAO_REWARDS_MANAGER));
@@ -41,7 +41,7 @@ contract Dao is DaoCommon {
 
     function daoVotingClaims()
         internal
-        constant
+        view
         returns (DaoVotingClaims _contract)
     {
         _contract = DaoVotingClaims(get_contract(CONTRACT_DAO_VOTING_CLAIMS));

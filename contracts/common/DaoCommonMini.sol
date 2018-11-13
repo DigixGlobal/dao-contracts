@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "../service/DaoListingService.sol";
 import "./DaoConstants.sol";
@@ -24,7 +24,7 @@ contract DaoCommonMini is IdentityCommon {
     */
     function isDaoNotReplaced()
         public
-        constant
+        view
         returns (bool _isNotReplaced)
     {
         _isNotReplaced = !daoUpgradeStorage().isReplacedByNewDao();
@@ -37,7 +37,7 @@ contract DaoCommonMini is IdentityCommon {
     */
     function isLockingPhase()
         public
-        constant
+        view
         returns (bool _isLockingPhase)
     {
         _isLockingPhase = currentTimeInQuarter() < getUintConfig(CONFIG_LOCKING_PHASE_DURATION);
@@ -50,7 +50,7 @@ contract DaoCommonMini is IdentityCommon {
     */
     function isMainPhase()
         public
-        constant
+        view
         returns (bool _isMainPhase)
     {
         _isMainPhase =
@@ -83,7 +83,7 @@ contract DaoCommonMini is IdentityCommon {
     */
     function requireInPhase(uint256 _startingPoint, uint256 _relativePhaseStart, uint256 _relativePhaseEnd)
         internal
-        constant
+        view
     {
         require(_startingPoint > 0);
         require(now < _startingPoint.add(_relativePhaseEnd));
@@ -97,7 +97,7 @@ contract DaoCommonMini is IdentityCommon {
     */
     function currentQuarterIndex()
         public
-        constant
+        view
         returns(uint256 _quarterIndex)
     {
         _quarterIndex = getQuarterIndex(now);
@@ -111,7 +111,7 @@ contract DaoCommonMini is IdentityCommon {
     */
     function getQuarterIndex(uint256 _time)
         internal
-        constant
+        view
         returns (uint256 _index)
     {
         require(startOfFirstQuarterIsSet());
@@ -128,7 +128,7 @@ contract DaoCommonMini is IdentityCommon {
     */
     function timeInQuarter(uint256 _time)
         internal
-        constant
+        view
         returns (uint256 _timeInQuarter)
     {
         require(startOfFirstQuarterIsSet()); // must be already set
@@ -143,7 +143,7 @@ contract DaoCommonMini is IdentityCommon {
     */
     function startOfFirstQuarterIsSet()
         internal
-        constant
+        view
         returns (bool _isSet)
     {
         _isSet = daoUpgradeStorage().startOfFirstQuarter() != 0;
@@ -156,7 +156,7 @@ contract DaoCommonMini is IdentityCommon {
     */
     function currentTimeInQuarter()
         public
-        constant
+        view
         returns (uint256 _currentT)
     {
         _currentT = timeInQuarter(now);
@@ -167,7 +167,7 @@ contract DaoCommonMini is IdentityCommon {
     */
     function getTimeLeftInQuarter(uint256 _time)
         internal
-        constant
+        view
         returns (uint256 _timeLeftInQuarter)
     {
         _timeLeftInQuarter = getUintConfig(CONFIG_QUARTER_DURATION).sub(timeInQuarter(_time));
@@ -176,7 +176,7 @@ contract DaoCommonMini is IdentityCommon {
 
     function daoListingService()
         internal
-        constant
+        view
         returns (DaoListingService _contract)
     {
         _contract = DaoListingService(get_contract(CONTRACT_SERVICE_DAO_LISTING));
@@ -184,7 +184,7 @@ contract DaoCommonMini is IdentityCommon {
 
     function daoConfigsStorage()
         internal
-        constant
+        view
         returns (DaoConfigsStorage _contract)
     {
         _contract = DaoConfigsStorage(get_contract(CONTRACT_STORAGE_DAO_CONFIG));
@@ -192,7 +192,7 @@ contract DaoCommonMini is IdentityCommon {
 
     function daoStakeStorage()
         internal
-        constant
+        view
         returns (DaoStakeStorage _contract)
     {
         _contract = DaoStakeStorage(get_contract(CONTRACT_STORAGE_DAO_STAKE));
@@ -200,7 +200,7 @@ contract DaoCommonMini is IdentityCommon {
 
     function daoStorage()
         internal
-        constant
+        view
         returns (DaoStorage _contract)
     {
         _contract = DaoStorage(get_contract(CONTRACT_STORAGE_DAO));
@@ -208,7 +208,7 @@ contract DaoCommonMini is IdentityCommon {
 
     function daoProposalCounterStorage()
         internal
-        constant
+        view
         returns (DaoProposalCounterStorage _contract)
     {
         _contract = DaoProposalCounterStorage(get_contract(CONTRACT_STORAGE_DAO_COUNTER));
@@ -216,7 +216,7 @@ contract DaoCommonMini is IdentityCommon {
 
     function daoUpgradeStorage()
         internal
-        constant
+        view
         returns (DaoUpgradeStorage _contract)
     {
         _contract = DaoUpgradeStorage(get_contract(CONTRACT_STORAGE_DAO_UPGRADE));
@@ -224,7 +224,7 @@ contract DaoCommonMini is IdentityCommon {
 
     function daoSpecialStorage()
         internal
-        constant
+        view
         returns (DaoSpecialStorage _contract)
     {
         _contract = DaoSpecialStorage(get_contract(CONTRACT_STORAGE_DAO_SPECIAL));
@@ -232,7 +232,7 @@ contract DaoCommonMini is IdentityCommon {
 
     function daoPointsStorage()
         internal
-        constant
+        view
         returns (DaoPointsStorage _contract)
     {
         _contract = DaoPointsStorage(get_contract(CONTRACT_STORAGE_DAO_POINTS));
@@ -240,7 +240,7 @@ contract DaoCommonMini is IdentityCommon {
 
     function daoRewardsStorage()
         internal
-        constant
+        view
         returns (DaoRewardsStorage _contract)
     {
         _contract = DaoRewardsStorage(get_contract(CONTRACT_STORAGE_DAO_REWARDS));
@@ -248,7 +248,7 @@ contract DaoCommonMini is IdentityCommon {
 
     function intermediateResultsStorage()
         internal
-        constant
+        view
         returns (IntermediateResultsStorage _contract)
     {
         _contract = IntermediateResultsStorage(get_contract(CONTRACT_STORAGE_INTERMEDIATE_RESULTS));
@@ -256,7 +256,7 @@ contract DaoCommonMini is IdentityCommon {
 
     function getUintConfig(bytes32 _configKey)
         public
-        constant
+        view
         returns (uint256 _configValue)
     {
         _configValue = daoConfigsStorage().uintConfigs(_configKey);

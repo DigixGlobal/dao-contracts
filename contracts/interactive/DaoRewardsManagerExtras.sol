@@ -1,4 +1,4 @@
-pragma solidity 0.4.24;
+pragma solidity 0.4.25;
 
 import "../common/DaoRewardsManagerCommon.sol";
 import "../service/DaoCalculatorService.sol";
@@ -11,7 +11,7 @@ contract DaoRewardsManagerExtras is DaoRewardsManagerCommon {
 
     function daoCalculatorService()
         internal
-        constant
+        view
         returns (DaoCalculatorService _contract)
     {
         _contract = DaoCalculatorService(get_contract(CONTRACT_SERVICE_DAO_CALCULATOR));
@@ -22,7 +22,7 @@ contract DaoRewardsManagerExtras is DaoRewardsManagerCommon {
     // when user actually withdraw some time after that, he will be deducted demurrage.
     function calculateUserRewardsForLastParticipatingQuarter(address _user)
         public
-        constant
+        view
         returns (uint256 _dgxRewardsAsParticipant, uint256 _dgxRewardsAsModerator)
     {
         UserRewards memory data = getUserRewardsStruct(_user);

@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "./DaoCommonMini.sol";
 import "../lib/MathHelper.sol";
@@ -16,7 +16,7 @@ contract DaoCommon is DaoCommonMini {
     */
     function isProposalPaused(bytes32 _proposalId)
         public
-        constant
+        view
         returns (bool _isPausedOrStopped)
     {
         (,,,,,,,,_isPausedOrStopped,) = daoStorage().readProposal(_proposalId);
@@ -28,7 +28,7 @@ contract DaoCommon is DaoCommonMini {
     */
     function isFromProposer(bytes32 _proposalId)
         internal
-        constant
+        view
         returns (bool _isFromProposer)
     {
         _isFromProposer = msg.sender == daoStorage().readProposalProposer(_proposalId);
@@ -41,7 +41,7 @@ contract DaoCommon is DaoCommonMini {
     */
     function isEditable(bytes32 _proposalId)
         internal
-        constant
+        view
         returns (bool _isEditable)
     {
         bytes32 _finalVersion;
@@ -54,7 +54,7 @@ contract DaoCommon is DaoCommonMini {
     */
     function weiInDao()
         internal
-        constant
+        view
         returns (uint256 _wei)
     {
         _wei = get_contract(CONTRACT_DAO_FUNDING_MANAGER).balance;
@@ -175,7 +175,7 @@ contract DaoCommon is DaoCommonMini {
 
     function daoWhitelistingStorage()
         internal
-        constant
+        view
         returns (DaoWhitelistingStorage _contract)
     {
         _contract = DaoWhitelistingStorage(get_contract(CONTRACT_STORAGE_DAO_WHITELISTING));
@@ -183,7 +183,7 @@ contract DaoCommon is DaoCommonMini {
 
     function getAddressConfig(bytes32 _configKey)
         public
-        constant
+        view
         returns (address _configValue)
     {
         _configValue = daoConfigsStorage().addressConfigs(_configKey);
@@ -191,7 +191,7 @@ contract DaoCommon is DaoCommonMini {
 
     function getBytesConfig(bytes32 _configKey)
         public
-        constant
+        view
         returns (bytes32 _configValue)
     {
         _configValue = daoConfigsStorage().bytesConfigs(_configKey);
@@ -202,7 +202,7 @@ contract DaoCommon is DaoCommonMini {
     */
     function isParticipant(address _user)
         public
-        constant
+        view
         returns (bool _is)
     {
         _is =
@@ -215,7 +215,7 @@ contract DaoCommon is DaoCommonMini {
     */
     function isModerator(address _user)
         public
-        constant
+        view
         returns (bool _is)
     {
         _is =
@@ -233,7 +233,7 @@ contract DaoCommon is DaoCommonMini {
     */
     function startOfMilestone(bytes32 _proposalId, uint256 _milestoneIndex)
         internal
-        constant
+        view
         returns (uint256 _milestoneStart)
     {
         uint256 _startOfPrecedingVotingRound = daoStorage().readProposalVotingTime(_proposalId, _milestoneIndex);
@@ -261,7 +261,7 @@ contract DaoCommon is DaoCommonMini {
         uint256 _tentativeVotingStart
     )
         internal
-        constant
+        view
         returns (uint256 _actualVotingStart)
     {
         uint256 _timeLeftInQuarter = getTimeLeftInQuarter(_tentativeVotingStart);
@@ -284,14 +284,14 @@ contract DaoCommon is DaoCommonMini {
     */
     function checkNonDigixProposalLimit(bytes32 _proposalId)
         internal
-        constant
+        view
     {
         require(isNonDigixProposalsWithinLimit(_proposalId));
     }
 
     function isNonDigixProposalsWithinLimit(bytes32 _proposalId)
         internal
-        constant
+        view
         returns (bool _withinLimit)
     {
         bool _isDigixProposal;
@@ -308,7 +308,7 @@ contract DaoCommon is DaoCommonMini {
     */
     function checkNonDigixFundings(uint256[] _milestonesFundings, uint256 _finalReward)
         internal
-        constant
+        view
     {
         if (!is_founder()) {
             require(_milestonesFundings.length <= getUintConfig(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
@@ -322,7 +322,7 @@ contract DaoCommon is DaoCommonMini {
     */
     function senderCanDoProposerOperations()
         internal
-        constant
+        view
     {
         require(isMainPhase());
         require(isParticipant(msg.sender));

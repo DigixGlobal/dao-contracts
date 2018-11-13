@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../common/DaoConstants.sol";
@@ -132,7 +132,7 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
 
     function readQuarterInfo(uint256 _quarterIndex)
         public
-        constant
+        view
         returns (
             uint256 _minimalParticipationPoint,
             uint256 _quarterPointScalingFactor,
@@ -164,7 +164,7 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
 
     function readQuarterGeneralInfo(uint256 _quarterIndex)
         public
-        constant
+        view
         returns (
             uint256 _dgxDistributionDay,
             uint256 _dgxRewardsPoolLastQuarter,
@@ -178,7 +178,7 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
 
     function readQuarterModeratorInfo(uint256 _quarterIndex)
         public
-        constant
+        view
         returns (
             uint256 _moderatorMinimalQuarterPoint,
             uint256 _moderatorQuarterPointScalingFactor,
@@ -194,7 +194,7 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
 
     function readQuarterParticipantInfo(uint256 _quarterIndex)
         public
-        constant
+        view
         returns (
             uint256 _minimalParticipationPoint,
             uint256 _quarterPointScalingFactor,

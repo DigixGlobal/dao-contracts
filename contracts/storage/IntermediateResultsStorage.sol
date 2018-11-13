@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../common/DaoConstants.sol";
@@ -22,7 +22,7 @@ contract IntermediateResultsStorage is ResolverClient, DaoConstants {
 
     function getIntermediateResults(bytes32 _key)
         public
-        constant
+        view
         returns (
             address _countedUntil,
             uint256 _currentForCount,

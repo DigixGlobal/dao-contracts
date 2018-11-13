@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 /// @title Digix Gold Token Demurrage Calculator
 /// @author Digix Holdings Pte Ltd

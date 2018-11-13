@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "@digix/solidity-core-libraries/contracts/Types.sol";
 import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
