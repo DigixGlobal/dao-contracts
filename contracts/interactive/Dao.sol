@@ -376,9 +376,14 @@ contract Dao is DaoCommon {
         uint256 _length = _proposalIds.length;
         uint256 _timeCreated;
         bytes32 _finalVersion;
+        bytes32 _currentState;
         for (uint256 _i = 0; _i < _length; _i++) {
-            (,,,,_timeCreated,,,_finalVersion,,) = daoStorage().readProposal(_proposalIds[_i]);
+            (,,,_currentState,_timeCreated,,,_finalVersion,,) = daoStorage().readProposal(_proposalIds[_i]);
             require(_finalVersion == EMPTY_BYTES);
+            require(
+                (_currentState == PROPOSAL_STATE_PREPROPOSAL) ||
+                (_currentState == PROPOSAL_STATE_DRAFT)
+            );
             require(now > _timeCreated.add(getUintConfig(CONFIG_PROPOSAL_DEAD_DURATION)));
             daoStorage().closeProposal(_proposalIds[_i]);
         }

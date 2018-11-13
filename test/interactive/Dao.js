@@ -3101,12 +3101,17 @@ contract('Dao', function (accounts) {
       await addProposal(contracts, proposals[0]);
       await addProposal(contracts, proposals[1]);
       await addProposal(contracts, proposals[2]);
+      await addProposal(contracts, proposals[3]);
       await endorseProposal(contracts, proposals[0]);
       await endorseProposal(contracts, proposals[1]);
       await endorseProposal(contracts, proposals[2]);
+      await endorseProposal(contracts, proposals[3]);
 
       // finalize proposals[2]. At this point in time, proposals[0] and [1] are not finalised
       await contracts.dao.finalizeProposal(proposals[2].id, { from: proposals[2].proposer });
+
+      // proposer has already closed proposals[3]
+      await contracts.dao.closeProposal(proposals[3].id, { from: proposals[3].proposer });
     });
     it('[proposal list contains a proposal that has not crossed the deadline]: revert', async function () {
       // both proposal[0] and proposal[1] have not been finalised
@@ -3136,6 +3141,14 @@ contract('Dao', function (accounts) {
       // because finalized proposals cannot be closed by founders
       assert(await a.failure(contracts.dao.founderCloseProposals.call(
         [proposals[0].id, proposals[1].id, proposals[2].id],
+        { from: addressOf.founderBadgeHolder },
+      )));
+    });
+    it('[proposal list contains an already closed proposal]: revert', async function () {
+      // if the list of proposal IDs contains an already closed proposal
+      // the function call must be reverted
+      assert(await a.failure(contracts.dao.founderCloseProposals.call(
+        [proposals[0].id, proposals[1].id, proposals[3].id],
         { from: addressOf.founderBadgeHolder },
       )));
     });
