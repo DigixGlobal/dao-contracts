@@ -3,6 +3,7 @@ const a = require('awaiting');
 const DaoIdentity = artifacts.require('./DaoIdentity.sol');
 const DaoWhitelisting = artifacts.require('./DaoWhitelisting.sol');
 const MockWhitelistedContract = artifacts.require('./MockWhitelistedContract.sol');
+const MockConstructorMethodFactory = artifacts.require('./MockConstructorMethodFactory.sol');
 
 const {
   deployNewContractResolver,
@@ -202,6 +203,10 @@ contract('DaoWhitelisting', function (accounts) {
         doc,
         addressOf.badgeHolders[0],
       )));
+    });
+    it('[call from constructor of non-whitelisted contracts] should revert', async function () {
+      const mockConstructorMethodFactory = await MockConstructorMethodFactory.new();
+      assert.ok(await a.failure(mockConstructorMethodFactory.test(contracts.daoStorage.address)));
     });
   });
 });

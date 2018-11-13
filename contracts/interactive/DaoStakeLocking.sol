@@ -127,9 +127,11 @@ contract DaoStakeLocking is DaoCommon {
     */
     function lockDGDInternal(uint256 _amount)
         internal
-        ifNotContract(msg.sender)
         ifGlobalRewardsSet(currentQuarterNumber())
     {
+        // msg.sender must be an EOA. Disallows any contract from participating in the DAO.
+        require(msg.sender == tx.origin);
+
         StakeInformation memory _info = getStakeInformation(msg.sender);
         StakeInformation memory _newInfo = refreshDGDStake(msg.sender, _info);
 

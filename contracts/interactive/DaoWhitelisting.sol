@@ -32,12 +32,12 @@ contract DaoWhitelisting is ResolverClient, DaoConstants, DaoCommon {
     @notice Function to whitelist a contract address (only callable by PRL)
     @dev Whitelisted contracts can read votes from the DaoStorage contract
     @param _contract Ethereum address of the deployed contract
-    @param _isWhitelisted Boolean, true if to be whitelisted, false to blacklist
+    @param _senderIsAllowedToRead Boolean, true if to be whitelisted, false to blacklist
     */
-    function setWhitelisted(address _contract, bool _isWhitelisted)
+    function setWhitelisted(address _contract, bool _senderIsAllowedToRead)
         public
         if_prl()
     {
-        daoWhitelistingStorage().setWhitelisted(_contract, _isWhitelisted);
+        daoWhitelistingStorage().setWhitelisted(_contract, _senderIsAllowedToRead);
     }
 }

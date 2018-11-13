@@ -58,15 +58,6 @@ contract DaoCommonMini is IdentityCommon {
             currentTimeInQuarter() >= getUintConfig(CONFIG_LOCKING_PHASE_DURATION);
     }
 
-    modifier ifNotContract(address _address) {
-        uint size;
-        assembly {
-            size := extcodesize(_address)
-        }
-        require(size == 0);
-        _;
-    }
-
     /**
     @notice Check if the calculateGlobalRewardsBeforeNewQuarter function has been done for a certain quarter
     @dev However, there is no need to run calculateGlobalRewardsBeforeNewQuarter for the first quarter
