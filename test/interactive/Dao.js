@@ -2560,7 +2560,7 @@ contract('Dao', function (accounts) {
         { from: proposals[0].proposer },
       )));
     });
-    it('[stop a proposal]', async function () {
+    it('[stop a proposal, then no other action can be done on that proposal]', async function () {
       // check that the proposal is in moderated phase
       assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates().PROPOSAL_STATE_MODERATED), proposals[0].id);
       // prl stops the proposal
@@ -2570,6 +2570,10 @@ contract('Dao', function (accounts) {
       assert.deepEqual(readProposal[3], paddedHex(web3, proposalStates().PROPOSAL_STATE_CLOSED));
       assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates().PROPOSAL_STATE_MODERATED), EMPTY_BYTES);
       assert.deepEqual(await contracts.daoStorage.getFirstProposalInState.call(proposalStates().PROPOSAL_STATE_CLOSED), proposals[0].id);
+
+      assert(await a.failure(contracts.dao.updatePRL(proposals[0].id, bN(1), 'again:stop', { from: addressOf.prl })));
+      assert(await a.failure(contracts.dao.updatePRL(proposals[0].id, bN(2), 'try:pause', { from: addressOf.prl })));
+      assert(await a.failure(contracts.dao.updatePRL(proposals[0].id, bN(3), 'try:unpause', { from: addressOf.prl })));
     });
   });
 

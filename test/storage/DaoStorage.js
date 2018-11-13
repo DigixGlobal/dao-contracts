@@ -297,6 +297,27 @@ contract('DaoStorage', function (accounts) {
       assert.notEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates().PROPOSAL_STATE_PREPROPOSAL), someDocs[4]);
       assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates().PROPOSAL_STATE_CLOSED), someDocs[4]);
     });
+    it('[do action on a closed proposal]: revert', async function () {
+      const prlDoc = randomBytes32();
+      assert(await a.failure(contracts.daoStorage.updateProposalPRL(
+        someDocs[4],
+        bN(1),
+        prlDoc,
+        bN(getCurrentTimestamp()),
+      )));
+      assert(await a.failure(contracts.daoStorage.updateProposalPRL(
+        someDocs[4],
+        bN(2),
+        prlDoc,
+        bN(getCurrentTimestamp()),
+      )));
+      assert(await a.failure(contracts.daoStorage.updateProposalPRL(
+        someDocs[4],
+        bN(3),
+        prlDoc,
+        bN(getCurrentTimestamp()),
+      )));
+    });
   });
 
   describe('Read Functions', function () {
