@@ -207,8 +207,6 @@ contract DaoVotingClaims is DaoCommon {
         // from this point onwards, _done refers to step 2
         _done = false;
 
-
-        //TODO: until here
         if (_index > 0) { // We only need to do bonus calculation if its a interim voting round
             _done = calculateVoterBonus(_proposalId, _index, _operations, _passed);
             if (!_done) return (_passed, false); // Step 2 is not done yet, return
@@ -313,7 +311,7 @@ contract DaoVotingClaims is DaoCommon {
             // voted NO in the previous round
             (_bonusVoters.users, _bonusVoters.usersLength) = daoStorage().readVotingRoundVotes(_proposalId, _index.sub(1), _voterBatch, false);
         }
-        //TODO: to here
+
         if (_bonusVoters.usersLength > 0) addBonusReputation(_bonusVoters.users, _bonusVoters.usersLength);
 
         if (_lastVoter == daoStakeStorage().readLastParticipant()) {
