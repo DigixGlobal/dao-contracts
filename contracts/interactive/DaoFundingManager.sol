@@ -88,5 +88,5 @@ contract DaoFundingManager is DaoCommon {
     /**
     @notice Payable function to receive ETH funds from DigixDAO crowdsale contract
     */
-    function () payable public {}
+    function () payable external {}
 }
