@@ -127,7 +127,7 @@ contract Dao is DaoCommon {
         uint256[] _milestonesFundings,
         uint256 _finalReward
     )
-        public
+        external
         payable
         ifFundingPossible(_milestonesFundings, _finalReward)
     {
@@ -159,7 +159,7 @@ contract Dao is DaoCommon {
         uint256[] _milestonesFundings,
         uint256 _finalReward
     )
-        public
+        external
     {
         senderCanDoProposerOperations();
         require(isFromProposer(_proposalId));
@@ -192,7 +192,7 @@ contract Dao is DaoCommon {
         uint256 _finalReward,
         uint256 _currentMilestone
     )
-        public
+        external
     {
         senderCanDoProposerOperations();
         require(isFromProposer(_proposalId));
@@ -370,7 +370,7 @@ contract Dao is DaoCommon {
     @param _proposalIds Array of proposal IDs
     */
     function founderCloseProposals(bytes32[] _proposalIds)
-        public
+        external
         if_founder()
     {
         uint256 _length = _proposalIds.length;

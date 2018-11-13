@@ -26,7 +26,7 @@ contract DaoSpecialProposal is DaoCommon {
         address[] _addressConfigs,
         bytes32[] _bytesConfigs
     )
-        public
+        external
         if_founder()
         returns (bool _success)
     {

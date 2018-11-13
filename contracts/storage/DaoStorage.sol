@@ -138,8 +138,8 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         _start = proposalsById[_proposalId].votingRounds[_index].startTime;
     }
 
-    function readDraftVotingCount(bytes32 _proposalId, address[] memory _allUsers)
-        public
+    function readDraftVotingCount(bytes32 _proposalId, address[] _allUsers)
+        external
         view
         returns (uint256 _for, uint256 _against)
     {
@@ -148,7 +148,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     }
 
     function readVotingCount(bytes32 _proposalId, uint256 _index, address[] _allUsers)
-        public
+        external
         view
         returns (uint256 _for, uint256 _against)
     {
@@ -157,7 +157,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     }
 
     function readVotingRoundVotes(bytes32 _proposalId, uint256 _index, address[] _allUsers, bool _vote)
-        public
+        external
         view
         returns (address[] memory _voters, uint256 _length)
     {
@@ -492,7 +492,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         uint256 _finalReward,
         bool _isFounder
     )
-        public
+        external
     {
         require(sender_is(CONTRACT_DAO));
         require(
@@ -516,7 +516,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         uint256[] _newMilestoneFundings,
         uint256 _finalReward
     )
-        public
+        external
     {
         require(sender_is(CONTRACT_DAO));
 
@@ -526,7 +526,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     /// @notice change fundings of a proposal
     /// @dev Will throw if the proposal is not finalized yet
     function changeFundings(bytes32 _proposalId, uint256[] _newMilestoneFundings, uint256 _finalReward)
-        public
+        external
     {
         require(sender_is(CONTRACT_DAO));
 

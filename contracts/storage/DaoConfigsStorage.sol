@@ -105,7 +105,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
     }
 
     function updateUintConfigs(uint256[] _uintConfigs)
-        public
+        external
     {
         require(sender_is(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS));
         uintConfigs[CONFIG_LOCKING_PHASE_DURATION] = _uintConfigs[0];
