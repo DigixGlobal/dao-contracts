@@ -461,7 +461,7 @@ contract('Dao', function (accounts) {
     it('[cannot finalize more than capped number of proposals in a quarter (only for non-digix proposals)]', async function () {
       // the max number of proposal per quarter is set to 10
       // finalize 9 more dummy proposals
-      await contracts.daoStorage.mock_set_proposal_count(bN(1), bN(10));
+      await contracts.daoProposalCounterStorage.mock_set_proposal_count(bN(1), bN(10));
 
       // now the next proposal can be created, but cannot be finalized in the same quarter
       const dummyDoc = randomBytes32();
@@ -1998,6 +1998,49 @@ contract('Dao', function (accounts) {
       // the claimed boolean must be set to true coz its claimed now
       assert.deepEqual(await contracts.daoStorage.isClaimed.call(proposals[2].id, bN(0)), true);
     });
+    it('[first voting round - passes, counter should increment]', async function () {
+      await contracts.daoStorage.mock_put_past_votes(
+        proposals[2].id,
+        bN(0),
+        false,
+        [addressOf.allParticipants[0], addressOf.allParticipants[1], addressOf.allParticipants[4], addressOf.allParticipants[5]],
+        [true, true, true, true],
+        [participants[0].dgdToLock, participants[1].dgdToLock, participants[2].dgdToLock, participants[3].dgdToLock],
+        bN(4),
+        bN(getCurrentTimestamp()),
+      );
+
+      // now wait for the interim phase to get over
+      const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);
+      await waitFor(interimVotingPhaseDuration.toNumber() + 1, addressOf, web3);
+
+      // note that the proposal voting has not been claimed yet
+      assert.deepEqual(await contracts.daoStorage.isClaimed.call(proposals[2].id, bN(0)), false);
+
+      // claim the voting result
+      // it should return false coz the quota is not met
+      const claimRes = await contracts.daoVotingClaims.claimProposalVotingResult.call(
+        proposals[2].id,
+        bN(0),
+        bN(10),
+        { from: proposals[2].proposer },
+      );
+      assert.deepEqual(claimRes[0], true); // claim pass
+      assert.deepEqual(claimRes[1], true); // claim process done
+
+      // get the number of proposals before claiming this one
+      const proposalCounterBefore = await contracts.daoProposalCounterStorage.proposalCountByQuarter.call(bN(1));
+
+      await contracts.daoVotingClaims.claimProposalVotingResult(
+        proposals[2].id,
+        bN(0),
+        bN(10),
+        { from: proposals[2].proposer },
+      );
+
+      // proposal counter must increment
+      assert.deepEqual(await contracts.daoProposalCounterStorage.proposalCountByQuarter.call(bN(1)), proposalCounterBefore.plus(bN(1)));
+    });
     it('[valid claim, check bonuses]: verify read functions', async function () {
       // now wait for the interim phase to get over
       const interimVotingPhaseDuration = await contracts.daoConfigsStorage.uintConfigs.call(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL);
@@ -2107,6 +2150,11 @@ contract('Dao', function (accounts) {
         bN(10),
         { from: proposals[3].proposer, gasPrice: web3.toWei(20, 'gwei') },
       );
+
+      // proposal should now be moved to the archived state
+      const readProposal = await contracts.daoStorage.readProposal.call(proposals[3].id);
+      assert.deepEqual(readProposal[3], paddedHex(web3, proposalStates().PROPOSAL_STATE_ARCHIVED));
+      assert.deepEqual(await contracts.daoStorage.getLastProposalInState.call(proposalStates().PROPOSAL_STATE_ARCHIVED), proposals[3].id);
 
       const gasUsed = tx.receipt.gasUsed * web3.toWei(20, 'gwei');
       // since it was the final voting round, and the voting is passing, the eth collateral should be released back
@@ -2441,7 +2489,7 @@ contract('Dao', function (accounts) {
       // wait for reveal phase to get over
       await waitFor(10, addressOf, web3);
 
-      console.log('\t\tProposal count = ', await contracts.daoStorage.proposalCountByQuarter(bN(2)));
+      console.log('\t\tProposal count = ', await contracts.daoProposalCounterStorage.proposalCountByQuarter(bN(2)));
 
       // claim the voting result
       await contracts.daoVotingClaims.claimProposalVotingResult(

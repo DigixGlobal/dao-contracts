@@ -7,6 +7,7 @@ const proposalStates = function () {
     PROPOSAL_STATE_MODERATED: 'proposal_state_moderated',
     PROPOSAL_STATE_ONGOING: 'proposal_state_ongoing',
     PROPOSAL_STATE_CLOSED: 'proposal_state_closed',
+    PROPOSAL_STATE_ARCHIVED: 'proposal_state_archived',
   };
 };
 
