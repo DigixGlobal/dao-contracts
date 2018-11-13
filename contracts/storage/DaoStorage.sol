@@ -660,6 +660,8 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         public
     {
         require(sender_is(CONTRACT_DAO));
+        require(proposalsById[_proposalId].currentState != PROPOSAL_STATE_CLOSED);
+
         DaoStructs.PrlAction memory prlAction;
         prlAction.at = _time;
         prlAction.doc = _doc;
