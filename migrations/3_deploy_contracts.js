@@ -35,7 +35,7 @@ const DaoSpecialVotingClaims = artifacts.require('DaoSpecialVotingClaims.sol');
 const DaoRewardsManager = artifacts.require('DaoRewardsManager.sol');
 const DaoRewardsManagerExtras = artifacts.require('DaoRewardsManagerExtras.sol');
 
-module.exports = async function (deployer, network) {
+module.exports = async function (deployer, network, accounts) {
   if ((network !== 'development' && network !== 'kovan') || process.env.SKIP) { return null; }
   deployer.deploy(ContractResolver)
     .then(() => {
@@ -82,7 +82,7 @@ module.exports = async function (deployer, network) {
         MockNumberCarbonVoting2.address,
       );
       deployer.deploy(DaoIdentity, ContractResolver.address);
-      deployer.deploy(DaoFundingManager, ContractResolver.address);
+      deployer.deploy(DaoFundingManager, ContractResolver.address, accounts[0]);
       deployer.deploy(DaoVoting, ContractResolver.address);
       deployer.deploy(Dao, ContractResolver.address);
       deployer.deploy(DaoSpecialProposal, ContractResolver.address);

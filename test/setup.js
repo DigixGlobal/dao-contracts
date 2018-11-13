@@ -189,7 +189,7 @@ const deployServices = async function (libs, contracts, resolver) {
 };
 
 // Deploy the interactive contracts
-const deployInteractive = async function (libs, contracts, resolver) {
+const deployInteractive = async function (libs, contracts, resolver, addressOf) {
   contracts.daoStakeLocking = await DaoStakeLocking.new(
     resolver.address,
     contracts.dgdToken.address,
@@ -198,7 +198,7 @@ const deployInteractive = async function (libs, contracts, resolver) {
     contracts.carbonVoting2.address,
   );
   contracts.daoIdentity = await DaoIdentity.new(resolver.address);
-  contracts.daoFundingManager = await DaoFundingManager.new(resolver.address);
+  contracts.daoFundingManager = await DaoFundingManager.new(resolver.address, addressOf.root);
   contracts.dao = await Dao.new(resolver.address);
   contracts.daoSpecialProposal = await DaoSpecialProposal.new(resolver.address);
   contracts.daoVoting = await DaoVoting.new(resolver.address);
@@ -505,7 +505,7 @@ const deployFreshDao = async (libs, contracts, addressOf, accounts, bN, web3, lo
   contracts.carbonVoting2 = await MockNumberCarbonVoting2.new('carbonVoting2');
   await deployStorage(libs, contracts, contracts.resolver);
   await deployServices(libs, contracts, contracts.resolver);
-  await deployInteractive(libs, contracts, contracts.resolver);
+  await deployInteractive(libs, contracts, contracts.resolver, addressOf);
   await contracts.daoIdentity.addGroupUser(bN(2), addressOf.founderBadgeHolder, '');
   await contracts.dao.setStartOfFirstQuarter(getCurrentTimestamp(), { from: addressOf.founderBadgeHolder });
   await setDummyConfig(contracts, bN, lockingPhase, mainPhase);
