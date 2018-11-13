@@ -87,7 +87,7 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
         view
         returns (uint256 _for, uint256 _against)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         return proposalsById[_proposalId].voting.countVotes(_allUsers);
     }
 
@@ -96,7 +96,7 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
         view
         returns (uint256 _start)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _start = proposalsById[_proposalId].voting.startTime;
     }
 
@@ -116,7 +116,7 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
         view
         returns (bytes32 _commitHash)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _commitHash = proposalsById[_proposalId].voting.commits[_voter];
     }
 
@@ -132,7 +132,7 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
         view
         returns (bool _result)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _result = proposalsById[_proposalId].voting.passed;
     }
 
@@ -156,7 +156,7 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
         view
         returns (bool _claimed)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _claimed = proposalsById[_proposalId].voting.claimed;
     }
 
@@ -165,7 +165,7 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
         view
         returns (bool _vote, uint256 _weight)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         return proposalsById[_proposalId].voting.readVote(_voter);
     }
 

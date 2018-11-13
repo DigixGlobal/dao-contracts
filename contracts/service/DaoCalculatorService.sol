@@ -82,7 +82,7 @@ contract DaoCalculatorService is DaoCommon {
         view
         returns (uint256 _minQuorum)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         uint256[] memory _weiAskedPerMilestone;
         uint256 _finalReward;
         (_weiAskedPerMilestone,_finalReward) = daoStorage().readProposalFunding(_proposalId);

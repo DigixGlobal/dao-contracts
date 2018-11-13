@@ -251,7 +251,7 @@ contract DaoListingService is
         view
         returns (bytes32[] _proposals)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _proposals = list_indexed_bytesarray(
             _stateId,
             _count,
@@ -283,7 +283,7 @@ contract DaoListingService is
         view
         returns (bytes32[] _proposals)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _proposals = list_indexed_bytesarray_from(
             _stateId,
             _currentProposal,
