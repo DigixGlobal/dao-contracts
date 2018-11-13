@@ -109,7 +109,6 @@ contract DaoConstants {
     bytes32 CONFIG_QUARTER_POINT_DRAFT_VOTE = "quarter_point_draft_vote";
     bytes32 CONFIG_QUARTER_POINT_VOTE = "quarter_point_vote";
     bytes32 CONFIG_QUARTER_POINT_INTERIM_VOTE = "quarter_point_interim_vote";
-    bytes32 CONFIG_QUARTER_POINT_CLAIM_RESULT = "quarter_point_claim_result";
 
     /// this is per 10000 ETHs
     bytes32 CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH = "q_p_milestone_completion";

@@ -101,7 +101,6 @@ contract DaoCommonMini is IdentityCommon {
         returns(uint256 _quarterIndex)
     {
         _quarterIndex = getQuarterIndex(now);
-        //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
     /**
@@ -119,7 +118,6 @@ contract DaoCommonMini is IdentityCommon {
             _time.sub(daoUpgradeStorage().startOfFirstQuarter())
             .div(getUintConfig(CONFIG_QUARTER_DURATION))
             .add(1);
-        //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
     /**
@@ -171,7 +169,6 @@ contract DaoCommonMini is IdentityCommon {
         returns (uint256 _timeLeftInQuarter)
     {
         _timeLeftInQuarter = getUintConfig(CONFIG_QUARTER_DURATION).sub(timeInQuarter(_time));
-        //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
     function daoListingService()

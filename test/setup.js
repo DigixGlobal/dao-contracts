@@ -568,7 +568,6 @@ const printDaoDetails = async (bN, contracts) => {
   console.log('\t\tDGX distribution day: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex));
   // console.log('\tDGX distribution day last quarter: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex.minus(1)));
   // console.log('\tDGX distribution day last last quarter: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex.minus(2)));
-  // TODO: print more stuff
 };
 
 const printBadgeHolderDetails = async (contracts, addressOf) => {
