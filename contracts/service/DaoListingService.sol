@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 /* import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol"; */
 import "@digix/solidity-collections/contracts/abstract/AddressIteratorInteractive.sol";
@@ -30,7 +30,7 @@ contract DaoListingService is
 
     function daoStakeStorage()
         internal
-        constant
+        view
         returns (DaoStakeStorage _contract)
     {
         _contract = DaoStakeStorage(get_contract(CONTRACT_STORAGE_DAO_STAKE));
@@ -38,7 +38,7 @@ contract DaoListingService is
 
     function daoStorage()
         internal
-        constant
+        view
         returns (DaoStorage _contract)
     {
         _contract = DaoStorage(get_contract(CONTRACT_STORAGE_DAO));
@@ -60,7 +60,7 @@ contract DaoListingService is
     */
     function listModerators(uint256 _count, bool _from_start)
         public
-        constant
+        view
         returns (address[] _moderators)
     {
         _moderators = list_addresses(
@@ -97,7 +97,7 @@ contract DaoListingService is
         bool _from_start
     )
         public
-        constant
+        view
         returns (address[] _moderators)
     {
         _moderators = list_addresses_from(
@@ -127,7 +127,7 @@ contract DaoListingService is
     */
     function listParticipants(uint256 _count, bool _from_start)
         public
-        constant
+        view
         returns (address[] _participants)
     {
         _participants = list_addresses(
@@ -164,7 +164,7 @@ contract DaoListingService is
         bool _from_start
     )
         public
-        constant
+        view
         returns (address[] _participants)
     {
         _participants = list_addresses_from(
@@ -191,7 +191,7 @@ contract DaoListingService is
         bool _from_start
     )
         public
-        constant
+        view
         returns (bytes32[] _proposals)
     {
         _proposals = list_bytesarray(
@@ -219,7 +219,7 @@ contract DaoListingService is
         bool _from_start
     )
         public
-        constant
+        view
         returns (bytes32[] _proposals)
     {
         _proposals = list_bytesarray_from(
@@ -248,7 +248,7 @@ contract DaoListingService is
         bool _from_start
     )
         public
-        constant
+        view
         returns (bytes32[] _proposals)
     {
         require(isWhitelisted(msg.sender));
@@ -280,7 +280,7 @@ contract DaoListingService is
         bool _from_start
     )
         public
-        constant
+        view
         returns (bytes32[] _proposals)
     {
         require(isWhitelisted(msg.sender));
@@ -311,7 +311,7 @@ contract DaoListingService is
         bool _from_start
     )
         public
-        constant
+        view
         returns (bytes32[] _versions)
     {
         _versions = list_indexed_bytesarray(
@@ -342,7 +342,7 @@ contract DaoListingService is
         bool _from_start
     )
         public
-        constant
+        view
         returns (bytes32[] _versions)
     {
         _versions = list_indexed_bytesarray_from(

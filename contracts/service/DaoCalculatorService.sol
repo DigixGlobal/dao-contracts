@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "./../interface/DgxDemurrageCalculator.sol";
 import "./../common/DaoCommon.sol";
@@ -26,7 +26,7 @@ contract DaoCalculatorService is DaoCommon {
     */
     function calculateAdditionalLockedDGDStake(uint256 _additionalDgd)
         public
-        constant
+        view
         returns (uint256 _additionalLockedDGDStake)
     {
         _additionalLockedDGDStake =
@@ -49,7 +49,7 @@ contract DaoCalculatorService is DaoCommon {
     // Quorum is in terms of lockedDGDStake
     function minimumDraftQuorum(bytes32 _proposalId)
         public
-        constant
+        view
         returns (uint256 _minQuorum)
     {
         uint256[] memory _fundings;
@@ -68,7 +68,7 @@ contract DaoCalculatorService is DaoCommon {
 
     function draftQuotaPass(uint256 _for, uint256 _against)
         public
-        constant
+        view
         returns (bool _passed)
     {
         _passed = _for.mul(getUintConfig(CONFIG_DRAFT_QUOTA_DENOMINATOR))
@@ -79,7 +79,7 @@ contract DaoCalculatorService is DaoCommon {
     // Quorum is in terms of lockedDGDStake
     function minimumVotingQuorum(bytes32 _proposalId, uint256 _milestone_id)
         public
-        constant
+        view
         returns (uint256 _minQuorum)
     {
         require(isWhitelisted(msg.sender));
@@ -114,7 +114,7 @@ contract DaoCalculatorService is DaoCommon {
     // Quorum is in terms of lockedDGDStake
     function minimumVotingQuorumForSpecial()
         public
-        constant
+        view
         returns (uint256 _minQuorum)
     {
       _minQuorum = getUintConfig(CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR).mul(
@@ -127,7 +127,7 @@ contract DaoCalculatorService is DaoCommon {
 
     function votingQuotaPass(uint256 _for, uint256 _against)
         public
-        constant
+        view
         returns (bool _passed)
     {
         _passed = _for.mul(getUintConfig(CONFIG_VOTING_QUOTA_DENOMINATOR))
@@ -137,7 +137,7 @@ contract DaoCalculatorService is DaoCommon {
 
     function votingQuotaForSpecialPass(uint256 _for, uint256 _against)
         public
-        constant
+        view
         returns (bool _passed)
     {
         _passed =_for.mul(getUintConfig(CONFIG_SPECIAL_QUOTA_DENOMINATOR))
@@ -154,7 +154,7 @@ contract DaoCalculatorService is DaoCommon {
         uint256 _weiAsked
     )
         internal
-        constant
+        view
         returns (uint256 _minimumQuorum)
     {
         uint256 _weiInDao = weiInDao();

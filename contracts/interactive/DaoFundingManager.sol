@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "../common/DaoCommon.sol";
 import "./Dao.sol";
@@ -16,7 +16,7 @@ contract DaoFundingManager is DaoCommon {
 
     function dao()
         internal
-        constant
+        view
         returns (Dao _contract)
     {
         _contract = Dao(get_contract(CONTRACT_DAO));

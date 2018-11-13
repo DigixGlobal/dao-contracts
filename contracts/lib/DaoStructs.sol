@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
 import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
@@ -136,7 +136,7 @@ library DaoStructs {
 
     function countVotes(Voting storage _voting, address[] memory _allUsers)
         public
-        constant
+        view
         returns (uint256 _for, uint256 _against)
     {
         uint256 _n = _allUsers.length;
@@ -152,7 +152,7 @@ library DaoStructs {
     // get the list of voters who voted _vote (true-yes/false-no)
     function listVotes(Voting storage _voting, address[] _allUsers, bool _vote)
         public
-        constant
+        view
         returns (address[] memory _voters, uint256 _length)
     {
         uint256 _n = _allUsers.length;
@@ -178,7 +178,7 @@ library DaoStructs {
 
     function readVote(Voting storage _voting, address _voter)
         public
-        constant
+        view
         returns (bool _vote, uint256 _weight)
     {
         if (_voting.yesVotes[_voter] > 0) {
@@ -207,7 +207,7 @@ library DaoStructs {
 
     function readVersion(ProposalVersion storage _version)
         public
-        constant
+        view
         returns (
             bytes32 _doc,
             uint256 _created,
@@ -225,7 +225,7 @@ library DaoStructs {
     // if _milestoneId is the same as _milestoneCount, it returns the final reward
     function readProposalMilestone(Proposal storage _proposal, uint256 _milestoneIndex)
         public
-        constant
+        view
         returns (uint256 _funding)
     {
         bytes32 _finalVersion = _proposal.finalVersion;

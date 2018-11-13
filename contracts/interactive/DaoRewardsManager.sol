@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../common/DaoRewardsManagerCommon.sol";
@@ -24,7 +24,7 @@ contract DaoRewardsManager is DaoRewardsManagerCommon {
 
     function daoCalculatorService()
         internal
-        constant
+        view
         returns (DaoCalculatorService _contract)
     {
         _contract = DaoCalculatorService(get_contract(CONTRACT_SERVICE_DAO_CALCULATOR));
@@ -32,7 +32,7 @@ contract DaoRewardsManager is DaoRewardsManagerCommon {
 
     function daoRewardsManagerExtras()
         internal
-        constant
+        view
         returns (DaoRewardsManagerExtras _contract)
     {
         _contract = DaoRewardsManagerExtras(get_contract(CONTRACT_DAO_REWARDS_MANAGER_EXTRAS));

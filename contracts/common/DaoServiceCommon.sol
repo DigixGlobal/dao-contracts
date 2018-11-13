@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "./../common/DaoConstants.sol";
@@ -11,7 +11,7 @@ contract DaoServiceCommon is DaoConstants, ResolverClient {
 
     function daoConfigsStorage()
         internal
-        constant
+        view
         returns (DaoConfigsStorage _contract)
     {
         _contract = DaoConfigsStorage(get_contract(CONTRACT_STORAGE_DAO_CONFIG));
@@ -19,7 +19,7 @@ contract DaoServiceCommon is DaoConstants, ResolverClient {
 
     function daoStakeStorage()
         internal
-        constant
+        view
         returns (DaoStakeStorage _contract)
     {
         _contract = DaoStakeStorage(get_contract(CONTRACT_STORAGE_DAO_STAKE));
@@ -27,7 +27,7 @@ contract DaoServiceCommon is DaoConstants, ResolverClient {
 
     function daoStorage()
         internal
-        constant
+        view
         returns (DaoStorage _contract)
     {
         _contract = DaoStorage(get_contract(CONTRACT_STORAGE_DAO));

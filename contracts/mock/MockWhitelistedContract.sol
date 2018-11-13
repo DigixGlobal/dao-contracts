@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "./interface/DaoStorageInterface.sol";
 import "./interface/DaoSpecialStorageInterface.sol";
@@ -17,7 +17,7 @@ contract MockWhitelistedContract {
         address[] _allUsers
     )
         public
-        constant
+        view
     {
         uint256 _uintValue;
         (,_uintValue) = DaoStorageInterface(_daoStorageAddress).readVotingRoundVotes(
@@ -40,7 +40,7 @@ contract MockWhitelistedContract {
         address _voter
     )
         public
-        constant
+        view
     {
         uint256 _uintValue;
         (,_uintValue) = DaoStorageInterface(_daoStorageAddress).readDraftVote(
@@ -56,7 +56,7 @@ contract MockWhitelistedContract {
         address _voter
     )
         public
-        constant
+        view
     {
         bytes32 _bytesValue;
         _bytesValue = DaoStorageInterface(_daoStorageAddress).readComittedVote(
@@ -73,7 +73,7 @@ contract MockWhitelistedContract {
         address _voter
     )
         public
-        constant
+        view
     {
         uint256 _uintValue;
         (,_uintValue) = DaoStorageInterface(_daoStorageAddress).readVote(
@@ -89,7 +89,7 @@ contract MockWhitelistedContract {
         address _voter
     )
         public
-        constant
+        view
     {
         uint256 _uintValue;
         (,_uintValue) = DaoSpecialStorageInterface(_daoSpecialStorageAddress).readVote(
@@ -104,7 +104,7 @@ contract MockWhitelistedContract {
         address _voter
     )
         public
-        constant
+        view
     {
         bytes32 _bytesValue;
         _bytesValue = DaoSpecialStorageInterface(_daoSpecialStorageAddress).readComittedVote(
