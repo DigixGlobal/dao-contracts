@@ -24,10 +24,6 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     // eg. when proposal is endorsed, when proposal is funded, etc
     mapping (bytes32 => DoublyLinkedList.Bytes) proposalsByState;
 
-    // This is to mark the number of proposals that have been funded in a specific quarter
-    // this is to take care of the cap on the number of funded proposals in a quarter
-    mapping (uint256 => uint256) public proposalCountByQuarter;
-
     constructor(address _resolver) public {
         require(init(CONTRACT_STORAGE_DAO, _resolver));
     }
@@ -740,18 +736,21 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         proposalsById[_proposalId].votingRounds[_index].revealVote(_voter, _vote, _weight);
     }
 
-    function addNonDigixProposalCountInQuarter(uint256 _quarterIndex)
-        public
-    {
-        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
-        proposalCountByQuarter[_quarterIndex] = proposalCountByQuarter[_quarterIndex].add(1);
-    }
-
     function closeProposal(bytes32 _proposalId)
         public
     {
         require(sender_is(CONTRACT_DAO));
         closeProposalInternal(_proposalId);
+    }
+
+    function archiveProposal(bytes32 _proposalId)
+        public
+    {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
+        bytes32 _currentState = proposalsById[_proposalId].currentState;
+        proposalsByState[_currentState].remove_item(_proposalId);
+        proposalsByState[PROPOSAL_STATE_ARCHIVED].append(_proposalId);
+        proposalsById[_proposalId].currentState = PROPOSAL_STATE_ARCHIVED;
     }
 
     function setMilestoneFunded(bytes32 _proposalId, uint256 _milestoneId)

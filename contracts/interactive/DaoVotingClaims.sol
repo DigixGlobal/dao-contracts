@@ -248,13 +248,14 @@ contract DaoVotingClaims is DaoCommon {
         (_milestoneFundings,) = daoStorage().readProposalFunding(_proposalId);
         if (_index == _milestoneFundings.length) {
             processCollateralRefund(_proposalId);
+            daoStorage().archiveProposal(_proposalId);
         }
 
         // increase the non-digix proposal count accordingly
         bool _isDigixProposal;
         (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
         if (_index == 0 && !_isDigixProposal) {
-            daoStorage().addNonDigixProposalCountInQuarter(currentQuarterIndex());
+            daoProposalCounterStorage().addNonDigixProposalCountInQuarter(currentQuarterIndex());
         }
 
         // Add quarter point for the proposer

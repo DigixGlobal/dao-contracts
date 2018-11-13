@@ -603,18 +603,18 @@ contract('DaoStorage', function (accounts) {
 
   describe('addNonDigixProposalCountInQuarter', function () {
     it('[not called by CONTRACT_DAO_VOTING_CLAIMS]: revert', async function () {
-      assert(await a.failure(contracts.daoStorage.addNonDigixProposalCountInQuarter.call(bN(1), { from: accounts[2] })));
+      assert(await a.failure(contracts.daoProposalCounterStorage.addNonDigixProposalCountInQuarter.call(bN(1), { from: accounts[2] })));
     });
     it('[valid call]: increment the count', async function () {
-      assert.deepEqual(await contracts.daoStorage.proposalCountByQuarter.call(bN(1)), bN(0));
-      await contracts.daoStorage.addNonDigixProposalCountInQuarter(bN(1));
-      assert.deepEqual(await contracts.daoStorage.proposalCountByQuarter.call(bN(1)), bN(1));
-      await contracts.daoStorage.addNonDigixProposalCountInQuarter(bN(1));
-      await contracts.daoStorage.addNonDigixProposalCountInQuarter(bN(2));
-      await contracts.daoStorage.addNonDigixProposalCountInQuarter(bN(2));
-      await contracts.daoStorage.addNonDigixProposalCountInQuarter(bN(2));
-      assert.deepEqual(await contracts.daoStorage.proposalCountByQuarter.call(bN(1)), bN(2));
-      assert.deepEqual(await contracts.daoStorage.proposalCountByQuarter.call(bN(2)), bN(3));
+      assert.deepEqual(await contracts.daoProposalCounterStorage.proposalCountByQuarter.call(bN(1)), bN(0));
+      await contracts.daoProposalCounterStorage.addNonDigixProposalCountInQuarter(bN(1));
+      assert.deepEqual(await contracts.daoProposalCounterStorage.proposalCountByQuarter.call(bN(1)), bN(1));
+      await contracts.daoProposalCounterStorage.addNonDigixProposalCountInQuarter(bN(1));
+      await contracts.daoProposalCounterStorage.addNonDigixProposalCountInQuarter(bN(2));
+      await contracts.daoProposalCounterStorage.addNonDigixProposalCountInQuarter(bN(2));
+      await contracts.daoProposalCounterStorage.addNonDigixProposalCountInQuarter(bN(2));
+      assert.deepEqual(await contracts.daoProposalCounterStorage.proposalCountByQuarter.call(bN(1)), bN(2));
+      assert.deepEqual(await contracts.daoProposalCounterStorage.proposalCountByQuarter.call(bN(2)), bN(3));
     });
   });
 

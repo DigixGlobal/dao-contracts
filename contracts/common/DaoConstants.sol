@@ -2,7 +2,6 @@ pragma solidity ^0.4.24;
 
 import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
 
-
 contract DaoConstants {
     using SafeMath for uint256;
     bytes32 EMPTY_BYTES = bytes32(0x0);
@@ -13,6 +12,7 @@ contract DaoConstants {
     bytes32 PROPOSAL_STATE_MODERATED = "proposal_state_moderated";
     bytes32 PROPOSAL_STATE_ONGOING = "proposal_state_ongoing";
     bytes32 PROPOSAL_STATE_CLOSED = "proposal_state_closed";
+    bytes32 PROPOSAL_STATE_ARCHIVED = "proposal_state_archived";
 
     uint256 PRL_ACTION_STOP = 1;
     uint256 PRL_ACTION_PAUSE = 2;
@@ -48,6 +48,7 @@ contract DaoConstants {
 
     // storage contracts
     bytes32 CONTRACT_STORAGE_DAO = "storage:dao";
+    bytes32 CONTRACT_STORAGE_DAO_COUNTER = "storage:dao:counter";
     bytes32 CONTRACT_STORAGE_DAO_UPGRADE = "storage:dao:upgrade";
     bytes32 CONTRACT_STORAGE_DAO_IDENTITY = "storage:dao:identity";
     bytes32 CONTRACT_STORAGE_DAO_POINTS = "storage:dao:points";

@@ -298,7 +298,7 @@ contract DaoCommon is DaoCommonMini {
         (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
         _withinLimit = true;
         if (!_isDigixProposal) {
-            _withinLimit = daoStorage().proposalCountByQuarter(currentQuarterIndex()) < getUintConfig(CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER);
+            _withinLimit = daoProposalCounterStorage().proposalCountByQuarter(currentQuarterIndex()) < getUintConfig(CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER);
         }
     }
 

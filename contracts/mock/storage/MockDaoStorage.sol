@@ -126,10 +126,4 @@ contract MockDaoStorage is DaoStorage {
             }
         }
     }
-
-    function mock_set_proposal_count(uint256 _quarterId, uint256 _count)
-        public
-    {
-        proposalCountByQuarter[_quarterId] = _count;
-    }
 }
