@@ -194,12 +194,13 @@ contract DaoVotingClaims is DaoCommon {
         // Here, _done is refering to whether STEP 1 is done
         _done = true;
         _passed = false; // redundant, put here just to emphasize that its false
+        uint256 _operationsLeft = _operations;
         // In other words, we only need to do Step 1 if its before the deadline
         if (now < startOfMilestone(_proposalId, _index)
                     .add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE)))
         {
-            (_operations, _passed, _done) = countProposalVote(_proposalId, _index, _operations);
-            // from here on, _operations is the number of operations left, after Step 1 is done
+            (_operationsLeft, _passed, _done) = countProposalVote(_proposalId, _index, _operations);
+            // from here on, _operationsLeft is the number of operations left, after Step 1 is done
             if (!_done) return (_passed, false); // haven't done Step 1 yet, return. The value of _passed here is irrelevant
         }
 
@@ -208,7 +209,7 @@ contract DaoVotingClaims is DaoCommon {
         _done = false;
 
         if (_index > 0) { // We only need to do bonus calculation if its a interim voting round
-            _done = calculateVoterBonus(_proposalId, _index, _operations, _passed);
+            _done = calculateVoterBonus(_proposalId, _index, _operationsLeft, _passed);
             if (!_done) return (_passed, false); // Step 2 is not done yet, return
         } else {
             // its the first voting round, we return the collateral if it fails, locks if it passes
