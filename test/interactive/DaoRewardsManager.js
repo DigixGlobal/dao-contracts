@@ -148,7 +148,6 @@ contract('DaoRewardsManager', function (accounts) {
       console.log('');
     };
 
-
     it('[Q2]', async function () {
       // await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
@@ -542,7 +541,6 @@ contract('DaoRewardsManager', function (accounts) {
       );
       assert(await a.failure(contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(10), { from: addressOf.founderBadgeHolder })));
     });
-
     it('[check step by step process]: verify quarter info', async function () {
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
       await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(20 * (10 ** 9)));

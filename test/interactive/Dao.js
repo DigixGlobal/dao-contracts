@@ -2214,6 +2214,15 @@ contract('Dao', function (accounts) {
       const rep4 = await contracts.daoPointsStorage.getReputation.call(addressOf.allParticipants[4]);
       const rep5 = await contracts.daoPointsStorage.getReputation.call(addressOf.allParticipants[5]);
 
+      const claimResult = await contracts.daoVotingClaims.claimProposalVotingResult.call(
+        proposals[0].id,
+        bN(1),
+        bN(10),
+        { from: addressOf.allParticipants[5] },
+      );
+      assert.deepEqual(claimResult[0], false);
+      assert.deepEqual(claimResult[1], true);
+
       // claim the proposal
       await contracts.daoVotingClaims.claimProposalVotingResult(
         proposals[0].id,

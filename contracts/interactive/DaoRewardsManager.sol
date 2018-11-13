@@ -339,8 +339,8 @@ contract DaoRewardsManager is DaoRewardsManagerCommon {
             getIntermediateResultsIdForGlobalRewards(info.previousQuarter, false)
         );
 
-        _operations = sumEffectiveBalance(info, false, _operations, interResults);
-        // now we are left with _operations operations
+        uint256 _operationsLeft = sumEffectiveBalance(info, false, _operations, interResults);
+        // now we are left with _operationsLeft operations
         // the results is saved in interResults
 
         // if we have not done with calculating the effective balance, quit.
@@ -353,7 +353,7 @@ contract DaoRewardsManager is DaoRewardsManagerCommon {
             getIntermediateResultsIdForGlobalRewards(info.previousQuarter, true)
         );
 
-        sumEffectiveBalance(info, true, _operations, interResults);
+        sumEffectiveBalance(info, true, _operationsLeft, interResults);
 
         // if we have not done with calculating the moderator effective balance, quit.
         if (!info.doneCalculatingModeratorEffectiveBalance) { return false; }
