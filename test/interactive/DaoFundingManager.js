@@ -17,6 +17,7 @@ const {
   randomBytes32,
   indexRange,
   getCurrentTimestamp,
+  randomAddress,
 } = require('@digix/helpers/lib/helpers');
 
 const bN = web3.toBigNumber;
@@ -50,7 +51,7 @@ contract('DaoFundingManager', function (accounts) {
     await contracts.daoUpgradeStorage.mock_set_start_of_quarter(getCurrentTimestamp());
 
     contracts.daoIdentity = await DaoIdentity.new(contracts.resolver.address);
-    contracts.daoFundingManager = await DaoFundingManager.new(contracts.resolver.address);
+    contracts.daoFundingManager = await DaoFundingManager.new(contracts.resolver.address, addressOf.root);
 
     await DaoWhitelisting.new(contracts.resolver.address, [contracts.daoFundingManager.address]);
 
@@ -60,17 +61,75 @@ contract('DaoFundingManager', function (accounts) {
 
     await contracts.resolver.register_contract('dao:voting:claims', addressOf.root);
     await contracts.resolver.register_contract('dao', addressOf.root);
-    await fundDao();
+    await fundDao(addressOf.root, web3.toWei(1000, 'ether'));
   };
 
-  const fundDao = async function () {
-    await web3.eth.sendTransaction({
-      from: accounts[0],
+  const fundDao = async function (source, value) {
+    const balance = await web3.eth.getBalance(contracts.daoFundingManager.address);
+    web3.eth.sendTransaction({
+      from: source,
       to: contracts.daoFundingManager.address,
-      value: web3.toWei(1000, 'ether'),
+      value,
     });
-    assert.deepEqual(await web3.eth.getBalance(contracts.daoFundingManager.address), bN(web3.toWei(1000, 'ether')));
+    assert.deepEqual(await web3.eth.getBalance(contracts.daoFundingManager.address), balance.plus(value));
   };
+
+  describe('fallbackFunction', function () {
+    before(async function () {
+      await resetBeforeEach();
+    });
+    it('[if called by someone other than FUNDING_SOURCE]: revert', async function () {
+      const balance = await web3.eth.getBalance(addressOf.prl);
+      const balance2 = await web3.eth.getBalance(addressOf.founderBadgeHolder);
+      assert.equal(balance.toNumber() > 1e18, true);
+      assert.equal(balance2.toNumber() > 1e18, true);
+      assert(await a.failure(fundDao(addressOf.prl, web3.toWei(1, 'ether'))));
+      assert(await a.failure(fundDao(addressOf.founderBadgeHolder, web3.toWei(1, 'ether'))));
+    });
+    it('[FUNDING_SOURCE sends funds]: ok', async function () {
+      const balanceBefore = await web3.eth.getBalance(contracts.daoFundingManager.address);
+      const tx = await web3.eth.sendTransaction({
+        from: addressOf.root,
+        to: contracts.daoFundingManager.address,
+        value: web3.toWei(1, 'ether'),
+      });
+      const txReceipt = await web3.eth.getTransactionReceipt(tx);
+      console.log('gas used = ', txReceipt.gasUsed);
+      assert.deepEqual(await web3.eth.getBalance(contracts.daoFundingManager.address), balanceBefore.plus(bN(1e18)));
+    });
+  });
+
+  describe('setFundingSource', function () {
+    before(async function () {
+      await resetBeforeEach();
+    });
+    it('[if called by other than root]: revert', async function () {
+      assert(await a.failure(contracts.daoFundingManager.setFundingSource.call(
+        randomAddress(),
+        { from: addressOf.prl },
+      )));
+      assert(await a.failure(contracts.daoFundingManager.setFundingSource.call(
+        randomAddress(),
+        { from: addressOf.founderBadgeHolder },
+      )));
+    });
+    it('[root updates the funding source]: ok', async function () {
+      const fundingSource = addressOf.founderBadgeHolder;
+      await contracts.daoFundingManager.setFundingSource(fundingSource, { from: addressOf.root });
+      const balanceBefore = await web3.eth.getBalance(contracts.daoFundingManager.address);
+
+      // DaoFundingManager can now receive wei from founderBadgeHolder
+      await web3.eth.sendTransaction({
+        from: addressOf.founderBadgeHolder,
+        to: contracts.daoFundingManager.address,
+        value: web3.toWei(1, 'ether'),
+      });
+      assert.deepEqual(await web3.eth.getBalance(contracts.daoFundingManager.address), balanceBefore.plus(bN(1e18)));
+
+      // DaoFundingManager can no longer receive funds from root account
+      assert(await a.failure(fundDao(addressOf.root, web3.toWei(1, 'ether'))));
+    });
+  });
 
   describe('claimFunding', function () {
     before(async function () {

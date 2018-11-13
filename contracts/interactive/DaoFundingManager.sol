@@ -10,8 +10,11 @@ import "./Dao.sol";
 */
 contract DaoFundingManager is DaoCommon {
 
-    constructor(address _resolver) public {
+    address FUNDING_SOURCE;
+
+    constructor(address _resolver, address _fundingSource) public {
         require(init(CONTRACT_DAO_FUNDING_MANAGER, _resolver));
+        FUNDING_SOURCE = _fundingSource;
     }
 
     function dao()
@@ -20,6 +23,18 @@ contract DaoFundingManager is DaoCommon {
         returns (Dao _contract)
     {
         _contract = Dao(get_contract(CONTRACT_DAO));
+    }
+
+    /**
+    @notice Function to set the source of DigixDAO funding
+    @dev only this source address will be able to fund the DaoFundingManager contract, along with CONTRACT_DAO
+    @param _fundingSource address of the funding source
+    */
+    function setFundingSource(address _fundingSource)
+        public
+        if_root()
+    {
+        FUNDING_SOURCE = _fundingSource;
     }
 
     /**
@@ -86,7 +101,13 @@ contract DaoFundingManager is DaoCommon {
     }
 
     /**
-    @notice Payable function to receive ETH funds from DigixDAO crowdsale contract
+    @notice Payable fallback function to receive ETH funds from DigixDAO crowdsale contract
+    @dev this contract can only receive funds from FUNDING_SOURCE address or CONTRACT_DAO (when proposal is created)
     */
-    function () payable external {}
+    function () payable external {
+        require(
+            (msg.sender == FUNDING_SOURCE) ||
+            (msg.sender == get_contract(CONTRACT_DAO))
+        );
+    }
 }
