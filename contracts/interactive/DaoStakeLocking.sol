@@ -14,9 +14,9 @@ import "./../interface/NumberCarbonVoting.sol";
 */
 contract DaoStakeLocking is DaoCommon {
 
-    event RedeemBadge(address _user);
-    event LockDGD(address _user, uint256 _amount, uint256 _currentLockedDGDStake);
-    event WithdrawDGD(address _user, uint256 _amount);
+    event RedeemBadge(address indexed _user);
+    event LockDGD(address indexed _user, uint256 _amount, uint256 _currentLockedDGDStake);
+    event WithdrawDGD(address indexed _user, uint256 _amount, uint256 _currentLockedDGDStake);
 
     address public dgdToken;
     address public dgdBadgeToken;
@@ -252,7 +252,7 @@ contract DaoStakeLocking is DaoCommon {
 
         require(ERC20(dgdToken).transfer(msg.sender, _amount));
 
-        emit WithdrawDGD(msg.sender, _amount);
+        emit WithdrawDGD(msg.sender, _amount, _newInfo.userLockedDGDStake);
     }
 
 

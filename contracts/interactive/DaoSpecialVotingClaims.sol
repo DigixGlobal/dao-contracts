@@ -15,6 +15,8 @@ contract DaoSpecialVotingClaims is DaoCommon {
     using DaoIntermediateStructs for DaoIntermediateStructs.VotingCount;
     using DaoStructs for DaoStructs.IntermediateResults;
 
+    event SpecialProposalClaim(bytes32 indexed _proposalId, bool _result);
+
     function daoCalculatorService()
         internal
         view
@@ -108,6 +110,7 @@ contract DaoSpecialVotingClaims is DaoCommon {
             }
             daoSpecialStorage().setPass(_proposalId, _passed);
             daoSpecialStorage().setVotingClaim(_proposalId, true);
+            emit SpecialProposalClaim(_proposalId, _passed);
         } else {
             intermediateResultsStorage().setIntermediateResults(
                 _proposalId,
