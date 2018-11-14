@@ -11,13 +11,14 @@ import "./DaoVotingClaims.sol";
 */
 contract Dao is DaoCommon {
 
-    event NewProposal(bytes32 _proposalId, address _proposer);
-    event ModifyProposal(bytes32 _proposalId, bytes32 _newDoc);
-    event ChangeProposalFunding(bytes32 _proposalId);
-    event FinalizeProposal(bytes32 _proposalId);
-    event FinishMilestone(bytes32 _proposalId, uint256 _milestoneIndex);
-    event AddProposalDoc(bytes32 _proposalId, bytes32 _newDoc);
-    event PRLAction(bytes32 _proposalId, uint256 _actionId, bytes32 _doc);
+    event NewProposal(bytes32 indexed _proposalId, address _proposer);
+    event ModifyProposal(bytes32 indexed _proposalId, bytes32 _newDoc);
+    event ChangeProposalFunding(bytes32 indexed _proposalId);
+    event FinalizeProposal(bytes32 indexed _proposalId);
+    event FinishMilestone(bytes32 indexed _proposalId, uint256 indexed _milestoneIndex);
+    event AddProposalDoc(bytes32 indexed _proposalId, bytes32 _newDoc);
+    event PRLAction(bytes32 indexed _proposalId, uint256 _actionId, bytes32 _doc);
+    event CloseProposal(bytes32 indexed _proposalId);
 
     constructor(address _resolver) public {
         require(init(CONTRACT_DAO, _resolver));
@@ -360,6 +361,7 @@ contract Dao is DaoCommon {
 
         daoStorage().closeProposal(_proposalId);
         daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_CLAIMED);
+        emit CloseProposal(_proposalId);
         require(daoFundingManager().refundCollateral(msg.sender, _proposalId));
     }
 
@@ -385,6 +387,7 @@ contract Dao is DaoCommon {
                 (_currentState == PROPOSAL_STATE_DRAFT)
             );
             require(now > _timeCreated.add(getUintConfig(CONFIG_PROPOSAL_DEAD_DURATION)));
+            emit CloseProposal(_proposalIds[_i]);
             daoStorage().closeProposal(_proposalIds[_i]);
         }
     }

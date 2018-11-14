@@ -10,7 +10,9 @@ import "./Dao.sol";
 */
 contract DaoFundingManager is DaoCommon {
 
-    address FUNDING_SOURCE;
+    address public FUNDING_SOURCE;
+
+    event ClaimFunding(bytes32 indexed _proposalId, uint256 indexed _votingRound, uint256 _funding);
 
     constructor(address _resolver, address _fundingSource) public {
         require(init(CONTRACT_DAO_FUNDING_MANAGER, _resolver));
@@ -62,6 +64,8 @@ contract DaoFundingManager is DaoCommon {
         daoStorage().setMilestoneFunded(_proposalId, _index);
 
         msg.sender.transfer(_funding);
+
+        emit ClaimFunding(_proposalId, _index, _funding);
     }
 
     /**

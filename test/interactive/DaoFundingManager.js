@@ -51,7 +51,7 @@ contract('DaoFundingManager', function (accounts) {
     await contracts.daoUpgradeStorage.mock_set_start_of_quarter(getCurrentTimestamp());
 
     contracts.daoIdentity = await DaoIdentity.new(contracts.resolver.address);
-    contracts.daoFundingManager = await DaoFundingManager.new(contracts.resolver.address, addressOf.root);
+    contracts.daoFundingManager = await DaoFundingManager.new(contracts.resolver.address, addressOf.founderBadgeHolder);
 
     await DaoWhitelisting.new(contracts.resolver.address, [contracts.daoFundingManager.address]);
 
@@ -61,7 +61,7 @@ contract('DaoFundingManager', function (accounts) {
 
     await contracts.resolver.register_contract('dao:voting:claims', addressOf.root);
     await contracts.resolver.register_contract('dao', addressOf.root);
-    await fundDao(addressOf.root, web3.toWei(1000, 'ether'));
+    await fundDao(addressOf.founderBadgeHolder, web3.toWei(1000, 'ether'));
   };
 
   const fundDao = async function (source, value) {
@@ -80,16 +80,16 @@ contract('DaoFundingManager', function (accounts) {
     });
     it('[if called by someone other than FUNDING_SOURCE]: revert', async function () {
       const balance = await web3.eth.getBalance(addressOf.prl);
-      const balance2 = await web3.eth.getBalance(addressOf.founderBadgeHolder);
+      const balance2 = await web3.eth.getBalance(addressOf.kycadmin);
       assert.equal(balance.toNumber() > 1e18, true);
       assert.equal(balance2.toNumber() > 1e18, true);
       assert(await a.failure(fundDao(addressOf.prl, web3.toWei(1, 'ether'))));
-      assert(await a.failure(fundDao(addressOf.founderBadgeHolder, web3.toWei(1, 'ether'))));
+      assert(await a.failure(fundDao(addressOf.kycadmin, web3.toWei(1, 'ether'))));
     });
     it('[FUNDING_SOURCE sends funds]: ok', async function () {
       const balanceBefore = await web3.eth.getBalance(contracts.daoFundingManager.address);
       const tx = await web3.eth.sendTransaction({
-        from: addressOf.root,
+        from: addressOf.founderBadgeHolder,
         to: contracts.daoFundingManager.address,
         value: web3.toWei(1, 'ether'),
       });
@@ -114,20 +114,20 @@ contract('DaoFundingManager', function (accounts) {
       )));
     });
     it('[root updates the funding source]: ok', async function () {
-      const fundingSource = addressOf.founderBadgeHolder;
+      const fundingSource = addressOf.kycadmin;
       await contracts.daoFundingManager.setFundingSource(fundingSource, { from: addressOf.root });
       const balanceBefore = await web3.eth.getBalance(contracts.daoFundingManager.address);
 
       // DaoFundingManager can now receive wei from founderBadgeHolder
       await web3.eth.sendTransaction({
-        from: addressOf.founderBadgeHolder,
+        from: addressOf.kycadmin,
         to: contracts.daoFundingManager.address,
         value: web3.toWei(1, 'ether'),
       });
       assert.deepEqual(await web3.eth.getBalance(contracts.daoFundingManager.address), balanceBefore.plus(bN(1e18)));
 
-      // DaoFundingManager can no longer receive funds from root account
-      assert(await a.failure(fundDao(addressOf.root, web3.toWei(1, 'ether'))));
+      // DaoFundingManager can no longer receive funds from original funding source account
+      assert(await a.failure(fundDao(addressOf.founderBadgeHolder, web3.toWei(1, 'ether'))));
     });
   });
 
@@ -183,6 +183,12 @@ contract('DaoFundingManager', function (accounts) {
       assert.deepEqual(bbb, ethBalanceProposerBefore.plus(claim).minus(totalWeiUsed));
       const weiInDaoAfter = await web3.eth.getBalance(contracts.daoFundingManager.address);
       assert.deepEqual(weiInDaoBefore, weiInDaoAfter.plus(claim));
+
+      // verify event logs
+      assert.deepEqual(tx.logs[0].event, 'ClaimFunding');
+      assert.deepEqual(tx.logs[0].args._proposalId, doc);
+      assert.deepEqual(tx.logs[0].args._votingRound, bN(0));
+      assert.deepEqual(tx.logs[0].args._funding, claim);
     });
     it('[cannot claim funding for milestone after it has already been claimed]', async function () {
       assert(await a.failure(contracts.daoFundingManager.claimFunding(

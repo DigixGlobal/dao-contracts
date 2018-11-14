@@ -565,7 +565,14 @@ contract('DaoRewardsManager', function (accounts) {
             { from: addressOf.founderBadgeHolder },
           ), true);
         }
-        await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(10), { from: addressOf.founderBadgeHolder });
+        const tx = await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(10), { from: addressOf.founderBadgeHolder });
+
+        if (i < N_CYCLES) {
+          assert.equal(tx.logs.length, 0);
+        } else {
+          assert.deepEqual(tx.logs[0].event, 'StartNewQuarter');
+          assert.deepEqual(tx.logs[0].args._quarterId, bN(2));
+        }
 
         // test the intermediate result
         let intermediateResult;
@@ -659,9 +666,16 @@ contract('DaoRewardsManager', function (accounts) {
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
       await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(5 * (10 ** 9)));
-      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
-      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
-      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
+      const tx1 = await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
+      const tx2 = await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
+      const tx3 = await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
+
+      // verify event logs
+      assert.equal(tx1.logs.length, 0);
+      assert.equal(tx2.logs.length, 0);
+      assert.deepEqual(tx3.logs[0].event, 'StartNewQuarter');
+      assert.deepEqual(tx3.logs[0].args._quarterId, bN(3));
+
       const quarterInfo = await contracts.daoRewardsStorage.readQuarterInfo.call(bN(3));
       assert.deepEqual(timeIsRecent(quarterInfo[8], 5), true);
       assert.deepEqual(quarterInfo[9], bN(5 * (10 ** 9)).plus(bN(demurrageFee)));

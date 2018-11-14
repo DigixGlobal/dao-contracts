@@ -18,7 +18,7 @@ contract DaoRewardsManager is DaoRewardsManagerCommon {
 
     // is emitted when calculateGlobalRewardsBeforeNewQuarter has been done in the beginning of the quarter
     // after which, all the other DAO activities could happen
-    event StartNewQuarter(uint256 _quarterId);
+    event StartNewQuarter(uint256 indexed _quarterId);
 
     address public ADDRESS_DGX_TOKEN;
 

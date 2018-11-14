@@ -732,8 +732,13 @@ contract('Dao', function (accounts) {
     it('[called in the main phase, enough time for entire voting]: success', async function () {
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
       assert.deepEqual(await contracts.daoSpecialStorage.readVotingTime.call(doc), bN(0));
-      await contracts.daoSpecialProposal.startSpecialProposalVoting(doc, { from: addressOf.founderBadgeHolder });
+      const tx = await contracts.daoSpecialProposal.startSpecialProposalVoting(doc, { from: addressOf.founderBadgeHolder });
       assert.deepEqual(timeIsRecent(await contracts.daoSpecialStorage.readVotingTime.call(doc), 2), true);
+
+      // verify event logs
+      assert.deepEqual(tx.logs[0].event, 'StartSpecialProposal');
+      assert.deepEqual(tx.logs[0].args._specialProposalId, doc);
+      assert.deepEqual(timeIsRecent(tx.logs[0].args._startTime, 2), true);
     });
   });
 
@@ -1033,11 +1038,12 @@ contract('Dao', function (accounts) {
           bN(12),
           { from: addressOf.founderBadgeHolder },
         ), false);
-        await contracts.daoSpecialVotingClaims.claimSpecialProposalVotingResult(
+        const tx = await contracts.daoSpecialVotingClaims.claimSpecialProposalVotingResult(
           specialProposalId1,
           bN(12),
           { from: addressOf.founderBadgeHolder },
         );
+        assert.equal(tx.logs.length, 0);
         console.log('done iteration ', i);
       }
       // this claim should now pass the special proposal
@@ -1046,11 +1052,14 @@ contract('Dao', function (accounts) {
         bN(12),
         { from: addressOf.founderBadgeHolder },
       ), true);
-      await contracts.daoSpecialVotingClaims.claimSpecialProposalVotingResult(
+      const tx = await contracts.daoSpecialVotingClaims.claimSpecialProposalVotingResult(
         specialProposalId1,
         bN(12),
         { from: addressOf.founderBadgeHolder },
       );
+      assert.deepEqual(tx.logs[0].event, 'SpecialProposalClaim');
+      assert.deepEqual(tx.logs[0].args._proposalId, specialProposalId1);
+      assert.deepEqual(tx.logs[0].args._result, true);
 
       // verify results
       assert.deepEqual(await contracts.daoSpecialStorage.isClaimed.call(specialProposalId1), true);
@@ -1066,11 +1075,15 @@ contract('Dao', function (accounts) {
         bN(30),
         { from: addressOf.founderBadgeHolder },
       );
-      await contracts.daoSpecialVotingClaims.claimSpecialProposalVotingResult(
+      const tx2 = await contracts.daoSpecialVotingClaims.claimSpecialProposalVotingResult(
         specialProposalId2,
         bN(30),
         { from: addressOf.founderBadgeHolder },
       );
+      assert.deepEqual(tx2.logs[0].event, 'SpecialProposalClaim');
+      assert.deepEqual(tx2.logs[0].args._proposalId, specialProposalId2);
+      assert.deepEqual(tx2.logs[0].args._result, false);
+
       assert.deepEqual(await contracts.daoSpecialStorage.readVotingResult.call(specialProposalId2), false);
       assert.deepEqual(await contracts.daoSpecialStorage.isClaimed.call(specialProposalId2), true);
       const readUintConfigs2 = await contracts.daoConfigsStorage.readUintConfigs.call();
@@ -1352,6 +1365,9 @@ contract('Dao', function (accounts) {
       assert.deepEqual(await contracts.daoStorage.readProposalDraftVotingResult.call(proposals[2].id), false);
       assert.deepEqual(await contracts.daoStorage.isDraftClaimed.call(proposals[2].id), true);
       assert.deepEqual(await contracts.daoStorage.readProposalCollateralStatus.call(proposals[2].id), collateralStatus(bN).COLLATERAL_STATUS_CLAIMED);
+      assert.deepEqual(tx.logs[0].event, 'DraftVotingClaim');
+      assert.deepEqual(tx.logs[0].args._proposalId, proposals[2].id);
+      assert.deepEqual(tx.logs[0].args._result, false);
     });
     it('[valid claim, quorum quota both passed]: verify read functions', async function () {
       await resetBeforeEach();
@@ -1385,7 +1401,12 @@ contract('Dao', function (accounts) {
       assert.deepEqual(returnValues[0], true);
       assert.deepEqual(returnValues[1], true);
 
-      await contracts.daoVotingClaims.claimDraftVotingResult(proposals[0].id, bN(50), { from: proposals[0].proposer });
+      const tx = await contracts.daoVotingClaims.claimDraftVotingResult(proposals[0].id, bN(50), { from: proposals[0].proposer });
+
+      // verify event logs
+      assert.deepEqual(tx.logs[0].event, 'DraftVotingClaim');
+      assert.deepEqual(tx.logs[0].args._proposalId, proposals[0].id);
+      assert.deepEqual(tx.logs[0].args._result, true);
 
       // draft voting result set
       assert.deepEqual(await contracts.daoStorage.readProposalDraftVotingResult.call(proposals[0].id), true);
@@ -2031,12 +2052,18 @@ contract('Dao', function (accounts) {
       // get the number of proposals before claiming this one
       const proposalCounterBefore = await contracts.daoProposalCounterStorage.proposalCountByQuarter.call(bN(1));
 
-      await contracts.daoVotingClaims.claimProposalVotingResult(
+      const tx = await contracts.daoVotingClaims.claimProposalVotingResult(
         proposals[2].id,
         bN(0),
         bN(10),
         { from: proposals[2].proposer },
       );
+
+      // verify event log
+      assert.deepEqual(tx.logs[0].event, 'VotingClaim');
+      assert.deepEqual(tx.logs[0].args._proposalId, proposals[2].id);
+      assert.deepEqual(tx.logs[0].args._votingRound, bN(0));
+      assert.deepEqual(tx.logs[0].args._result, true);
 
       // proposal counter must increment
       assert.deepEqual(await contracts.daoProposalCounterStorage.proposalCountByQuarter.call(bN(1)), proposalCounterBefore.plus(bN(1)));
@@ -2091,7 +2118,13 @@ contract('Dao', function (accounts) {
       const qpBefore4 = await contracts.daoPointsStorage.getReputation.call(addressOf.allParticipants[4]);
       const qpBefore5 = await contracts.daoPointsStorage.getReputation.call(addressOf.allParticipants[5]);
 
-      await contracts.daoVotingClaims.claimProposalVotingResult(proposals[1].id, bN(1), bN(10), { from: proposals[1].proposer });
+      const tx = await contracts.daoVotingClaims.claimProposalVotingResult(proposals[1].id, bN(1), bN(10), { from: proposals[1].proposer });
+
+      // verify event logs
+      assert.deepEqual(tx.logs[0].event, 'VotingClaim');
+      assert.deepEqual(tx.logs[0].args._proposalId, proposals[1].id);
+      assert.deepEqual(tx.logs[0].args._votingRound, bN(1));
+      assert.deepEqual(tx.logs[0].args._result, true);
 
       // check bonus reputation awarded
       const bonusRP = getBonusReputation(
@@ -2224,12 +2257,18 @@ contract('Dao', function (accounts) {
       assert.deepEqual(claimResult[1], true);
 
       // claim the proposal
-      await contracts.daoVotingClaims.claimProposalVotingResult(
+      const tx = await contracts.daoVotingClaims.claimProposalVotingResult(
         proposals[0].id,
         bN(1),
         bN(10),
         { from: addressOf.allParticipants[5] },
       );
+
+      // verify event logs
+      assert.deepEqual(tx.logs[0].event, 'VotingClaim');
+      assert.deepEqual(tx.logs[0].args._proposalId, proposals[0].id);
+      assert.deepEqual(tx.logs[0].args._votingRound, bN(1));
+      assert.deepEqual(tx.logs[0].args._result, false);
 
       // proposal voting round is failed
       assert.deepEqual(await contracts.daoStorage.readProposalVotingResult.call(proposals[0].id, bN(1)), false);
@@ -3088,6 +3127,10 @@ contract('Dao', function (accounts) {
       const tx = await contracts.dao.closeProposal(proposals[0].id, { from: proposals[0].proposer, gasPrice: price });
       const gasUsed = tx.receipt.gasUsed * price;
 
+      // verify event logs
+      assert.deepEqual(tx.logs[0].event, 'CloseProposal');
+      assert.deepEqual(tx.logs[0].args._proposalId, proposals[0].id);
+
       // verify that the proposal state is now closed, and it is added to the list of closed proposals
       const readProposal = await contracts.daoStorage.readProposal.call(proposals[0].id);
       assert.deepEqual(readProposal[3], paddedHex(web3, proposalStates(bN).PROPOSAL_STATE_CLOSED));
@@ -3171,10 +3214,16 @@ contract('Dao', function (accounts) {
         [proposals[0].id, proposals[1].id],
         { from: addressOf.founderBadgeHolder },
       ));
-      await contracts.dao.founderCloseProposals(
+      const tx = await contracts.dao.founderCloseProposals(
         [proposals[0].id, proposals[1].id],
         { from: addressOf.founderBadgeHolder },
       );
+
+      // verify event logs
+      tx.logs.forEach((log, i) => {
+        assert.deepEqual(log.event, 'CloseProposal');
+        assert.deepEqual(log.args._proposalId, proposals[i].id);
+      });
 
       // verify that the state of these proposals is closed
       const readProposal0 = await contracts.daoStorage.readProposal(proposals[0].id);

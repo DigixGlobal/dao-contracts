@@ -4,7 +4,7 @@ import "./../common/DaoCommon.sol";
 
 contract DaoSpecialProposal is DaoCommon {
 
-    event StartSpecialProposal(bytes32 _specialProposalId);
+    event StartSpecialProposal(bytes32 indexed _specialProposalId, uint256 _startTime);
 
     constructor(address _resolver) public {
         require(init(CONTRACT_DAO_SPECIAL_PROPOSAL, _resolver));
@@ -57,6 +57,6 @@ contract DaoSpecialProposal is DaoCommon {
         require(getTimeLeftInQuarter(now) > getUintConfig(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
         daoSpecialStorage().setVotingTime(_proposalId, now);
 
-        emit StartSpecialProposal(_proposalId);
+        emit StartSpecialProposal(_proposalId, now);
     }
 }
