@@ -58,7 +58,6 @@ contract DaoConstants {
     bytes32 CONTRACT_STORAGE_DAO_REWARDS = "storage:dao:rewards";
     bytes32 CONTRACT_STORAGE_DAO_WHITELISTING = "storage:dao:whitelisting";
     bytes32 CONTRACT_STORAGE_INTERMEDIATE_RESULTS = "storage:intermediate:results";
-    bytes32 CONTRACT_STORAGE_DAO_COLLATERAL = "storage:dao:collateral";
 
     bytes32 CONTRACT_DGD_TOKEN = "t:dgd";
     bytes32 CONTRACT_DGX_TOKEN = "t:dgx";
@@ -144,7 +143,7 @@ contract DaoConstants {
 
     bytes32 CONFIG_VOTE_CLAIMING_DEADLINE = "config_claiming_deadline";
 
-    bytes32 CONFIG_PREPROPOSAL_DEPOSIT = "config_preproposal_deposit";
+    bytes32 CONFIG_PREPROPOSAL_COLLATERAL = "config_preproposal_collateral";
 
     bytes32 CONFIG_MAX_FUNDING_FOR_NON_DIGIX = "config_max_funding_nonDigix";
     bytes32 CONFIG_MAX_MILESTONES_FOR_NON_DIGIX = "config_max_milestones_nonDigix";

@@ -443,7 +443,7 @@ contract DaoVotingClaims is DaoCommon {
 
         for (uint256 i = 0; i < _n; i++) {
             if (isParticipant(_voters[i])) { // only give bonus reputation to current participants
-                daoPointsStorage().addReputation(_voters[i], _bonus);
+                daoPointsStorage().increaseReputation(_voters[i], _bonus);
             }
         }
     }

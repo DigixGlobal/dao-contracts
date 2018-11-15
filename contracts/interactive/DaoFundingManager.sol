@@ -108,7 +108,7 @@ contract DaoFundingManager is DaoCommon {
     @notice Payable fallback function to receive ETH funds from DigixDAO crowdsale contract
     @dev this contract can only receive funds from FUNDING_SOURCE address or CONTRACT_DAO (when proposal is created)
     */
-    function () payable external {
+    function () external payable {
         require(
             (msg.sender == FUNDING_SOURCE) ||
             (msg.sender == get_contract(CONTRACT_DAO))

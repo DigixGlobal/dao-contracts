@@ -114,7 +114,7 @@ contract Dao is DaoCommon {
 
     /**
     @notice Submit a new preliminary idea / Pre-proposal
-    @dev The proposer has to send in a collateral == getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT)
+    @dev The proposer has to send in a collateral == getUintConfig(CONFIG_PREPROPOSAL_COLLATERAL)
          which he could claim back in these scenarios:
           - Before the proposal is finalized, by calling closeProposal()
           - After all milestones are done and the final voting round is passed
@@ -135,7 +135,7 @@ contract Dao is DaoCommon {
         senderCanDoProposerOperations();
         bool _isFounder = is_founder();
 
-        require(msg.value == getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT));
+        require(msg.value == getUintConfig(CONFIG_PREPROPOSAL_COLLATERAL));
         require(address(daoFundingManager()).call.value(msg.value)());
 
         checkNonDigixFundings(_milestonesFundings, _finalReward);

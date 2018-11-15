@@ -89,7 +89,7 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
     }
 
     /// @notice add reputation points for a _participant
-    function addReputation(address _participant, uint256 _point)
+    function increaseReputation(address _participant, uint256 _point)
         public
         returns (uint256 _newPoint, uint256 _totalPoint)
     {
@@ -102,7 +102,7 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
     }
 
     /// @notice subtract reputation points for a _participant
-    function subtractReputation(address _participant, uint256 _point)
+    function reduceReputation(address _participant, uint256 _point)
         public
         returns (uint256 _newPoint, uint256 _totalPoint)
     {

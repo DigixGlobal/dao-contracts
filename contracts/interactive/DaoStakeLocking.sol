@@ -101,7 +101,7 @@ contract DaoStakeLocking is DaoCommon {
         );
 
         daoStakeStorage().redeemBadge(msg.sender);
-        daoPointsStorage().addReputation(msg.sender, getUintConfig(CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE));
+        daoPointsStorage().increaseReputation(msg.sender, getUintConfig(CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE));
 
         // update moderator status
         StakeInformation memory _info = getStakeInformation(msg.sender);
@@ -383,11 +383,11 @@ contract DaoStakeLocking is DaoCommon {
 
         // for carbon voting 1, if voted, give out a bonus
         if (NumberCarbonVoting(carbonVoting1).voted(_user)) {
-            daoPointsStorage().addReputation(_user, getUintConfig(CONFIG_CARBON_VOTE_REPUTATION_BONUS));
+            daoPointsStorage().increaseReputation(_user, getUintConfig(CONFIG_CARBON_VOTE_REPUTATION_BONUS));
         }
         // for carbon voting 2, if voted, give out a bonus
         if (NumberCarbonVoting(carbonVoting2).voted(_user)) {
-            daoPointsStorage().addReputation(_user, getUintConfig(CONFIG_CARBON_VOTE_REPUTATION_BONUS));
+            daoPointsStorage().increaseReputation(_user, getUintConfig(CONFIG_CARBON_VOTE_REPUTATION_BONUS));
         }
 
         // we changed reputation, so we need to update the last quarter that reputation was updated
