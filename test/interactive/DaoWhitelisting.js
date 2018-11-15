@@ -43,10 +43,10 @@ contract('DaoWhitelisting', function (accounts) {
     await contracts.daoIdentity.addGroupUser(bN(3), addressOf.prl, 'prl:added');
 
     // register interactives
-    await contracts.resolver.register_contract('dao:voting:claims', addressOf.root);
-    await contracts.resolver.register_contract('dao:voting', addressOf.root);
-    await contracts.resolver.register_contract('dao', addressOf.root);
-    await contracts.resolver.register_contract('dao:special:proposal', addressOf.root);
+    await contracts.resolver.init_register_contract('dao:voting:claims', addressOf.root);
+    await contracts.resolver.init_register_contract('dao:voting', addressOf.root);
+    await contracts.resolver.init_register_contract('dao', addressOf.root);
+    await contracts.resolver.init_register_contract('dao:special:proposal', addressOf.root);
 
     // deploy
     contracts.whitelistedContracts = [];

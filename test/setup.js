@@ -179,7 +179,7 @@ const registerInteractive = async function (resolver, addressOf) {
     'dao:rewards-manager',
     'dao:whitelisting',
   ];
-  await a.map(callingKeys, 10, key => resolver.register_contract(key, addressOf.root));
+  await a.map(callingKeys, 10, key => resolver.init_register_contract(key, addressOf.root));
 };
 
 // Deploy service layer contracts

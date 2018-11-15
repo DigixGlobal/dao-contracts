@@ -136,7 +136,7 @@ contract Dao is DaoCommon {
         bool _isFounder = is_founder();
 
         require(msg.value == getUintConfig(CONFIG_PREPROPOSAL_COLLATERAL));
-        require(address(daoFundingManager()).call.value(msg.value)());
+        require(address(daoFundingManager()).call.gas(25000).value(msg.value)());
 
         checkNonDigixFundings(_milestonesFundings, _finalReward);
 
