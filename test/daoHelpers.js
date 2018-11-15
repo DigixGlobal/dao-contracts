@@ -53,9 +53,9 @@ const quarters = {
   QUARTER_3: 3,
 };
 
-const assertQuarter = function (timeNow, startOfDao, lockingPhaseDuration, quarterDuration, quarterId) {
+const assertQuarter = function (timeNow, startOfDao, lockingPhaseDuration, quarterDuration, _quarterNumber) {
   const quarterNow = Math.floor((timeNow - startOfDao) / quarterDuration) + 1;
-  assert.strictEqual(quarterId, quarterNow);
+  assert.strictEqual(_quarterNumber, quarterNow);
 };
 
 // Locking phase : 1

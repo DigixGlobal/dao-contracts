@@ -13,10 +13,10 @@ contract DaoProposalCounterStorage is ResolverClient, DaoConstants {
     // this is to take care of the cap on the number of funded proposals in a quarter
     mapping (uint256 => uint256) public proposalCountByQuarter;
 
-    function addNonDigixProposalCountInQuarter(uint256 _quarterIndex)
+    function addNonDigixProposalCountInQuarter(uint256 _quarterNumber)
         public
     {
         require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
-        proposalCountByQuarter[_quarterIndex] = proposalCountByQuarter[_quarterIndex].add(1);
+        proposalCountByQuarter[_quarterNumber] = proposalCountByQuarter[_quarterNumber].add(1);
     }
 }

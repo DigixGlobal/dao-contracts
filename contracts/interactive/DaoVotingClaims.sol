@@ -260,7 +260,7 @@ contract DaoVotingClaims is DaoCommon {
         bool _isDigixProposal;
         (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
         if (_index == 0 && !_isDigixProposal) {
-            daoProposalCounterStorage().addNonDigixProposalCountInQuarter(currentQuarterIndex());
+            daoProposalCounterStorage().addNonDigixProposalCountInQuarter(currentQuarterNumber());
         }
 
         // Add quarter point for the proposer
@@ -268,7 +268,7 @@ contract DaoVotingClaims is DaoCommon {
         daoPointsStorage().addQuarterPoint(
             daoStorage().readProposalProposer(_proposalId),
             getUintConfig(CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH).mul(_funding).div(10000 ether),
-            currentQuarterIndex()
+            currentQuarterNumber()
         );
     }
 

@@ -523,10 +523,10 @@ const fundDao = async function (web3, accounts, contracts) {
 };
 
 // this function provides a hypothetical startOfFirstQuarter value
-// for the DAO to be in the _phase phase of _quarterIndex quarter
-const getStartOfFirstQuarterFor = function (_quarterIndex, _phase, _lockingPhaseDuration, _quarterDuration, _timeNow, bN) {
-  const _gap = (_phase === phases.LOCKING_PHASE) ? _quarterDuration.times(_quarterIndex.minus(bN(1))) :
-    (_quarterDuration.times(_quarterIndex.minus(bN(1)))).plus(_lockingPhaseDuration);
+// for the DAO to be in the _phase phase of _quarterNumber quarter
+const getStartOfFirstQuarterFor = function (_quarterNumber, _phase, _lockingPhaseDuration, _quarterDuration, _timeNow, bN) {
+  const _gap = (_phase === phases.LOCKING_PHASE) ? _quarterDuration.times(_quarterNumber.minus(bN(1))) :
+    (_quarterDuration.times(_quarterNumber.minus(bN(1)))).plus(_lockingPhaseDuration);
   const _startOfFirstQuarter = _timeNow.minus(_gap.plus(bN(1)));
   return _startOfFirstQuarter;
 };
@@ -539,8 +539,8 @@ const setStartOfFirstQuarterTo = async function (contracts, addressOf, startOfFi
 
 // set the dgx distribution of a quarter to given time
 // dummy mark the start of quarter
-const initQuarter = async function (contracts, quarterIndex, dgxDistributionDay) {
-  await contracts.daoRewardsStorage.mock_set_dgx_distribution_day(quarterIndex, dgxDistributionDay);
+const initQuarter = async function (contracts, _quarterNumber, dgxDistributionDay) {
+  await contracts.daoRewardsStorage.mock_set_dgx_distribution_day(_quarterNumber, dgxDistributionDay);
 };
 
 const printParticipantDetails = async (bN, contracts, address) => {
@@ -562,7 +562,7 @@ const printParticipantDetails = async (bN, contracts, address) => {
 
 const printDaoDetails = async (bN, contracts) => {
   console.log('\tPrinting DAO details');
-  const qIndex = await contracts.daoFundingManager.currentQuarterIndex.call();
+  const qIndex = await contracts.daoFundingManager.currentQuarterNumber.call();
   console.log('\t\tCurrent Quarter: ', qIndex);
   console.log('\t\tisLockingPhase? ', await contracts.daoFundingManager.isLockingPhase.call());
   console.log('\t\tDGX distribution day: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex));
@@ -571,7 +571,7 @@ const printDaoDetails = async (bN, contracts) => {
 };
 
 const printBadgeHolderDetails = async (contracts, addressOf) => {
-  console.log('\tCurrent Quarter = ', await contracts.dao.currentQuarterIndex.call());
+  console.log('\tCurrent Quarter = ', await contracts.dao.currentQuarterNumber.call());
   for (const index of indexRange(0, 4)) {
     const participant = addressOf.badgeHolders[index];
     console.log(`\tPrinting details for badgeHolders[${index}]`);
@@ -584,7 +584,7 @@ const printBadgeHolderDetails = async (contracts, addressOf) => {
 };
 
 const printHolderDetails = async (contracts, addressOf) => {
-  console.log('\tCurrent Quarter = ', await contracts.dao.currentQuarterIndex.call());
+  console.log('\tCurrent Quarter = ', await contracts.dao.currentQuarterNumber.call());
   for (const index of indexRange(0, 5)) {
     const participant = addressOf.dgdHolders[index];
     console.log(`\tPrinting details for dgdHolders[${index}]`);

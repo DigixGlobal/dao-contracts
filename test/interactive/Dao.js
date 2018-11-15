@@ -1158,10 +1158,10 @@ contract('Dao', function (accounts) {
       )));
     });
     it('[valid vote]: success | verify read functions', async function () {
-      const currentQuarterIndex = bN(1);
+      const currentQuarterNumber = bN(1);
       // note the moderator quarter points before voting in this draft voting round
-      const qpBefore0 = await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[0], currentQuarterIndex);
-      const qpBefore1 = await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[1], currentQuarterIndex);
+      const qpBefore0 = await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[0], currentQuarterNumber);
+      const qpBefore1 = await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[1], currentQuarterNumber);
 
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
       // put votes
@@ -1215,19 +1215,19 @@ contract('Dao', function (accounts) {
 
       // read quarter points
       assert.deepEqual(
-        await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[0], currentQuarterIndex),
+        await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[0], currentQuarterNumber),
         qpBefore0.plus(daoConstantsValues(bN).CONFIG_QUARTER_POINT_DRAFT_VOTE.times(bN(2))),
       );
       assert.deepEqual(
-        await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[1], currentQuarterIndex),
+        await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[1], currentQuarterNumber),
         qpBefore1.plus(daoConstantsValues(bN).CONFIG_QUARTER_POINT_DRAFT_VOTE.times(bN(2))),
       );
     });
     it('[modify votes]: success | verify read functions', async function () {
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
-      const currentQuarterIndex = bN(1);
-      const qpBefore0 = await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[0], currentQuarterIndex);
-      const qpBefore1 = await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[1], currentQuarterIndex);
+      const currentQuarterNumber = bN(1);
+      const qpBefore0 = await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[0], currentQuarterNumber);
+      const qpBefore1 = await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[1], currentQuarterNumber);
 
       await contracts.daoVoting.voteOnDraft(
         proposals[0].id,
@@ -1257,8 +1257,8 @@ contract('Dao', function (accounts) {
       assert.deepEqual(count1[0], participants[1].dgdToLock);
       assert.deepEqual(count1[1], participants[0].dgdToLock);
 
-      assert.deepEqual(await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[0], currentQuarterIndex), qpBefore0);
-      assert.deepEqual(await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[1], currentQuarterIndex), qpBefore1);
+      assert.deepEqual(await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[0], currentQuarterNumber), qpBefore0);
+      assert.deepEqual(await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.badgeHolders[1], currentQuarterNumber), qpBefore1);
 
       // now vote back true so that proposals[0] can pass
       await contracts.daoVoting.voteOnDraft(
@@ -1797,9 +1797,9 @@ contract('Dao', function (accounts) {
     });
     it('[reveal successfully]: verify read functions', async function () {
       // read info before
-      const quarterIndex = bN(1);
-      const qpBefore0 = await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.allParticipants[0], quarterIndex);
-      const qpBefore1 = await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.allParticipants[1], quarterIndex);
+      const _quarterNumber = bN(1);
+      const qpBefore0 = await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.allParticipants[0], _quarterNumber);
+      const qpBefore1 = await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.allParticipants[1], _quarterNumber);
 
       // reveal correctly
       await contracts.daoVoting.revealVoteOnProposal(
@@ -1828,8 +1828,8 @@ contract('Dao', function (accounts) {
 
       // check quarter point
       const additionQP = daoConstantsValues(bN).CONFIG_QUARTER_POINT_VOTE;
-      assert.deepEqual(await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.allParticipants[0], quarterIndex), qpBefore0.plus(additionQP));
-      assert.deepEqual(await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.allParticipants[1], quarterIndex), qpBefore1.plus(additionQP));
+      assert.deepEqual(await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.allParticipants[0], _quarterNumber), qpBefore0.plus(additionQP));
+      assert.deepEqual(await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.allParticipants[1], _quarterNumber), qpBefore1.plus(additionQP));
 
       await contracts.daoVoting.revealVoteOnProposal(
         proposals[3].id,

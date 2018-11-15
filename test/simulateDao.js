@@ -624,13 +624,13 @@ module.exports = async function () {
 
     // wait for the quarter to end
     await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE, quarters.QUARTER_2);
-    console.log('in the second quarter (quarterId = 2), locking phase');
+    console.log('in the second quarter (_quarterNumber = 2), locking phase');
 
     // call the global rewards calculation
     await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(200 * (10 ** 9)));
     console.log('transferred dgx to rewards manager');
     await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(50), { from: addressOf.founderBadgeHolder });
-    console.log('updated the rewards for previous quarter (quarterId = 1)');
+    console.log('updated the rewards for previous quarter (_quarterNumber = 1)');
     console.log('DGX rewards pool = ', await contracts.daoRewardsStorage.readRewardsPoolOfLastQuarter.call(2));
     console.log('totalEffectiveDGDLastQuarter = ', await contracts.daoRewardsStorage.readTotalEffectiveDGDLastQuarter.call(2));
     console.log('totalEffectiveModeratorDGDLastQuarter = ', await contracts.daoRewardsStorage.readTotalEffectiveModeratorDGDLastQuarter.call(2));
@@ -670,7 +670,7 @@ module.exports = async function () {
     console.log('claimed all dgxs');
 
     await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_2, web3);
-    console.log('in the second quarter (quarterId = 2), main phase');
+    console.log('in the second quarter (_quarterNumber = 2), main phase');
 
     // create some fake proposals to draft vote on
     await finishMilestones(contracts);
@@ -692,12 +692,12 @@ module.exports = async function () {
     console.log('claimed funding after interim voting phase');
 
     await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE, quarters.QUARTER_3, web3);
-    console.log('in the third quarter (quarterId = 3), locking phase');
+    console.log('in the third quarter (_quarterNumber = 3), locking phase');
 
     await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(25 * (10 ** 9)));
     console.log('transferred dgx to rewards manager');
     await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(50), { from: addressOf.founderBadgeHolder });
-    console.log('updated the rewards for previous quarter (quarterId = 2)');
+    console.log('updated the rewards for previous quarter (_quarterNumber = 2)');
 
     await confirmContinuedParticipation(contracts, addressOf);
     console.log('confirmed participation of all members');

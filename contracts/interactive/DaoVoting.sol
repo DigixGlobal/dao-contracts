@@ -36,7 +36,7 @@ contract DaoVoting is DaoCommon {
         daoStorage().addDraftVote(_proposalId, _moderator, _vote, _moderatorStake);
 
         if (_voteWeight == 0) { // just voted the first time
-            daoPointsStorage().addModeratorQuarterPoint(_moderator, getUintConfig(CONFIG_QUARTER_POINT_DRAFT_VOTE), currentQuarterIndex());
+            daoPointsStorage().addModeratorQuarterPoint(_moderator, getUintConfig(CONFIG_QUARTER_POINT_DRAFT_VOTE), currentQuarterNumber());
         }
     }
 
@@ -80,7 +80,7 @@ contract DaoVoting is DaoCommon {
         require(isParticipant(msg.sender));
         require(keccak256(abi.encodePacked(msg.sender, _vote, _salt)) == daoSpecialStorage().readComittedVote(_proposalId, msg.sender));
         daoSpecialStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().lockedDGDStake(msg.sender));
-        daoPointsStorage().addQuarterPoint(msg.sender, getUintConfig(CONFIG_QUARTER_POINT_VOTE), currentQuarterIndex());
+        daoPointsStorage().addQuarterPoint(msg.sender, getUintConfig(CONFIG_QUARTER_POINT_VOTE), currentQuarterNumber());
     }
 
 
@@ -127,7 +127,7 @@ contract DaoVoting is DaoCommon {
         daoPointsStorage().addQuarterPoint(
             msg.sender,
             getUintConfig(_index == 0 ? CONFIG_QUARTER_POINT_VOTE : CONFIG_QUARTER_POINT_INTERIM_VOTE),
-            currentQuarterIndex()
+            currentQuarterNumber()
         );
     }
 }

@@ -327,7 +327,7 @@ contract('DaoStakeLocking', function (accounts) {
       // make sure its locking phase and dgdHolder2 is a participant already
       // assert(await a.failure(contracts.daoStakeLocking.isMainPhase.call()));
       // assert.deepEqual(await contracts.daoStakeLocking.isLockingPhase.call(), true);
-      // because currentQuarterIndex() is now +1 the lastParticipatedQuarter
+      // because currentQuarterNumber() is now +1 the lastParticipatedQuarter
       assert.deepEqual(await contracts.daoStakeLocking.isParticipant.call(addressOf.dgdHolders[1]), false);
       // if this amount is withdrawn, there will still be enough for dgdHolder2 to be participant
       const withdrawAmount = lockedAmount[0].minus(daoConstantsValues(bN).CONFIG_MINIMUM_LOCKED_DGD);
@@ -392,7 +392,7 @@ contract('DaoStakeLocking', function (accounts) {
     before(async function () {
       await resetBeforeEach();
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
-      // console.log('1. current quarter = ', await contracts.dao.currentQuarterIndex.call());
+      // console.log('1. current quarter = ', await contracts.dao.currentQuarterNumber.call());
 
       await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(15 * (10 ** 9)));
       await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(30), { from: addressOf.founderBadgeHolder });
@@ -412,7 +412,7 @@ contract('DaoStakeLocking', function (accounts) {
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
       await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(15 * (10 ** 9)));
       await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(30), { from: addressOf.founderBadgeHolder });
-      // console.log('2. Calculated global ,current quarter = ', await contracts.dao.currentQuarterIndex.call());
+      // console.log('2. Calculated global ,current quarter = ', await contracts.dao.currentQuarterNumber.call());
     });
     afterEach(async () => {
       await checkDgdStakeConsistency(contracts, bN);
