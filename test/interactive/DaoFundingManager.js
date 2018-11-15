@@ -59,8 +59,8 @@ contract('DaoFundingManager', function (accounts) {
     await kycApproveUser(addressOf.dgdHolders[2]);
     await kycApproveUser(addressOf.dgdHolders[3]);
 
-    await contracts.resolver.register_contract('dao:voting:claims', addressOf.root);
-    await contracts.resolver.register_contract('dao', addressOf.root);
+    await contracts.resolver.init_register_contract('dao:voting:claims', addressOf.root);
+    await contracts.resolver.init_register_contract('dao', addressOf.root);
     await fundDao(addressOf.founderBadgeHolder, web3.toWei(1000, 'ether'));
   };
 

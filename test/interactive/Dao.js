@@ -191,6 +191,7 @@ contract('Dao', function (accounts) {
       assert.deepEqual(await contracts.daoStorage.readProposalCollateralStatus.call(proposalId), collateralStatus(bN).COLLATERAL_STATUS_UNLOCKED);
     });
     it('[valid inputs]: success | verify read functions', async function () {
+      const daoBalanceBefore = await web3.eth.getBalance(contracts.daoFundingManager.address);
       await contracts.dao.submitPreproposal(
         proposals[0].id,
         proposals[0].versions[0].milestoneFundings,
@@ -213,6 +214,12 @@ contract('Dao', function (accounts) {
       assert.deepEqual(readProposal[5], bN(1));
       assert.deepEqual(readProposal[6], proposals[0].id);
       assert.deepEqual(readProposal[9], false); // not digix proposal
+
+      // daoFundingManager should have more ethers (per proposal * 2 proposals)
+      assert.deepEqual(
+        await web3.eth.getBalance(contracts.daoFundingManager.address),
+        daoBalanceBefore.plus(daoConstantsValues(bN).CONFIG_PREPROPOSAL_COLLATERAL.times(bN(2))),
+      );
     });
     it('[not main phase]: revert', async function () {
       await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
