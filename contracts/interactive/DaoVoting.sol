@@ -16,11 +16,11 @@ contract DaoVoting is DaoCommon {
     /**
     @notice Function to vote on draft proposal (only Moderators can vote)
     @param _proposalId ID of the proposal
-    @param _voteYes Boolean, true if voting for, false if voting against
+    @param _vote Boolean, true if voting for, false if voting against
     */
     function voteOnDraft(
         bytes32 _proposalId,
-        bool _voteYes
+        bool _vote
     )
         public
         ifDraftVotingPhase(_proposalId)
@@ -33,7 +33,7 @@ contract DaoVoting is DaoCommon {
         uint256 _voteWeight;
         (,_voteWeight) = daoStorage().readDraftVote(_proposalId, _moderator);
 
-        daoStorage().addDraftVote(_proposalId, _moderator, _voteYes, _moderatorStake);
+        daoStorage().addDraftVote(_proposalId, _moderator, _vote, _moderatorStake);
 
         if (_voteWeight == 0) { // just voted the first time
             daoPointsStorage().addModeratorQuarterPoint(_moderator, getUintConfig(CONFIG_QUARTER_POINT_DRAFT_VOTE), currentQuarterIndex());

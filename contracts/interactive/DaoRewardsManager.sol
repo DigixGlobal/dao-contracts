@@ -213,7 +213,7 @@ contract DaoRewardsManager is DaoRewardsManagerCommon {
                 .add(getUintConfig(CONFIG_PUNISHMENT_FOR_NOT_LOCKING))
             );
 
-        if (_reputationDeduction > 0) daoPointsStorage().subtractReputation(_user, _reputationDeduction);
+        if (_reputationDeduction > 0) daoPointsStorage().reduceReputation(_user, _reputationDeduction);
         daoRewardsStorage().updateLastQuarterThatReputationWasUpdated(_user, currentQuarterIndex().sub(1));
     }
 
@@ -235,14 +235,14 @@ contract DaoRewardsManager is DaoRewardsManagerCommon {
                 .mul(_maxRPDeduction)
                 .div(_minimalQP);
 
-            daoPointsStorage().subtractReputation(_user, _reputationDeduction);
+            daoPointsStorage().reduceReputation(_user, _reputationDeduction);
         } else {
             _reputationAddition =
                 _userQP.sub(_minimalQP)
                 .mul(_rpPerExtraQP_num)
                 .div(_rpPerExtraQP_den);
 
-            daoPointsStorage().addReputation(_user, _reputationAddition);
+            daoPointsStorage().increaseReputation(_user, _reputationAddition);
         }
     }
 
@@ -317,8 +317,8 @@ contract DaoRewardsManager is DaoRewardsManagerCommon {
          totalEffectiveDGDLastQuarter
     */
     function calculateGlobalRewardsBeforeNewQuarter(uint256 _operations)
-        if_founder()
         public
+        if_founder()
         returns (bool _done)
     {
         require(isDaoNotReplaced());

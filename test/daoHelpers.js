@@ -148,7 +148,7 @@ const daoConstantsKeys = function () {
     CONFIG_MAX_FUNDING_FOR_NON_DIGIX: 'config_max_funding_nonDigix',
     CONFIG_MAX_MILESTONES_FOR_NON_DIGIX: 'config_max_milestones_nonDigix',
     CONFIG_PROPOSAL_DEAD_DURATION: 'config_dead_duration',
-    CONFIG_PREPROPOSAL_DEPOSIT: 'config_preproposal_deposit',
+    CONFIG_PREPROPOSAL_COLLATERAL: 'config_preproposal_collateral',
   };
 };
 
@@ -211,7 +211,7 @@ const daoConstantsValues = function (bN) {
     CONFIG_MAX_FUNDING_FOR_NON_DIGIX: bN(20 * (10 ** 18)),
     CONFIG_MAX_MILESTONES_FOR_NON_DIGIX: bN(2),
     CONFIG_PROPOSAL_DEAD_DURATION: bN(15552000),
-    CONFIG_PREPROPOSAL_DEPOSIT: bN(2 * (10 ** 18)),
+    CONFIG_PREPROPOSAL_COLLATERAL: bN(2 * (10 ** 18)),
   };
 };
 

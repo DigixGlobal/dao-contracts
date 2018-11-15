@@ -93,7 +93,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_MINIMUM_DGD_FOR_MODERATOR] = 100 * (10 ** 9);
         uintConfigs[CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR] = 100;
 
-        uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT] = 2 ether;
+        uintConfigs[CONFIG_PREPROPOSAL_COLLATERAL] = 2 ether;
 
         uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX] = 20 ether;
         uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX] = 2;
@@ -164,7 +164,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_MINIMUM_LOCKED_DGD] = _uintConfigs[50];
         uintConfigs[CONFIG_MINIMUM_DGD_FOR_MODERATOR] = _uintConfigs[51];
         uintConfigs[CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR] = _uintConfigs[52];
-        uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT] = _uintConfigs[53];
+        uintConfigs[CONFIG_PREPROPOSAL_COLLATERAL] = _uintConfigs[53];
         uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX] = _uintConfigs[54];
         uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX] = _uintConfigs[55];
         uintConfigs[CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER] = _uintConfigs[56];
@@ -231,7 +231,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         _uintConfigs[50] = uintConfigs[CONFIG_MINIMUM_LOCKED_DGD];
         _uintConfigs[51] = uintConfigs[CONFIG_MINIMUM_DGD_FOR_MODERATOR];
         _uintConfigs[52] = uintConfigs[CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR];
-        _uintConfigs[53] = uintConfigs[CONFIG_PREPROPOSAL_DEPOSIT];
+        _uintConfigs[53] = uintConfigs[CONFIG_PREPROPOSAL_COLLATERAL];
         _uintConfigs[54] = uintConfigs[CONFIG_MAX_FUNDING_FOR_NON_DIGIX];
         _uintConfigs[55] = uintConfigs[CONFIG_MAX_MILESTONES_FOR_NON_DIGIX];
         _uintConfigs[56] = uintConfigs[CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER];

@@ -118,7 +118,7 @@ library DaoStructs {
         bool isDigix;
 
         // Every proposal has a collateral tied to it with a value of
-        // get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT) (refer "./../storage/DaoConfigsStorage.sol")
+        // get_uint_config(CONFIG_PREPROPOSAL_COLLATERAL) (refer "./../storage/DaoConfigsStorage.sol")
         // Collateral can be in different states
         // refer COLLATERAL_STATUS_* in "./../common/DaoConstants.sol"
         uint256 collateralStatus;
