@@ -71,9 +71,9 @@ contract DaoCommonMini is IdentityCommon {
     @notice Check if the calculateGlobalRewardsBeforeNewQuarter function has been done for a certain quarter
     @dev However, there is no need to run calculateGlobalRewardsBeforeNewQuarter for the first quarter
     */
-    modifier ifGlobalRewardsSet(uint256 _quarterIndex) {
-        if (_quarterIndex > 1) {
-            require(daoRewardsStorage().readDgxDistributionDay(_quarterIndex) > 0);
+    modifier ifGlobalRewardsSet(uint256 _quarterNumber) {
+        if (_quarterNumber > 1) {
+            require(daoRewardsStorage().readDgxDistributionDay(_quarterNumber) > 0);
         }
         _;
     }
@@ -93,14 +93,14 @@ contract DaoCommonMini is IdentityCommon {
     /**
     @notice Get the current quarter index
     @dev Quarter indexes starts from 1
-    @return _quarterIndex the current quarter index
+    @return _quarterNumber the current quarter index
     */
-    function currentQuarterIndex()
+    function currentQuarterNumber()
         public
         view
-        returns(uint256 _quarterIndex)
+        returns(uint256 _quarterNumber)
     {
-        _quarterIndex = getQuarterIndex(now);
+        _quarterNumber = getQuarterNumber(now);
     }
 
     /**
@@ -108,7 +108,7 @@ contract DaoCommonMini is IdentityCommon {
     @dev Quarter indexes starts from 1
     @return _index the quarter index
     */
-    function getQuarterIndex(uint256 _time)
+    function getQuarterNumber(uint256 _time)
         internal
         view
         returns (uint256 _index)

@@ -88,7 +88,7 @@ contract Dao is DaoCommon {
     )
         public
         if_root()
-        ifGlobalRewardsSet(currentQuarterIndex())
+        ifGlobalRewardsSet(currentQuarterNumber())
     {
         require(isLockingPhase());
         require(daoUpgradeStorage().isReplacedByNewDao() == false);

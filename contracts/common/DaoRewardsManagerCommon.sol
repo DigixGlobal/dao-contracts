@@ -44,7 +44,7 @@ contract DaoRewardsManagerCommon is DaoCommonMini {
     }
 
     // read the DaoQuarterInfo struct of a certain quarter
-    function readQuarterInfo(uint256 _quarterIndex)
+    function readQuarterInfo(uint256 _quarterNumber)
         internal
         view
         returns (DaoStructs.DaoQuarterInfo _qInfo)
@@ -54,17 +54,17 @@ contract DaoRewardsManagerCommon is DaoCommonMini {
             _qInfo.quarterPointScalingFactor,
             _qInfo.reputationPointScalingFactor,
             _qInfo.totalEffectiveDGDPreviousQuarter
-        ) = daoRewardsStorage().readQuarterParticipantInfo(_quarterIndex);
+        ) = daoRewardsStorage().readQuarterParticipantInfo(_quarterNumber);
         (
             _qInfo.moderatorMinimalParticipationPoint,
             _qInfo.moderatorQuarterPointScalingFactor,
             _qInfo.moderatorReputationPointScalingFactor,
             _qInfo.totalEffectiveModeratorDGDLastQuarter
-        ) = daoRewardsStorage().readQuarterModeratorInfo(_quarterIndex);
+        ) = daoRewardsStorage().readQuarterModeratorInfo(_quarterNumber);
         (
             _qInfo.dgxDistributionDay,
             _qInfo.dgxRewardsPoolLastQuarter,
             _qInfo.sumRewardsFromBeginning
-        ) = daoRewardsStorage().readQuarterGeneralInfo(_quarterIndex);
+        ) = daoRewardsStorage().readQuarterGeneralInfo(_quarterNumber);
     }
 }

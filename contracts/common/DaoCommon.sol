@@ -206,7 +206,7 @@ contract DaoCommon is DaoCommonMini {
         returns (bool _is)
     {
         _is =
-            (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex())
+            (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterNumber())
             && (daoStakeStorage().lockedDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_LOCKED_DGD));
     }
 
@@ -219,7 +219,7 @@ contract DaoCommon is DaoCommonMini {
         returns (bool _is)
     {
         _is =
-            (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex())
+            (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterNumber())
             && (daoStakeStorage().lockedDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_DGD_FOR_MODERATOR))
             && (daoPointsStorage().getReputation(_user) >= getUintConfig(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR));
     }
@@ -298,7 +298,7 @@ contract DaoCommon is DaoCommonMini {
         (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
         _withinLimit = true;
         if (!_isDigixProposal) {
-            _withinLimit = daoProposalCounterStorage().proposalCountByQuarter(currentQuarterIndex()) < getUintConfig(CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER);
+            _withinLimit = daoProposalCounterStorage().proposalCountByQuarter(currentQuarterNumber()) < getUintConfig(CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER);
         }
     }
 

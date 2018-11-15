@@ -97,7 +97,7 @@ contract DaoStakeLocking is DaoCommon {
 
         // Note that after lockDGD/withdrawDGD/confirmContinuedParticipation is called, the reputation is always updated to the previous quarter
         require(
-            daoRewardsStorage().lastQuarterThatReputationWasUpdated(msg.sender) == (currentQuarterIndex() - 1)
+            daoRewardsStorage().lastQuarterThatReputationWasUpdated(msg.sender) == (currentQuarterNumber() - 1)
         );
 
         daoStakeStorage().redeemBadge(msg.sender);
@@ -128,7 +128,7 @@ contract DaoStakeLocking is DaoCommon {
     function lockDGDInternal(uint256 _amount)
         internal
         ifNotContract(msg.sender)
-        ifGlobalRewardsSet(currentQuarterIndex())
+        ifGlobalRewardsSet(currentQuarterNumber())
     {
         StakeInformation memory _info = getStakeInformation(msg.sender);
         StakeInformation memory _newInfo = refreshDGDStake(msg.sender, _info);
@@ -150,7 +150,7 @@ contract DaoStakeLocking is DaoCommon {
         refreshModeratorStatus(msg.sender, _info, _newInfo);
 
         uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(msg.sender);
-        uint256 _currentQuarter = currentQuarterIndex();
+        uint256 _currentQuarter = currentQuarterNumber();
 
         // Note: there might be a case when user locked in very small amount A that is less than Minimum locked DGD
         // then, lock again in the middle of the quarter. This will not take into account that A was staked in earlier. Its as if A is only staked in now.
@@ -200,7 +200,7 @@ contract DaoStakeLocking is DaoCommon {
     */
     function withdrawDGD(uint256 _amount)
         public
-        ifGlobalRewardsSet(currentQuarterIndex())
+        ifGlobalRewardsSet(currentQuarterNumber())
     {
         require(isLockingPhase() || daoUpgradeStorage().isReplacedByNewDao()); // If the DAO is already replaced, everyone is free to withdraw their DGDs anytime
         StakeInformation memory _info = getStakeInformation(msg.sender);
@@ -225,7 +225,7 @@ contract DaoStakeLocking is DaoCommon {
         refreshModeratorStatus(msg.sender, _info, _newInfo);
 
         uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(msg.sender);
-        uint256 _currentQuarter = currentQuarterIndex();
+        uint256 _currentQuarter = currentQuarterNumber();
 
         if (_newInfo.userLockedDGDStake < getUintConfig(CONFIG_MINIMUM_LOCKED_DGD)) { // this participant doesnt have enough DGD to be a participant
             // if this participant has lock/unlock/continue in this quarter before, we need to revert the lastParticipatedQuarter to the previousLastParticipatedQuarter
@@ -291,7 +291,7 @@ contract DaoStakeLocking is DaoCommon {
         _infoAfter.totalLockedDGDStake = _infoBefore.totalLockedDGDStake;
 
         // only need to refresh if this is the first refresh in this new quarter;
-        uint256 _currentQuarter = currentQuarterIndex();
+        uint256 _currentQuarter = currentQuarterNumber();
         if (daoRewardsStorage().lastParticipatedQuarter(_user) < _currentQuarter) {
             _infoAfter.userLockedDGDStake = daoCalculatorService().calculateAdditionalLockedDGDStake(_infoBefore.userActualLockedDGD);
 
@@ -312,7 +312,7 @@ contract DaoStakeLocking is DaoCommon {
     function refreshModeratorStatus(address _user, StakeInformation _infoBefore, StakeInformation _infoAfter)
         internal
     {
-        bool _alreadyParticipatedInThisQuarter = daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex();
+        bool _alreadyParticipatedInThisQuarter = daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterNumber();
         uint256 _currentTotalModeratorLockedDGDs = daoStakeStorage().totalModeratorLockedDGDStake();
 
         if (daoStakeStorage().isInModeratorsList(_user) == true) {
@@ -395,7 +395,7 @@ contract DaoStakeLocking is DaoCommon {
         // Holder A locks DGD for the first time in quarter 5, gets some bonus RP for the carbon votes
         // Then, A withdraw all his DGDs right away. Essentially, he's not participating in quarter 5 anymore
         // Now, when he comes back at quarter 10, he should be deducted reputation for 5 quarters that he didnt participated in: from quarter 5 to quarter 9
-        daoRewardsStorage().updateLastQuarterThatReputationWasUpdated(msg.sender, currentQuarterIndex().sub(1));
+        daoRewardsStorage().updateLastQuarterThatReputationWasUpdated(msg.sender, currentQuarterNumber().sub(1));
 
         // set that this user's carbon voting bonus has been given out
         daoStakeStorage().setCarbonVoteBonusClaimed(_user);

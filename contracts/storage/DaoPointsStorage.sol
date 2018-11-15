@@ -29,63 +29,63 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
         require(init(CONTRACT_STORAGE_DAO_POINTS, _resolver));
     }
 
-    /// @notice add quarter points for a _participant for a _quarterId
-    function addQuarterPoint(address _participant, uint256 _point, uint256 _quarterId)
+    /// @notice add quarter points for a _participant for a _quarterNumber
+    function addQuarterPoint(address _participant, uint256 _point, uint256 _quarterNumber)
         public
         returns (uint256 _newPoint, uint256 _newTotalPoint)
     {
         require(sender_is_from([CONTRACT_DAO_VOTING, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES]));
-        quarterPoint[_quarterId].totalSupply = quarterPoint[_quarterId].totalSupply.add(_point);
-        quarterPoint[_quarterId].balance[_participant] = quarterPoint[_quarterId].balance[_participant].add(_point);
+        quarterPoint[_quarterNumber].totalSupply = quarterPoint[_quarterNumber].totalSupply.add(_point);
+        quarterPoint[_quarterNumber].balance[_participant] = quarterPoint[_quarterNumber].balance[_participant].add(_point);
 
-        _newPoint = quarterPoint[_quarterId].balance[_participant];
-        _newTotalPoint = quarterPoint[_quarterId].totalSupply;
+        _newPoint = quarterPoint[_quarterNumber].balance[_participant];
+        _newTotalPoint = quarterPoint[_quarterNumber].totalSupply;
     }
 
-    function addModeratorQuarterPoint(address _participant, uint256 _point, uint256 _quarterId)
+    function addModeratorQuarterPoint(address _participant, uint256 _point, uint256 _quarterNumber)
         public
         returns (uint256 _newPoint, uint256 _newTotalPoint)
     {
         require(sender_is_from([CONTRACT_DAO_VOTING, CONTRACT_DAO_VOTING_CLAIMS, EMPTY_BYTES]));
-        quarterModeratorPoint[_quarterId].totalSupply = quarterModeratorPoint[_quarterId].totalSupply.add(_point);
-        quarterModeratorPoint[_quarterId].balance[_participant] = quarterModeratorPoint[_quarterId].balance[_participant].add(_point);
+        quarterModeratorPoint[_quarterNumber].totalSupply = quarterModeratorPoint[_quarterNumber].totalSupply.add(_point);
+        quarterModeratorPoint[_quarterNumber].balance[_participant] = quarterModeratorPoint[_quarterNumber].balance[_participant].add(_point);
 
-        _newPoint = quarterModeratorPoint[_quarterId].balance[_participant];
-        _newTotalPoint = quarterModeratorPoint[_quarterId].totalSupply;
+        _newPoint = quarterModeratorPoint[_quarterNumber].balance[_participant];
+        _newTotalPoint = quarterModeratorPoint[_quarterNumber].totalSupply;
     }
 
-    /// @notice get quarter points for a _participant in a _quarterId
-    function getQuarterPoint(address _participant, uint256 _quarterId)
+    /// @notice get quarter points for a _participant in a _quarterNumber
+    function getQuarterPoint(address _participant, uint256 _quarterNumber)
         public
         view
         returns (uint256 _point)
     {
-        _point = quarterPoint[_quarterId].balance[_participant];
+        _point = quarterPoint[_quarterNumber].balance[_participant];
     }
 
-    function getQuarterModeratorPoint(address _participant, uint256 _quarterId)
+    function getQuarterModeratorPoint(address _participant, uint256 _quarterNumber)
         public
         view
         returns (uint256 _point)
     {
-        _point = quarterModeratorPoint[_quarterId].balance[_participant];
+        _point = quarterModeratorPoint[_quarterNumber].balance[_participant];
     }
 
-    /// @notice get total quarter points for a particular _quarterId
-    function getTotalQuarterPoint(uint256 _quarterId)
+    /// @notice get total quarter points for a particular _quarterNumber
+    function getTotalQuarterPoint(uint256 _quarterNumber)
         public
         view
         returns (uint256 _totalPoint)
     {
-        _totalPoint = quarterPoint[_quarterId].totalSupply;
+        _totalPoint = quarterPoint[_quarterNumber].totalSupply;
     }
 
-    function getTotalQuarterModeratorPoint(uint256 _quarterId)
+    function getTotalQuarterModeratorPoint(uint256 _quarterNumber)
         public
         view
         returns (uint256 _totalPoint)
     {
-        _totalPoint = quarterModeratorPoint[_quarterId].totalSupply;
+        _totalPoint = quarterModeratorPoint[_quarterNumber].totalSupply;
     }
 
     /// @notice add reputation points for a _participant

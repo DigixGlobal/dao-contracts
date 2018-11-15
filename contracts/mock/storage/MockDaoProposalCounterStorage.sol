@@ -7,9 +7,9 @@ contract MockDaoProposalCounterStorage is DaoProposalCounterStorage {
     constructor(address _resolver) public DaoProposalCounterStorage(_resolver) {
     }
 
-    function mock_set_proposal_count(uint256 _quarterId, uint256 _count)
+    function mock_set_proposal_count(uint256 _quarterNumber, uint256 _count)
         public
     {
-        proposalCountByQuarter[_quarterId] = _count;
+        proposalCountByQuarter[_quarterNumber] = _count;
     }
 }

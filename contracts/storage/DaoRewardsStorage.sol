@@ -55,7 +55,7 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
     }
 
     function updateQuarterInfo(
-        uint256 _quarterIndex,
+        uint256 _quarterNumber,
         uint256 _minimalParticipationPoint,
         uint256 _quarterPointScalingFactor,
         uint256 _reputationPointScalingFactor,
@@ -73,19 +73,19 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         public
     {
         require(sender_is(CONTRACT_DAO_REWARDS_MANAGER));
-        allQuartersInfo[_quarterIndex].minimalParticipationPoint = _minimalParticipationPoint;
-        allQuartersInfo[_quarterIndex].quarterPointScalingFactor = _quarterPointScalingFactor;
-        allQuartersInfo[_quarterIndex].reputationPointScalingFactor = _reputationPointScalingFactor;
-        allQuartersInfo[_quarterIndex].totalEffectiveDGDPreviousQuarter = _totalEffectiveDGDPreviousQuarter;
+        allQuartersInfo[_quarterNumber].minimalParticipationPoint = _minimalParticipationPoint;
+        allQuartersInfo[_quarterNumber].quarterPointScalingFactor = _quarterPointScalingFactor;
+        allQuartersInfo[_quarterNumber].reputationPointScalingFactor = _reputationPointScalingFactor;
+        allQuartersInfo[_quarterNumber].totalEffectiveDGDPreviousQuarter = _totalEffectiveDGDPreviousQuarter;
 
-        allQuartersInfo[_quarterIndex].moderatorMinimalParticipationPoint = _moderatorMinimalQuarterPoint;
-        allQuartersInfo[_quarterIndex].moderatorQuarterPointScalingFactor = _moderatorQuarterPointScalingFactor;
-        allQuartersInfo[_quarterIndex].moderatorReputationPointScalingFactor = _moderatorReputationPointScalingFactor;
-        allQuartersInfo[_quarterIndex].totalEffectiveModeratorDGDLastQuarter = _totalEffectiveModeratorDGDLastQuarter;
+        allQuartersInfo[_quarterNumber].moderatorMinimalParticipationPoint = _moderatorMinimalQuarterPoint;
+        allQuartersInfo[_quarterNumber].moderatorQuarterPointScalingFactor = _moderatorQuarterPointScalingFactor;
+        allQuartersInfo[_quarterNumber].moderatorReputationPointScalingFactor = _moderatorReputationPointScalingFactor;
+        allQuartersInfo[_quarterNumber].totalEffectiveModeratorDGDLastQuarter = _totalEffectiveModeratorDGDLastQuarter;
 
-        allQuartersInfo[_quarterIndex].dgxDistributionDay = _dgxDistributionDay;
-        allQuartersInfo[_quarterIndex].dgxRewardsPoolLastQuarter = _dgxRewardsPoolLastQuarter;
-        allQuartersInfo[_quarterIndex].sumRewardsFromBeginning = _sumRewardsFromBeginning;
+        allQuartersInfo[_quarterNumber].dgxDistributionDay = _dgxDistributionDay;
+        allQuartersInfo[_quarterNumber].dgxRewardsPoolLastQuarter = _dgxRewardsPoolLastQuarter;
+        allQuartersInfo[_quarterNumber].sumRewardsFromBeginning = _sumRewardsFromBeginning;
     }
 
     function updateClaimableDGX(address _user, uint256 _newClaimableDGX)
@@ -130,7 +130,7 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
         totalDGXsClaimed = totalDGXsClaimed.add(_dgxClaimed);
     }
 
-    function readQuarterInfo(uint256 _quarterIndex)
+    function readQuarterInfo(uint256 _quarterNumber)
         public
         view
         returns (
@@ -149,20 +149,20 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
             uint256 _sumRewardsFromBeginning
         )
     {
-        _minimalParticipationPoint = allQuartersInfo[_quarterIndex].minimalParticipationPoint;
-        _quarterPointScalingFactor = allQuartersInfo[_quarterIndex].quarterPointScalingFactor;
-        _reputationPointScalingFactor = allQuartersInfo[_quarterIndex].reputationPointScalingFactor;
-        _totalEffectiveDGDPreviousQuarter = allQuartersInfo[_quarterIndex].totalEffectiveDGDPreviousQuarter;
-        _moderatorMinimalQuarterPoint = allQuartersInfo[_quarterIndex].moderatorMinimalParticipationPoint;
-        _moderatorQuarterPointScalingFactor = allQuartersInfo[_quarterIndex].moderatorQuarterPointScalingFactor;
-        _moderatorReputationPointScalingFactor = allQuartersInfo[_quarterIndex].moderatorReputationPointScalingFactor;
-        _totalEffectiveModeratorDGDLastQuarter = allQuartersInfo[_quarterIndex].totalEffectiveModeratorDGDLastQuarter;
-        _dgxDistributionDay = allQuartersInfo[_quarterIndex].dgxDistributionDay;
-        _dgxRewardsPoolLastQuarter = allQuartersInfo[_quarterIndex].dgxRewardsPoolLastQuarter;
-        _sumRewardsFromBeginning = allQuartersInfo[_quarterIndex].sumRewardsFromBeginning;
+        _minimalParticipationPoint = allQuartersInfo[_quarterNumber].minimalParticipationPoint;
+        _quarterPointScalingFactor = allQuartersInfo[_quarterNumber].quarterPointScalingFactor;
+        _reputationPointScalingFactor = allQuartersInfo[_quarterNumber].reputationPointScalingFactor;
+        _totalEffectiveDGDPreviousQuarter = allQuartersInfo[_quarterNumber].totalEffectiveDGDPreviousQuarter;
+        _moderatorMinimalQuarterPoint = allQuartersInfo[_quarterNumber].moderatorMinimalParticipationPoint;
+        _moderatorQuarterPointScalingFactor = allQuartersInfo[_quarterNumber].moderatorQuarterPointScalingFactor;
+        _moderatorReputationPointScalingFactor = allQuartersInfo[_quarterNumber].moderatorReputationPointScalingFactor;
+        _totalEffectiveModeratorDGDLastQuarter = allQuartersInfo[_quarterNumber].totalEffectiveModeratorDGDLastQuarter;
+        _dgxDistributionDay = allQuartersInfo[_quarterNumber].dgxDistributionDay;
+        _dgxRewardsPoolLastQuarter = allQuartersInfo[_quarterNumber].dgxRewardsPoolLastQuarter;
+        _sumRewardsFromBeginning = allQuartersInfo[_quarterNumber].sumRewardsFromBeginning;
     }
 
-    function readQuarterGeneralInfo(uint256 _quarterIndex)
+    function readQuarterGeneralInfo(uint256 _quarterNumber)
         public
         view
         returns (
@@ -171,12 +171,12 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
             uint256 _sumRewardsFromBeginning
         )
     {
-        _dgxDistributionDay = allQuartersInfo[_quarterIndex].dgxDistributionDay;
-        _dgxRewardsPoolLastQuarter = allQuartersInfo[_quarterIndex].dgxRewardsPoolLastQuarter;
-        _sumRewardsFromBeginning = allQuartersInfo[_quarterIndex].sumRewardsFromBeginning;
+        _dgxDistributionDay = allQuartersInfo[_quarterNumber].dgxDistributionDay;
+        _dgxRewardsPoolLastQuarter = allQuartersInfo[_quarterNumber].dgxRewardsPoolLastQuarter;
+        _sumRewardsFromBeginning = allQuartersInfo[_quarterNumber].sumRewardsFromBeginning;
     }
 
-    function readQuarterModeratorInfo(uint256 _quarterIndex)
+    function readQuarterModeratorInfo(uint256 _quarterNumber)
         public
         view
         returns (
@@ -186,13 +186,13 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
             uint256 _totalEffectiveModeratorDGDLastQuarter
         )
     {
-        _moderatorMinimalQuarterPoint = allQuartersInfo[_quarterIndex].moderatorMinimalParticipationPoint;
-        _moderatorQuarterPointScalingFactor = allQuartersInfo[_quarterIndex].moderatorQuarterPointScalingFactor;
-        _moderatorReputationPointScalingFactor = allQuartersInfo[_quarterIndex].moderatorReputationPointScalingFactor;
-        _totalEffectiveModeratorDGDLastQuarter = allQuartersInfo[_quarterIndex].totalEffectiveModeratorDGDLastQuarter;
+        _moderatorMinimalQuarterPoint = allQuartersInfo[_quarterNumber].moderatorMinimalParticipationPoint;
+        _moderatorQuarterPointScalingFactor = allQuartersInfo[_quarterNumber].moderatorQuarterPointScalingFactor;
+        _moderatorReputationPointScalingFactor = allQuartersInfo[_quarterNumber].moderatorReputationPointScalingFactor;
+        _totalEffectiveModeratorDGDLastQuarter = allQuartersInfo[_quarterNumber].totalEffectiveModeratorDGDLastQuarter;
     }
 
-    function readQuarterParticipantInfo(uint256 _quarterIndex)
+    function readQuarterParticipantInfo(uint256 _quarterNumber)
         public
         view
         returns (
@@ -202,41 +202,41 @@ contract DaoRewardsStorage is ResolverClient, DaoConstants {
             uint256 _totalEffectiveDGDPreviousQuarter
         )
     {
-        _minimalParticipationPoint = allQuartersInfo[_quarterIndex].minimalParticipationPoint;
-        _quarterPointScalingFactor = allQuartersInfo[_quarterIndex].quarterPointScalingFactor;
-        _reputationPointScalingFactor = allQuartersInfo[_quarterIndex].reputationPointScalingFactor;
-        _totalEffectiveDGDPreviousQuarter = allQuartersInfo[_quarterIndex].totalEffectiveDGDPreviousQuarter;
+        _minimalParticipationPoint = allQuartersInfo[_quarterNumber].minimalParticipationPoint;
+        _quarterPointScalingFactor = allQuartersInfo[_quarterNumber].quarterPointScalingFactor;
+        _reputationPointScalingFactor = allQuartersInfo[_quarterNumber].reputationPointScalingFactor;
+        _totalEffectiveDGDPreviousQuarter = allQuartersInfo[_quarterNumber].totalEffectiveDGDPreviousQuarter;
     }
 
-    function readDgxDistributionDay(uint256 _quarterIndex)
+    function readDgxDistributionDay(uint256 _quarterNumber)
         public
         view
         returns (uint256 _distributionDay)
     {
-        _distributionDay = allQuartersInfo[_quarterIndex].dgxDistributionDay;
+        _distributionDay = allQuartersInfo[_quarterNumber].dgxDistributionDay;
     }
 
-    function readTotalEffectiveDGDLastQuarter(uint256 _quarterIndex)
+    function readTotalEffectiveDGDLastQuarter(uint256 _quarterNumber)
         public
         view
         returns (uint256 _totalEffectiveDGDPreviousQuarter)
     {
-        _totalEffectiveDGDPreviousQuarter = allQuartersInfo[_quarterIndex].totalEffectiveDGDPreviousQuarter;
+        _totalEffectiveDGDPreviousQuarter = allQuartersInfo[_quarterNumber].totalEffectiveDGDPreviousQuarter;
     }
 
-    function readTotalEffectiveModeratorDGDLastQuarter(uint256 _quarterIndex)
+    function readTotalEffectiveModeratorDGDLastQuarter(uint256 _quarterNumber)
         public
         view
         returns (uint256 _totalEffectiveModeratorDGDLastQuarter)
     {
-        _totalEffectiveModeratorDGDLastQuarter = allQuartersInfo[_quarterIndex].totalEffectiveModeratorDGDLastQuarter;
+        _totalEffectiveModeratorDGDLastQuarter = allQuartersInfo[_quarterNumber].totalEffectiveModeratorDGDLastQuarter;
     }
 
-    function readRewardsPoolOfLastQuarter(uint256 _quarterIndex)
+    function readRewardsPoolOfLastQuarter(uint256 _quarterNumber)
         public
         view
         returns (uint256 _rewardsPool)
     {
-        _rewardsPool = allQuartersInfo[_quarterIndex].dgxRewardsPoolLastQuarter;
+        _rewardsPool = allQuartersInfo[_quarterNumber].dgxRewardsPoolLastQuarter;
     }
 }

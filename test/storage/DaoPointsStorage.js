@@ -50,22 +50,22 @@ contract('DaoPointsStorage', function (accounts) {
       )));
     });
     it('[add quarter points]: verify balance and total supply', async function () {
-      const quarterId = bN(1);
-      await contracts.daoPointsStorage.addQuarterPoint(addressOf.dgdHolders[0], someQuarterPoints[0], quarterId);
-      await contracts.daoPointsStorage.addQuarterPoint(addressOf.dgdHolders[1], someQuarterPoints[1], quarterId);
-      await contracts.daoPointsStorage.addQuarterPoint(addressOf.dgdHolders[0], someQuarterPoints[2], quarterId);
+      const _quarterNumber = bN(1);
+      await contracts.daoPointsStorage.addQuarterPoint(addressOf.dgdHolders[0], someQuarterPoints[0], _quarterNumber);
+      await contracts.daoPointsStorage.addQuarterPoint(addressOf.dgdHolders[1], someQuarterPoints[1], _quarterNumber);
+      await contracts.daoPointsStorage.addQuarterPoint(addressOf.dgdHolders[0], someQuarterPoints[2], _quarterNumber);
 
       // check balance and total supply
       assert.deepEqual(
-        await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.dgdHolders[0], quarterId),
+        await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.dgdHolders[0], _quarterNumber),
         someQuarterPoints[0].plus(someQuarterPoints[2]),
       );
       assert.deepEqual(
-        await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.dgdHolders[1], quarterId),
+        await contracts.daoPointsStorage.getQuarterPoint.call(addressOf.dgdHolders[1], _quarterNumber),
         someQuarterPoints[1],
       );
       assert.deepEqual(
-        await contracts.daoPointsStorage.getTotalQuarterPoint.call(quarterId),
+        await contracts.daoPointsStorage.getTotalQuarterPoint.call(_quarterNumber),
         someQuarterPoints[0].plus(someQuarterPoints[1]).plus(someQuarterPoints[2]),
       );
     });
@@ -129,22 +129,22 @@ contract('DaoPointsStorage', function (accounts) {
       )));
     });
     it('[add quarter points]: verify balance and total supply', async function () {
-      const quarterId = bN(1);
-      await contracts.daoPointsStorage.addModeratorQuarterPoint(addressOf.dgdHolders[0], someQuarterBadgePoints[0], quarterId);
-      await contracts.daoPointsStorage.addModeratorQuarterPoint(addressOf.dgdHolders[1], someQuarterBadgePoints[1], quarterId);
-      await contracts.daoPointsStorage.addModeratorQuarterPoint(addressOf.dgdHolders[0], someQuarterBadgePoints[2], quarterId);
+      const _quarterNumber = bN(1);
+      await contracts.daoPointsStorage.addModeratorQuarterPoint(addressOf.dgdHolders[0], someQuarterBadgePoints[0], _quarterNumber);
+      await contracts.daoPointsStorage.addModeratorQuarterPoint(addressOf.dgdHolders[1], someQuarterBadgePoints[1], _quarterNumber);
+      await contracts.daoPointsStorage.addModeratorQuarterPoint(addressOf.dgdHolders[0], someQuarterBadgePoints[2], _quarterNumber);
 
       // check balance and total supply
       assert.deepEqual(
-        await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.dgdHolders[0], quarterId),
+        await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.dgdHolders[0], _quarterNumber),
         someQuarterBadgePoints[0].plus(someQuarterBadgePoints[2]),
       );
       assert.deepEqual(
-        await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.dgdHolders[1], quarterId),
+        await contracts.daoPointsStorage.getQuarterModeratorPoint.call(addressOf.dgdHolders[1], _quarterNumber),
         someQuarterBadgePoints[1],
       );
       assert.deepEqual(
-        await contracts.daoPointsStorage.getTotalQuarterModeratorPoint.call(quarterId),
+        await contracts.daoPointsStorage.getTotalQuarterModeratorPoint.call(_quarterNumber),
         someQuarterBadgePoints[0].plus(someQuarterBadgePoints[1]).plus(someQuarterBadgePoints[2]),
       );
     });
