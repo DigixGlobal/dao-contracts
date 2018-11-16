@@ -12,24 +12,24 @@ contract DaoRewardsManagerCommon is DaoCommonMini {
     struct UserRewards {
         uint256 lastParticipatedQuarter;
         uint256 lastQuarterThatRewardsWasUpdated;
-        DaoStructs.DaoQuarterInfo qInfo;
         uint256 effectiveDGDBalance;
         uint256 effectiveModeratorDGDBalance;
+        DaoStructs.DaoQuarterInfo qInfo;
     }
 
     // struct to store variables needed in the execution of calculateGlobalRewardsBeforeNewQuarter
     struct QuarterRewardsInfo {
         uint256 previousQuarter;
         uint256 totalEffectiveDGDPreviousQuarter;
-        bool doneCalculatingEffectiveBalance;
-        bool doneCalculatingModeratorEffectiveBalance;
         uint256 totalEffectiveModeratorDGDLastQuarter;
         uint256 dgxRewardsPoolLastQuarter;
-        DaoStructs.DaoQuarterInfo qInfo;
-        address currentUser;
         uint256 userCount;
         uint256 i;
+        DaoStructs.DaoQuarterInfo qInfo;
+        address currentUser;
         address[] users;
+        bool doneCalculatingEffectiveBalance;
+        bool doneCalculatingModeratorEffectiveBalance;
     }
 
     // get the struct for the relevant information for calculating a user's DGX rewards for the last participated quarter
