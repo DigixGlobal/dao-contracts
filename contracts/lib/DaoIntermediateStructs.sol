@@ -14,9 +14,9 @@ library DaoIntermediateStructs {
 
     // Struct used in large functions to cut down on variables
     struct Users {
-        // List of addresses, participants of DigixDAO
-        address[] users;
         // Length of the above list
         uint256 usersLength;
+        // List of addresses, participants of DigixDAO
+        address[] users;
     }
 }

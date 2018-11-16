@@ -7,8 +7,8 @@ contract DaoPointsStorage is ResolverClient, DaoConstants {
 
     // struct for a non-transferrable token
     struct Token {
-        mapping (address => uint256) balance;
         uint256 totalSupply;
+        mapping (address => uint256) balance;
     }
 
     // the reputation point token
