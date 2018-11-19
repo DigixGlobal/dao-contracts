@@ -1372,9 +1372,6 @@ contract('Dao', function (accounts) {
       assert.deepEqual(await contracts.daoStorage.readProposalDraftVotingResult.call(proposals[2].id), false);
       assert.deepEqual(await contracts.daoStorage.isDraftClaimed.call(proposals[2].id), true);
       assert.deepEqual(await contracts.daoStorage.readProposalCollateralStatus.call(proposals[2].id), collateralStatus(bN).COLLATERAL_STATUS_CLAIMED);
-      assert.deepEqual(tx.logs[0].event, 'DraftVotingClaim');
-      assert.deepEqual(tx.logs[0].args._proposalId, proposals[2].id);
-      assert.deepEqual(tx.logs[0].args._result, false);
     });
     it('[valid claim, quorum quota both passed]: verify read functions', async function () {
       await resetBeforeEach();
@@ -1409,11 +1406,6 @@ contract('Dao', function (accounts) {
       assert.deepEqual(returnValues[1], true);
 
       const tx = await contracts.daoVotingClaims.claimDraftVotingResult(proposals[0].id, bN(50), { from: proposals[0].proposer });
-
-      // verify event logs
-      assert.deepEqual(tx.logs[0].event, 'DraftVotingClaim');
-      assert.deepEqual(tx.logs[0].args._proposalId, proposals[0].id);
-      assert.deepEqual(tx.logs[0].args._result, true);
 
       // draft voting result set
       assert.deepEqual(await contracts.daoStorage.readProposalDraftVotingResult.call(proposals[0].id), true);
@@ -2066,12 +2058,6 @@ contract('Dao', function (accounts) {
         { from: proposals[2].proposer },
       );
 
-      // verify event log
-      assert.deepEqual(tx.logs[0].event, 'VotingClaim');
-      assert.deepEqual(tx.logs[0].args._proposalId, proposals[2].id);
-      assert.deepEqual(tx.logs[0].args._votingRound, bN(0));
-      assert.deepEqual(tx.logs[0].args._result, true);
-
       // proposal counter must increment
       assert.deepEqual(await contracts.daoProposalCounterStorage.proposalCountByQuarter.call(bN(1)), proposalCounterBefore.plus(bN(1)));
     });
@@ -2126,12 +2112,6 @@ contract('Dao', function (accounts) {
       const qpBefore5 = await contracts.daoPointsStorage.getReputation.call(addressOf.allParticipants[5]);
 
       const tx = await contracts.daoVotingClaims.claimProposalVotingResult(proposals[1].id, bN(1), bN(10), { from: proposals[1].proposer });
-
-      // verify event logs
-      assert.deepEqual(tx.logs[0].event, 'VotingClaim');
-      assert.deepEqual(tx.logs[0].args._proposalId, proposals[1].id);
-      assert.deepEqual(tx.logs[0].args._votingRound, bN(1));
-      assert.deepEqual(tx.logs[0].args._result, true);
 
       // check bonus reputation awarded
       const bonusRP = getBonusReputation(
@@ -2264,18 +2244,12 @@ contract('Dao', function (accounts) {
       assert.deepEqual(claimResult[1], true);
 
       // claim the proposal
-      const tx = await contracts.daoVotingClaims.claimProposalVotingResult(
+      await contracts.daoVotingClaims.claimProposalVotingResult(
         proposals[0].id,
         bN(1),
         bN(10),
         { from: addressOf.allParticipants[5] },
       );
-
-      // verify event logs
-      assert.deepEqual(tx.logs[0].event, 'VotingClaim');
-      assert.deepEqual(tx.logs[0].args._proposalId, proposals[0].id);
-      assert.deepEqual(tx.logs[0].args._votingRound, bN(1));
-      assert.deepEqual(tx.logs[0].args._result, false);
 
       // proposal voting round is failed
       assert.deepEqual(await contracts.daoStorage.readProposalVotingResult.call(proposals[0].id, bN(1)), false);
