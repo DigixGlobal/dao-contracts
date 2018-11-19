@@ -48,7 +48,7 @@
     "dijix-pdf": "0.0.8",
     "dotenv": "5.0.1",
     "ethereumjs-testrpc": "^3.9.2",
-    "ganache-cli": "6.1.0",
+    "ganache-cli": "^6.1.2",
     "openzeppelin-solidity": "^1.12.0",
     "truffle": "^4.1.14",
     "web3-utils": "^1.0.0-beta.34"
