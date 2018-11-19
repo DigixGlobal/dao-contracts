@@ -17,9 +17,6 @@ contract DaoVotingClaims is DaoCommon {
     using DaoIntermediateStructs for DaoIntermediateStructs.Users;
     using DaoStructs for DaoStructs.IntermediateResults;
 
-    event DraftVotingClaim(bytes32 indexed _proposalId, bool _result);
-    event VotingClaim(bytes32 indexed _proposalId, uint256 indexed _votingRound, bool _result);
-
     function daoCalculatorService()
         internal
         view
@@ -78,7 +75,6 @@ contract DaoVotingClaims is DaoCommon {
             daoStorage().setProposalDraftPass(_proposalId, false);
             daoStorage().setDraftVotingClaim(_proposalId, true);
             processCollateralRefund(_proposalId);
-            emit DraftVotingClaim(_proposalId, false);
             return (false, true);
         }
         require(isFromProposer(_proposalId));
@@ -122,7 +118,6 @@ contract DaoVotingClaims is DaoCommon {
 
             // reset intermediate result for the proposal.
             intermediateResultsStorage().resetIntermediateResults(_proposalId);
-            emit DraftVotingClaim(_proposalId, _passed);
         } else {
             // update intermediate results
             intermediateResultsStorage().setIntermediateResults(
@@ -236,7 +231,6 @@ contract DaoVotingClaims is DaoCommon {
         }
         daoStorage().setVotingClaim(_proposalId, _index, true);
         daoStorage().setProposalPass(_proposalId, _index, _passed);
-        emit VotingClaim(_proposalId, _index, _passed);
         _done = true;
     }
 
