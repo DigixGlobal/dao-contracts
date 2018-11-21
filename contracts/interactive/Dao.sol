@@ -19,6 +19,7 @@ contract Dao is DaoCommon {
     event AddProposalDoc(bytes32 indexed _proposalId, bytes32 _newDoc);
     event PRLAction(bytes32 indexed _proposalId, uint256 _actionId, bytes32 _doc);
     event CloseProposal(bytes32 indexed _proposalId);
+    event MigrateToNewDao(address _newDaoContract, address _newDaoFundingManager, address _newDaoRewardsManager);
 
     constructor(address _resolver) public {
         require(init(CONTRACT_DAO, _resolver));
@@ -100,6 +101,7 @@ contract Dao is DaoCommon {
         daoUpgradeStorage().updateForDaoMigration();
         daoFundingManager().moveFundsToNewDao(_newDaoFundingManager);
         daoRewardsManager().moveDGXsToNewDao(_newDaoRewardsManager);
+        MigrateToNewDao(_newDaoContract, _newDaoFundingManager, _newDaoRewardsManager);
     }
 
     /**
