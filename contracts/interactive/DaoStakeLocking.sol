@@ -325,7 +325,11 @@ contract DaoStakeLocking is DaoCommon {
                 // this participant is no longer a moderator this quarter, should be removed
 
                 // Throw if this is the last moderator. There must be at least one moderator in the moderator list. Otherwise calculateGlobalRewardsBeforeNewQuarter() will fail.
-                require(daoStakeStorage().readTotalModerators() > 1);
+                // after replacing DAO, we will want all moderators to withdraw their DGDs, hence the check
+                require(
+                    (daoStakeStorage().readTotalModerators() > 1) ||
+                    (!isDaoNotReplaced())
+                );
 
                 daoStakeStorage().removeFromModeratorList(_user);
 

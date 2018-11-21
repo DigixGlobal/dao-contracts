@@ -24,11 +24,14 @@ const {
 
 const {
   randomBigNumber,
+  randomAddress,
   getCurrentTimestamp,
   timeIsRecent,
   randomBytes32,
   indexRange,
 } = require('@digix/helpers/lib/helpers');
+
+const MockDaoFundingManager = artifacts.require('MockDaoFundingManager.sol');
 
 const bN = web3.toBigNumber;
 const MAIN_PHASE_DURATION_1 = 40;
@@ -669,6 +672,48 @@ contract('DaoStakeLocking', function (accounts) {
       assert.deepEqual(await contracts.daoPointsStorage.getReputation.call(accounts[17]), rep17.plus(bN(35)).minus(bN(25)));
 
       await checkDgdStakeConsistency(contracts, bN);
+    });
+    it('[last moderator should not be able to withdraw DGDs, unless DigixDAO is replaced/migrated to new one]', async function () {
+      const moderators = await contracts.daoListingService.listModerators.call(bN(20), true);
+
+      // say the participant never participated in quarter 1
+      await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE);
+      // mark beginning of new quarter
+      await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(15 * (10 ** 9)));
+      await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(20), { from: addressOf.founderBadgeHolder });
+
+      for (const moderator of moderators) {
+        if (moderator !== moderators[moderators.length - 1]) {
+          const amount = await contracts.daoStakeStorage.actualLockedDGD.call(moderator);
+          await contracts.daoStakeLocking.withdrawDGD(amount, { from: moderator });
+        }
+      }
+
+      // now try to withdraw for final moderator. It should fail
+      // the last moderator can only withdraw after migration of this DAO
+      const amount = await contracts.daoStakeStorage.actualLockedDGD.call(moderators[moderators.length - 1]);
+      assert(await a.failure(contracts.daoStakeLocking.withdrawDGD.call(amount, { from: moderators[moderators.length - 1] })));
+
+      // migrate to new set of contracts
+      const newDaoContract = randomAddress();
+      const newDaoFundingManager = await MockDaoFundingManager.new();
+      const newDaoRewardsManager = randomAddress();
+      await contracts.dao.setNewDaoContracts(
+        newDaoContract,
+        newDaoFundingManager.address,
+        newDaoRewardsManager,
+        { from: addressOf.root },
+      );
+      await contracts.dao.migrateToNewDao(
+        newDaoContract,
+        newDaoFundingManager.address,
+        newDaoRewardsManager,
+        { from: addressOf.root },
+      );
+
+      // now this last moderator should be able to withdraw
+      assert.ok(await contracts.daoStakeLocking.withdrawDGD.call(amount, { from: moderators[moderators.length - 1] }));
+      await contracts.daoStakeLocking.withdrawDGD(amount, { from: moderators[moderators.length - 1] });
     });
   });
 
