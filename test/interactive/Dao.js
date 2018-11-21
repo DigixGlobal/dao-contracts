@@ -745,7 +745,6 @@ contract('Dao', function (accounts) {
       // verify event logs
       assert.deepEqual(tx.logs[0].event, 'StartSpecialProposal');
       assert.deepEqual(tx.logs[0].args._specialProposalId, doc);
-      assert.deepEqual(timeIsRecent(tx.logs[0].args._startTime, 2), true);
     });
   });
 

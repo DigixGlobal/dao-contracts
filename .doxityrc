@@ -35,6 +35,18 @@
       "bytecode": false,
       "source": true
     },
+    "DaoRewardsManagerExtras": {
+      "abi": true,
+      "methods": true,
+      "bytecode": false,
+      "source": true
+    },
+    "DaoSpecialProposal": {
+      "abi": true,
+      "methods": true,
+      "bytecode": false,
+      "source": true
+    },
     "DaoSpecialVotingClaims": {
       "abi": true,
       "methods": true,

@@ -5,7 +5,7 @@ version = "1.0.0"
 description = "Smart contracts for DigixDAO"
 homepage = "https://github.com/DigixGlobal/dao-contracts#readme"
 author = "DigixGlobal"
-buildTime = 2018-11-19T09:09:20.356Z
+buildTime = 2018-11-21T04:13:30.430Z
 target = "scripts/doxity"
 src = "contracts/interactive/*"
 dir = "pages/docs"
@@ -41,6 +41,18 @@ bytecode = false
 source = true
 
 [whitelist.DaoRewardsManager]
+abi = true
+methods = true
+bytecode = false
+source = true
+
+[whitelist.DaoRewardsManagerExtras]
+abi = true
+methods = true
+bytecode = false
+source = true
+
+[whitelist.DaoSpecialProposal]
 abi = true
 methods = true
 bytecode = false
