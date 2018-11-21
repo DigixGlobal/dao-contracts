@@ -1405,7 +1405,7 @@ contract('Dao', function (accounts) {
       assert.deepEqual(returnValues[0], true);
       assert.deepEqual(returnValues[1], true);
 
-      const tx = await contracts.daoVotingClaims.claimDraftVotingResult(proposals[0].id, bN(50), { from: proposals[0].proposer });
+      await contracts.daoVotingClaims.claimDraftVotingResult(proposals[0].id, bN(50), { from: proposals[0].proposer });
 
       // draft voting result set
       assert.deepEqual(await contracts.daoStorage.readProposalDraftVotingResult.call(proposals[0].id), true);
@@ -2051,7 +2051,7 @@ contract('Dao', function (accounts) {
       // get the number of proposals before claiming this one
       const proposalCounterBefore = await contracts.daoProposalCounterStorage.proposalCountByQuarter.call(bN(1));
 
-      const tx = await contracts.daoVotingClaims.claimProposalVotingResult(
+      await contracts.daoVotingClaims.claimProposalVotingResult(
         proposals[2].id,
         bN(0),
         bN(10),
@@ -2111,7 +2111,7 @@ contract('Dao', function (accounts) {
       const qpBefore4 = await contracts.daoPointsStorage.getReputation.call(addressOf.allParticipants[4]);
       const qpBefore5 = await contracts.daoPointsStorage.getReputation.call(addressOf.allParticipants[5]);
 
-      const tx = await contracts.daoVotingClaims.claimProposalVotingResult(proposals[1].id, bN(1), bN(10), { from: proposals[1].proposer });
+      await contracts.daoVotingClaims.claimProposalVotingResult(proposals[1].id, bN(1), bN(10), { from: proposals[1].proposer });
 
       // check bonus reputation awarded
       const bonusRP = getBonusReputation(
