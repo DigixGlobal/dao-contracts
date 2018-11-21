@@ -1,10 +1,10 @@
-pragma solidity 0.4.24;
+pragma solidity ^0.4.25;
 
 import "./../common/DaoCommon.sol";
 
 contract DaoSpecialProposal is DaoCommon {
 
-    event StartSpecialProposal(bytes32 _specialProposalId);
+    event StartSpecialProposal(bytes32 indexed _specialProposalId);
 
     constructor(address _resolver) public {
         require(init(CONTRACT_DAO_SPECIAL_PROPOSAL, _resolver));
@@ -26,7 +26,7 @@ contract DaoSpecialProposal is DaoCommon {
         address[] _addressConfigs,
         bytes32[] _bytesConfigs
     )
-        public
+        external
         if_founder()
         returns (bool _success)
     {

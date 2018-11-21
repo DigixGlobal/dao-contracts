@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
 import "../common/DaoWhitelistingCommon.sol";
@@ -31,6 +31,10 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
         public
     {
         require(sender_is(CONTRACT_DAO_SPECIAL_PROPOSAL));
+        require(
+          (proposalsById[_proposalId].proposalId == EMPTY_BYTES) &&
+          (_proposalId != EMPTY_BYTES)
+        );
         proposals.append(_proposalId);
         proposalsById[_proposalId].proposalId = _proposalId;
         proposalsById[_proposalId].proposer = _proposer;
@@ -42,7 +46,7 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
 
     function readProposal(bytes32 _proposalId)
         public
-        constant
+        view
         returns (
             bytes32 _id,
             address _proposer,
@@ -58,7 +62,7 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
 
     function readProposalProposer(bytes32 _proposalId)
         public
-        constant
+        view
         returns (address _proposer)
     {
         _proposer = proposalsById[_proposalId].proposer;
@@ -66,7 +70,7 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
 
     function readConfigs(bytes32 _proposalId)
         public
-        constant
+        view
         returns (
             uint256[] memory _uintConfigs,
             address[] memory _addressConfigs,
@@ -79,20 +83,20 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
     }
 
     function readVotingCount(bytes32 _proposalId, address[] _allUsers)
-        public
-        constant
+        external
+        view
         returns (uint256 _for, uint256 _against)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         return proposalsById[_proposalId].voting.countVotes(_allUsers);
     }
 
     function readVotingTime(bytes32 _proposalId)
         public
-        constant
+        view
         returns (uint256 _start)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _start = proposalsById[_proposalId].voting.startTime;
     }
 
@@ -109,10 +113,10 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
 
     function readComittedVote(bytes32 _proposalId, address _voter)
         public
-        constant
+        view
         returns (bytes32 _commitHash)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _commitHash = proposalsById[_proposalId].voting.commits[_voter];
     }
 
@@ -125,10 +129,10 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
 
     function readVotingResult(bytes32 _proposalId)
         public
-        constant
+        view
         returns (bool _result)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _result = proposalsById[_proposalId].voting.passed;
     }
 
@@ -149,19 +153,19 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
 
     function isClaimed(bytes32 _proposalId)
         public
-        constant
+        view
         returns (bool _claimed)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _claimed = proposalsById[_proposalId].voting.claimed;
     }
 
     function readVote(bytes32 _proposalId, address _voter)
         public
-        constant
+        view
         returns (bool _vote, uint256 _weight)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         return proposalsById[_proposalId].voting.readVote(_voter);
     }
 

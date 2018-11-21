@@ -1,6 +1,6 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 contract DaoSpecialStorageInterface {
-    function readComittedVote(bytes32, address) public constant returns (bytes32);
-    function readVote(bytes32, address) public constant returns (bool, uint256);
+    function readComittedVote(bytes32, address) public view returns (bytes32);
+    function readVote(bytes32, address) public view returns (bool, uint256);
 }

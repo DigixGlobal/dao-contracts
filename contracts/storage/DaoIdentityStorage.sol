@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "@digix/cdap/contracts/storage/DirectoryStorage.sol";
@@ -72,7 +72,7 @@ contract DaoIdentityStorage is ResolverClient, DaoConstants, DirectoryStorage {
 
     function read_kyc_info(address _user)
         public
-        constant
+        view
         returns (bytes32 _doc, uint256 _id_expiration)
     {
         _doc = kycInfo[_user].doc;
@@ -81,7 +81,7 @@ contract DaoIdentityStorage is ResolverClient, DaoConstants, DirectoryStorage {
 
     function is_kyc_approved(address _user)
         public
-        constant
+        view
         returns (bool _approved)
     {
         uint256 _id_expiration;

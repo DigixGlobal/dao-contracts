@@ -3,6 +3,7 @@ const a = require('awaiting');
 const DaoIdentity = artifacts.require('./DaoIdentity.sol');
 const DaoWhitelisting = artifacts.require('./DaoWhitelisting.sol');
 const MockWhitelistedContract = artifacts.require('./MockWhitelistedContract.sol');
+const MockConstructorMethodFactory = artifacts.require('./MockConstructorMethodFactory.sol');
 
 const {
   deployNewContractResolver,
@@ -43,10 +44,10 @@ contract('DaoWhitelisting', function (accounts) {
     await contracts.daoIdentity.addGroupUser(bN(3), addressOf.prl, 'prl:added');
 
     // register interactives
-    await contracts.resolver.register_contract('dao:voting:claims', addressOf.root);
-    await contracts.resolver.register_contract('dao:voting', addressOf.root);
-    await contracts.resolver.register_contract('dao', addressOf.root);
-    await contracts.resolver.register_contract('dao:special:proposal', addressOf.root);
+    await contracts.resolver.init_register_contract('dao:voting:claims', addressOf.root);
+    await contracts.resolver.init_register_contract('dao:voting', addressOf.root);
+    await contracts.resolver.init_register_contract('dao', addressOf.root);
+    await contracts.resolver.init_register_contract('dao:special:proposal', addressOf.root);
 
     // deploy
     contracts.whitelistedContracts = [];
@@ -202,6 +203,10 @@ contract('DaoWhitelisting', function (accounts) {
         doc,
         addressOf.badgeHolders[0],
       )));
+    });
+    it('[call from constructor of non-whitelisted contracts] should revert', async function () {
+      const mockConstructorMethodFactory = await MockConstructorMethodFactory.new();
+      assert.ok(await a.failure(mockConstructorMethodFactory.test(contracts.daoStorage.address)));
     });
   });
 });

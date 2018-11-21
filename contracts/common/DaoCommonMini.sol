@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "../service/DaoListingService.sol";
 import "./DaoConstants.sol";
@@ -6,10 +6,10 @@ import "./IdentityCommon.sol";
 import "../storage/DaoConfigsStorage.sol";
 import "../storage/DaoStakeStorage.sol";
 import "../storage/DaoStorage.sol";
+import "../storage/DaoProposalCounterStorage.sol";
 import "../storage/DaoUpgradeStorage.sol";
 import "../storage/DaoSpecialStorage.sol";
 import "../storage/DaoPointsStorage.sol";
-import "../storage/DaoFundingStorage.sol";
 import "../storage/DaoRewardsStorage.sol";
 import "../storage/IntermediateResultsStorage.sol";
 import "../lib/MathHelper.sol";
@@ -24,7 +24,7 @@ contract DaoCommonMini is IdentityCommon {
     */
     function isDaoNotReplaced()
         public
-        constant
+        view
         returns (bool _isNotReplaced)
     {
         _isNotReplaced = !daoUpgradeStorage().isReplacedByNewDao();
@@ -37,7 +37,7 @@ contract DaoCommonMini is IdentityCommon {
     */
     function isLockingPhase()
         public
-        constant
+        view
         returns (bool _isLockingPhase)
     {
         _isLockingPhase = currentTimeInQuarter() < getUintConfig(CONFIG_LOCKING_PHASE_DURATION);
@@ -50,7 +50,7 @@ contract DaoCommonMini is IdentityCommon {
     */
     function isMainPhase()
         public
-        constant
+        view
         returns (bool _isMainPhase)
     {
         _isMainPhase =
@@ -58,22 +58,13 @@ contract DaoCommonMini is IdentityCommon {
             currentTimeInQuarter() >= getUintConfig(CONFIG_LOCKING_PHASE_DURATION);
     }
 
-    modifier ifNotContract(address _address) {
-        uint size;
-        assembly {
-            size := extcodesize(_address)
-        }
-        require(size == 0);
-        _;
-    }
-
     /**
     @notice Check if the calculateGlobalRewardsBeforeNewQuarter function has been done for a certain quarter
     @dev However, there is no need to run calculateGlobalRewardsBeforeNewQuarter for the first quarter
     */
-    modifier ifGlobalRewardsSet(uint256 _quarterIndex) {
-        if (_quarterIndex > 1) {
-            require(daoRewardsStorage().readDgxDistributionDay(_quarterIndex) > 0);
+    modifier ifGlobalRewardsSet(uint256 _quarterNumber) {
+        if (_quarterNumber > 1) {
+            require(daoRewardsStorage().readDgxDistributionDay(_quarterNumber) > 0);
         }
         _;
     }
@@ -83,7 +74,7 @@ contract DaoCommonMini is IdentityCommon {
     */
     function requireInPhase(uint256 _startingPoint, uint256 _relativePhaseStart, uint256 _relativePhaseEnd)
         internal
-        constant
+        view
     {
         require(_startingPoint > 0);
         require(now < _startingPoint.add(_relativePhaseEnd));
@@ -93,15 +84,14 @@ contract DaoCommonMini is IdentityCommon {
     /**
     @notice Get the current quarter index
     @dev Quarter indexes starts from 1
-    @return _quarterIndex the current quarter index
+    @return _quarterNumber the current quarter index
     */
-    function currentQuarterIndex()
+    function currentQuarterNumber()
         public
-        constant
-        returns(uint256 _quarterIndex)
+        view
+        returns(uint256 _quarterNumber)
     {
-        _quarterIndex = getQuarterIndex(now);
-        //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
+        _quarterNumber = getQuarterNumber(now);
     }
 
     /**
@@ -109,9 +99,9 @@ contract DaoCommonMini is IdentityCommon {
     @dev Quarter indexes starts from 1
     @return _index the quarter index
     */
-    function getQuarterIndex(uint256 _time)
+    function getQuarterNumber(uint256 _time)
         internal
-        constant
+        view
         returns (uint256 _index)
     {
         require(startOfFirstQuarterIsSet());
@@ -119,7 +109,6 @@ contract DaoCommonMini is IdentityCommon {
             _time.sub(daoUpgradeStorage().startOfFirstQuarter())
             .div(getUintConfig(CONFIG_QUARTER_DURATION))
             .add(1);
-        //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
     /**
@@ -128,7 +117,7 @@ contract DaoCommonMini is IdentityCommon {
     */
     function timeInQuarter(uint256 _time)
         internal
-        constant
+        view
         returns (uint256 _timeInQuarter)
     {
         require(startOfFirstQuarterIsSet()); // must be already set
@@ -143,7 +132,7 @@ contract DaoCommonMini is IdentityCommon {
     */
     function startOfFirstQuarterIsSet()
         internal
-        constant
+        view
         returns (bool _isSet)
     {
         _isSet = daoUpgradeStorage().startOfFirstQuarter() != 0;
@@ -156,7 +145,7 @@ contract DaoCommonMini is IdentityCommon {
     */
     function currentTimeInQuarter()
         public
-        constant
+        view
         returns (uint256 _currentT)
     {
         _currentT = timeInQuarter(now);
@@ -167,16 +156,15 @@ contract DaoCommonMini is IdentityCommon {
     */
     function getTimeLeftInQuarter(uint256 _time)
         internal
-        constant
+        view
         returns (uint256 _timeLeftInQuarter)
     {
         _timeLeftInQuarter = getUintConfig(CONFIG_QUARTER_DURATION).sub(timeInQuarter(_time));
-        //TODO: the QUARTER DURATION must be a fixed config and cannot be changed
     }
 
     function daoListingService()
         internal
-        constant
+        view
         returns (DaoListingService _contract)
     {
         _contract = DaoListingService(get_contract(CONTRACT_SERVICE_DAO_LISTING));
@@ -184,7 +172,7 @@ contract DaoCommonMini is IdentityCommon {
 
     function daoConfigsStorage()
         internal
-        constant
+        view
         returns (DaoConfigsStorage _contract)
     {
         _contract = DaoConfigsStorage(get_contract(CONTRACT_STORAGE_DAO_CONFIG));
@@ -192,7 +180,7 @@ contract DaoCommonMini is IdentityCommon {
 
     function daoStakeStorage()
         internal
-        constant
+        view
         returns (DaoStakeStorage _contract)
     {
         _contract = DaoStakeStorage(get_contract(CONTRACT_STORAGE_DAO_STAKE));
@@ -200,15 +188,23 @@ contract DaoCommonMini is IdentityCommon {
 
     function daoStorage()
         internal
-        constant
+        view
         returns (DaoStorage _contract)
     {
         _contract = DaoStorage(get_contract(CONTRACT_STORAGE_DAO));
     }
 
+    function daoProposalCounterStorage()
+        internal
+        view
+        returns (DaoProposalCounterStorage _contract)
+    {
+        _contract = DaoProposalCounterStorage(get_contract(CONTRACT_STORAGE_DAO_COUNTER));
+    }
+
     function daoUpgradeStorage()
         internal
-        constant
+        view
         returns (DaoUpgradeStorage _contract)
     {
         _contract = DaoUpgradeStorage(get_contract(CONTRACT_STORAGE_DAO_UPGRADE));
@@ -216,7 +212,7 @@ contract DaoCommonMini is IdentityCommon {
 
     function daoSpecialStorage()
         internal
-        constant
+        view
         returns (DaoSpecialStorage _contract)
     {
         _contract = DaoSpecialStorage(get_contract(CONTRACT_STORAGE_DAO_SPECIAL));
@@ -224,23 +220,15 @@ contract DaoCommonMini is IdentityCommon {
 
     function daoPointsStorage()
         internal
-        constant
+        view
         returns (DaoPointsStorage _contract)
     {
         _contract = DaoPointsStorage(get_contract(CONTRACT_STORAGE_DAO_POINTS));
     }
 
-    function daoFundingStorage()
-        internal
-        constant
-        returns (DaoFundingStorage _contract)
-    {
-        _contract = DaoFundingStorage(get_contract(CONTRACT_STORAGE_DAO_FUNDING));
-    }
-
     function daoRewardsStorage()
         internal
-        constant
+        view
         returns (DaoRewardsStorage _contract)
     {
         _contract = DaoRewardsStorage(get_contract(CONTRACT_STORAGE_DAO_REWARDS));
@@ -248,7 +236,7 @@ contract DaoCommonMini is IdentityCommon {
 
     function intermediateResultsStorage()
         internal
-        constant
+        view
         returns (IntermediateResultsStorage _contract)
     {
         _contract = IntermediateResultsStorage(get_contract(CONTRACT_STORAGE_INTERMEDIATE_RESULTS));
@@ -256,7 +244,7 @@ contract DaoCommonMini is IdentityCommon {
 
     function getUintConfig(bytes32 _configKey)
         public
-        constant
+        view
         returns (uint256 _configValue)
     {
         _configValue = daoConfigsStorage().uintConfigs(_configKey);

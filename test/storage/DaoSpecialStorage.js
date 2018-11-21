@@ -84,6 +84,26 @@ contract('DaoSpecialStorage', function (accounts) {
       // since the voting time has not been set yet
       assert.deepEqual(await contracts.daoSpecialStorage.readVotingTime.call(doc), bN(0));
     });
+    it('[try to overwrite existing special proposal]: revert', async function () {
+      assert(await a.failure(contracts.daoSpecialStorage.addSpecialProposal(
+        doc,
+        proposer,
+        uintConfigs,
+        addressConfigs,
+        bytesConfigs,
+        { from: accounts[0] },
+      )));
+    });
+    it('[try to create special proposal with 0x0 proposalId]: revert', async function () {
+      assert(await a.failure(contracts.daoSpecialStorage.addSpecialProposal(
+        '0x0',
+        proposer,
+        uintConfigs,
+        addressConfigs,
+        bytesConfigs,
+        { from: accounts[0] },
+      )));
+    });
   });
 
   describe('commitVote', function () {

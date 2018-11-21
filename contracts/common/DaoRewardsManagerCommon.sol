@@ -1,4 +1,4 @@
-pragma solidity 0.4.24;
+pragma solidity ^0.4.25;
 
 import "./DaoCommonMini.sol";
 import "./../lib/DaoStructs.sol";
@@ -12,30 +12,30 @@ contract DaoRewardsManagerCommon is DaoCommonMini {
     struct UserRewards {
         uint256 lastParticipatedQuarter;
         uint256 lastQuarterThatRewardsWasUpdated;
-        DaoStructs.DaoQuarterInfo qInfo;
         uint256 effectiveDGDBalance;
         uint256 effectiveModeratorDGDBalance;
+        DaoStructs.DaoQuarterInfo qInfo;
     }
 
     // struct to store variables needed in the execution of calculateGlobalRewardsBeforeNewQuarter
     struct QuarterRewardsInfo {
         uint256 previousQuarter;
         uint256 totalEffectiveDGDPreviousQuarter;
-        bool doneCalculatingEffectiveBalance;
-        bool doneCalculatingModeratorEffectiveBalance;
         uint256 totalEffectiveModeratorDGDLastQuarter;
         uint256 dgxRewardsPoolLastQuarter;
-        DaoStructs.DaoQuarterInfo qInfo;
-        address currentUser;
         uint256 userCount;
         uint256 i;
+        DaoStructs.DaoQuarterInfo qInfo;
+        address currentUser;
         address[] users;
+        bool doneCalculatingEffectiveBalance;
+        bool doneCalculatingModeratorEffectiveBalance;
     }
 
     // get the struct for the relevant information for calculating a user's DGX rewards for the last participated quarter
     function getUserRewardsStruct(address _user)
         internal
-        constant
+        view
         returns (UserRewards memory _data)
     {
         _data.lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(_user);
@@ -44,9 +44,9 @@ contract DaoRewardsManagerCommon is DaoCommonMini {
     }
 
     // read the DaoQuarterInfo struct of a certain quarter
-    function readQuarterInfo(uint256 _quarterIndex)
+    function readQuarterInfo(uint256 _quarterNumber)
         internal
-        constant
+        view
         returns (DaoStructs.DaoQuarterInfo _qInfo)
     {
         (
@@ -54,17 +54,17 @@ contract DaoRewardsManagerCommon is DaoCommonMini {
             _qInfo.quarterPointScalingFactor,
             _qInfo.reputationPointScalingFactor,
             _qInfo.totalEffectiveDGDPreviousQuarter
-        ) = daoRewardsStorage().readQuarterParticipantInfo(_quarterIndex);
+        ) = daoRewardsStorage().readQuarterParticipantInfo(_quarterNumber);
         (
             _qInfo.moderatorMinimalParticipationPoint,
             _qInfo.moderatorQuarterPointScalingFactor,
             _qInfo.moderatorReputationPointScalingFactor,
             _qInfo.totalEffectiveModeratorDGDLastQuarter
-        ) = daoRewardsStorage().readQuarterModeratorInfo(_quarterIndex);
+        ) = daoRewardsStorage().readQuarterModeratorInfo(_quarterNumber);
         (
             _qInfo.dgxDistributionDay,
             _qInfo.dgxRewardsPoolLastQuarter,
             _qInfo.sumRewardsFromBeginning
-        ) = daoRewardsStorage().readQuarterGeneralInfo(_quarterIndex);
+        ) = daoRewardsStorage().readQuarterGeneralInfo(_quarterNumber);
     }
 }

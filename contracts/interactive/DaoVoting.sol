@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "../common/DaoCommon.sol";
 
@@ -16,11 +16,11 @@ contract DaoVoting is DaoCommon {
     /**
     @notice Function to vote on draft proposal (only Moderators can vote)
     @param _proposalId ID of the proposal
-    @param _voteYes Boolean, true if voting for, false if voting against
+    @param _vote Boolean, true if voting for, false if voting against
     */
     function voteOnDraft(
         bytes32 _proposalId,
-        bool _voteYes
+        bool _vote
     )
         public
         ifDraftVotingPhase(_proposalId)
@@ -33,10 +33,10 @@ contract DaoVoting is DaoCommon {
         uint256 _voteWeight;
         (,_voteWeight) = daoStorage().readDraftVote(_proposalId, _moderator);
 
-        daoStorage().addDraftVote(_proposalId, _moderator, _voteYes, _moderatorStake);
+        daoStorage().addDraftVote(_proposalId, _moderator, _vote, _moderatorStake);
 
         if (_voteWeight == 0) { // just voted the first time
-            daoPointsStorage().addModeratorQuarterPoint(_moderator, getUintConfig(CONFIG_QUARTER_POINT_DRAFT_VOTE), currentQuarterIndex());
+            daoPointsStorage().addModeratorQuarterPoint(_moderator, getUintConfig(CONFIG_QUARTER_POINT_DRAFT_VOTE), currentQuarterNumber());
         }
     }
 
@@ -80,7 +80,7 @@ contract DaoVoting is DaoCommon {
         require(isParticipant(msg.sender));
         require(keccak256(abi.encodePacked(msg.sender, _vote, _salt)) == daoSpecialStorage().readComittedVote(_proposalId, msg.sender));
         daoSpecialStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().lockedDGDStake(msg.sender));
-        daoPointsStorage().addQuarterPoint(msg.sender, getUintConfig(CONFIG_QUARTER_POINT_VOTE), currentQuarterIndex());
+        daoPointsStorage().addQuarterPoint(msg.sender, getUintConfig(CONFIG_QUARTER_POINT_VOTE), currentQuarterNumber());
     }
 
 
@@ -127,7 +127,7 @@ contract DaoVoting is DaoCommon {
         daoPointsStorage().addQuarterPoint(
             msg.sender,
             getUintConfig(_index == 0 ? CONFIG_QUARTER_POINT_VOTE : CONFIG_QUARTER_POINT_INTERIM_VOTE),
-            currentQuarterIndex()
+            currentQuarterNumber()
         );
     }
 }

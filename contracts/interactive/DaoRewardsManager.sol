@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../common/DaoRewardsManagerCommon.sol";
@@ -18,13 +18,13 @@ contract DaoRewardsManager is DaoRewardsManagerCommon {
 
     // is emitted when calculateGlobalRewardsBeforeNewQuarter has been done in the beginning of the quarter
     // after which, all the other DAO activities could happen
-    event StartNewQuarter(uint256 _quarterId);
+    event StartNewQuarter(uint256 indexed _quarterNumber);
 
     address public ADDRESS_DGX_TOKEN;
 
     function daoCalculatorService()
         internal
-        constant
+        view
         returns (DaoCalculatorService _contract)
     {
         _contract = DaoCalculatorService(get_contract(CONTRACT_SERVICE_DAO_CALCULATOR));
@@ -32,7 +32,7 @@ contract DaoRewardsManager is DaoRewardsManagerCommon {
 
     function daoRewardsManagerExtras()
         internal
-        constant
+        view
         returns (DaoRewardsManagerExtras _contract)
     {
         _contract = DaoRewardsManagerExtras(get_contract(CONTRACT_DAO_REWARDS_MANAGER_EXTRAS));
@@ -94,7 +94,7 @@ contract DaoRewardsManager is DaoRewardsManagerCommon {
     */
     function claimRewards()
         public
-        ifGlobalRewardsSet(currentQuarterIndex())
+        ifGlobalRewardsSet(currentQuarterNumber())
     {
         require(isDaoNotReplaced());
 
@@ -163,7 +163,7 @@ contract DaoRewardsManager is DaoRewardsManagerCommon {
         // If the reputation was already updated until the previous quarter
         // nothing needs to be done
         if (
-            _lastQuarterThatReputationWasUpdated.add(1) >= currentQuarterIndex()
+            _lastQuarterThatReputationWasUpdated.add(1) >= currentQuarterNumber()
         ) {
             return;
         }
@@ -207,14 +207,14 @@ contract DaoRewardsManager is DaoRewardsManagerCommon {
         // note that the carbon vote's reputation bonus will be added after this, so its fine
 
         _reputationDeduction =
-            (currentQuarterIndex().sub(1).sub(_lastQuarterThatReputationWasUpdated))
+            (currentQuarterNumber().sub(1).sub(_lastQuarterThatReputationWasUpdated))
             .mul(
                 getUintConfig(CONFIG_MAXIMUM_REPUTATION_DEDUCTION)
                 .add(getUintConfig(CONFIG_PUNISHMENT_FOR_NOT_LOCKING))
             );
 
-        if (_reputationDeduction > 0) daoPointsStorage().subtractReputation(_user, _reputationDeduction);
-        daoRewardsStorage().updateLastQuarterThatReputationWasUpdated(_user, currentQuarterIndex().sub(1));
+        if (_reputationDeduction > 0) daoPointsStorage().reduceReputation(_user, _reputationDeduction);
+        daoRewardsStorage().updateLastQuarterThatReputationWasUpdated(_user, currentQuarterNumber().sub(1));
     }
 
 
@@ -235,14 +235,14 @@ contract DaoRewardsManager is DaoRewardsManagerCommon {
                 .mul(_maxRPDeduction)
                 .div(_minimalQP);
 
-            daoPointsStorage().subtractReputation(_user, _reputationDeduction);
+            daoPointsStorage().reduceReputation(_user, _reputationDeduction);
         } else {
             _reputationAddition =
                 _userQP.sub(_minimalQP)
                 .mul(_rpPerExtraQP_num)
                 .div(_rpPerExtraQP_den);
 
-            daoPointsStorage().addReputation(_user, _reputationAddition);
+            daoPointsStorage().increaseReputation(_user, _reputationAddition);
         }
     }
 
@@ -261,7 +261,7 @@ contract DaoRewardsManager is DaoRewardsManagerCommon {
         // This also means that this participant has ALREADY PARTICIPATED at least once IN THE PAST, and we have not calculated for this quarter
         // Thus, we need to calculate the Rewards for the lastParticipatedQuarter
         if (
-            (currentQuarterIndex() == data.lastParticipatedQuarter) ||
+            (currentQuarterNumber() == data.lastParticipatedQuarter) ||
             (data.lastParticipatedQuarter <= data.lastQuarterThatRewardsWasUpdated)
         ) {
             return (false, _userClaimableDgx);
@@ -317,17 +317,17 @@ contract DaoRewardsManager is DaoRewardsManagerCommon {
          totalEffectiveDGDLastQuarter
     */
     function calculateGlobalRewardsBeforeNewQuarter(uint256 _operations)
-        if_founder()
         public
+        if_founder()
         returns (bool _done)
     {
         require(isDaoNotReplaced());
         require(daoUpgradeStorage().startOfFirstQuarter() != 0); // start of first quarter must have been set already
         require(isLockingPhase());
-        require(daoRewardsStorage().readDgxDistributionDay(currentQuarterIndex()) == 0); // throw if this function has already finished running this quarter
+        require(daoRewardsStorage().readDgxDistributionDay(currentQuarterNumber()) == 0); // throw if this function has already finished running this quarter
 
         QuarterRewardsInfo memory info;
-        info.previousQuarter = currentQuarterIndex().sub(1);
+        info.previousQuarter = currentQuarterNumber().sub(1);
         require(info.previousQuarter > 0); // throw if this is the first quarter
         info.qInfo = readQuarterInfo(info.previousQuarter);
 
@@ -339,8 +339,8 @@ contract DaoRewardsManager is DaoRewardsManagerCommon {
             getIntermediateResultsIdForGlobalRewards(info.previousQuarter, false)
         );
 
-        _operations = sumEffectiveBalance(info, false, _operations, interResults);
-        // now we are left with _operations operations
+        uint256 _operationsLeft = sumEffectiveBalance(info, false, _operations, interResults);
+        // now we are left with _operationsLeft operations
         // the results is saved in interResults
 
         // if we have not done with calculating the effective balance, quit.
@@ -353,7 +353,7 @@ contract DaoRewardsManager is DaoRewardsManagerCommon {
             getIntermediateResultsIdForGlobalRewards(info.previousQuarter, true)
         );
 
-        sumEffectiveBalance(info, true, _operations, interResults);
+        sumEffectiveBalance(info, true, _operationsLeft, interResults);
 
         // if we have not done with calculating the moderator effective balance, quit.
         if (!info.doneCalculatingModeratorEffectiveBalance) { return false; }
@@ -362,15 +362,15 @@ contract DaoRewardsManager is DaoRewardsManagerCommon {
         processGlobalRewardsUpdate(info);
         _done = true;
 
-        emit StartNewQuarter(currentQuarterIndex());
+        emit StartNewQuarter(currentQuarterNumber());
     }
 
 
     // get the Id for the intermediateResult for a quarter's global rewards calculation
-    function getIntermediateResultsIdForGlobalRewards(uint256 _quarterId, bool _forModerator) internal view returns (bytes32 _id) {
+    function getIntermediateResultsIdForGlobalRewards(uint256 _quarterNumber, bool _forModerator) internal view returns (bytes32 _id) {
         _id = keccak256(abi.encodePacked(
             _forModerator ? INTERMEDIATE_MODERATOR_DGD_IDENTIFIER : INTERMEDIATE_DGD_IDENTIFIER,
-            _quarterId
+            _quarterNumber
         ));
     }
 

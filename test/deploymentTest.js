@@ -1,3 +1,5 @@
+const a = require('awaiting');
+
 const MockDgd = artifacts.require('MockDgd.sol');
 const MockBadge = artifacts.require('MockBadge.sol');
 const MockDgxStorage = artifacts.require('MockDgxStorage.sol');
@@ -24,6 +26,16 @@ contract('Deployment Test', function (accounts) {
   const addressOf = {};
   let multiSigWallet;
 
+  const fundDao = async function (source, value) {
+    const balance = await web3.eth.getBalance(contracts.daoFundingManager.address);
+    web3.eth.sendTransaction({
+      from: source,
+      to: contracts.daoFundingManager.address,
+      value,
+    });
+    assert.deepEqual(await web3.eth.getBalance(contracts.daoFundingManager.address), balance.plus(value));
+  };
+
   describe('Deploy', function () {
     it('[Deploy contracts]', async function () {
       await deployLibraries(libs);
@@ -39,7 +51,7 @@ contract('Deployment Test', function (accounts) {
       contracts.carbonVoting2 = await MockNumberCarbonVoting2.new('carbonVoting2');
       await deployStorage(libs, contracts, contracts.resolver);
       await deployServices(libs, contracts, contracts.resolver);
-      await deployInteractive(libs, contracts, contracts.resolver);
+      await deployInteractive(libs, contracts, contracts.resolver, addressOf);
     });
     it('[Deploy multiSig]', async function () {
       // 2 out of 3 multisig wallet
@@ -50,6 +62,9 @@ contract('Deployment Test', function (accounts) {
         to: multiSigWallet.address,
         value: web3.toWei(100, 'ether'),
       });
+
+      // only multisig wallet can send funds to DaoFundingManager
+      await contracts.daoFundingManager.setFundingSource(multiSigWallet.address, { from: addressOf.root });
     });
     it('[Add users to groups (founders | PRL)]', async function () {
       await contracts.daoIdentity.addGroupUser(bN(2), addressOf.founderBadgeHolder, 'add:founder');
@@ -86,6 +101,17 @@ contract('Deployment Test', function (accounts) {
       const userInfo = await contracts.daoIdentityStorage.read_user.call(addressOf.kycadmin);
       assert.deepEqual(userInfo[0], bN(4));
       assert.deepEqual(await contracts.daoIdentityStorage.read_user_role_id.call(addressOf.kycadmin), bN(4));
+
+      // multisig can send ethers to DaoFundingManager
+      const balanceBefore = await web3.eth.getBalance(contracts.daoFundingManager.address);
+      const fundTxnId = await multiSigWallet.submitTransaction.call(contracts.daoFundingManager.address, bN(1e18), '', { from: addressOf.multiSigUsers[2] });
+      await multiSigWallet.submitTransaction(contracts.daoFundingManager.address, bN(1e18), '', { from: addressOf.multiSigUsers[2] });
+      await multiSigWallet.confirmTransaction(fundTxnId, { from: addressOf.multiSigUsers[1] });
+      await multiSigWallet.confirmTransaction(fundTxnId, { from: addressOf.multiSigUsers[0] });
+      assert.deepEqual(await web3.eth.getBalance(contracts.daoFundingManager.address), balanceBefore.plus(bN(1e18)));
+
+      // even root cannot send funds
+      assert(await a.failure(fundDao(addressOf.root, web3.toWei(1, 'ether'))));
     });
   });
 });

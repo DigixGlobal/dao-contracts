@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "./DaoCommonMini.sol";
 import "../lib/MathHelper.sol";
@@ -16,7 +16,7 @@ contract DaoCommon is DaoCommonMini {
     */
     function isProposalPaused(bytes32 _proposalId)
         public
-        constant
+        view
         returns (bool _isPausedOrStopped)
     {
         (,,,,,,,,_isPausedOrStopped,) = daoStorage().readProposal(_proposalId);
@@ -28,7 +28,7 @@ contract DaoCommon is DaoCommonMini {
     */
     function isFromProposer(bytes32 _proposalId)
         internal
-        constant
+        view
         returns (bool _isFromProposer)
     {
         _isFromProposer = msg.sender == daoStorage().readProposalProposer(_proposalId);
@@ -41,7 +41,7 @@ contract DaoCommon is DaoCommonMini {
     */
     function isEditable(bytes32 _proposalId)
         internal
-        constant
+        view
         returns (bool _isEditable)
     {
         bytes32 _finalVersion;
@@ -50,12 +50,23 @@ contract DaoCommon is DaoCommonMini {
     }
 
     /**
+    @notice returns the balance of DaoFundingManager, which is the wei in DigixDAO
+    */
+    function weiInDao()
+        internal
+        view
+        returns (uint256 _wei)
+    {
+        _wei = get_contract(CONTRACT_DAO_FUNDING_MANAGER).balance;
+    }
+
+    /**
     @notice Check if it is after the draft voting phase of the proposal
     */
     modifier ifAfterDraftVotingPhase(bytes32 _proposalId) {
         uint256 _start = daoStorage().readProposalDraftVotingTime(_proposalId);
         require(_start > 0); // Draft voting must have started. In other words, proposer must have finalized the proposal
-        require(now >= _start + getUintConfig(CONFIG_DRAFT_VOTING_PHASE));
+        require(now >= _start.add(getUintConfig(CONFIG_DRAFT_VOTING_PHASE)));
         _;
     }
 
@@ -104,7 +115,7 @@ contract DaoCommon is DaoCommonMini {
     @notice Check if the DAO has enough ETHs for a particular funding request
     */
     modifier ifFundingPossible(uint256[] _fundings, uint256 _finalReward) {
-        require(MathHelper.sumNumbers(_fundings).add(_finalReward) <= daoFundingStorage().ethInDao());
+        require(MathHelper.sumNumbers(_fundings).add(_finalReward) <= weiInDao());
         _;
     }
 
@@ -164,7 +175,7 @@ contract DaoCommon is DaoCommonMini {
 
     function daoWhitelistingStorage()
         internal
-        constant
+        view
         returns (DaoWhitelistingStorage _contract)
     {
         _contract = DaoWhitelistingStorage(get_contract(CONTRACT_STORAGE_DAO_WHITELISTING));
@@ -172,7 +183,7 @@ contract DaoCommon is DaoCommonMini {
 
     function getAddressConfig(bytes32 _configKey)
         public
-        constant
+        view
         returns (address _configValue)
     {
         _configValue = daoConfigsStorage().addressConfigs(_configKey);
@@ -180,7 +191,7 @@ contract DaoCommon is DaoCommonMini {
 
     function getBytesConfig(bytes32 _configKey)
         public
-        constant
+        view
         returns (bytes32 _configValue)
     {
         _configValue = daoConfigsStorage().bytesConfigs(_configKey);
@@ -191,11 +202,11 @@ contract DaoCommon is DaoCommonMini {
     */
     function isParticipant(address _user)
         public
-        constant
+        view
         returns (bool _is)
     {
         _is =
-            (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex())
+            (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterNumber())
             && (daoStakeStorage().lockedDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_LOCKED_DGD));
     }
 
@@ -204,11 +215,11 @@ contract DaoCommon is DaoCommonMini {
     */
     function isModerator(address _user)
         public
-        constant
+        view
         returns (bool _is)
     {
         _is =
-            (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex())
+            (daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterNumber())
             && (daoStakeStorage().lockedDGDStake(_user) >= getUintConfig(CONFIG_MINIMUM_DGD_FOR_MODERATOR))
             && (daoPointsStorage().getReputation(_user) >= getUintConfig(CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR));
     }
@@ -222,7 +233,7 @@ contract DaoCommon is DaoCommonMini {
     */
     function startOfMilestone(bytes32 _proposalId, uint256 _milestoneIndex)
         internal
-        constant
+        view
         returns (uint256 _milestoneStart)
     {
         uint256 _startOfPrecedingVotingRound = daoStorage().readProposalVotingTime(_proposalId, _milestoneIndex);
@@ -250,7 +261,7 @@ contract DaoCommon is DaoCommonMini {
         uint256 _tentativeVotingStart
     )
         internal
-        constant
+        view
         returns (uint256 _actualVotingStart)
     {
         uint256 _timeLeftInQuarter = getTimeLeftInQuarter(_tentativeVotingStart);
@@ -273,21 +284,21 @@ contract DaoCommon is DaoCommonMini {
     */
     function checkNonDigixProposalLimit(bytes32 _proposalId)
         internal
-        constant
+        view
     {
         require(isNonDigixProposalsWithinLimit(_proposalId));
     }
 
     function isNonDigixProposalsWithinLimit(bytes32 _proposalId)
         internal
-        constant
+        view
         returns (bool _withinLimit)
     {
         bool _isDigixProposal;
         (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
         _withinLimit = true;
         if (!_isDigixProposal) {
-            _withinLimit = daoStorage().proposalCountByQuarter(currentQuarterIndex()) < getUintConfig(CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER);
+            _withinLimit = daoProposalCounterStorage().proposalCountByQuarter(currentQuarterNumber()) < getUintConfig(CONFIG_NON_DIGIX_PROPOSAL_CAP_PER_QUARTER);
         }
     }
 
@@ -297,11 +308,11 @@ contract DaoCommon is DaoCommonMini {
     */
     function checkNonDigixFundings(uint256[] _milestonesFundings, uint256 _finalReward)
         internal
-        constant
+        view
     {
         if (!is_founder()) {
-            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= getUintConfig(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
             require(_milestonesFundings.length <= getUintConfig(CONFIG_MAX_MILESTONES_FOR_NON_DIGIX));
+            require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= getUintConfig(CONFIG_MAX_FUNDING_FOR_NON_DIGIX));
         }
     }
 
@@ -311,7 +322,7 @@ contract DaoCommon is DaoCommonMini {
     */
     function senderCanDoProposerOperations()
         internal
-        constant
+        view
     {
         require(isMainPhase());
         require(isParticipant(msg.sender));

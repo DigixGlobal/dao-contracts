@@ -14,9 +14,9 @@ const DaoConfigsStorage = artifacts.require('MockDaoConfigsStorage.sol');
 const DaoStakeStorage = artifacts.require('DaoStakeStorage.sol');
 const DaoPointsStorage = artifacts.require('DaoPointsStorage.sol');
 const DaoStorage = artifacts.require('DaoStorage.sol');
+const DaoProposalCounterStorage = artifacts.require('DaoProposalCounterStorage.sol');
 const DaoUpgradeStorage = artifacts.require('DaoUpgradeStorage.sol');
 const DaoSpecialStorage = artifacts.require('DaoSpecialStorage.sol');
-const DaoFundingStorage = artifacts.require('DaoFundingStorage.sol');
 const DaoRewardsStorage = artifacts.require('DaoRewardsStorage.sol');
 const DaoWhitelistingStorage = artifacts.require('DaoWhitelistingStorage.sol');
 const IntermediateResultsStorage = artifacts.require('IntermediateResultsStorage.sol');
@@ -35,7 +35,7 @@ const DaoSpecialVotingClaims = artifacts.require('DaoSpecialVotingClaims.sol');
 const DaoRewardsManager = artifacts.require('DaoRewardsManager.sol');
 const DaoRewardsManagerExtras = artifacts.require('DaoRewardsManagerExtras.sol');
 
-module.exports = async function (deployer, network) {
+module.exports = async function (deployer, network, accounts) {
   if ((network !== 'development' && network !== 'kovan') || process.env.SKIP) { return null; }
   deployer.deploy(ContractResolver)
     .then(() => {
@@ -61,9 +61,9 @@ module.exports = async function (deployer, network) {
       deployer.deploy(DaoStakeStorage, ContractResolver.address);
       deployer.deploy(DaoPointsStorage, ContractResolver.address);
       deployer.deploy(DaoStorage, ContractResolver.address);
+      deployer.deploy(DaoProposalCounterStorage, ContractResolver.address);
       deployer.deploy(DaoUpgradeStorage, ContractResolver.address);
       deployer.deploy(DaoSpecialStorage, ContractResolver.address);
-      deployer.deploy(DaoFundingStorage, ContractResolver.address);
       deployer.deploy(DaoWhitelistingStorage, ContractResolver.address);
       deployer.deploy(IntermediateResultsStorage, ContractResolver.address);
       return deployer.deploy(DaoRewardsStorage, ContractResolver.address);
@@ -82,7 +82,7 @@ module.exports = async function (deployer, network) {
         MockNumberCarbonVoting2.address,
       );
       deployer.deploy(DaoIdentity, ContractResolver.address);
-      deployer.deploy(DaoFundingManager, ContractResolver.address);
+      deployer.deploy(DaoFundingManager, ContractResolver.address, accounts[0]);
       deployer.deploy(DaoVoting, ContractResolver.address);
       deployer.deploy(Dao, ContractResolver.address);
       deployer.deploy(DaoSpecialProposal, ContractResolver.address);

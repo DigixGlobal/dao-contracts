@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "../common/DaoCommon.sol";
 import "./DaoFundingManager.sol";
@@ -11,13 +11,14 @@ import "./DaoVotingClaims.sol";
 */
 contract Dao is DaoCommon {
 
-    event NewProposal(bytes32 _proposalId, address _proposer);
-    event ModifyProposal(bytes32 _proposalId, bytes32 _newDoc);
-    event ChangeProposalFunding(bytes32 _proposalId);
-    event FinalizeProposal(bytes32 _proposalId);
-    event FinishMilestone(bytes32 _proposalId, uint256 _milestoneIndex);
-    event AddProposalDoc(bytes32 _proposalId, bytes32 _newDoc);
-    event PRLAction(bytes32 _proposalId, uint256 _actionId, bytes32 _doc);
+    event NewProposal(bytes32 indexed _proposalId, address _proposer);
+    event ModifyProposal(bytes32 indexed _proposalId, bytes32 _newDoc);
+    event ChangeProposalFunding(bytes32 indexed _proposalId);
+    event FinalizeProposal(bytes32 indexed _proposalId);
+    event FinishMilestone(bytes32 indexed _proposalId, uint256 indexed _milestoneIndex);
+    event AddProposalDoc(bytes32 indexed _proposalId, bytes32 _newDoc);
+    event PRLAction(bytes32 indexed _proposalId, uint256 _actionId, bytes32 _doc);
+    event CloseProposal(bytes32 indexed _proposalId);
 
     constructor(address _resolver) public {
         require(init(CONTRACT_DAO, _resolver));
@@ -25,7 +26,7 @@ contract Dao is DaoCommon {
 
     function daoFundingManager()
         internal
-        constant
+        view
         returns (DaoFundingManager _contract)
     {
         _contract = DaoFundingManager(get_contract(CONTRACT_DAO_FUNDING_MANAGER));
@@ -33,7 +34,7 @@ contract Dao is DaoCommon {
 
     function daoRewardsManager()
         internal
-        constant
+        view
         returns (DaoRewardsManager _contract)
     {
         _contract = DaoRewardsManager(get_contract(CONTRACT_DAO_REWARDS_MANAGER));
@@ -41,7 +42,7 @@ contract Dao is DaoCommon {
 
     function daoVotingClaims()
         internal
-        constant
+        view
         returns (DaoVotingClaims _contract)
     {
         _contract = DaoVotingClaims(get_contract(CONTRACT_DAO_VOTING_CLAIMS));
@@ -87,7 +88,7 @@ contract Dao is DaoCommon {
     )
         public
         if_root()
-        ifGlobalRewardsSet(currentQuarterIndex())
+        ifGlobalRewardsSet(currentQuarterNumber())
     {
         require(isLockingPhase());
         require(daoUpgradeStorage().isReplacedByNewDao() == false);
@@ -107,12 +108,13 @@ contract Dao is DaoCommon {
     */
     function setStartOfFirstQuarter(uint256 _start) public if_founder() {
         require(daoUpgradeStorage().startOfFirstQuarter() == 0);
+        require(_start > 0);
         daoUpgradeStorage().setStartOfFirstQuarter(_start);
     }
 
     /**
     @notice Submit a new preliminary idea / Pre-proposal
-    @dev The proposer has to send in a collateral == getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT)
+    @dev The proposer has to send in a collateral == getUintConfig(CONFIG_PREPROPOSAL_COLLATERAL)
          which he could claim back in these scenarios:
           - Before the proposal is finalized, by calling closeProposal()
           - After all milestones are done and the final voting round is passed
@@ -126,15 +128,15 @@ contract Dao is DaoCommon {
         uint256[] _milestonesFundings,
         uint256 _finalReward
     )
-        public
+        external
         payable
         ifFundingPossible(_milestonesFundings, _finalReward)
     {
         senderCanDoProposerOperations();
         bool _isFounder = is_founder();
 
-        require(msg.value == getUintConfig(CONFIG_PREPROPOSAL_DEPOSIT));
-        require(address(daoFundingManager()).call.value(msg.value)());
+        require(msg.value == getUintConfig(CONFIG_PREPROPOSAL_COLLATERAL));
+        require(address(daoFundingManager()).call.gas(25000).value(msg.value)());
 
         checkNonDigixFundings(_milestonesFundings, _finalReward);
 
@@ -158,7 +160,7 @@ contract Dao is DaoCommon {
         uint256[] _milestonesFundings,
         uint256 _finalReward
     )
-        public
+        external
     {
         senderCanDoProposerOperations();
         require(isFromProposer(_proposalId));
@@ -191,7 +193,7 @@ contract Dao is DaoCommon {
         uint256 _finalReward,
         uint256 _currentMilestone
     )
-        public
+        external
     {
         senderCanDoProposerOperations();
         require(isFromProposer(_proposalId));
@@ -359,6 +361,7 @@ contract Dao is DaoCommon {
 
         daoStorage().closeProposal(_proposalId);
         daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_CLAIMED);
+        emit CloseProposal(_proposalId);
         require(daoFundingManager().refundCollateral(msg.sender, _proposalId));
     }
 
@@ -369,16 +372,22 @@ contract Dao is DaoCommon {
     @param _proposalIds Array of proposal IDs
     */
     function founderCloseProposals(bytes32[] _proposalIds)
-        public
+        external
         if_founder()
     {
         uint256 _length = _proposalIds.length;
         uint256 _timeCreated;
         bytes32 _finalVersion;
+        bytes32 _currentState;
         for (uint256 _i = 0; _i < _length; _i++) {
-            (,,,,_timeCreated,,,_finalVersion,,) = daoStorage().readProposal(_proposalIds[_i]);
+            (,,,_currentState,_timeCreated,,,_finalVersion,,) = daoStorage().readProposal(_proposalIds[_i]);
             require(_finalVersion == EMPTY_BYTES);
+            require(
+                (_currentState == PROPOSAL_STATE_PREPROPOSAL) ||
+                (_currentState == PROPOSAL_STATE_DRAFT)
+            );
             require(now > _timeCreated.add(getUintConfig(CONFIG_PROPOSAL_DEAD_DURATION)));
+            emit CloseProposal(_proposalIds[_i]);
             daoStorage().closeProposal(_proposalIds[_i]);
         }
     }

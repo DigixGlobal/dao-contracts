@@ -28,9 +28,9 @@
     "dao"
   ],
   "dependencies": {
-    "@digix/cacp-contracts-dao": "^1.0.6",
+    "@digix/cacp-contracts-dao": "^1.0.9",
     "@digix/cdap": "^0.1.0",
-    "@digix/doxity-solc": "0.6.0",
+    "@digix/doxity-solc": "0.6.1",
     "@digix/helpers": "^1.0.1",
     "@digix/lite-dgx-contract": "1.0.1",
     "@digix/multi-hash": "0.0.2",
@@ -48,7 +48,7 @@
     "dijix-pdf": "0.0.8",
     "dotenv": "5.0.1",
     "ethereumjs-testrpc": "^3.9.2",
-    "ganache-cli": "6.1.0",
+    "ganache-cli": "^6.1.2",
     "openzeppelin-solidity": "^1.12.0",
     "truffle": "^4.1.14",
     "web3-utils": "^1.0.0-beta.34"

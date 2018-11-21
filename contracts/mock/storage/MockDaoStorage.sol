@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "../../storage/DaoStorage.sol";
 
@@ -125,11 +125,5 @@ contract MockDaoStorage is DaoStorage {
                 _voting.noVotes[_voters[i]] = _weights[i];
             }
         }
-    }
-
-    function mock_set_proposal_count(uint256 _quarterId, uint256 _count)
-        public
-    {
-        proposalCountByQuarter[_quarterId] = _count;
     }
 }

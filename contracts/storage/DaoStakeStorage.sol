@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
 import "@digix/solidity-collections/contracts/abstract/AddressIteratorStorage.sol";
@@ -80,7 +80,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readUserDGDStake(address _user)
         public
-        constant
+        view
         returns (
             uint256 _actualLockedDGD,
             uint256 _lockedDGDStake
@@ -124,7 +124,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function isInParticipantList(address _user)
         public
-        constant
+        view
         returns (bool _is)
     {
         _is = allParticipants.find(_user) != 0;
@@ -132,7 +132,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function isInModeratorsList(address _user)
         public
-        constant
+        view
         returns (bool _is)
     {
         _is = allModerators.find(_user) != 0;
@@ -140,7 +140,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readFirstModerator()
         public
-        constant
+        view
         returns (address _item)
     {
         _item = read_first_from_addresses(allModerators);
@@ -148,7 +148,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readLastModerator()
         public
-        constant
+        view
         returns (address _item)
     {
         _item = read_last_from_addresses(allModerators);
@@ -156,7 +156,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readNextModerator(address _current_item)
         public
-        constant
+        view
         returns (address _item)
     {
         _item = read_next_from_addresses(allModerators, _current_item);
@@ -164,7 +164,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readPreviousModerator(address _current_item)
         public
-        constant
+        view
         returns (address _item)
     {
         _item = read_previous_from_addresses(allModerators, _current_item);
@@ -172,7 +172,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readTotalModerators()
         public
-        constant
+        view
         returns (uint256 _total_count)
     {
         _total_count = read_total_addresses(allModerators);
@@ -180,7 +180,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readFirstParticipant()
         public
-        constant
+        view
         returns (address _item)
     {
         _item = read_first_from_addresses(allParticipants);
@@ -188,7 +188,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readLastParticipant()
         public
-        constant
+        view
         returns (address _item)
     {
         _item = read_last_from_addresses(allParticipants);
@@ -196,7 +196,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readNextParticipant(address _current_item)
         public
-        constant
+        view
         returns (address _item)
     {
         _item = read_next_from_addresses(allParticipants, _current_item);
@@ -204,7 +204,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readPreviousParticipant(address _current_item)
         public
-        constant
+        view
         returns (address _item)
     {
         _item = read_previous_from_addresses(allParticipants, _current_item);
@@ -212,7 +212,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readTotalParticipant()
         public
-        constant
+        view
         returns (uint256 _total_count)
     {
         _total_count = read_total_addresses(allParticipants);

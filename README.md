@@ -107,12 +107,11 @@ Most of our contracts have been documented extensively in their codes. This is a
 Most contracts implement the [Resolver Client](https://github.com/DigixGlobal/cacp-contracts/blob/dao/contracts/ResolverClient.sol) contract, whose addresses are securely fetched from one [Contract Resolver](https://github.com/DigixGlobal/cacp-contracts/blob/dao/contracts/ContractResolver.sol).
 
 ##### Storage Layer
-The Storage layer contracts interact with Ethereum's persistent storage. They can only be used publicly to read from `public` functions. All the functions that can update the state variables can only be called from specific DigixDAO smart contracts, for example, [this](https://github.com/DigixGlobal/dao-contracts/blob/dev/contracts/storage/DaoStorage.sol#L596) and [this](https://github.com/DigixGlobal/dao-contracts/blob/dev/contracts/storage/DaoFundingStorage.sol#L17). We try to include as less as possible logic in contracts under this layer. The storage layer contracts are:
+The Storage layer contracts interact with Ethereum's persistent storage. They can only be used publicly to read from `public` functions. All the functions that can update the state variables can only be called from specific DigixDAO smart contracts, for example, [this](https://github.com/DigixGlobal/dao-contracts/blob/dev/contracts/storage/DaoStorage.sol#L596). We try to include as less as possible logic in contracts under this layer. The storage layer contracts are:
 * DaoStorage (proposals)
 * DaoSpecialStorage (Special proposals)
 * DaoStakeStorage (participant stakes)
 * DaoRewardsStorage (DGX rewards for participants)
-* DaoFundingStorage (funding DigixDAO or proposers)
 * DaoPointsStorage (quarter and reputation points)
 * DaoIdentityStorage (KYC information)
 * DaoConfigsStorage (configuration for DigixDAO)
@@ -121,7 +120,6 @@ The Storage layer contracts interact with Ethereum's persistent storage. They ca
 The Interactive layer contracts can be called publicly. They contain DigixDAO's logic. DigixDAO's logic is segregated into multiple parts, namely:
 * <strong>DaoFundingManager</strong>
   * Handles incoming and outgoing DAO funds
-  * Writes to the DaoFundingStorage storage layer contract
 * <strong>DaoRewardsManager</strong>
   * Handles DGX rewards and reputation between quarters
   * Writes to the DaoRewardsStorage storage layer contract

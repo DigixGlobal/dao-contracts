@@ -33,9 +33,9 @@ contract('DaoRewardsManager', function (accounts) {
     await contracts.daoStakeStorage.mock_add_participants(normalParticipants, mockStakes);
     await contracts.daoStakeStorage.mock_add_moderators(moderators, mockModeratorStakes);
 
-    const quarterIndex = bN(1);
+    const _quarterNumber = bN(1);
     await a.map(indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT), 20, async (i) => {
-      await contracts.daoRewardsStorage.mock_set_last_participated_quarter(accounts[i], quarterIndex);
+      await contracts.daoRewardsStorage.mock_set_last_participated_quarter(accounts[i], _quarterNumber);
     });
     const mockQPs = randomBigNumbers(bN, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT, 20);
     const mockModeratorQPs = randomBigNumbers(bN, BADGE_HOLDER_COUNT, 30);
@@ -47,8 +47,8 @@ contract('DaoRewardsManager', function (accounts) {
     for (const i of indexRange(0, DGD_HOLDER_COUNT)) {
       mockRPs[i] += 50;
     }
-    await contracts.daoPointsStorage.mock_set_qp(accounts.slice(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT), mockQPs, quarterIndex);
-    await contracts.daoPointsStorage.mock_set_moderator_qp(moderators, mockModeratorQPs, quarterIndex);
+    await contracts.daoPointsStorage.mock_set_qp(accounts.slice(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT), mockQPs, _quarterNumber);
+    await contracts.daoPointsStorage.mock_set_moderator_qp(moderators, mockModeratorQPs, _quarterNumber);
     await contracts.daoPointsStorage.mock_set_rp(normalParticipants, mockRPs);
     await contracts.daoPointsStorage.mock_set_rp(moderators, mockModeratorRPs);
   };

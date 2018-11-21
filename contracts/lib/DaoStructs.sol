@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
 import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
@@ -67,12 +67,12 @@ library DaoStructs {
         // The number of milestones in the proposal as per this version
         uint256 milestoneCount;
 
+        // The final reward asked by the proposer for completion of the entire proposal
+        uint256 finalReward;
+
         // List of fundings required by the proposal as per this version
         // The numbers are in wei
         uint256[] milestoneFundings;
-
-        // The final reward asked by the proposer for completion of the entire proposal
-        uint256 finalReward;
 
         // When a proposal is finalized (calling Dao.finalizeProposal), the proposer can no longer add proposal versions
         // However, they can still add more details to this final proposal version, in the form of IPFS docs.
@@ -83,12 +83,6 @@ library DaoStructs {
     struct Proposal {
         // ID of the proposal. Also the IPFS hash of the first ProposalVersion
         bytes32 proposalId;
-
-        // Address of the user who created the proposal
-        address proposer;
-
-        // Address of the moderator who endorsed the proposal
-        address endorser;
 
         // current state of the proposal
         // refer PROPOSAL_STATE_* in "./../common/DaoConstants.sol"
@@ -111,14 +105,8 @@ library DaoStructs {
         // votingRounds[i] for i>0 are the Interim Voting rounds of the proposal, which lasts for get_uint_config(CONFIG_INTERIM_PHASE_TOTAL)
         mapping (uint256 => Voting) votingRounds;
 
-        // Boolean whether the proposal is paused/stopped at the moment
-        bool isPausedOrStopped;
-
-        // Boolean whether the proposal was created by a founder role
-        bool isDigix;
-
         // Every proposal has a collateral tied to it with a value of
-        // get_uint_config(CONFIG_PREPROPOSAL_DEPOSIT) (refer "./../storage/DaoConfigsStorage.sol")
+        // get_uint_config(CONFIG_PREPROPOSAL_COLLATERAL) (refer "./../storage/DaoConfigsStorage.sol")
         // Collateral can be in different states
         // refer COLLATERAL_STATUS_* in "./../common/DaoConstants.sol"
         uint256 collateralStatus;
@@ -132,11 +120,23 @@ library DaoStructs {
         // List of PrlAction structs
         // These are all the actions done by the PRL on the proposal
         PrlAction[] prlActions;
+
+        // Address of the user who created the proposal
+        address proposer;
+
+        // Address of the moderator who endorsed the proposal
+        address endorser;
+
+        // Boolean whether the proposal is paused/stopped at the moment
+        bool isPausedOrStopped;
+
+        // Boolean whether the proposal was created by a founder role
+        bool isDigix;
     }
 
-    function countVotes(Voting storage _voting, address[] memory _allUsers)
-        public
-        constant
+    function countVotes(Voting storage _voting, address[] _allUsers)
+        external
+        view
         returns (uint256 _for, uint256 _against)
     {
         uint256 _n = _allUsers.length;
@@ -151,8 +151,8 @@ library DaoStructs {
 
     // get the list of voters who voted _vote (true-yes/false-no)
     function listVotes(Voting storage _voting, address[] _allUsers, bool _vote)
-        public
-        constant
+        external
+        view
         returns (address[] memory _voters, uint256 _length)
     {
         uint256 _n = _allUsers.length;
@@ -178,7 +178,7 @@ library DaoStructs {
 
     function readVote(Voting storage _voting, address _voter)
         public
-        constant
+        view
         returns (bool _vote, uint256 _weight)
     {
         if (_voting.yesVotes[_voter] > 0) {
@@ -207,7 +207,7 @@ library DaoStructs {
 
     function readVersion(ProposalVersion storage _version)
         public
-        constant
+        view
         returns (
             bytes32 _doc,
             uint256 _created,
@@ -225,7 +225,7 @@ library DaoStructs {
     // if _milestoneId is the same as _milestoneCount, it returns the final reward
     function readProposalMilestone(Proposal storage _proposal, uint256 _milestoneIndex)
         public
-        constant
+        view
         returns (uint256 _funding)
     {
         bytes32 _finalVersion = _proposal.finalVersion;
@@ -261,11 +261,6 @@ library DaoStructs {
         // This is the IPFS doc hash of the proposal
         bytes32 proposalId;
 
-        // Address of the user who created the special proposal
-        // This address should also be in the ROLES_FOUNDERS group
-        // refer "./../storage/DaoIdentityStorage.sol"
-        address proposer;
-
         // UTC timestamp at which the proposal was created
         uint256 timeCreated;
 
@@ -280,6 +275,11 @@ library DaoStructs {
 
         // List of the new bytes32 configs as per the special proposal
         bytes32[] bytesConfigs;
+
+        // Address of the user who created the special proposal
+        // This address should also be in the ROLES_FOUNDERS group
+        // refer "./../storage/DaoIdentityStorage.sol"
+        address proposer;
     }
 
     // All configs are as per the DaoConfigsStorage values at the time when
@@ -333,9 +333,6 @@ library DaoStructs {
     // This struct stores the intermediate results in between the calculating transactions
     // These intermediate results are stored in IntermediateResultsStorage
     struct IntermediateResults {
-        // Address of user until which the calculation has been done
-        address countedUntil;
-
         // weight of "FOR" votes counted up until the current calculation step
         uint256 currentForCount;
 
@@ -344,5 +341,8 @@ library DaoStructs {
 
         // summation of effectiveDGDs up until the iteration of calculation
         uint256 currentSumOfEffectiveBalance;
+
+        // Address of user until which the calculation has been done
+        address countedUntil;
     }
 }

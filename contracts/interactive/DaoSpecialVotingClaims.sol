@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "../common/DaoCommon.sol";
 import "../service/DaoCalculatorService.sol";
@@ -15,9 +15,11 @@ contract DaoSpecialVotingClaims is DaoCommon {
     using DaoIntermediateStructs for DaoIntermediateStructs.VotingCount;
     using DaoStructs for DaoStructs.IntermediateResults;
 
+    event SpecialProposalClaim(bytes32 indexed _proposalId, bool _result);
+
     function daoCalculatorService()
         internal
-        constant
+        view
         returns (DaoCalculatorService _contract)
     {
         _contract = DaoCalculatorService(get_contract(CONTRACT_SERVICE_DAO_CALCULATOR));
@@ -25,7 +27,7 @@ contract DaoSpecialVotingClaims is DaoCommon {
 
     function daoFundingManager()
         internal
-        constant
+        view
         returns (DaoFundingManager _contract)
     {
         _contract = DaoFundingManager(get_contract(CONTRACT_DAO_FUNDING_MANAGER));
@@ -33,7 +35,7 @@ contract DaoSpecialVotingClaims is DaoCommon {
 
     function daoRewardsManager()
         internal
-        constant
+        view
         returns (DaoRewardsManager _contract)
     {
         _contract = DaoRewardsManager(get_contract(CONTRACT_DAO_REWARDS_MANAGER));
@@ -108,6 +110,7 @@ contract DaoSpecialVotingClaims is DaoCommon {
             }
             daoSpecialStorage().setPass(_proposalId, _passed);
             daoSpecialStorage().setVotingClaim(_proposalId, true);
+            emit SpecialProposalClaim(_proposalId, _passed);
         } else {
             intermediateResultsStorage().setIntermediateResults(
                 _proposalId,

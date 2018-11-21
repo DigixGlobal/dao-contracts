@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "@digix/solidity-collections/contracts/abstract/BytesIteratorStorage.sol";
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
@@ -24,10 +24,6 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     // eg. when proposal is endorsed, when proposal is funded, etc
     mapping (bytes32 => DoublyLinkedList.Bytes) proposalsByState;
 
-    // This is to mark the number of proposals that have been funded in a specific quarter
-    // this is to take care of the cap on the number of funded proposals in a quarter
-    mapping (uint256 => uint256) public proposalCountByQuarter;
-
     constructor(address _resolver) public {
         require(init(CONTRACT_STORAGE_DAO, _resolver));
     }
@@ -50,7 +46,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     /// }
     function readProposal(bytes32 _proposalId)
         public
-        constant
+        view
         returns (
             bytes32 _doc,
             address _proposer,
@@ -64,7 +60,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
             bool _isDigixProposal
         )
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
         _doc = _proposal.proposalId;
         _proposer = _proposal.proposer;
@@ -80,7 +76,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
 
     function readProposalProposer(bytes32 _proposalId)
         public
-        constant
+        view
         returns (address _proposer)
     {
         _proposer = proposalsById[_proposalId].proposer;
@@ -88,7 +84,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
 
     function readTotalPrlActions(bytes32 _proposalId)
         public
-        constant
+        view
         returns (uint256 _length)
     {
         _length = proposalsById[_proposalId].prlActions.length;
@@ -96,7 +92,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
 
     function readPrlAction(bytes32 _proposalId, uint256 _index)
         public
-        constant
+        view
         returns (uint256 _actionId, uint256 _time, bytes32 _doc)
     {
         DaoStructs.PrlAction[] memory _actions = proposalsById[_proposalId].prlActions;
@@ -108,72 +104,73 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
 
     function readProposalDraftVotingResult(bytes32 _proposalId)
         public
-        constant
+        view
         returns (bool _result)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _result = proposalsById[_proposalId].draftVoting.passed;
     }
 
     function readProposalVotingResult(bytes32 _proposalId, uint256 _index)
         public
-        constant
+        view
         returns (bool _result)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _result = proposalsById[_proposalId].votingRounds[_index].passed;
     }
 
     function readProposalDraftVotingTime(bytes32 _proposalId)
         public
-        constant
+        view
         returns (uint256 _start)
     {
+        require(senderIsAllowedToRead());
         _start = proposalsById[_proposalId].draftVoting.startTime;
     }
 
     function readProposalVotingTime(bytes32 _proposalId, uint256 _index)
         public
-        constant
+        view
         returns (uint256 _start)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _start = proposalsById[_proposalId].votingRounds[_index].startTime;
     }
 
-    function readDraftVotingCount(bytes32 _proposalId, address[] memory _allUsers)
-        public
-        constant
+    function readDraftVotingCount(bytes32 _proposalId, address[] _allUsers)
+        external
+        view
         returns (uint256 _for, uint256 _against)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         return proposalsById[_proposalId].draftVoting.countVotes(_allUsers);
     }
 
     function readVotingCount(bytes32 _proposalId, uint256 _index, address[] _allUsers)
-        public
-        constant
+        external
+        view
         returns (uint256 _for, uint256 _against)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         return proposalsById[_proposalId].votingRounds[_index].countVotes(_allUsers);
     }
 
     function readVotingRoundVotes(bytes32 _proposalId, uint256 _index, address[] _allUsers, bool _vote)
-        public
-        constant
+        external
+        view
         returns (address[] memory _voters, uint256 _length)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         return proposalsById[_proposalId].votingRounds[_index].listVotes(_allUsers, _vote);
     }
 
     function readDraftVote(bytes32 _proposalId, address _voter)
         public
-        constant
+        view
         returns (bool _vote, uint256 _weight)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         return proposalsById[_proposalId].draftVoting.readVote(_voter);
     }
 
@@ -185,19 +182,19 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     /// }
     function readComittedVote(bytes32 _proposalId, uint256 _index, address _voter)
         public
-        constant
+        view
         returns (bytes32 _commitHash)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _commitHash = proposalsById[_proposalId].votingRounds[_index].commits[_voter];
     }
 
     function readVote(bytes32 _proposalId, uint256 _index, address _voter)
         public
-        constant
+        view
         returns (bool _vote, uint256 _weight)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         return proposalsById[_proposalId].votingRounds[_index].readVote(_voter);
     }
 
@@ -207,7 +204,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     /// }
     function getFirstProposal()
         public
-        constant
+        view
         returns (bytes32 _id)
     {
         _id = read_first_from_bytesarray(allProposals);
@@ -219,7 +216,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     /// }
     function getLastProposal()
         public
-        constant
+        view
         returns (bytes32 _id)
     {
         _id = read_last_from_bytesarray(allProposals);
@@ -232,7 +229,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     /// }
     function getNextProposal(bytes32 _proposalId)
         public
-        constant
+        view
         returns (bytes32 _id)
     {
         _id = read_next_from_bytesarray(
@@ -248,7 +245,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     /// }
     function getPreviousProposal(bytes32 _proposalId)
         public
-        constant
+        view
         returns (bytes32 _id)
     {
         _id = read_previous_from_bytesarray(
@@ -264,10 +261,10 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     /// }
     function getFirstProposalInState(bytes32 _stateId)
         public
-        constant
+        view
         returns (bytes32 _id)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _id = read_first_from_bytesarray(proposalsByState[_stateId]);
     }
 
@@ -278,10 +275,10 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     /// }
     function getLastProposalInState(bytes32 _stateId)
         public
-        constant
+        view
         returns (bytes32 _id)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _id = read_last_from_bytesarray(proposalsByState[_stateId]);
     }
 
@@ -292,10 +289,10 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     /// }
     function getNextProposalInState(bytes32 _stateId, bytes32 _proposalId)
         public
-        constant
+        view
         returns (bytes32 _id)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _id = read_next_from_bytesarray(
             proposalsByState[_stateId],
             _proposalId
@@ -309,10 +306,10 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     /// }
     function getPreviousProposalInState(bytes32 _stateId, bytes32 _proposalId)
         public
-        constant
+        view
         returns (bytes32 _id)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _id = read_previous_from_bytesarray(
             proposalsByState[_stateId],
             _proposalId
@@ -329,7 +326,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     /// }
     function readProposalVersion(bytes32 _proposalId, bytes32 _version)
         public
-        constant
+        view
         returns (
             bytes32 _doc,
             uint256 _created,
@@ -349,10 +346,10 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     */
     function readProposalFunding(bytes32 _proposalId)
         public
-        constant
+        view
         returns (uint256[] memory _fundings, uint256 _finalReward)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         bytes32 _finalVersion = proposalsById[_proposalId].finalVersion;
         require(_finalVersion != EMPTY_BYTES);
         _fundings = proposalsById[_proposalId].proposalVersions[_finalVersion].milestoneFundings;
@@ -361,10 +358,10 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
 
     function readProposalMilestone(bytes32 _proposalId, uint256 _index)
         public
-        constant
+        view
         returns (uint256 _funding)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _funding = proposalsById[_proposalId].readProposalMilestone(_index);
     }
 
@@ -375,7 +372,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     /// }
     function getFirstProposalVersion(bytes32 _proposalId)
         public
-        constant
+        view
         returns (bytes32 _version)
     {
         DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
@@ -389,7 +386,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     /// }
     function getLastProposalVersion(bytes32 _proposalId)
         public
-        constant
+        view
         returns (bytes32 _version)
     {
         DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
@@ -404,7 +401,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     /// }
     function getNextProposalVersion(bytes32 _proposalId, bytes32 _version)
         public
-        constant
+        view
         returns (bytes32 _nextVersion)
     {
         DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
@@ -422,7 +419,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     /// }
     function getPreviousProposalVersion(bytes32 _proposalId, bytes32 _version)
         public
-        constant
+        view
         returns (bytes32 _previousVersion)
     {
         DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
@@ -434,7 +431,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
 
     function isDraftClaimed(bytes32 _proposalId)
         public
-        constant
+        view
         returns (bool _claimed)
     {
         _claimed = proposalsById[_proposalId].draftVoting.claimed;
@@ -442,7 +439,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
 
     function isClaimed(bytes32 _proposalId, uint256 _index)
         public
-        constant
+        view
         returns (bool _claimed)
     {
         _claimed = proposalsById[_proposalId].votingRounds[_index].claimed;
@@ -450,16 +447,16 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
 
     function readProposalCollateralStatus(bytes32 _proposalId)
         public
-        constant
+        view
         returns (uint256 _status)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _status = proposalsById[_proposalId].collateralStatus;
     }
 
     function readProposalCollateralAmount(bytes32 _proposalId)
         public
-        constant
+        view
         returns (uint256 _amount)
     {
         _amount = proposalsById[_proposalId].collateralAmount;
@@ -469,7 +466,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     /// @dev Will throw if the propsal is not finalized yet
     function readProposalDocs(bytes32 _proposalId)
         public
-        constant
+        view
         returns (bytes32[] _moreDocs)
     {
         bytes32 _finalVersion = proposalsById[_proposalId].finalVersion;
@@ -479,10 +476,10 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
 
     function readIfMilestoneFunded(bytes32 _proposalId, uint256 _milestoneId)
         public
-        constant
+        view
         returns (bool _funded)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _funded = proposalsById[_proposalId].votingRounds[_milestoneId].funded;
     }
 
@@ -495,9 +492,13 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         uint256 _finalReward,
         bool _isFounder
     )
-        public
+        external
     {
         require(sender_is(CONTRACT_DAO));
+        require(
+          (proposalsById[_doc].proposalId == EMPTY_BYTES) &&
+          (_doc != EMPTY_BYTES)
+        );
 
         allProposals.append(_doc);
         proposalsByState[PROPOSAL_STATE_PREPROPOSAL].append(_doc);
@@ -515,7 +516,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         uint256[] _newMilestoneFundings,
         uint256 _finalReward
     )
-        public
+        external
     {
         require(sender_is(CONTRACT_DAO));
 
@@ -525,7 +526,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
     /// @notice change fundings of a proposal
     /// @dev Will throw if the proposal is not finalized yet
     function changeFundings(bytes32 _proposalId, uint256[] _newMilestoneFundings, uint256 _finalReward)
-        public
+        external
     {
         require(sender_is(CONTRACT_DAO));
 
@@ -659,6 +660,8 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         public
     {
         require(sender_is(CONTRACT_DAO));
+        require(proposalsById[_proposalId].currentState != PROPOSAL_STATE_CLOSED);
+
         DaoStructs.PrlAction memory prlAction;
         prlAction.at = _time;
         prlAction.doc = _doc;
@@ -735,18 +738,21 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         proposalsById[_proposalId].votingRounds[_index].revealVote(_voter, _vote, _weight);
     }
 
-    function addNonDigixProposalCountInQuarter(uint256 _quarterIndex)
-        public
-    {
-        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
-        proposalCountByQuarter[_quarterIndex] = proposalCountByQuarter[_quarterIndex].add(1);
-    }
-
     function closeProposal(bytes32 _proposalId)
         public
     {
         require(sender_is(CONTRACT_DAO));
         closeProposalInternal(_proposalId);
+    }
+
+    function archiveProposal(bytes32 _proposalId)
+        public
+    {
+        require(sender_is(CONTRACT_DAO_VOTING_CLAIMS));
+        bytes32 _currentState = proposalsById[_proposalId].currentState;
+        proposalsByState[_currentState].remove_item(_proposalId);
+        proposalsByState[PROPOSAL_STATE_ARCHIVED].append(_proposalId);
+        proposalsById[_proposalId].currentState = PROPOSAL_STATE_ARCHIVED;
     }
 
     function setMilestoneFunded(bytes32 _proposalId, uint256 _milestoneId)

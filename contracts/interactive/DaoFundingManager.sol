@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "../common/DaoCommon.sol";
 import "./Dao.sol";
@@ -10,19 +10,35 @@ import "./Dao.sol";
 */
 contract DaoFundingManager is DaoCommon {
 
-    constructor(address _resolver) public {
+    address public FUNDING_SOURCE;
+
+    event ClaimFunding(bytes32 indexed _proposalId, uint256 indexed _votingRound, uint256 _funding);
+
+    constructor(address _resolver, address _fundingSource) public {
         require(init(CONTRACT_DAO_FUNDING_MANAGER, _resolver));
+        FUNDING_SOURCE = _fundingSource;
     }
 
     function dao()
         internal
-        constant
+        view
         returns (Dao _contract)
     {
         _contract = Dao(get_contract(CONTRACT_DAO));
     }
 
-    
+    /**
+    @notice Function to set the source of DigixDAO funding
+    @dev only this source address will be able to fund the DaoFundingManager contract, along with CONTRACT_DAO
+    @param _fundingSource address of the funding source
+    */
+    function setFundingSource(address _fundingSource)
+        public
+        if_root()
+    {
+        FUNDING_SOURCE = _fundingSource;
+    }
+
     /**
     @notice Call function to claim the ETH funding for a certain milestone
     @dev Note that the proposer can do this anytime, even in the locking phase
@@ -45,12 +61,12 @@ contract DaoFundingManager is DaoCommon {
 
         uint256 _funding = daoStorage().readProposalMilestone(_proposalId, _index);
 
-        daoFundingStorage().withdrawEth(_funding);
         daoStorage().setMilestoneFunded(_proposalId, _index);
 
         msg.sender.transfer(_funding);
-    }
 
+        emit ClaimFunding(_proposalId, _index, _funding);
+    }
 
     /**
     @notice Function to refund the collateral to _receiver
@@ -69,15 +85,12 @@ contract DaoFundingManager is DaoCommon {
         _success = true;
     }
 
-
     function refundCollateralInternal(address _receiver, bytes32 _proposalId)
         internal
     {
         uint256 _collateralAmount = daoStorage().readProposalCollateralAmount(_proposalId);
-        daoFundingStorage().withdrawEth(_collateralAmount);
         _receiver.transfer(_collateralAmount);
     }
-
 
     /**
     @notice Function to move funds to a new DAO
@@ -88,15 +101,17 @@ contract DaoFundingManager is DaoCommon {
     {
         require(sender_is(CONTRACT_DAO));
         uint256 _remainingBalance = address(this).balance;
-        daoFundingStorage().withdrawEth(_remainingBalance);
         _destinationForDaoFunds.transfer(_remainingBalance);
     }
 
-
     /**
-    @notice Payable function to receive ETH funds from DigixDAO crowdsale contract
+    @notice Payable fallback function to receive ETH funds from DigixDAO crowdsale contract
+    @dev this contract can only receive funds from FUNDING_SOURCE address or CONTRACT_DAO (when proposal is created)
     */
-    function () payable public {
-        daoFundingStorage().addEth(msg.value);
+    function () external payable {
+        require(
+            (msg.sender == FUNDING_SOURCE) ||
+            (msg.sender == get_contract(CONTRACT_DAO))
+        );
     }
 }

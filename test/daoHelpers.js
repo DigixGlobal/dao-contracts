@@ -7,6 +7,7 @@ const proposalStates = function () {
     PROPOSAL_STATE_MODERATED: 'proposal_state_moderated',
     PROPOSAL_STATE_ONGOING: 'proposal_state_ongoing',
     PROPOSAL_STATE_CLOSED: 'proposal_state_closed',
+    PROPOSAL_STATE_ARCHIVED: 'proposal_state_archived',
   };
 };
 
@@ -52,9 +53,9 @@ const quarters = {
   QUARTER_3: 3,
 };
 
-const assertQuarter = function (timeNow, startOfDao, lockingPhaseDuration, quarterDuration, quarterId) {
+const assertQuarter = function (timeNow, startOfDao, lockingPhaseDuration, quarterDuration, _quarterNumber) {
   const quarterNow = Math.floor((timeNow - startOfDao) / quarterDuration) + 1;
-  assert.strictEqual(quarterId, quarterNow);
+  assert.strictEqual(_quarterNumber, quarterNow);
 };
 
 // Locking phase : 1
@@ -117,7 +118,6 @@ const daoConstantsKeys = function () {
     CONFIG_QUARTER_POINT_DRAFT_VOTE: 'quarter_point_draft_vote',
     CONFIG_QUARTER_POINT_VOTE: 'quarter_point_vote',
     CONFIG_QUARTER_POINT_INTERIM_VOTE: 'quarter_point_interim_vote',
-    CONFIG_QUARTER_POINT_CLAIM_RESULT: 'quarter_point_claim_result',
     CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH: 'q_p_milestone_completion',
     CONFIG_BONUS_REPUTATION_NUMERATOR: 'bonus_reputation_numerator',
     CONFIG_BONUS_REPUTATION_DENOMINATOR: 'bonus_reputation_denominator',
@@ -148,7 +148,7 @@ const daoConstantsKeys = function () {
     CONFIG_MAX_FUNDING_FOR_NON_DIGIX: 'config_max_funding_nonDigix',
     CONFIG_MAX_MILESTONES_FOR_NON_DIGIX: 'config_max_milestones_nonDigix',
     CONFIG_PROPOSAL_DEAD_DURATION: 'config_dead_duration',
-    CONFIG_PREPROPOSAL_DEPOSIT: 'config_preproposal_deposit',
+    CONFIG_PREPROPOSAL_COLLATERAL: 'config_preproposal_collateral',
   };
 };
 
@@ -175,7 +175,6 @@ const daoConstantsValues = function (bN) {
     CONFIG_QUARTER_POINT_DRAFT_VOTE: bN(1),
     CONFIG_QUARTER_POINT_VOTE: bN(1),
     CONFIG_QUARTER_POINT_INTERIM_VOTE: bN(1),
-    CONFIG_QUARTER_POINT_CLAIM_RESULT: bN(1),
     CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH: bN(3),
     CONFIG_BONUS_REPUTATION_NUMERATOR: bN(200),
     CONFIG_BONUS_REPUTATION_DENOMINATOR: bN(100),
@@ -212,7 +211,7 @@ const daoConstantsValues = function (bN) {
     CONFIG_MAX_FUNDING_FOR_NON_DIGIX: bN(20 * (10 ** 18)),
     CONFIG_MAX_MILESTONES_FOR_NON_DIGIX: bN(2),
     CONFIG_PROPOSAL_DEAD_DURATION: bN(15552000),
-    CONFIG_PREPROPOSAL_DEPOSIT: bN(2 * (10 ** 18)),
+    CONFIG_PREPROPOSAL_COLLATERAL: bN(2 * (10 ** 18)),
   };
 };
 

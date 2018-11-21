@@ -31,13 +31,13 @@ const DaoConfigsStorage = process.env.SIMULATION ? 0 : artifacts.require('./Mock
 const DaoStakeStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoStakeStorage.sol');
 const DaoPointsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoPointsStorage.sol');
 const DaoStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoStorage.sol');
+const DaoProposalCounterStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoProposalCounterStorage.sol');
 const DaoWhitelistingStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoWhitelistingStorage.sol');
 const IntermediateResultsStorage = process.env.SIMULATION ? 0 : artifacts.require('./IntermediateResultsStorage.sol');
 
 const DaoStructs = process.env.SIMULATION ? 0 : artifacts.require('./DaoStructs.sol');
 const DaoUpgradeStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoUpgradeStorage.sol');
 const DaoSpecialStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoSpecialStorage.sol');
-const DaoFundingStorage = process.env.SIMULATION ? 0 : artifacts.require('./DaoFundingStorage.sol');
 const DaoRewardsStorage = process.env.SIMULATION ? 0 : artifacts.require('./MockDaoRewardsStorage.sol');
 
 const DaoListingService = process.env.SIMULATION ? 0 : artifacts.require('./DaoListingService.sol');
@@ -156,8 +156,8 @@ const deployStorage = async function (libs, contracts, resolver) {
   DaoSpecialStorage.link('DaoStructs', libs.daoStructs.address);
   contracts.daoUpgradeStorage = await DaoUpgradeStorage.new(resolver.address);
   contracts.daoStorage = await DaoStorage.new(resolver.address);
+  contracts.daoProposalCounterStorage = await DaoProposalCounterStorage.new(resolver.address);
   contracts.daoSpecialStorage = await DaoSpecialStorage.new(resolver.address);
-  contracts.daoFundingStorage = await DaoFundingStorage.new(resolver.address);
   contracts.daoRewardsStorage = await DaoRewardsStorage.new(resolver.address);
   contracts.intermediateResultsStorage = await IntermediateResultsStorage.new(resolver.address);
 };
@@ -179,7 +179,7 @@ const registerInteractive = async function (resolver, addressOf) {
     'dao:rewards-manager',
     'dao:whitelisting',
   ];
-  await a.map(callingKeys, 10, key => resolver.register_contract(key, addressOf.root));
+  await a.map(callingKeys, 10, key => resolver.init_register_contract(key, addressOf.root));
 };
 
 // Deploy service layer contracts
@@ -189,7 +189,7 @@ const deployServices = async function (libs, contracts, resolver) {
 };
 
 // Deploy the interactive contracts
-const deployInteractive = async function (libs, contracts, resolver) {
+const deployInteractive = async function (libs, contracts, resolver, addressOf) {
   contracts.daoStakeLocking = await DaoStakeLocking.new(
     resolver.address,
     contracts.dgdToken.address,
@@ -198,7 +198,7 @@ const deployInteractive = async function (libs, contracts, resolver) {
     contracts.carbonVoting2.address,
   );
   contracts.daoIdentity = await DaoIdentity.new(resolver.address);
-  contracts.daoFundingManager = await DaoFundingManager.new(resolver.address);
+  contracts.daoFundingManager = await DaoFundingManager.new(resolver.address, addressOf.root);
   contracts.dao = await Dao.new(resolver.address);
   contracts.daoSpecialProposal = await DaoSpecialProposal.new(resolver.address);
   contracts.daoVoting = await DaoVoting.new(resolver.address);
@@ -505,7 +505,7 @@ const deployFreshDao = async (libs, contracts, addressOf, accounts, bN, web3, lo
   contracts.carbonVoting2 = await MockNumberCarbonVoting2.new('carbonVoting2');
   await deployStorage(libs, contracts, contracts.resolver);
   await deployServices(libs, contracts, contracts.resolver);
-  await deployInteractive(libs, contracts, contracts.resolver);
+  await deployInteractive(libs, contracts, contracts.resolver, addressOf);
   await contracts.daoIdentity.addGroupUser(bN(2), addressOf.founderBadgeHolder, '');
   await contracts.dao.setStartOfFirstQuarter(getCurrentTimestamp(), { from: addressOf.founderBadgeHolder });
   await setDummyConfig(contracts, bN, lockingPhase, mainPhase);
@@ -523,10 +523,10 @@ const fundDao = async function (web3, accounts, contracts) {
 };
 
 // this function provides a hypothetical startOfFirstQuarter value
-// for the DAO to be in the _phase phase of _quarterIndex quarter
-const getStartOfFirstQuarterFor = function (_quarterIndex, _phase, _lockingPhaseDuration, _quarterDuration, _timeNow, bN) {
-  const _gap = (_phase === phases.LOCKING_PHASE) ? _quarterDuration.times(_quarterIndex.minus(bN(1))) :
-    (_quarterDuration.times(_quarterIndex.minus(bN(1)))).plus(_lockingPhaseDuration);
+// for the DAO to be in the _phase phase of _quarterNumber quarter
+const getStartOfFirstQuarterFor = function (_quarterNumber, _phase, _lockingPhaseDuration, _quarterDuration, _timeNow, bN) {
+  const _gap = (_phase === phases.LOCKING_PHASE) ? _quarterDuration.times(_quarterNumber.minus(bN(1))) :
+    (_quarterDuration.times(_quarterNumber.minus(bN(1)))).plus(_lockingPhaseDuration);
   const _startOfFirstQuarter = _timeNow.minus(_gap.plus(bN(1)));
   return _startOfFirstQuarter;
 };
@@ -539,8 +539,8 @@ const setStartOfFirstQuarterTo = async function (contracts, addressOf, startOfFi
 
 // set the dgx distribution of a quarter to given time
 // dummy mark the start of quarter
-const initQuarter = async function (contracts, quarterIndex, dgxDistributionDay) {
-  await contracts.daoRewardsStorage.mock_set_dgx_distribution_day(quarterIndex, dgxDistributionDay);
+const initQuarter = async function (contracts, _quarterNumber, dgxDistributionDay) {
+  await contracts.daoRewardsStorage.mock_set_dgx_distribution_day(_quarterNumber, dgxDistributionDay);
 };
 
 const printParticipantDetails = async (bN, contracts, address) => {
@@ -562,17 +562,16 @@ const printParticipantDetails = async (bN, contracts, address) => {
 
 const printDaoDetails = async (bN, contracts) => {
   console.log('\tPrinting DAO details');
-  const qIndex = await contracts.daoFundingManager.currentQuarterIndex.call();
+  const qIndex = await contracts.daoFundingManager.currentQuarterNumber.call();
   console.log('\t\tCurrent Quarter: ', qIndex);
   console.log('\t\tisLockingPhase? ', await contracts.daoFundingManager.isLockingPhase.call());
   console.log('\t\tDGX distribution day: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex));
   // console.log('\tDGX distribution day last quarter: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex.minus(1)));
   // console.log('\tDGX distribution day last last quarter: ', await contracts.daoRewardsStorage.readDgxDistributionDay.call(qIndex.minus(2)));
-  // TODO: print more stuff
 };
 
 const printBadgeHolderDetails = async (contracts, addressOf) => {
-  console.log('\tCurrent Quarter = ', await contracts.dao.currentQuarterIndex.call());
+  console.log('\tCurrent Quarter = ', await contracts.dao.currentQuarterNumber.call());
   for (const index of indexRange(0, 4)) {
     const participant = addressOf.badgeHolders[index];
     console.log(`\tPrinting details for badgeHolders[${index}]`);
@@ -585,7 +584,7 @@ const printBadgeHolderDetails = async (contracts, addressOf) => {
 };
 
 const printHolderDetails = async (contracts, addressOf) => {
-  console.log('\tCurrent Quarter = ', await contracts.dao.currentQuarterIndex.call());
+  console.log('\tCurrent Quarter = ', await contracts.dao.currentQuarterNumber.call());
   for (const index of indexRange(0, 5)) {
     const participant = addressOf.dgdHolders[index];
     console.log(`\tPrinting details for dgdHolders[${index}]`);

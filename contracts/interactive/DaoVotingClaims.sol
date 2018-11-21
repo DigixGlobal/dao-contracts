@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "../common/DaoCommon.sol";
 import "../service/DaoCalculatorService.sol";
@@ -19,7 +19,7 @@ contract DaoVotingClaims is DaoCommon {
 
     function daoCalculatorService()
         internal
-        constant
+        view
         returns (DaoCalculatorService _contract)
     {
         _contract = DaoCalculatorService(get_contract(CONTRACT_SERVICE_DAO_CALCULATOR));
@@ -27,7 +27,7 @@ contract DaoVotingClaims is DaoCommon {
 
     function daoFundingManager()
         internal
-        constant
+        view
         returns (DaoFundingManager _contract)
     {
         _contract = DaoFundingManager(get_contract(CONTRACT_DAO_FUNDING_MANAGER));
@@ -35,7 +35,7 @@ contract DaoVotingClaims is DaoCommon {
 
     function daoRewardsManager()
         internal
-        constant
+        view
         returns (DaoRewardsManager _contract)
     {
         _contract = DaoRewardsManager(get_contract(CONTRACT_DAO_REWARDS_MANAGER));
@@ -194,12 +194,13 @@ contract DaoVotingClaims is DaoCommon {
         // Here, _done is refering to whether STEP 1 is done
         _done = true;
         _passed = false; // redundant, put here just to emphasize that its false
+        uint256 _operationsLeft = _operations;
         // In other words, we only need to do Step 1 if its before the deadline
         if (now < startOfMilestone(_proposalId, _index)
                     .add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE)))
         {
-            (_operations, _passed, _done) = countProposalVote(_proposalId, _index, _operations);
-            // from here on, _operations is the number of operations left, after Step 1 is done
+            (_operationsLeft, _passed, _done) = countProposalVote(_proposalId, _index, _operations);
+            // from here on, _operationsLeft is the number of operations left, after Step 1 is done
             if (!_done) return (_passed, false); // haven't done Step 1 yet, return. The value of _passed here is irrelevant
         }
 
@@ -207,10 +208,8 @@ contract DaoVotingClaims is DaoCommon {
         // from this point onwards, _done refers to step 2
         _done = false;
 
-
-        //TODO: until here
         if (_index > 0) { // We only need to do bonus calculation if its a interim voting round
-            _done = calculateVoterBonus(_proposalId, _index, _operations, _passed);
+            _done = calculateVoterBonus(_proposalId, _index, _operationsLeft, _passed);
             if (!_done) return (_passed, false); // Step 2 is not done yet, return
         } else {
             // its the first voting round, we return the collateral if it fails, locks if it passes
@@ -248,13 +247,14 @@ contract DaoVotingClaims is DaoCommon {
         (_milestoneFundings,) = daoStorage().readProposalFunding(_proposalId);
         if (_index == _milestoneFundings.length) {
             processCollateralRefund(_proposalId);
+            daoStorage().archiveProposal(_proposalId);
         }
 
         // increase the non-digix proposal count accordingly
         bool _isDigixProposal;
         (,,,,,,,,,_isDigixProposal) = daoStorage().readProposal(_proposalId);
         if (_index == 0 && !_isDigixProposal) {
-            daoStorage().addNonDigixProposalCountInQuarter(currentQuarterIndex());
+            daoProposalCounterStorage().addNonDigixProposalCountInQuarter(currentQuarterNumber());
         }
 
         // Add quarter point for the proposer
@@ -262,7 +262,7 @@ contract DaoVotingClaims is DaoCommon {
         daoPointsStorage().addQuarterPoint(
             daoStorage().readProposalProposer(_proposalId),
             getUintConfig(CONFIG_QUARTER_POINT_MILESTONE_COMPLETION_PER_10000ETH).mul(_funding).div(10000 ether),
-            currentQuarterIndex()
+            currentQuarterNumber()
         );
     }
 
@@ -312,7 +312,7 @@ contract DaoVotingClaims is DaoCommon {
             // voted NO in the previous round
             (_bonusVoters.users, _bonusVoters.usersLength) = daoStorage().readVotingRoundVotes(_proposalId, _index.sub(1), _voterBatch, false);
         }
-        //TODO: to here
+
         if (_bonusVoters.usersLength > 0) addBonusReputation(_bonusVoters.users, _bonusVoters.usersLength);
 
         if (_lastVoter == daoStakeStorage().readLastParticipant()) {
@@ -437,7 +437,7 @@ contract DaoVotingClaims is DaoCommon {
 
         for (uint256 i = 0; i < _n; i++) {
             if (isParticipant(_voters[i])) { // only give bonus reputation to current participants
-                daoPointsStorage().addReputation(_voters[i], _bonus);
+                daoPointsStorage().increaseReputation(_voters[i], _bonus);
             }
         }
     }

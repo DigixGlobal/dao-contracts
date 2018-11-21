@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "./../common/DaoConstants.sol";
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
@@ -19,10 +19,10 @@ contract DaoWhitelistingStorage is ResolverClient, DaoConstants {
         require(init(CONTRACT_STORAGE_DAO_WHITELISTING, _resolver));
     }
 
-    function setWhitelisted(address _contractAddress, bool _isWhitelisted)
+    function setWhitelisted(address _contractAddress, bool _senderIsAllowedToRead)
         public
     {
         require(sender_is(CONTRACT_DAO_WHITELISTING));
-        whitelist[_contractAddress] = _isWhitelisted;
+        whitelist[_contractAddress] = _senderIsAllowedToRead;
     }
 }

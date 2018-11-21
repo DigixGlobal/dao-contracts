@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
 import "../lib/MathHelper.sol";
@@ -14,9 +14,9 @@ import "./../interface/NumberCarbonVoting.sol";
 */
 contract DaoStakeLocking is DaoCommon {
 
-    event RedeemBadge(address _user);
-    event LockDGD(address _user, uint256 _amount, uint256 _currentLockedDGDStake);
-    event WithdrawDGD(address _user, uint256 _amount);
+    event RedeemBadge(address indexed _user);
+    event LockDGD(address indexed _user, uint256 _amount, uint256 _currentLockedDGDStake);
+    event WithdrawDGD(address indexed _user, uint256 _amount, uint256 _currentLockedDGDStake);
 
     address public dgdToken;
     address public dgdBadgeToken;
@@ -63,7 +63,7 @@ contract DaoStakeLocking is DaoCommon {
 
     function daoCalculatorService()
         internal
-        constant
+        view
         returns (DaoCalculatorService _contract)
     {
         _contract = DaoCalculatorService(get_contract(CONTRACT_SERVICE_DAO_CALCULATOR));
@@ -71,7 +71,7 @@ contract DaoStakeLocking is DaoCommon {
 
     function daoRewardsManager()
         internal
-        constant
+        view
         returns (DaoRewardsManager _contract)
     {
         _contract = DaoRewardsManager(get_contract(CONTRACT_DAO_REWARDS_MANAGER));
@@ -97,11 +97,11 @@ contract DaoStakeLocking is DaoCommon {
 
         // Note that after lockDGD/withdrawDGD/confirmContinuedParticipation is called, the reputation is always updated to the previous quarter
         require(
-            daoRewardsStorage().lastQuarterThatReputationWasUpdated(msg.sender) == (currentQuarterIndex() - 1)
+            daoRewardsStorage().lastQuarterThatReputationWasUpdated(msg.sender) == (currentQuarterNumber() - 1)
         );
 
         daoStakeStorage().redeemBadge(msg.sender);
-        daoPointsStorage().addReputation(msg.sender, getUintConfig(CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE));
+        daoPointsStorage().increaseReputation(msg.sender, getUintConfig(CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE));
 
         // update moderator status
         StakeInformation memory _info = getStakeInformation(msg.sender);
@@ -127,13 +127,16 @@ contract DaoStakeLocking is DaoCommon {
     */
     function lockDGDInternal(uint256 _amount)
         internal
-        ifNotContract(msg.sender)
-        ifGlobalRewardsSet(currentQuarterIndex())
+        ifGlobalRewardsSet(currentQuarterNumber())
     {
+        // msg.sender must be an EOA. Disallows any contract from participating in the DAO.
+        require(msg.sender == tx.origin);
+
         StakeInformation memory _info = getStakeInformation(msg.sender);
         StakeInformation memory _newInfo = refreshDGDStake(msg.sender, _info);
 
-        uint256 _additionalStake = daoCalculatorService().calculateAdditionalLockedDGDStake(_amount);
+        uint256 _additionalStake = 0;
+        if (_amount > 0) _additionalStake = daoCalculatorService().calculateAdditionalLockedDGDStake(_amount);
 
         _newInfo.userActualLockedDGD = _newInfo.userActualLockedDGD.add(_amount);
         _newInfo.userLockedDGDStake = _newInfo.userLockedDGDStake.add(_additionalStake);
@@ -149,7 +152,7 @@ contract DaoStakeLocking is DaoCommon {
         refreshModeratorStatus(msg.sender, _info, _newInfo);
 
         uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(msg.sender);
-        uint256 _currentQuarter = currentQuarterIndex();
+        uint256 _currentQuarter = currentQuarterNumber();
 
         // Note: there might be a case when user locked in very small amount A that is less than Minimum locked DGD
         // then, lock again in the middle of the quarter. This will not take into account that A was staked in earlier. Its as if A is only staked in now.
@@ -199,7 +202,7 @@ contract DaoStakeLocking is DaoCommon {
     */
     function withdrawDGD(uint256 _amount)
         public
-        ifGlobalRewardsSet(currentQuarterIndex())
+        ifGlobalRewardsSet(currentQuarterNumber())
     {
         require(isLockingPhase() || daoUpgradeStorage().isReplacedByNewDao()); // If the DAO is already replaced, everyone is free to withdraw their DGDs anytime
         StakeInformation memory _info = getStakeInformation(msg.sender);
@@ -224,7 +227,7 @@ contract DaoStakeLocking is DaoCommon {
         refreshModeratorStatus(msg.sender, _info, _newInfo);
 
         uint256 _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(msg.sender);
-        uint256 _currentQuarter = currentQuarterIndex();
+        uint256 _currentQuarter = currentQuarterNumber();
 
         if (_newInfo.userLockedDGDStake < getUintConfig(CONFIG_MINIMUM_LOCKED_DGD)) { // this participant doesnt have enough DGD to be a participant
             // if this participant has lock/unlock/continue in this quarter before, we need to revert the lastParticipatedQuarter to the previousLastParticipatedQuarter
@@ -251,7 +254,7 @@ contract DaoStakeLocking is DaoCommon {
 
         require(ERC20(dgdToken).transfer(msg.sender, _amount));
 
-        emit WithdrawDGD(msg.sender, _amount);
+        emit WithdrawDGD(msg.sender, _amount, _newInfo.userLockedDGDStake);
     }
 
 
@@ -290,7 +293,7 @@ contract DaoStakeLocking is DaoCommon {
         _infoAfter.totalLockedDGDStake = _infoBefore.totalLockedDGDStake;
 
         // only need to refresh if this is the first refresh in this new quarter;
-        uint256 _currentQuarter = currentQuarterIndex();
+        uint256 _currentQuarter = currentQuarterNumber();
         if (daoRewardsStorage().lastParticipatedQuarter(_user) < _currentQuarter) {
             _infoAfter.userLockedDGDStake = daoCalculatorService().calculateAdditionalLockedDGDStake(_infoBefore.userActualLockedDGD);
 
@@ -311,7 +314,7 @@ contract DaoStakeLocking is DaoCommon {
     function refreshModeratorStatus(address _user, StakeInformation _infoBefore, StakeInformation _infoAfter)
         internal
     {
-        bool _alreadyParticipatedInThisQuarter = daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterIndex();
+        bool _alreadyParticipatedInThisQuarter = daoRewardsStorage().lastParticipatedQuarter(_user) == currentQuarterNumber();
         uint256 _currentTotalModeratorLockedDGDs = daoStakeStorage().totalModeratorLockedDGDStake();
 
         if (daoStakeStorage().isInModeratorsList(_user) == true) {
@@ -362,7 +365,7 @@ contract DaoStakeLocking is DaoCommon {
     */
     function getStakeInformation(address _user)
         internal
-        constant
+        view
         returns (StakeInformation _info)
     {
         (_info.userActualLockedDGD, _info.userLockedDGDStake) = daoStakeStorage().readUserDGDStake(_user);
@@ -382,11 +385,11 @@ contract DaoStakeLocking is DaoCommon {
 
         // for carbon voting 1, if voted, give out a bonus
         if (NumberCarbonVoting(carbonVoting1).voted(_user)) {
-            daoPointsStorage().addReputation(_user, getUintConfig(CONFIG_CARBON_VOTE_REPUTATION_BONUS));
+            daoPointsStorage().increaseReputation(_user, getUintConfig(CONFIG_CARBON_VOTE_REPUTATION_BONUS));
         }
         // for carbon voting 2, if voted, give out a bonus
         if (NumberCarbonVoting(carbonVoting2).voted(_user)) {
-            daoPointsStorage().addReputation(_user, getUintConfig(CONFIG_CARBON_VOTE_REPUTATION_BONUS));
+            daoPointsStorage().increaseReputation(_user, getUintConfig(CONFIG_CARBON_VOTE_REPUTATION_BONUS));
         }
 
         // we changed reputation, so we need to update the last quarter that reputation was updated
@@ -394,7 +397,7 @@ contract DaoStakeLocking is DaoCommon {
         // Holder A locks DGD for the first time in quarter 5, gets some bonus RP for the carbon votes
         // Then, A withdraw all his DGDs right away. Essentially, he's not participating in quarter 5 anymore
         // Now, when he comes back at quarter 10, he should be deducted reputation for 5 quarters that he didnt participated in: from quarter 5 to quarter 9
-        daoRewardsStorage().updateLastQuarterThatReputationWasUpdated(msg.sender, currentQuarterIndex().sub(1));
+        daoRewardsStorage().updateLastQuarterThatReputationWasUpdated(msg.sender, currentQuarterNumber().sub(1));
 
         // set that this user's carbon voting bonus has been given out
         daoStakeStorage().setCarbonVoteBonusClaimed(_user);
