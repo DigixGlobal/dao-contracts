@@ -39,6 +39,7 @@ contract DaoConstants {
     bytes32 CONTRACT_DAO_ROLES = "dao:roles";
     bytes32 CONTRACT_DAO_FUNDING_MANAGER = "dao:funding-manager";
     bytes32 CONTRACT_DAO_WHITELISTING = "dao:whitelisting";
+    bytes32 CONTRACT_DAO_INFORMATION = "dao:information";
 
     // service contracts
     bytes32 CONTRACT_SERVICE_ROLE = "service:role";

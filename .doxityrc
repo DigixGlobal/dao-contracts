@@ -29,6 +29,12 @@
       "bytecode": false,
       "source": true
     },
+    "DaoInformation": {
+      "abi": true,
+      "methods": true,
+      "bytecode": false,
+      "source": true
+    },
     "DaoRewardsManager": {
       "abi": true,
       "methods": true,

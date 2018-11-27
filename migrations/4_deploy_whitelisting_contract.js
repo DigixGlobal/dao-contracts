@@ -5,6 +5,7 @@ const DaoCalculatorService = artifacts.require('DaoCalculatorService.sol');
 
 const DaoStakeLocking = artifacts.require('DaoStakeLocking.sol');
 const DaoIdentity = artifacts.require('DaoIdentity.sol');
+const DaoInformation = artifacts.require('DaoInformation.sol');
 const DaoFundingManager = artifacts.require('DaoFundingManager.sol');
 const Dao = artifacts.require('Dao.sol');
 const DaoSpecialProposal = artifacts.require('DaoSpecialProposal.sol');
@@ -21,6 +22,7 @@ module.exports = async function (deployer, network) {
   deployer.deploy(DaoWhitelisting, ContractResolver.address, [
     DaoStakeLocking.address,
     DaoIdentity.address,
+    DaoInformation.address,
     DaoFundingManager.address,
     DaoRewardsManager.address,
     DaoRewardsManagerExtras.address,
