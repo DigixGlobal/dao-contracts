@@ -26,6 +26,7 @@ const DaoCalculatorService = artifacts.require('DaoCalculatorService.sol');
 
 const DaoStakeLocking = artifacts.require('DaoStakeLocking.sol');
 const DaoIdentity = artifacts.require('DaoIdentity.sol');
+const DaoInformation = artifacts.require('DaoInformation.sol');
 const DaoFundingManager = artifacts.require('DaoFundingManager.sol');
 const Dao = artifacts.require('Dao.sol');
 const DaoSpecialProposal = artifacts.require('DaoSpecialProposal.sol');
@@ -82,6 +83,7 @@ module.exports = async function (deployer, network, accounts) {
         MockNumberCarbonVoting2.address,
       );
       deployer.deploy(DaoIdentity, ContractResolver.address);
+      deployer.deploy(DaoInformation, ContractResolver.address);
       deployer.deploy(DaoFundingManager, ContractResolver.address, accounts[0]);
       deployer.deploy(DaoVoting, ContractResolver.address);
       deployer.deploy(Dao, ContractResolver.address);
