@@ -101,7 +101,7 @@ contract Dao is DaoCommon {
         daoUpgradeStorage().updateForDaoMigration();
         daoFundingManager().moveFundsToNewDao(_newDaoFundingManager);
         daoRewardsManager().moveDGXsToNewDao(_newDaoRewardsManager);
-        MigrateToNewDao(_newDaoContract, _newDaoFundingManager, _newDaoRewardsManager);
+        emit MigrateToNewDao(_newDaoContract, _newDaoFundingManager, _newDaoRewardsManager);
     }
 
     /**
