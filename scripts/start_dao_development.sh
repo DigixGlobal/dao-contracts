@@ -22,7 +22,6 @@ ganache_running() {
 }
 
 start_ipfs() {
-  ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/9001
   ipfs daemon > /dev/null &
 }
 
