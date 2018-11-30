@@ -17,7 +17,6 @@ const DaoPointsStorage = artifacts.require('./DaoPointsStorage.sol');
 const DaoStorage = artifacts.require('./DaoStorage.sol');
 const DaoUpgradeStorage = artifacts.require('./DaoUpgradeStorage.sol');
 const DaoSpecialStorage = artifacts.require('./DaoSpecialStorage.sol');
-const DaoFundingStorage = artifacts.require('./DaoFundingStorage.sol');
 const DaoRewardsStorage = artifacts.require('./DaoRewardsStorage.sol');
 const IntermediateResultsStorage = artifacts.require('./IntermediateResultsStorage.sol');
 
@@ -26,6 +25,7 @@ const DaoCalculatorService = artifacts.require('./DaoCalculatorService.sol');
 
 const DaoIdentity = artifacts.require('./DaoIdentity.sol');
 const Dao = artifacts.require('./Dao.sol');
+const DaoSpecialProposal = artifacts.require('./DaoSpecialProposal.sol');
 const DaoVoting = artifacts.require('./DaoVoting.sol');
 const DaoVotingClaims = artifacts.require('./DaoVotingClaims.sol');
 const DaoSpecialVotingClaims = artifacts.require('./DaoSpecialVotingClaims.sol');
@@ -177,7 +177,6 @@ const assignDeployedContracts = async function (contracts, libs) {
   contracts.daoStorage = await DaoStorage.deployed();
   contracts.daoUpgradeStorage = await DaoUpgradeStorage.deployed();
   contracts.daoSpecialStorage = await DaoSpecialStorage.deployed();
-  contracts.daoFundingStorage = await DaoFundingStorage.deployed();
   contracts.daoRewardsStorage = await DaoRewardsStorage.deployed();
   contracts.intermediateResultsStorage = await IntermediateResultsStorage.deployed();
 
@@ -188,6 +187,7 @@ const assignDeployedContracts = async function (contracts, libs) {
   contracts.daoIdentity = await DaoIdentity.deployed();
   contracts.daoFundingManager = await DaoFundingManager.deployed();
   contracts.dao = await Dao.deployed();
+  contracts.daoSpecialProposal = await DaoSpecialProposal.deployed();
   contracts.daoVoting = await DaoVoting.deployed();
   contracts.daoVotingClaims = await DaoVotingClaims.deployed();
   contracts.daoSpecialVotingClaims = await DaoSpecialVotingClaims.deployed();
@@ -259,8 +259,8 @@ const claimDraftVotingResult = async function (contracts) {
 const votingCommitRound = async function (contracts, addressOf) {
   console.log('now = ', getCurrentTimestamp());
   await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
-    await printProposalDetails(contracts, proposals[proposalIndex]);
     if (proposalIndex === 1) return;
+    await printProposalDetails(contracts, proposals[proposalIndex]);
     await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (holderIndex) => {
       await contracts.daoVoting.commitVoteOnProposal(
         proposals[proposalIndex].id,
@@ -330,9 +330,25 @@ const confirmContinuedParticipation = async function (contracts, addressOf) {
 };
 
 const claimDGXs = async function (contracts, addressOf) {
+  let total = 0;
+  // let totalLockedDGDStake = 0;
+  // let totalModeratorLockedDGDStake = 0;
   await a.map(indexRange(0, DGD_HOLDER_COUNT + BADGE_HOLDER_COUNT), 20, async (index) => {
+    console.log('Claiming rewards for holder index ', index);
+    const claimableDGX = (await contracts.daoRewardsStorage.claimableDGXs.call(addressOf.allParticipants[index])).toNumber();
+    // const dgdStake = (await contracts.daoStakeStorage.lockedDGDStake.call(addressOf.allParticipants[index])).toNumber();
+    // const isMod = await contracts.dao.isModerator.call(addressOf.allParticipants[index]);
+    total += claimableDGX;
+    // totalLockedDGDStake += dgdStake;
+    // if (isMod) totalModeratorLockedDGDStake += dgdStake;
+    console.log('Claimable DGXs = ', claimableDGX);
+    // console.log('lockedDGDStake = ', dgdStake);
+
     await contracts.daoRewardsManager.claimRewards({ from: addressOf.allParticipants[index] });
   });
+  console.log('\t\tTotal claimable DGXs = ', total);
+  // console.log('totalLockedDGDStake = ', totalLockedDGDStake);
+  // console.log('totalModeratorLockedDGDStake = ', totalModeratorLockedDGDStake);
 };
 
 const interimVotingCommitRound = async function (contracts, addressOf) {
@@ -381,7 +397,11 @@ const interimVotingRevealRound = async function (contracts, addressOf) {
 const interimvotingRoundClaim = async function (contracts) {
   await a.map(indexRange(0, 4), 20, async (proposalIndex) => {
     if (proposalIndex === 1) return;
+    console.log('isMainPhase? ', await contracts.daoRewardsManager.isMainPhase.call());
+    console.log('interim voting claim for proposal ', proposalIndex, ' id = ', proposals[proposalIndex].id, ' from proposer ', proposals[proposalIndex].proposer);
+    await printProposalDetails(contracts, proposals[proposalIndex]);
     await contracts.daoVotingClaims.claimProposalVotingResult(proposals[proposalIndex].id, bN(1), bN(30), { from: proposals[proposalIndex].proposer });
+    console.log('Done interim voting claim for proposal ', proposalIndex);
   });
 };
 
@@ -411,8 +431,6 @@ const interimRevealRound = async function (contracts, addressOf, proposalIndex, 
 
 const claimFinalReward = async function (contracts, addressOf, proposalId, proposer, index) {
   console.log(`proposer is ${proposer}, proposalId = ${proposalId}`);
-  // console.log('claimable Eth of proposer = ', await contracts.daoFundingStorage.claimableEth.call(proposer));
-  // const value = index >= proposals[0].versions[1].milestoneCount ? proposals[0].versions[1].finalReward : proposals[0].versions[1].milestoneFundings[index];
   await contracts.daoFundingManager.claimFunding(
     proposalId,
     bN(index),
@@ -534,7 +552,7 @@ module.exports = async function () {
     console.log('got the deployed contracts');
 
     // set dummy config for testing
-    await setDummyConfig(contracts, bN);
+    await setDummyConfig(contracts, bN, 10, 50);
     console.log('setup dummy config');
 
     // start dao and fund dao
@@ -543,6 +561,7 @@ module.exports = async function () {
 
     await fundUserAndApproveForStakeLocking(web3, contracts, bN, participants, addressOf);
     console.log('\tfunded users DGDs and Badges');
+    await waitFor(2, addressOf, web3);
     await lockDGDs(web3, contracts, bN, participants, addressOf);
     console.log('\tusers locked DGDs for first quarter');
     await redeemBadges(web3, contracts, bN, participants);
@@ -573,7 +592,6 @@ module.exports = async function () {
     console.log('locked more dgds in main phase');
 
 
-    // until here
     await waitFor(((await contracts.daoStorage.readProposalDraftVotingTime.call(proposals[3].id)).toNumber()
       + 6) - getCurrentTimestamp(), addressOf, web3);
 
@@ -606,13 +624,16 @@ module.exports = async function () {
 
     // wait for the quarter to end
     await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE, quarters.QUARTER_2);
-    console.log('in the second quarter (quarterId = 2), locking phase');
+    console.log('in the second quarter (_quarterNumber = 2), locking phase');
 
     // call the global rewards calculation
-    await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(20 * (10 ** 9)));
+    await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(200 * (10 ** 9)));
     console.log('transferred dgx to rewards manager');
     await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(50), { from: addressOf.founderBadgeHolder });
-    console.log('updated the rewards for previous quarter (quarterId = 1)');
+    console.log('updated the rewards for previous quarter (_quarterNumber = 1)');
+    console.log('DGX rewards pool = ', await contracts.daoRewardsStorage.readRewardsPoolOfLastQuarter.call(2));
+    console.log('totalEffectiveDGDLastQuarter = ', await contracts.daoRewardsStorage.readTotalEffectiveDGDLastQuarter.call(2));
+    console.log('totalEffectiveModeratorDGDLastQuarter = ', await contracts.daoRewardsStorage.readTotalEffectiveModeratorDGDLastQuarter.call(2));
 
     console.log('\t\t#### Info of users for last quarter: ');
     const printStake = async (user, userString) => {
@@ -649,7 +670,7 @@ module.exports = async function () {
     console.log('claimed all dgxs');
 
     await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_2, web3);
-    console.log('in the second quarter (quarterId = 2), main phase');
+    console.log('in the second quarter (_quarterNumber = 2), main phase');
 
     // create some fake proposals to draft vote on
     await finishMilestones(contracts);
@@ -660,7 +681,7 @@ module.exports = async function () {
     await interimVotingRevealRound(contracts, addressOf);
     console.log('done with interim voting reveal round');
 
-    await waitForRevealPhaseToGetOver(contracts, addressOf, proposals[0].id, bN(1), bN, web3);
+    await waitForRevealPhaseToGetOver(contracts, addressOf, proposals[3].id, bN(1), bN, web3);
     console.log('done waitForRevealPhaseToGetOver');
     await interimvotingRoundClaim(contracts);
     console.log('done with claiming interim round voting');
@@ -671,12 +692,12 @@ module.exports = async function () {
     console.log('claimed funding after interim voting phase');
 
     await phaseCorrection(web3, contracts, addressOf, phases.LOCKING_PHASE, quarters.QUARTER_3, web3);
-    console.log('in the third quarter (quarterId = 3), locking phase');
+    console.log('in the third quarter (_quarterNumber = 3), locking phase');
 
     await contracts.dgxToken.mintDgxFor(contracts.daoRewardsManager.address, bN(25 * (10 ** 9)));
     console.log('transferred dgx to rewards manager');
     await contracts.daoRewardsManager.calculateGlobalRewardsBeforeNewQuarter(bN(50), { from: addressOf.founderBadgeHolder });
-    console.log('updated the rewards for previous quarter (quarterId = 2)');
+    console.log('updated the rewards for previous quarter (_quarterNumber = 2)');
 
     await confirmContinuedParticipation(contracts, addressOf);
     console.log('confirmed participation of all members');
@@ -693,7 +714,6 @@ module.exports = async function () {
     console.log('interim reveal is done');
     await waitForRevealPhaseToGetOver(contracts, addressOf, proposals[0].id, bN(2), bN, web3);
 
-    // console.log('[before claiming result] claimable Eth of proposer = ', await contracts.daoFundingStorage.claimableEth.call(proposals[0].proposer));
     console.log('daoFunding balance = ', await web3.eth.getBalance(contracts.daoFundingManager.address));
 
     await contracts.daoVotingClaims.claimProposalVotingResult(proposals[0].id, bN(2), bN(30), { from: proposals[0].proposer });
@@ -723,7 +743,7 @@ module.exports = async function () {
     uintConfigs[24] = bN(5);
     uintConfigs[25] = bN(3);
     uintConfigs[40] = bN(2);
-    await contracts.dao.createSpecialProposal(
+    await contracts.daoSpecialProposal.createSpecialProposal(
       specialProposalId,
       uintConfigs,
       [],
@@ -732,7 +752,7 @@ module.exports = async function () {
     );
     console.log('created special proposal');
     // vote on special proposal everybody
-    await contracts.dao.startSpecialProposalVoting(specialProposalId, { from: addressOf.founderBadgeHolder });
+    await contracts.daoSpecialProposal.startSpecialProposalVoting(specialProposalId, { from: addressOf.founderBadgeHolder });
     await waitFor(2, addressOf, web3); // wait for a couple of seconds
     await specialProposalVoting(contracts, addressOf, specialProposalId);
     const uintConfigs2 = await contracts.daoConfigsStorage.readUintConfigs.call();

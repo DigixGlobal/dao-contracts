@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
 import "@digix/solidity-collections/contracts/abstract/AddressIteratorStorage.sol";
@@ -34,6 +34,10 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
     // reputation points for their DGD Badge
     mapping (address => bool) public redeemedBadge;
 
+    // mapping to note whether an address has claimed their
+    // reputation bonus for carbon vote participation
+    mapping (address => bool) public carbonVoteBonusClaimed;
+
     constructor(address _resolver) public {
         require(init(CONTRACT_STORAGE_DAO_STAKE, _resolver));
     }
@@ -45,17 +49,24 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
         redeemedBadge[_user] = true;
     }
 
-    function updateTotalLockedDGDStake(uint256 _totalLockedDGDStake)
+    function setCarbonVoteBonusClaimed(address _user)
         public
     {
         require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
+        carbonVoteBonusClaimed[_user] = true;
+    }
+
+    function updateTotalLockedDGDStake(uint256 _totalLockedDGDStake)
+        public
+    {
+        require(sender_is_from([CONTRACT_DAO_STAKE_LOCKING, CONTRACT_DAO_REWARDS_MANAGER, EMPTY_BYTES]));
         totalLockedDGDStake = _totalLockedDGDStake;
     }
 
     function updateTotalModeratorLockedDGDs(uint256 _totalLockedDGDStake)
         public
     {
-        require(sender_is(CONTRACT_DAO_STAKE_LOCKING));
+        require(sender_is_from([CONTRACT_DAO_STAKE_LOCKING, CONTRACT_DAO_REWARDS_MANAGER, EMPTY_BYTES]));
         totalModeratorLockedDGDStake = _totalLockedDGDStake;
     }
 
@@ -69,7 +80,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readUserDGDStake(address _user)
         public
-        constant
+        view
         returns (
             uint256 _actualLockedDGD,
             uint256 _lockedDGDStake
@@ -77,14 +88,6 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
     {
         _actualLockedDGD = actualLockedDGD[_user];
         _lockedDGDStake = lockedDGDStake[_user];
-    }
-
-    function readUserEffectiveDGDStake(address _user)
-        public
-        constant
-        returns (uint256 _stake)
-    {
-        _stake = lockedDGDStake[_user];
     }
 
     function addToParticipantList(address _user)
@@ -121,33 +124,23 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function isInParticipantList(address _user)
         public
-        constant
+        view
         returns (bool _is)
     {
-        uint256 _index = allParticipants.find(_user);
-        if (_index == 0) {
-            _is = false;
-        } else {
-            _is = true;
-        }
+        _is = allParticipants.find(_user) != 0;
     }
 
     function isInModeratorsList(address _user)
         public
-        constant
+        view
         returns (bool _is)
     {
-        uint256 _index = allModerators.find(_user);
-        if (_index == 0) {
-            _is = false;
-        } else {
-            _is = true;
-        }
+        _is = allModerators.find(_user) != 0;
     }
 
     function readFirstModerator()
         public
-        constant
+        view
         returns (address _item)
     {
         _item = read_first_from_addresses(allModerators);
@@ -155,7 +148,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readLastModerator()
         public
-        constant
+        view
         returns (address _item)
     {
         _item = read_last_from_addresses(allModerators);
@@ -163,7 +156,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readNextModerator(address _current_item)
         public
-        constant
+        view
         returns (address _item)
     {
         _item = read_next_from_addresses(allModerators, _current_item);
@@ -171,7 +164,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readPreviousModerator(address _current_item)
         public
-        constant
+        view
         returns (address _item)
     {
         _item = read_previous_from_addresses(allModerators, _current_item);
@@ -179,7 +172,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readTotalModerators()
         public
-        constant
+        view
         returns (uint256 _total_count)
     {
         _total_count = read_total_addresses(allModerators);
@@ -187,7 +180,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readFirstParticipant()
         public
-        constant
+        view
         returns (address _item)
     {
         _item = read_first_from_addresses(allParticipants);
@@ -195,7 +188,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readLastParticipant()
         public
-        constant
+        view
         returns (address _item)
     {
         _item = read_last_from_addresses(allParticipants);
@@ -203,7 +196,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readNextParticipant(address _current_item)
         public
-        constant
+        view
         returns (address _item)
     {
         _item = read_next_from_addresses(allParticipants, _current_item);
@@ -211,7 +204,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readPreviousParticipant(address _current_item)
         public
-        constant
+        view
         returns (address _item)
     {
         _item = read_previous_from_addresses(allParticipants, _current_item);
@@ -219,7 +212,7 @@ contract DaoStakeStorage is ResolverClient, DaoConstants, AddressIteratorStorage
 
     function readTotalParticipant()
         public
-        constant
+        view
         returns (uint256 _total_count)
     {
         _total_count = read_total_addresses(allParticipants);

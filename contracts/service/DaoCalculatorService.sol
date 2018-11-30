@@ -1,8 +1,9 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
-import "./../mock/MockDgxDemurrageCalculator.sol";
+import "./../interface/DgxDemurrageCalculator.sol";
 import "./../common/DaoCommon.sol";
 import "./../lib/MathHelper.sol";
+
 
 contract DaoCalculatorService is DaoCommon {
 
@@ -17,20 +18,38 @@ contract DaoCalculatorService is DaoCommon {
         dgxDemurrageCalculatorAddress = _dgxDemurrageCalculatorAddress;
     }
 
+
+    /**
+    @notice Calculate the additional lockedDGDStake, given the DGDs that the user has just locked in
+    @dev The earlier the locking happens, the more lockedDGDStake the user will get
+         The formula is: additionalLockedDGDStake = (90 - t)/80 * additionalDGD if t is more than 10. If t<=10, additionalLockedDGDStake = additionalDGD
+    */
     function calculateAdditionalLockedDGDStake(uint256 _additionalDgd)
         public
-        constant
+        view
         returns (uint256 _additionalLockedDGDStake)
     {
-        // todo: change this to fixed quarter duration
-        /* _additionalLockedDGDStake = _additionalDgd.mul(QUARTER_DURATION.sub(currentTInQuarter())).div(QUARTER_DURATION.sub(get_uint_config(CONFIG_LOCKING_PHASE_DURATION))); */
-        _additionalLockedDGDStake = _additionalDgd.mul((get_uint_config(CONFIG_QUARTER_DURATION).sub(MathHelper.max(currentTInQuarter(), get_uint_config(CONFIG_LOCKING_PHASE_DURATION)))))
-                                    .div(get_uint_config(CONFIG_QUARTER_DURATION).sub(get_uint_config(CONFIG_LOCKING_PHASE_DURATION)));
+        _additionalLockedDGDStake =
+            _additionalDgd.mul(
+                getUintConfig(CONFIG_QUARTER_DURATION)
+                .sub(
+                    MathHelper.max(
+                        currentTimeInQuarter(),
+                        getUintConfig(CONFIG_LOCKING_PHASE_DURATION)
+                    )
+                )
+            )
+            .div(
+                getUintConfig(CONFIG_QUARTER_DURATION)
+                .sub(getUintConfig(CONFIG_LOCKING_PHASE_DURATION))
+            );
     }
 
+
+    // Quorum is in terms of lockedDGDStake
     function minimumDraftQuorum(bytes32 _proposalId)
         public
-        constant
+        view
         returns (uint256 _minQuorum)
     {
         uint256[] memory _fundings;
@@ -38,88 +57,93 @@ contract DaoCalculatorService is DaoCommon {
         (_fundings,) = daoStorage().readProposalFunding(_proposalId);
         _minQuorum = calculateMinQuorum(
             daoStakeStorage().totalModeratorLockedDGDStake(),
-            get_uint_config(CONFIG_DRAFT_QUORUM_FIXED_PORTION_NUMERATOR),
-            get_uint_config(CONFIG_DRAFT_QUORUM_FIXED_PORTION_DENOMINATOR),
-            get_uint_config(CONFIG_DRAFT_QUORUM_SCALING_FACTOR_NUMERATOR),
-            get_uint_config(CONFIG_DRAFT_QUORUM_SCALING_FACTOR_DENOMINATOR),
+            getUintConfig(CONFIG_DRAFT_QUORUM_FIXED_PORTION_NUMERATOR),
+            getUintConfig(CONFIG_DRAFT_QUORUM_FIXED_PORTION_DENOMINATOR),
+            getUintConfig(CONFIG_DRAFT_QUORUM_SCALING_FACTOR_NUMERATOR),
+            getUintConfig(CONFIG_DRAFT_QUORUM_SCALING_FACTOR_DENOMINATOR),
             _fundings[0]
         );
     }
 
+
     function draftQuotaPass(uint256 _for, uint256 _against)
         public
-        constant
+        view
         returns (bool _passed)
     {
-        if ((_for.mul(get_uint_config(CONFIG_DRAFT_QUOTA_DENOMINATOR))) >
-                (get_uint_config(CONFIG_DRAFT_QUOTA_NUMERATOR).mul(_for.add(_against)))) {
-            _passed = true;
-        }
+        _passed = _for.mul(getUintConfig(CONFIG_DRAFT_QUOTA_DENOMINATOR))
+                > getUintConfig(CONFIG_DRAFT_QUOTA_NUMERATOR).mul(_for.add(_against));
     }
 
+
+    // Quorum is in terms of lockedDGDStake
     function minimumVotingQuorum(bytes32 _proposalId, uint256 _milestone_id)
         public
-        constant
+        view
         returns (uint256 _minQuorum)
     {
-        uint256[] memory _ethAskedPerMilestone;
+        require(senderIsAllowedToRead());
+        uint256[] memory _weiAskedPerMilestone;
         uint256 _finalReward;
-        (_ethAskedPerMilestone,_finalReward) = daoStorage().readProposalFunding(_proposalId);
-        require(_milestone_id <= _ethAskedPerMilestone.length);
-        if (_milestone_id == _ethAskedPerMilestone.length) {
+        (_weiAskedPerMilestone,_finalReward) = daoStorage().readProposalFunding(_proposalId);
+        require(_milestone_id <= _weiAskedPerMilestone.length);
+        if (_milestone_id == _weiAskedPerMilestone.length) {
+            // calculate quorum for the final voting round
             _minQuorum = calculateMinQuorum(
                 daoStakeStorage().totalLockedDGDStake(),
-                get_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR),
-                get_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR),
-                get_uint_config(CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR),
-                get_uint_config(CONFIG_FINAL_REWARD_SCALING_FACTOR_DENOMINATOR),
+                getUintConfig(CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR),
+                getUintConfig(CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR),
+                getUintConfig(CONFIG_FINAL_REWARD_SCALING_FACTOR_NUMERATOR),
+                getUintConfig(CONFIG_FINAL_REWARD_SCALING_FACTOR_DENOMINATOR),
                 _finalReward
             );
         } else {
+            // calculate quorum for a voting round
             _minQuorum = calculateMinQuorum(
                 daoStakeStorage().totalLockedDGDStake(),
-                get_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR),
-                get_uint_config(CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR),
-                get_uint_config(CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR),
-                get_uint_config(CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR),
-                _ethAskedPerMilestone[_milestone_id]
+                getUintConfig(CONFIG_VOTING_QUORUM_FIXED_PORTION_NUMERATOR),
+                getUintConfig(CONFIG_VOTING_QUORUM_FIXED_PORTION_DENOMINATOR),
+                getUintConfig(CONFIG_VOTING_QUORUM_SCALING_FACTOR_NUMERATOR),
+                getUintConfig(CONFIG_VOTING_QUORUM_SCALING_FACTOR_DENOMINATOR),
+                _weiAskedPerMilestone[_milestone_id]
             );
         }
     }
 
+
+    // Quorum is in terms of lockedDGDStake
     function minimumVotingQuorumForSpecial()
         public
-        constant
+        view
         returns (uint256 _minQuorum)
     {
-      _minQuorum = get_uint_config(CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR).mul(
+      _minQuorum = getUintConfig(CONFIG_SPECIAL_PROPOSAL_QUORUM_NUMERATOR).mul(
                        daoStakeStorage().totalLockedDGDStake()
                    ).div(
-                       get_uint_config(CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR)
+                       getUintConfig(CONFIG_SPECIAL_PROPOSAL_QUORUM_DENOMINATOR)
                    );
     }
 
+
     function votingQuotaPass(uint256 _for, uint256 _against)
         public
-        constant
+        view
         returns (bool _passed)
     {
-        if ((_for.mul(get_uint_config(CONFIG_VOTING_QUOTA_DENOMINATOR))) >
-                (get_uint_config(CONFIG_VOTING_QUOTA_NUMERATOR).mul(_for.add(_against)))) {
-            _passed = true;
-        }
+        _passed = _for.mul(getUintConfig(CONFIG_VOTING_QUOTA_DENOMINATOR))
+                > getUintConfig(CONFIG_VOTING_QUOTA_NUMERATOR).mul(_for.add(_against));
     }
+
 
     function votingQuotaForSpecialPass(uint256 _for, uint256 _against)
         public
-        constant
+        view
         returns (bool _passed)
     {
-        if ((_for.mul(get_uint_config(CONFIG_SPECIAL_QUOTA_DENOMINATOR))) >
-                (get_uint_config(CONFIG_SPECIAL_QUOTA_NUMERATOR).mul(_for.add(_against)))) {
-            _passed = true;
-        }
+        _passed =_for.mul(getUintConfig(CONFIG_SPECIAL_QUOTA_DENOMINATOR))
+                > getUintConfig(CONFIG_SPECIAL_QUOTA_NUMERATOR).mul(_for.add(_against));
     }
+
 
     function calculateMinQuorum(
         uint256 _totalStake,
@@ -127,19 +151,20 @@ contract DaoCalculatorService is DaoCommon {
         uint256 _fixedQuorumPortionDenominator,
         uint256 _scalingFactorNumerator,
         uint256 _scalingFactorDenominator,
-        uint256 _ethAsked
+        uint256 _weiAsked
     )
         internal
-        constant
+        view
         returns (uint256 _minimumQuorum)
     {
-        uint256 _ethInDao = get_contract(CONTRACT_DAO_FUNDING_MANAGER).balance;
+        uint256 _weiInDao = weiInDao();
         // add the fixed portion of the quorum
         _minimumQuorum = (_totalStake.mul(_fixedQuorumPortionNumerator)).div(_fixedQuorumPortionDenominator);
 
         // add the dynamic portion of the quorum
-        _minimumQuorum = _minimumQuorum.add(_totalStake.mul(_ethAsked.mul(_scalingFactorNumerator)).div(_ethInDao.mul(_scalingFactorDenominator)));
+        _minimumQuorum = _minimumQuorum.add(_totalStake.mul(_weiAsked.mul(_scalingFactorNumerator)).div(_weiInDao.mul(_scalingFactorDenominator)));
     }
+
 
     function calculateUserEffectiveBalance(
         uint256 _minimalParticipationPoint,
@@ -161,13 +186,13 @@ contract DaoCalculatorService is DaoCommon {
             .div(_quarterPointScalingFactor.mul(_reputationPointScalingFactor));
     }
 
+
     function calculateDemurrage(uint256 _balance, uint256 _daysElapsed)
         public
         view
         returns (uint256 _demurrageFees)
     {
-        (_demurrageFees,) = MockDgxDemurrageCalculator(dgxDemurrageCalculatorAddress).calculateDemurrage(_balance, _daysElapsed);
+        (_demurrageFees,) = DgxDemurrageCalculator(dgxDemurrageCalculatorAddress).calculateDemurrage(_balance, _daysElapsed);
     }
-
 
 }

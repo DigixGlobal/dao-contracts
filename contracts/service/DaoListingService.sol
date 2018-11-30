@@ -1,22 +1,24 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
-import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol";
+/* import "@digix/cacp-contracts-dao/contracts/ResolverClient.sol"; */
 import "@digix/solidity-collections/contracts/abstract/AddressIteratorInteractive.sol";
 import "@digix/solidity-collections/contracts/abstract/BytesIteratorInteractive.sol";
 import "@digix/solidity-collections/contracts/abstract/IndexedBytesIteratorInteractive.sol";
 import "./../storage/DaoStorage.sol";
 import "./../storage/DaoStakeStorage.sol";
-import "./../common/DaoConstants.sol";
+import "./../common/DaoWhitelistingCommon.sol";
+
 
 /**
 @title Contract to list various storage states from DigixDAO
 @author Digix Holdings
 */
-contract DaoListingService is ResolverClient,
-                              DaoConstants,
-                              AddressIteratorInteractive,
-                              BytesIteratorInteractive,
-                              IndexedBytesIteratorInteractive {
+contract DaoListingService is
+    AddressIteratorInteractive,
+    BytesIteratorInteractive,
+    IndexedBytesIteratorInteractive,
+    DaoWhitelistingCommon
+{
 
     /**
     @notice Constructor
@@ -27,19 +29,19 @@ contract DaoListingService is ResolverClient,
     }
 
     function daoStakeStorage()
-      internal
-      constant
-      returns (DaoStakeStorage _contract)
+        internal
+        view
+        returns (DaoStakeStorage _contract)
     {
-      _contract = DaoStakeStorage(get_contract(CONTRACT_STORAGE_DAO_STAKE));
+        _contract = DaoStakeStorage(get_contract(CONTRACT_STORAGE_DAO_STAKE));
     }
 
     function daoStorage()
-      internal
-      constant
-      returns (DaoStorage _contract)
+        internal
+        view
+        returns (DaoStorage _contract)
     {
-      _contract = DaoStorage(get_contract(CONTRACT_STORAGE_DAO));
+        _contract = DaoStorage(get_contract(CONTRACT_STORAGE_DAO));
     }
 
     /**
@@ -49,7 +51,7 @@ contract DaoListingService is ResolverClient,
          were moderators in the previous quarter, but have not confirmed
          their participation in the current quarter. For a single address,
          a better way to know if moderator or not is:
-         contracts.dao.isModerator(_user)
+         Dao.isModerator(_user)
     @param _count number of addresses to list
     @param _from_start boolean, whether to list from start or end
     @return {
@@ -58,7 +60,7 @@ contract DaoListingService is ResolverClient,
     */
     function listModerators(uint256 _count, bool _from_start)
         public
-        constant
+        view
         returns (address[] _moderators)
     {
         _moderators = list_addresses(
@@ -78,8 +80,11 @@ contract DaoListingService is ResolverClient,
          were moderators in the previous quarter, but have not confirmed
          their participation in the current quarter. For a single address,
          a better way to know if moderator or not is:
-         contracts.dao.isModerator(_user)
-    @param _currentModerator list from this moderator address
+         Dao.isModerator(_user)
+
+         Another note: this function will start listing AFTER the _currentModerator
+         For example: we have [address1, address2, address3, address4]. listModeratorsFrom(address1, 2, true) = [address2, address3]
+    @param _currentModerator start the list after this moderator address
     @param _count number of addresses to list
     @param _from_start boolean, whether to list from start or end
     @return {
@@ -92,7 +97,7 @@ contract DaoListingService is ResolverClient,
         bool _from_start
     )
         public
-        constant
+        view
         returns (address[] _moderators)
     {
         _moderators = list_addresses_from(
@@ -113,7 +118,7 @@ contract DaoListingService is ResolverClient,
          were participants in the previous quarter, but have not confirmed
          their participation in the current quarter. For a single address,
          a better way to know if participant or not is:
-         contracts.dao.isParticipant(_user)
+         Dao.isParticipant(_user)
     @param _count number of addresses to list
     @param _from_start boolean, whether to list from start or end
     @return {
@@ -122,7 +127,7 @@ contract DaoListingService is ResolverClient,
     */
     function listParticipants(uint256 _count, bool _from_start)
         public
-        constant
+        view
         returns (address[] _participants)
     {
         _participants = list_addresses(
@@ -143,7 +148,10 @@ contract DaoListingService is ResolverClient,
          their participation in the current quarter. For a single address,
          a better way to know if participant or not is:
          contracts.dao.isParticipant(_user)
-    @param _currentParticipant list from this participant address
+
+         Another note: this function will start listing AFTER the _currentParticipant
+         For example: we have [address1, address2, address3, address4]. listParticipantsFrom(address1, 2, true) = [address2, address3]
+    @param _currentParticipant list from AFTER this participant address
     @param _count number of addresses to list
     @param _from_start boolean, whether to list from start or end
     @return {
@@ -156,7 +164,7 @@ contract DaoListingService is ResolverClient,
         bool _from_start
     )
         public
-        constant
+        view
         returns (address[] _participants)
     {
         _participants = list_addresses_from(
@@ -183,7 +191,7 @@ contract DaoListingService is ResolverClient,
         bool _from_start
     )
         public
-        constant
+        view
         returns (bytes32[] _proposals)
     {
         _proposals = list_bytesarray(
@@ -197,7 +205,7 @@ contract DaoListingService is ResolverClient,
     }
 
     /**
-    @notice function to list _count no. of proposals from _currentProposal
+    @notice function to list _count no. of proposals from AFTER _currentProposal
     @param _currentProposal ID of proposal to list proposals from
     @param _count number of proposals to list
     @param _from_start boolean value, true if count forwards, false if count backwards
@@ -211,7 +219,7 @@ contract DaoListingService is ResolverClient,
         bool _from_start
     )
         public
-        constant
+        view
         returns (bytes32[] _proposals)
     {
         _proposals = list_bytesarray_from(
@@ -240,9 +248,10 @@ contract DaoListingService is ResolverClient,
         bool _from_start
     )
         public
-        constant
+        view
         returns (bytes32[] _proposals)
     {
+        require(senderIsAllowedToRead());
         _proposals = list_indexed_bytesarray(
             _stateId,
             _count,
@@ -255,7 +264,7 @@ contract DaoListingService is ResolverClient,
     }
 
     /**
-    @notice function to list _count no. of proposals in state _stateId from _currentProposal
+    @notice function to list _count no. of proposals in state _stateId from AFTER _currentProposal
     @param _stateId state of proposal
     @param _currentProposal ID of proposal to list proposals from
     @param _count number of proposals to list
@@ -271,9 +280,10 @@ contract DaoListingService is ResolverClient,
         bool _from_start
     )
         public
-        constant
+        view
         returns (bytes32[] _proposals)
     {
+        require(senderIsAllowedToRead());
         _proposals = list_indexed_bytesarray_from(
             _stateId,
             _currentProposal,
@@ -301,7 +311,7 @@ contract DaoListingService is ResolverClient,
         bool _from_start
     )
         public
-        constant
+        view
         returns (bytes32[] _versions)
     {
         _versions = list_indexed_bytesarray(
@@ -316,7 +326,7 @@ contract DaoListingService is ResolverClient,
     }
 
     /**
-    @notice function to list proposal versions from a particular version
+    @notice function to list proposal versions from AFTER a particular version
     @param _proposalId ID of the proposal
     @param _currentVersion version to list _count versions from
     @param _count number of proposal versions to list
@@ -332,7 +342,7 @@ contract DaoListingService is ResolverClient,
         bool _from_start
     )
         public
-        constant
+        view
         returns (bytes32[] _versions)
     {
         _versions = list_indexed_bytesarray_from(

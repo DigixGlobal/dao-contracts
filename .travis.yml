@@ -10,6 +10,7 @@ before_install:
   - sudo apt-get install libgif-dev
 before_script:
   - npm i truffle
+  - cd ./node_modules/truffle && npm install solc@0.4.25 && cd ../..
   - truffle version
 script:
   - npm run test

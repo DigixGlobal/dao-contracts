@@ -1,10 +1,10 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol";
 
 contract MockBadge is StandardToken {
-  string public constant name = "MockBadge";
-  string public constant symbol = "MDGB";
+  string public constant name = "Kovan DGD Badge";
+  string public constant symbol = "KDGB";
   uint8 public constant decimals = 0;
 
   uint256 public constant INITIAL_SUPPLY = 200;

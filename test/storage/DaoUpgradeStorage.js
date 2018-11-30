@@ -11,11 +11,8 @@ const {
 const {
   randomBigNumber,
   randomAddress,
+  randomAddresses,
 } = require('@digix/helpers/lib/helpers');
-
-const {
-  EMPTY_ADDRESS,
-} = require('../daoHelpers');
 
 const bN = web3.toBigNumber;
 
@@ -37,7 +34,7 @@ contract('DaoUpgradeStorage', function (accounts) {
 
   describe('Initialization', function () {
     it('[verify key]', async function () {
-      assert.deepEqual(await contracts.resolver.get_contract.call('storage:dao:upgradable'), contracts.daoUpgradeStorage.address);
+      assert.deepEqual(await contracts.resolver.get_contract.call('storage:dao:upgrade'), contracts.daoUpgradeStorage.address);
     });
   });
 
@@ -55,28 +52,42 @@ contract('DaoUpgradeStorage', function (accounts) {
     });
   });
 
-  describe('updateForDaoMigration', function () {
-    it('[not called by CONTRACT_DAO]: revert', async function () {
-      assert(await a.failure(contracts.daoUpgradeStorage.updateForDaoMigration.call(
+  describe('setNewContractAddresses', function () {
+    it('[not called from CONTRACT_DAO]: revert', async function () {
+      assert(await a.failure(contracts.daoUpgradeStorage.setNewContractAddresses.call(
         randomAddress(),
         randomAddress(),
-        { from: accounts[4] },
+        randomAddress(),
+        { from: accounts[1] },
       )));
     });
-    it('[valid call]: set the values', async function () {
-      const newDaoFundingManager = randomAddress();
-      const newDao = randomAddress();
-      assert.deepEqual(await contracts.daoUpgradeStorage.isReplacedByNewDao.call(), false);
-      assert.deepEqual(await contracts.daoUpgradeStorage.newDaoFundingManager.call(), EMPTY_ADDRESS);
-      assert.deepEqual(await contracts.daoUpgradeStorage.newDaoContract.call(), EMPTY_ADDRESS);
-      await contracts.daoUpgradeStorage.updateForDaoMigration(
-        newDaoFundingManager,
-        newDao,
+    it('[valid call]: update address, read', async function () {
+      const addresses = randomAddresses(3);
+      assert.ok(await contracts.daoUpgradeStorage.setNewContractAddresses.call(
+        addresses[0],
+        addresses[1],
+        addresses[2],
+      ));
+      await contracts.daoUpgradeStorage.setNewContractAddresses(
+        addresses[0],
+        addresses[1],
+        addresses[2],
       );
+      assert.deepEqual(await contracts.daoUpgradeStorage.newDaoContract.call(), addresses[0]);
+      assert.deepEqual(await contracts.daoUpgradeStorage.newDaoFundingManager.call(), addresses[1]);
+      assert.deepEqual(await contracts.daoUpgradeStorage.newDaoRewardsManager.call(), addresses[2]);
+    });
+  });
+
+  describe('updateForDaoMigration', function () {
+    it('[not called by CONTRACT_DAO]: revert', async function () {
+      assert(await a.failure(contracts.daoUpgradeStorage.updateForDaoMigration.call({ from: accounts[4] })));
+    });
+    it('[valid call]: set the values', async function () {
+      assert.deepEqual(await contracts.daoUpgradeStorage.isReplacedByNewDao.call(), false);
+      await contracts.daoUpgradeStorage.updateForDaoMigration();
 
       assert.deepEqual(await contracts.daoUpgradeStorage.isReplacedByNewDao.call(), true);
-      assert.deepEqual(await contracts.daoUpgradeStorage.newDaoFundingManager.call(), newDaoFundingManager);
-      assert.deepEqual(await contracts.daoUpgradeStorage.newDaoContract.call(), newDao);
     });
   });
 });

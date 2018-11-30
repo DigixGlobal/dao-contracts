@@ -1,6 +1,5 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
-import "openzeppelin-solidity/contracts/ownership/Claimable.sol";
 import "../common/DaoCommon.sol";
 import "../service/DaoCalculatorService.sol";
 import "./DaoFundingManager.sol";
@@ -12,15 +11,15 @@ import "../lib/DaoStructs.sol";
 @title Contract to claim voting results
 @author Digix Holdings
 */
-contract DaoSpecialVotingClaims is DaoCommon, Claimable {
+contract DaoSpecialVotingClaims is DaoCommon {
     using DaoIntermediateStructs for DaoIntermediateStructs.VotingCount;
-    using DaoIntermediateStructs for DaoIntermediateStructs.MilestoneInfo;
-    using DaoIntermediateStructs for DaoIntermediateStructs.Users;
     using DaoStructs for DaoStructs.IntermediateResults;
+
+    event SpecialProposalClaim(bytes32 indexed _proposalId, bool _result);
 
     function daoCalculatorService()
         internal
-        constant
+        view
         returns (DaoCalculatorService _contract)
     {
         _contract = DaoCalculatorService(get_contract(CONTRACT_SERVICE_DAO_CALCULATOR));
@@ -28,7 +27,7 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
 
     function daoFundingManager()
         internal
-        constant
+        view
         returns (DaoFundingManager _contract)
     {
         _contract = DaoFundingManager(get_contract(CONTRACT_DAO_FUNDING_MANAGER));
@@ -36,7 +35,7 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
 
     function daoRewardsManager()
         internal
-        constant
+        view
         returns (DaoRewardsManager _contract)
     {
         _contract = DaoRewardsManager(get_contract(CONTRACT_DAO_REWARDS_MANAGER));
@@ -45,6 +44,7 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
     constructor(address _resolver) public {
         require(init(CONTRACT_DAO_SPECIAL_VOTING_CLAIMS, _resolver));
     }
+
 
     /**
     @notice Function to claim the voting result on special proposal
@@ -61,8 +61,8 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
     {
         require(isMainPhase());
         if (now > daoSpecialStorage().readVotingTime(_proposalId)
-                    .add(get_uint_config(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL))
-                    .add(get_uint_config(CONFIG_VOTE_CLAIMING_DEADLINE))) {
+                    .add(getUintConfig(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL))
+                    .add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE))) {
             daoSpecialStorage().setPass(_proposalId, false);
             return false;
         }
@@ -73,7 +73,6 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
             _currentResults.countedUntil,
             _currentResults.currentForCount,
             _currentResults.currentAgainstCount,
-            _currentResults.currentQuorum,
         ) = intermediateResultsStorage().getIntermediateResults(_proposalId);
 
         address[] memory _voters;
@@ -93,16 +92,17 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
         address _lastVoter = _voters[_voters.length - 1];
 
         DaoIntermediateStructs.VotingCount memory _voteCount;
-        (_voteCount.forCount, _voteCount.againstCount, _voteCount.quorum) = daoSpecialStorage().readVotingCount(_proposalId, _voters);
+        (_voteCount.forCount, _voteCount.againstCount) = daoSpecialStorage().readVotingCount(_proposalId, _voters);
 
         _currentResults.countedUntil = _lastVoter;
         _currentResults.currentForCount = _currentResults.currentForCount.add(_voteCount.forCount);
         _currentResults.currentAgainstCount = _currentResults.currentAgainstCount.add(_voteCount.againstCount);
-        _currentResults.currentQuorum = _currentResults.currentQuorum.add(_voteCount.quorum);
 
         if (_lastVoter == daoStakeStorage().readLastParticipant()) {
+            // this is already the last transaction, we have counted all the votes
+
             if (
-                (_currentResults.currentQuorum > daoCalculatorService().minimumVotingQuorumForSpecial()) &&
+                (_currentResults.currentForCount.add(_currentResults.currentAgainstCount) > daoCalculatorService().minimumVotingQuorumForSpecial()) &&
                 (daoCalculatorService().votingQuotaForSpecialPass(_currentResults.currentForCount, _currentResults.currentAgainstCount))
             ) {
                 _passed = true;
@@ -110,19 +110,18 @@ contract DaoSpecialVotingClaims is DaoCommon, Claimable {
             }
             daoSpecialStorage().setPass(_proposalId, _passed);
             daoSpecialStorage().setVotingClaim(_proposalId, true);
-
-            intermediateResultsStorage().resetIntermediateResults(_proposalId);
+            emit SpecialProposalClaim(_proposalId, _passed);
         } else {
             intermediateResultsStorage().setIntermediateResults(
                 _proposalId,
                 _currentResults.countedUntil,
                 _currentResults.currentForCount,
                 _currentResults.currentAgainstCount,
-                _currentResults.currentQuorum,
                 0
             );
         }
     }
+
 
     function setConfigs(bytes32 _proposalId)
         private

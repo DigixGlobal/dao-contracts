@@ -1,12 +1,12 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
+
 
 library MathHelper {
 
   using SafeMath for uint256;
 
-  // functions to calculate points/rewards
   function max(uint256 a, uint256 b) internal pure returns (uint256 _max){
       _max = b;
       if (a > b) {

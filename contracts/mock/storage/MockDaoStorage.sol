@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "../../storage/DaoStorage.sol";
 
@@ -41,6 +41,7 @@ contract MockDaoStorage is DaoStorage {
         proposalsById[_proposalId].proposalVersions[_proposalId].finalReward = _finalReward;
         proposalsById[_proposalId].endorser = _endorser;
         proposalsById[_proposalId].finalVersion = _proposalId;
+        proposalsById[_proposalId].collateralAmount = 2 ether;
         if (_isDraftPhase) {
             proposalsByState[PROPOSAL_STATE_DRAFT].append(_proposalId);
             proposalsById[_proposalId].currentState = PROPOSAL_STATE_DRAFT;
@@ -124,11 +125,5 @@ contract MockDaoStorage is DaoStorage {
                 _voting.noVotes[_voters[i]] = _weights[i];
             }
         }
-    }
-
-    function mock_set_proposal_count(uint256 _quarterId, uint256 _count)
-        public
-    {
-        proposalCountByQuarter[_quarterId] = _count;
     }
 }

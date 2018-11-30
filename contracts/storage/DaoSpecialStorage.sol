@@ -1,16 +1,20 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol";
-import "../common/DaoStorageCommon.sol";
+import "../common/DaoWhitelistingCommon.sol";
 import "../lib/DaoStructs.sol";
 import "./DaoWhitelistingStorage.sol";
 
-contract DaoSpecialStorage is DaoStorageCommon {
+contract DaoSpecialStorage is DaoWhitelistingCommon {
     using DoublyLinkedList for DoublyLinkedList.Bytes;
     using DaoStructs for DaoStructs.SpecialProposal;
     using DaoStructs for DaoStructs.Voting;
 
+    // List of all the special proposals ever created in DigixDAO
     DoublyLinkedList.Bytes proposals;
+
+    // mapping of the SpecialProposal struct by its ID
+    // ID is also the IPFS doc hash of the proposal
     mapping (bytes32 => DaoStructs.SpecialProposal) proposalsById;
 
     constructor(address _resolver) public {
@@ -26,7 +30,11 @@ contract DaoSpecialStorage is DaoStorageCommon {
     )
         public
     {
-        require(sender_is(CONTRACT_DAO));
+        require(sender_is(CONTRACT_DAO_SPECIAL_PROPOSAL));
+        require(
+          (proposalsById[_proposalId].proposalId == EMPTY_BYTES) &&
+          (_proposalId != EMPTY_BYTES)
+        );
         proposals.append(_proposalId);
         proposalsById[_proposalId].proposalId = _proposalId;
         proposalsById[_proposalId].proposer = _proposer;
@@ -38,7 +46,7 @@ contract DaoSpecialStorage is DaoStorageCommon {
 
     function readProposal(bytes32 _proposalId)
         public
-        constant
+        view
         returns (
             bytes32 _id,
             address _proposer,
@@ -54,7 +62,7 @@ contract DaoSpecialStorage is DaoStorageCommon {
 
     function readProposalProposer(bytes32 _proposalId)
         public
-        constant
+        view
         returns (address _proposer)
     {
         _proposer = proposalsById[_proposalId].proposer;
@@ -62,7 +70,7 @@ contract DaoSpecialStorage is DaoStorageCommon {
 
     function readConfigs(bytes32 _proposalId)
         public
-        constant
+        view
         returns (
             uint256[] memory _uintConfigs,
             address[] memory _addressConfigs,
@@ -75,20 +83,20 @@ contract DaoSpecialStorage is DaoStorageCommon {
     }
 
     function readVotingCount(bytes32 _proposalId, address[] _allUsers)
-        public
-        constant
-        returns (uint256 _for, uint256 _against, uint256 _quorum)
+        external
+        view
+        returns (uint256 _for, uint256 _against)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         return proposalsById[_proposalId].voting.countVotes(_allUsers);
     }
 
     function readVotingTime(bytes32 _proposalId)
         public
-        constant
+        view
         returns (uint256 _start)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _start = proposalsById[_proposalId].voting.startTime;
     }
 
@@ -103,28 +111,28 @@ contract DaoSpecialStorage is DaoStorageCommon {
         proposalsById[_proposalId].voting.commits[_voter] = _hash;
     }
 
-    function readCommitVote(bytes32 _proposalId, address _voter)
+    function readComittedVote(bytes32 _proposalId, address _voter)
         public
-        constant
+        view
         returns (bytes32 _commitHash)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _commitHash = proposalsById[_proposalId].voting.commits[_voter];
     }
 
     function setVotingTime(bytes32 _proposalId, uint256 _time)
         public
     {
-        require(sender_is(CONTRACT_DAO));
+        require(sender_is(CONTRACT_DAO_SPECIAL_PROPOSAL));
         proposalsById[_proposalId].voting.startTime = _time;
     }
 
     function readVotingResult(bytes32 _proposalId)
         public
-        constant
+        view
         returns (bool _result)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _result = proposalsById[_proposalId].voting.passed;
     }
 
@@ -145,19 +153,19 @@ contract DaoSpecialStorage is DaoStorageCommon {
 
     function isClaimed(bytes32 _proposalId)
         public
-        constant
+        view
         returns (bool _claimed)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _claimed = proposalsById[_proposalId].voting.claimed;
     }
 
     function readVote(bytes32 _proposalId, address _voter)
         public
-        constant
+        view
         returns (bool _vote, uint256 _weight)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         return proposalsById[_proposalId].voting.readVote(_voter);
     }
 

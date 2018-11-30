@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.4.25;
 
 import "./interface/DaoStorageInterface.sol";
 import "./interface/DaoSpecialStorageInterface.sol";
@@ -17,7 +17,7 @@ contract MockWhitelistedContract {
         address[] _allUsers
     )
         public
-        constant
+        view
     {
         uint256 _uintValue;
         (,_uintValue) = DaoStorageInterface(_daoStorageAddress).readVotingRoundVotes(
@@ -40,7 +40,7 @@ contract MockWhitelistedContract {
         address _voter
     )
         public
-        constant
+        view
     {
         uint256 _uintValue;
         (,_uintValue) = DaoStorageInterface(_daoStorageAddress).readDraftVote(
@@ -49,17 +49,17 @@ contract MockWhitelistedContract {
         );
     }
 
-    function mock_call_readCommitVote(
+    function mock_call_readComittedVote(
         address _daoStorageAddress,
         bytes32 _proposalId,
         uint256 _index,
         address _voter
     )
         public
-        constant
+        view
     {
         bytes32 _bytesValue;
-        _bytesValue = DaoStorageInterface(_daoStorageAddress).readCommitVote(
+        _bytesValue = DaoStorageInterface(_daoStorageAddress).readComittedVote(
             _proposalId,
             _index,
             _voter
@@ -73,7 +73,7 @@ contract MockWhitelistedContract {
         address _voter
     )
         public
-        constant
+        view
     {
         uint256 _uintValue;
         (,_uintValue) = DaoStorageInterface(_daoStorageAddress).readVote(
@@ -89,7 +89,7 @@ contract MockWhitelistedContract {
         address _voter
     )
         public
-        constant
+        view
     {
         uint256 _uintValue;
         (,_uintValue) = DaoSpecialStorageInterface(_daoSpecialStorageAddress).readVote(
@@ -98,16 +98,16 @@ contract MockWhitelistedContract {
         );
     }
 
-    function mock_call_special_readCommitVote(
+    function mock_call_special_readComittedVote(
         address _daoSpecialStorageAddress,
         bytes32 _proposalId,
         address _voter
     )
         public
-        constant
+        view
     {
         bytes32 _bytesValue;
-        _bytesValue = DaoSpecialStorageInterface(_daoSpecialStorageAddress).readCommitVote(
+        _bytesValue = DaoSpecialStorageInterface(_daoSpecialStorageAddress).readComittedVote(
             _proposalId,
             _voter
         );
