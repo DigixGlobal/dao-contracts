@@ -8,7 +8,8 @@ start_ganache() {
   local accounts=""
   for i in {1..600}
   do
-    accounts+=--account="0x$(printf %064x $i),1000000000000000000000000 "
+    y=$(( $i * 10000000 ))
+    accounts+=--account="0x$(printf %064x $y),1000000000000000000000000 "
   done
 
   node_modules/.bin/ganache-cli --gasLimit 0xfffffffffff $accounts

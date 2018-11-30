@@ -1,6 +1,6 @@
 {
   "name": "@digix/dao-contracts",
-  "version": "1.0.0",
+  "version": "0.0.3",
   "description": "Smart contracts for DigixDAO",
   "main": "truffle-config.js",
   "directories": {
@@ -15,7 +15,8 @@
     "ganache": "bash scripts/start_ganache.sh",
     "docs:compile": "./node_modules/.bin/doxity compile",
     "docs:publish": "./node_modules/.bin/doxity publish",
-    "docs:server": "cd scripts/doxity/ && ./node_modules/.bin/gatsby develop"
+    "docs:server": "cd scripts/doxity/ && ./node_modules/.bin/gatsby develop",
+    "dao:dev": "bash scripts/start_dao_development.sh"
   },
   "repository": {
     "type": "git",
