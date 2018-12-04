@@ -238,16 +238,16 @@ contract Dao is DaoCommon {
         public
     {
         senderCanDoProposerOperations();
-        require(isFromProposer(_proposalId));
-        require(isEditable(_proposalId));
+        require(isFromProposer(_proposalId), "not proposer");
+        require(isEditable(_proposalId), "proposal not editable");
         checkNonDigixProposalLimit(_proposalId);
 
         // make sure we have reasonably enough time left in the quarter to conduct the Draft Voting.
         // Otherwise, the proposer must wait until the next quarter to finalize the proposal
-        require(getTimeLeftInQuarter(now) > getUintConfig(CONFIG_DRAFT_VOTING_PHASE).add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE)));
+        require(getTimeLeftInQuarter(now) > getUintConfig(CONFIG_DRAFT_VOTING_PHASE).add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE)), "not enough time");
         address _endorser;
         (,,_endorser,,,,,,,) = daoStorage().readProposal(_proposalId);
-        require(_endorser != EMPTY_ADDRESS);
+        require(_endorser != EMPTY_ADDRESS, "not endorsed");
         daoStorage().finalizeProposal(_proposalId);
         daoStorage().setProposalDraftVotingTime(_proposalId, now);
 
@@ -266,7 +266,7 @@ contract Dao is DaoCommon {
         public
     {
         senderCanDoProposerOperations();
-        require(isFromProposer(_proposalId));
+        require(isFromProposer(_proposalId), "not proposer");
 
         uint256[] memory _currentFundings;
         (_currentFundings,) = daoStorage().readProposalFunding(_proposalId);
@@ -274,12 +274,12 @@ contract Dao is DaoCommon {
         // If there are N milestones, the milestone index must be < N. Otherwise, putting a milestone index of N will actually return a valid timestamp that is
         // right after the final voting round (voting round index N is the final voting round)
         // Which could be abused ( to "finish" a milestone even after the final voting round)
-        require(_milestoneIndex < _currentFundings.length);
+        require(_milestoneIndex < _currentFundings.length, "index outside limit");
 
         // must be after the start of this milestone, and the milestone has not been finished yet (voting hasnt started)
         uint256 _startOfCurrentMilestone = startOfMilestone(_proposalId, _milestoneIndex);
-        require(now > _startOfCurrentMilestone);
-        require(daoStorage().readProposalVotingTime(_proposalId, _milestoneIndex.add(1)) == 0);
+        require(now > _startOfCurrentMilestone, "milestone not started");
+        require(daoStorage().readProposalVotingTime(_proposalId, _milestoneIndex.add(1)) == 0, "next milestone set");
 
         daoStorage().setProposalVotingTime(
             _proposalId,
@@ -353,13 +353,13 @@ contract Dao is DaoCommon {
         public
     {
         senderCanDoProposerOperations();
-        require(isFromProposer(_proposalId));
+        require(isFromProposer(_proposalId), "not proposer");
         bytes32 _finalVersion;
         bytes32 _status;
         (,,,_status,,,,_finalVersion,,) = daoStorage().readProposal(_proposalId);
-        require(_finalVersion == EMPTY_BYTES);
-        require(_status != PROPOSAL_STATE_CLOSED);
-        require(daoStorage().readProposalCollateralStatus(_proposalId) == COLLATERAL_STATUS_UNLOCKED);
+        require(_finalVersion == EMPTY_BYTES, "already finalized");
+        require(_status != PROPOSAL_STATE_CLOSED, "already closed");
+        require(daoStorage().readProposalCollateralStatus(_proposalId) == COLLATERAL_STATUS_UNLOCKED, "already unlocked");
 
         daoStorage().closeProposal(_proposalId);
         daoStorage().setProposalCollateralStatus(_proposalId, COLLATERAL_STATUS_CLAIMED);

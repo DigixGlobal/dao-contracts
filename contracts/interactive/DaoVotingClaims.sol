@@ -77,7 +77,7 @@ contract DaoVotingClaims is DaoCommon {
             processCollateralRefund(_proposalId);
             return (false, true);
         }
-        require(isFromProposer(_proposalId));
+        require(isFromProposer(_proposalId), "not proposer");
         senderCanDoProposerOperations();
 
         // get the previously stored intermediary state
@@ -187,7 +187,7 @@ contract DaoVotingClaims is DaoCommon {
         ifAfterProposalRevealPhase(_proposalId, _index)
         returns (bool _passed, bool _done)
     {
-        require(isMainPhase());
+        require(isMainPhase(), "not main phase");
 
         // STEP 1
         // If the claiming deadline is over, the proposal is auto failed, and anyone can call this function
@@ -342,7 +342,7 @@ contract DaoVotingClaims is DaoCommon {
         returns (uint256 _operationsLeft, bool _passed, bool _done)
     {
         senderCanDoProposerOperations();
-        require(isFromProposer(_proposalId));
+        require(isFromProposer(_proposalId), "not proposer");
 
         DaoStructs.IntermediateResults memory _currentResults;
         (

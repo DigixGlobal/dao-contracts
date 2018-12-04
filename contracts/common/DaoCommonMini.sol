@@ -76,9 +76,9 @@ contract DaoCommonMini is IdentityCommon {
         internal
         view
     {
-        require(_startingPoint > 0);
-        require(now < _startingPoint.add(_relativePhaseEnd));
-        require(now >= _startingPoint.add(_relativePhaseStart));
+        require(_startingPoint > 0, "start not set");
+        require(now < _startingPoint.add(_relativePhaseEnd), "not within phase end");
+        require(now >= _startingPoint.add(_relativePhaseStart), "not after phase start");
     }
 
     /**

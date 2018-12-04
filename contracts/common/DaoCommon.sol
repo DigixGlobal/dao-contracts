@@ -120,12 +120,12 @@ contract DaoCommon is DaoCommonMini {
     }
 
     modifier ifDraftNotClaimed(bytes32 _proposalId) {
-        require(daoStorage().isDraftClaimed(_proposalId) == false);
+        require(daoStorage().isDraftClaimed(_proposalId) == false, "draft is already claimed");
         _;
     }
 
     modifier ifNotClaimed(bytes32 _proposalId, uint256 _index) {
-        require(daoStorage().isClaimed(_proposalId, _index) == false);
+        require(daoStorage().isClaimed(_proposalId, _index) == false, "voting round already claimed");
         _;
     }
 
@@ -137,7 +137,7 @@ contract DaoCommon is DaoCommonMini {
     modifier hasNotRevealed(bytes32 _proposalId, uint256 _index) {
         uint256 _voteWeight;
         (, _voteWeight) = daoStorage().readVote(_proposalId, _index, msg.sender);
-        require(_voteWeight == uint(0));
+        require(_voteWeight == uint(0), "has already revealed");
         _;
     }
 
@@ -286,7 +286,7 @@ contract DaoCommon is DaoCommonMini {
         internal
         view
     {
-        require(isNonDigixProposalsWithinLimit(_proposalId));
+        require(isNonDigixProposalsWithinLimit(_proposalId), "not within funding limits");
     }
 
     function isNonDigixProposalsWithinLimit(bytes32 _proposalId)
@@ -324,8 +324,8 @@ contract DaoCommon is DaoCommonMini {
         internal
         view
     {
-        require(isMainPhase());
-        require(isParticipant(msg.sender));
-        require(identity_storage().is_kyc_approved(msg.sender));
+        require(isMainPhase(), "not main phase");
+        require(isParticipant(msg.sender), "not participant");
+        require(identity_storage().is_kyc_approved(msg.sender), "not kyc approved");
     }
 }

@@ -37,7 +37,6 @@ const {
   lockDGDs,
   getAccountsAndAddressOf,
   getProposalStruct,
-  setDummyConfig,
   initialTransferTokens,
   waitFor,
   phaseCorrection,
@@ -51,11 +50,13 @@ const {
 const {
   phases,
   quarters,
+  daoConstantsKeys,
 } = require('../test/daoHelpers');
 
 const {
   getCurrentTimestamp,
   encodeHash,
+  indexRange,
 } = require('@digix/helpers/lib/helpers');
 
 const dijixUtil = require('./dijixUtil');
@@ -67,6 +68,26 @@ const bN = web3.toBigNumber;
 
 const dotenv = require('dotenv');
 const proposalsJson = require('../static/json/proposals.json');
+
+// We set a dummy config for DigixDAO for the tests
+// Basically, changing the time scale to something more feasible for the test suite
+const setDummyConfig = async function (contracts, bN, initial = false) {
+  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_LOCKING_PHASE_DURATION, bN(process.env.LOCKING_PHASE));
+  await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_QUARTER_DURATION, bN(process.env.QUARTER_DURATION));
+  if (initial) {
+    await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_DRAFT_VOTING_PHASE, bN(10));
+    await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE, bN(5));
+  } else {
+    await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTING_COMMIT_PHASE, bN(process.env.COMMIT_ROUND));
+    await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTING_PHASE_TOTAL, bN(process.env.VOTING_ROUND));
+    await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_INTERIM_COMMIT_PHASE, bN(process.env.COMMIT_ROUND));
+    await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_INTERIM_PHASE_TOTAL, bN(process.env.VOTING_ROUND));
+    await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE, bN(process.env.COMMIT_ROUND));
+    await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL, bN(process.env.VOTING_ROUND));
+    await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_DRAFT_VOTING_PHASE, bN(process.env.DRAFT_VOTING_PHASE));
+    await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE, bN(process.env.VOTE_CLAIMING_DEADLINE));
+  }
+};
 
 // Test scenario structs for proposals
 const getTestProposals = function (bN, addressOf, proposalHashes) {
@@ -81,10 +102,6 @@ const getTestProposals = function (bN, addressOf, proposalHashes) {
         versionId: encodeHash(proposalHashes[0].versions[0].ipfsHash),
         milestoneFundings: [bN(2 * (10 ** 18)), bN(3 * (10 ** 18))],
         finalReward: bN(1 * (10 ** 18)),
-      }, {
-        versionId: encodeHash(proposalHashes[0].versions[1].ipfsHash),
-        milestoneFundings: [bN(2 * (10 ** 18)), bN(4 * (10 ** 18))],
-        finalReward: bN(1 * (10 ** 18)),
       }],
     ),
 
@@ -96,9 +113,27 @@ const getTestProposals = function (bN, addressOf, proposalHashes) {
         versionId: encodeHash(proposalHashes[1].versions[0].ipfsHash),
         milestoneFundings: [bN(5 * (10 ** 18)), bN(7 * (10 ** 18))],
         finalReward: bN(1 * (10 ** 18)),
-      }, {
-        versionId: encodeHash(proposalHashes[1].versions[1].ipfsHash),
-        milestoneFundings: [bN(6 * (10 ** 18)), bN(7 * (10 ** 18))],
+      }],
+    ),
+
+    getProposalStruct(
+      bN,
+      addressOf.dgdHolders[2],
+      addressOf.badgeHolders[2],
+      [{
+        versionId: encodeHash(proposalHashes[2].versions[0].ipfsHash),
+        milestoneFundings: [bN(1 * (10 ** 18)), bN(1 * (10 ** 18))],
+        finalReward: bN(1 * (10 ** 18)),
+      }],
+    ),
+
+    getProposalStruct(
+      bN,
+      addressOf.dgdHolders[3],
+      addressOf.badgeHolders[3],
+      [{
+        versionId: encodeHash(proposalHashes[3].versions[0].ipfsHash),
+        milestoneFundings: [bN(1 * (10 ** 18)), bN(1 * (10 ** 18))],
         finalReward: bN(1 * (10 ** 18)),
       }],
     ),
@@ -152,15 +187,56 @@ const kycProposers = async function (contracts, addressOf) {
   });
 };
 
-const addAndEndorseProposals = async function (contracts, proposals) {
+const addProposals = async function (contracts, proposals) {
   await a.map(proposals, 20, async (proposal) => {
     await addProposal(contracts, proposal);
+  });
+};
+
+const endorseProposals = async function (contracts, proposals) {
+  await a.map(proposals, 20, async (proposal) => {
     await endorseProposal(contracts, proposal);
   });
 };
 
+const finalizeProposals = async function (contracts, proposals) {
+  await a.map(proposals, 20, async (proposal) => {
+    await contracts.dao.finalizeProposal(proposal.id, { from: proposal.proposer });
+  });
+};
+
+const draftVotingAndClaim = async function (contracts, addressOf, proposals) {
+  await a.map(indexRange(0, proposals.length), 20, async (proposalIndex) => {
+    await a.map(indexRange(0, addressOf.badgeHolders.length), 20, async (badgeHolderIndex) => {
+      await contracts.daoVoting.voteOnDraft(
+        proposals[proposalIndex].id,
+        true,
+        { from: addressOf.badgeHolders[badgeHolderIndex] },
+      );
+    });
+  });
+
+  await waitFor(10, addressOf, web3);
+
+  await a.map(indexRange(0, proposals.length), 20, async (proposalIndex) => {
+    await contracts.daoVotingClaims.claimDraftVotingResult(
+      proposals[proposalIndex].id,
+      bN(50),
+      { from: proposals[proposalIndex].proposer },
+    );
+  });
+
+  await waitFor(5, addressOf, web3);
+};
+
 const uploadAttestations = async function (_proposals) {
   const docs = [
+    {
+      versions: [],
+    },
+    {
+      versions: [],
+    },
     {
       versions: [],
     },
@@ -251,8 +327,8 @@ module.exports = async function () {
     await assignDeployedContracts(contracts, libs);
     console.log('got the deployed contracts');
 
-    // set dummy config for testing
-    await setDummyConfig(contracts, bN);
+    // set dummy config for testing (initial config)
+    await setDummyConfig(contracts, bN, true);
     console.log('setup dummy config');
 
     // start dao and fund dao
@@ -282,9 +358,24 @@ module.exports = async function () {
 
     await kycProposers(contracts, addressOf);
     console.log('kyc approved proposers');
-    await addAndEndorseProposals(contracts, proposals);
-    console.log('added and endorsed proposals');
 
-    console.log(assignVotesAndCommits(addressOf, 2, 10));
+    await addProposals(contracts, proposals);
+    console.log('added and proposals');
+
+    await endorseProposals(contracts, [proposals[1], proposals[2], proposals[3]]);
+    console.log('endorsed proposals');
+
+    await finalizeProposals(contracts, [proposals[2], proposals[3]]);
+    console.log('finalized proposals');
+
+    await draftVotingAndClaim(contracts, addressOf, [proposals[3]]);
+    console.log('finished draft voting');
+
+    // set dummy config for testing (initial config)
+    await setDummyConfig(contracts, bN, false);
+    console.log('setup dummy config');
+
+    const votesAndCommits = assignVotesAndCommits(addressOf, 2, 10);
+    console.log('votes and commits = ', votesAndCommits);
   });
 };

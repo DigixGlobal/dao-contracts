@@ -89,7 +89,7 @@ contract DaoStakeLocking is DaoCommon {
         public
     {
         // should not have redeemed a badge
-        require(!daoStakeStorage().redeemedBadge(msg.sender));
+        require(!daoStakeStorage().redeemedBadge(msg.sender), "already redeemed");
 
         // Can only redeem a badge if the reputation has been updated to the previous quarter.
         // In other words, this holder must have called either lockDGD/withdrawDGD/confirmContinuedParticipation in this quarter (hence, rewards for last quarter was already calculated)
@@ -97,7 +97,8 @@ contract DaoStakeLocking is DaoCommon {
 
         // Note that after lockDGD/withdrawDGD/confirmContinuedParticipation is called, the reputation is always updated to the previous quarter
         require(
-            daoRewardsStorage().lastQuarterThatReputationWasUpdated(msg.sender) == (currentQuarterNumber() - 1)
+            daoRewardsStorage().lastQuarterThatReputationWasUpdated(msg.sender) == (currentQuarterNumber() - 1),
+            "reputation not updated"
         );
 
         daoStakeStorage().redeemBadge(msg.sender);
@@ -114,7 +115,7 @@ contract DaoStakeLocking is DaoCommon {
     }
 
     function lockDGD(uint256 _amount) public {
-        require(_amount > 0);
+        require(_amount > 0, "zero amount");
         lockDGDInternal(_amount);
     }
 

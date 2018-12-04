@@ -48,16 +48,16 @@ contract DaoFundingManager is DaoCommon {
     function claimFunding(bytes32 _proposalId, uint256 _index)
         public
     {
-        require(identity_storage().is_kyc_approved(msg.sender));
-        require(isFromProposer(_proposalId));
+        require(identity_storage().is_kyc_approved(msg.sender), "no kyc");
+        require(isFromProposer(_proposalId), "not proposer");
 
         // proposal should not be paused/stopped
-        require(!isProposalPaused(_proposalId));
+        require(!isProposalPaused(_proposalId), "proposal is paused");
 
-        require(!daoStorage().readIfMilestoneFunded(_proposalId, _index));
+        require(!daoStorage().readIfMilestoneFunded(_proposalId, _index), "milestone already funded");
 
-        require(daoStorage().readProposalVotingResult(_proposalId, _index));
-        require(daoStorage().isClaimed(_proposalId, _index));
+        require(daoStorage().readProposalVotingResult(_proposalId, _index), "result not pass");
+        require(daoStorage().isClaimed(_proposalId, _index), "result not claimed");
 
         uint256 _funding = daoStorage().readProposalMilestone(_proposalId, _index);
 

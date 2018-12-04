@@ -26,7 +26,7 @@ contract DaoVoting is DaoCommon {
         ifDraftVotingPhase(_proposalId)
     {
         require(isMainPhase());
-        require(isModerator(msg.sender));
+        require(isModerator(msg.sender), "not moderator");
         address _moderator = msg.sender;
         uint256 _moderatorStake = daoStakeStorage().lockedDGDStake(_moderator);
 
@@ -56,7 +56,7 @@ contract DaoVoting is DaoCommon {
         public
         ifCommitPhaseSpecial(_proposalId)
     {
-        require(isParticipant(msg.sender));
+        require(isParticipant(msg.sender), "not participant");
         daoSpecialStorage().commitVote(_proposalId, _commitHash, msg.sender);
     }
 
@@ -121,8 +121,8 @@ contract DaoVoting is DaoCommon {
         ifRevealPhase(_proposalId, _index)
         hasNotRevealed(_proposalId, _index)
     {
-        require(isParticipant(msg.sender));
-        require(keccak256(abi.encodePacked(msg.sender, _vote, _salt)) == daoStorage().readComittedVote(_proposalId, _index, msg.sender));
+        require(isParticipant(msg.sender), "not participant");
+        require(keccak256(abi.encodePacked(msg.sender, _vote, _salt)) == daoStorage().readComittedVote(_proposalId, _index, msg.sender), "validation failed");
         daoStorage().revealVote(_proposalId, msg.sender, _vote, daoStakeStorage().lockedDGDStake(msg.sender), _index);
         daoPointsStorage().addQuarterPoint(
             msg.sender,
