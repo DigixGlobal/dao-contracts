@@ -56,6 +56,6 @@ fi
 
 # rm -rf build/
 
-truffle compile
-truffle migrate --network development --reset
-SIMULATION=true truffle exec test/simulateDao.js
+./node_modules/.bin/truffle compile
+./node_modules/.bin/truffle migrate --network development --reset
+SIMULATION=true ./node_modules/.bin/truffle exec test/simulateDao.js

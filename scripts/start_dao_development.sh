@@ -40,5 +40,5 @@ else
   start_ganache
 fi
 
-truffle migrate --reset
-SIMULATION=true truffle exec scripts/init-dao.js
+./node_modules/.bin/truffle migrate --reset
+SIMULATION=true ./node_modules/.bin/truffle exec scripts/init-dao.js
