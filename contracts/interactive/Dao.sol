@@ -110,7 +110,7 @@ contract Dao is DaoCommon {
     */
     function setStartOfFirstQuarter(uint256 _start) public if_founder() {
         require(daoUpgradeStorage().startOfFirstQuarter() == 0);
-        require(_start > 0);
+        require(_start > now);
         daoUpgradeStorage().setStartOfFirstQuarter(_start);
     }
 
