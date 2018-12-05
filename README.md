@@ -139,6 +139,8 @@ The Interactive layer contracts can be called publicly. They contain DigixDAO's 
   * Handles the logic related to DigixDAO Directory (role and group management)
   * Writes to DaoIdentityStorage storage layer contract
 
+An important note is that the function `calculateGlobalRewardsBeforeNewQuarter()` in `DaoRewardsManager` needs to execute completely (returning true) first in the Locking Phase, before any stake locking and subsequent activities can happen.
+
 ##### Modifiers
 Conditional checks and authorizing `msg.sender` is done in the [DaoCommon.sol](https://github.com/DigixGlobal/dao-contracts/blob/dev/contracts/common/DaoCommon.sol) contract.
 
