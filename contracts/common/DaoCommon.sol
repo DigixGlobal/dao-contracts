@@ -111,14 +111,6 @@ contract DaoCommon is DaoCommonMini {
         _;
     }
 
-    /**
-    @notice Check if the DAO has enough ETHs for a particular funding request
-    */
-    modifier ifFundingPossible(uint256[] _fundings, uint256 _finalReward) {
-        require(MathHelper.sumNumbers(_fundings).add(_finalReward) <= weiInDao());
-        _;
-    }
-
     modifier ifDraftNotClaimed(bytes32 _proposalId) {
         require(daoStorage().isDraftClaimed(_proposalId) == false);
         _;
