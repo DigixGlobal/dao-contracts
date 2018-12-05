@@ -1038,6 +1038,12 @@ contract('Dao', function (accounts) {
     });
     it('[claim step by step (operations)]', async function () {
       // 50 people have voted (will require 5 steps if 12 in each batch)
+      assert.deepEqual(await contracts.daoSpecialVotingClaims.claimSpecialProposalVotingResult.call(
+        specialProposalId1,
+        bN(0),
+        { from: addressOf.founderBadgeHolder },
+      ), false);
+
       for (const i of indexRange(0, 4)) {
         assert.deepEqual(await contracts.daoSpecialVotingClaims.claimSpecialProposalVotingResult.call(
           specialProposalId1,
@@ -1403,6 +1409,10 @@ contract('Dao', function (accounts) {
       const returnValues = await contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[0].id, bN(50), { from: proposals[0].proposer });
       assert.deepEqual(returnValues[0], true);
       assert.deepEqual(returnValues[1], true);
+
+      const zeroOperationClaimResult = await contracts.daoVotingClaims.claimDraftVotingResult.call(proposals[0].id, bN(0), { from: proposals[0].proposer });
+      assert.deepEqual(zeroOperationClaimResult[0], false);
+      assert.deepEqual(zeroOperationClaimResult[1], false);
 
       await contracts.daoVotingClaims.claimDraftVotingResult(proposals[0].id, bN(50), { from: proposals[0].proposer });
 
@@ -2070,6 +2080,15 @@ contract('Dao', function (accounts) {
       const qpBefore1 = await contracts.daoPointsStorage.getReputation.call(addressOf.allParticipants[1]);
       const qpBefore4 = await contracts.daoPointsStorage.getReputation.call(addressOf.allParticipants[4]);
       const qpBefore5 = await contracts.daoPointsStorage.getReputation.call(addressOf.allParticipants[5]);
+
+      const zeroOperationClaimResult = await contracts.daoVotingClaims.claimProposalVotingResult.call(
+        proposals[0].id,
+        bN(1),
+        bN(0),
+        { from: proposals[0].proposer },
+      );
+      assert.deepEqual(zeroOperationClaimResult[0], false);
+      assert.deepEqual(zeroOperationClaimResult[1], false);
 
       // claim the result
       await contracts.daoVotingClaims.claimProposalVotingResult(
