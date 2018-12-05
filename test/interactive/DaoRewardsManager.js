@@ -76,7 +76,7 @@ contract('DaoRewardsManager', function (accounts) {
   };
 
   const resetBeforeEach = async function () {
-    await deployFreshDao(libs, contracts, addressOf, accounts, bN, web3, 15, 15);
+    await deployFreshDao(libs, contracts, addressOf, accounts, bN, web3, 20, 20);
     await contracts.daoIdentity.addGroupUser(bN(3), addressOf.prl, randomBytes32());
     await contracts.daoIdentity.addGroupUser(bN(4), addressOf.kycadmin, randomBytes32());
     await setMockValues();
