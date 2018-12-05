@@ -128,7 +128,7 @@ contract ContractResolver is ACOwned, Constants {
   /// @return _contract the address of the contract
   function get_contract(bytes32 _key)
            public
-           constant
+           view
            returns (address _contract)
   {
     require(contracts[_key] != NULL_ADDRESS);
@@ -203,7 +203,7 @@ contract ResolverClient {
   /// @return _locked if the resolver is currently locked
   function is_locked()
            private
-           constant
+           view
            returns (bool _locked)
   {
     _locked = ContractResolver(resolver).locked_forever();
@@ -214,7 +214,7 @@ contract ResolverClient {
   /// @return _contract the address of the contract
   function get_contract(bytes32 _key)
            public
-           constant
+           view
            returns (address _contract)
   {
     _contract = ContractResolver(resolver).get_contract(_key);
@@ -1954,6 +1954,7 @@ contract DaoConstants {
     bytes32 CONTRACT_DAO_ROLES = "dao:roles";
     bytes32 CONTRACT_DAO_FUNDING_MANAGER = "dao:funding-manager";
     bytes32 CONTRACT_DAO_WHITELISTING = "dao:whitelisting";
+    bytes32 CONTRACT_DAO_INFORMATION = "dao:information";
 
     // service contracts
     bytes32 CONTRACT_SERVICE_ROLE = "service:role";
@@ -2084,11 +2085,11 @@ contract DaoWhitelistingStorage is ResolverClient, DaoConstants {
         require(init(CONTRACT_STORAGE_DAO_WHITELISTING, _resolver));
     }
 
-    function setWhitelisted(address _contractAddress, bool _isWhitelisted)
+    function setWhitelisted(address _contractAddress, bool _senderIsAllowedToRead)
         public
     {
         require(sender_is(CONTRACT_DAO_WHITELISTING));
-        whitelist[_contractAddress] = _isWhitelisted;
+        whitelist[_contractAddress] = _senderIsAllowedToRead;
     }
 }
 
@@ -2106,16 +2107,13 @@ contract DaoWhitelistingCommon is ResolverClient, DaoConstants {
     @notice Check if a certain address is whitelisted to read sensitive information in the storage layer
     @dev if the address is an account, it is allowed to read. If the address is a contract, it has to be in the whitelist
     */
-    function isWhitelisted(address _address)
+    function senderIsAllowedToRead()
         internal
         view
-        returns (bool _isWhitelisted)
+        returns (bool _senderIsAllowedToRead)
     {
-        uint size;
-        assembly {
-            size := extcodesize(_address)
-        }
-        _isWhitelisted = size == 0 || daoWhitelistingStorage().whitelist(_address);
+        // msg.sender is allowed to read only if its an EOA or a whitelisted contract
+        _senderIsAllowedToRead = (msg.sender == tx.origin) || daoWhitelistingStorage().whitelist(msg.sender);
     }
 }
 
@@ -2517,7 +2515,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
             bool _isDigixProposal
         )
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         DaoStructs.Proposal storage _proposal = proposalsById[_proposalId];
         _doc = _proposal.proposalId;
         _proposer = _proposal.proposer;
@@ -2564,7 +2562,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         view
         returns (bool _result)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _result = proposalsById[_proposalId].draftVoting.passed;
     }
 
@@ -2573,7 +2571,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         view
         returns (bool _result)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _result = proposalsById[_proposalId].votingRounds[_index].passed;
     }
 
@@ -2582,7 +2580,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         view
         returns (uint256 _start)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _start = proposalsById[_proposalId].draftVoting.startTime;
     }
 
@@ -2591,7 +2589,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         view
         returns (uint256 _start)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _start = proposalsById[_proposalId].votingRounds[_index].startTime;
     }
 
@@ -2600,7 +2598,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         view
         returns (uint256 _for, uint256 _against)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         return proposalsById[_proposalId].draftVoting.countVotes(_allUsers);
     }
 
@@ -2609,7 +2607,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         view
         returns (uint256 _for, uint256 _against)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         return proposalsById[_proposalId].votingRounds[_index].countVotes(_allUsers);
     }
 
@@ -2618,7 +2616,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         view
         returns (address[] memory _voters, uint256 _length)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         return proposalsById[_proposalId].votingRounds[_index].listVotes(_allUsers, _vote);
     }
 
@@ -2627,7 +2625,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         view
         returns (bool _vote, uint256 _weight)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         return proposalsById[_proposalId].draftVoting.readVote(_voter);
     }
 
@@ -2642,7 +2640,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         view
         returns (bytes32 _commitHash)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _commitHash = proposalsById[_proposalId].votingRounds[_index].commits[_voter];
     }
 
@@ -2651,7 +2649,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         view
         returns (bool _vote, uint256 _weight)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         return proposalsById[_proposalId].votingRounds[_index].readVote(_voter);
     }
 
@@ -2721,7 +2719,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         view
         returns (bytes32 _id)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _id = read_first_from_bytesarray(proposalsByState[_stateId]);
     }
 
@@ -2735,7 +2733,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         view
         returns (bytes32 _id)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _id = read_last_from_bytesarray(proposalsByState[_stateId]);
     }
 
@@ -2749,7 +2747,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         view
         returns (bytes32 _id)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _id = read_next_from_bytesarray(
             proposalsByState[_stateId],
             _proposalId
@@ -2766,7 +2764,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         view
         returns (bytes32 _id)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _id = read_previous_from_bytesarray(
             proposalsByState[_stateId],
             _proposalId
@@ -2806,7 +2804,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         view
         returns (uint256[] memory _fundings, uint256 _finalReward)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         bytes32 _finalVersion = proposalsById[_proposalId].finalVersion;
         require(_finalVersion != EMPTY_BYTES);
         _fundings = proposalsById[_proposalId].proposalVersions[_finalVersion].milestoneFundings;
@@ -2818,7 +2816,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         view
         returns (uint256 _funding)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _funding = proposalsById[_proposalId].readProposalMilestone(_index);
     }
 
@@ -2907,7 +2905,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         view
         returns (uint256 _status)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _status = proposalsById[_proposalId].collateralStatus;
     }
 
@@ -2936,7 +2934,7 @@ contract DaoStorage is DaoWhitelistingCommon, BytesIteratorStorage {
         view
         returns (bool _funded)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _funded = proposalsById[_proposalId].votingRounds[_milestoneId].funded;
     }
 
@@ -3755,7 +3753,7 @@ contract DaoListingService is
         view
         returns (bytes32[] _proposals)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _proposals = list_indexed_bytesarray(
             _stateId,
             _count,
@@ -3787,7 +3785,7 @@ contract DaoListingService is
         view
         returns (bytes32[] _proposals)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _proposals = list_indexed_bytesarray_from(
             _stateId,
             _currentProposal,
@@ -4880,7 +4878,7 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
         view
         returns (uint256 _for, uint256 _against)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         return proposalsById[_proposalId].voting.countVotes(_allUsers);
     }
 
@@ -4889,7 +4887,7 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
         view
         returns (uint256 _start)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _start = proposalsById[_proposalId].voting.startTime;
     }
 
@@ -4909,7 +4907,7 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
         view
         returns (bytes32 _commitHash)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _commitHash = proposalsById[_proposalId].voting.commits[_voter];
     }
 
@@ -4925,7 +4923,7 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
         view
         returns (bool _result)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _result = proposalsById[_proposalId].voting.passed;
     }
 
@@ -4949,7 +4947,7 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
         view
         returns (bool _claimed)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         _claimed = proposalsById[_proposalId].voting.claimed;
     }
 
@@ -4958,7 +4956,7 @@ contract DaoSpecialStorage is DaoWhitelistingCommon {
         view
         returns (bool _vote, uint256 _weight)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         return proposalsById[_proposalId].voting.readVote(_voter);
     }
 
@@ -5472,15 +5470,6 @@ contract DaoCommonMini is IdentityCommon {
         _isMainPhase =
             isDaoNotReplaced() &&
             currentTimeInQuarter() >= getUintConfig(CONFIG_LOCKING_PHASE_DURATION);
-    }
-
-    modifier ifNotContract(address _address) {
-        uint size;
-        assembly {
-            size := extcodesize(_address)
-        }
-        require(size == 0);
-        _;
     }
 
     /**
@@ -6156,7 +6145,7 @@ contract DaoCalculatorService is DaoCommon {
         view
         returns (uint256 _minQuorum)
     {
-        require(isWhitelisted(msg.sender));
+        require(senderIsAllowedToRead());
         uint256[] memory _weiAskedPerMilestone;
         uint256 _finalReward;
         (_weiAskedPerMilestone,_finalReward) = daoStorage().readProposalFunding(_proposalId);
@@ -6964,6 +6953,10 @@ contract DaoVotingClaims is DaoCommon {
         require(isFromProposer(_proposalId));
         senderCanDoProposerOperations();
 
+        if (_operations == 0) { // if no operations are passed, return with done = false
+            return (false, false);
+        }
+
         // get the previously stored intermediary state
         DaoStructs.IntermediateResults memory _currentResults;
         (
@@ -7079,6 +7072,11 @@ contract DaoVotingClaims is DaoCommon {
         _done = true;
         _passed = false; // redundant, put here just to emphasize that its false
         uint256 _operationsLeft = _operations;
+
+        if (_operations == 0) { // if no operations are passed, return with done = false
+            return (false, false);
+        }
+
         // In other words, we only need to do Step 1 if its before the deadline
         if (now < startOfMilestone(_proposalId, _index)
                     .add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE)))
@@ -7453,6 +7451,7 @@ contract Dao is DaoCommon {
     event AddProposalDoc(bytes32 indexed _proposalId, bytes32 _newDoc);
     event PRLAction(bytes32 indexed _proposalId, uint256 _actionId, bytes32 _doc);
     event CloseProposal(bytes32 indexed _proposalId);
+    event MigrateToNewDao(address _newDaoContract, address _newDaoFundingManager, address _newDaoRewardsManager);
 
     constructor(address _resolver) public {
         require(init(CONTRACT_DAO, _resolver));
@@ -7534,6 +7533,7 @@ contract Dao is DaoCommon {
         daoUpgradeStorage().updateForDaoMigration();
         daoFundingManager().moveFundsToNewDao(_newDaoFundingManager);
         daoRewardsManager().moveDGXsToNewDao(_newDaoRewardsManager);
+        emit MigrateToNewDao(_newDaoContract, _newDaoFundingManager, _newDaoRewardsManager);
     }
 
     /**
