@@ -8,21 +8,6 @@ contract DaoCommon is DaoCommonMini {
     using MathHelper for MathHelper;
 
     /**
-    @notice Check if a proposal is currently paused/stopped
-    @dev If a proposal is paused/stopped (by the PRLs): proposer cannot call for voting, a current on-going voting round can still pass, but no funding can be withdrawn.
-    @dev A paused proposal can still be unpaused
-    @dev If a proposal is stopped, this function also returns true
-    @return _isPausedOrStopped true if the proposal is paused(or stopped)
-    */
-    function isProposalPaused(bytes32 _proposalId)
-        public
-        view
-        returns (bool _isPausedOrStopped)
-    {
-        (,,,,,,,,_isPausedOrStopped,) = daoStorage().readProposal(_proposalId);
-    }
-
-    /**
     @notice Check if the transaction is called by the proposer of a proposal
     @return _isFromProposer true if the caller is the proposer
     */
