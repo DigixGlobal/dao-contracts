@@ -110,7 +110,7 @@ contract Dao is DaoCommon {
     */
     function setStartOfFirstQuarter(uint256 _start) public if_founder() {
         require(daoUpgradeStorage().startOfFirstQuarter() == 0);
-        require(_start > 0);
+        require(_start > now);
         daoUpgradeStorage().setStartOfFirstQuarter(_start);
     }
 
@@ -132,10 +132,11 @@ contract Dao is DaoCommon {
     )
         external
         payable
-        ifFundingPossible(_milestonesFundings, _finalReward)
     {
         senderCanDoProposerOperations();
         bool _isFounder = is_founder();
+
+        require(MathHelper.sumNumbers(_milestonesFundings).add(_finalReward) <= weiInDao());
 
         require(msg.value == getUintConfig(CONFIG_PREPROPOSAL_COLLATERAL));
         require(address(daoFundingManager()).call.gas(25000).value(msg.value)());

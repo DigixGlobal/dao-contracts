@@ -68,6 +68,10 @@ contract DaoSpecialVotingClaims is DaoCommon {
         }
         require(msg.sender == daoSpecialStorage().readProposalProposer(_proposalId));
 
+        if (_operations == 0) { // if no operations are passed, return false
+            return (false);
+        }
+
         DaoStructs.IntermediateResults memory _currentResults;
         (
             _currentResults.countedUntil,

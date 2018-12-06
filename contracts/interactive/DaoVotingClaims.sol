@@ -80,6 +80,10 @@ contract DaoVotingClaims is DaoCommon {
         require(isFromProposer(_proposalId));
         senderCanDoProposerOperations();
 
+        if (_operations == 0) { // if no operations are passed, return with done = false
+            return (false, false);
+        }
+
         // get the previously stored intermediary state
         DaoStructs.IntermediateResults memory _currentResults;
         (
@@ -195,6 +199,11 @@ contract DaoVotingClaims is DaoCommon {
         _done = true;
         _passed = false; // redundant, put here just to emphasize that its false
         uint256 _operationsLeft = _operations;
+
+        if (_operations == 0) { // if no operations are passed, return with done = false
+            return (false, false);
+        }
+        
         // In other words, we only need to do Step 1 if its before the deadline
         if (now < startOfMilestone(_proposalId, _index)
                     .add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE)))

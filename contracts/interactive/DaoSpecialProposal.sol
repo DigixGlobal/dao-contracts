@@ -54,7 +54,7 @@ contract DaoSpecialProposal is DaoCommon {
         require(isMainPhase());
         require(daoSpecialStorage().readProposalProposer(_proposalId) == msg.sender);
         require(daoSpecialStorage().readVotingTime(_proposalId) == 0); // voting hasnt started yet
-        require(getTimeLeftInQuarter(now) > getUintConfig(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL));
+        require(getTimeLeftInQuarter(now) > getUintConfig(CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL).add(getUintConfig(CONFIG_VOTE_CLAIMING_DEADLINE)));
         daoSpecialStorage().setVotingTime(_proposalId, now);
 
         emit StartSpecialProposal(_proposalId);
