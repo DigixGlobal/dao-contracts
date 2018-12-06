@@ -401,6 +401,7 @@ const initDao = async function (contracts, addressOf, bN, web3) {
   await contracts.daoIdentity.addGroupUser(bN(3), addressOf.prl, '', { from: addressOf.root });
   await contracts.daoIdentity.addGroupUser(bN(4), addressOf.kycadmin, '', { from: addressOf.root });
   await contracts.dao.setStartOfFirstQuarter(getCurrentTimestamp(), { from: addressOf.founderBadgeHolder });
+  await waitFor(2, addressOf, web3);
   await web3.eth.sendTransaction({
     from: addressOf.root,
     to: contracts.daoFundingManager.address,
@@ -508,7 +509,7 @@ const deployFreshDao = async (libs, contracts, addressOf, accounts, bN, web3, lo
   await deployInteractive(libs, contracts, contracts.resolver, addressOf);
   await contracts.daoIdentity.addGroupUser(bN(2), addressOf.founderBadgeHolder, '');
   await contracts.dao.setStartOfFirstQuarter(bN(getCurrentTimestamp() + 1), { from: addressOf.founderBadgeHolder });
-  await waitFor(1, addressOf, web3);
+  await waitFor(2, addressOf, web3);
   await setDummyConfig(contracts, bN, lockingPhase, mainPhase);
   await fundDao(web3, accounts, contracts);
   console.log('\tDeployed fresh DAO');
