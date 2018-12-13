@@ -47,7 +47,7 @@ contract('DaoRewardsManager', function (accounts) {
 
   const setMockValues = async function () {
     const mockStakes = randomBigNumbers(bN, DGD_HOLDER_COUNT, 50 * (10 ** 9));
-    const mockModeratorStakes = randomBigNumbers(bN, BADGE_HOLDER_COUNT, 3000 * (10 ** 9));
+    const mockModeratorStakes = randomBigNumbers(bN, BADGE_HOLDER_COUNT, 3000 * (10 ** 9)).map(n => n.add(100e9));
     await contracts.daoStakeStorage.mock_add_participants(addressOf.allParticipants.slice(BADGE_HOLDER_COUNT, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT), mockStakes);
     await contracts.daoStakeStorage.mock_add_moderators(addressOf.allParticipants.slice(0, BADGE_HOLDER_COUNT), mockModeratorStakes);
     let allStakesSum = 0;
@@ -62,7 +62,8 @@ contract('DaoRewardsManager', function (accounts) {
     const mockQPs = randomBigNumbers(bN, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT, 10);
     const mockModeratorQPs = randomBigNumbers(bN, BADGE_HOLDER_COUNT, 6);
     const mockRPs = randomBigNumbers(bN, DGD_HOLDER_COUNT, 200);
-    const mockModeratorRPs = randomBigNumbers(bN, BADGE_HOLDER_COUNT, 2000);
+    const mockModeratorRPs = randomBigNumbers(bN, BADGE_HOLDER_COUNT, 2000).map(n => n.add(100));
+
     for (const i of indexRange(0, BADGE_HOLDER_COUNT)) {
       mockModeratorRPs[i] += 100;
     }
@@ -124,6 +125,7 @@ contract('DaoRewardsManager', function (accounts) {
       await a.map(indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT), 20, async (i) => {
         await contracts.daoStakeLocking.confirmContinuedParticipation({ from: addressOf.allParticipants[i] });
       });
+
       const pointsEvenAfter = await readReputationPoints();
       const rewardsEvenAfter = await readClaimableDgx();
       for (const i of indexRange(0, BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT)) {
@@ -134,16 +136,16 @@ contract('DaoRewardsManager', function (accounts) {
 
     const printDifferences = function (pointsBefore, pointsAfter, calculatedReputation, pointsName) {
       console.log('\t\t------ ', pointsName, '(before) ------');
-      for (const i of indexRange(0, 5)) {
-        console.log('\t\tdgdHolders[', i, '] : ', pointsBefore[i]);
+      for (const i of indexRange(0, 10)) {
+        console.log('\t\tparticipants[', i, '] : ', pointsBefore[i]);
       }
       console.log('\t\t------ ', pointsName, '(after) ------');
-      for (const i of indexRange(0, 5)) {
-        console.log('\t\tdgdHolders[', i, '] : ', pointsAfter[i]);
+      for (const i of indexRange(0, 10)) {
+        console.log('\t\tparticipants[', i, '] : ', pointsAfter[i]);
       }
       console.log('\t\t------ ', pointsName, '(calculated) ------');
-      for (const i of indexRange(0, 5)) {
-        console.log('\t\tdgdHolders[', i, '] : ', calculatedReputation[i]);
+      for (const i of indexRange(0, 10)) {
+        console.log('\t\tparticipants[', i, '] : ', calculatedReputation[i]);
       }
       console.log('');
     };
@@ -404,15 +406,17 @@ contract('DaoRewardsManager', function (accounts) {
     });
   });
 
+  const MINIMUM_TRANSFER_AMOUNT = 1000000;
+
   describe('claimRewards', function () {
     before(async function () {
       const claimable = await contracts.daoRewardsStorage.claimableDGXs.call(addressOf.dgdHolders[3]);
-      if (claimable.toNumber() > 0) await contracts.daoRewardsManager.claimRewards({ from: addressOf.dgdHolders[3] });
+      if (claimable.toNumber() > MINIMUM_TRANSFER_AMOUNT) await contracts.daoRewardsManager.claimRewards({ from: addressOf.dgdHolders[3] });
     });
-    it('[claimable dgx = 0]: revert', async function () {
+    it('[claimable dgx < MINIMUM_TRANSFER_AMOUNT ]: revert', async function () {
       assert(await a.failure(contracts.daoRewardsManager.claimRewards.call({ from: addressOf.dgdHolders[3] })));
     });
-    it('[claimable dgx > 0]: success', async function () {
+    it('[claimable dgx >= MINIMUM_TRANSFER_AMOUNT]: success', async function () {
       // the rewards were calculated 3 days ago (CHECK Q5 test case above)
       const initialUserBalance = await contracts.dgxToken.balanceOf.call(addressOf.dgdHolders[0]);
       const initialDgxWithContract = await contracts.dgxToken.balanceOf.call(contracts.daoRewardsManager.address);
@@ -427,17 +431,22 @@ contract('DaoRewardsManager', function (accounts) {
         demurrageConfigs[0],
         demurrageConfigs[1],
       );
-      await contracts.daoRewardsManager.claimRewards({ from: addressOf.dgdHolders[0] });
-      const finalUserBalance = await contracts.dgxToken.balanceOf.call(addressOf.dgdHolders[0]);
-      const finalDgxWithContract = await contracts.dgxToken.balanceOf.call(contracts.daoRewardsManager.address);
-      const finalUserClaimableDgx = await contracts.daoRewardsStorage.claimableDGXs.call(addressOf.dgdHolders[0]);
-      const finalTotalDgxsClaimed = await contracts.daoRewardsStorage.totalDGXsClaimed.call();
-      assert.deepEqual(finalTotalDgxsClaimed, totalDGXsClaimed.plus(userClaimableDgx));
-      assert.deepEqual(finalUserClaimableDgx, bN(0));
-      assert.deepEqual(finalDgxWithContract, initialDgxWithContract.minus(userClaimableDgx).plus(bN(demurrageFees)));
-      const transferConfig = await contracts.dgxStorage.read_transfer_config.call();
-      const estimatedTransferFees = calculateTransferFees(userClaimableDgx.minus(bN(demurrageFees)).toNumber(), transferConfig[1].toNumber(), transferConfig[2].toNumber());
-      assert.deepEqual(finalUserBalance, initialUserBalance.plus(userClaimableDgx).minus(bN(estimatedTransferFees)).minus(bN(demurrageFees)));
+      console.log('User claimable DGX =', userClaimableDgx);
+      if (userClaimableDgx.toNumber() < MINIMUM_TRANSFER_AMOUNT) {
+        console.log('WARNING: the random values for the test did not produce a userClaimableDgx > MINIMUM_TRANSFER_AMOUNT, should rerun the tests');
+      } else {
+        await contracts.daoRewardsManager.claimRewards({ from: addressOf.dgdHolders[0] });
+        const finalUserBalance = await contracts.dgxToken.balanceOf.call(addressOf.dgdHolders[0]);
+        const finalDgxWithContract = await contracts.dgxToken.balanceOf.call(contracts.daoRewardsManager.address);
+        const finalUserClaimableDgx = await contracts.daoRewardsStorage.claimableDGXs.call(addressOf.dgdHolders[0]);
+        const finalTotalDgxsClaimed = await contracts.daoRewardsStorage.totalDGXsClaimed.call();
+        assert.deepEqual(finalTotalDgxsClaimed, totalDGXsClaimed.plus(userClaimableDgx));
+        assert.deepEqual(finalUserClaimableDgx, bN(0));
+        assert.deepEqual(finalDgxWithContract, initialDgxWithContract.minus(userClaimableDgx).plus(bN(demurrageFees)));
+        const transferConfig = await contracts.dgxStorage.read_transfer_config.call();
+        const estimatedTransferFees = calculateTransferFees(userClaimableDgx.minus(bN(demurrageFees)).toNumber(), transferConfig[1].toNumber(), transferConfig[2].toNumber());
+        assert.deepEqual(finalUserBalance, initialUserBalance.plus(userClaimableDgx).minus(bN(estimatedTransferFees)).minus(bN(demurrageFees)));
+      }
     });
     it('[claim dgx after the dao has been migrated]: revert', async function () {
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
