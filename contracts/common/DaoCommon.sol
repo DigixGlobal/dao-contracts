@@ -8,21 +8,6 @@ contract DaoCommon is DaoCommonMini {
     using MathHelper for MathHelper;
 
     /**
-    @notice Check if a proposal is currently paused/stopped
-    @dev If a proposal is paused/stopped (by the PRLs): proposer cannot call for voting, a current on-going voting round can still pass, but no funding can be withdrawn.
-    @dev A paused proposal can still be unpaused
-    @dev If a proposal is stopped, this function also returns true
-    @return _isPausedOrStopped true if the proposal is paused(or stopped)
-    */
-    function isProposalPaused(bytes32 _proposalId)
-        public
-        view
-        returns (bool _isPausedOrStopped)
-    {
-        (,,,,,,,,_isPausedOrStopped,) = daoStorage().readProposal(_proposalId);
-    }
-
-    /**
     @notice Check if the transaction is called by the proposer of a proposal
     @return _isFromProposer true if the caller is the proposer
     */
@@ -120,12 +105,12 @@ contract DaoCommon is DaoCommonMini {
     }
 
     modifier ifDraftNotClaimed(bytes32 _proposalId) {
-        require(daoStorage().isDraftClaimed(_proposalId) == false, "draft is already claimed");
+        require(daoStorage().isDraftClaimed(_proposalId) == false);
         _;
     }
 
     modifier ifNotClaimed(bytes32 _proposalId, uint256 _index) {
-        require(daoStorage().isClaimed(_proposalId, _index) == false, "voting round already claimed");
+        require(daoStorage().isClaimed(_proposalId, _index) == false);
         _;
     }
 
@@ -137,7 +122,7 @@ contract DaoCommon is DaoCommonMini {
     modifier hasNotRevealed(bytes32 _proposalId, uint256 _index) {
         uint256 _voteWeight;
         (, _voteWeight) = daoStorage().readVote(_proposalId, _index, msg.sender);
-        require(_voteWeight == uint(0), "has already revealed");
+        require(_voteWeight == uint(0));
         _;
     }
 
@@ -286,7 +271,7 @@ contract DaoCommon is DaoCommonMini {
         internal
         view
     {
-        require(isNonDigixProposalsWithinLimit(_proposalId), "not within funding limits");
+        require(isNonDigixProposalsWithinLimit(_proposalId));
     }
 
     function isNonDigixProposalsWithinLimit(bytes32 _proposalId)
@@ -324,8 +309,8 @@ contract DaoCommon is DaoCommonMini {
         internal
         view
     {
-        require(isMainPhase(), "not main phase");
-        require(isParticipant(msg.sender), "not participant");
-        require(identity_storage().is_kyc_approved(msg.sender), "not kyc approved");
+        require(isMainPhase());
+        require(isParticipant(msg.sender));
+        require(identity_storage().is_kyc_approved(msg.sender));
     }
 }

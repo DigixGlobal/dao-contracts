@@ -82,16 +82,26 @@ module.exports = async function (deployer, network, accounts) {
         MockNumberCarbonVoting1.address,
         MockNumberCarbonVoting2.address,
       );
-      deployer.deploy(DaoIdentity, ContractResolver.address);
-      deployer.deploy(DaoInformation, ContractResolver.address);
-      deployer.deploy(DaoFundingManager, ContractResolver.address, accounts[0]);
-      deployer.deploy(DaoVoting, ContractResolver.address);
-      deployer.deploy(Dao, ContractResolver.address);
-      deployer.deploy(DaoSpecialProposal, ContractResolver.address);
-      deployer.deploy(DaoVotingClaims, ContractResolver.address);
-      deployer.deploy(DaoRewardsManager, ContractResolver.address, MockDgx.address);
-      deployer.deploy(DaoRewardsManagerExtras, ContractResolver.address);
       return deployer.deploy(DaoSpecialVotingClaims, ContractResolver.address);
+    })
+    .then(() => {
+      deployer.deploy(DaoIdentity, ContractResolver.address);
+      return deployer.deploy(DaoInformation, ContractResolver.address);
+    })
+    .then(() => {
+      deployer.deploy(DaoFundingManager, ContractResolver.address, accounts[0]);
+      return deployer.deploy(DaoVoting, ContractResolver.address);
+    })
+    .then(() => {
+      deployer.deploy(Dao, ContractResolver.address);
+      return deployer.deploy(DaoSpecialProposal, ContractResolver.address);
+    })
+    .then(() => {
+      deployer.deploy(DaoRewardsManager, ContractResolver.address, MockDgx.address);
+      return deployer.deploy(DaoRewardsManagerExtras, ContractResolver.address);
+    })
+    .then(() => {
+      return deployer.deploy(DaoVotingClaims, ContractResolver.address);
     })
     .then(() => {
       console.log('Deployment Completed');

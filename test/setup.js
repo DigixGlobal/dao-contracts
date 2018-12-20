@@ -400,12 +400,12 @@ const initDao = async function (contracts, addressOf, bN, web3) {
   await contracts.daoIdentity.addGroupUser(bN(2), addressOf.founderBadgeHolder, '', { from: addressOf.root });
   await contracts.daoIdentity.addGroupUser(bN(3), addressOf.prl, '', { from: addressOf.root });
   await contracts.daoIdentity.addGroupUser(bN(4), addressOf.kycadmin, '', { from: addressOf.root });
-  await contracts.dao.setStartOfFirstQuarter(getCurrentTimestamp(), { from: addressOf.founderBadgeHolder });
-  await web3.eth.sendTransaction({
-    from: addressOf.root,
-    to: contracts.daoFundingManager.address,
-    value: web3.toWei(1000, 'ether'),
-  });
+  await contracts.dao.setStartOfFirstQuarter(bN(getCurrentTimestamp() + 60), { from: addressOf.founderBadgeHolder });
+  // await web3.eth.sendTransaction({
+  //   from: addressOf.root,
+  //   to: contracts.daoFundingManager.address,
+  //   value: web3.toWei(1000, 'ether'),
+  // });
 };
 
 // Function to wait for some timeToWait seconds

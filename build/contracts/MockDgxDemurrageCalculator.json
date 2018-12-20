@@ -1,0 +1,1754 @@
+{
+  "contractName": "MockDgxDemurrageCalculator",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "TOKEN_ADDRESS",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_token_address",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_initial_balance",
+          "type": "uint256"
+        },
+        {
+          "name": "_days_elapsed",
+          "type": "uint256"
+        }
+      ],
+      "name": "calculateDemurrage",
+      "outputs": [
+        {
+          "name": "_demurrage_fees",
+          "type": "uint256"
+        },
+        {
+          "name": "_no_demurrage_fees",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b506040516020806102ee83398101806040528101908080519060200190929190505050806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505061026b806100836000396000f30060806040526004361061004c576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff1680630bdf530014610051578063120c52ef146100a8575b600080fd5b34801561005d57600080fd5b506100666100fe565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b3480156100b457600080fd5b506100dd6004803603810190808035906020019092919080359060200190929190505050610123565b60405180838152602001821515151581526020019250505060405180910390f35b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600080600080610131610216565b73ffffffffffffffffffffffffffffffffffffffff1663293f9a9c6040518163ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401608060405180830381600087803b15801561019457600080fd5b505af11580156101a8573d6000803e3d6000fd5b505050506040513d60808110156101be57600080fd5b8101908080519060200190929190805190602001909291908051906020019092919080519060200190929190505050905080955081935082945050505081818688020281151561020a57fe5b04935050509250929050565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050905600a165627a7a72305820df19d6ab204d73d7544073ba58e76bd07509e017f8c8539e8498d13b32a331570029",
+  "deployedBytecode": "0x60806040526004361061004c576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff1680630bdf530014610051578063120c52ef146100a8575b600080fd5b34801561005d57600080fd5b506100666100fe565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b3480156100b457600080fd5b506100dd6004803603810190808035906020019092919080359060200190929190505050610123565b60405180838152602001821515151581526020019250505060405180910390f35b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600080600080610131610216565b73ffffffffffffffffffffffffffffffffffffffff1663293f9a9c6040518163ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401608060405180830381600087803b15801561019457600080fd5b505af11580156101a8573d6000803e3d6000fd5b505050506040513d60808110156101be57600080fd5b8101908080519060200190929190805190602001909291908051906020019092919080519060200190929190505050905080955081935082945050505081818688020281151561020a57fe5b04935050509250929050565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff169050905600a165627a7a72305820df19d6ab204d73d7544073ba58e76bd07509e017f8c8539e8498d13b32a331570029",
+  "sourceMap": "337:671:27:-;;;526:90;8:9:-1;5:2;;;30:1;27;20:12;5:2;526:90:27;;;;;;;;;;;;;;;;;;;;;;;;;;;;;595:14;579:13;;:30;;;;;;;;;;;;;;;;;;526:90;337:671;;;;;;",
+  "deployedSourceMap": "337:671:27:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;379:28;;8:9:-1;5:2;;;30:1;27;20:12;5:2;379:28:27;;;;;;;;;;;;;;;;;;;;;;;;;;;622:384;;8:9:-1;5:2;;;30:1;27;20:12;5:2;622:384:27;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;379:28;;;;;;;;;;;;;:::o;622:384::-;744:23;769;808:13;831;891:7;:5;:7::i;:::-;:28;;;:30;;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;891:30:27;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;891:30:27;;;;;;;13:3:-1;8;5:12;2:2;;;30:1;27;20:12;2:2;891:30:27;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;854:67;;;;;;;;;;;;;;994:5;985;969:13;950:16;:32;:40;949:50;;;;;;;;931:68;;622:384;;;;;;;:::o;414:106::-;454:15;499:13;;;;;;;;;;;481:32;;414:106;:::o",
+  "source": "pragma solidity ^0.4.25;\n\nimport \"@digix/lite-dgx-contract/contracts/DummyDGX.sol\";\n\n/// @title Digix Gold Token Demurrage Calculator\n/// @author Digix Holdings Pte Ltd\n/// @notice This contract is meant to be used by exchanges/other parties who want to calculate the DGX demurrage fees, provided an initial balance and the days elapsed\ncontract MockDgxDemurrageCalculator {\n    address public TOKEN_ADDRESS;\n\n    function token() internal view returns (DummyDGX _token) {\n        _token = DummyDGX(TOKEN_ADDRESS);\n    }\n\n    constructor(address _token_address) public {\n        TOKEN_ADDRESS = _token_address;\n    }\n\n    function calculateDemurrage(uint256 _initial_balance, uint256 _days_elapsed)\n        public\n        view\n        returns (uint256 _demurrage_fees, bool _no_demurrage_fees)\n    {\n        uint256 _base;\n        uint256 _rate;\n        (_base, _rate,,_no_demurrage_fees) = token().showDemurrageConfigs();\n        _demurrage_fees = (_initial_balance * _days_elapsed * _rate) / _base;\n    }\n}\n",
+  "sourcePath": "/home/rohit/Develop/dao-contracts/contracts/mock/MockDgxDemurrageCalculator.sol",
+  "ast": {
+    "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/MockDgxDemurrageCalculator.sol",
+    "exportedSymbols": {
+      "MockDgxDemurrageCalculator": [
+        8747
+      ]
+    },
+    "id": 8748,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 8682,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".25"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:27"
+      },
+      {
+        "absolutePath": "@digix/lite-dgx-contract/contracts/DummyDGX.sol",
+        "file": "@digix/lite-dgx-contract/contracts/DummyDGX.sol",
+        "id": 8683,
+        "nodeType": "ImportDirective",
+        "scope": 8748,
+        "sourceUnit": 19529,
+        "src": "26:57:27",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": "@title Digix Gold Token Demurrage Calculator\n @author Digix Holdings Pte Ltd\n @notice This contract is meant to be used by exchanges/other parties who want to calculate the DGX demurrage fees, provided an initial balance and the days elapsed",
+        "fullyImplemented": true,
+        "id": 8747,
+        "linearizedBaseContracts": [
+          8747
+        ],
+        "name": "MockDgxDemurrageCalculator",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 8685,
+            "name": "TOKEN_ADDRESS",
+            "nodeType": "VariableDeclaration",
+            "scope": 8747,
+            "src": "379:28:27",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_address",
+              "typeString": "address"
+            },
+            "typeName": {
+              "id": 8684,
+              "name": "address",
+              "nodeType": "ElementaryTypeName",
+              "src": "379:7:27",
+              "typeDescriptions": {
+                "typeIdentifier": "t_address",
+                "typeString": "address"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 8696,
+              "nodeType": "Block",
+              "src": "471:49:27",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 8694,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 8690,
+                      "name": "_token",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 8688,
+                      "src": "481:6:27",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_DummyDGX_$19528",
+                        "typeString": "contract DummyDGX"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 8692,
+                          "name": "TOKEN_ADDRESS",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 8685,
+                          "src": "499:13:27",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "id": 8691,
+                        "name": "DummyDGX",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 19528,
+                        "src": "490:8:27",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_DummyDGX_$19528_$",
+                          "typeString": "type(contract DummyDGX)"
+                        }
+                      },
+                      "id": 8693,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "490:23:27",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_DummyDGX_$19528",
+                        "typeString": "contract DummyDGX"
+                      }
+                    },
+                    "src": "481:32:27",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_DummyDGX_$19528",
+                      "typeString": "contract DummyDGX"
+                    }
+                  },
+                  "id": 8695,
+                  "nodeType": "ExpressionStatement",
+                  "src": "481:32:27"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 8697,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "token",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8686,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "428:2:27"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 8689,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8688,
+                  "name": "_token",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8697,
+                  "src": "454:15:27",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_DummyDGX_$19528",
+                    "typeString": "contract DummyDGX"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 8687,
+                    "name": "DummyDGX",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 19528,
+                    "src": "454:8:27",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_DummyDGX_$19528",
+                      "typeString": "contract DummyDGX"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "453:17:27"
+            },
+            "scope": 8747,
+            "src": "414:106:27",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 8706,
+              "nodeType": "Block",
+              "src": "569:47:27",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 8704,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 8702,
+                      "name": "TOKEN_ADDRESS",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 8685,
+                      "src": "579:13:27",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 8703,
+                      "name": "_token_address",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 8699,
+                      "src": "595:14:27",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "579:30:27",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 8705,
+                  "nodeType": "ExpressionStatement",
+                  "src": "579:30:27"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 8707,
+            "implemented": true,
+            "isConstructor": true,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8700,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8699,
+                  "name": "_token_address",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8707,
+                  "src": "538:22:27",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 8698,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "538:7:27",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "537:24:27"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 8701,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "569:0:27"
+            },
+            "scope": 8747,
+            "src": "526:90:27",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 8745,
+              "nodeType": "Block",
+              "src": "798:208:27",
+              "statements": [
+                {
+                  "assignments": [],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 8719,
+                      "name": "_base",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 8746,
+                      "src": "808:13:27",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 8718,
+                        "name": "uint256",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "808:7:27",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 8720,
+                  "initialValue": null,
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "808:13:27"
+                },
+                {
+                  "assignments": [],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 8722,
+                      "name": "_rate",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 8746,
+                      "src": "831:13:27",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 8721,
+                        "name": "uint256",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "831:7:27",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 8723,
+                  "initialValue": null,
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "831:13:27"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 8732,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "components": [
+                        {
+                          "argumentTypes": null,
+                          "id": 8724,
+                          "name": "_base",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 8719,
+                          "src": "855:5:27",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        {
+                          "argumentTypes": null,
+                          "id": 8725,
+                          "name": "_rate",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 8722,
+                          "src": "862:5:27",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        null,
+                        {
+                          "argumentTypes": null,
+                          "id": 8726,
+                          "name": "_no_demurrage_fees",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 8716,
+                          "src": "869:18:27",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bool",
+                            "typeString": "bool"
+                          }
+                        }
+                      ],
+                      "id": 8727,
+                      "isConstant": false,
+                      "isInlineArray": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "TupleExpression",
+                      "src": "854:34:27",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_tuple$_t_uint256_$_t_uint256_$__$_t_bool_$",
+                        "typeString": "tuple(uint256,uint256,,bool)"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [],
+                      "expression": {
+                        "argumentTypes": [],
+                        "expression": {
+                          "argumentTypes": null,
+                          "arguments": [],
+                          "expression": {
+                            "argumentTypes": [],
+                            "id": 8728,
+                            "name": "token",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 8697,
+                            "src": "891:5:27",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$19528_$",
+                              "typeString": "function () view returns (contract DummyDGX)"
+                            }
+                          },
+                          "id": 8729,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "functionCall",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "891:7:27",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_contract$_DummyDGX_$19528",
+                            "typeString": "contract DummyDGX"
+                          }
+                        },
+                        "id": 8730,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "showDemurrageConfigs",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 19487,
+                        "src": "891:28:27",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_external_view$__$returns$_t_uint256_$_t_uint256_$_t_address_$_t_bool_$",
+                          "typeString": "function () view external returns (uint256,uint256,address,bool)"
+                        }
+                      },
+                      "id": 8731,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "891:30:27",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_tuple$_t_uint256_$_t_uint256_$_t_address_$_t_bool_$",
+                        "typeString": "tuple(uint256,uint256,address,bool)"
+                      }
+                    },
+                    "src": "854:67:27",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 8733,
+                  "nodeType": "ExpressionStatement",
+                  "src": "854:67:27"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 8743,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 8734,
+                      "name": "_demurrage_fees",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 8714,
+                      "src": "931:15:27",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "commonType": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "id": 8742,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "leftExpression": {
+                        "argumentTypes": null,
+                        "components": [
+                          {
+                            "argumentTypes": null,
+                            "commonType": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            },
+                            "id": 8739,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "leftExpression": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              },
+                              "id": 8737,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "leftExpression": {
+                                "argumentTypes": null,
+                                "id": 8735,
+                                "name": "_initial_balance",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 8709,
+                                "src": "950:16:27",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                }
+                              },
+                              "nodeType": "BinaryOperation",
+                              "operator": "*",
+                              "rightExpression": {
+                                "argumentTypes": null,
+                                "id": 8736,
+                                "name": "_days_elapsed",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 8711,
+                                "src": "969:13:27",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                }
+                              },
+                              "src": "950:32:27",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            },
+                            "nodeType": "BinaryOperation",
+                            "operator": "*",
+                            "rightExpression": {
+                              "argumentTypes": null,
+                              "id": 8738,
+                              "name": "_rate",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 8722,
+                              "src": "985:5:27",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            },
+                            "src": "950:40:27",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          }
+                        ],
+                        "id": 8740,
+                        "isConstant": false,
+                        "isInlineArray": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "TupleExpression",
+                        "src": "949:42:27",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "nodeType": "BinaryOperation",
+                      "operator": "/",
+                      "rightExpression": {
+                        "argumentTypes": null,
+                        "id": 8741,
+                        "name": "_base",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 8719,
+                        "src": "994:5:27",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "src": "949:50:27",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "931:68:27",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 8744,
+                  "nodeType": "ExpressionStatement",
+                  "src": "931:68:27"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 8746,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "calculateDemurrage",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8712,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8709,
+                  "name": "_initial_balance",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8746,
+                  "src": "650:24:27",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 8708,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "650:7:27",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8711,
+                  "name": "_days_elapsed",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8746,
+                  "src": "676:21:27",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 8710,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "676:7:27",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "649:49:27"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 8717,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8714,
+                  "name": "_demurrage_fees",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8746,
+                  "src": "744:23:27",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 8713,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "744:7:27",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8716,
+                  "name": "_no_demurrage_fees",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8746,
+                  "src": "769:23:27",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 8715,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "769:4:27",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "743:50:27"
+            },
+            "scope": 8747,
+            "src": "622:384:27",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 8748,
+        "src": "337:671:27"
+      }
+    ],
+    "src": "0:1009:27"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/MockDgxDemurrageCalculator.sol",
+    "exportedSymbols": {
+      "MockDgxDemurrageCalculator": [
+        8747
+      ]
+    },
+    "id": 8748,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 8682,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".25"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:27"
+      },
+      {
+        "absolutePath": "@digix/lite-dgx-contract/contracts/DummyDGX.sol",
+        "file": "@digix/lite-dgx-contract/contracts/DummyDGX.sol",
+        "id": 8683,
+        "nodeType": "ImportDirective",
+        "scope": 8748,
+        "sourceUnit": 19529,
+        "src": "26:57:27",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": "@title Digix Gold Token Demurrage Calculator\n @author Digix Holdings Pte Ltd\n @notice This contract is meant to be used by exchanges/other parties who want to calculate the DGX demurrage fees, provided an initial balance and the days elapsed",
+        "fullyImplemented": true,
+        "id": 8747,
+        "linearizedBaseContracts": [
+          8747
+        ],
+        "name": "MockDgxDemurrageCalculator",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 8685,
+            "name": "TOKEN_ADDRESS",
+            "nodeType": "VariableDeclaration",
+            "scope": 8747,
+            "src": "379:28:27",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_address",
+              "typeString": "address"
+            },
+            "typeName": {
+              "id": 8684,
+              "name": "address",
+              "nodeType": "ElementaryTypeName",
+              "src": "379:7:27",
+              "typeDescriptions": {
+                "typeIdentifier": "t_address",
+                "typeString": "address"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 8696,
+              "nodeType": "Block",
+              "src": "471:49:27",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 8694,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 8690,
+                      "name": "_token",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 8688,
+                      "src": "481:6:27",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_DummyDGX_$19528",
+                        "typeString": "contract DummyDGX"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 8692,
+                          "name": "TOKEN_ADDRESS",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 8685,
+                          "src": "499:13:27",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "id": 8691,
+                        "name": "DummyDGX",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 19528,
+                        "src": "490:8:27",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_DummyDGX_$19528_$",
+                          "typeString": "type(contract DummyDGX)"
+                        }
+                      },
+                      "id": 8693,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "490:23:27",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_DummyDGX_$19528",
+                        "typeString": "contract DummyDGX"
+                      }
+                    },
+                    "src": "481:32:27",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_DummyDGX_$19528",
+                      "typeString": "contract DummyDGX"
+                    }
+                  },
+                  "id": 8695,
+                  "nodeType": "ExpressionStatement",
+                  "src": "481:32:27"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 8697,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "token",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8686,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "428:2:27"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 8689,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8688,
+                  "name": "_token",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8697,
+                  "src": "454:15:27",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_DummyDGX_$19528",
+                    "typeString": "contract DummyDGX"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 8687,
+                    "name": "DummyDGX",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 19528,
+                    "src": "454:8:27",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_DummyDGX_$19528",
+                      "typeString": "contract DummyDGX"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "453:17:27"
+            },
+            "scope": 8747,
+            "src": "414:106:27",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 8706,
+              "nodeType": "Block",
+              "src": "569:47:27",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 8704,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 8702,
+                      "name": "TOKEN_ADDRESS",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 8685,
+                      "src": "579:13:27",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 8703,
+                      "name": "_token_address",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 8699,
+                      "src": "595:14:27",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "579:30:27",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 8705,
+                  "nodeType": "ExpressionStatement",
+                  "src": "579:30:27"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 8707,
+            "implemented": true,
+            "isConstructor": true,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8700,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8699,
+                  "name": "_token_address",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8707,
+                  "src": "538:22:27",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 8698,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "538:7:27",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "537:24:27"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 8701,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "569:0:27"
+            },
+            "scope": 8747,
+            "src": "526:90:27",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 8745,
+              "nodeType": "Block",
+              "src": "798:208:27",
+              "statements": [
+                {
+                  "assignments": [],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 8719,
+                      "name": "_base",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 8746,
+                      "src": "808:13:27",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 8718,
+                        "name": "uint256",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "808:7:27",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 8720,
+                  "initialValue": null,
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "808:13:27"
+                },
+                {
+                  "assignments": [],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 8722,
+                      "name": "_rate",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 8746,
+                      "src": "831:13:27",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 8721,
+                        "name": "uint256",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "831:7:27",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "value": null,
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 8723,
+                  "initialValue": null,
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "831:13:27"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 8732,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "components": [
+                        {
+                          "argumentTypes": null,
+                          "id": 8724,
+                          "name": "_base",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 8719,
+                          "src": "855:5:27",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        {
+                          "argumentTypes": null,
+                          "id": 8725,
+                          "name": "_rate",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 8722,
+                          "src": "862:5:27",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        null,
+                        {
+                          "argumentTypes": null,
+                          "id": 8726,
+                          "name": "_no_demurrage_fees",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 8716,
+                          "src": "869:18:27",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bool",
+                            "typeString": "bool"
+                          }
+                        }
+                      ],
+                      "id": 8727,
+                      "isConstant": false,
+                      "isInlineArray": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "TupleExpression",
+                      "src": "854:34:27",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_tuple$_t_uint256_$_t_uint256_$__$_t_bool_$",
+                        "typeString": "tuple(uint256,uint256,,bool)"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [],
+                      "expression": {
+                        "argumentTypes": [],
+                        "expression": {
+                          "argumentTypes": null,
+                          "arguments": [],
+                          "expression": {
+                            "argumentTypes": [],
+                            "id": 8728,
+                            "name": "token",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 8697,
+                            "src": "891:5:27",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$19528_$",
+                              "typeString": "function () view returns (contract DummyDGX)"
+                            }
+                          },
+                          "id": 8729,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "functionCall",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "891:7:27",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_contract$_DummyDGX_$19528",
+                            "typeString": "contract DummyDGX"
+                          }
+                        },
+                        "id": 8730,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "showDemurrageConfigs",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 19487,
+                        "src": "891:28:27",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_external_view$__$returns$_t_uint256_$_t_uint256_$_t_address_$_t_bool_$",
+                          "typeString": "function () view external returns (uint256,uint256,address,bool)"
+                        }
+                      },
+                      "id": 8731,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "891:30:27",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_tuple$_t_uint256_$_t_uint256_$_t_address_$_t_bool_$",
+                        "typeString": "tuple(uint256,uint256,address,bool)"
+                      }
+                    },
+                    "src": "854:67:27",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 8733,
+                  "nodeType": "ExpressionStatement",
+                  "src": "854:67:27"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 8743,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 8734,
+                      "name": "_demurrage_fees",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 8714,
+                      "src": "931:15:27",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "commonType": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "id": 8742,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "leftExpression": {
+                        "argumentTypes": null,
+                        "components": [
+                          {
+                            "argumentTypes": null,
+                            "commonType": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            },
+                            "id": 8739,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "leftExpression": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              },
+                              "id": 8737,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "leftExpression": {
+                                "argumentTypes": null,
+                                "id": 8735,
+                                "name": "_initial_balance",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 8709,
+                                "src": "950:16:27",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                }
+                              },
+                              "nodeType": "BinaryOperation",
+                              "operator": "*",
+                              "rightExpression": {
+                                "argumentTypes": null,
+                                "id": 8736,
+                                "name": "_days_elapsed",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 8711,
+                                "src": "969:13:27",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                }
+                              },
+                              "src": "950:32:27",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            },
+                            "nodeType": "BinaryOperation",
+                            "operator": "*",
+                            "rightExpression": {
+                              "argumentTypes": null,
+                              "id": 8738,
+                              "name": "_rate",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 8722,
+                              "src": "985:5:27",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              }
+                            },
+                            "src": "950:40:27",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          }
+                        ],
+                        "id": 8740,
+                        "isConstant": false,
+                        "isInlineArray": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "TupleExpression",
+                        "src": "949:42:27",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "nodeType": "BinaryOperation",
+                      "operator": "/",
+                      "rightExpression": {
+                        "argumentTypes": null,
+                        "id": 8741,
+                        "name": "_base",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 8719,
+                        "src": "994:5:27",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "src": "949:50:27",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "src": "931:68:27",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 8744,
+                  "nodeType": "ExpressionStatement",
+                  "src": "931:68:27"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 8746,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "calculateDemurrage",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 8712,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8709,
+                  "name": "_initial_balance",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8746,
+                  "src": "650:24:27",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 8708,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "650:7:27",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8711,
+                  "name": "_days_elapsed",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8746,
+                  "src": "676:21:27",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 8710,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "676:7:27",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "649:49:27"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 8717,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 8714,
+                  "name": "_demurrage_fees",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8746,
+                  "src": "744:23:27",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 8713,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "744:7:27",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 8716,
+                  "name": "_no_demurrage_fees",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 8746,
+                  "src": "769:23:27",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 8715,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "769:4:27",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "743:50:27"
+            },
+            "scope": 8747,
+            "src": "622:384:27",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 8748,
+        "src": "337:671:27"
+      }
+    ],
+    "src": "0:1009:27"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.25+commit.59dbf8f1.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.1",
+  "updatedAt": "2018-12-19T03:33:09.046Z"
+}

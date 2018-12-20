@@ -181,9 +181,9 @@ const assignDeployedContracts = async function (contracts, libs) {
 
 const kycProposers = async function (contracts, addressOf) {
   const expiry = getCurrentTimestamp() + 2628000; // KYC valid for 1 month
-  await a.map(proposals, 20, async (proposal) => {
-    console.log('updating KYC for proposer ', proposal.proposer);
-    await contracts.daoIdentity.updateKyc(proposal.proposer, '', expiry, { from: addressOf.kycadmin });
+  await a.map(addressOf.allParticipants, 20, async (user) => {
+    console.log('updating KYC for proposer ', user);
+    await contracts.daoIdentity.updateKyc(user, '', expiry, { from: addressOf.kycadmin });
   });
 };
 
@@ -328,7 +328,7 @@ module.exports = async function () {
     console.log('got the deployed contracts');
 
     // set dummy config for testing (initial config)
-    await setDummyConfig(contracts, bN, true);
+    await setDummyConfig(contracts, bN, false);
     console.log('setup dummy config');
 
     // start dao and fund dao
@@ -343,39 +343,39 @@ module.exports = async function () {
     await redeemBadges(web3, contracts, bN, participants);
     console.log('\tusers redeemed badges');
 
-    // create some proposals in the main phase, assert that its the same quarter
-    await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);
-
-    // upload proposal details on ipfs
-    dijixUtil.init(process.env.IPFS_ENDPOINT, process.env.HTTP_ENDPOINT);
-    const proposalHashes = await uploadAttestations(proposalsJson);
-    console.log('uploaded attestations');
-
-    // preparing proposals
-    console.log('proposalHashes = ', JSON.stringify(proposalHashes));
-    proposals = getTestProposals(bN, addressOf, proposalHashes);
-    console.log(proposals);
-
+    // // create some proposals in the main phase, assert that its the same quarter
+    // await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);
+    //
+    // // upload proposal details on ipfs
+    // dijixUtil.init(process.env.IPFS_ENDPOINT, process.env.HTTP_ENDPOINT);
+    // const proposalHashes = await uploadAttestations(proposalsJson);
+    // console.log('uploaded attestations');
+    //
+    // // preparing proposals
+    // console.log('proposalHashes = ', JSON.stringify(proposalHashes));
+    // proposals = getTestProposals(bN, addressOf, proposalHashes);
+    // console.log(proposals);
+    //
     await kycProposers(contracts, addressOf);
     console.log('kyc approved proposers');
-
-    await addProposals(contracts, proposals);
-    console.log('added and proposals');
-
-    await endorseProposals(contracts, [proposals[1], proposals[2], proposals[3]]);
-    console.log('endorsed proposals');
-
-    await finalizeProposals(contracts, [proposals[2], proposals[3]]);
-    console.log('finalized proposals');
-
-    await draftVotingAndClaim(contracts, addressOf, [proposals[3]]);
-    console.log('finished draft voting');
-
-    // set dummy config for testing (initial config)
-    await setDummyConfig(contracts, bN, false);
-    console.log('setup dummy config');
-
-    const votesAndCommits = assignVotesAndCommits(addressOf, 2, 10);
-    console.log('votes and commits = ', votesAndCommits);
+    //
+    // await addProposals(contracts, proposals);
+    // console.log('added and proposals');
+    //
+    // await endorseProposals(contracts, [proposals[1], proposals[2], proposals[3]]);
+    // console.log('endorsed proposals');
+    //
+    // await finalizeProposals(contracts, [proposals[2], proposals[3]]);
+    // console.log('finalized proposals');
+    //
+    // await draftVotingAndClaim(contracts, addressOf, [proposals[3]]);
+    // console.log('finished draft voting');
+    //
+    // // set dummy config for testing (initial config)
+    // await setDummyConfig(contracts, bN, false);
+    // console.log('setup dummy config');
+    //
+    // const votesAndCommits = assignVotesAndCommits(addressOf, 2, 10);
+    // console.log('votes and commits = ', votesAndCommits);
   });
 };
