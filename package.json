@@ -16,7 +16,8 @@
     "docs:compile": "./node_modules/.bin/doxity compile",
     "docs:publish": "./node_modules/.bin/doxity publish",
     "docs:server": "cd scripts/doxity/ && ./node_modules/.bin/gatsby develop",
-    "dao:dev": "bash scripts/start_dao_development.sh"
+    "dao:dev": "bash scripts/start_dao_development.sh",
+    "dao:details": "node_modules/.bin/truffle exec scripts/print-dao-configs.js --network kovan"
   },
   "repository": {
     "type": "git",
