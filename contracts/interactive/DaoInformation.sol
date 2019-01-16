@@ -21,6 +21,7 @@ contract DaoInformation is DaoCommon {
     @return {
       "_isParticipant": "Boolean, true if the user is a DigixDAO participant in the current quarter",
       "_isModerator": "Boolean, true if the user is a DigixDAO moderator in the current quarter",
+      "_isDigix": "Boolean, true if the user is a Digix founder",
       "_redeemedBadge": "Boolean, true if the user has redeemed a DGD badge in DigixDAO",
       "_lastParticipatedQuarter": "The last quarter in which this user has/had participated in DigixDAO",
       "_lastParticipatedQuarter": "The last quarter in which this user's reputation was updated in DigixDAO, equal to (currentQuarter - 1) if its updated at the moment",
@@ -37,6 +38,7 @@ contract DaoInformation is DaoCommon {
         returns (
             bool _isParticipant,
             bool _isModerator,
+            bool _isDigix,
             bool _redeemedBadge,
             uint256 _lastParticipatedQuarter,
             uint256 _lastQuarterThatReputationWasUpdated,
@@ -55,6 +57,7 @@ contract DaoInformation is DaoCommon {
          _quarterPoints = daoPointsStorage().getQuarterPoint(_user, currentQuarterNumber());
          _isParticipant = isParticipant(_user);
          _isModerator = isModerator(_user);
+         _isDigix = identity_storage().read_user_role_id(_user) == ROLES_FOUNDERS;
          _claimableDgx = daoRewardsStorage().claimableDGXs(_user);
     }
 
