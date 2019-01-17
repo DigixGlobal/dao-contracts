@@ -337,6 +337,11 @@ module.exports = async function () {
 
     await fundUserAndApproveForStakeLocking(web3, contracts, bN, participants, addressOf);
     console.log('\tfunded users DGDs and Badges');
+
+    const badgeBalance = await contracts.badgeToken.balanceOf.call(addressOf.dgdHolders[1]);
+    await contracts.badgeToken.transfer(addressOf.dgdHolders[0], badgeBalance, { from: addressOf.dgdHolders[1] });
+    console.log(`\tbadge balance of ${addressOf.dgdHolders[1]} = ${await contracts.badgeToken.balanceOf.call(addressOf.dgdHolders[1])}`);
+
     await waitFor(2, addressOf, web3);
     await lockDGDs(web3, contracts, bN, participants, addressOf);
     console.log('\tusers locked DGDs for first quarter');
