@@ -119,7 +119,7 @@ module.exports = async function () {
 
     if (process.env.PHASE === 'locking_phase') {
       // set locking phase duration to FORCED_LOCKING_PHASE
-      await contracts.mockDaoConfigsStorage.mock_set_uint_config('config_locking_phase', parseInt(process.env.FORCED_LOCKING_PHASE, 10));
+      await contracts.mockDaoConfigsStorage.mock_set_uint_config('locking_phase_duration', parseInt(process.env.FORCED_LOCKING_PHASE, 10));
     } else if (process.env.PHASE === 'main_phase') {
       // wait for main phase to begin
       await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
