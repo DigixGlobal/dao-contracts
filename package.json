@@ -17,7 +17,8 @@
     "docs:publish": "./node_modules/.bin/doxity publish",
     "docs:server": "cd scripts/doxity/ && ./node_modules/.bin/gatsby develop",
     "dao:dev": "bash scripts/start_dao_development.sh",
-    "teleport:next_quarter": "SIMULATION=true node_modules/.bin/truffle exec scripts/teleport-dao.js"
+    "teleport:locking_phase": "SIMULATION=true PHASE=locking_phase node_modules/.bin/truffle exec scripts/teleport-dao.js",
+    "teleport:main_phase": "SIMULATION=true PHASE=main_phase node_modules/.bin/truffle exec scripts/teleport-dao.js"
   },
   "repository": {
     "type": "git",

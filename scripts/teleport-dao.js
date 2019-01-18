@@ -1,11 +1,8 @@
-const a = require('awaiting');
+const dotenv = require('dotenv');
 
 const DaoUpgradeStorage = artifacts.require('./MockDaoUpgradeStorage.sol');
 const MockDgd = artifacts.require('./MockDgd.sol');
-// const MockBadge = artifacts.require('./MockBadge.sol');
-// const MockDgxStorage = artifacts.require('./MockDgxStorage.sol');
 const MockDgx = artifacts.require('./MockDgx.sol');
-// const MockDgxDemurrageReporter = artifacts.require('./MockDgxDemurrageReporter.sol');
 
 const ContractResolver = artifacts.require('./ContractResolver.sol');
 const DoublyLinkedList = artifacts.require('./DoublyLinkedList.sol');
@@ -18,6 +15,7 @@ const DaoStorage = artifacts.require('./DaoStorage.sol');
 const DaoSpecialStorage = artifacts.require('./DaoSpecialStorage.sol');
 const DaoRewardsStorage = artifacts.require('./DaoRewardsStorage.sol');
 const IntermediateResultsStorage = artifacts.require('./IntermediateResultsStorage.sol');
+const MockDaoConfigsStorage = artifacts.require('./MockDaoConfigsStorage.sol');
 
 const DaoListingService = artifacts.require('./DaoListingService.sol');
 const DaoCalculatorService = artifacts.require('./DaoCalculatorService.sol');
@@ -36,22 +34,17 @@ const DaoRewardsManager = artifacts.require('./DaoRewardsManager.sol');
 const {
   getAccountsAndAddressOf,
   printDaoDetails,
+  phaseCorrection,
 } = require('../test/setup');
 
 const {
   getCurrentTimestamp,
-  encodeHash,
-  indexRange,
 } = require('@digix/helpers/lib/helpers');
 
 const {
-  phases,
-  quarters,
   daoConstantsKeys,
+  phases,
 } = require('../test/daoHelpers');
-
-// let proposals;
-// let participants;
 
 const bN = web3.toBigNumber;
 
@@ -68,6 +61,7 @@ const assignDeployedContracts = async function (contracts, libs) {
   contracts.daoSpecialStorage = await DaoSpecialStorage.deployed();
   contracts.daoRewardsStorage = await DaoRewardsStorage.deployed();
   contracts.intermediateResultsStorage = await IntermediateResultsStorage.deployed();
+  contracts.mockDaoConfigsStorage = await MockDaoConfigsStorage.deployed();
 
   contracts.daoListingService = await DaoListingService.deployed();
   contracts.daoCalculatorService = await DaoCalculatorService.deployed();
@@ -88,7 +82,7 @@ module.exports = async function () {
   const addressOf = {};
   const contracts = {};
   const libs = {};
-  // dotenv.config();
+  dotenv.config();
   await web3.eth.getAccounts(async function (e, accounts) {
     getAccountsAndAddressOf(accounts, addressOf);
 
@@ -122,5 +116,13 @@ module.exports = async function () {
     console.log('\tDGD balance of badgeHolders[0] = ', await contracts.dgdToken.balanceOf.call(addressOf.badgeHolders[0]));
     await contracts.daoStakeLocking.lockDGD(1e9, { from: addressOf.badgeHolders[0] });
     console.log('\tClaimableDGX of badgerHolders[0] = ', await contracts.daoRewardsStorage.claimableDGXs.call(addressOf.badgeHolders[0]));
+
+    if (process.env.PHASE === 'locking_phase') {
+      // set locking phase duration to FORCED_LOCKING_PHASE
+      await contracts.mockDaoConfigsStorage.mock_set_uint_config('config_locking_phase', parseInt(process.env.FORCED_LOCKING_PHASE, 10));
+    } else if (process.env.PHASE === 'main_phase') {
+      // wait for main phase to begin
+      await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE);
+    }
   });
 };
