@@ -121,14 +121,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/storage/DaoWhitelistingStorage.sol",
     "exportedSymbols": {
       "DaoWhitelistingStorage": [
-        17928
+        17985
       ]
     },
-    "id": 17929,
+    "id": 17986,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 17884,
+        "id": 17941,
         "literals": [
           "solidity",
           "^",
@@ -141,9 +141,9 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/common/DaoConstants.sol",
         "file": "./../common/DaoConstants.sol",
-        "id": 17885,
+        "id": 17942,
         "nodeType": "ImportDirective",
-        "scope": 17929,
+        "scope": 17986,
         "sourceUnit": 1603,
         "src": "26:38:62",
         "symbolAliases": [],
@@ -152,10 +152,10 @@
       {
         "absolutePath": "@digix/cacp-contracts-dao/contracts/ResolverClient.sol",
         "file": "@digix/cacp-contracts-dao/contracts/ResolverClient.sol",
-        "id": 17886,
+        "id": 17943,
         "nodeType": "ImportDirective",
-        "scope": 17929,
-        "sourceUnit": 18547,
+        "scope": 17986,
+        "sourceUnit": 18604,
         "src": "65:64:62",
         "symbolAliases": [],
         "unitAlias": ""
@@ -166,17 +166,17 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 17887,
+              "id": 17944,
               "name": "ResolverClient",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 18546,
+              "referencedDeclaration": 18603,
               "src": "279:14:62",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ResolverClient_$18546",
+                "typeIdentifier": "t_contract$_ResolverClient_$18603",
                 "typeString": "contract ResolverClient"
               }
             },
-            "id": 17888,
+            "id": 17945,
             "nodeType": "InheritanceSpecifier",
             "src": "279:14:62"
           },
@@ -184,7 +184,7 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 17889,
+              "id": 17946,
               "name": "DaoConstants",
               "nodeType": "UserDefinedTypeName",
               "referencedDeclaration": 1602,
@@ -194,33 +194,33 @@
                 "typeString": "contract DaoConstants"
               }
             },
-            "id": 17890,
+            "id": 17947,
             "nodeType": "InheritanceSpecifier",
             "src": "295:12:62"
           }
         ],
         "contractDependencies": [
           1602,
-          18546
+          18603
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 17928,
+        "id": 17985,
         "linearizedBaseContracts": [
-          17928,
+          17985,
           1602,
-          18546
+          18603
         ],
         "name": "DaoWhitelistingStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 17894,
+            "id": 17951,
             "name": "whitelist",
             "nodeType": "VariableDeclaration",
-            "scope": 17928,
+            "scope": 17985,
             "src": "627:42:62",
             "stateVariable": true,
             "storageLocation": "default",
@@ -229,9 +229,9 @@
               "typeString": "mapping(address => bool)"
             },
             "typeName": {
-              "id": 17893,
+              "id": 17950,
               "keyType": {
-                "id": 17891,
+                "id": 17948,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
                 "src": "636:7:62",
@@ -247,7 +247,7 @@
                 "typeString": "mapping(address => bool)"
               },
               "valueType": {
-                "id": 17892,
+                "id": 17949,
                 "name": "bool",
                 "nodeType": "ElementaryTypeName",
                 "src": "647:4:62",
@@ -262,7 +262,7 @@
           },
           {
             "body": {
-              "id": 17906,
+              "id": 17963,
               "nodeType": "Block",
               "src": "726:76:62",
               "statements": [
@@ -275,7 +275,7 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 17901,
+                            "id": 17958,
                             "name": "CONTRACT_STORAGE_DAO_WHITELISTING",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -288,11 +288,11 @@
                           },
                           {
                             "argumentTypes": null,
-                            "id": 17902,
+                            "id": 17959,
                             "name": "_resolver",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 17896,
+                            "referencedDeclaration": 17953,
                             "src": "784:9:62",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -311,18 +311,18 @@
                               "typeString": "address"
                             }
                           ],
-                          "id": 17900,
+                          "id": 17957,
                           "name": "init",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18514,
+                          "referencedDeclaration": 18571,
                           "src": "744:4:62",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_nonpayable$_t_bytes32_$_t_address_$returns$_t_bool_$",
                             "typeString": "function (bytes32,address) returns (bool)"
                           }
                         },
-                        "id": 17903,
+                        "id": 17960,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -344,21 +344,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 17899,
+                      "id": 17956,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "736:7:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 17904,
+                    "id": 17961,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -372,14 +372,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 17905,
+                  "id": 17962,
                   "nodeType": "ExpressionStatement",
                   "src": "736:59:62"
                 }
               ]
             },
             "documentation": null,
-            "id": 17907,
+            "id": 17964,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -387,15 +387,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 17897,
+              "id": 17954,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 17896,
+                  "id": 17953,
                   "name": "_resolver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 17907,
+                  "scope": 17964,
                   "src": "688:17:62",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -404,7 +404,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 17895,
+                    "id": 17952,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "688:7:62",
@@ -421,12 +421,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 17898,
+              "id": 17955,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "726:0:62"
             },
-            "scope": 17928,
+            "scope": 17985,
             "src": "676:126:62",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -434,7 +434,7 @@
           },
           {
             "body": {
-              "id": 17926,
+              "id": 17983,
               "nodeType": "Block",
               "src": "906:124:62",
               "statements": [
@@ -447,7 +447,7 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 17916,
+                            "id": 17973,
                             "name": "CONTRACT_DAO_WHITELISTING",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -466,18 +466,18 @@
                               "typeString": "bytes32"
                             }
                           ],
-                          "id": 17915,
+                          "id": 17972,
                           "name": "sender_is",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18379,
+                          "referencedDeclaration": 18436,
                           "src": "924:9:62",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_bytes32_$returns$_t_bool_$",
                             "typeString": "function (bytes32) view returns (bool)"
                           }
                         },
-                        "id": 17917,
+                        "id": 17974,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -499,21 +499,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 17914,
+                      "id": 17971,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "916:7:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 17918,
+                    "id": 17975,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -527,14 +527,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 17919,
+                  "id": 17976,
                   "nodeType": "ExpressionStatement",
                   "src": "916:45:62"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 17924,
+                    "id": 17981,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -543,25 +543,25 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 17920,
+                        "id": 17977,
                         "name": "whitelist",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 17894,
+                        "referencedDeclaration": 17951,
                         "src": "971:9:62",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_bool_$",
                           "typeString": "mapping(address => bool)"
                         }
                       },
-                      "id": 17922,
+                      "id": 17979,
                       "indexExpression": {
                         "argumentTypes": null,
-                        "id": 17921,
+                        "id": 17978,
                         "name": "_contractAddress",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 17909,
+                        "referencedDeclaration": 17966,
                         "src": "981:16:62",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -583,11 +583,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 17923,
+                      "id": 17980,
                       "name": "_senderIsAllowedToRead",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 17911,
+                      "referencedDeclaration": 17968,
                       "src": "1001:22:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -600,14 +600,14 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 17925,
+                  "id": 17982,
                   "nodeType": "ExpressionStatement",
                   "src": "971:52:62"
                 }
               ]
             },
             "documentation": null,
-            "id": 17927,
+            "id": 17984,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -615,15 +615,15 @@
             "name": "setWhitelisted",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 17912,
+              "id": 17969,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 17909,
+                  "id": 17966,
                   "name": "_contractAddress",
                   "nodeType": "VariableDeclaration",
-                  "scope": 17927,
+                  "scope": 17984,
                   "src": "832:24:62",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -632,7 +632,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 17908,
+                    "id": 17965,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "832:7:62",
@@ -646,10 +646,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 17911,
+                  "id": 17968,
                   "name": "_senderIsAllowedToRead",
                   "nodeType": "VariableDeclaration",
-                  "scope": 17927,
+                  "scope": 17984,
                   "src": "858:27:62",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -658,7 +658,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 17910,
+                    "id": 17967,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "858:4:62",
@@ -675,19 +675,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 17913,
+              "id": 17970,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "906:0:62"
             },
-            "scope": 17928,
+            "scope": 17985,
             "src": "808:222:62",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 17929,
+        "scope": 17986,
         "src": "244:788:62"
       }
     ],
@@ -697,14 +697,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/storage/DaoWhitelistingStorage.sol",
     "exportedSymbols": {
       "DaoWhitelistingStorage": [
-        17928
+        17985
       ]
     },
-    "id": 17929,
+    "id": 17986,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 17884,
+        "id": 17941,
         "literals": [
           "solidity",
           "^",
@@ -717,9 +717,9 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/common/DaoConstants.sol",
         "file": "./../common/DaoConstants.sol",
-        "id": 17885,
+        "id": 17942,
         "nodeType": "ImportDirective",
-        "scope": 17929,
+        "scope": 17986,
         "sourceUnit": 1603,
         "src": "26:38:62",
         "symbolAliases": [],
@@ -728,10 +728,10 @@
       {
         "absolutePath": "@digix/cacp-contracts-dao/contracts/ResolverClient.sol",
         "file": "@digix/cacp-contracts-dao/contracts/ResolverClient.sol",
-        "id": 17886,
+        "id": 17943,
         "nodeType": "ImportDirective",
-        "scope": 17929,
-        "sourceUnit": 18547,
+        "scope": 17986,
+        "sourceUnit": 18604,
         "src": "65:64:62",
         "symbolAliases": [],
         "unitAlias": ""
@@ -742,17 +742,17 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 17887,
+              "id": 17944,
               "name": "ResolverClient",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 18546,
+              "referencedDeclaration": 18603,
               "src": "279:14:62",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ResolverClient_$18546",
+                "typeIdentifier": "t_contract$_ResolverClient_$18603",
                 "typeString": "contract ResolverClient"
               }
             },
-            "id": 17888,
+            "id": 17945,
             "nodeType": "InheritanceSpecifier",
             "src": "279:14:62"
           },
@@ -760,7 +760,7 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 17889,
+              "id": 17946,
               "name": "DaoConstants",
               "nodeType": "UserDefinedTypeName",
               "referencedDeclaration": 1602,
@@ -770,33 +770,33 @@
                 "typeString": "contract DaoConstants"
               }
             },
-            "id": 17890,
+            "id": 17947,
             "nodeType": "InheritanceSpecifier",
             "src": "295:12:62"
           }
         ],
         "contractDependencies": [
           1602,
-          18546
+          18603
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 17928,
+        "id": 17985,
         "linearizedBaseContracts": [
-          17928,
+          17985,
           1602,
-          18546
+          18603
         ],
         "name": "DaoWhitelistingStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 17894,
+            "id": 17951,
             "name": "whitelist",
             "nodeType": "VariableDeclaration",
-            "scope": 17928,
+            "scope": 17985,
             "src": "627:42:62",
             "stateVariable": true,
             "storageLocation": "default",
@@ -805,9 +805,9 @@
               "typeString": "mapping(address => bool)"
             },
             "typeName": {
-              "id": 17893,
+              "id": 17950,
               "keyType": {
-                "id": 17891,
+                "id": 17948,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
                 "src": "636:7:62",
@@ -823,7 +823,7 @@
                 "typeString": "mapping(address => bool)"
               },
               "valueType": {
-                "id": 17892,
+                "id": 17949,
                 "name": "bool",
                 "nodeType": "ElementaryTypeName",
                 "src": "647:4:62",
@@ -838,7 +838,7 @@
           },
           {
             "body": {
-              "id": 17906,
+              "id": 17963,
               "nodeType": "Block",
               "src": "726:76:62",
               "statements": [
@@ -851,7 +851,7 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 17901,
+                            "id": 17958,
                             "name": "CONTRACT_STORAGE_DAO_WHITELISTING",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -864,11 +864,11 @@
                           },
                           {
                             "argumentTypes": null,
-                            "id": 17902,
+                            "id": 17959,
                             "name": "_resolver",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 17896,
+                            "referencedDeclaration": 17953,
                             "src": "784:9:62",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -887,18 +887,18 @@
                               "typeString": "address"
                             }
                           ],
-                          "id": 17900,
+                          "id": 17957,
                           "name": "init",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18514,
+                          "referencedDeclaration": 18571,
                           "src": "744:4:62",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_nonpayable$_t_bytes32_$_t_address_$returns$_t_bool_$",
                             "typeString": "function (bytes32,address) returns (bool)"
                           }
                         },
-                        "id": 17903,
+                        "id": 17960,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -920,21 +920,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 17899,
+                      "id": 17956,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "736:7:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 17904,
+                    "id": 17961,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -948,14 +948,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 17905,
+                  "id": 17962,
                   "nodeType": "ExpressionStatement",
                   "src": "736:59:62"
                 }
               ]
             },
             "documentation": null,
-            "id": 17907,
+            "id": 17964,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -963,15 +963,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 17897,
+              "id": 17954,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 17896,
+                  "id": 17953,
                   "name": "_resolver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 17907,
+                  "scope": 17964,
                   "src": "688:17:62",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -980,7 +980,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 17895,
+                    "id": 17952,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "688:7:62",
@@ -997,12 +997,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 17898,
+              "id": 17955,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "726:0:62"
             },
-            "scope": 17928,
+            "scope": 17985,
             "src": "676:126:62",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1010,7 +1010,7 @@
           },
           {
             "body": {
-              "id": 17926,
+              "id": 17983,
               "nodeType": "Block",
               "src": "906:124:62",
               "statements": [
@@ -1023,7 +1023,7 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 17916,
+                            "id": 17973,
                             "name": "CONTRACT_DAO_WHITELISTING",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -1042,18 +1042,18 @@
                               "typeString": "bytes32"
                             }
                           ],
-                          "id": 17915,
+                          "id": 17972,
                           "name": "sender_is",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18379,
+                          "referencedDeclaration": 18436,
                           "src": "924:9:62",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_bytes32_$returns$_t_bool_$",
                             "typeString": "function (bytes32) view returns (bool)"
                           }
                         },
-                        "id": 17917,
+                        "id": 17974,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1075,21 +1075,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 17914,
+                      "id": 17971,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "916:7:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 17918,
+                    "id": 17975,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1103,14 +1103,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 17919,
+                  "id": 17976,
                   "nodeType": "ExpressionStatement",
                   "src": "916:45:62"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 17924,
+                    "id": 17981,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1119,25 +1119,25 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 17920,
+                        "id": 17977,
                         "name": "whitelist",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 17894,
+                        "referencedDeclaration": 17951,
                         "src": "971:9:62",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_bool_$",
                           "typeString": "mapping(address => bool)"
                         }
                       },
-                      "id": 17922,
+                      "id": 17979,
                       "indexExpression": {
                         "argumentTypes": null,
-                        "id": 17921,
+                        "id": 17978,
                         "name": "_contractAddress",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 17909,
+                        "referencedDeclaration": 17966,
                         "src": "981:16:62",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -1159,11 +1159,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 17923,
+                      "id": 17980,
                       "name": "_senderIsAllowedToRead",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 17911,
+                      "referencedDeclaration": 17968,
                       "src": "1001:22:62",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -1176,14 +1176,14 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 17925,
+                  "id": 17982,
                   "nodeType": "ExpressionStatement",
                   "src": "971:52:62"
                 }
               ]
             },
             "documentation": null,
-            "id": 17927,
+            "id": 17984,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1191,15 +1191,15 @@
             "name": "setWhitelisted",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 17912,
+              "id": 17969,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 17909,
+                  "id": 17966,
                   "name": "_contractAddress",
                   "nodeType": "VariableDeclaration",
-                  "scope": 17927,
+                  "scope": 17984,
                   "src": "832:24:62",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1208,7 +1208,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 17908,
+                    "id": 17965,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "832:7:62",
@@ -1222,10 +1222,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 17911,
+                  "id": 17968,
                   "name": "_senderIsAllowedToRead",
                   "nodeType": "VariableDeclaration",
-                  "scope": 17927,
+                  "scope": 17984,
                   "src": "858:27:62",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1234,7 +1234,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 17910,
+                    "id": 17967,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "858:4:62",
@@ -1251,19 +1251,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 17913,
+              "id": 17970,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "906:0:62"
             },
-            "scope": 17928,
+            "scope": 17985,
             "src": "808:222:62",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 17929,
+        "scope": 17986,
         "src": "244:788:62"
       }
     ],
@@ -1277,10 +1277,10 @@
     "42": {
       "events": {},
       "links": {},
-      "address": "0x540748c441dc2884ed736ca5fc1204718f43bdfb",
-      "transactionHash": "0xaccb8261c0ab49071305736821bf7a1ffb1aeeab2a5a196062366bbdbafd93c5"
+      "address": "0x4743bf8da27a7491a706984b38e4f556a3bc75b7",
+      "transactionHash": "0x70add6b55f028dd7e72eda6604f40bb0ec23beb00eab43dfc6ac52044cf0fd44"
     }
   },
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-19T03:41:22.183Z"
+  "updatedAt": "2019-01-18T07:00:33.881Z"
 }

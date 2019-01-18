@@ -96,7 +96,7 @@
         "id": 1744,
         "nodeType": "ImportDirective",
         "scope": 1796,
-        "sourceUnit": 18547,
+        "sourceUnit": 18604,
         "src": "26:64:5",
         "symbolAliases": [],
         "unitAlias": ""
@@ -118,7 +118,7 @@
         "id": 1746,
         "nodeType": "ImportDirective",
         "scope": 1796,
-        "sourceUnit": 13770,
+        "sourceUnit": 13827,
         "src": "130:44:5",
         "symbolAliases": [],
         "unitAlias": ""
@@ -129,7 +129,7 @@
         "id": 1747,
         "nodeType": "ImportDirective",
         "scope": 1796,
-        "sourceUnit": 15945,
+        "sourceUnit": 16002,
         "src": "175:42:5",
         "symbolAliases": [],
         "unitAlias": ""
@@ -140,7 +140,7 @@
         "id": 1748,
         "nodeType": "ImportDirective",
         "scope": 1796,
-        "sourceUnit": 17793,
+        "sourceUnit": 17850,
         "src": "218:37:5",
         "symbolAliases": [],
         "unitAlias": ""
@@ -172,10 +172,10 @@
               "id": 1751,
               "name": "ResolverClient",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 18546,
+              "referencedDeclaration": 18603,
               "src": "301:14:5",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ResolverClient_$18546",
+                "typeIdentifier": "t_contract$_ResolverClient_$18603",
                 "typeString": "contract ResolverClient"
               }
             },
@@ -186,7 +186,7 @@
         ],
         "contractDependencies": [
           1602,
-          18546
+          18603
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -194,7 +194,7 @@
         "id": 1795,
         "linearizedBaseContracts": [
           1795,
-          18546,
+          18603,
           1602
         ],
         "name": "DaoServiceCommon",
@@ -223,7 +223,7 @@
                       "referencedDeclaration": 1755,
                       "src": "442:9:5",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoConfigsStorage_$13769",
+                        "typeIdentifier": "t_contract$_DaoConfigsStorage_$13826",
                         "typeString": "contract DaoConfigsStorage"
                       }
                     },
@@ -260,7 +260,7 @@
                             "name": "get_contract",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 18545,
+                            "referencedDeclaration": 18602,
                             "src": "472:12:5",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_view$_t_bytes32_$returns$_t_address_$",
@@ -293,10 +293,10 @@
                         "name": "DaoConfigsStorage",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 13769,
+                        "referencedDeclaration": 13826,
                         "src": "454:17:5",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DaoConfigsStorage_$13769_$",
+                          "typeIdentifier": "t_type$_t_contract$_DaoConfigsStorage_$13826_$",
                           "typeString": "type(contract DaoConfigsStorage)"
                         }
                       },
@@ -310,13 +310,13 @@
                       "nodeType": "FunctionCall",
                       "src": "454:60:5",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoConfigsStorage_$13769",
+                        "typeIdentifier": "t_contract$_DaoConfigsStorage_$13826",
                         "typeString": "contract DaoConfigsStorage"
                       }
                     },
                     "src": "442:72:5",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoConfigsStorage_$13769",
+                      "typeIdentifier": "t_contract$_DaoConfigsStorage_$13826",
                       "typeString": "contract DaoConfigsStorage"
                     }
                   },
@@ -355,7 +355,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_DaoConfigsStorage_$13769",
+                    "typeIdentifier": "t_contract$_DaoConfigsStorage_$13826",
                     "typeString": "contract DaoConfigsStorage"
                   },
                   "typeName": {
@@ -363,10 +363,10 @@
                     "id": 1754,
                     "name": "DaoConfigsStorage",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 13769,
+                    "referencedDeclaration": 13826,
                     "src": "399:17:5",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoConfigsStorage_$13769",
+                      "typeIdentifier": "t_contract$_DaoConfigsStorage_$13826",
                       "typeString": "contract DaoConfigsStorage"
                     }
                   },
@@ -405,7 +405,7 @@
                       "referencedDeclaration": 1769,
                       "src": "642:9:5",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoStakeStorage_$15944",
+                        "typeIdentifier": "t_contract$_DaoStakeStorage_$16001",
                         "typeString": "contract DaoStakeStorage"
                       }
                     },
@@ -442,7 +442,7 @@
                             "name": "get_contract",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 18545,
+                            "referencedDeclaration": 18602,
                             "src": "670:12:5",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_view$_t_bytes32_$returns$_t_address_$",
@@ -475,10 +475,10 @@
                         "name": "DaoStakeStorage",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 15944,
+                        "referencedDeclaration": 16001,
                         "src": "654:15:5",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DaoStakeStorage_$15944_$",
+                          "typeIdentifier": "t_type$_t_contract$_DaoStakeStorage_$16001_$",
                           "typeString": "type(contract DaoStakeStorage)"
                         }
                       },
@@ -492,13 +492,13 @@
                       "nodeType": "FunctionCall",
                       "src": "654:57:5",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoStakeStorage_$15944",
+                        "typeIdentifier": "t_contract$_DaoStakeStorage_$16001",
                         "typeString": "contract DaoStakeStorage"
                       }
                     },
                     "src": "642:69:5",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoStakeStorage_$15944",
+                      "typeIdentifier": "t_contract$_DaoStakeStorage_$16001",
                       "typeString": "contract DaoStakeStorage"
                     }
                   },
@@ -537,7 +537,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_DaoStakeStorage_$15944",
+                    "typeIdentifier": "t_contract$_DaoStakeStorage_$16001",
                     "typeString": "contract DaoStakeStorage"
                   },
                   "typeName": {
@@ -545,10 +545,10 @@
                     "id": 1768,
                     "name": "DaoStakeStorage",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 15944,
+                    "referencedDeclaration": 16001,
                     "src": "601:15:5",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoStakeStorage_$15944",
+                      "typeIdentifier": "t_contract$_DaoStakeStorage_$16001",
                       "typeString": "contract DaoStakeStorage"
                     }
                   },
@@ -587,7 +587,7 @@
                       "referencedDeclaration": 1783,
                       "src": "829:9:5",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoStorage_$17792",
+                        "typeIdentifier": "t_contract$_DaoStorage_$17849",
                         "typeString": "contract DaoStorage"
                       }
                     },
@@ -624,7 +624,7 @@
                             "name": "get_contract",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 18545,
+                            "referencedDeclaration": 18602,
                             "src": "852:12:5",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_view$_t_bytes32_$returns$_t_address_$",
@@ -657,10 +657,10 @@
                         "name": "DaoStorage",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 17792,
+                        "referencedDeclaration": 17849,
                         "src": "841:10:5",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DaoStorage_$17792_$",
+                          "typeIdentifier": "t_type$_t_contract$_DaoStorage_$17849_$",
                           "typeString": "type(contract DaoStorage)"
                         }
                       },
@@ -674,13 +674,13 @@
                       "nodeType": "FunctionCall",
                       "src": "841:46:5",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoStorage_$17792",
+                        "typeIdentifier": "t_contract$_DaoStorage_$17849",
                         "typeString": "contract DaoStorage"
                       }
                     },
                     "src": "829:58:5",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoStorage_$17792",
+                      "typeIdentifier": "t_contract$_DaoStorage_$17849",
                       "typeString": "contract DaoStorage"
                     }
                   },
@@ -719,7 +719,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_DaoStorage_$17792",
+                    "typeIdentifier": "t_contract$_DaoStorage_$17849",
                     "typeString": "contract DaoStorage"
                   },
                   "typeName": {
@@ -727,10 +727,10 @@
                     "id": 1782,
                     "name": "DaoStorage",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 17792,
+                    "referencedDeclaration": 17849,
                     "src": "793:10:5",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoStorage_$17792",
+                      "typeIdentifier": "t_contract$_DaoStorage_$17849",
                       "typeString": "contract DaoStorage"
                     }
                   },
@@ -780,7 +780,7 @@
         "id": 1744,
         "nodeType": "ImportDirective",
         "scope": 1796,
-        "sourceUnit": 18547,
+        "sourceUnit": 18604,
         "src": "26:64:5",
         "symbolAliases": [],
         "unitAlias": ""
@@ -802,7 +802,7 @@
         "id": 1746,
         "nodeType": "ImportDirective",
         "scope": 1796,
-        "sourceUnit": 13770,
+        "sourceUnit": 13827,
         "src": "130:44:5",
         "symbolAliases": [],
         "unitAlias": ""
@@ -813,7 +813,7 @@
         "id": 1747,
         "nodeType": "ImportDirective",
         "scope": 1796,
-        "sourceUnit": 15945,
+        "sourceUnit": 16002,
         "src": "175:42:5",
         "symbolAliases": [],
         "unitAlias": ""
@@ -824,7 +824,7 @@
         "id": 1748,
         "nodeType": "ImportDirective",
         "scope": 1796,
-        "sourceUnit": 17793,
+        "sourceUnit": 17850,
         "src": "218:37:5",
         "symbolAliases": [],
         "unitAlias": ""
@@ -856,10 +856,10 @@
               "id": 1751,
               "name": "ResolverClient",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 18546,
+              "referencedDeclaration": 18603,
               "src": "301:14:5",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ResolverClient_$18546",
+                "typeIdentifier": "t_contract$_ResolverClient_$18603",
                 "typeString": "contract ResolverClient"
               }
             },
@@ -870,7 +870,7 @@
         ],
         "contractDependencies": [
           1602,
-          18546
+          18603
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -878,7 +878,7 @@
         "id": 1795,
         "linearizedBaseContracts": [
           1795,
-          18546,
+          18603,
           1602
         ],
         "name": "DaoServiceCommon",
@@ -907,7 +907,7 @@
                       "referencedDeclaration": 1755,
                       "src": "442:9:5",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoConfigsStorage_$13769",
+                        "typeIdentifier": "t_contract$_DaoConfigsStorage_$13826",
                         "typeString": "contract DaoConfigsStorage"
                       }
                     },
@@ -944,7 +944,7 @@
                             "name": "get_contract",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 18545,
+                            "referencedDeclaration": 18602,
                             "src": "472:12:5",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_view$_t_bytes32_$returns$_t_address_$",
@@ -977,10 +977,10 @@
                         "name": "DaoConfigsStorage",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 13769,
+                        "referencedDeclaration": 13826,
                         "src": "454:17:5",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DaoConfigsStorage_$13769_$",
+                          "typeIdentifier": "t_type$_t_contract$_DaoConfigsStorage_$13826_$",
                           "typeString": "type(contract DaoConfigsStorage)"
                         }
                       },
@@ -994,13 +994,13 @@
                       "nodeType": "FunctionCall",
                       "src": "454:60:5",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoConfigsStorage_$13769",
+                        "typeIdentifier": "t_contract$_DaoConfigsStorage_$13826",
                         "typeString": "contract DaoConfigsStorage"
                       }
                     },
                     "src": "442:72:5",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoConfigsStorage_$13769",
+                      "typeIdentifier": "t_contract$_DaoConfigsStorage_$13826",
                       "typeString": "contract DaoConfigsStorage"
                     }
                   },
@@ -1039,7 +1039,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_DaoConfigsStorage_$13769",
+                    "typeIdentifier": "t_contract$_DaoConfigsStorage_$13826",
                     "typeString": "contract DaoConfigsStorage"
                   },
                   "typeName": {
@@ -1047,10 +1047,10 @@
                     "id": 1754,
                     "name": "DaoConfigsStorage",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 13769,
+                    "referencedDeclaration": 13826,
                     "src": "399:17:5",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoConfigsStorage_$13769",
+                      "typeIdentifier": "t_contract$_DaoConfigsStorage_$13826",
                       "typeString": "contract DaoConfigsStorage"
                     }
                   },
@@ -1089,7 +1089,7 @@
                       "referencedDeclaration": 1769,
                       "src": "642:9:5",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoStakeStorage_$15944",
+                        "typeIdentifier": "t_contract$_DaoStakeStorage_$16001",
                         "typeString": "contract DaoStakeStorage"
                       }
                     },
@@ -1126,7 +1126,7 @@
                             "name": "get_contract",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 18545,
+                            "referencedDeclaration": 18602,
                             "src": "670:12:5",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_view$_t_bytes32_$returns$_t_address_$",
@@ -1159,10 +1159,10 @@
                         "name": "DaoStakeStorage",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 15944,
+                        "referencedDeclaration": 16001,
                         "src": "654:15:5",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DaoStakeStorage_$15944_$",
+                          "typeIdentifier": "t_type$_t_contract$_DaoStakeStorage_$16001_$",
                           "typeString": "type(contract DaoStakeStorage)"
                         }
                       },
@@ -1176,13 +1176,13 @@
                       "nodeType": "FunctionCall",
                       "src": "654:57:5",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoStakeStorage_$15944",
+                        "typeIdentifier": "t_contract$_DaoStakeStorage_$16001",
                         "typeString": "contract DaoStakeStorage"
                       }
                     },
                     "src": "642:69:5",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoStakeStorage_$15944",
+                      "typeIdentifier": "t_contract$_DaoStakeStorage_$16001",
                       "typeString": "contract DaoStakeStorage"
                     }
                   },
@@ -1221,7 +1221,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_DaoStakeStorage_$15944",
+                    "typeIdentifier": "t_contract$_DaoStakeStorage_$16001",
                     "typeString": "contract DaoStakeStorage"
                   },
                   "typeName": {
@@ -1229,10 +1229,10 @@
                     "id": 1768,
                     "name": "DaoStakeStorage",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 15944,
+                    "referencedDeclaration": 16001,
                     "src": "601:15:5",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoStakeStorage_$15944",
+                      "typeIdentifier": "t_contract$_DaoStakeStorage_$16001",
                       "typeString": "contract DaoStakeStorage"
                     }
                   },
@@ -1271,7 +1271,7 @@
                       "referencedDeclaration": 1783,
                       "src": "829:9:5",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoStorage_$17792",
+                        "typeIdentifier": "t_contract$_DaoStorage_$17849",
                         "typeString": "contract DaoStorage"
                       }
                     },
@@ -1308,7 +1308,7 @@
                             "name": "get_contract",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 18545,
+                            "referencedDeclaration": 18602,
                             "src": "852:12:5",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_view$_t_bytes32_$returns$_t_address_$",
@@ -1341,10 +1341,10 @@
                         "name": "DaoStorage",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 17792,
+                        "referencedDeclaration": 17849,
                         "src": "841:10:5",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DaoStorage_$17792_$",
+                          "typeIdentifier": "t_type$_t_contract$_DaoStorage_$17849_$",
                           "typeString": "type(contract DaoStorage)"
                         }
                       },
@@ -1358,13 +1358,13 @@
                       "nodeType": "FunctionCall",
                       "src": "841:46:5",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoStorage_$17792",
+                        "typeIdentifier": "t_contract$_DaoStorage_$17849",
                         "typeString": "contract DaoStorage"
                       }
                     },
                     "src": "829:58:5",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoStorage_$17792",
+                      "typeIdentifier": "t_contract$_DaoStorage_$17849",
                       "typeString": "contract DaoStorage"
                     }
                   },
@@ -1403,7 +1403,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_DaoStorage_$17792",
+                    "typeIdentifier": "t_contract$_DaoStorage_$17849",
                     "typeString": "contract DaoStorage"
                   },
                   "typeName": {
@@ -1411,10 +1411,10 @@
                     "id": 1782,
                     "name": "DaoStorage",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 17792,
+                    "referencedDeclaration": 17849,
                     "src": "793:10:5",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoStorage_$17792",
+                      "typeIdentifier": "t_contract$_DaoStorage_$17849",
                       "typeString": "contract DaoStorage"
                     }
                   },
@@ -1443,5 +1443,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-19T03:33:09.017Z"
+  "updatedAt": "2019-01-18T06:49:39.225Z"
 }

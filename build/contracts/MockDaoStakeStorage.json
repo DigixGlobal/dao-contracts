@@ -599,14 +599,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/storage/MockDaoStakeStorage.sol",
     "exportedSymbols": {
       "MockDaoStakeStorage": [
-        10904
+        10961
       ]
     },
-    "id": 10905,
+    "id": 10962,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 10764,
+        "id": 10821,
         "literals": [
           "solidity",
           "^",
@@ -619,10 +619,10 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/storage/DaoStakeStorage.sol",
         "file": "../../storage/DaoStakeStorage.sol",
-        "id": 10765,
+        "id": 10822,
         "nodeType": "ImportDirective",
-        "scope": 10905,
-        "sourceUnit": 15945,
+        "scope": 10962,
+        "sourceUnit": 16002,
         "src": "26:43:42",
         "symbolAliases": [],
         "unitAlias": ""
@@ -633,50 +633,50 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 10766,
+              "id": 10823,
               "name": "DaoStakeStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 15944,
+              "referencedDeclaration": 16001,
               "src": "103:15:42",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoStakeStorage_$15944",
+                "typeIdentifier": "t_contract$_DaoStakeStorage_$16001",
                 "typeString": "contract DaoStakeStorage"
               }
             },
-            "id": 10767,
+            "id": 10824,
             "nodeType": "InheritanceSpecifier",
             "src": "103:15:42"
           }
         ],
         "contractDependencies": [
           1602,
-          15944,
-          18546,
-          21589
+          16001,
+          18603,
+          21646
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 10904,
+        "id": 10961,
         "linearizedBaseContracts": [
-          10904,
-          15944,
-          21589,
+          10961,
+          16001,
+          21646,
           1602,
-          18546
+          18603
         ],
         "name": "MockDaoStakeStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 10775,
+              "id": 10832,
               "nodeType": "Block",
               "src": "191:2:42",
               "statements": []
             },
             "documentation": null,
-            "id": 10776,
+            "id": 10833,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -685,11 +685,11 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 10772,
+                    "id": 10829,
                     "name": "_resolver",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 10769,
+                    "referencedDeclaration": 10826,
                     "src": "173:9:42",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -697,17 +697,17 @@
                     }
                   }
                 ],
-                "id": 10773,
+                "id": 10830,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 10771,
+                  "id": 10828,
                   "name": "DaoStakeStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 15944,
+                  "referencedDeclaration": 16001,
                   "src": "157:15:42",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoStakeStorage_$15944_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoStakeStorage_$16001_$",
                     "typeString": "type(contract DaoStakeStorage)"
                   }
                 },
@@ -718,15 +718,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10770,
+              "id": 10827,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10769,
+                  "id": 10826,
                   "name": "_resolver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10776,
+                  "scope": 10833,
                   "src": "138:17:42",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -735,7 +735,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 10768,
+                    "id": 10825,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "138:7:42",
@@ -752,12 +752,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10774,
+              "id": 10831,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "191:0:42"
             },
-            "scope": 10904,
+            "scope": 10961,
             "src": "126:67:42",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -765,21 +765,21 @@
           },
           {
             "body": {
-              "id": 10841,
+              "id": 10898,
               "nodeType": "Block",
               "src": "291:383:42",
               "statements": [
                 {
                   "assignments": [
-                    10786
+                    10843
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 10786,
+                      "id": 10843,
                       "name": "_n",
                       "nodeType": "VariableDeclaration",
-                      "scope": 10842,
+                      "scope": 10899,
                       "src": "301:10:42",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -788,7 +788,7 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 10785,
+                        "id": 10842,
                         "name": "uint256",
                         "nodeType": "ElementaryTypeName",
                         "src": "301:7:42",
@@ -801,23 +801,23 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 10789,
+                  "id": 10846,
                   "initialValue": {
                     "argumentTypes": null,
                     "expression": {
                       "argumentTypes": null,
-                      "id": 10787,
+                      "id": 10844,
                       "name": "_moderators",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10779,
+                      "referencedDeclaration": 10836,
                       "src": "314:11:42",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                         "typeString": "address[] memory"
                       }
                     },
-                    "id": 10788,
+                    "id": 10845,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -836,7 +836,7 @@
                 },
                 {
                   "body": {
-                    "id": 10834,
+                    "id": 10891,
                     "nodeType": "Block",
                     "src": "375:238:42",
                     "statements": [
@@ -848,25 +848,25 @@
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 10803,
+                                "id": 10860,
                                 "name": "_moderators",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10779,
+                                "referencedDeclaration": 10836,
                                 "src": "410:11:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                                   "typeString": "address[] memory"
                                 }
                               },
-                              "id": 10805,
+                              "id": 10862,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 10804,
+                                "id": 10861,
                                 "name": "i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10791,
+                                "referencedDeclaration": 10848,
                                 "src": "422:1:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -894,32 +894,32 @@
                             ],
                             "expression": {
                               "argumentTypes": null,
-                              "id": 10800,
+                              "id": 10857,
                               "name": "allModerators",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 15548,
+                              "referencedDeclaration": 15605,
                               "src": "389:13:42",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Address_$22520_storage",
+                                "typeIdentifier": "t_struct$_Address_$22577_storage",
                                 "typeString": "struct DoublyLinkedList.Address storage ref"
                               }
                             },
-                            "id": 10802,
+                            "id": 10859,
                             "isConstant": false,
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
                             "memberName": "append",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 23903,
+                            "referencedDeclaration": 23960,
                             "src": "389:20:42",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Address_$22520_storage_ptr_$_t_address_$returns$_t_bool_$bound_to$_t_struct$_Address_$22520_storage_ptr_$",
+                              "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Address_$22577_storage_ptr_$_t_address_$returns$_t_bool_$bound_to$_t_struct$_Address_$22577_storage_ptr_$",
                               "typeString": "function (struct DoublyLinkedList.Address storage pointer,address) returns (bool)"
                             }
                           },
-                          "id": 10806,
+                          "id": 10863,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -933,14 +933,14 @@
                             "typeString": "bool"
                           }
                         },
-                        "id": 10807,
+                        "id": 10864,
                         "nodeType": "ExpressionStatement",
                         "src": "389:36:42"
                       },
                       {
                         "expression": {
                           "argumentTypes": null,
-                          "id": 10816,
+                          "id": 10873,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -949,41 +949,41 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10808,
+                              "id": 10865,
                               "name": "actualLockedDGD",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 15540,
+                              "referencedDeclaration": 15597,
                               "src": "439:15:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                                 "typeString": "mapping(address => uint256)"
                               }
                             },
-                            "id": 10812,
+                            "id": 10869,
                             "indexExpression": {
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 10809,
+                                "id": 10866,
                                 "name": "_moderators",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10779,
+                                "referencedDeclaration": 10836,
                                 "src": "455:11:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                                   "typeString": "address[] memory"
                                 }
                               },
-                              "id": 10811,
+                              "id": 10868,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 10810,
+                                "id": 10867,
                                 "name": "i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10791,
+                                "referencedDeclaration": 10848,
                                 "src": "467:1:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -1018,25 +1018,25 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10813,
+                              "id": 10870,
                               "name": "_dgdStake",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10782,
+                              "referencedDeclaration": 10839,
                               "src": "473:9:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
                                 "typeString": "uint256[] memory"
                               }
                             },
-                            "id": 10815,
+                            "id": 10872,
                             "indexExpression": {
                               "argumentTypes": null,
-                              "id": 10814,
+                              "id": 10871,
                               "name": "i",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10791,
+                              "referencedDeclaration": 10848,
                               "src": "483:1:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -1060,14 +1060,14 @@
                             "typeString": "uint256"
                           }
                         },
-                        "id": 10817,
+                        "id": 10874,
                         "nodeType": "ExpressionStatement",
                         "src": "439:46:42"
                       },
                       {
                         "expression": {
                           "argumentTypes": null,
-                          "id": 10826,
+                          "id": 10883,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1076,41 +1076,41 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10818,
+                              "id": 10875,
                               "name": "lockedDGDStake",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 15536,
+                              "referencedDeclaration": 15593,
                               "src": "499:14:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                                 "typeString": "mapping(address => uint256)"
                               }
                             },
-                            "id": 10822,
+                            "id": 10879,
                             "indexExpression": {
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 10819,
+                                "id": 10876,
                                 "name": "_moderators",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10779,
+                                "referencedDeclaration": 10836,
                                 "src": "514:11:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                                   "typeString": "address[] memory"
                                 }
                               },
-                              "id": 10821,
+                              "id": 10878,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 10820,
+                                "id": 10877,
                                 "name": "i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10791,
+                                "referencedDeclaration": 10848,
                                 "src": "526:1:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -1145,25 +1145,25 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10823,
+                              "id": 10880,
                               "name": "_dgdStake",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10782,
+                              "referencedDeclaration": 10839,
                               "src": "532:9:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
                                 "typeString": "uint256[] memory"
                               }
                             },
-                            "id": 10825,
+                            "id": 10882,
                             "indexExpression": {
                               "argumentTypes": null,
-                              "id": 10824,
+                              "id": 10881,
                               "name": "i",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10791,
+                              "referencedDeclaration": 10848,
                               "src": "542:1:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -1187,25 +1187,25 @@
                             "typeString": "uint256"
                           }
                         },
-                        "id": 10827,
+                        "id": 10884,
                         "nodeType": "ExpressionStatement",
                         "src": "499:45:42"
                       },
                       {
                         "expression": {
                           "argumentTypes": null,
-                          "id": 10832,
+                          "id": 10889,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
                           "leftHandSide": {
                             "argumentTypes": null,
-                            "id": 10828,
+                            "id": 10885,
                             "name": "totalModeratorLockedDGDStake",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 15544,
+                            "referencedDeclaration": 15601,
                             "src": "558:28:42",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -1218,25 +1218,25 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10829,
+                              "id": 10886,
                               "name": "_dgdStake",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10782,
+                              "referencedDeclaration": 10839,
                               "src": "590:9:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
                                 "typeString": "uint256[] memory"
                               }
                             },
-                            "id": 10831,
+                            "id": 10888,
                             "indexExpression": {
                               "argumentTypes": null,
-                              "id": 10830,
+                              "id": 10887,
                               "name": "i",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10791,
+                              "referencedDeclaration": 10848,
                               "src": "600:1:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -1260,7 +1260,7 @@
                             "typeString": "uint256"
                           }
                         },
-                        "id": 10833,
+                        "id": 10890,
                         "nodeType": "ExpressionStatement",
                         "src": "558:44:42"
                       }
@@ -1272,18 +1272,18 @@
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 10796,
+                    "id": 10853,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
                       "argumentTypes": null,
-                      "id": 10794,
+                      "id": 10851,
                       "name": "i",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10791,
+                      "referencedDeclaration": 10848,
                       "src": "362:1:42",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1294,11 +1294,11 @@
                     "operator": "<",
                     "rightExpression": {
                       "argumentTypes": null,
-                      "id": 10795,
+                      "id": 10852,
                       "name": "_n",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10786,
+                      "referencedDeclaration": 10843,
                       "src": "366:2:42",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1311,18 +1311,18 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 10835,
+                  "id": 10892,
                   "initializationExpression": {
                     "assignments": [
-                      10791
+                      10848
                     ],
                     "declarations": [
                       {
                         "constant": false,
-                        "id": 10791,
+                        "id": 10848,
                         "name": "i",
                         "nodeType": "VariableDeclaration",
-                        "scope": 10842,
+                        "scope": 10899,
                         "src": "347:9:42",
                         "stateVariable": false,
                         "storageLocation": "default",
@@ -1331,7 +1331,7 @@
                           "typeString": "uint256"
                         },
                         "typeName": {
-                          "id": 10790,
+                          "id": 10847,
                           "name": "uint256",
                           "nodeType": "ElementaryTypeName",
                           "src": "347:7:42",
@@ -1344,11 +1344,11 @@
                         "visibility": "internal"
                       }
                     ],
-                    "id": 10793,
+                    "id": 10850,
                     "initialValue": {
                       "argumentTypes": null,
                       "hexValue": "30",
-                      "id": 10792,
+                      "id": 10849,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -1369,7 +1369,7 @@
                   "loopExpression": {
                     "expression": {
                       "argumentTypes": null,
-                      "id": 10798,
+                      "id": 10855,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1380,11 +1380,11 @@
                       "src": "370:3:42",
                       "subExpression": {
                         "argumentTypes": null,
-                        "id": 10797,
+                        "id": 10854,
                         "name": "i",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10791,
+                        "referencedDeclaration": 10848,
                         "src": "370:1:42",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1396,7 +1396,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 10799,
+                    "id": 10856,
                     "nodeType": "ExpressionStatement",
                     "src": "370:3:42"
                   },
@@ -1409,11 +1409,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 10837,
+                        "id": 10894,
                         "name": "_moderators",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10779,
+                        "referencedDeclaration": 10836,
                         "src": "644:11:42",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
@@ -1422,11 +1422,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 10838,
+                        "id": 10895,
                         "name": "_dgdStake",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10782,
+                        "referencedDeclaration": 10839,
                         "src": "657:9:42",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
@@ -1445,18 +1445,18 @@
                           "typeString": "uint256[] memory"
                         }
                       ],
-                      "id": 10836,
+                      "id": 10893,
                       "name": "mock_add_participants",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10903,
+                      "referencedDeclaration": 10960,
                       "src": "622:21:42",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_array$_t_address_$dyn_memory_ptr_$_t_array$_t_uint256_$dyn_memory_ptr_$returns$__$",
                         "typeString": "function (address[] memory,uint256[] memory)"
                       }
                     },
-                    "id": 10839,
+                    "id": 10896,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1470,14 +1470,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 10840,
+                  "id": 10897,
                   "nodeType": "ExpressionStatement",
                   "src": "622:45:42"
                 }
               ]
             },
             "documentation": null,
-            "id": 10842,
+            "id": 10899,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1485,15 +1485,15 @@
             "name": "mock_add_moderators",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10783,
+              "id": 10840,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10779,
+                  "id": 10836,
                   "name": "_moderators",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10842,
+                  "scope": 10899,
                   "src": "228:21:42",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1503,7 +1503,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 10777,
+                      "id": 10834,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "228:7:42",
@@ -1512,7 +1512,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 10778,
+                    "id": 10835,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "228:9:42",
@@ -1526,10 +1526,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10782,
+                  "id": 10839,
                   "name": "_dgdStake",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10842,
+                  "scope": 10899,
                   "src": "251:19:42",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1539,7 +1539,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 10780,
+                      "id": 10837,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "251:7:42",
@@ -1548,7 +1548,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 10781,
+                    "id": 10838,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "251:9:42",
@@ -1565,12 +1565,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10784,
+              "id": 10841,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "291:0:42"
             },
-            "scope": 10904,
+            "scope": 10961,
             "src": "199:475:42",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1578,21 +1578,21 @@
           },
           {
             "body": {
-              "id": 10902,
+              "id": 10959,
               "nodeType": "Block",
               "src": "776:329:42",
               "statements": [
                 {
                   "assignments": [
-                    10852
+                    10909
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 10852,
+                      "id": 10909,
                       "name": "_n",
                       "nodeType": "VariableDeclaration",
-                      "scope": 10903,
+                      "scope": 10960,
                       "src": "786:10:42",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -1601,7 +1601,7 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 10851,
+                        "id": 10908,
                         "name": "uint256",
                         "nodeType": "ElementaryTypeName",
                         "src": "786:7:42",
@@ -1614,23 +1614,23 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 10855,
+                  "id": 10912,
                   "initialValue": {
                     "argumentTypes": null,
                     "expression": {
                       "argumentTypes": null,
-                      "id": 10853,
+                      "id": 10910,
                       "name": "_participants",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10845,
+                      "referencedDeclaration": 10902,
                       "src": "799:13:42",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                         "typeString": "address[] memory"
                       }
                     },
-                    "id": 10854,
+                    "id": 10911,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1649,7 +1649,7 @@
                 },
                 {
                   "body": {
-                    "id": 10900,
+                    "id": 10957,
                     "nodeType": "Block",
                     "src": "862:237:42",
                     "statements": [
@@ -1661,25 +1661,25 @@
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 10869,
+                                "id": 10926,
                                 "name": "_participants",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10845,
+                                "referencedDeclaration": 10902,
                                 "src": "899:13:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                                   "typeString": "address[] memory"
                                 }
                               },
-                              "id": 10871,
+                              "id": 10928,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 10870,
+                                "id": 10927,
                                 "name": "i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10857,
+                                "referencedDeclaration": 10914,
                                 "src": "913:1:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -1707,32 +1707,32 @@
                             ],
                             "expression": {
                               "argumentTypes": null,
-                              "id": 10866,
+                              "id": 10923,
                               "name": "allParticipants",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 15546,
+                              "referencedDeclaration": 15603,
                               "src": "876:15:42",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Address_$22520_storage",
+                                "typeIdentifier": "t_struct$_Address_$22577_storage",
                                 "typeString": "struct DoublyLinkedList.Address storage ref"
                               }
                             },
-                            "id": 10868,
+                            "id": 10925,
                             "isConstant": false,
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
                             "memberName": "append",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 23903,
+                            "referencedDeclaration": 23960,
                             "src": "876:22:42",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Address_$22520_storage_ptr_$_t_address_$returns$_t_bool_$bound_to$_t_struct$_Address_$22520_storage_ptr_$",
+                              "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Address_$22577_storage_ptr_$_t_address_$returns$_t_bool_$bound_to$_t_struct$_Address_$22577_storage_ptr_$",
                               "typeString": "function (struct DoublyLinkedList.Address storage pointer,address) returns (bool)"
                             }
                           },
-                          "id": 10872,
+                          "id": 10929,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1746,14 +1746,14 @@
                             "typeString": "bool"
                           }
                         },
-                        "id": 10873,
+                        "id": 10930,
                         "nodeType": "ExpressionStatement",
                         "src": "876:40:42"
                       },
                       {
                         "expression": {
                           "argumentTypes": null,
-                          "id": 10882,
+                          "id": 10939,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1762,41 +1762,41 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10874,
+                              "id": 10931,
                               "name": "actualLockedDGD",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 15540,
+                              "referencedDeclaration": 15597,
                               "src": "930:15:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                                 "typeString": "mapping(address => uint256)"
                               }
                             },
-                            "id": 10878,
+                            "id": 10935,
                             "indexExpression": {
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 10875,
+                                "id": 10932,
                                 "name": "_participants",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10845,
+                                "referencedDeclaration": 10902,
                                 "src": "946:13:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                                   "typeString": "address[] memory"
                                 }
                               },
-                              "id": 10877,
+                              "id": 10934,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 10876,
+                                "id": 10933,
                                 "name": "i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10857,
+                                "referencedDeclaration": 10914,
                                 "src": "960:1:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -1831,25 +1831,25 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10879,
+                              "id": 10936,
                               "name": "_dgdStake",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10848,
+                              "referencedDeclaration": 10905,
                               "src": "966:9:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
                                 "typeString": "uint256[] memory"
                               }
                             },
-                            "id": 10881,
+                            "id": 10938,
                             "indexExpression": {
                               "argumentTypes": null,
-                              "id": 10880,
+                              "id": 10937,
                               "name": "i",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10857,
+                              "referencedDeclaration": 10914,
                               "src": "976:1:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -1873,14 +1873,14 @@
                             "typeString": "uint256"
                           }
                         },
-                        "id": 10883,
+                        "id": 10940,
                         "nodeType": "ExpressionStatement",
                         "src": "930:48:42"
                       },
                       {
                         "expression": {
                           "argumentTypes": null,
-                          "id": 10892,
+                          "id": 10949,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1889,41 +1889,41 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10884,
+                              "id": 10941,
                               "name": "lockedDGDStake",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 15536,
+                              "referencedDeclaration": 15593,
                               "src": "992:14:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                                 "typeString": "mapping(address => uint256)"
                               }
                             },
-                            "id": 10888,
+                            "id": 10945,
                             "indexExpression": {
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 10885,
+                                "id": 10942,
                                 "name": "_participants",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10845,
+                                "referencedDeclaration": 10902,
                                 "src": "1007:13:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                                   "typeString": "address[] memory"
                                 }
                               },
-                              "id": 10887,
+                              "id": 10944,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 10886,
+                                "id": 10943,
                                 "name": "i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10857,
+                                "referencedDeclaration": 10914,
                                 "src": "1021:1:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -1958,25 +1958,25 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10889,
+                              "id": 10946,
                               "name": "_dgdStake",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10848,
+                              "referencedDeclaration": 10905,
                               "src": "1027:9:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
                                 "typeString": "uint256[] memory"
                               }
                             },
-                            "id": 10891,
+                            "id": 10948,
                             "indexExpression": {
                               "argumentTypes": null,
-                              "id": 10890,
+                              "id": 10947,
                               "name": "i",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10857,
+                              "referencedDeclaration": 10914,
                               "src": "1037:1:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -2000,25 +2000,25 @@
                             "typeString": "uint256"
                           }
                         },
-                        "id": 10893,
+                        "id": 10950,
                         "nodeType": "ExpressionStatement",
                         "src": "992:47:42"
                       },
                       {
                         "expression": {
                           "argumentTypes": null,
-                          "id": 10898,
+                          "id": 10955,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
                           "leftHandSide": {
                             "argumentTypes": null,
-                            "id": 10894,
+                            "id": 10951,
                             "name": "totalLockedDGDStake",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 15542,
+                            "referencedDeclaration": 15599,
                             "src": "1053:19:42",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -2031,25 +2031,25 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10895,
+                              "id": 10952,
                               "name": "_dgdStake",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10848,
+                              "referencedDeclaration": 10905,
                               "src": "1076:9:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
                                 "typeString": "uint256[] memory"
                               }
                             },
-                            "id": 10897,
+                            "id": 10954,
                             "indexExpression": {
                               "argumentTypes": null,
-                              "id": 10896,
+                              "id": 10953,
                               "name": "i",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10857,
+                              "referencedDeclaration": 10914,
                               "src": "1086:1:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -2073,7 +2073,7 @@
                             "typeString": "uint256"
                           }
                         },
-                        "id": 10899,
+                        "id": 10956,
                         "nodeType": "ExpressionStatement",
                         "src": "1053:35:42"
                       }
@@ -2085,18 +2085,18 @@
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 10862,
+                    "id": 10919,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
                       "argumentTypes": null,
-                      "id": 10860,
+                      "id": 10917,
                       "name": "i",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10857,
+                      "referencedDeclaration": 10914,
                       "src": "849:1:42",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2107,11 +2107,11 @@
                     "operator": "<",
                     "rightExpression": {
                       "argumentTypes": null,
-                      "id": 10861,
+                      "id": 10918,
                       "name": "_n",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10852,
+                      "referencedDeclaration": 10909,
                       "src": "853:2:42",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2124,18 +2124,18 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 10901,
+                  "id": 10958,
                   "initializationExpression": {
                     "assignments": [
-                      10857
+                      10914
                     ],
                     "declarations": [
                       {
                         "constant": false,
-                        "id": 10857,
+                        "id": 10914,
                         "name": "i",
                         "nodeType": "VariableDeclaration",
-                        "scope": 10903,
+                        "scope": 10960,
                         "src": "834:9:42",
                         "stateVariable": false,
                         "storageLocation": "default",
@@ -2144,7 +2144,7 @@
                           "typeString": "uint256"
                         },
                         "typeName": {
-                          "id": 10856,
+                          "id": 10913,
                           "name": "uint256",
                           "nodeType": "ElementaryTypeName",
                           "src": "834:7:42",
@@ -2157,11 +2157,11 @@
                         "visibility": "internal"
                       }
                     ],
-                    "id": 10859,
+                    "id": 10916,
                     "initialValue": {
                       "argumentTypes": null,
                       "hexValue": "30",
-                      "id": 10858,
+                      "id": 10915,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -2182,7 +2182,7 @@
                   "loopExpression": {
                     "expression": {
                       "argumentTypes": null,
-                      "id": 10864,
+                      "id": 10921,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2193,11 +2193,11 @@
                       "src": "857:3:42",
                       "subExpression": {
                         "argumentTypes": null,
-                        "id": 10863,
+                        "id": 10920,
                         "name": "i",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10857,
+                        "referencedDeclaration": 10914,
                         "src": "857:1:42",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -2209,7 +2209,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 10865,
+                    "id": 10922,
                     "nodeType": "ExpressionStatement",
                     "src": "857:3:42"
                   },
@@ -2219,7 +2219,7 @@
               ]
             },
             "documentation": null,
-            "id": 10903,
+            "id": 10960,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2227,15 +2227,15 @@
             "name": "mock_add_participants",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10849,
+              "id": 10906,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10845,
+                  "id": 10902,
                   "name": "_participants",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10903,
+                  "scope": 10960,
                   "src": "711:23:42",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2245,7 +2245,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 10843,
+                      "id": 10900,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "711:7:42",
@@ -2254,7 +2254,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 10844,
+                    "id": 10901,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "711:9:42",
@@ -2268,10 +2268,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10848,
+                  "id": 10905,
                   "name": "_dgdStake",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10903,
+                  "scope": 10960,
                   "src": "736:19:42",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2281,7 +2281,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 10846,
+                      "id": 10903,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "736:7:42",
@@ -2290,7 +2290,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 10847,
+                    "id": 10904,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "736:9:42",
@@ -2307,19 +2307,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10850,
+              "id": 10907,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "776:0:42"
             },
-            "scope": 10904,
+            "scope": 10961,
             "src": "680:425:42",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 10905,
+        "scope": 10962,
         "src": "71:1036:42"
       }
     ],
@@ -2329,14 +2329,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/storage/MockDaoStakeStorage.sol",
     "exportedSymbols": {
       "MockDaoStakeStorage": [
-        10904
+        10961
       ]
     },
-    "id": 10905,
+    "id": 10962,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 10764,
+        "id": 10821,
         "literals": [
           "solidity",
           "^",
@@ -2349,10 +2349,10 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/storage/DaoStakeStorage.sol",
         "file": "../../storage/DaoStakeStorage.sol",
-        "id": 10765,
+        "id": 10822,
         "nodeType": "ImportDirective",
-        "scope": 10905,
-        "sourceUnit": 15945,
+        "scope": 10962,
+        "sourceUnit": 16002,
         "src": "26:43:42",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2363,50 +2363,50 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 10766,
+              "id": 10823,
               "name": "DaoStakeStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 15944,
+              "referencedDeclaration": 16001,
               "src": "103:15:42",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoStakeStorage_$15944",
+                "typeIdentifier": "t_contract$_DaoStakeStorage_$16001",
                 "typeString": "contract DaoStakeStorage"
               }
             },
-            "id": 10767,
+            "id": 10824,
             "nodeType": "InheritanceSpecifier",
             "src": "103:15:42"
           }
         ],
         "contractDependencies": [
           1602,
-          15944,
-          18546,
-          21589
+          16001,
+          18603,
+          21646
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 10904,
+        "id": 10961,
         "linearizedBaseContracts": [
-          10904,
-          15944,
-          21589,
+          10961,
+          16001,
+          21646,
           1602,
-          18546
+          18603
         ],
         "name": "MockDaoStakeStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 10775,
+              "id": 10832,
               "nodeType": "Block",
               "src": "191:2:42",
               "statements": []
             },
             "documentation": null,
-            "id": 10776,
+            "id": 10833,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -2415,11 +2415,11 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 10772,
+                    "id": 10829,
                     "name": "_resolver",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 10769,
+                    "referencedDeclaration": 10826,
                     "src": "173:9:42",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -2427,17 +2427,17 @@
                     }
                   }
                 ],
-                "id": 10773,
+                "id": 10830,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 10771,
+                  "id": 10828,
                   "name": "DaoStakeStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 15944,
+                  "referencedDeclaration": 16001,
                   "src": "157:15:42",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoStakeStorage_$15944_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoStakeStorage_$16001_$",
                     "typeString": "type(contract DaoStakeStorage)"
                   }
                 },
@@ -2448,15 +2448,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10770,
+              "id": 10827,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10769,
+                  "id": 10826,
                   "name": "_resolver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10776,
+                  "scope": 10833,
                   "src": "138:17:42",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2465,7 +2465,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 10768,
+                    "id": 10825,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "138:7:42",
@@ -2482,12 +2482,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10774,
+              "id": 10831,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "191:0:42"
             },
-            "scope": 10904,
+            "scope": 10961,
             "src": "126:67:42",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -2495,21 +2495,21 @@
           },
           {
             "body": {
-              "id": 10841,
+              "id": 10898,
               "nodeType": "Block",
               "src": "291:383:42",
               "statements": [
                 {
                   "assignments": [
-                    10786
+                    10843
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 10786,
+                      "id": 10843,
                       "name": "_n",
                       "nodeType": "VariableDeclaration",
-                      "scope": 10842,
+                      "scope": 10899,
                       "src": "301:10:42",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -2518,7 +2518,7 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 10785,
+                        "id": 10842,
                         "name": "uint256",
                         "nodeType": "ElementaryTypeName",
                         "src": "301:7:42",
@@ -2531,23 +2531,23 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 10789,
+                  "id": 10846,
                   "initialValue": {
                     "argumentTypes": null,
                     "expression": {
                       "argumentTypes": null,
-                      "id": 10787,
+                      "id": 10844,
                       "name": "_moderators",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10779,
+                      "referencedDeclaration": 10836,
                       "src": "314:11:42",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                         "typeString": "address[] memory"
                       }
                     },
-                    "id": 10788,
+                    "id": 10845,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2566,7 +2566,7 @@
                 },
                 {
                   "body": {
-                    "id": 10834,
+                    "id": 10891,
                     "nodeType": "Block",
                     "src": "375:238:42",
                     "statements": [
@@ -2578,25 +2578,25 @@
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 10803,
+                                "id": 10860,
                                 "name": "_moderators",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10779,
+                                "referencedDeclaration": 10836,
                                 "src": "410:11:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                                   "typeString": "address[] memory"
                                 }
                               },
-                              "id": 10805,
+                              "id": 10862,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 10804,
+                                "id": 10861,
                                 "name": "i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10791,
+                                "referencedDeclaration": 10848,
                                 "src": "422:1:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -2624,32 +2624,32 @@
                             ],
                             "expression": {
                               "argumentTypes": null,
-                              "id": 10800,
+                              "id": 10857,
                               "name": "allModerators",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 15548,
+                              "referencedDeclaration": 15605,
                               "src": "389:13:42",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Address_$22520_storage",
+                                "typeIdentifier": "t_struct$_Address_$22577_storage",
                                 "typeString": "struct DoublyLinkedList.Address storage ref"
                               }
                             },
-                            "id": 10802,
+                            "id": 10859,
                             "isConstant": false,
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
                             "memberName": "append",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 23903,
+                            "referencedDeclaration": 23960,
                             "src": "389:20:42",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Address_$22520_storage_ptr_$_t_address_$returns$_t_bool_$bound_to$_t_struct$_Address_$22520_storage_ptr_$",
+                              "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Address_$22577_storage_ptr_$_t_address_$returns$_t_bool_$bound_to$_t_struct$_Address_$22577_storage_ptr_$",
                               "typeString": "function (struct DoublyLinkedList.Address storage pointer,address) returns (bool)"
                             }
                           },
-                          "id": 10806,
+                          "id": 10863,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -2663,14 +2663,14 @@
                             "typeString": "bool"
                           }
                         },
-                        "id": 10807,
+                        "id": 10864,
                         "nodeType": "ExpressionStatement",
                         "src": "389:36:42"
                       },
                       {
                         "expression": {
                           "argumentTypes": null,
-                          "id": 10816,
+                          "id": 10873,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -2679,41 +2679,41 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10808,
+                              "id": 10865,
                               "name": "actualLockedDGD",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 15540,
+                              "referencedDeclaration": 15597,
                               "src": "439:15:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                                 "typeString": "mapping(address => uint256)"
                               }
                             },
-                            "id": 10812,
+                            "id": 10869,
                             "indexExpression": {
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 10809,
+                                "id": 10866,
                                 "name": "_moderators",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10779,
+                                "referencedDeclaration": 10836,
                                 "src": "455:11:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                                   "typeString": "address[] memory"
                                 }
                               },
-                              "id": 10811,
+                              "id": 10868,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 10810,
+                                "id": 10867,
                                 "name": "i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10791,
+                                "referencedDeclaration": 10848,
                                 "src": "467:1:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -2748,25 +2748,25 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10813,
+                              "id": 10870,
                               "name": "_dgdStake",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10782,
+                              "referencedDeclaration": 10839,
                               "src": "473:9:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
                                 "typeString": "uint256[] memory"
                               }
                             },
-                            "id": 10815,
+                            "id": 10872,
                             "indexExpression": {
                               "argumentTypes": null,
-                              "id": 10814,
+                              "id": 10871,
                               "name": "i",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10791,
+                              "referencedDeclaration": 10848,
                               "src": "483:1:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -2790,14 +2790,14 @@
                             "typeString": "uint256"
                           }
                         },
-                        "id": 10817,
+                        "id": 10874,
                         "nodeType": "ExpressionStatement",
                         "src": "439:46:42"
                       },
                       {
                         "expression": {
                           "argumentTypes": null,
-                          "id": 10826,
+                          "id": 10883,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -2806,41 +2806,41 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10818,
+                              "id": 10875,
                               "name": "lockedDGDStake",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 15536,
+                              "referencedDeclaration": 15593,
                               "src": "499:14:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                                 "typeString": "mapping(address => uint256)"
                               }
                             },
-                            "id": 10822,
+                            "id": 10879,
                             "indexExpression": {
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 10819,
+                                "id": 10876,
                                 "name": "_moderators",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10779,
+                                "referencedDeclaration": 10836,
                                 "src": "514:11:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                                   "typeString": "address[] memory"
                                 }
                               },
-                              "id": 10821,
+                              "id": 10878,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 10820,
+                                "id": 10877,
                                 "name": "i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10791,
+                                "referencedDeclaration": 10848,
                                 "src": "526:1:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -2875,25 +2875,25 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10823,
+                              "id": 10880,
                               "name": "_dgdStake",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10782,
+                              "referencedDeclaration": 10839,
                               "src": "532:9:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
                                 "typeString": "uint256[] memory"
                               }
                             },
-                            "id": 10825,
+                            "id": 10882,
                             "indexExpression": {
                               "argumentTypes": null,
-                              "id": 10824,
+                              "id": 10881,
                               "name": "i",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10791,
+                              "referencedDeclaration": 10848,
                               "src": "542:1:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -2917,25 +2917,25 @@
                             "typeString": "uint256"
                           }
                         },
-                        "id": 10827,
+                        "id": 10884,
                         "nodeType": "ExpressionStatement",
                         "src": "499:45:42"
                       },
                       {
                         "expression": {
                           "argumentTypes": null,
-                          "id": 10832,
+                          "id": 10889,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
                           "leftHandSide": {
                             "argumentTypes": null,
-                            "id": 10828,
+                            "id": 10885,
                             "name": "totalModeratorLockedDGDStake",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 15544,
+                            "referencedDeclaration": 15601,
                             "src": "558:28:42",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -2948,25 +2948,25 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10829,
+                              "id": 10886,
                               "name": "_dgdStake",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10782,
+                              "referencedDeclaration": 10839,
                               "src": "590:9:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
                                 "typeString": "uint256[] memory"
                               }
                             },
-                            "id": 10831,
+                            "id": 10888,
                             "indexExpression": {
                               "argumentTypes": null,
-                              "id": 10830,
+                              "id": 10887,
                               "name": "i",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10791,
+                              "referencedDeclaration": 10848,
                               "src": "600:1:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -2990,7 +2990,7 @@
                             "typeString": "uint256"
                           }
                         },
-                        "id": 10833,
+                        "id": 10890,
                         "nodeType": "ExpressionStatement",
                         "src": "558:44:42"
                       }
@@ -3002,18 +3002,18 @@
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 10796,
+                    "id": 10853,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
                       "argumentTypes": null,
-                      "id": 10794,
+                      "id": 10851,
                       "name": "i",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10791,
+                      "referencedDeclaration": 10848,
                       "src": "362:1:42",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3024,11 +3024,11 @@
                     "operator": "<",
                     "rightExpression": {
                       "argumentTypes": null,
-                      "id": 10795,
+                      "id": 10852,
                       "name": "_n",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10786,
+                      "referencedDeclaration": 10843,
                       "src": "366:2:42",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3041,18 +3041,18 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 10835,
+                  "id": 10892,
                   "initializationExpression": {
                     "assignments": [
-                      10791
+                      10848
                     ],
                     "declarations": [
                       {
                         "constant": false,
-                        "id": 10791,
+                        "id": 10848,
                         "name": "i",
                         "nodeType": "VariableDeclaration",
-                        "scope": 10842,
+                        "scope": 10899,
                         "src": "347:9:42",
                         "stateVariable": false,
                         "storageLocation": "default",
@@ -3061,7 +3061,7 @@
                           "typeString": "uint256"
                         },
                         "typeName": {
-                          "id": 10790,
+                          "id": 10847,
                           "name": "uint256",
                           "nodeType": "ElementaryTypeName",
                           "src": "347:7:42",
@@ -3074,11 +3074,11 @@
                         "visibility": "internal"
                       }
                     ],
-                    "id": 10793,
+                    "id": 10850,
                     "initialValue": {
                       "argumentTypes": null,
                       "hexValue": "30",
-                      "id": 10792,
+                      "id": 10849,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -3099,7 +3099,7 @@
                   "loopExpression": {
                     "expression": {
                       "argumentTypes": null,
-                      "id": 10798,
+                      "id": 10855,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3110,11 +3110,11 @@
                       "src": "370:3:42",
                       "subExpression": {
                         "argumentTypes": null,
-                        "id": 10797,
+                        "id": 10854,
                         "name": "i",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10791,
+                        "referencedDeclaration": 10848,
                         "src": "370:1:42",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -3126,7 +3126,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 10799,
+                    "id": 10856,
                     "nodeType": "ExpressionStatement",
                     "src": "370:3:42"
                   },
@@ -3139,11 +3139,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 10837,
+                        "id": 10894,
                         "name": "_moderators",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10779,
+                        "referencedDeclaration": 10836,
                         "src": "644:11:42",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
@@ -3152,11 +3152,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 10838,
+                        "id": 10895,
                         "name": "_dgdStake",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10782,
+                        "referencedDeclaration": 10839,
                         "src": "657:9:42",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
@@ -3175,18 +3175,18 @@
                           "typeString": "uint256[] memory"
                         }
                       ],
-                      "id": 10836,
+                      "id": 10893,
                       "name": "mock_add_participants",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10903,
+                      "referencedDeclaration": 10960,
                       "src": "622:21:42",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_array$_t_address_$dyn_memory_ptr_$_t_array$_t_uint256_$dyn_memory_ptr_$returns$__$",
                         "typeString": "function (address[] memory,uint256[] memory)"
                       }
                     },
-                    "id": 10839,
+                    "id": 10896,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3200,14 +3200,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 10840,
+                  "id": 10897,
                   "nodeType": "ExpressionStatement",
                   "src": "622:45:42"
                 }
               ]
             },
             "documentation": null,
-            "id": 10842,
+            "id": 10899,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -3215,15 +3215,15 @@
             "name": "mock_add_moderators",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10783,
+              "id": 10840,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10779,
+                  "id": 10836,
                   "name": "_moderators",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10842,
+                  "scope": 10899,
                   "src": "228:21:42",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3233,7 +3233,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 10777,
+                      "id": 10834,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "228:7:42",
@@ -3242,7 +3242,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 10778,
+                    "id": 10835,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "228:9:42",
@@ -3256,10 +3256,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10782,
+                  "id": 10839,
                   "name": "_dgdStake",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10842,
+                  "scope": 10899,
                   "src": "251:19:42",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3269,7 +3269,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 10780,
+                      "id": 10837,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "251:7:42",
@@ -3278,7 +3278,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 10781,
+                    "id": 10838,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "251:9:42",
@@ -3295,12 +3295,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10784,
+              "id": 10841,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "291:0:42"
             },
-            "scope": 10904,
+            "scope": 10961,
             "src": "199:475:42",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -3308,21 +3308,21 @@
           },
           {
             "body": {
-              "id": 10902,
+              "id": 10959,
               "nodeType": "Block",
               "src": "776:329:42",
               "statements": [
                 {
                   "assignments": [
-                    10852
+                    10909
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 10852,
+                      "id": 10909,
                       "name": "_n",
                       "nodeType": "VariableDeclaration",
-                      "scope": 10903,
+                      "scope": 10960,
                       "src": "786:10:42",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -3331,7 +3331,7 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 10851,
+                        "id": 10908,
                         "name": "uint256",
                         "nodeType": "ElementaryTypeName",
                         "src": "786:7:42",
@@ -3344,23 +3344,23 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 10855,
+                  "id": 10912,
                   "initialValue": {
                     "argumentTypes": null,
                     "expression": {
                       "argumentTypes": null,
-                      "id": 10853,
+                      "id": 10910,
                       "name": "_participants",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10845,
+                      "referencedDeclaration": 10902,
                       "src": "799:13:42",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                         "typeString": "address[] memory"
                       }
                     },
-                    "id": 10854,
+                    "id": 10911,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3379,7 +3379,7 @@
                 },
                 {
                   "body": {
-                    "id": 10900,
+                    "id": 10957,
                     "nodeType": "Block",
                     "src": "862:237:42",
                     "statements": [
@@ -3391,25 +3391,25 @@
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 10869,
+                                "id": 10926,
                                 "name": "_participants",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10845,
+                                "referencedDeclaration": 10902,
                                 "src": "899:13:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                                   "typeString": "address[] memory"
                                 }
                               },
-                              "id": 10871,
+                              "id": 10928,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 10870,
+                                "id": 10927,
                                 "name": "i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10857,
+                                "referencedDeclaration": 10914,
                                 "src": "913:1:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -3437,32 +3437,32 @@
                             ],
                             "expression": {
                               "argumentTypes": null,
-                              "id": 10866,
+                              "id": 10923,
                               "name": "allParticipants",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 15546,
+                              "referencedDeclaration": 15603,
                               "src": "876:15:42",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Address_$22520_storage",
+                                "typeIdentifier": "t_struct$_Address_$22577_storage",
                                 "typeString": "struct DoublyLinkedList.Address storage ref"
                               }
                             },
-                            "id": 10868,
+                            "id": 10925,
                             "isConstant": false,
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
                             "memberName": "append",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 23903,
+                            "referencedDeclaration": 23960,
                             "src": "876:22:42",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Address_$22520_storage_ptr_$_t_address_$returns$_t_bool_$bound_to$_t_struct$_Address_$22520_storage_ptr_$",
+                              "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Address_$22577_storage_ptr_$_t_address_$returns$_t_bool_$bound_to$_t_struct$_Address_$22577_storage_ptr_$",
                               "typeString": "function (struct DoublyLinkedList.Address storage pointer,address) returns (bool)"
                             }
                           },
-                          "id": 10872,
+                          "id": 10929,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -3476,14 +3476,14 @@
                             "typeString": "bool"
                           }
                         },
-                        "id": 10873,
+                        "id": 10930,
                         "nodeType": "ExpressionStatement",
                         "src": "876:40:42"
                       },
                       {
                         "expression": {
                           "argumentTypes": null,
-                          "id": 10882,
+                          "id": 10939,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -3492,41 +3492,41 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10874,
+                              "id": 10931,
                               "name": "actualLockedDGD",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 15540,
+                              "referencedDeclaration": 15597,
                               "src": "930:15:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                                 "typeString": "mapping(address => uint256)"
                               }
                             },
-                            "id": 10878,
+                            "id": 10935,
                             "indexExpression": {
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 10875,
+                                "id": 10932,
                                 "name": "_participants",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10845,
+                                "referencedDeclaration": 10902,
                                 "src": "946:13:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                                   "typeString": "address[] memory"
                                 }
                               },
-                              "id": 10877,
+                              "id": 10934,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 10876,
+                                "id": 10933,
                                 "name": "i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10857,
+                                "referencedDeclaration": 10914,
                                 "src": "960:1:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -3561,25 +3561,25 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10879,
+                              "id": 10936,
                               "name": "_dgdStake",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10848,
+                              "referencedDeclaration": 10905,
                               "src": "966:9:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
                                 "typeString": "uint256[] memory"
                               }
                             },
-                            "id": 10881,
+                            "id": 10938,
                             "indexExpression": {
                               "argumentTypes": null,
-                              "id": 10880,
+                              "id": 10937,
                               "name": "i",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10857,
+                              "referencedDeclaration": 10914,
                               "src": "976:1:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -3603,14 +3603,14 @@
                             "typeString": "uint256"
                           }
                         },
-                        "id": 10883,
+                        "id": 10940,
                         "nodeType": "ExpressionStatement",
                         "src": "930:48:42"
                       },
                       {
                         "expression": {
                           "argumentTypes": null,
-                          "id": 10892,
+                          "id": 10949,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -3619,41 +3619,41 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10884,
+                              "id": 10941,
                               "name": "lockedDGDStake",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 15536,
+                              "referencedDeclaration": 15593,
                               "src": "992:14:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                                 "typeString": "mapping(address => uint256)"
                               }
                             },
-                            "id": 10888,
+                            "id": 10945,
                             "indexExpression": {
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 10885,
+                                "id": 10942,
                                 "name": "_participants",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10845,
+                                "referencedDeclaration": 10902,
                                 "src": "1007:13:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                                   "typeString": "address[] memory"
                                 }
                               },
-                              "id": 10887,
+                              "id": 10944,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 10886,
+                                "id": 10943,
                                 "name": "i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10857,
+                                "referencedDeclaration": 10914,
                                 "src": "1021:1:42",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -3688,25 +3688,25 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10889,
+                              "id": 10946,
                               "name": "_dgdStake",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10848,
+                              "referencedDeclaration": 10905,
                               "src": "1027:9:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
                                 "typeString": "uint256[] memory"
                               }
                             },
-                            "id": 10891,
+                            "id": 10948,
                             "indexExpression": {
                               "argumentTypes": null,
-                              "id": 10890,
+                              "id": 10947,
                               "name": "i",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10857,
+                              "referencedDeclaration": 10914,
                               "src": "1037:1:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -3730,25 +3730,25 @@
                             "typeString": "uint256"
                           }
                         },
-                        "id": 10893,
+                        "id": 10950,
                         "nodeType": "ExpressionStatement",
                         "src": "992:47:42"
                       },
                       {
                         "expression": {
                           "argumentTypes": null,
-                          "id": 10898,
+                          "id": 10955,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
                           "leftHandSide": {
                             "argumentTypes": null,
-                            "id": 10894,
+                            "id": 10951,
                             "name": "totalLockedDGDStake",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 15542,
+                            "referencedDeclaration": 15599,
                             "src": "1053:19:42",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -3761,25 +3761,25 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10895,
+                              "id": 10952,
                               "name": "_dgdStake",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10848,
+                              "referencedDeclaration": 10905,
                               "src": "1076:9:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
                                 "typeString": "uint256[] memory"
                               }
                             },
-                            "id": 10897,
+                            "id": 10954,
                             "indexExpression": {
                               "argumentTypes": null,
-                              "id": 10896,
+                              "id": 10953,
                               "name": "i",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 10857,
+                              "referencedDeclaration": 10914,
                               "src": "1086:1:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -3803,7 +3803,7 @@
                             "typeString": "uint256"
                           }
                         },
-                        "id": 10899,
+                        "id": 10956,
                         "nodeType": "ExpressionStatement",
                         "src": "1053:35:42"
                       }
@@ -3815,18 +3815,18 @@
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 10862,
+                    "id": 10919,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
                       "argumentTypes": null,
-                      "id": 10860,
+                      "id": 10917,
                       "name": "i",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10857,
+                      "referencedDeclaration": 10914,
                       "src": "849:1:42",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3837,11 +3837,11 @@
                     "operator": "<",
                     "rightExpression": {
                       "argumentTypes": null,
-                      "id": 10861,
+                      "id": 10918,
                       "name": "_n",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10852,
+                      "referencedDeclaration": 10909,
                       "src": "853:2:42",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3854,18 +3854,18 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 10901,
+                  "id": 10958,
                   "initializationExpression": {
                     "assignments": [
-                      10857
+                      10914
                     ],
                     "declarations": [
                       {
                         "constant": false,
-                        "id": 10857,
+                        "id": 10914,
                         "name": "i",
                         "nodeType": "VariableDeclaration",
-                        "scope": 10903,
+                        "scope": 10960,
                         "src": "834:9:42",
                         "stateVariable": false,
                         "storageLocation": "default",
@@ -3874,7 +3874,7 @@
                           "typeString": "uint256"
                         },
                         "typeName": {
-                          "id": 10856,
+                          "id": 10913,
                           "name": "uint256",
                           "nodeType": "ElementaryTypeName",
                           "src": "834:7:42",
@@ -3887,11 +3887,11 @@
                         "visibility": "internal"
                       }
                     ],
-                    "id": 10859,
+                    "id": 10916,
                     "initialValue": {
                       "argumentTypes": null,
                       "hexValue": "30",
-                      "id": 10858,
+                      "id": 10915,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -3912,7 +3912,7 @@
                   "loopExpression": {
                     "expression": {
                       "argumentTypes": null,
-                      "id": 10864,
+                      "id": 10921,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3923,11 +3923,11 @@
                       "src": "857:3:42",
                       "subExpression": {
                         "argumentTypes": null,
-                        "id": 10863,
+                        "id": 10920,
                         "name": "i",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10857,
+                        "referencedDeclaration": 10914,
                         "src": "857:1:42",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -3939,7 +3939,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 10865,
+                    "id": 10922,
                     "nodeType": "ExpressionStatement",
                     "src": "857:3:42"
                   },
@@ -3949,7 +3949,7 @@
               ]
             },
             "documentation": null,
-            "id": 10903,
+            "id": 10960,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -3957,15 +3957,15 @@
             "name": "mock_add_participants",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10849,
+              "id": 10906,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10845,
+                  "id": 10902,
                   "name": "_participants",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10903,
+                  "scope": 10960,
                   "src": "711:23:42",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3975,7 +3975,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 10843,
+                      "id": 10900,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "711:7:42",
@@ -3984,7 +3984,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 10844,
+                    "id": 10901,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "711:9:42",
@@ -3998,10 +3998,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10848,
+                  "id": 10905,
                   "name": "_dgdStake",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10903,
+                  "scope": 10960,
                   "src": "736:19:42",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -4011,7 +4011,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 10846,
+                      "id": 10903,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "736:7:42",
@@ -4020,7 +4020,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 10847,
+                    "id": 10904,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "736:9:42",
@@ -4037,19 +4037,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10850,
+              "id": 10907,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "776:0:42"
             },
-            "scope": 10904,
+            "scope": 10961,
             "src": "680:425:42",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 10905,
+        "scope": 10962,
         "src": "71:1036:42"
       }
     ],
@@ -4061,5 +4061,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-19T03:33:09.057Z"
+  "updatedAt": "2019-01-18T06:49:39.266Z"
 }

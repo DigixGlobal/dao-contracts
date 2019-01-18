@@ -11,14 +11,14 @@
     "absolutePath": "@digix/solidity-collections/contracts/abstract/IndexedAddressIteratorStorage.sol",
     "exportedSymbols": {
       "IndexedAddressIteratorStorage": [
-        22065
+        22122
       ]
     },
-    "id": 22066,
+    "id": 22123,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 21969,
+        "id": 22026,
         "literals": [
           "solidity",
           "^",
@@ -31,10 +31,10 @@
       {
         "absolutePath": "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol",
         "file": "../lib/DoublyLinkedList.sol",
-        "id": 21970,
+        "id": 22027,
         "nodeType": "ImportDirective",
-        "scope": 22066,
-        "sourceUnit": 25035,
+        "scope": 22123,
+        "sourceUnit": 25092,
         "src": "26:37:78",
         "symbolAliases": [],
         "unitAlias": ""
@@ -45,24 +45,24 @@
         "contractKind": "contract",
         "documentation": "@title Indexed Address IteratorStorage\n@author DigixGlobal Pte Ltd\n@notice This contract utilizes: [Doubly Linked List](/DoublyLinkedList)",
         "fullyImplemented": true,
-        "id": 22065,
+        "id": 22122,
         "linearizedBaseContracts": [
-          22065
+          22122
         ],
         "name": "IndexedAddressIteratorStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "id": 21973,
+            "id": 22030,
             "libraryName": {
               "contractScope": null,
-              "id": 21971,
+              "id": 22028,
               "name": "DoublyLinkedList",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 25034,
+              "referencedDeclaration": 25091,
               "src": "267:16:78",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DoublyLinkedList_$25034",
+                "typeIdentifier": "t_contract$_DoublyLinkedList_$25091",
                 "typeString": "library DoublyLinkedList"
               }
             },
@@ -70,38 +70,38 @@
             "src": "261:59:78",
             "typeName": {
               "contractScope": null,
-              "id": 21972,
+              "id": 22029,
               "name": "DoublyLinkedList.IndexedAddress",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 22512,
+              "referencedDeclaration": 22569,
               "src": "288:31:78",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
+                "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
                 "typeString": "struct DoublyLinkedList.IndexedAddress"
               }
             }
           },
           {
             "body": {
-              "id": 21989,
+              "id": 22046,
               "nodeType": "Block",
               "src": "751:54:78",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 21987,
+                    "id": 22044,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 21982,
+                      "id": 22039,
                       "name": "_item",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 21980,
+                      "referencedDeclaration": 22037,
                       "src": "757:5:78",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -115,11 +115,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 21985,
+                          "id": 22042,
                           "name": "_collection_index",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 21977,
+                          "referencedDeclaration": 22034,
                           "src": "782:17:78",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -136,32 +136,32 @@
                         ],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 21983,
+                          "id": 22040,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 21975,
+                          "referencedDeclaration": 22032,
                           "src": "765:5:78",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
+                            "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
                             "typeString": "struct DoublyLinkedList.IndexedAddress storage pointer"
                           }
                         },
-                        "id": 21984,
+                        "id": 22041,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "start_item",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 24267,
+                        "referencedDeclaration": 24324,
                         "src": "765:16:78",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_IndexedAddress_$22512_storage_ptr_$_t_bytes32_$returns$_t_address_$bound_to$_t_struct$_IndexedAddress_$22512_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_IndexedAddress_$22569_storage_ptr_$_t_bytes32_$returns$_t_address_$bound_to$_t_struct$_IndexedAddress_$22569_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.IndexedAddress storage pointer,bytes32) view returns (address)"
                         }
                       },
-                      "id": 21986,
+                      "id": 22043,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -181,14 +181,14 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 21988,
+                  "id": 22045,
                   "nodeType": "ExpressionStatement",
                   "src": "757:43:78"
                 }
               ]
             },
             "documentation": "@notice Reads the first item from an Indexed Address Doubly Linked List\n@param _list The source list\n@param _collection_index Index of the Collection to evaluate\n@return {\"_item\" : \"First item on the list\"}",
-            "id": 21990,
+            "id": 22047,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -196,31 +196,31 @@
             "name": "read_first_from_indexed_addresses",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 21978,
+              "id": 22035,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 21975,
+                  "id": 22032,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 21990,
+                  "scope": 22047,
                   "src": "600:45:78",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
+                    "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
                     "typeString": "struct DoublyLinkedList.IndexedAddress"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 21974,
+                    "id": 22031,
                     "name": "DoublyLinkedList.IndexedAddress",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22512,
+                    "referencedDeclaration": 22569,
                     "src": "600:31:78",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
+                      "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
                       "typeString": "struct DoublyLinkedList.IndexedAddress"
                     }
                   },
@@ -229,10 +229,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 21977,
+                  "id": 22034,
                   "name": "_collection_index",
                   "nodeType": "VariableDeclaration",
-                  "scope": 21990,
+                  "scope": 22047,
                   "src": "647:25:78",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -241,7 +241,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 21976,
+                    "id": 22033,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "647:7:78",
@@ -258,15 +258,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 21981,
+              "id": 22038,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 21980,
+                  "id": 22037,
                   "name": "_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 21990,
+                  "scope": 22047,
                   "src": "734:13:78",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -275,7 +275,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 21979,
+                    "id": 22036,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "734:7:78",
@@ -290,739 +290,8 @@
               ],
               "src": "733:15:78"
             },
-            "scope": 22065,
+            "scope": 22122,
             "src": "557:248:78",
-            "stateMutability": "view",
-            "superFunction": null,
-            "visibility": "internal"
-          },
-          {
-            "body": {
-              "id": 22006,
-              "nodeType": "Block",
-              "src": "1235:52:78",
-              "statements": [
-                {
-                  "expression": {
-                    "argumentTypes": null,
-                    "id": 22004,
-                    "isConstant": false,
-                    "isLValue": false,
-                    "isPure": false,
-                    "lValueRequested": false,
-                    "leftHandSide": {
-                      "argumentTypes": null,
-                      "id": 21999,
-                      "name": "_item",
-                      "nodeType": "Identifier",
-                      "overloadedDeclarations": [],
-                      "referencedDeclaration": 21997,
-                      "src": "1241:5:78",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_address",
-                        "typeString": "address"
-                      }
-                    },
-                    "nodeType": "Assignment",
-                    "operator": "=",
-                    "rightHandSide": {
-                      "argumentTypes": null,
-                      "arguments": [
-                        {
-                          "argumentTypes": null,
-                          "id": 22002,
-                          "name": "_collection_index",
-                          "nodeType": "Identifier",
-                          "overloadedDeclarations": [],
-                          "referencedDeclaration": 21994,
-                          "src": "1264:17:78",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_bytes32",
-                            "typeString": "bytes32"
-                          }
-                        }
-                      ],
-                      "expression": {
-                        "argumentTypes": [
-                          {
-                            "typeIdentifier": "t_bytes32",
-                            "typeString": "bytes32"
-                          }
-                        ],
-                        "expression": {
-                          "argumentTypes": null,
-                          "id": 22000,
-                          "name": "_list",
-                          "nodeType": "Identifier",
-                          "overloadedDeclarations": [],
-                          "referencedDeclaration": 21992,
-                          "src": "1249:5:78",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
-                            "typeString": "struct DoublyLinkedList.IndexedAddress storage pointer"
-                          }
-                        },
-                        "id": 22001,
-                        "isConstant": false,
-                        "isLValue": true,
-                        "isPure": false,
-                        "lValueRequested": false,
-                        "memberName": "end_item",
-                        "nodeType": "MemberAccess",
-                        "referencedDeclaration": 24307,
-                        "src": "1249:14:78",
-                        "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_IndexedAddress_$22512_storage_ptr_$_t_bytes32_$returns$_t_address_$bound_to$_t_struct$_IndexedAddress_$22512_storage_ptr_$",
-                          "typeString": "function (struct DoublyLinkedList.IndexedAddress storage pointer,bytes32) view returns (address)"
-                        }
-                      },
-                      "id": 22003,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": false,
-                      "kind": "functionCall",
-                      "lValueRequested": false,
-                      "names": [],
-                      "nodeType": "FunctionCall",
-                      "src": "1249:33:78",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_address",
-                        "typeString": "address"
-                      }
-                    },
-                    "src": "1241:41:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "id": 22005,
-                  "nodeType": "ExpressionStatement",
-                  "src": "1241:41:78"
-                }
-              ]
-            },
-            "documentation": "@notice Reads the last item from an Indexed Address Doubly Linked list\n@param _list The source list\n@param _collection_index Index of the Collection to evaluate\n@return {\"_item\" : \"First item on the list\"}",
-            "id": 22007,
-            "implemented": true,
-            "isConstructor": false,
-            "isDeclaredConst": true,
-            "modifiers": [],
-            "name": "read_last_from_indexed_addresses",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 21995,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 21992,
-                  "name": "_list",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22007,
-                  "src": "1084:45:78",
-                  "stateVariable": false,
-                  "storageLocation": "storage",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
-                    "typeString": "struct DoublyLinkedList.IndexedAddress"
-                  },
-                  "typeName": {
-                    "contractScope": null,
-                    "id": 21991,
-                    "name": "DoublyLinkedList.IndexedAddress",
-                    "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22512,
-                    "src": "1084:31:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
-                      "typeString": "struct DoublyLinkedList.IndexedAddress"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 21994,
-                  "name": "_collection_index",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22007,
-                  "src": "1131:25:78",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_bytes32",
-                    "typeString": "bytes32"
-                  },
-                  "typeName": {
-                    "id": 21993,
-                    "name": "bytes32",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "1131:7:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_bytes32",
-                      "typeString": "bytes32"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "1083:74:78"
-            },
-            "payable": false,
-            "returnParameters": {
-              "id": 21998,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 21997,
-                  "name": "_item",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22007,
-                  "src": "1218:13:78",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 21996,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "1218:7:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "1217:15:78"
-            },
-            "scope": 22065,
-            "src": "1042:245:78",
-            "stateMutability": "view",
-            "superFunction": null,
-            "visibility": "internal"
-          },
-          {
-            "body": {
-              "id": 22026,
-              "nodeType": "Block",
-              "src": "1843:68:78",
-              "statements": [
-                {
-                  "expression": {
-                    "argumentTypes": null,
-                    "id": 22024,
-                    "isConstant": false,
-                    "isLValue": false,
-                    "isPure": false,
-                    "lValueRequested": false,
-                    "leftHandSide": {
-                      "argumentTypes": null,
-                      "id": 22018,
-                      "name": "_item",
-                      "nodeType": "Identifier",
-                      "overloadedDeclarations": [],
-                      "referencedDeclaration": 22016,
-                      "src": "1849:5:78",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_address",
-                        "typeString": "address"
-                      }
-                    },
-                    "nodeType": "Assignment",
-                    "operator": "=",
-                    "rightHandSide": {
-                      "argumentTypes": null,
-                      "arguments": [
-                        {
-                          "argumentTypes": null,
-                          "id": 22021,
-                          "name": "_collection_index",
-                          "nodeType": "Identifier",
-                          "overloadedDeclarations": [],
-                          "referencedDeclaration": 22011,
-                          "src": "1873:17:78",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_bytes32",
-                            "typeString": "bytes32"
-                          }
-                        },
-                        {
-                          "argumentTypes": null,
-                          "id": 22022,
-                          "name": "_current_item",
-                          "nodeType": "Identifier",
-                          "overloadedDeclarations": [],
-                          "referencedDeclaration": 22013,
-                          "src": "1892:13:78",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_address",
-                            "typeString": "address"
-                          }
-                        }
-                      ],
-                      "expression": {
-                        "argumentTypes": [
-                          {
-                            "typeIdentifier": "t_bytes32",
-                            "typeString": "bytes32"
-                          },
-                          {
-                            "typeIdentifier": "t_address",
-                            "typeString": "address"
-                          }
-                        ],
-                        "expression": {
-                          "argumentTypes": null,
-                          "id": 22019,
-                          "name": "_list",
-                          "nodeType": "Identifier",
-                          "overloadedDeclarations": [],
-                          "referencedDeclaration": 22009,
-                          "src": "1857:5:78",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
-                            "typeString": "struct DoublyLinkedList.IndexedAddress storage pointer"
-                          }
-                        },
-                        "id": 22020,
-                        "isConstant": false,
-                        "isLValue": true,
-                        "isPure": false,
-                        "lValueRequested": false,
-                        "memberName": "next_item",
-                        "nodeType": "MemberAccess",
-                        "referencedDeclaration": 24449,
-                        "src": "1857:15:78",
-                        "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_IndexedAddress_$22512_storage_ptr_$_t_bytes32_$_t_address_$returns$_t_address_$bound_to$_t_struct$_IndexedAddress_$22512_storage_ptr_$",
-                          "typeString": "function (struct DoublyLinkedList.IndexedAddress storage pointer,bytes32,address) view returns (address)"
-                        }
-                      },
-                      "id": 22023,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": false,
-                      "kind": "functionCall",
-                      "lValueRequested": false,
-                      "names": [],
-                      "nodeType": "FunctionCall",
-                      "src": "1857:49:78",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_address",
-                        "typeString": "address"
-                      }
-                    },
-                    "src": "1849:57:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "id": 22025,
-                  "nodeType": "ExpressionStatement",
-                  "src": "1849:57:78"
-                }
-              ]
-            },
-            "documentation": "@notice Reads the next item from an Indexed Address Doubly Linked List based on the specified `_current_item`\n@param _list The source list\n@param _collection_index Index of the Collection to evaluate\n@param _current_item The current item to use as base line\n@return {\"_item\": \"The next item on the list\"}",
-            "id": 22027,
-            "implemented": true,
-            "isConstructor": false,
-            "isDeclaredConst": true,
-            "modifiers": [],
-            "name": "read_next_from_indexed_addresses",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 22014,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 22009,
-                  "name": "_list",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22027,
-                  "src": "1669:45:78",
-                  "stateVariable": false,
-                  "storageLocation": "storage",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
-                    "typeString": "struct DoublyLinkedList.IndexedAddress"
-                  },
-                  "typeName": {
-                    "contractScope": null,
-                    "id": 22008,
-                    "name": "DoublyLinkedList.IndexedAddress",
-                    "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22512,
-                    "src": "1669:31:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
-                      "typeString": "struct DoublyLinkedList.IndexedAddress"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 22011,
-                  "name": "_collection_index",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22027,
-                  "src": "1716:25:78",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_bytes32",
-                    "typeString": "bytes32"
-                  },
-                  "typeName": {
-                    "id": 22010,
-                    "name": "bytes32",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "1716:7:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_bytes32",
-                      "typeString": "bytes32"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 22013,
-                  "name": "_current_item",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22027,
-                  "src": "1743:21:78",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 22012,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "1743:7:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "1668:97:78"
-            },
-            "payable": false,
-            "returnParameters": {
-              "id": 22017,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 22016,
-                  "name": "_item",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22027,
-                  "src": "1826:13:78",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 22015,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "1826:7:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "1825:15:78"
-            },
-            "scope": 22065,
-            "src": "1627:284:78",
-            "stateMutability": "view",
-            "superFunction": null,
-            "visibility": "internal"
-          },
-          {
-            "body": {
-              "id": 22046,
-              "nodeType": "Block",
-              "src": "2478:72:78",
-              "statements": [
-                {
-                  "expression": {
-                    "argumentTypes": null,
-                    "id": 22044,
-                    "isConstant": false,
-                    "isLValue": false,
-                    "isPure": false,
-                    "lValueRequested": false,
-                    "leftHandSide": {
-                      "argumentTypes": null,
-                      "id": 22038,
-                      "name": "_item",
-                      "nodeType": "Identifier",
-                      "overloadedDeclarations": [],
-                      "referencedDeclaration": 22036,
-                      "src": "2484:5:78",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_address",
-                        "typeString": "address"
-                      }
-                    },
-                    "nodeType": "Assignment",
-                    "operator": "=",
-                    "rightHandSide": {
-                      "argumentTypes": null,
-                      "arguments": [
-                        {
-                          "argumentTypes": null,
-                          "id": 22041,
-                          "name": "_collection_index",
-                          "nodeType": "Identifier",
-                          "overloadedDeclarations": [],
-                          "referencedDeclaration": 22031,
-                          "src": "2512:17:78",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_bytes32",
-                            "typeString": "bytes32"
-                          }
-                        },
-                        {
-                          "argumentTypes": null,
-                          "id": 22042,
-                          "name": "_current_item",
-                          "nodeType": "Identifier",
-                          "overloadedDeclarations": [],
-                          "referencedDeclaration": 22033,
-                          "src": "2531:13:78",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_address",
-                            "typeString": "address"
-                          }
-                        }
-                      ],
-                      "expression": {
-                        "argumentTypes": [
-                          {
-                            "typeIdentifier": "t_bytes32",
-                            "typeString": "bytes32"
-                          },
-                          {
-                            "typeIdentifier": "t_address",
-                            "typeString": "address"
-                          }
-                        ],
-                        "expression": {
-                          "argumentTypes": null,
-                          "id": 22039,
-                          "name": "_list",
-                          "nodeType": "Identifier",
-                          "overloadedDeclarations": [],
-                          "referencedDeclaration": 22029,
-                          "src": "2492:5:78",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
-                            "typeString": "struct DoublyLinkedList.IndexedAddress storage pointer"
-                          }
-                        },
-                        "id": 22040,
-                        "isConstant": false,
-                        "isLValue": true,
-                        "isPure": false,
-                        "lValueRequested": false,
-                        "memberName": "previous_item",
-                        "nodeType": "MemberAccess",
-                        "referencedDeclaration": 24401,
-                        "src": "2492:19:78",
-                        "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_IndexedAddress_$22512_storage_ptr_$_t_bytes32_$_t_address_$returns$_t_address_$bound_to$_t_struct$_IndexedAddress_$22512_storage_ptr_$",
-                          "typeString": "function (struct DoublyLinkedList.IndexedAddress storage pointer,bytes32,address) view returns (address)"
-                        }
-                      },
-                      "id": 22043,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": false,
-                      "kind": "functionCall",
-                      "lValueRequested": false,
-                      "names": [],
-                      "nodeType": "FunctionCall",
-                      "src": "2492:53:78",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_address",
-                        "typeString": "address"
-                      }
-                    },
-                    "src": "2484:61:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "id": 22045,
-                  "nodeType": "ExpressionStatement",
-                  "src": "2484:61:78"
-                }
-              ]
-            },
-            "documentation": "@notice Reads the previous item from an Index Address Doubly Linked List based on the specified `_current_item`\n@param _list The source list\n@param _collection_index Index of the Collection to evaluate\n@param _current_item The current item to use as base line\n@return {\"_item\" : \"The previous item on the list\"}",
-            "id": 22047,
-            "implemented": true,
-            "isConstructor": false,
-            "isDeclaredConst": true,
-            "modifiers": [],
-            "name": "read_previous_from_indexed_addresses",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 22034,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 22029,
-                  "name": "_list",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22047,
-                  "src": "2304:45:78",
-                  "stateVariable": false,
-                  "storageLocation": "storage",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
-                    "typeString": "struct DoublyLinkedList.IndexedAddress"
-                  },
-                  "typeName": {
-                    "contractScope": null,
-                    "id": 22028,
-                    "name": "DoublyLinkedList.IndexedAddress",
-                    "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22512,
-                    "src": "2304:31:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
-                      "typeString": "struct DoublyLinkedList.IndexedAddress"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 22031,
-                  "name": "_collection_index",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22047,
-                  "src": "2351:25:78",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_bytes32",
-                    "typeString": "bytes32"
-                  },
-                  "typeName": {
-                    "id": 22030,
-                    "name": "bytes32",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "2351:7:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_bytes32",
-                      "typeString": "bytes32"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 22033,
-                  "name": "_current_item",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22047,
-                  "src": "2378:21:78",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 22032,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "2378:7:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "2303:97:78"
-            },
-            "payable": false,
-            "returnParameters": {
-              "id": 22037,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 22036,
-                  "name": "_item",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22047,
-                  "src": "2461:13:78",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 22035,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "2461:7:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "2460:15:78"
-            },
-            "scope": 22065,
-            "src": "2258:292:78",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "internal"
@@ -1031,7 +300,7 @@
             "body": {
               "id": 22063,
               "nodeType": "Block",
-              "src": "2999:50:78",
+              "src": "1235:52:78",
               "statements": [
                 {
                   "expression": {
@@ -1044,14 +313,14 @@
                     "leftHandSide": {
                       "argumentTypes": null,
                       "id": 22056,
-                      "name": "_count",
+                      "name": "_item",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 22054,
-                      "src": "3005:6:78",
+                      "src": "1241:5:78",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_uint256",
-                        "typeString": "uint256"
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
                       }
                     },
                     "nodeType": "Assignment",
@@ -1066,7 +335,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 22051,
-                          "src": "3026:17:78",
+                          "src": "1264:17:78",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
                             "typeString": "bytes32"
@@ -1087,9 +356,9 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 22049,
-                          "src": "3014:5:78",
+                          "src": "1249:5:78",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
+                            "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
                             "typeString": "struct DoublyLinkedList.IndexedAddress storage pointer"
                           }
                         },
@@ -1098,16 +367,747 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberName": "total",
+                        "memberName": "end_item",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 24227,
-                        "src": "3014:11:78",
+                        "referencedDeclaration": 24364,
+                        "src": "1249:14:78",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_IndexedAddress_$22512_storage_ptr_$_t_bytes32_$returns$_t_uint256_$bound_to$_t_struct$_IndexedAddress_$22512_storage_ptr_$",
-                          "typeString": "function (struct DoublyLinkedList.IndexedAddress storage pointer,bytes32) view returns (uint256)"
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_IndexedAddress_$22569_storage_ptr_$_t_bytes32_$returns$_t_address_$bound_to$_t_struct$_IndexedAddress_$22569_storage_ptr_$",
+                          "typeString": "function (struct DoublyLinkedList.IndexedAddress storage pointer,bytes32) view returns (address)"
                         }
                       },
                       "id": 22060,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1249:33:78",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "1241:41:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 22062,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1241:41:78"
+                }
+              ]
+            },
+            "documentation": "@notice Reads the last item from an Indexed Address Doubly Linked list\n@param _list The source list\n@param _collection_index Index of the Collection to evaluate\n@return {\"_item\" : \"First item on the list\"}",
+            "id": 22064,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "read_last_from_indexed_addresses",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 22052,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 22049,
+                  "name": "_list",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22064,
+                  "src": "1084:45:78",
+                  "stateVariable": false,
+                  "storageLocation": "storage",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
+                    "typeString": "struct DoublyLinkedList.IndexedAddress"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 22048,
+                    "name": "DoublyLinkedList.IndexedAddress",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 22569,
+                    "src": "1084:31:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
+                      "typeString": "struct DoublyLinkedList.IndexedAddress"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 22051,
+                  "name": "_collection_index",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22064,
+                  "src": "1131:25:78",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 22050,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1131:7:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1083:74:78"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 22055,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 22054,
+                  "name": "_item",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22064,
+                  "src": "1218:13:78",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 22053,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1218:7:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1217:15:78"
+            },
+            "scope": 22122,
+            "src": "1042:245:78",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 22083,
+              "nodeType": "Block",
+              "src": "1843:68:78",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 22081,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 22075,
+                      "name": "_item",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 22073,
+                      "src": "1849:5:78",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 22078,
+                          "name": "_collection_index",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 22068,
+                          "src": "1873:17:78",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bytes32",
+                            "typeString": "bytes32"
+                          }
+                        },
+                        {
+                          "argumentTypes": null,
+                          "id": 22079,
+                          "name": "_current_item",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 22070,
+                          "src": "1892:13:78",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_bytes32",
+                            "typeString": "bytes32"
+                          },
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 22076,
+                          "name": "_list",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 22066,
+                          "src": "1857:5:78",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
+                            "typeString": "struct DoublyLinkedList.IndexedAddress storage pointer"
+                          }
+                        },
+                        "id": 22077,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "next_item",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 24506,
+                        "src": "1857:15:78",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_IndexedAddress_$22569_storage_ptr_$_t_bytes32_$_t_address_$returns$_t_address_$bound_to$_t_struct$_IndexedAddress_$22569_storage_ptr_$",
+                          "typeString": "function (struct DoublyLinkedList.IndexedAddress storage pointer,bytes32,address) view returns (address)"
+                        }
+                      },
+                      "id": 22080,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1857:49:78",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "1849:57:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 22082,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1849:57:78"
+                }
+              ]
+            },
+            "documentation": "@notice Reads the next item from an Indexed Address Doubly Linked List based on the specified `_current_item`\n@param _list The source list\n@param _collection_index Index of the Collection to evaluate\n@param _current_item The current item to use as base line\n@return {\"_item\": \"The next item on the list\"}",
+            "id": 22084,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "read_next_from_indexed_addresses",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 22071,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 22066,
+                  "name": "_list",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22084,
+                  "src": "1669:45:78",
+                  "stateVariable": false,
+                  "storageLocation": "storage",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
+                    "typeString": "struct DoublyLinkedList.IndexedAddress"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 22065,
+                    "name": "DoublyLinkedList.IndexedAddress",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 22569,
+                    "src": "1669:31:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
+                      "typeString": "struct DoublyLinkedList.IndexedAddress"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 22068,
+                  "name": "_collection_index",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22084,
+                  "src": "1716:25:78",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 22067,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1716:7:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 22070,
+                  "name": "_current_item",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22084,
+                  "src": "1743:21:78",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 22069,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1743:7:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1668:97:78"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 22074,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 22073,
+                  "name": "_item",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22084,
+                  "src": "1826:13:78",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 22072,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1826:7:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1825:15:78"
+            },
+            "scope": 22122,
+            "src": "1627:284:78",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 22103,
+              "nodeType": "Block",
+              "src": "2478:72:78",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 22101,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 22095,
+                      "name": "_item",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 22093,
+                      "src": "2484:5:78",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 22098,
+                          "name": "_collection_index",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 22088,
+                          "src": "2512:17:78",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bytes32",
+                            "typeString": "bytes32"
+                          }
+                        },
+                        {
+                          "argumentTypes": null,
+                          "id": 22099,
+                          "name": "_current_item",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 22090,
+                          "src": "2531:13:78",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_bytes32",
+                            "typeString": "bytes32"
+                          },
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 22096,
+                          "name": "_list",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 22086,
+                          "src": "2492:5:78",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
+                            "typeString": "struct DoublyLinkedList.IndexedAddress storage pointer"
+                          }
+                        },
+                        "id": 22097,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "previous_item",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 24458,
+                        "src": "2492:19:78",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_IndexedAddress_$22569_storage_ptr_$_t_bytes32_$_t_address_$returns$_t_address_$bound_to$_t_struct$_IndexedAddress_$22569_storage_ptr_$",
+                          "typeString": "function (struct DoublyLinkedList.IndexedAddress storage pointer,bytes32,address) view returns (address)"
+                        }
+                      },
+                      "id": 22100,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "2492:53:78",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "2484:61:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 22102,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2484:61:78"
+                }
+              ]
+            },
+            "documentation": "@notice Reads the previous item from an Index Address Doubly Linked List based on the specified `_current_item`\n@param _list The source list\n@param _collection_index Index of the Collection to evaluate\n@param _current_item The current item to use as base line\n@return {\"_item\" : \"The previous item on the list\"}",
+            "id": 22104,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "read_previous_from_indexed_addresses",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 22091,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 22086,
+                  "name": "_list",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22104,
+                  "src": "2304:45:78",
+                  "stateVariable": false,
+                  "storageLocation": "storage",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
+                    "typeString": "struct DoublyLinkedList.IndexedAddress"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 22085,
+                    "name": "DoublyLinkedList.IndexedAddress",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 22569,
+                    "src": "2304:31:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
+                      "typeString": "struct DoublyLinkedList.IndexedAddress"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 22088,
+                  "name": "_collection_index",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22104,
+                  "src": "2351:25:78",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 22087,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2351:7:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 22090,
+                  "name": "_current_item",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22104,
+                  "src": "2378:21:78",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 22089,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2378:7:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2303:97:78"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 22094,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 22093,
+                  "name": "_item",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22104,
+                  "src": "2461:13:78",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 22092,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2461:7:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2460:15:78"
+            },
+            "scope": 22122,
+            "src": "2258:292:78",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 22120,
+              "nodeType": "Block",
+              "src": "2999:50:78",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 22118,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 22113,
+                      "name": "_count",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 22111,
+                      "src": "3005:6:78",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 22116,
+                          "name": "_collection_index",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 22108,
+                          "src": "3026:17:78",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bytes32",
+                            "typeString": "bytes32"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_bytes32",
+                            "typeString": "bytes32"
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 22114,
+                          "name": "_list",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 22106,
+                          "src": "3014:5:78",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
+                            "typeString": "struct DoublyLinkedList.IndexedAddress storage pointer"
+                          }
+                        },
+                        "id": 22115,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "total",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 24284,
+                        "src": "3014:11:78",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_IndexedAddress_$22569_storage_ptr_$_t_bytes32_$returns$_t_uint256_$bound_to$_t_struct$_IndexedAddress_$22569_storage_ptr_$",
+                          "typeString": "function (struct DoublyLinkedList.IndexedAddress storage pointer,bytes32) view returns (uint256)"
+                        }
+                      },
+                      "id": 22117,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1127,14 +1127,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 22062,
+                  "id": 22119,
                   "nodeType": "ExpressionStatement",
                   "src": "3005:39:78"
                 }
               ]
             },
             "documentation": "@notice Reads the total number of items in an Indexed Address Doubly Linked List\n@param _list  The source list\n@param _collection_index Index of the Collection to evaluate\n@return {\"_count\": \"Length of the Doubly Linked list\"}",
-            "id": 22064,
+            "id": 22121,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1142,31 +1142,31 @@
             "name": "read_total_indexed_addresses",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 22052,
+              "id": 22109,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22049,
+                  "id": 22106,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22064,
+                  "scope": 22121,
                   "src": "2847:45:78",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
+                    "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
                     "typeString": "struct DoublyLinkedList.IndexedAddress"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 22048,
+                    "id": 22105,
                     "name": "DoublyLinkedList.IndexedAddress",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22512,
+                    "referencedDeclaration": 22569,
                     "src": "2847:31:78",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
+                      "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
                       "typeString": "struct DoublyLinkedList.IndexedAddress"
                     }
                   },
@@ -1175,10 +1175,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 22051,
+                  "id": 22108,
                   "name": "_collection_index",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22064,
+                  "scope": 22121,
                   "src": "2894:25:78",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1187,7 +1187,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 22050,
+                    "id": 22107,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "2894:7:78",
@@ -1204,15 +1204,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22055,
+              "id": 22112,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22054,
+                  "id": 22111,
                   "name": "_count",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22064,
+                  "scope": 22121,
                   "src": "2981:14:78",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1221,7 +1221,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 22053,
+                    "id": 22110,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "2981:7:78",
@@ -1236,14 +1236,14 @@
               ],
               "src": "2980:16:78"
             },
-            "scope": 22065,
+            "scope": 22122,
             "src": "2809:240:78",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "internal"
           }
         ],
-        "scope": 22066,
+        "scope": 22123,
         "src": "217:2835:78"
       }
     ],
@@ -1253,14 +1253,14 @@
     "absolutePath": "@digix/solidity-collections/contracts/abstract/IndexedAddressIteratorStorage.sol",
     "exportedSymbols": {
       "IndexedAddressIteratorStorage": [
-        22065
+        22122
       ]
     },
-    "id": 22066,
+    "id": 22123,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 21969,
+        "id": 22026,
         "literals": [
           "solidity",
           "^",
@@ -1273,10 +1273,10 @@
       {
         "absolutePath": "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol",
         "file": "../lib/DoublyLinkedList.sol",
-        "id": 21970,
+        "id": 22027,
         "nodeType": "ImportDirective",
-        "scope": 22066,
-        "sourceUnit": 25035,
+        "scope": 22123,
+        "sourceUnit": 25092,
         "src": "26:37:78",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1287,24 +1287,24 @@
         "contractKind": "contract",
         "documentation": "@title Indexed Address IteratorStorage\n@author DigixGlobal Pte Ltd\n@notice This contract utilizes: [Doubly Linked List](/DoublyLinkedList)",
         "fullyImplemented": true,
-        "id": 22065,
+        "id": 22122,
         "linearizedBaseContracts": [
-          22065
+          22122
         ],
         "name": "IndexedAddressIteratorStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "id": 21973,
+            "id": 22030,
             "libraryName": {
               "contractScope": null,
-              "id": 21971,
+              "id": 22028,
               "name": "DoublyLinkedList",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 25034,
+              "referencedDeclaration": 25091,
               "src": "267:16:78",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DoublyLinkedList_$25034",
+                "typeIdentifier": "t_contract$_DoublyLinkedList_$25091",
                 "typeString": "library DoublyLinkedList"
               }
             },
@@ -1312,38 +1312,38 @@
             "src": "261:59:78",
             "typeName": {
               "contractScope": null,
-              "id": 21972,
+              "id": 22029,
               "name": "DoublyLinkedList.IndexedAddress",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 22512,
+              "referencedDeclaration": 22569,
               "src": "288:31:78",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
+                "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
                 "typeString": "struct DoublyLinkedList.IndexedAddress"
               }
             }
           },
           {
             "body": {
-              "id": 21989,
+              "id": 22046,
               "nodeType": "Block",
               "src": "751:54:78",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 21987,
+                    "id": 22044,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 21982,
+                      "id": 22039,
                       "name": "_item",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 21980,
+                      "referencedDeclaration": 22037,
                       "src": "757:5:78",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -1357,11 +1357,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 21985,
+                          "id": 22042,
                           "name": "_collection_index",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 21977,
+                          "referencedDeclaration": 22034,
                           "src": "782:17:78",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -1378,32 +1378,32 @@
                         ],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 21983,
+                          "id": 22040,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 21975,
+                          "referencedDeclaration": 22032,
                           "src": "765:5:78",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
+                            "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
                             "typeString": "struct DoublyLinkedList.IndexedAddress storage pointer"
                           }
                         },
-                        "id": 21984,
+                        "id": 22041,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "start_item",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 24267,
+                        "referencedDeclaration": 24324,
                         "src": "765:16:78",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_IndexedAddress_$22512_storage_ptr_$_t_bytes32_$returns$_t_address_$bound_to$_t_struct$_IndexedAddress_$22512_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_IndexedAddress_$22569_storage_ptr_$_t_bytes32_$returns$_t_address_$bound_to$_t_struct$_IndexedAddress_$22569_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.IndexedAddress storage pointer,bytes32) view returns (address)"
                         }
                       },
-                      "id": 21986,
+                      "id": 22043,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1423,14 +1423,14 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 21988,
+                  "id": 22045,
                   "nodeType": "ExpressionStatement",
                   "src": "757:43:78"
                 }
               ]
             },
             "documentation": "@notice Reads the first item from an Indexed Address Doubly Linked List\n@param _list The source list\n@param _collection_index Index of the Collection to evaluate\n@return {\"_item\" : \"First item on the list\"}",
-            "id": 21990,
+            "id": 22047,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1438,31 +1438,31 @@
             "name": "read_first_from_indexed_addresses",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 21978,
+              "id": 22035,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 21975,
+                  "id": 22032,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 21990,
+                  "scope": 22047,
                   "src": "600:45:78",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
+                    "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
                     "typeString": "struct DoublyLinkedList.IndexedAddress"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 21974,
+                    "id": 22031,
                     "name": "DoublyLinkedList.IndexedAddress",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22512,
+                    "referencedDeclaration": 22569,
                     "src": "600:31:78",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
+                      "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
                       "typeString": "struct DoublyLinkedList.IndexedAddress"
                     }
                   },
@@ -1471,10 +1471,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 21977,
+                  "id": 22034,
                   "name": "_collection_index",
                   "nodeType": "VariableDeclaration",
-                  "scope": 21990,
+                  "scope": 22047,
                   "src": "647:25:78",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1483,7 +1483,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 21976,
+                    "id": 22033,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "647:7:78",
@@ -1500,15 +1500,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 21981,
+              "id": 22038,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 21980,
+                  "id": 22037,
                   "name": "_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 21990,
+                  "scope": 22047,
                   "src": "734:13:78",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1517,7 +1517,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 21979,
+                    "id": 22036,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "734:7:78",
@@ -1532,739 +1532,8 @@
               ],
               "src": "733:15:78"
             },
-            "scope": 22065,
+            "scope": 22122,
             "src": "557:248:78",
-            "stateMutability": "view",
-            "superFunction": null,
-            "visibility": "internal"
-          },
-          {
-            "body": {
-              "id": 22006,
-              "nodeType": "Block",
-              "src": "1235:52:78",
-              "statements": [
-                {
-                  "expression": {
-                    "argumentTypes": null,
-                    "id": 22004,
-                    "isConstant": false,
-                    "isLValue": false,
-                    "isPure": false,
-                    "lValueRequested": false,
-                    "leftHandSide": {
-                      "argumentTypes": null,
-                      "id": 21999,
-                      "name": "_item",
-                      "nodeType": "Identifier",
-                      "overloadedDeclarations": [],
-                      "referencedDeclaration": 21997,
-                      "src": "1241:5:78",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_address",
-                        "typeString": "address"
-                      }
-                    },
-                    "nodeType": "Assignment",
-                    "operator": "=",
-                    "rightHandSide": {
-                      "argumentTypes": null,
-                      "arguments": [
-                        {
-                          "argumentTypes": null,
-                          "id": 22002,
-                          "name": "_collection_index",
-                          "nodeType": "Identifier",
-                          "overloadedDeclarations": [],
-                          "referencedDeclaration": 21994,
-                          "src": "1264:17:78",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_bytes32",
-                            "typeString": "bytes32"
-                          }
-                        }
-                      ],
-                      "expression": {
-                        "argumentTypes": [
-                          {
-                            "typeIdentifier": "t_bytes32",
-                            "typeString": "bytes32"
-                          }
-                        ],
-                        "expression": {
-                          "argumentTypes": null,
-                          "id": 22000,
-                          "name": "_list",
-                          "nodeType": "Identifier",
-                          "overloadedDeclarations": [],
-                          "referencedDeclaration": 21992,
-                          "src": "1249:5:78",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
-                            "typeString": "struct DoublyLinkedList.IndexedAddress storage pointer"
-                          }
-                        },
-                        "id": 22001,
-                        "isConstant": false,
-                        "isLValue": true,
-                        "isPure": false,
-                        "lValueRequested": false,
-                        "memberName": "end_item",
-                        "nodeType": "MemberAccess",
-                        "referencedDeclaration": 24307,
-                        "src": "1249:14:78",
-                        "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_IndexedAddress_$22512_storage_ptr_$_t_bytes32_$returns$_t_address_$bound_to$_t_struct$_IndexedAddress_$22512_storage_ptr_$",
-                          "typeString": "function (struct DoublyLinkedList.IndexedAddress storage pointer,bytes32) view returns (address)"
-                        }
-                      },
-                      "id": 22003,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": false,
-                      "kind": "functionCall",
-                      "lValueRequested": false,
-                      "names": [],
-                      "nodeType": "FunctionCall",
-                      "src": "1249:33:78",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_address",
-                        "typeString": "address"
-                      }
-                    },
-                    "src": "1241:41:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "id": 22005,
-                  "nodeType": "ExpressionStatement",
-                  "src": "1241:41:78"
-                }
-              ]
-            },
-            "documentation": "@notice Reads the last item from an Indexed Address Doubly Linked list\n@param _list The source list\n@param _collection_index Index of the Collection to evaluate\n@return {\"_item\" : \"First item on the list\"}",
-            "id": 22007,
-            "implemented": true,
-            "isConstructor": false,
-            "isDeclaredConst": true,
-            "modifiers": [],
-            "name": "read_last_from_indexed_addresses",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 21995,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 21992,
-                  "name": "_list",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22007,
-                  "src": "1084:45:78",
-                  "stateVariable": false,
-                  "storageLocation": "storage",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
-                    "typeString": "struct DoublyLinkedList.IndexedAddress"
-                  },
-                  "typeName": {
-                    "contractScope": null,
-                    "id": 21991,
-                    "name": "DoublyLinkedList.IndexedAddress",
-                    "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22512,
-                    "src": "1084:31:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
-                      "typeString": "struct DoublyLinkedList.IndexedAddress"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 21994,
-                  "name": "_collection_index",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22007,
-                  "src": "1131:25:78",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_bytes32",
-                    "typeString": "bytes32"
-                  },
-                  "typeName": {
-                    "id": 21993,
-                    "name": "bytes32",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "1131:7:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_bytes32",
-                      "typeString": "bytes32"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "1083:74:78"
-            },
-            "payable": false,
-            "returnParameters": {
-              "id": 21998,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 21997,
-                  "name": "_item",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22007,
-                  "src": "1218:13:78",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 21996,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "1218:7:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "1217:15:78"
-            },
-            "scope": 22065,
-            "src": "1042:245:78",
-            "stateMutability": "view",
-            "superFunction": null,
-            "visibility": "internal"
-          },
-          {
-            "body": {
-              "id": 22026,
-              "nodeType": "Block",
-              "src": "1843:68:78",
-              "statements": [
-                {
-                  "expression": {
-                    "argumentTypes": null,
-                    "id": 22024,
-                    "isConstant": false,
-                    "isLValue": false,
-                    "isPure": false,
-                    "lValueRequested": false,
-                    "leftHandSide": {
-                      "argumentTypes": null,
-                      "id": 22018,
-                      "name": "_item",
-                      "nodeType": "Identifier",
-                      "overloadedDeclarations": [],
-                      "referencedDeclaration": 22016,
-                      "src": "1849:5:78",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_address",
-                        "typeString": "address"
-                      }
-                    },
-                    "nodeType": "Assignment",
-                    "operator": "=",
-                    "rightHandSide": {
-                      "argumentTypes": null,
-                      "arguments": [
-                        {
-                          "argumentTypes": null,
-                          "id": 22021,
-                          "name": "_collection_index",
-                          "nodeType": "Identifier",
-                          "overloadedDeclarations": [],
-                          "referencedDeclaration": 22011,
-                          "src": "1873:17:78",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_bytes32",
-                            "typeString": "bytes32"
-                          }
-                        },
-                        {
-                          "argumentTypes": null,
-                          "id": 22022,
-                          "name": "_current_item",
-                          "nodeType": "Identifier",
-                          "overloadedDeclarations": [],
-                          "referencedDeclaration": 22013,
-                          "src": "1892:13:78",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_address",
-                            "typeString": "address"
-                          }
-                        }
-                      ],
-                      "expression": {
-                        "argumentTypes": [
-                          {
-                            "typeIdentifier": "t_bytes32",
-                            "typeString": "bytes32"
-                          },
-                          {
-                            "typeIdentifier": "t_address",
-                            "typeString": "address"
-                          }
-                        ],
-                        "expression": {
-                          "argumentTypes": null,
-                          "id": 22019,
-                          "name": "_list",
-                          "nodeType": "Identifier",
-                          "overloadedDeclarations": [],
-                          "referencedDeclaration": 22009,
-                          "src": "1857:5:78",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
-                            "typeString": "struct DoublyLinkedList.IndexedAddress storage pointer"
-                          }
-                        },
-                        "id": 22020,
-                        "isConstant": false,
-                        "isLValue": true,
-                        "isPure": false,
-                        "lValueRequested": false,
-                        "memberName": "next_item",
-                        "nodeType": "MemberAccess",
-                        "referencedDeclaration": 24449,
-                        "src": "1857:15:78",
-                        "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_IndexedAddress_$22512_storage_ptr_$_t_bytes32_$_t_address_$returns$_t_address_$bound_to$_t_struct$_IndexedAddress_$22512_storage_ptr_$",
-                          "typeString": "function (struct DoublyLinkedList.IndexedAddress storage pointer,bytes32,address) view returns (address)"
-                        }
-                      },
-                      "id": 22023,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": false,
-                      "kind": "functionCall",
-                      "lValueRequested": false,
-                      "names": [],
-                      "nodeType": "FunctionCall",
-                      "src": "1857:49:78",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_address",
-                        "typeString": "address"
-                      }
-                    },
-                    "src": "1849:57:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "id": 22025,
-                  "nodeType": "ExpressionStatement",
-                  "src": "1849:57:78"
-                }
-              ]
-            },
-            "documentation": "@notice Reads the next item from an Indexed Address Doubly Linked List based on the specified `_current_item`\n@param _list The source list\n@param _collection_index Index of the Collection to evaluate\n@param _current_item The current item to use as base line\n@return {\"_item\": \"The next item on the list\"}",
-            "id": 22027,
-            "implemented": true,
-            "isConstructor": false,
-            "isDeclaredConst": true,
-            "modifiers": [],
-            "name": "read_next_from_indexed_addresses",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 22014,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 22009,
-                  "name": "_list",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22027,
-                  "src": "1669:45:78",
-                  "stateVariable": false,
-                  "storageLocation": "storage",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
-                    "typeString": "struct DoublyLinkedList.IndexedAddress"
-                  },
-                  "typeName": {
-                    "contractScope": null,
-                    "id": 22008,
-                    "name": "DoublyLinkedList.IndexedAddress",
-                    "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22512,
-                    "src": "1669:31:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
-                      "typeString": "struct DoublyLinkedList.IndexedAddress"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 22011,
-                  "name": "_collection_index",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22027,
-                  "src": "1716:25:78",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_bytes32",
-                    "typeString": "bytes32"
-                  },
-                  "typeName": {
-                    "id": 22010,
-                    "name": "bytes32",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "1716:7:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_bytes32",
-                      "typeString": "bytes32"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 22013,
-                  "name": "_current_item",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22027,
-                  "src": "1743:21:78",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 22012,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "1743:7:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "1668:97:78"
-            },
-            "payable": false,
-            "returnParameters": {
-              "id": 22017,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 22016,
-                  "name": "_item",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22027,
-                  "src": "1826:13:78",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 22015,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "1826:7:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "1825:15:78"
-            },
-            "scope": 22065,
-            "src": "1627:284:78",
-            "stateMutability": "view",
-            "superFunction": null,
-            "visibility": "internal"
-          },
-          {
-            "body": {
-              "id": 22046,
-              "nodeType": "Block",
-              "src": "2478:72:78",
-              "statements": [
-                {
-                  "expression": {
-                    "argumentTypes": null,
-                    "id": 22044,
-                    "isConstant": false,
-                    "isLValue": false,
-                    "isPure": false,
-                    "lValueRequested": false,
-                    "leftHandSide": {
-                      "argumentTypes": null,
-                      "id": 22038,
-                      "name": "_item",
-                      "nodeType": "Identifier",
-                      "overloadedDeclarations": [],
-                      "referencedDeclaration": 22036,
-                      "src": "2484:5:78",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_address",
-                        "typeString": "address"
-                      }
-                    },
-                    "nodeType": "Assignment",
-                    "operator": "=",
-                    "rightHandSide": {
-                      "argumentTypes": null,
-                      "arguments": [
-                        {
-                          "argumentTypes": null,
-                          "id": 22041,
-                          "name": "_collection_index",
-                          "nodeType": "Identifier",
-                          "overloadedDeclarations": [],
-                          "referencedDeclaration": 22031,
-                          "src": "2512:17:78",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_bytes32",
-                            "typeString": "bytes32"
-                          }
-                        },
-                        {
-                          "argumentTypes": null,
-                          "id": 22042,
-                          "name": "_current_item",
-                          "nodeType": "Identifier",
-                          "overloadedDeclarations": [],
-                          "referencedDeclaration": 22033,
-                          "src": "2531:13:78",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_address",
-                            "typeString": "address"
-                          }
-                        }
-                      ],
-                      "expression": {
-                        "argumentTypes": [
-                          {
-                            "typeIdentifier": "t_bytes32",
-                            "typeString": "bytes32"
-                          },
-                          {
-                            "typeIdentifier": "t_address",
-                            "typeString": "address"
-                          }
-                        ],
-                        "expression": {
-                          "argumentTypes": null,
-                          "id": 22039,
-                          "name": "_list",
-                          "nodeType": "Identifier",
-                          "overloadedDeclarations": [],
-                          "referencedDeclaration": 22029,
-                          "src": "2492:5:78",
-                          "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
-                            "typeString": "struct DoublyLinkedList.IndexedAddress storage pointer"
-                          }
-                        },
-                        "id": 22040,
-                        "isConstant": false,
-                        "isLValue": true,
-                        "isPure": false,
-                        "lValueRequested": false,
-                        "memberName": "previous_item",
-                        "nodeType": "MemberAccess",
-                        "referencedDeclaration": 24401,
-                        "src": "2492:19:78",
-                        "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_IndexedAddress_$22512_storage_ptr_$_t_bytes32_$_t_address_$returns$_t_address_$bound_to$_t_struct$_IndexedAddress_$22512_storage_ptr_$",
-                          "typeString": "function (struct DoublyLinkedList.IndexedAddress storage pointer,bytes32,address) view returns (address)"
-                        }
-                      },
-                      "id": 22043,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": false,
-                      "kind": "functionCall",
-                      "lValueRequested": false,
-                      "names": [],
-                      "nodeType": "FunctionCall",
-                      "src": "2492:53:78",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_address",
-                        "typeString": "address"
-                      }
-                    },
-                    "src": "2484:61:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "id": 22045,
-                  "nodeType": "ExpressionStatement",
-                  "src": "2484:61:78"
-                }
-              ]
-            },
-            "documentation": "@notice Reads the previous item from an Index Address Doubly Linked List based on the specified `_current_item`\n@param _list The source list\n@param _collection_index Index of the Collection to evaluate\n@param _current_item The current item to use as base line\n@return {\"_item\" : \"The previous item on the list\"}",
-            "id": 22047,
-            "implemented": true,
-            "isConstructor": false,
-            "isDeclaredConst": true,
-            "modifiers": [],
-            "name": "read_previous_from_indexed_addresses",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 22034,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 22029,
-                  "name": "_list",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22047,
-                  "src": "2304:45:78",
-                  "stateVariable": false,
-                  "storageLocation": "storage",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
-                    "typeString": "struct DoublyLinkedList.IndexedAddress"
-                  },
-                  "typeName": {
-                    "contractScope": null,
-                    "id": 22028,
-                    "name": "DoublyLinkedList.IndexedAddress",
-                    "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22512,
-                    "src": "2304:31:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
-                      "typeString": "struct DoublyLinkedList.IndexedAddress"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 22031,
-                  "name": "_collection_index",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22047,
-                  "src": "2351:25:78",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_bytes32",
-                    "typeString": "bytes32"
-                  },
-                  "typeName": {
-                    "id": 22030,
-                    "name": "bytes32",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "2351:7:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_bytes32",
-                      "typeString": "bytes32"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 22033,
-                  "name": "_current_item",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22047,
-                  "src": "2378:21:78",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 22032,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "2378:7:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "2303:97:78"
-            },
-            "payable": false,
-            "returnParameters": {
-              "id": 22037,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 22036,
-                  "name": "_item",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 22047,
-                  "src": "2461:13:78",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 22035,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "2461:7:78",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "2460:15:78"
-            },
-            "scope": 22065,
-            "src": "2258:292:78",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "internal"
@@ -2273,7 +1542,7 @@
             "body": {
               "id": 22063,
               "nodeType": "Block",
-              "src": "2999:50:78",
+              "src": "1235:52:78",
               "statements": [
                 {
                   "expression": {
@@ -2286,14 +1555,14 @@
                     "leftHandSide": {
                       "argumentTypes": null,
                       "id": 22056,
-                      "name": "_count",
+                      "name": "_item",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
                       "referencedDeclaration": 22054,
-                      "src": "3005:6:78",
+                      "src": "1241:5:78",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_uint256",
-                        "typeString": "uint256"
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
                       }
                     },
                     "nodeType": "Assignment",
@@ -2308,7 +1577,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 22051,
-                          "src": "3026:17:78",
+                          "src": "1264:17:78",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
                             "typeString": "bytes32"
@@ -2329,9 +1598,9 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 22049,
-                          "src": "3014:5:78",
+                          "src": "1249:5:78",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
+                            "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
                             "typeString": "struct DoublyLinkedList.IndexedAddress storage pointer"
                           }
                         },
@@ -2340,16 +1609,747 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberName": "total",
+                        "memberName": "end_item",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 24227,
-                        "src": "3014:11:78",
+                        "referencedDeclaration": 24364,
+                        "src": "1249:14:78",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_IndexedAddress_$22512_storage_ptr_$_t_bytes32_$returns$_t_uint256_$bound_to$_t_struct$_IndexedAddress_$22512_storage_ptr_$",
-                          "typeString": "function (struct DoublyLinkedList.IndexedAddress storage pointer,bytes32) view returns (uint256)"
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_IndexedAddress_$22569_storage_ptr_$_t_bytes32_$returns$_t_address_$bound_to$_t_struct$_IndexedAddress_$22569_storage_ptr_$",
+                          "typeString": "function (struct DoublyLinkedList.IndexedAddress storage pointer,bytes32) view returns (address)"
                         }
                       },
                       "id": 22060,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1249:33:78",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "1241:41:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 22062,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1241:41:78"
+                }
+              ]
+            },
+            "documentation": "@notice Reads the last item from an Indexed Address Doubly Linked list\n@param _list The source list\n@param _collection_index Index of the Collection to evaluate\n@return {\"_item\" : \"First item on the list\"}",
+            "id": 22064,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "read_last_from_indexed_addresses",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 22052,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 22049,
+                  "name": "_list",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22064,
+                  "src": "1084:45:78",
+                  "stateVariable": false,
+                  "storageLocation": "storage",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
+                    "typeString": "struct DoublyLinkedList.IndexedAddress"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 22048,
+                    "name": "DoublyLinkedList.IndexedAddress",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 22569,
+                    "src": "1084:31:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
+                      "typeString": "struct DoublyLinkedList.IndexedAddress"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 22051,
+                  "name": "_collection_index",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22064,
+                  "src": "1131:25:78",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 22050,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1131:7:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1083:74:78"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 22055,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 22054,
+                  "name": "_item",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22064,
+                  "src": "1218:13:78",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 22053,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1218:7:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1217:15:78"
+            },
+            "scope": 22122,
+            "src": "1042:245:78",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 22083,
+              "nodeType": "Block",
+              "src": "1843:68:78",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 22081,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 22075,
+                      "name": "_item",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 22073,
+                      "src": "1849:5:78",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 22078,
+                          "name": "_collection_index",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 22068,
+                          "src": "1873:17:78",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bytes32",
+                            "typeString": "bytes32"
+                          }
+                        },
+                        {
+                          "argumentTypes": null,
+                          "id": 22079,
+                          "name": "_current_item",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 22070,
+                          "src": "1892:13:78",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_bytes32",
+                            "typeString": "bytes32"
+                          },
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 22076,
+                          "name": "_list",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 22066,
+                          "src": "1857:5:78",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
+                            "typeString": "struct DoublyLinkedList.IndexedAddress storage pointer"
+                          }
+                        },
+                        "id": 22077,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "next_item",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 24506,
+                        "src": "1857:15:78",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_IndexedAddress_$22569_storage_ptr_$_t_bytes32_$_t_address_$returns$_t_address_$bound_to$_t_struct$_IndexedAddress_$22569_storage_ptr_$",
+                          "typeString": "function (struct DoublyLinkedList.IndexedAddress storage pointer,bytes32,address) view returns (address)"
+                        }
+                      },
+                      "id": 22080,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "1857:49:78",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "1849:57:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 22082,
+                  "nodeType": "ExpressionStatement",
+                  "src": "1849:57:78"
+                }
+              ]
+            },
+            "documentation": "@notice Reads the next item from an Indexed Address Doubly Linked List based on the specified `_current_item`\n@param _list The source list\n@param _collection_index Index of the Collection to evaluate\n@param _current_item The current item to use as base line\n@return {\"_item\": \"The next item on the list\"}",
+            "id": 22084,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "read_next_from_indexed_addresses",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 22071,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 22066,
+                  "name": "_list",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22084,
+                  "src": "1669:45:78",
+                  "stateVariable": false,
+                  "storageLocation": "storage",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
+                    "typeString": "struct DoublyLinkedList.IndexedAddress"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 22065,
+                    "name": "DoublyLinkedList.IndexedAddress",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 22569,
+                    "src": "1669:31:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
+                      "typeString": "struct DoublyLinkedList.IndexedAddress"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 22068,
+                  "name": "_collection_index",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22084,
+                  "src": "1716:25:78",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 22067,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1716:7:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 22070,
+                  "name": "_current_item",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22084,
+                  "src": "1743:21:78",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 22069,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1743:7:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1668:97:78"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 22074,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 22073,
+                  "name": "_item",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22084,
+                  "src": "1826:13:78",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 22072,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1826:7:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1825:15:78"
+            },
+            "scope": 22122,
+            "src": "1627:284:78",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 22103,
+              "nodeType": "Block",
+              "src": "2478:72:78",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 22101,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 22095,
+                      "name": "_item",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 22093,
+                      "src": "2484:5:78",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 22098,
+                          "name": "_collection_index",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 22088,
+                          "src": "2512:17:78",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bytes32",
+                            "typeString": "bytes32"
+                          }
+                        },
+                        {
+                          "argumentTypes": null,
+                          "id": 22099,
+                          "name": "_current_item",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 22090,
+                          "src": "2531:13:78",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_bytes32",
+                            "typeString": "bytes32"
+                          },
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 22096,
+                          "name": "_list",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 22086,
+                          "src": "2492:5:78",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
+                            "typeString": "struct DoublyLinkedList.IndexedAddress storage pointer"
+                          }
+                        },
+                        "id": 22097,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "previous_item",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 24458,
+                        "src": "2492:19:78",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_IndexedAddress_$22569_storage_ptr_$_t_bytes32_$_t_address_$returns$_t_address_$bound_to$_t_struct$_IndexedAddress_$22569_storage_ptr_$",
+                          "typeString": "function (struct DoublyLinkedList.IndexedAddress storage pointer,bytes32,address) view returns (address)"
+                        }
+                      },
+                      "id": 22100,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "2492:53:78",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "2484:61:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 22102,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2484:61:78"
+                }
+              ]
+            },
+            "documentation": "@notice Reads the previous item from an Index Address Doubly Linked List based on the specified `_current_item`\n@param _list The source list\n@param _collection_index Index of the Collection to evaluate\n@param _current_item The current item to use as base line\n@return {\"_item\" : \"The previous item on the list\"}",
+            "id": 22104,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "read_previous_from_indexed_addresses",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 22091,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 22086,
+                  "name": "_list",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22104,
+                  "src": "2304:45:78",
+                  "stateVariable": false,
+                  "storageLocation": "storage",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
+                    "typeString": "struct DoublyLinkedList.IndexedAddress"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 22085,
+                    "name": "DoublyLinkedList.IndexedAddress",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 22569,
+                    "src": "2304:31:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
+                      "typeString": "struct DoublyLinkedList.IndexedAddress"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 22088,
+                  "name": "_collection_index",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22104,
+                  "src": "2351:25:78",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 22087,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2351:7:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 22090,
+                  "name": "_current_item",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22104,
+                  "src": "2378:21:78",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 22089,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2378:7:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2303:97:78"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 22094,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 22093,
+                  "name": "_item",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 22104,
+                  "src": "2461:13:78",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 22092,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2461:7:78",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2460:15:78"
+            },
+            "scope": 22122,
+            "src": "2258:292:78",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 22120,
+              "nodeType": "Block",
+              "src": "2999:50:78",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 22118,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 22113,
+                      "name": "_count",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 22111,
+                      "src": "3005:6:78",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 22116,
+                          "name": "_collection_index",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 22108,
+                          "src": "3026:17:78",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bytes32",
+                            "typeString": "bytes32"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_bytes32",
+                            "typeString": "bytes32"
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": null,
+                          "id": 22114,
+                          "name": "_list",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 22106,
+                          "src": "3014:5:78",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
+                            "typeString": "struct DoublyLinkedList.IndexedAddress storage pointer"
+                          }
+                        },
+                        "id": 22115,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "total",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 24284,
+                        "src": "3014:11:78",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_IndexedAddress_$22569_storage_ptr_$_t_bytes32_$returns$_t_uint256_$bound_to$_t_struct$_IndexedAddress_$22569_storage_ptr_$",
+                          "typeString": "function (struct DoublyLinkedList.IndexedAddress storage pointer,bytes32) view returns (uint256)"
+                        }
+                      },
+                      "id": 22117,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2369,14 +2369,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 22062,
+                  "id": 22119,
                   "nodeType": "ExpressionStatement",
                   "src": "3005:39:78"
                 }
               ]
             },
             "documentation": "@notice Reads the total number of items in an Indexed Address Doubly Linked List\n@param _list  The source list\n@param _collection_index Index of the Collection to evaluate\n@return {\"_count\": \"Length of the Doubly Linked list\"}",
-            "id": 22064,
+            "id": 22121,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -2384,31 +2384,31 @@
             "name": "read_total_indexed_addresses",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 22052,
+              "id": 22109,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22049,
+                  "id": 22106,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22064,
+                  "scope": 22121,
                   "src": "2847:45:78",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
+                    "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
                     "typeString": "struct DoublyLinkedList.IndexedAddress"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 22048,
+                    "id": 22105,
                     "name": "DoublyLinkedList.IndexedAddress",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22512,
+                    "referencedDeclaration": 22569,
                     "src": "2847:31:78",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_IndexedAddress_$22512_storage_ptr",
+                      "typeIdentifier": "t_struct$_IndexedAddress_$22569_storage_ptr",
                       "typeString": "struct DoublyLinkedList.IndexedAddress"
                     }
                   },
@@ -2417,10 +2417,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 22051,
+                  "id": 22108,
                   "name": "_collection_index",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22064,
+                  "scope": 22121,
                   "src": "2894:25:78",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2429,7 +2429,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 22050,
+                    "id": 22107,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "2894:7:78",
@@ -2446,15 +2446,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22055,
+              "id": 22112,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22054,
+                  "id": 22111,
                   "name": "_count",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22064,
+                  "scope": 22121,
                   "src": "2981:14:78",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2463,7 +2463,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 22053,
+                    "id": 22110,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "2981:7:78",
@@ -2478,14 +2478,14 @@
               ],
               "src": "2980:16:78"
             },
-            "scope": 22065,
+            "scope": 22122,
             "src": "2809:240:78",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "internal"
           }
         ],
-        "scope": 22066,
+        "scope": 22123,
         "src": "217:2835:78"
       }
     ],
@@ -2497,5 +2497,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-19T03:33:09.100Z"
+  "updatedAt": "2019-01-18T06:49:39.315Z"
 }

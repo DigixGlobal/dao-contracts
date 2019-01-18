@@ -324,14 +324,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/tokens/MockDgx.sol",
     "exportedSymbols": {
       "MockDgx": [
-        11522
+        11579
       ]
     },
-    "id": 11523,
+    "id": 11580,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 11506,
+        "id": 11563,
         "literals": [
           "solidity",
           "^",
@@ -344,10 +344,10 @@
       {
         "absolutePath": "@digix/lite-dgx-contract/contracts/DummyDGX.sol",
         "file": "@digix/lite-dgx-contract/contracts/DummyDGX.sol",
-        "id": 11507,
+        "id": 11564,
         "nodeType": "ImportDirective",
-        "scope": 11523,
-        "sourceUnit": 19529,
+        "scope": 11580,
+        "sourceUnit": 19586,
         "src": "26:57:48",
         "symbolAliases": [],
         "unitAlias": ""
@@ -358,44 +358,44 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 11508,
+              "id": 11565,
               "name": "DummyDGX",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 19528,
+              "referencedDeclaration": 19585,
               "src": "105:8:48",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DummyDGX_$19528",
+                "typeIdentifier": "t_contract$_DummyDGX_$19585",
                 "typeString": "contract DummyDGX"
               }
             },
-            "id": 11509,
+            "id": 11566,
             "nodeType": "InheritanceSpecifier",
             "src": "105:8:48"
           }
         ],
         "contractDependencies": [
-          19528
+          19585
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 11522,
+        "id": 11579,
         "linearizedBaseContracts": [
-          11522,
-          19528
+          11579,
+          19585
         ],
         "name": "MockDgx",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 11520,
+              "id": 11577,
               "nodeType": "Block",
               "src": "220:5:48",
               "statements": []
             },
             "documentation": null,
-            "id": 11521,
+            "id": 11578,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -404,11 +404,11 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 11516,
+                    "id": 11573,
                     "name": "_mockDgxStorage",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 11511,
+                    "referencedDeclaration": 11568,
                     "src": "191:15:48",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -417,11 +417,11 @@
                   },
                   {
                     "argumentTypes": null,
-                    "id": 11517,
+                    "id": 11574,
                     "name": "_feesAdmin",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 11513,
+                    "referencedDeclaration": 11570,
                     "src": "208:10:48",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -429,17 +429,17 @@
                     }
                   }
                 ],
-                "id": 11518,
+                "id": 11575,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 11515,
+                  "id": 11572,
                   "name": "DummyDGX",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 19528,
+                  "referencedDeclaration": 19585,
                   "src": "182:8:48",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DummyDGX_$19528_$",
+                    "typeIdentifier": "t_type$_t_contract$_DummyDGX_$19585_$",
                     "typeString": "type(contract DummyDGX)"
                   }
                 },
@@ -450,15 +450,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11514,
+              "id": 11571,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11511,
+                  "id": 11568,
                   "name": "_mockDgxStorage",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11521,
+                  "scope": 11578,
                   "src": "130:23:48",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -467,7 +467,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11510,
+                    "id": 11567,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "130:7:48",
@@ -481,10 +481,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 11513,
+                  "id": 11570,
                   "name": "_feesAdmin",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11521,
+                  "scope": 11578,
                   "src": "155:18:48",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -493,7 +493,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11512,
+                    "id": 11569,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "155:7:48",
@@ -510,19 +510,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 11519,
+              "id": 11576,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "220:0:48"
             },
-            "scope": 11522,
+            "scope": 11579,
             "src": "118:107:48",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 11523,
+        "scope": 11580,
         "src": "85:142:48"
       }
     ],
@@ -532,14 +532,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/tokens/MockDgx.sol",
     "exportedSymbols": {
       "MockDgx": [
-        11522
+        11579
       ]
     },
-    "id": 11523,
+    "id": 11580,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 11506,
+        "id": 11563,
         "literals": [
           "solidity",
           "^",
@@ -552,10 +552,10 @@
       {
         "absolutePath": "@digix/lite-dgx-contract/contracts/DummyDGX.sol",
         "file": "@digix/lite-dgx-contract/contracts/DummyDGX.sol",
-        "id": 11507,
+        "id": 11564,
         "nodeType": "ImportDirective",
-        "scope": 11523,
-        "sourceUnit": 19529,
+        "scope": 11580,
+        "sourceUnit": 19586,
         "src": "26:57:48",
         "symbolAliases": [],
         "unitAlias": ""
@@ -566,44 +566,44 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 11508,
+              "id": 11565,
               "name": "DummyDGX",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 19528,
+              "referencedDeclaration": 19585,
               "src": "105:8:48",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DummyDGX_$19528",
+                "typeIdentifier": "t_contract$_DummyDGX_$19585",
                 "typeString": "contract DummyDGX"
               }
             },
-            "id": 11509,
+            "id": 11566,
             "nodeType": "InheritanceSpecifier",
             "src": "105:8:48"
           }
         ],
         "contractDependencies": [
-          19528
+          19585
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 11522,
+        "id": 11579,
         "linearizedBaseContracts": [
-          11522,
-          19528
+          11579,
+          19585
         ],
         "name": "MockDgx",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 11520,
+              "id": 11577,
               "nodeType": "Block",
               "src": "220:5:48",
               "statements": []
             },
             "documentation": null,
-            "id": 11521,
+            "id": 11578,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -612,11 +612,11 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 11516,
+                    "id": 11573,
                     "name": "_mockDgxStorage",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 11511,
+                    "referencedDeclaration": 11568,
                     "src": "191:15:48",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -625,11 +625,11 @@
                   },
                   {
                     "argumentTypes": null,
-                    "id": 11517,
+                    "id": 11574,
                     "name": "_feesAdmin",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 11513,
+                    "referencedDeclaration": 11570,
                     "src": "208:10:48",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -637,17 +637,17 @@
                     }
                   }
                 ],
-                "id": 11518,
+                "id": 11575,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 11515,
+                  "id": 11572,
                   "name": "DummyDGX",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 19528,
+                  "referencedDeclaration": 19585,
                   "src": "182:8:48",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DummyDGX_$19528_$",
+                    "typeIdentifier": "t_type$_t_contract$_DummyDGX_$19585_$",
                     "typeString": "type(contract DummyDGX)"
                   }
                 },
@@ -658,15 +658,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11514,
+              "id": 11571,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11511,
+                  "id": 11568,
                   "name": "_mockDgxStorage",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11521,
+                  "scope": 11578,
                   "src": "130:23:48",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -675,7 +675,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11510,
+                    "id": 11567,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "130:7:48",
@@ -689,10 +689,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 11513,
+                  "id": 11570,
                   "name": "_feesAdmin",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11521,
+                  "scope": 11578,
                   "src": "155:18:48",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -701,7 +701,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11512,
+                    "id": 11569,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "155:7:48",
@@ -718,19 +718,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 11519,
+              "id": 11576,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "220:0:48"
             },
-            "scope": 11522,
+            "scope": 11579,
             "src": "118:107:48",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 11523,
+        "scope": 11580,
         "src": "85:142:48"
       }
     ],
@@ -744,10 +744,10 @@
     "42": {
       "events": {},
       "links": {},
-      "address": "0x987363d88854f9e4403f3a680d03afe388f1b787",
-      "transactionHash": "0x3917feeb6323fd5c7ca61ae6691db69d10310a373cc110838ee3524a0b8374d6"
+      "address": "0x4a1baf2e40fca20d0640b5a48766865da316b508",
+      "transactionHash": "0x21f2fbb64657f7cc51c21f4903df8821e0b489d08aa3f55bdacb8b073663393d"
     }
   },
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-19T03:41:22.136Z"
+  "updatedAt": "2019-01-18T07:00:33.843Z"
 }

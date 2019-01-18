@@ -337,11 +337,11 @@ module.exports = async function () {
 
     await fundUserAndApproveForStakeLocking(web3, contracts, bN, participants, addressOf);
     console.log('\tfunded users DGDs and Badges');
-    await waitFor(2, addressOf, web3);
-    await lockDGDs(web3, contracts, bN, participants, addressOf);
-    console.log('\tusers locked DGDs for first quarter');
-    await redeemBadges(web3, contracts, bN, participants);
-    console.log('\tusers redeemed badges');
+    // await waitFor(2, addressOf, web3);
+    // await lockDGDs(web3, contracts, bN, participants, addressOf);
+    // console.log('\tusers locked DGDs for first quarter');
+    // await redeemBadges(web3, contracts, bN, participants);
+    // console.log('\tusers redeemed badges');
 
     // // create some proposals in the main phase, assert that its the same quarter
     // await phaseCorrection(web3, contracts, addressOf, phases.MAIN_PHASE, quarters.QUARTER_1);

@@ -223,14 +223,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/storage/MockDaoConfigsStorage.sol",
     "exportedSymbols": {
       "MockDaoConfigsStorage": [
-        10333
+        10390
       ]
     },
-    "id": 10334,
+    "id": 10391,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 10278,
+        "id": 10335,
         "literals": [
           "solidity",
           "^",
@@ -243,10 +243,10 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/storage/DaoConfigsStorage.sol",
         "file": "../../storage/DaoConfigsStorage.sol",
-        "id": 10279,
+        "id": 10336,
         "nodeType": "ImportDirective",
-        "scope": 10334,
-        "sourceUnit": 13770,
+        "scope": 10391,
+        "sourceUnit": 13827,
         "src": "26:45:38",
         "symbolAliases": [],
         "unitAlias": ""
@@ -257,48 +257,48 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 10280,
+              "id": 10337,
               "name": "DaoConfigsStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 13769,
+              "referencedDeclaration": 13826,
               "src": "107:17:38",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoConfigsStorage_$13769",
+                "typeIdentifier": "t_contract$_DaoConfigsStorage_$13826",
                 "typeString": "contract DaoConfigsStorage"
               }
             },
-            "id": 10281,
+            "id": 10338,
             "nodeType": "InheritanceSpecifier",
             "src": "107:17:38"
           }
         ],
         "contractDependencies": [
           1602,
-          13769,
-          18546
+          13826,
+          18603
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 10333,
+        "id": 10390,
         "linearizedBaseContracts": [
-          10333,
-          13769,
+          10390,
+          13826,
           1602,
-          18546
+          18603
         ],
         "name": "MockDaoConfigsStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 10289,
+              "id": 10346,
               "nodeType": "Block",
               "src": "198:7:38",
               "statements": []
             },
             "documentation": null,
-            "id": 10290,
+            "id": 10347,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -307,11 +307,11 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 10286,
+                    "id": 10343,
                     "name": "_resolver",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 10283,
+                    "referencedDeclaration": 10340,
                     "src": "187:9:38",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -319,17 +319,17 @@
                     }
                   }
                 ],
-                "id": 10287,
+                "id": 10344,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 10285,
+                  "id": 10342,
                   "name": "DaoConfigsStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 13769,
+                  "referencedDeclaration": 13826,
                   "src": "169:17:38",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoConfigsStorage_$13769_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoConfigsStorage_$13826_$",
                     "typeString": "type(contract DaoConfigsStorage)"
                   }
                 },
@@ -340,15 +340,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10284,
+              "id": 10341,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10283,
+                  "id": 10340,
                   "name": "_resolver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10290,
+                  "scope": 10347,
                   "src": "143:17:38",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -357,7 +357,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 10282,
+                    "id": 10339,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "143:7:38",
@@ -374,12 +374,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10288,
+              "id": 10345,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "198:0:38"
             },
-            "scope": 10333,
+            "scope": 10390,
             "src": "131:74:38",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -387,14 +387,14 @@
           },
           {
             "body": {
-              "id": 10303,
+              "id": 10360,
               "nodeType": "Block",
               "src": "302:57:38",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 10301,
+                    "id": 10358,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -403,25 +403,25 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 10297,
+                        "id": 10354,
                         "name": "uintConfigs",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 12418,
+                        "referencedDeclaration": 12475,
                         "src": "314:11:38",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_bytes32_$_t_uint256_$",
                           "typeString": "mapping(bytes32 => uint256)"
                         }
                       },
-                      "id": 10299,
+                      "id": 10356,
                       "indexExpression": {
                         "argumentTypes": null,
-                        "id": 10298,
+                        "id": 10355,
                         "name": "_config_name",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10292,
+                        "referencedDeclaration": 10349,
                         "src": "326:12:38",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
@@ -443,11 +443,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 10300,
+                      "id": 10357,
                       "name": "_new_value",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10294,
+                      "referencedDeclaration": 10351,
                       "src": "342:10:38",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -460,14 +460,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 10302,
+                  "id": 10359,
                   "nodeType": "ExpressionStatement",
                   "src": "314:38:38"
                 }
               ]
             },
             "documentation": null,
-            "id": 10304,
+            "id": 10361,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -475,15 +475,15 @@
             "name": "mock_set_uint_config",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10295,
+              "id": 10352,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10292,
+                  "id": 10349,
                   "name": "_config_name",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10304,
+                  "scope": 10361,
                   "src": "241:20:38",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -492,7 +492,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 10291,
+                    "id": 10348,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "241:7:38",
@@ -506,10 +506,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10294,
+                  "id": 10351,
                   "name": "_new_value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10304,
+                  "scope": 10361,
                   "src": "263:18:38",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -518,7 +518,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 10293,
+                    "id": 10350,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "263:7:38",
@@ -535,12 +535,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10296,
+              "id": 10353,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "302:0:38"
             },
-            "scope": 10333,
+            "scope": 10390,
             "src": "211:148:38",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -548,14 +548,14 @@
           },
           {
             "body": {
-              "id": 10317,
+              "id": 10374,
               "nodeType": "Block",
               "src": "459:58:38",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 10315,
+                    "id": 10372,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -564,25 +564,25 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 10311,
+                        "id": 10368,
                         "name": "addressConfigs",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 12422,
+                        "referencedDeclaration": 12479,
                         "src": "469:14:38",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_bytes32_$_t_address_$",
                           "typeString": "mapping(bytes32 => address)"
                         }
                       },
-                      "id": 10313,
+                      "id": 10370,
                       "indexExpression": {
                         "argumentTypes": null,
-                        "id": 10312,
+                        "id": 10369,
                         "name": "_config_name",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10306,
+                        "referencedDeclaration": 10363,
                         "src": "484:12:38",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
@@ -604,11 +604,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 10314,
+                      "id": 10371,
                       "name": "_new_value",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10308,
+                      "referencedDeclaration": 10365,
                       "src": "500:10:38",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -621,14 +621,14 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 10316,
+                  "id": 10373,
                   "nodeType": "ExpressionStatement",
                   "src": "469:41:38"
                 }
               ]
             },
             "documentation": null,
-            "id": 10318,
+            "id": 10375,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -636,15 +636,15 @@
             "name": "mock_set_address_config",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10309,
+              "id": 10366,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10306,
+                  "id": 10363,
                   "name": "_config_name",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10318,
+                  "scope": 10375,
                   "src": "398:20:38",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -653,7 +653,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 10305,
+                    "id": 10362,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "398:7:38",
@@ -667,10 +667,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10308,
+                  "id": 10365,
                   "name": "_new_value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10318,
+                  "scope": 10375,
                   "src": "420:18:38",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -679,7 +679,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 10307,
+                    "id": 10364,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "420:7:38",
@@ -696,12 +696,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10310,
+              "id": 10367,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "459:0:38"
             },
-            "scope": 10333,
+            "scope": 10390,
             "src": "365:152:38",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -709,14 +709,14 @@
           },
           {
             "body": {
-              "id": 10331,
+              "id": 10388,
               "nodeType": "Block",
               "src": "615:56:38",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 10329,
+                    "id": 10386,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -725,25 +725,25 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 10325,
+                        "id": 10382,
                         "name": "bytesConfigs",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 12426,
+                        "referencedDeclaration": 12483,
                         "src": "625:12:38",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_bytes32_$_t_bytes32_$",
                           "typeString": "mapping(bytes32 => bytes32)"
                         }
                       },
-                      "id": 10327,
+                      "id": 10384,
                       "indexExpression": {
                         "argumentTypes": null,
-                        "id": 10326,
+                        "id": 10383,
                         "name": "_config_name",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10320,
+                        "referencedDeclaration": 10377,
                         "src": "638:12:38",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
@@ -765,11 +765,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 10328,
+                      "id": 10385,
                       "name": "_new_value",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10322,
+                      "referencedDeclaration": 10379,
                       "src": "654:10:38",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
@@ -782,14 +782,14 @@
                       "typeString": "bytes32"
                     }
                   },
-                  "id": 10330,
+                  "id": 10387,
                   "nodeType": "ExpressionStatement",
                   "src": "625:39:38"
                 }
               ]
             },
             "documentation": null,
-            "id": 10332,
+            "id": 10389,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -797,15 +797,15 @@
             "name": "mock_set_bytes_config",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10323,
+              "id": 10380,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10320,
+                  "id": 10377,
                   "name": "_config_name",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10332,
+                  "scope": 10389,
                   "src": "554:20:38",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -814,7 +814,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 10319,
+                    "id": 10376,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "554:7:38",
@@ -828,10 +828,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10322,
+                  "id": 10379,
                   "name": "_new_value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10332,
+                  "scope": 10389,
                   "src": "576:18:38",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -840,7 +840,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 10321,
+                    "id": 10378,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "576:7:38",
@@ -857,19 +857,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10324,
+              "id": 10381,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "615:0:38"
             },
-            "scope": 10333,
+            "scope": 10390,
             "src": "523:148:38",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 10334,
+        "scope": 10391,
         "src": "73:600:38"
       }
     ],
@@ -879,14 +879,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/storage/MockDaoConfigsStorage.sol",
     "exportedSymbols": {
       "MockDaoConfigsStorage": [
-        10333
+        10390
       ]
     },
-    "id": 10334,
+    "id": 10391,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 10278,
+        "id": 10335,
         "literals": [
           "solidity",
           "^",
@@ -899,10 +899,10 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/storage/DaoConfigsStorage.sol",
         "file": "../../storage/DaoConfigsStorage.sol",
-        "id": 10279,
+        "id": 10336,
         "nodeType": "ImportDirective",
-        "scope": 10334,
-        "sourceUnit": 13770,
+        "scope": 10391,
+        "sourceUnit": 13827,
         "src": "26:45:38",
         "symbolAliases": [],
         "unitAlias": ""
@@ -913,48 +913,48 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 10280,
+              "id": 10337,
               "name": "DaoConfigsStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 13769,
+              "referencedDeclaration": 13826,
               "src": "107:17:38",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoConfigsStorage_$13769",
+                "typeIdentifier": "t_contract$_DaoConfigsStorage_$13826",
                 "typeString": "contract DaoConfigsStorage"
               }
             },
-            "id": 10281,
+            "id": 10338,
             "nodeType": "InheritanceSpecifier",
             "src": "107:17:38"
           }
         ],
         "contractDependencies": [
           1602,
-          13769,
-          18546
+          13826,
+          18603
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 10333,
+        "id": 10390,
         "linearizedBaseContracts": [
-          10333,
-          13769,
+          10390,
+          13826,
           1602,
-          18546
+          18603
         ],
         "name": "MockDaoConfigsStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 10289,
+              "id": 10346,
               "nodeType": "Block",
               "src": "198:7:38",
               "statements": []
             },
             "documentation": null,
-            "id": 10290,
+            "id": 10347,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -963,11 +963,11 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 10286,
+                    "id": 10343,
                     "name": "_resolver",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 10283,
+                    "referencedDeclaration": 10340,
                     "src": "187:9:38",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -975,17 +975,17 @@
                     }
                   }
                 ],
-                "id": 10287,
+                "id": 10344,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 10285,
+                  "id": 10342,
                   "name": "DaoConfigsStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 13769,
+                  "referencedDeclaration": 13826,
                   "src": "169:17:38",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoConfigsStorage_$13769_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoConfigsStorage_$13826_$",
                     "typeString": "type(contract DaoConfigsStorage)"
                   }
                 },
@@ -996,15 +996,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10284,
+              "id": 10341,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10283,
+                  "id": 10340,
                   "name": "_resolver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10290,
+                  "scope": 10347,
                   "src": "143:17:38",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1013,7 +1013,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 10282,
+                    "id": 10339,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "143:7:38",
@@ -1030,12 +1030,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10288,
+              "id": 10345,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "198:0:38"
             },
-            "scope": 10333,
+            "scope": 10390,
             "src": "131:74:38",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1043,14 +1043,14 @@
           },
           {
             "body": {
-              "id": 10303,
+              "id": 10360,
               "nodeType": "Block",
               "src": "302:57:38",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 10301,
+                    "id": 10358,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1059,25 +1059,25 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 10297,
+                        "id": 10354,
                         "name": "uintConfigs",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 12418,
+                        "referencedDeclaration": 12475,
                         "src": "314:11:38",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_bytes32_$_t_uint256_$",
                           "typeString": "mapping(bytes32 => uint256)"
                         }
                       },
-                      "id": 10299,
+                      "id": 10356,
                       "indexExpression": {
                         "argumentTypes": null,
-                        "id": 10298,
+                        "id": 10355,
                         "name": "_config_name",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10292,
+                        "referencedDeclaration": 10349,
                         "src": "326:12:38",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
@@ -1099,11 +1099,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 10300,
+                      "id": 10357,
                       "name": "_new_value",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10294,
+                      "referencedDeclaration": 10351,
                       "src": "342:10:38",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1116,14 +1116,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 10302,
+                  "id": 10359,
                   "nodeType": "ExpressionStatement",
                   "src": "314:38:38"
                 }
               ]
             },
             "documentation": null,
-            "id": 10304,
+            "id": 10361,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1131,15 +1131,15 @@
             "name": "mock_set_uint_config",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10295,
+              "id": 10352,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10292,
+                  "id": 10349,
                   "name": "_config_name",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10304,
+                  "scope": 10361,
                   "src": "241:20:38",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1148,7 +1148,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 10291,
+                    "id": 10348,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "241:7:38",
@@ -1162,10 +1162,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10294,
+                  "id": 10351,
                   "name": "_new_value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10304,
+                  "scope": 10361,
                   "src": "263:18:38",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1174,7 +1174,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 10293,
+                    "id": 10350,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "263:7:38",
@@ -1191,12 +1191,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10296,
+              "id": 10353,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "302:0:38"
             },
-            "scope": 10333,
+            "scope": 10390,
             "src": "211:148:38",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1204,14 +1204,14 @@
           },
           {
             "body": {
-              "id": 10317,
+              "id": 10374,
               "nodeType": "Block",
               "src": "459:58:38",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 10315,
+                    "id": 10372,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1220,25 +1220,25 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 10311,
+                        "id": 10368,
                         "name": "addressConfigs",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 12422,
+                        "referencedDeclaration": 12479,
                         "src": "469:14:38",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_bytes32_$_t_address_$",
                           "typeString": "mapping(bytes32 => address)"
                         }
                       },
-                      "id": 10313,
+                      "id": 10370,
                       "indexExpression": {
                         "argumentTypes": null,
-                        "id": 10312,
+                        "id": 10369,
                         "name": "_config_name",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10306,
+                        "referencedDeclaration": 10363,
                         "src": "484:12:38",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
@@ -1260,11 +1260,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 10314,
+                      "id": 10371,
                       "name": "_new_value",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10308,
+                      "referencedDeclaration": 10365,
                       "src": "500:10:38",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -1277,14 +1277,14 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 10316,
+                  "id": 10373,
                   "nodeType": "ExpressionStatement",
                   "src": "469:41:38"
                 }
               ]
             },
             "documentation": null,
-            "id": 10318,
+            "id": 10375,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1292,15 +1292,15 @@
             "name": "mock_set_address_config",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10309,
+              "id": 10366,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10306,
+                  "id": 10363,
                   "name": "_config_name",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10318,
+                  "scope": 10375,
                   "src": "398:20:38",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1309,7 +1309,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 10305,
+                    "id": 10362,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "398:7:38",
@@ -1323,10 +1323,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10308,
+                  "id": 10365,
                   "name": "_new_value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10318,
+                  "scope": 10375,
                   "src": "420:18:38",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1335,7 +1335,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 10307,
+                    "id": 10364,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "420:7:38",
@@ -1352,12 +1352,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10310,
+              "id": 10367,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "459:0:38"
             },
-            "scope": 10333,
+            "scope": 10390,
             "src": "365:152:38",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1365,14 +1365,14 @@
           },
           {
             "body": {
-              "id": 10331,
+              "id": 10388,
               "nodeType": "Block",
               "src": "615:56:38",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 10329,
+                    "id": 10386,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1381,25 +1381,25 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 10325,
+                        "id": 10382,
                         "name": "bytesConfigs",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 12426,
+                        "referencedDeclaration": 12483,
                         "src": "625:12:38",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_bytes32_$_t_bytes32_$",
                           "typeString": "mapping(bytes32 => bytes32)"
                         }
                       },
-                      "id": 10327,
+                      "id": 10384,
                       "indexExpression": {
                         "argumentTypes": null,
-                        "id": 10326,
+                        "id": 10383,
                         "name": "_config_name",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10320,
+                        "referencedDeclaration": 10377,
                         "src": "638:12:38",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
@@ -1421,11 +1421,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 10328,
+                      "id": 10385,
                       "name": "_new_value",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10322,
+                      "referencedDeclaration": 10379,
                       "src": "654:10:38",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
@@ -1438,14 +1438,14 @@
                       "typeString": "bytes32"
                     }
                   },
-                  "id": 10330,
+                  "id": 10387,
                   "nodeType": "ExpressionStatement",
                   "src": "625:39:38"
                 }
               ]
             },
             "documentation": null,
-            "id": 10332,
+            "id": 10389,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1453,15 +1453,15 @@
             "name": "mock_set_bytes_config",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10323,
+              "id": 10380,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10320,
+                  "id": 10377,
                   "name": "_config_name",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10332,
+                  "scope": 10389,
                   "src": "554:20:38",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1470,7 +1470,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 10319,
+                    "id": 10376,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "554:7:38",
@@ -1484,10 +1484,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10322,
+                  "id": 10379,
                   "name": "_new_value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10332,
+                  "scope": 10389,
                   "src": "576:18:38",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1496,7 +1496,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 10321,
+                    "id": 10378,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "576:7:38",
@@ -1513,19 +1513,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10324,
+              "id": 10381,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "615:0:38"
             },
-            "scope": 10333,
+            "scope": 10390,
             "src": "523:148:38",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 10334,
+        "scope": 10391,
         "src": "73:600:38"
       }
     ],
@@ -1539,10 +1539,10 @@
     "42": {
       "events": {},
       "links": {},
-      "address": "0xd093b40e699ef5ce62d8fc15957c63594ec86992",
-      "transactionHash": "0x6992d9f56a245d4ac0a02fa60b0da6c799705dfed36221f73c5a729556fd9b5f"
+      "address": "0xa996b463b5e4cf1a2349c066d6dd2c3cd213149a",
+      "transactionHash": "0x8cf2314cd8a86c1db8443c4225a73471e1abf33989eeb1e926c264196d98f5ae"
     }
   },
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-19T03:41:22.144Z"
+  "updatedAt": "2019-01-18T07:00:33.851Z"
 }

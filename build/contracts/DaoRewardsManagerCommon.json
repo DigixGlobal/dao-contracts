@@ -196,7 +196,7 @@
         "id": 1606,
         "nodeType": "ImportDirective",
         "scope": 1742,
-        "sourceUnit": 8370,
+        "sourceUnit": 8427,
         "src": "56:33:4",
         "symbolAliases": [],
         "unitAlias": ""
@@ -227,7 +227,7 @@
           1602,
           1841,
           1933,
-          18546
+          18603
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -239,7 +239,7 @@
           1933,
           1841,
           1602,
-          18546
+          18603
         ],
         "name": "DaoRewardsManagerCommon",
         "nodeType": "ContractDefinition",
@@ -251,10 +251,10 @@
               "id": 1609,
               "name": "DaoStructs",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 8369,
+              "referencedDeclaration": 8426,
               "src": "154:10:4",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoStructs_$8369",
+                "typeIdentifier": "t_contract$_DaoStructs_$8426",
                 "typeString": "library DaoStructs"
               }
             },
@@ -265,10 +265,10 @@
               "id": 1610,
               "name": "DaoStructs.DaoQuarterInfo",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 8359,
+              "referencedDeclaration": 8416,
               "src": "169:25:4",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_storage_ptr",
+                "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_storage_ptr",
                 "typeString": "struct DaoStructs.DaoQuarterInfo"
               }
             }
@@ -391,7 +391,7 @@
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_storage_ptr",
+                  "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_storage_ptr",
                   "typeString": "struct DaoStructs.DaoQuarterInfo"
                 },
                 "typeName": {
@@ -399,10 +399,10 @@
                   "id": 1620,
                   "name": "DaoStructs.DaoQuarterInfo",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 8359,
+                  "referencedDeclaration": 8416,
                   "src": "535:25:4",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_storage_ptr",
+                    "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_storage_ptr",
                     "typeString": "struct DaoStructs.DaoQuarterInfo"
                   }
                 },
@@ -586,7 +586,7 @@
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_storage_ptr",
+                  "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_storage_ptr",
                   "typeString": "struct DaoStructs.DaoQuarterInfo"
                 },
                 "typeName": {
@@ -594,10 +594,10 @@
                   "id": 1635,
                   "name": "DaoStructs.DaoQuarterInfo",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 8359,
+                  "referencedDeclaration": 8416,
                   "src": "941:25:4",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_storage_ptr",
+                    "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_storage_ptr",
                     "typeString": "struct DaoStructs.DaoQuarterInfo"
                   }
                 },
@@ -806,7 +806,7 @@
                             "referencedDeclaration": 1224,
                             "src": "1426:17:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoRewardsStorage_$15033_$",
+                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoRewardsStorage_$15090_$",
                               "typeString": "function () view returns (contract DaoRewardsStorage)"
                             }
                           },
@@ -820,7 +820,7 @@
                           "nodeType": "FunctionCall",
                           "src": "1426:19:4",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_DaoRewardsStorage_$15033",
+                            "typeIdentifier": "t_contract$_DaoRewardsStorage_$15090",
                             "typeString": "contract DaoRewardsStorage"
                           }
                         },
@@ -831,7 +831,7 @@
                         "lValueRequested": false,
                         "memberName": "lastParticipatedQuarter",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 14489,
+                        "referencedDeclaration": 14546,
                         "src": "1426:43:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_uint256_$",
@@ -937,7 +937,7 @@
                             "referencedDeclaration": 1224,
                             "src": "1527:17:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoRewardsStorage_$15033_$",
+                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoRewardsStorage_$15090_$",
                               "typeString": "function () view returns (contract DaoRewardsStorage)"
                             }
                           },
@@ -951,7 +951,7 @@
                           "nodeType": "FunctionCall",
                           "src": "1527:19:4",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_DaoRewardsStorage_$15033",
+                            "typeIdentifier": "t_contract$_DaoRewardsStorage_$15090",
                             "typeString": "contract DaoRewardsStorage"
                           }
                         },
@@ -962,7 +962,7 @@
                         "lValueRequested": false,
                         "memberName": "lastQuarterThatRewardsWasUpdated",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 14497,
+                        "referencedDeclaration": 14554,
                         "src": "1527:52:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_uint256_$",
@@ -1026,7 +1026,7 @@
                       "referencedDeclaration": 1621,
                       "src": "1596:11:4",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory",
+                        "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory",
                         "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                       }
                     },
@@ -1079,7 +1079,7 @@
                         "referencedDeclaration": 1740,
                         "src": "1610:15:4",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_internal_view$_t_uint256_$returns$_t_struct$_DaoQuarterInfo_$8359_memory_ptr_$",
+                          "typeIdentifier": "t_function_internal_view$_t_uint256_$returns$_t_struct$_DaoQuarterInfo_$8416_memory_ptr_$",
                           "typeString": "function (uint256) view returns (struct DaoStructs.DaoQuarterInfo memory)"
                         }
                       },
@@ -1093,13 +1093,13 @@
                       "nodeType": "FunctionCall",
                       "src": "1610:46:4",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                        "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                         "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                       }
                     },
                     "src": "1596:60:4",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory",
+                      "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory",
                       "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                     }
                   },
@@ -1220,7 +1220,7 @@
                             "referencedDeclaration": 1688,
                             "src": "1886:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -1231,7 +1231,7 @@
                           "lValueRequested": true,
                           "memberName": "minimalParticipationPoint",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8338,
+                          "referencedDeclaration": 8395,
                           "src": "1886:32:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1249,7 +1249,7 @@
                             "referencedDeclaration": 1688,
                             "src": "1932:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -1260,7 +1260,7 @@
                           "lValueRequested": true,
                           "memberName": "quarterPointScalingFactor",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8340,
+                          "referencedDeclaration": 8397,
                           "src": "1932:32:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1278,7 +1278,7 @@
                             "referencedDeclaration": 1688,
                             "src": "1978:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -1289,7 +1289,7 @@
                           "lValueRequested": true,
                           "memberName": "reputationPointScalingFactor",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8342,
+                          "referencedDeclaration": 8399,
                           "src": "1978:35:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1307,7 +1307,7 @@
                             "referencedDeclaration": 1688,
                             "src": "2027:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -1318,7 +1318,7 @@
                           "lValueRequested": true,
                           "memberName": "totalEffectiveDGDPreviousQuarter",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8344,
+                          "referencedDeclaration": 8401,
                           "src": "2027:39:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1377,7 +1377,7 @@
                             "referencedDeclaration": 1224,
                             "src": "2079:17:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoRewardsStorage_$15033_$",
+                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoRewardsStorage_$15090_$",
                               "typeString": "function () view returns (contract DaoRewardsStorage)"
                             }
                           },
@@ -1391,7 +1391,7 @@
                           "nodeType": "FunctionCall",
                           "src": "2079:19:4",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_DaoRewardsStorage_$15033",
+                            "typeIdentifier": "t_contract$_DaoRewardsStorage_$15090",
                             "typeString": "contract DaoRewardsStorage"
                           }
                         },
@@ -1402,7 +1402,7 @@
                         "lValueRequested": false,
                         "memberName": "readQuarterParticipantInfo",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 14972,
+                        "referencedDeclaration": 15029,
                         "src": "2079:46:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$_t_uint256_$returns$_t_uint256_$_t_uint256_$_t_uint256_$_t_uint256_$",
@@ -1455,7 +1455,7 @@
                             "referencedDeclaration": 1688,
                             "src": "2165:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -1466,7 +1466,7 @@
                           "lValueRequested": true,
                           "memberName": "moderatorMinimalParticipationPoint",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8346,
+                          "referencedDeclaration": 8403,
                           "src": "2165:41:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1484,7 +1484,7 @@
                             "referencedDeclaration": 1688,
                             "src": "2220:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -1495,7 +1495,7 @@
                           "lValueRequested": true,
                           "memberName": "moderatorQuarterPointScalingFactor",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8348,
+                          "referencedDeclaration": 8405,
                           "src": "2220:41:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1513,7 +1513,7 @@
                             "referencedDeclaration": 1688,
                             "src": "2275:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -1524,7 +1524,7 @@
                           "lValueRequested": true,
                           "memberName": "moderatorReputationPointScalingFactor",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8350,
+                          "referencedDeclaration": 8407,
                           "src": "2275:44:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1542,7 +1542,7 @@
                             "referencedDeclaration": 1688,
                             "src": "2333:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -1553,7 +1553,7 @@
                           "lValueRequested": true,
                           "memberName": "totalEffectiveModeratorDGDLastQuarter",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8352,
+                          "referencedDeclaration": 8409,
                           "src": "2333:44:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1612,7 +1612,7 @@
                             "referencedDeclaration": 1224,
                             "src": "2390:17:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoRewardsStorage_$15033_$",
+                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoRewardsStorage_$15090_$",
                               "typeString": "function () view returns (contract DaoRewardsStorage)"
                             }
                           },
@@ -1626,7 +1626,7 @@
                           "nodeType": "FunctionCall",
                           "src": "2390:19:4",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_DaoRewardsStorage_$15033",
+                            "typeIdentifier": "t_contract$_DaoRewardsStorage_$15090",
                             "typeString": "contract DaoRewardsStorage"
                           }
                         },
@@ -1637,7 +1637,7 @@
                         "lValueRequested": false,
                         "memberName": "readQuarterModeratorInfo",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 14930,
+                        "referencedDeclaration": 14987,
                         "src": "2390:44:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$_t_uint256_$returns$_t_uint256_$_t_uint256_$_t_uint256_$_t_uint256_$",
@@ -1690,7 +1690,7 @@
                             "referencedDeclaration": 1688,
                             "src": "2474:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -1701,7 +1701,7 @@
                           "lValueRequested": true,
                           "memberName": "dgxDistributionDay",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8354,
+                          "referencedDeclaration": 8411,
                           "src": "2474:25:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1719,7 +1719,7 @@
                             "referencedDeclaration": 1688,
                             "src": "2513:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -1730,7 +1730,7 @@
                           "lValueRequested": true,
                           "memberName": "dgxRewardsPoolLastQuarter",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8356,
+                          "referencedDeclaration": 8413,
                           "src": "2513:32:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1748,7 +1748,7 @@
                             "referencedDeclaration": 1688,
                             "src": "2559:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -1759,7 +1759,7 @@
                           "lValueRequested": true,
                           "memberName": "sumRewardsFromBeginning",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8358,
+                          "referencedDeclaration": 8415,
                           "src": "2559:30:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1818,7 +1818,7 @@
                             "referencedDeclaration": 1224,
                             "src": "2602:17:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoRewardsStorage_$15033_$",
+                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoRewardsStorage_$15090_$",
                               "typeString": "function () view returns (contract DaoRewardsStorage)"
                             }
                           },
@@ -1832,7 +1832,7 @@
                           "nodeType": "FunctionCall",
                           "src": "2602:19:4",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_DaoRewardsStorage_$15033",
+                            "typeIdentifier": "t_contract$_DaoRewardsStorage_$15090",
                             "typeString": "contract DaoRewardsStorage"
                           }
                         },
@@ -1843,7 +1843,7 @@
                         "lValueRequested": false,
                         "memberName": "readQuarterGeneralInfo",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 14888,
+                        "referencedDeclaration": 14945,
                         "src": "2602:42:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$_t_uint256_$returns$_t_uint256_$_t_uint256_$_t_uint256_$",
@@ -1932,7 +1932,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                    "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                     "typeString": "struct DaoStructs.DaoQuarterInfo"
                   },
                   "typeName": {
@@ -1940,10 +1940,10 @@
                     "id": 1687,
                     "name": "DaoStructs.DaoQuarterInfo",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 8359,
+                    "referencedDeclaration": 8416,
                     "src": "1824:25:4",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_storage_ptr",
+                      "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_storage_ptr",
                       "typeString": "struct DaoStructs.DaoQuarterInfo"
                     }
                   },
@@ -2004,7 +2004,7 @@
         "id": 1606,
         "nodeType": "ImportDirective",
         "scope": 1742,
-        "sourceUnit": 8370,
+        "sourceUnit": 8427,
         "src": "56:33:4",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2035,7 +2035,7 @@
           1602,
           1841,
           1933,
-          18546
+          18603
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -2047,7 +2047,7 @@
           1933,
           1841,
           1602,
-          18546
+          18603
         ],
         "name": "DaoRewardsManagerCommon",
         "nodeType": "ContractDefinition",
@@ -2059,10 +2059,10 @@
               "id": 1609,
               "name": "DaoStructs",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 8369,
+              "referencedDeclaration": 8426,
               "src": "154:10:4",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoStructs_$8369",
+                "typeIdentifier": "t_contract$_DaoStructs_$8426",
                 "typeString": "library DaoStructs"
               }
             },
@@ -2073,10 +2073,10 @@
               "id": 1610,
               "name": "DaoStructs.DaoQuarterInfo",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 8359,
+              "referencedDeclaration": 8416,
               "src": "169:25:4",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_storage_ptr",
+                "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_storage_ptr",
                 "typeString": "struct DaoStructs.DaoQuarterInfo"
               }
             }
@@ -2199,7 +2199,7 @@
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_storage_ptr",
+                  "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_storage_ptr",
                   "typeString": "struct DaoStructs.DaoQuarterInfo"
                 },
                 "typeName": {
@@ -2207,10 +2207,10 @@
                   "id": 1620,
                   "name": "DaoStructs.DaoQuarterInfo",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 8359,
+                  "referencedDeclaration": 8416,
                   "src": "535:25:4",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_storage_ptr",
+                    "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_storage_ptr",
                     "typeString": "struct DaoStructs.DaoQuarterInfo"
                   }
                 },
@@ -2394,7 +2394,7 @@
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_storage_ptr",
+                  "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_storage_ptr",
                   "typeString": "struct DaoStructs.DaoQuarterInfo"
                 },
                 "typeName": {
@@ -2402,10 +2402,10 @@
                   "id": 1635,
                   "name": "DaoStructs.DaoQuarterInfo",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 8359,
+                  "referencedDeclaration": 8416,
                   "src": "941:25:4",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_storage_ptr",
+                    "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_storage_ptr",
                     "typeString": "struct DaoStructs.DaoQuarterInfo"
                   }
                 },
@@ -2614,7 +2614,7 @@
                             "referencedDeclaration": 1224,
                             "src": "1426:17:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoRewardsStorage_$15033_$",
+                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoRewardsStorage_$15090_$",
                               "typeString": "function () view returns (contract DaoRewardsStorage)"
                             }
                           },
@@ -2628,7 +2628,7 @@
                           "nodeType": "FunctionCall",
                           "src": "1426:19:4",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_DaoRewardsStorage_$15033",
+                            "typeIdentifier": "t_contract$_DaoRewardsStorage_$15090",
                             "typeString": "contract DaoRewardsStorage"
                           }
                         },
@@ -2639,7 +2639,7 @@
                         "lValueRequested": false,
                         "memberName": "lastParticipatedQuarter",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 14489,
+                        "referencedDeclaration": 14546,
                         "src": "1426:43:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_uint256_$",
@@ -2745,7 +2745,7 @@
                             "referencedDeclaration": 1224,
                             "src": "1527:17:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoRewardsStorage_$15033_$",
+                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoRewardsStorage_$15090_$",
                               "typeString": "function () view returns (contract DaoRewardsStorage)"
                             }
                           },
@@ -2759,7 +2759,7 @@
                           "nodeType": "FunctionCall",
                           "src": "1527:19:4",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_DaoRewardsStorage_$15033",
+                            "typeIdentifier": "t_contract$_DaoRewardsStorage_$15090",
                             "typeString": "contract DaoRewardsStorage"
                           }
                         },
@@ -2770,7 +2770,7 @@
                         "lValueRequested": false,
                         "memberName": "lastQuarterThatRewardsWasUpdated",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 14497,
+                        "referencedDeclaration": 14554,
                         "src": "1527:52:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_uint256_$",
@@ -2834,7 +2834,7 @@
                       "referencedDeclaration": 1621,
                       "src": "1596:11:4",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory",
+                        "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory",
                         "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                       }
                     },
@@ -2887,7 +2887,7 @@
                         "referencedDeclaration": 1740,
                         "src": "1610:15:4",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_internal_view$_t_uint256_$returns$_t_struct$_DaoQuarterInfo_$8359_memory_ptr_$",
+                          "typeIdentifier": "t_function_internal_view$_t_uint256_$returns$_t_struct$_DaoQuarterInfo_$8416_memory_ptr_$",
                           "typeString": "function (uint256) view returns (struct DaoStructs.DaoQuarterInfo memory)"
                         }
                       },
@@ -2901,13 +2901,13 @@
                       "nodeType": "FunctionCall",
                       "src": "1610:46:4",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                        "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                         "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                       }
                     },
                     "src": "1596:60:4",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory",
+                      "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory",
                       "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                     }
                   },
@@ -3028,7 +3028,7 @@
                             "referencedDeclaration": 1688,
                             "src": "1886:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -3039,7 +3039,7 @@
                           "lValueRequested": true,
                           "memberName": "minimalParticipationPoint",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8338,
+                          "referencedDeclaration": 8395,
                           "src": "1886:32:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -3057,7 +3057,7 @@
                             "referencedDeclaration": 1688,
                             "src": "1932:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -3068,7 +3068,7 @@
                           "lValueRequested": true,
                           "memberName": "quarterPointScalingFactor",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8340,
+                          "referencedDeclaration": 8397,
                           "src": "1932:32:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -3086,7 +3086,7 @@
                             "referencedDeclaration": 1688,
                             "src": "1978:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -3097,7 +3097,7 @@
                           "lValueRequested": true,
                           "memberName": "reputationPointScalingFactor",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8342,
+                          "referencedDeclaration": 8399,
                           "src": "1978:35:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -3115,7 +3115,7 @@
                             "referencedDeclaration": 1688,
                             "src": "2027:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -3126,7 +3126,7 @@
                           "lValueRequested": true,
                           "memberName": "totalEffectiveDGDPreviousQuarter",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8344,
+                          "referencedDeclaration": 8401,
                           "src": "2027:39:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -3185,7 +3185,7 @@
                             "referencedDeclaration": 1224,
                             "src": "2079:17:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoRewardsStorage_$15033_$",
+                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoRewardsStorage_$15090_$",
                               "typeString": "function () view returns (contract DaoRewardsStorage)"
                             }
                           },
@@ -3199,7 +3199,7 @@
                           "nodeType": "FunctionCall",
                           "src": "2079:19:4",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_DaoRewardsStorage_$15033",
+                            "typeIdentifier": "t_contract$_DaoRewardsStorage_$15090",
                             "typeString": "contract DaoRewardsStorage"
                           }
                         },
@@ -3210,7 +3210,7 @@
                         "lValueRequested": false,
                         "memberName": "readQuarterParticipantInfo",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 14972,
+                        "referencedDeclaration": 15029,
                         "src": "2079:46:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$_t_uint256_$returns$_t_uint256_$_t_uint256_$_t_uint256_$_t_uint256_$",
@@ -3263,7 +3263,7 @@
                             "referencedDeclaration": 1688,
                             "src": "2165:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -3274,7 +3274,7 @@
                           "lValueRequested": true,
                           "memberName": "moderatorMinimalParticipationPoint",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8346,
+                          "referencedDeclaration": 8403,
                           "src": "2165:41:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -3292,7 +3292,7 @@
                             "referencedDeclaration": 1688,
                             "src": "2220:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -3303,7 +3303,7 @@
                           "lValueRequested": true,
                           "memberName": "moderatorQuarterPointScalingFactor",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8348,
+                          "referencedDeclaration": 8405,
                           "src": "2220:41:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -3321,7 +3321,7 @@
                             "referencedDeclaration": 1688,
                             "src": "2275:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -3332,7 +3332,7 @@
                           "lValueRequested": true,
                           "memberName": "moderatorReputationPointScalingFactor",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8350,
+                          "referencedDeclaration": 8407,
                           "src": "2275:44:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -3350,7 +3350,7 @@
                             "referencedDeclaration": 1688,
                             "src": "2333:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -3361,7 +3361,7 @@
                           "lValueRequested": true,
                           "memberName": "totalEffectiveModeratorDGDLastQuarter",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8352,
+                          "referencedDeclaration": 8409,
                           "src": "2333:44:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -3420,7 +3420,7 @@
                             "referencedDeclaration": 1224,
                             "src": "2390:17:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoRewardsStorage_$15033_$",
+                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoRewardsStorage_$15090_$",
                               "typeString": "function () view returns (contract DaoRewardsStorage)"
                             }
                           },
@@ -3434,7 +3434,7 @@
                           "nodeType": "FunctionCall",
                           "src": "2390:19:4",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_DaoRewardsStorage_$15033",
+                            "typeIdentifier": "t_contract$_DaoRewardsStorage_$15090",
                             "typeString": "contract DaoRewardsStorage"
                           }
                         },
@@ -3445,7 +3445,7 @@
                         "lValueRequested": false,
                         "memberName": "readQuarterModeratorInfo",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 14930,
+                        "referencedDeclaration": 14987,
                         "src": "2390:44:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$_t_uint256_$returns$_t_uint256_$_t_uint256_$_t_uint256_$_t_uint256_$",
@@ -3498,7 +3498,7 @@
                             "referencedDeclaration": 1688,
                             "src": "2474:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -3509,7 +3509,7 @@
                           "lValueRequested": true,
                           "memberName": "dgxDistributionDay",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8354,
+                          "referencedDeclaration": 8411,
                           "src": "2474:25:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -3527,7 +3527,7 @@
                             "referencedDeclaration": 1688,
                             "src": "2513:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -3538,7 +3538,7 @@
                           "lValueRequested": true,
                           "memberName": "dgxRewardsPoolLastQuarter",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8356,
+                          "referencedDeclaration": 8413,
                           "src": "2513:32:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -3556,7 +3556,7 @@
                             "referencedDeclaration": 1688,
                             "src": "2559:6:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                              "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                               "typeString": "struct DaoStructs.DaoQuarterInfo memory"
                             }
                           },
@@ -3567,7 +3567,7 @@
                           "lValueRequested": true,
                           "memberName": "sumRewardsFromBeginning",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 8358,
+                          "referencedDeclaration": 8415,
                           "src": "2559:30:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -3626,7 +3626,7 @@
                             "referencedDeclaration": 1224,
                             "src": "2602:17:4",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoRewardsStorage_$15033_$",
+                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoRewardsStorage_$15090_$",
                               "typeString": "function () view returns (contract DaoRewardsStorage)"
                             }
                           },
@@ -3640,7 +3640,7 @@
                           "nodeType": "FunctionCall",
                           "src": "2602:19:4",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_DaoRewardsStorage_$15033",
+                            "typeIdentifier": "t_contract$_DaoRewardsStorage_$15090",
                             "typeString": "contract DaoRewardsStorage"
                           }
                         },
@@ -3651,7 +3651,7 @@
                         "lValueRequested": false,
                         "memberName": "readQuarterGeneralInfo",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 14888,
+                        "referencedDeclaration": 14945,
                         "src": "2602:42:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$_t_uint256_$returns$_t_uint256_$_t_uint256_$_t_uint256_$",
@@ -3740,7 +3740,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_memory_ptr",
+                    "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_memory_ptr",
                     "typeString": "struct DaoStructs.DaoQuarterInfo"
                   },
                   "typeName": {
@@ -3748,10 +3748,10 @@
                     "id": 1687,
                     "name": "DaoStructs.DaoQuarterInfo",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 8359,
+                    "referencedDeclaration": 8416,
                     "src": "1824:25:4",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_storage_ptr",
+                      "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_storage_ptr",
                       "typeString": "struct DaoStructs.DaoQuarterInfo"
                     }
                   },
@@ -3780,5 +3780,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-19T03:33:09.016Z"
+  "updatedAt": "2019-01-18T06:49:39.225Z"
 }

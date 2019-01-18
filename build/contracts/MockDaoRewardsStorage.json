@@ -710,14 +710,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/storage/MockDaoRewardsStorage.sol",
     "exportedSymbols": {
       "MockDaoRewardsStorage": [
-        10762
+        10819
       ]
     },
-    "id": 10763,
+    "id": 10820,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 10672,
+        "id": 10729,
         "literals": [
           "solidity",
           "^",
@@ -730,10 +730,10 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/storage/DaoRewardsStorage.sol",
         "file": "../../storage/DaoRewardsStorage.sol",
-        "id": 10673,
+        "id": 10730,
         "nodeType": "ImportDirective",
-        "scope": 10763,
-        "sourceUnit": 15034,
+        "scope": 10820,
+        "sourceUnit": 15091,
         "src": "26:45:41",
         "symbolAliases": [],
         "unitAlias": ""
@@ -744,48 +744,48 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 10674,
+              "id": 10731,
               "name": "DaoRewardsStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 15033,
+              "referencedDeclaration": 15090,
               "src": "107:17:41",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoRewardsStorage_$15033",
+                "typeIdentifier": "t_contract$_DaoRewardsStorage_$15090",
                 "typeString": "contract DaoRewardsStorage"
               }
             },
-            "id": 10675,
+            "id": 10732,
             "nodeType": "InheritanceSpecifier",
             "src": "107:17:41"
           }
         ],
         "contractDependencies": [
           1602,
-          15033,
-          18546
+          15090,
+          18603
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 10762,
+        "id": 10819,
         "linearizedBaseContracts": [
-          10762,
-          15033,
+          10819,
+          15090,
           1602,
-          18546
+          18603
         ],
         "name": "MockDaoRewardsStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 10683,
+              "id": 10740,
               "nodeType": "Block",
               "src": "199:2:41",
               "statements": []
             },
             "documentation": null,
-            "id": 10684,
+            "id": 10741,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -794,11 +794,11 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 10680,
+                    "id": 10737,
                     "name": "_resolver",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 10677,
+                    "referencedDeclaration": 10734,
                     "src": "188:9:41",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -806,17 +806,17 @@
                     }
                   }
                 ],
-                "id": 10681,
+                "id": 10738,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 10679,
+                  "id": 10736,
                   "name": "DaoRewardsStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 15033,
+                  "referencedDeclaration": 15090,
                   "src": "170:17:41",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoRewardsStorage_$15033_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoRewardsStorage_$15090_$",
                     "typeString": "type(contract DaoRewardsStorage)"
                   }
                 },
@@ -827,15 +827,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10678,
+              "id": 10735,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10677,
+                  "id": 10734,
                   "name": "_resolver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10684,
+                  "scope": 10741,
                   "src": "144:17:41",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -844,7 +844,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 10676,
+                    "id": 10733,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "144:7:41",
@@ -861,12 +861,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10682,
+              "id": 10739,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "199:0:41"
             },
-            "scope": 10762,
+            "scope": 10819,
             "src": "132:69:41",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -874,14 +874,14 @@
           },
           {
             "body": {
-              "id": 10697,
+              "id": 10754,
               "nodeType": "Block",
               "src": "309:64:41",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 10695,
+                    "id": 10752,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -890,25 +890,25 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 10691,
+                        "id": 10748,
                         "name": "lastParticipatedQuarter",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 14489,
+                        "referencedDeclaration": 14546,
                         "src": "319:23:41",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                           "typeString": "mapping(address => uint256)"
                         }
                       },
-                      "id": 10693,
+                      "id": 10750,
                       "indexExpression": {
                         "argumentTypes": null,
-                        "id": 10692,
+                        "id": 10749,
                         "name": "_user",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10686,
+                        "referencedDeclaration": 10743,
                         "src": "343:5:41",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -930,11 +930,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 10694,
+                      "id": 10751,
                       "name": "_quarterNumber",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10688,
+                      "referencedDeclaration": 10745,
                       "src": "352:14:41",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -947,14 +947,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 10696,
+                  "id": 10753,
                   "nodeType": "ExpressionStatement",
                   "src": "319:47:41"
                 }
               ]
             },
             "documentation": null,
-            "id": 10698,
+            "id": 10755,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -962,15 +962,15 @@
             "name": "mock_set_last_participated_quarter",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10689,
+              "id": 10746,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10686,
+                  "id": 10743,
                   "name": "_user",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10698,
+                  "scope": 10755,
                   "src": "251:13:41",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -979,7 +979,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 10685,
+                    "id": 10742,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "251:7:41",
@@ -993,10 +993,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10688,
+                  "id": 10745,
                   "name": "_quarterNumber",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10698,
+                  "scope": 10755,
                   "src": "266:22:41",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1005,7 +1005,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 10687,
+                    "id": 10744,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "266:7:41",
@@ -1022,12 +1022,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10690,
+              "id": 10747,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "309:0:41"
             },
-            "scope": 10762,
+            "scope": 10819,
             "src": "207:166:41",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1035,21 +1035,21 @@
           },
           {
             "body": {
-              "id": 10731,
+              "id": 10788,
               "nodeType": "Block",
               "src": "489:161:41",
               "statements": [
                 {
                   "assignments": [
-                    10707
+                    10764
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 10707,
+                      "id": 10764,
                       "name": "_n",
                       "nodeType": "VariableDeclaration",
-                      "scope": 10732,
+                      "scope": 10789,
                       "src": "499:10:41",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -1058,7 +1058,7 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 10706,
+                        "id": 10763,
                         "name": "uint256",
                         "nodeType": "ElementaryTypeName",
                         "src": "499:7:41",
@@ -1071,23 +1071,23 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 10710,
+                  "id": 10767,
                   "initialValue": {
                     "argumentTypes": null,
                     "expression": {
                       "argumentTypes": null,
-                      "id": 10708,
+                      "id": 10765,
                       "name": "_users",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10701,
+                      "referencedDeclaration": 10758,
                       "src": "512:6:41",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                         "typeString": "address[] memory"
                       }
                     },
-                    "id": 10709,
+                    "id": 10766,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1106,14 +1106,14 @@
                 },
                 {
                   "body": {
-                    "id": 10729,
+                    "id": 10786,
                     "nodeType": "Block",
                     "src": "568:76:41",
                     "statements": [
                       {
                         "expression": {
                           "argumentTypes": null,
-                          "id": 10727,
+                          "id": 10784,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1122,41 +1122,41 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10721,
+                              "id": 10778,
                               "name": "lastParticipatedQuarter",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 14489,
+                              "referencedDeclaration": 14546,
                               "src": "582:23:41",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                                 "typeString": "mapping(address => uint256)"
                               }
                             },
-                            "id": 10725,
+                            "id": 10782,
                             "indexExpression": {
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 10722,
+                                "id": 10779,
                                 "name": "_users",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10701,
+                                "referencedDeclaration": 10758,
                                 "src": "606:6:41",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                                   "typeString": "address[] memory"
                                 }
                               },
-                              "id": 10724,
+                              "id": 10781,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 10723,
+                                "id": 10780,
                                 "name": "i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10712,
+                                "referencedDeclaration": 10769,
                                 "src": "613:1:41",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -1189,11 +1189,11 @@
                           "operator": "=",
                           "rightHandSide": {
                             "argumentTypes": null,
-                            "id": 10726,
+                            "id": 10783,
                             "name": "_quarterNumber",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 10703,
+                            "referencedDeclaration": 10760,
                             "src": "619:14:41",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -1206,7 +1206,7 @@
                             "typeString": "uint256"
                           }
                         },
-                        "id": 10728,
+                        "id": 10785,
                         "nodeType": "ExpressionStatement",
                         "src": "582:51:41"
                       }
@@ -1218,18 +1218,18 @@
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 10717,
+                    "id": 10774,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
                       "argumentTypes": null,
-                      "id": 10715,
+                      "id": 10772,
                       "name": "i",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10712,
+                      "referencedDeclaration": 10769,
                       "src": "555:1:41",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1240,11 +1240,11 @@
                     "operator": "<",
                     "rightExpression": {
                       "argumentTypes": null,
-                      "id": 10716,
+                      "id": 10773,
                       "name": "_n",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10707,
+                      "referencedDeclaration": 10764,
                       "src": "559:2:41",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1257,18 +1257,18 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 10730,
+                  "id": 10787,
                   "initializationExpression": {
                     "assignments": [
-                      10712
+                      10769
                     ],
                     "declarations": [
                       {
                         "constant": false,
-                        "id": 10712,
+                        "id": 10769,
                         "name": "i",
                         "nodeType": "VariableDeclaration",
-                        "scope": 10732,
+                        "scope": 10789,
                         "src": "540:9:41",
                         "stateVariable": false,
                         "storageLocation": "default",
@@ -1277,7 +1277,7 @@
                           "typeString": "uint256"
                         },
                         "typeName": {
-                          "id": 10711,
+                          "id": 10768,
                           "name": "uint256",
                           "nodeType": "ElementaryTypeName",
                           "src": "540:7:41",
@@ -1290,11 +1290,11 @@
                         "visibility": "internal"
                       }
                     ],
-                    "id": 10714,
+                    "id": 10771,
                     "initialValue": {
                       "argumentTypes": null,
                       "hexValue": "30",
-                      "id": 10713,
+                      "id": 10770,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -1315,7 +1315,7 @@
                   "loopExpression": {
                     "expression": {
                       "argumentTypes": null,
-                      "id": 10719,
+                      "id": 10776,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1326,11 +1326,11 @@
                       "src": "563:3:41",
                       "subExpression": {
                         "argumentTypes": null,
-                        "id": 10718,
+                        "id": 10775,
                         "name": "i",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10712,
+                        "referencedDeclaration": 10769,
                         "src": "563:1:41",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1342,7 +1342,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 10720,
+                    "id": 10777,
                     "nodeType": "ExpressionStatement",
                     "src": "563:3:41"
                   },
@@ -1352,7 +1352,7 @@
               ]
             },
             "documentation": null,
-            "id": 10732,
+            "id": 10789,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1360,15 +1360,15 @@
             "name": "mock_bulk_set_last_participated_quarter",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10704,
+              "id": 10761,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10701,
+                  "id": 10758,
                   "name": "_users",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10732,
+                  "scope": 10789,
                   "src": "428:16:41",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1378,7 +1378,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 10699,
+                      "id": 10756,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "428:7:41",
@@ -1387,7 +1387,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 10700,
+                    "id": 10757,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "428:9:41",
@@ -1401,10 +1401,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10703,
+                  "id": 10760,
                   "name": "_quarterNumber",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10732,
+                  "scope": 10789,
                   "src": "446:22:41",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1413,7 +1413,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 10702,
+                    "id": 10759,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "446:7:41",
@@ -1430,12 +1430,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10705,
+              "id": 10762,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "489:0:41"
             },
-            "scope": 10762,
+            "scope": 10819,
             "src": "379:271:41",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1443,14 +1443,14 @@
           },
           {
             "body": {
-              "id": 10745,
+              "id": 10802,
               "nodeType": "Block",
               "src": "770:73:41",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 10743,
+                    "id": 10800,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1459,25 +1459,25 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 10739,
+                        "id": 10796,
                         "name": "lastQuarterThatRewardsWasUpdated",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 14497,
+                        "referencedDeclaration": 14554,
                         "src": "780:32:41",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                           "typeString": "mapping(address => uint256)"
                         }
                       },
-                      "id": 10741,
+                      "id": 10798,
                       "indexExpression": {
                         "argumentTypes": null,
-                        "id": 10740,
+                        "id": 10797,
                         "name": "_user",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10734,
+                        "referencedDeclaration": 10791,
                         "src": "813:5:41",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -1499,11 +1499,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 10742,
+                      "id": 10799,
                       "name": "_quarterNumber",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10736,
+                      "referencedDeclaration": 10793,
                       "src": "822:14:41",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1516,14 +1516,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 10744,
+                  "id": 10801,
                   "nodeType": "ExpressionStatement",
                   "src": "780:56:41"
                 }
               ]
             },
             "documentation": null,
-            "id": 10746,
+            "id": 10803,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1531,15 +1531,15 @@
             "name": "mock_set_last_quarter_that_rewards_was_updated",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10737,
+              "id": 10794,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10734,
+                  "id": 10791,
                   "name": "_user",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10746,
+                  "scope": 10803,
                   "src": "712:13:41",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1548,7 +1548,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 10733,
+                    "id": 10790,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "712:7:41",
@@ -1562,10 +1562,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10736,
+                  "id": 10793,
                   "name": "_quarterNumber",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10746,
+                  "scope": 10803,
                   "src": "727:22:41",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1574,7 +1574,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 10735,
+                    "id": 10792,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "727:7:41",
@@ -1591,12 +1591,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10738,
+              "id": 10795,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "770:0:41"
             },
-            "scope": 10762,
+            "scope": 10819,
             "src": "656:187:41",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1604,14 +1604,14 @@
           },
           {
             "body": {
-              "id": 10760,
+              "id": 10817,
               "nodeType": "Block",
               "src": "960:89:41",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 10758,
+                    "id": 10815,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1622,25 +1622,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 10753,
+                          "id": 10810,
                           "name": "allQuartersInfo",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 14479,
+                          "referencedDeclaration": 14536,
                           "src": "970:15:41",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_DaoQuarterInfo_$8359_storage_$",
+                            "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_DaoQuarterInfo_$8416_storage_$",
                             "typeString": "mapping(uint256 => struct DaoStructs.DaoQuarterInfo storage ref)"
                           }
                         },
-                        "id": 10755,
+                        "id": 10812,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 10754,
+                          "id": 10811,
                           "name": "_quarterNumber",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 10748,
+                          "referencedDeclaration": 10805,
                           "src": "986:14:41",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1654,18 +1654,18 @@
                         "nodeType": "IndexAccess",
                         "src": "970:31:41",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_storage",
+                          "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_storage",
                           "typeString": "struct DaoStructs.DaoQuarterInfo storage ref"
                         }
                       },
-                      "id": 10756,
+                      "id": 10813,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "dgxDistributionDay",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8354,
+                      "referencedDeclaration": 8411,
                       "src": "970:50:41",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1676,11 +1676,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 10757,
+                      "id": 10814,
                       "name": "_dgxDistributionDay",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10750,
+                      "referencedDeclaration": 10807,
                       "src": "1023:19:41",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1693,14 +1693,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 10759,
+                  "id": 10816,
                   "nodeType": "ExpressionStatement",
                   "src": "970:72:41"
                 }
               ]
             },
             "documentation": null,
-            "id": 10761,
+            "id": 10818,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1708,15 +1708,15 @@
             "name": "mock_set_dgx_distribution_day",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10751,
+              "id": 10808,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10748,
+                  "id": 10805,
                   "name": "_quarterNumber",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10761,
+                  "scope": 10818,
                   "src": "888:22:41",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1725,7 +1725,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 10747,
+                    "id": 10804,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "888:7:41",
@@ -1739,10 +1739,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10750,
+                  "id": 10807,
                   "name": "_dgxDistributionDay",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10761,
+                  "scope": 10818,
                   "src": "912:27:41",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1751,7 +1751,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 10749,
+                    "id": 10806,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "912:7:41",
@@ -1768,19 +1768,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10752,
+              "id": 10809,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "960:0:41"
             },
-            "scope": 10762,
+            "scope": 10819,
             "src": "849:200:41",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 10763,
+        "scope": 10820,
         "src": "73:978:41"
       }
     ],
@@ -1790,14 +1790,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/storage/MockDaoRewardsStorage.sol",
     "exportedSymbols": {
       "MockDaoRewardsStorage": [
-        10762
+        10819
       ]
     },
-    "id": 10763,
+    "id": 10820,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 10672,
+        "id": 10729,
         "literals": [
           "solidity",
           "^",
@@ -1810,10 +1810,10 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/storage/DaoRewardsStorage.sol",
         "file": "../../storage/DaoRewardsStorage.sol",
-        "id": 10673,
+        "id": 10730,
         "nodeType": "ImportDirective",
-        "scope": 10763,
-        "sourceUnit": 15034,
+        "scope": 10820,
+        "sourceUnit": 15091,
         "src": "26:45:41",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1824,48 +1824,48 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 10674,
+              "id": 10731,
               "name": "DaoRewardsStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 15033,
+              "referencedDeclaration": 15090,
               "src": "107:17:41",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoRewardsStorage_$15033",
+                "typeIdentifier": "t_contract$_DaoRewardsStorage_$15090",
                 "typeString": "contract DaoRewardsStorage"
               }
             },
-            "id": 10675,
+            "id": 10732,
             "nodeType": "InheritanceSpecifier",
             "src": "107:17:41"
           }
         ],
         "contractDependencies": [
           1602,
-          15033,
-          18546
+          15090,
+          18603
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 10762,
+        "id": 10819,
         "linearizedBaseContracts": [
-          10762,
-          15033,
+          10819,
+          15090,
           1602,
-          18546
+          18603
         ],
         "name": "MockDaoRewardsStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 10683,
+              "id": 10740,
               "nodeType": "Block",
               "src": "199:2:41",
               "statements": []
             },
             "documentation": null,
-            "id": 10684,
+            "id": 10741,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -1874,11 +1874,11 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 10680,
+                    "id": 10737,
                     "name": "_resolver",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 10677,
+                    "referencedDeclaration": 10734,
                     "src": "188:9:41",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1886,17 +1886,17 @@
                     }
                   }
                 ],
-                "id": 10681,
+                "id": 10738,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 10679,
+                  "id": 10736,
                   "name": "DaoRewardsStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 15033,
+                  "referencedDeclaration": 15090,
                   "src": "170:17:41",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoRewardsStorage_$15033_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoRewardsStorage_$15090_$",
                     "typeString": "type(contract DaoRewardsStorage)"
                   }
                 },
@@ -1907,15 +1907,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10678,
+              "id": 10735,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10677,
+                  "id": 10734,
                   "name": "_resolver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10684,
+                  "scope": 10741,
                   "src": "144:17:41",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1924,7 +1924,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 10676,
+                    "id": 10733,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "144:7:41",
@@ -1941,12 +1941,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10682,
+              "id": 10739,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "199:0:41"
             },
-            "scope": 10762,
+            "scope": 10819,
             "src": "132:69:41",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1954,14 +1954,14 @@
           },
           {
             "body": {
-              "id": 10697,
+              "id": 10754,
               "nodeType": "Block",
               "src": "309:64:41",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 10695,
+                    "id": 10752,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1970,25 +1970,25 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 10691,
+                        "id": 10748,
                         "name": "lastParticipatedQuarter",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 14489,
+                        "referencedDeclaration": 14546,
                         "src": "319:23:41",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                           "typeString": "mapping(address => uint256)"
                         }
                       },
-                      "id": 10693,
+                      "id": 10750,
                       "indexExpression": {
                         "argumentTypes": null,
-                        "id": 10692,
+                        "id": 10749,
                         "name": "_user",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10686,
+                        "referencedDeclaration": 10743,
                         "src": "343:5:41",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -2010,11 +2010,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 10694,
+                      "id": 10751,
                       "name": "_quarterNumber",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10688,
+                      "referencedDeclaration": 10745,
                       "src": "352:14:41",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2027,14 +2027,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 10696,
+                  "id": 10753,
                   "nodeType": "ExpressionStatement",
                   "src": "319:47:41"
                 }
               ]
             },
             "documentation": null,
-            "id": 10698,
+            "id": 10755,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2042,15 +2042,15 @@
             "name": "mock_set_last_participated_quarter",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10689,
+              "id": 10746,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10686,
+                  "id": 10743,
                   "name": "_user",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10698,
+                  "scope": 10755,
                   "src": "251:13:41",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2059,7 +2059,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 10685,
+                    "id": 10742,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "251:7:41",
@@ -2073,10 +2073,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10688,
+                  "id": 10745,
                   "name": "_quarterNumber",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10698,
+                  "scope": 10755,
                   "src": "266:22:41",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2085,7 +2085,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 10687,
+                    "id": 10744,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "266:7:41",
@@ -2102,12 +2102,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10690,
+              "id": 10747,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "309:0:41"
             },
-            "scope": 10762,
+            "scope": 10819,
             "src": "207:166:41",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -2115,21 +2115,21 @@
           },
           {
             "body": {
-              "id": 10731,
+              "id": 10788,
               "nodeType": "Block",
               "src": "489:161:41",
               "statements": [
                 {
                   "assignments": [
-                    10707
+                    10764
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 10707,
+                      "id": 10764,
                       "name": "_n",
                       "nodeType": "VariableDeclaration",
-                      "scope": 10732,
+                      "scope": 10789,
                       "src": "499:10:41",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -2138,7 +2138,7 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 10706,
+                        "id": 10763,
                         "name": "uint256",
                         "nodeType": "ElementaryTypeName",
                         "src": "499:7:41",
@@ -2151,23 +2151,23 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 10710,
+                  "id": 10767,
                   "initialValue": {
                     "argumentTypes": null,
                     "expression": {
                       "argumentTypes": null,
-                      "id": 10708,
+                      "id": 10765,
                       "name": "_users",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10701,
+                      "referencedDeclaration": 10758,
                       "src": "512:6:41",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                         "typeString": "address[] memory"
                       }
                     },
-                    "id": 10709,
+                    "id": 10766,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2186,14 +2186,14 @@
                 },
                 {
                   "body": {
-                    "id": 10729,
+                    "id": 10786,
                     "nodeType": "Block",
                     "src": "568:76:41",
                     "statements": [
                       {
                         "expression": {
                           "argumentTypes": null,
-                          "id": 10727,
+                          "id": 10784,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -2202,41 +2202,41 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 10721,
+                              "id": 10778,
                               "name": "lastParticipatedQuarter",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 14489,
+                              "referencedDeclaration": 14546,
                               "src": "582:23:41",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                                 "typeString": "mapping(address => uint256)"
                               }
                             },
-                            "id": 10725,
+                            "id": 10782,
                             "indexExpression": {
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 10722,
+                                "id": 10779,
                                 "name": "_users",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10701,
+                                "referencedDeclaration": 10758,
                                 "src": "606:6:41",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                                   "typeString": "address[] memory"
                                 }
                               },
-                              "id": 10724,
+                              "id": 10781,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 10723,
+                                "id": 10780,
                                 "name": "i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 10712,
+                                "referencedDeclaration": 10769,
                                 "src": "613:1:41",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -2269,11 +2269,11 @@
                           "operator": "=",
                           "rightHandSide": {
                             "argumentTypes": null,
-                            "id": 10726,
+                            "id": 10783,
                             "name": "_quarterNumber",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 10703,
+                            "referencedDeclaration": 10760,
                             "src": "619:14:41",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -2286,7 +2286,7 @@
                             "typeString": "uint256"
                           }
                         },
-                        "id": 10728,
+                        "id": 10785,
                         "nodeType": "ExpressionStatement",
                         "src": "582:51:41"
                       }
@@ -2298,18 +2298,18 @@
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 10717,
+                    "id": 10774,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
                       "argumentTypes": null,
-                      "id": 10715,
+                      "id": 10772,
                       "name": "i",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10712,
+                      "referencedDeclaration": 10769,
                       "src": "555:1:41",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2320,11 +2320,11 @@
                     "operator": "<",
                     "rightExpression": {
                       "argumentTypes": null,
-                      "id": 10716,
+                      "id": 10773,
                       "name": "_n",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10707,
+                      "referencedDeclaration": 10764,
                       "src": "559:2:41",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2337,18 +2337,18 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 10730,
+                  "id": 10787,
                   "initializationExpression": {
                     "assignments": [
-                      10712
+                      10769
                     ],
                     "declarations": [
                       {
                         "constant": false,
-                        "id": 10712,
+                        "id": 10769,
                         "name": "i",
                         "nodeType": "VariableDeclaration",
-                        "scope": 10732,
+                        "scope": 10789,
                         "src": "540:9:41",
                         "stateVariable": false,
                         "storageLocation": "default",
@@ -2357,7 +2357,7 @@
                           "typeString": "uint256"
                         },
                         "typeName": {
-                          "id": 10711,
+                          "id": 10768,
                           "name": "uint256",
                           "nodeType": "ElementaryTypeName",
                           "src": "540:7:41",
@@ -2370,11 +2370,11 @@
                         "visibility": "internal"
                       }
                     ],
-                    "id": 10714,
+                    "id": 10771,
                     "initialValue": {
                       "argumentTypes": null,
                       "hexValue": "30",
-                      "id": 10713,
+                      "id": 10770,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -2395,7 +2395,7 @@
                   "loopExpression": {
                     "expression": {
                       "argumentTypes": null,
-                      "id": 10719,
+                      "id": 10776,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2406,11 +2406,11 @@
                       "src": "563:3:41",
                       "subExpression": {
                         "argumentTypes": null,
-                        "id": 10718,
+                        "id": 10775,
                         "name": "i",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10712,
+                        "referencedDeclaration": 10769,
                         "src": "563:1:41",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -2422,7 +2422,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 10720,
+                    "id": 10777,
                     "nodeType": "ExpressionStatement",
                     "src": "563:3:41"
                   },
@@ -2432,7 +2432,7 @@
               ]
             },
             "documentation": null,
-            "id": 10732,
+            "id": 10789,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2440,15 +2440,15 @@
             "name": "mock_bulk_set_last_participated_quarter",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10704,
+              "id": 10761,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10701,
+                  "id": 10758,
                   "name": "_users",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10732,
+                  "scope": 10789,
                   "src": "428:16:41",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2458,7 +2458,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 10699,
+                      "id": 10756,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "428:7:41",
@@ -2467,7 +2467,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 10700,
+                    "id": 10757,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "428:9:41",
@@ -2481,10 +2481,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10703,
+                  "id": 10760,
                   "name": "_quarterNumber",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10732,
+                  "scope": 10789,
                   "src": "446:22:41",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2493,7 +2493,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 10702,
+                    "id": 10759,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "446:7:41",
@@ -2510,12 +2510,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10705,
+              "id": 10762,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "489:0:41"
             },
-            "scope": 10762,
+            "scope": 10819,
             "src": "379:271:41",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -2523,14 +2523,14 @@
           },
           {
             "body": {
-              "id": 10745,
+              "id": 10802,
               "nodeType": "Block",
               "src": "770:73:41",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 10743,
+                    "id": 10800,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2539,25 +2539,25 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 10739,
+                        "id": 10796,
                         "name": "lastQuarterThatRewardsWasUpdated",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 14497,
+                        "referencedDeclaration": 14554,
                         "src": "780:32:41",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
                           "typeString": "mapping(address => uint256)"
                         }
                       },
-                      "id": 10741,
+                      "id": 10798,
                       "indexExpression": {
                         "argumentTypes": null,
-                        "id": 10740,
+                        "id": 10797,
                         "name": "_user",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10734,
+                        "referencedDeclaration": 10791,
                         "src": "813:5:41",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -2579,11 +2579,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 10742,
+                      "id": 10799,
                       "name": "_quarterNumber",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10736,
+                      "referencedDeclaration": 10793,
                       "src": "822:14:41",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2596,14 +2596,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 10744,
+                  "id": 10801,
                   "nodeType": "ExpressionStatement",
                   "src": "780:56:41"
                 }
               ]
             },
             "documentation": null,
-            "id": 10746,
+            "id": 10803,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2611,15 +2611,15 @@
             "name": "mock_set_last_quarter_that_rewards_was_updated",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10737,
+              "id": 10794,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10734,
+                  "id": 10791,
                   "name": "_user",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10746,
+                  "scope": 10803,
                   "src": "712:13:41",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2628,7 +2628,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 10733,
+                    "id": 10790,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "712:7:41",
@@ -2642,10 +2642,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10736,
+                  "id": 10793,
                   "name": "_quarterNumber",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10746,
+                  "scope": 10803,
                   "src": "727:22:41",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2654,7 +2654,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 10735,
+                    "id": 10792,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "727:7:41",
@@ -2671,12 +2671,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10738,
+              "id": 10795,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "770:0:41"
             },
-            "scope": 10762,
+            "scope": 10819,
             "src": "656:187:41",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -2684,14 +2684,14 @@
           },
           {
             "body": {
-              "id": 10760,
+              "id": 10817,
               "nodeType": "Block",
               "src": "960:89:41",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 10758,
+                    "id": 10815,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2702,25 +2702,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 10753,
+                          "id": 10810,
                           "name": "allQuartersInfo",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 14479,
+                          "referencedDeclaration": 14536,
                           "src": "970:15:41",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_DaoQuarterInfo_$8359_storage_$",
+                            "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_DaoQuarterInfo_$8416_storage_$",
                             "typeString": "mapping(uint256 => struct DaoStructs.DaoQuarterInfo storage ref)"
                           }
                         },
-                        "id": 10755,
+                        "id": 10812,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 10754,
+                          "id": 10811,
                           "name": "_quarterNumber",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 10748,
+                          "referencedDeclaration": 10805,
                           "src": "986:14:41",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -2734,18 +2734,18 @@
                         "nodeType": "IndexAccess",
                         "src": "970:31:41",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_DaoQuarterInfo_$8359_storage",
+                          "typeIdentifier": "t_struct$_DaoQuarterInfo_$8416_storage",
                           "typeString": "struct DaoStructs.DaoQuarterInfo storage ref"
                         }
                       },
-                      "id": 10756,
+                      "id": 10813,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "dgxDistributionDay",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8354,
+                      "referencedDeclaration": 8411,
                       "src": "970:50:41",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2756,11 +2756,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 10757,
+                      "id": 10814,
                       "name": "_dgxDistributionDay",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10750,
+                      "referencedDeclaration": 10807,
                       "src": "1023:19:41",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2773,14 +2773,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 10759,
+                  "id": 10816,
                   "nodeType": "ExpressionStatement",
                   "src": "970:72:41"
                 }
               ]
             },
             "documentation": null,
-            "id": 10761,
+            "id": 10818,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2788,15 +2788,15 @@
             "name": "mock_set_dgx_distribution_day",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10751,
+              "id": 10808,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10748,
+                  "id": 10805,
                   "name": "_quarterNumber",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10761,
+                  "scope": 10818,
                   "src": "888:22:41",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2805,7 +2805,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 10747,
+                    "id": 10804,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "888:7:41",
@@ -2819,10 +2819,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10750,
+                  "id": 10807,
                   "name": "_dgxDistributionDay",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10761,
+                  "scope": 10818,
                   "src": "912:27:41",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2831,7 +2831,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 10749,
+                    "id": 10806,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "912:7:41",
@@ -2848,19 +2848,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10752,
+              "id": 10809,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "960:0:41"
             },
-            "scope": 10762,
+            "scope": 10819,
             "src": "849:200:41",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 10763,
+        "scope": 10820,
         "src": "73:978:41"
       }
     ],
@@ -2872,5 +2872,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-19T03:33:09.057Z"
+  "updatedAt": "2019-01-18T06:49:39.266Z"
 }

@@ -26,14 +26,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/whitelisting/MockConstructorMethodFactory.sol",
     "exportedSymbols": {
       "MockConstructorMethodFactory": [
-        11562
+        11619
       ]
     },
-    "id": 11563,
+    "id": 11620,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 11549,
+        "id": 11606,
         "literals": [
           "solidity",
           "^",
@@ -46,10 +46,10 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/whitelisting/MockConstructorMethod.sol",
         "file": "./MockConstructorMethod.sol",
-        "id": 11550,
+        "id": 11607,
         "nodeType": "ImportDirective",
-        "scope": 11563,
-        "sourceUnit": 11548,
+        "scope": 11620,
+        "sourceUnit": 11605,
         "src": "26:37:50",
         "symbolAliases": [],
         "unitAlias": ""
@@ -57,21 +57,21 @@
       {
         "baseContracts": [],
         "contractDependencies": [
-          11547
+          11604
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 11562,
+        "id": 11619,
         "linearizedBaseContracts": [
-          11562
+          11619
         ],
         "name": "MockConstructorMethodFactory",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 11560,
+              "id": 11617,
               "nodeType": "Block",
               "src": "159:119:50",
               "statements": [
@@ -81,11 +81,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11557,
+                        "id": 11614,
                         "name": "daoStorageAddress",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11552,
+                        "referencedDeclaration": 11609,
                         "src": "195:17:50",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -100,7 +100,7 @@
                           "typeString": "address"
                         }
                       ],
-                      "id": 11556,
+                      "id": 11613,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -108,23 +108,23 @@
                       "nodeType": "NewExpression",
                       "src": "169:25:50",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_creation_nonpayable$_t_address_$returns$_t_contract$_MockConstructorMethod_$11547_$",
+                        "typeIdentifier": "t_function_creation_nonpayable$_t_address_$returns$_t_contract$_MockConstructorMethod_$11604_$",
                         "typeString": "function (address) returns (contract MockConstructorMethod)"
                       },
                       "typeName": {
                         "contractScope": null,
-                        "id": 11555,
+                        "id": 11612,
                         "name": "MockConstructorMethod",
                         "nodeType": "UserDefinedTypeName",
-                        "referencedDeclaration": 11547,
+                        "referencedDeclaration": 11604,
                         "src": "173:21:50",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_MockConstructorMethod_$11547",
+                          "typeIdentifier": "t_contract$_MockConstructorMethod_$11604",
                           "typeString": "contract MockConstructorMethod"
                         }
                       }
                     },
-                    "id": 11558,
+                    "id": 11615,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -134,18 +134,18 @@
                     "nodeType": "FunctionCall",
                     "src": "169:44:50",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_MockConstructorMethod_$11547",
+                      "typeIdentifier": "t_contract$_MockConstructorMethod_$11604",
                       "typeString": "contract MockConstructorMethod"
                     }
                   },
-                  "id": 11559,
+                  "id": 11616,
                   "nodeType": "ExpressionStatement",
                   "src": "169:44:50"
                 }
               ]
             },
             "documentation": null,
-            "id": 11561,
+            "id": 11618,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -153,15 +153,15 @@
             "name": "test",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11553,
+              "id": 11610,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11552,
+                  "id": 11609,
                   "name": "daoStorageAddress",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11561,
+                  "scope": 11618,
                   "src": "125:25:50",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -170,7 +170,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11551,
+                    "id": 11608,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "125:7:50",
@@ -187,19 +187,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 11554,
+              "id": 11611,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "159:0:50"
             },
-            "scope": 11562,
+            "scope": 11619,
             "src": "110:168:50",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 11563,
+        "scope": 11620,
         "src": "65:215:50"
       }
     ],
@@ -209,14 +209,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/whitelisting/MockConstructorMethodFactory.sol",
     "exportedSymbols": {
       "MockConstructorMethodFactory": [
-        11562
+        11619
       ]
     },
-    "id": 11563,
+    "id": 11620,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 11549,
+        "id": 11606,
         "literals": [
           "solidity",
           "^",
@@ -229,10 +229,10 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/whitelisting/MockConstructorMethod.sol",
         "file": "./MockConstructorMethod.sol",
-        "id": 11550,
+        "id": 11607,
         "nodeType": "ImportDirective",
-        "scope": 11563,
-        "sourceUnit": 11548,
+        "scope": 11620,
+        "sourceUnit": 11605,
         "src": "26:37:50",
         "symbolAliases": [],
         "unitAlias": ""
@@ -240,21 +240,21 @@
       {
         "baseContracts": [],
         "contractDependencies": [
-          11547
+          11604
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 11562,
+        "id": 11619,
         "linearizedBaseContracts": [
-          11562
+          11619
         ],
         "name": "MockConstructorMethodFactory",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 11560,
+              "id": 11617,
               "nodeType": "Block",
               "src": "159:119:50",
               "statements": [
@@ -264,11 +264,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 11557,
+                        "id": 11614,
                         "name": "daoStorageAddress",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11552,
+                        "referencedDeclaration": 11609,
                         "src": "195:17:50",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -283,7 +283,7 @@
                           "typeString": "address"
                         }
                       ],
-                      "id": 11556,
+                      "id": 11613,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -291,23 +291,23 @@
                       "nodeType": "NewExpression",
                       "src": "169:25:50",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_creation_nonpayable$_t_address_$returns$_t_contract$_MockConstructorMethod_$11547_$",
+                        "typeIdentifier": "t_function_creation_nonpayable$_t_address_$returns$_t_contract$_MockConstructorMethod_$11604_$",
                         "typeString": "function (address) returns (contract MockConstructorMethod)"
                       },
                       "typeName": {
                         "contractScope": null,
-                        "id": 11555,
+                        "id": 11612,
                         "name": "MockConstructorMethod",
                         "nodeType": "UserDefinedTypeName",
-                        "referencedDeclaration": 11547,
+                        "referencedDeclaration": 11604,
                         "src": "173:21:50",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_MockConstructorMethod_$11547",
+                          "typeIdentifier": "t_contract$_MockConstructorMethod_$11604",
                           "typeString": "contract MockConstructorMethod"
                         }
                       }
                     },
-                    "id": 11558,
+                    "id": 11615,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -317,18 +317,18 @@
                     "nodeType": "FunctionCall",
                     "src": "169:44:50",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_MockConstructorMethod_$11547",
+                      "typeIdentifier": "t_contract$_MockConstructorMethod_$11604",
                       "typeString": "contract MockConstructorMethod"
                     }
                   },
-                  "id": 11559,
+                  "id": 11616,
                   "nodeType": "ExpressionStatement",
                   "src": "169:44:50"
                 }
               ]
             },
             "documentation": null,
-            "id": 11561,
+            "id": 11618,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -336,15 +336,15 @@
             "name": "test",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11553,
+              "id": 11610,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11552,
+                  "id": 11609,
                   "name": "daoStorageAddress",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11561,
+                  "scope": 11618,
                   "src": "125:25:50",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -353,7 +353,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11551,
+                    "id": 11608,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "125:7:50",
@@ -370,19 +370,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 11554,
+              "id": 11611,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "159:0:50"
             },
-            "scope": 11562,
+            "scope": 11619,
             "src": "110:168:50",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 11563,
+        "scope": 11620,
         "src": "65:215:50"
       }
     ],
@@ -394,5 +394,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-19T03:33:09.067Z"
+  "updatedAt": "2019-01-18T06:49:39.276Z"
 }

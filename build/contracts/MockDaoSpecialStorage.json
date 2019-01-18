@@ -517,14 +517,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/MockDaoSpecialStorage.sol",
     "exportedSymbols": {
       "MockDaoSpecialStorage": [
-        8680
+        8737
       ]
     },
-    "id": 8681,
+    "id": 8738,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 8504,
+        "id": 8561,
         "literals": [
           "solidity",
           "^",
@@ -537,10 +537,10 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/storage/DaoSpecialStorage.sol",
         "file": "./../storage/DaoSpecialStorage.sol",
-        "id": 8505,
+        "id": 8562,
         "nodeType": "ImportDirective",
-        "scope": 8681,
-        "sourceUnit": 15518,
+        "scope": 8738,
+        "sourceUnit": 15575,
         "src": "26:44:26",
         "symbolAliases": [],
         "unitAlias": ""
@@ -551,17 +551,17 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 8506,
+              "id": 8563,
               "name": "DaoSpecialStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 15517,
+              "referencedDeclaration": 15574,
               "src": "106:17:26",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoSpecialStorage_$15517",
+                "typeIdentifier": "t_contract$_DaoSpecialStorage_$15574",
                 "typeString": "contract DaoSpecialStorage"
               }
             },
-            "id": 8507,
+            "id": 8564,
             "nodeType": "InheritanceSpecifier",
             "src": "106:17:26"
           }
@@ -569,32 +569,32 @@
         "contractDependencies": [
           1602,
           1841,
-          15517,
-          18546
+          15574,
+          18603
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 8680,
+        "id": 8737,
         "linearizedBaseContracts": [
-          8680,
-          15517,
+          8737,
+          15574,
           1841,
           1602,
-          18546
+          18603
         ],
         "name": "MockDaoSpecialStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 8515,
+              "id": 8572,
               "nodeType": "Block",
               "src": "198:2:26",
               "statements": []
             },
             "documentation": null,
-            "id": 8516,
+            "id": 8573,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -603,11 +603,11 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 8512,
+                    "id": 8569,
                     "name": "_resolver",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 8509,
+                    "referencedDeclaration": 8566,
                     "src": "187:9:26",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -615,17 +615,17 @@
                     }
                   }
                 ],
-                "id": 8513,
+                "id": 8570,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 8511,
+                  "id": 8568,
                   "name": "DaoSpecialStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 15517,
+                  "referencedDeclaration": 15574,
                   "src": "169:17:26",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoSpecialStorage_$15517_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoSpecialStorage_$15574_$",
                     "typeString": "type(contract DaoSpecialStorage)"
                   }
                 },
@@ -636,15 +636,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8510,
+              "id": 8567,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8509,
+                  "id": 8566,
                   "name": "_resolver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8516,
+                  "scope": 8573,
                   "src": "143:17:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -653,7 +653,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 8508,
+                    "id": 8565,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "143:7:26",
@@ -670,12 +670,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 8514,
+              "id": 8571,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "198:0:26"
             },
-            "scope": 8680,
+            "scope": 8737,
             "src": "131:69:26",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -683,7 +683,7 @@
           },
           {
             "body": {
-              "id": 8593,
+              "id": 8650,
               "nodeType": "Block",
               "src": "455:565:26",
               "statements": [
@@ -693,11 +693,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 8537,
+                        "id": 8594,
                         "name": "_specialProposalId",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 8518,
+                        "referencedDeclaration": 8575,
                         "src": "482:18:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
@@ -714,32 +714,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 8534,
+                        "id": 8591,
                         "name": "proposals",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 15052,
+                        "referencedDeclaration": 15109,
                         "src": "465:9:26",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Bytes_$22523_storage",
+                          "typeIdentifier": "t_struct$_Bytes_$22580_storage",
                           "typeString": "struct DoublyLinkedList.Bytes storage ref"
                         }
                       },
-                      "id": 8536,
+                      "id": 8593,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "append",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 24503,
+                      "referencedDeclaration": 24560,
                       "src": "465:16:26",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Bytes_$22523_storage_ptr_$_t_bytes32_$returns$_t_bool_$bound_to$_t_struct$_Bytes_$22523_storage_ptr_$",
+                        "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Bytes_$22580_storage_ptr_$_t_bytes32_$returns$_t_bool_$bound_to$_t_struct$_Bytes_$22580_storage_ptr_$",
                         "typeString": "function (struct DoublyLinkedList.Bytes storage pointer,bytes32) returns (bool)"
                       }
                     },
-                    "id": 8538,
+                    "id": 8595,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -753,14 +753,14 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 8539,
+                  "id": 8596,
                   "nodeType": "ExpressionStatement",
                   "src": "465:36:26"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8545,
+                    "id": 8602,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -771,25 +771,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 8540,
+                          "id": 8597,
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15056,
+                          "referencedDeclaration": 15113,
                           "src": "511:13:26",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8336_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8393_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.SpecialProposal storage ref)"
                           }
                         },
-                        "id": 8542,
+                        "id": 8599,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 8541,
+                          "id": 8598,
                           "name": "_specialProposalId",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8518,
+                          "referencedDeclaration": 8575,
                           "src": "525:18:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -803,18 +803,18 @@
                         "nodeType": "IndexAccess",
                         "src": "511:33:26",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_SpecialProposal_$8336_storage",
+                          "typeIdentifier": "t_struct$_SpecialProposal_$8393_storage",
                           "typeString": "struct DaoStructs.SpecialProposal storage ref"
                         }
                       },
-                      "id": 8543,
+                      "id": 8600,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "proposalId",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8320,
+                      "referencedDeclaration": 8377,
                       "src": "511:44:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
@@ -825,11 +825,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 8544,
+                      "id": 8601,
                       "name": "_specialProposalId",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8518,
+                      "referencedDeclaration": 8575,
                       "src": "558:18:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
@@ -842,14 +842,14 @@
                       "typeString": "bytes32"
                     }
                   },
-                  "id": 8546,
+                  "id": 8603,
                   "nodeType": "ExpressionStatement",
                   "src": "511:65:26"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8552,
+                    "id": 8609,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -860,25 +860,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 8547,
+                          "id": 8604,
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15056,
+                          "referencedDeclaration": 15113,
                           "src": "586:13:26",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8336_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8393_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.SpecialProposal storage ref)"
                           }
                         },
-                        "id": 8549,
+                        "id": 8606,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 8548,
+                          "id": 8605,
                           "name": "_specialProposalId",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8518,
+                          "referencedDeclaration": 8575,
                           "src": "600:18:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -892,18 +892,18 @@
                         "nodeType": "IndexAccess",
                         "src": "586:33:26",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_SpecialProposal_$8336_storage",
+                          "typeIdentifier": "t_struct$_SpecialProposal_$8393_storage",
                           "typeString": "struct DaoStructs.SpecialProposal storage ref"
                         }
                       },
-                      "id": 8550,
+                      "id": 8607,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "proposer",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8335,
+                      "referencedDeclaration": 8392,
                       "src": "586:42:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -914,11 +914,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 8551,
+                      "id": 8608,
                       "name": "_founder",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8520,
+                      "referencedDeclaration": 8577,
                       "src": "631:8:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -931,14 +931,14 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 8553,
+                  "id": 8610,
                   "nodeType": "ExpressionStatement",
                   "src": "586:53:26"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8562,
+                    "id": 8619,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -949,25 +949,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 8554,
+                          "id": 8611,
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15056,
+                          "referencedDeclaration": 15113,
                           "src": "649:13:26",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8336_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8393_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.SpecialProposal storage ref)"
                           }
                         },
-                        "id": 8556,
+                        "id": 8613,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 8555,
+                          "id": 8612,
                           "name": "_specialProposalId",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8518,
+                          "referencedDeclaration": 8575,
                           "src": "663:18:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -981,18 +981,18 @@
                         "nodeType": "IndexAccess",
                         "src": "649:33:26",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_SpecialProposal_$8336_storage",
+                          "typeIdentifier": "t_struct$_SpecialProposal_$8393_storage",
                           "typeString": "struct DaoStructs.SpecialProposal storage ref"
                         }
                       },
-                      "id": 8557,
+                      "id": 8614,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "timeCreated",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8322,
+                      "referencedDeclaration": 8379,
                       "src": "649:45:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1007,7 +1007,7 @@
                         {
                           "argumentTypes": null,
                           "hexValue": "31",
-                          "id": 8560,
+                          "id": 8617,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -1032,32 +1032,32 @@
                         ],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 8558,
+                          "id": 8615,
                           "name": "_startOfVoting",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8531,
+                          "referencedDeclaration": 8588,
                           "src": "697:14:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
                           }
                         },
-                        "id": 8559,
+                        "id": 8616,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "sub",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 25504,
+                        "referencedDeclaration": 25561,
                         "src": "697:18:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
                           "typeString": "function (uint256,uint256) pure returns (uint256)"
                         }
                       },
-                      "id": 8561,
+                      "id": 8618,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1077,14 +1077,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 8563,
+                  "id": 8620,
                   "nodeType": "ExpressionStatement",
                   "src": "649:69:26"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8569,
+                    "id": 8626,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1095,25 +1095,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 8564,
+                          "id": 8621,
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15056,
+                          "referencedDeclaration": 15113,
                           "src": "728:13:26",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8336_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8393_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.SpecialProposal storage ref)"
                           }
                         },
-                        "id": 8566,
+                        "id": 8623,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 8565,
+                          "id": 8622,
                           "name": "_specialProposalId",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8518,
+                          "referencedDeclaration": 8575,
                           "src": "742:18:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -1127,18 +1127,18 @@
                         "nodeType": "IndexAccess",
                         "src": "728:33:26",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_SpecialProposal_$8336_storage",
+                          "typeIdentifier": "t_struct$_SpecialProposal_$8393_storage",
                           "typeString": "struct DaoStructs.SpecialProposal storage ref"
                         }
                       },
-                      "id": 8567,
+                      "id": 8624,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "uintConfigs",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8327,
+                      "referencedDeclaration": 8384,
                       "src": "728:45:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_uint256_$dyn_storage",
@@ -1149,11 +1149,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 8568,
+                      "id": 8625,
                       "name": "_uintConfigs",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8523,
+                      "referencedDeclaration": 8580,
                       "src": "776:12:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
@@ -1166,14 +1166,14 @@
                       "typeString": "uint256[] storage ref"
                     }
                   },
-                  "id": 8570,
+                  "id": 8627,
                   "nodeType": "ExpressionStatement",
                   "src": "728:60:26"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8576,
+                    "id": 8633,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1184,25 +1184,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 8571,
+                          "id": 8628,
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15056,
+                          "referencedDeclaration": 15113,
                           "src": "798:13:26",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8336_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8393_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.SpecialProposal storage ref)"
                           }
                         },
-                        "id": 8573,
+                        "id": 8630,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 8572,
+                          "id": 8629,
                           "name": "_specialProposalId",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8518,
+                          "referencedDeclaration": 8575,
                           "src": "812:18:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -1216,18 +1216,18 @@
                         "nodeType": "IndexAccess",
                         "src": "798:33:26",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_SpecialProposal_$8336_storage",
+                          "typeIdentifier": "t_struct$_SpecialProposal_$8393_storage",
                           "typeString": "struct DaoStructs.SpecialProposal storage ref"
                         }
                       },
-                      "id": 8574,
+                      "id": 8631,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "addressConfigs",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8330,
+                      "referencedDeclaration": 8387,
                       "src": "798:48:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_address_$dyn_storage",
@@ -1238,11 +1238,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 8575,
+                      "id": 8632,
                       "name": "_addressConfigs",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8526,
+                      "referencedDeclaration": 8583,
                       "src": "849:15:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
@@ -1255,14 +1255,14 @@
                       "typeString": "address[] storage ref"
                     }
                   },
-                  "id": 8577,
+                  "id": 8634,
                   "nodeType": "ExpressionStatement",
                   "src": "798:66:26"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8583,
+                    "id": 8640,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1273,25 +1273,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 8578,
+                          "id": 8635,
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15056,
+                          "referencedDeclaration": 15113,
                           "src": "874:13:26",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8336_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8393_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.SpecialProposal storage ref)"
                           }
                         },
-                        "id": 8580,
+                        "id": 8637,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 8579,
+                          "id": 8636,
                           "name": "_specialProposalId",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8518,
+                          "referencedDeclaration": 8575,
                           "src": "888:18:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -1305,18 +1305,18 @@
                         "nodeType": "IndexAccess",
                         "src": "874:33:26",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_SpecialProposal_$8336_storage",
+                          "typeIdentifier": "t_struct$_SpecialProposal_$8393_storage",
                           "typeString": "struct DaoStructs.SpecialProposal storage ref"
                         }
                       },
-                      "id": 8581,
+                      "id": 8638,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "bytesConfigs",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8333,
+                      "referencedDeclaration": 8390,
                       "src": "874:46:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_bytes32_$dyn_storage",
@@ -1327,11 +1327,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 8582,
+                      "id": 8639,
                       "name": "_bytesConfigs",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8529,
+                      "referencedDeclaration": 8586,
                       "src": "923:13:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
@@ -1344,14 +1344,14 @@
                       "typeString": "bytes32[] storage ref"
                     }
                   },
-                  "id": 8584,
+                  "id": 8641,
                   "nodeType": "ExpressionStatement",
                   "src": "874:62:26"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8591,
+                    "id": 8648,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1364,25 +1364,25 @@
                           "argumentTypes": null,
                           "baseExpression": {
                             "argumentTypes": null,
-                            "id": 8585,
+                            "id": 8642,
                             "name": "proposalsById",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 15056,
+                            "referencedDeclaration": 15113,
                             "src": "946:13:26",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8336_storage_$",
+                              "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8393_storage_$",
                               "typeString": "mapping(bytes32 => struct DaoStructs.SpecialProposal storage ref)"
                             }
                           },
-                          "id": 8587,
+                          "id": 8644,
                           "indexExpression": {
                             "argumentTypes": null,
-                            "id": 8586,
+                            "id": 8643,
                             "name": "_specialProposalId",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 8518,
+                            "referencedDeclaration": 8575,
                             "src": "960:18:26",
                             "typeDescriptions": {
                               "typeIdentifier": "t_bytes32",
@@ -1396,32 +1396,32 @@
                           "nodeType": "IndexAccess",
                           "src": "946:33:26",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_SpecialProposal_$8336_storage",
+                            "typeIdentifier": "t_struct$_SpecialProposal_$8393_storage",
                             "typeString": "struct DaoStructs.SpecialProposal storage ref"
                           }
                         },
-                        "id": 8588,
+                        "id": 8645,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "voting",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 8324,
+                        "referencedDeclaration": 8381,
                         "src": "946:40:26",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Voting_$7848_storage",
+                          "typeIdentifier": "t_struct$_Voting_$7905_storage",
                           "typeString": "struct DaoStructs.Voting storage ref"
                         }
                       },
-                      "id": 8589,
+                      "id": 8646,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "startTime",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 7825,
+                      "referencedDeclaration": 7882,
                       "src": "946:50:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1432,11 +1432,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 8590,
+                      "id": 8647,
                       "name": "_startOfVoting",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8531,
+                      "referencedDeclaration": 8588,
                       "src": "999:14:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1449,14 +1449,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 8592,
+                  "id": 8649,
                   "nodeType": "ExpressionStatement",
                   "src": "946:67:26"
                 }
               ]
             },
             "documentation": null,
-            "id": 8594,
+            "id": 8651,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1464,15 +1464,15 @@
             "name": "mock_put_proposal_as",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8532,
+              "id": 8589,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8518,
+                  "id": 8575,
                   "name": "_specialProposalId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8594,
+                  "scope": 8651,
                   "src": "245:26:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1481,7 +1481,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 8517,
+                    "id": 8574,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "245:7:26",
@@ -1495,10 +1495,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8520,
+                  "id": 8577,
                   "name": "_founder",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8594,
+                  "scope": 8651,
                   "src": "281:16:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1507,7 +1507,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 8519,
+                    "id": 8576,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "281:7:26",
@@ -1521,10 +1521,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8523,
+                  "id": 8580,
                   "name": "_uintConfigs",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8594,
+                  "scope": 8651,
                   "src": "307:22:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1534,7 +1534,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8521,
+                      "id": 8578,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "307:7:26",
@@ -1543,7 +1543,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 8522,
+                    "id": 8579,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "307:9:26",
@@ -1557,10 +1557,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8526,
+                  "id": 8583,
                   "name": "_addressConfigs",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8594,
+                  "scope": 8651,
                   "src": "339:25:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1570,7 +1570,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8524,
+                      "id": 8581,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "339:7:26",
@@ -1579,7 +1579,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 8525,
+                    "id": 8582,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "339:9:26",
@@ -1593,10 +1593,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8529,
+                  "id": 8586,
                   "name": "_bytesConfigs",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8594,
+                  "scope": 8651,
                   "src": "374:23:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1606,7 +1606,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8527,
+                      "id": 8584,
                       "name": "bytes32",
                       "nodeType": "ElementaryTypeName",
                       "src": "374:7:26",
@@ -1615,7 +1615,7 @@
                         "typeString": "bytes32"
                       }
                     },
-                    "id": 8528,
+                    "id": 8585,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "374:9:26",
@@ -1629,10 +1629,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8531,
+                  "id": 8588,
                   "name": "_startOfVoting",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8594,
+                  "scope": 8651,
                   "src": "407:22:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1641,7 +1641,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8530,
+                    "id": 8587,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "407:7:26",
@@ -1658,12 +1658,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 8533,
+              "id": 8590,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "455:0:26"
             },
-            "scope": 8680,
+            "scope": 8737,
             "src": "206:814:26",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1671,20 +1671,20 @@
           },
           {
             "body": {
-              "id": 8633,
+              "id": 8690,
               "nodeType": "Block",
               "src": "1198:158:26",
               "statements": [
                 {
                   "body": {
-                    "id": 8631,
+                    "id": 8688,
                     "nodeType": "Block",
                     "src": "1249:101:26",
                     "statements": [
                       {
                         "expression": {
                           "argumentTypes": null,
-                          "id": 8629,
+                          "id": 8686,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1699,25 +1699,25 @@
                                   "argumentTypes": null,
                                   "baseExpression": {
                                     "argumentTypes": null,
-                                    "id": 8617,
+                                    "id": 8674,
                                     "name": "proposalsById",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 15056,
+                                    "referencedDeclaration": 15113,
                                     "src": "1263:13:26",
                                     "typeDescriptions": {
-                                      "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8336_storage_$",
+                                      "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8393_storage_$",
                                       "typeString": "mapping(bytes32 => struct DaoStructs.SpecialProposal storage ref)"
                                     }
                                   },
-                                  "id": 8619,
+                                  "id": 8676,
                                   "indexExpression": {
                                     "argumentTypes": null,
-                                    "id": 8618,
+                                    "id": 8675,
                                     "name": "_specialProposalId",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 8596,
+                                    "referencedDeclaration": 8653,
                                     "src": "1277:18:26",
                                     "typeDescriptions": {
                                       "typeIdentifier": "t_bytes32",
@@ -1731,62 +1731,62 @@
                                   "nodeType": "IndexAccess",
                                   "src": "1263:33:26",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_struct$_SpecialProposal_$8336_storage",
+                                    "typeIdentifier": "t_struct$_SpecialProposal_$8393_storage",
                                     "typeString": "struct DaoStructs.SpecialProposal storage ref"
                                   }
                                 },
-                                "id": 8620,
+                                "id": 8677,
                                 "isConstant": false,
                                 "isLValue": true,
                                 "isPure": false,
                                 "lValueRequested": false,
                                 "memberName": "voting",
                                 "nodeType": "MemberAccess",
-                                "referencedDeclaration": 8324,
+                                "referencedDeclaration": 8381,
                                 "src": "1263:40:26",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_struct$_Voting_$7848_storage",
+                                  "typeIdentifier": "t_struct$_Voting_$7905_storage",
                                   "typeString": "struct DaoStructs.Voting storage ref"
                                 }
                               },
-                              "id": 8621,
+                              "id": 8678,
                               "isConstant": false,
                               "isLValue": true,
                               "isPure": false,
                               "lValueRequested": false,
                               "memberName": "commits",
                               "nodeType": "MemberAccess",
-                              "referencedDeclaration": 7833,
+                              "referencedDeclaration": 7890,
                               "src": "1263:48:26",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_bytes32_$",
                                 "typeString": "mapping(address => bytes32)"
                               }
                             },
-                            "id": 8625,
+                            "id": 8682,
                             "indexExpression": {
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 8622,
+                                "id": 8679,
                                 "name": "_voters",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8599,
+                                "referencedDeclaration": 8656,
                                 "src": "1312:7:26",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                                   "typeString": "address[] memory"
                                 }
                               },
-                              "id": 8624,
+                              "id": 8681,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 8623,
+                                "id": 8680,
                                 "name": "_i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8608,
+                                "referencedDeclaration": 8665,
                                 "src": "1320:2:26",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -1821,25 +1821,25 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 8626,
+                              "id": 8683,
                               "name": "_commits",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 8602,
+                              "referencedDeclaration": 8659,
                               "src": "1327:8:26",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
                                 "typeString": "bytes32[] memory"
                               }
                             },
-                            "id": 8628,
+                            "id": 8685,
                             "indexExpression": {
                               "argumentTypes": null,
-                              "id": 8627,
+                              "id": 8684,
                               "name": "_i",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 8608,
+                              "referencedDeclaration": 8665,
                               "src": "1336:2:26",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -1863,7 +1863,7 @@
                             "typeString": "bytes32"
                           }
                         },
-                        "id": 8630,
+                        "id": 8687,
                         "nodeType": "ExpressionStatement",
                         "src": "1263:76:26"
                       }
@@ -1875,18 +1875,18 @@
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 8613,
+                    "id": 8670,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
                       "argumentTypes": null,
-                      "id": 8611,
+                      "id": 8668,
                       "name": "_i",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8608,
+                      "referencedDeclaration": 8665,
                       "src": "1229:2:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1897,11 +1897,11 @@
                     "operator": "<",
                     "rightExpression": {
                       "argumentTypes": null,
-                      "id": 8612,
+                      "id": 8669,
                       "name": "_length",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8604,
+                      "referencedDeclaration": 8661,
                       "src": "1234:7:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1914,18 +1914,18 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 8632,
+                  "id": 8689,
                   "initializationExpression": {
                     "assignments": [
-                      8608
+                      8665
                     ],
                     "declarations": [
                       {
                         "constant": false,
-                        "id": 8608,
+                        "id": 8665,
                         "name": "_i",
                         "nodeType": "VariableDeclaration",
-                        "scope": 8634,
+                        "scope": 8691,
                         "src": "1213:10:26",
                         "stateVariable": false,
                         "storageLocation": "default",
@@ -1934,7 +1934,7 @@
                           "typeString": "uint256"
                         },
                         "typeName": {
-                          "id": 8607,
+                          "id": 8664,
                           "name": "uint256",
                           "nodeType": "ElementaryTypeName",
                           "src": "1213:7:26",
@@ -1947,11 +1947,11 @@
                         "visibility": "internal"
                       }
                     ],
-                    "id": 8610,
+                    "id": 8667,
                     "initialValue": {
                       "argumentTypes": null,
                       "hexValue": "30",
-                      "id": 8609,
+                      "id": 8666,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -1972,7 +1972,7 @@
                   "loopExpression": {
                     "expression": {
                       "argumentTypes": null,
-                      "id": 8615,
+                      "id": 8672,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1983,11 +1983,11 @@
                       "src": "1243:4:26",
                       "subExpression": {
                         "argumentTypes": null,
-                        "id": 8614,
+                        "id": 8671,
                         "name": "_i",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 8608,
+                        "referencedDeclaration": 8665,
                         "src": "1243:2:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1999,7 +1999,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 8616,
+                    "id": 8673,
                     "nodeType": "ExpressionStatement",
                     "src": "1243:4:26"
                   },
@@ -2009,7 +2009,7 @@
               ]
             },
             "documentation": null,
-            "id": 8634,
+            "id": 8691,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2017,15 +2017,15 @@
             "name": "mock_put_commit_votes",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8605,
+              "id": 8662,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8596,
+                  "id": 8653,
                   "name": "_specialProposalId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8634,
+                  "scope": 8691,
                   "src": "1066:26:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2034,7 +2034,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 8595,
+                    "id": 8652,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1066:7:26",
@@ -2048,10 +2048,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8599,
+                  "id": 8656,
                   "name": "_voters",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8634,
+                  "scope": 8691,
                   "src": "1102:17:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2061,7 +2061,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8597,
+                      "id": 8654,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "1102:7:26",
@@ -2070,7 +2070,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 8598,
+                    "id": 8655,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "1102:9:26",
@@ -2084,10 +2084,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8602,
+                  "id": 8659,
                   "name": "_commits",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8634,
+                  "scope": 8691,
                   "src": "1129:18:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2097,7 +2097,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8600,
+                      "id": 8657,
                       "name": "bytes32",
                       "nodeType": "ElementaryTypeName",
                       "src": "1129:7:26",
@@ -2106,7 +2106,7 @@
                         "typeString": "bytes32"
                       }
                     },
-                    "id": 8601,
+                    "id": 8658,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "1129:9:26",
@@ -2120,10 +2120,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8604,
+                  "id": 8661,
                   "name": "_length",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8634,
+                  "scope": 8691,
                   "src": "1157:15:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2132,7 +2132,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8603,
+                    "id": 8660,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1157:7:26",
@@ -2149,12 +2149,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 8606,
+              "id": 8663,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1198:0:26"
             },
-            "scope": 8680,
+            "scope": 8737,
             "src": "1026:330:26",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -2162,13 +2162,13 @@
           },
           {
             "body": {
-              "id": 8678,
+              "id": 8735,
               "nodeType": "Block",
               "src": "1554:171:26",
               "statements": [
                 {
                   "body": {
-                    "id": 8676,
+                    "id": 8733,
                     "nodeType": "Block",
                     "src": "1605:114:26",
                     "statements": [
@@ -2180,25 +2180,25 @@
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 8665,
+                                "id": 8722,
                                 "name": "_voters",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8639,
+                                "referencedDeclaration": 8696,
                                 "src": "1671:7:26",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                                   "typeString": "address[] memory"
                                 }
                               },
-                              "id": 8667,
+                              "id": 8724,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 8666,
+                                "id": 8723,
                                 "name": "_i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8651,
+                                "referencedDeclaration": 8708,
                                 "src": "1679:2:26",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -2220,25 +2220,25 @@
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 8668,
+                                "id": 8725,
                                 "name": "_votes",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8642,
+                                "referencedDeclaration": 8699,
                                 "src": "1684:6:26",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_bool_$dyn_memory_ptr",
                                   "typeString": "bool[] memory"
                                 }
                               },
-                              "id": 8670,
+                              "id": 8727,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 8669,
+                                "id": 8726,
                                 "name": "_i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8651,
+                                "referencedDeclaration": 8708,
                                 "src": "1691:2:26",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -2260,25 +2260,25 @@
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 8671,
+                                "id": 8728,
                                 "name": "_stakes",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8645,
+                                "referencedDeclaration": 8702,
                                 "src": "1696:7:26",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
                                   "typeString": "uint256[] memory"
                                 }
                               },
-                              "id": 8673,
+                              "id": 8730,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 8672,
+                                "id": 8729,
                                 "name": "_i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8651,
+                                "referencedDeclaration": 8708,
                                 "src": "1704:2:26",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -2318,25 +2318,25 @@
                                 "argumentTypes": null,
                                 "baseExpression": {
                                   "argumentTypes": null,
-                                  "id": 8660,
+                                  "id": 8717,
                                   "name": "proposalsById",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 15056,
+                                  "referencedDeclaration": 15113,
                                   "src": "1619:13:26",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8336_storage_$",
+                                    "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8393_storage_$",
                                     "typeString": "mapping(bytes32 => struct DaoStructs.SpecialProposal storage ref)"
                                   }
                                 },
-                                "id": 8662,
+                                "id": 8719,
                                 "indexExpression": {
                                   "argumentTypes": null,
-                                  "id": 8661,
+                                  "id": 8718,
                                   "name": "_specialProposalId",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 8636,
+                                  "referencedDeclaration": 8693,
                                   "src": "1633:18:26",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_bytes32",
@@ -2350,39 +2350,39 @@
                                 "nodeType": "IndexAccess",
                                 "src": "1619:33:26",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_struct$_SpecialProposal_$8336_storage",
+                                  "typeIdentifier": "t_struct$_SpecialProposal_$8393_storage",
                                   "typeString": "struct DaoStructs.SpecialProposal storage ref"
                                 }
                               },
-                              "id": 8663,
+                              "id": 8720,
                               "isConstant": false,
                               "isLValue": true,
                               "isPure": false,
                               "lValueRequested": false,
                               "memberName": "voting",
                               "nodeType": "MemberAccess",
-                              "referencedDeclaration": 8324,
+                              "referencedDeclaration": 8381,
                               "src": "1619:40:26",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Voting_$7848_storage",
+                                "typeIdentifier": "t_struct$_Voting_$7905_storage",
                                 "typeString": "struct DaoStructs.Voting storage ref"
                               }
                             },
-                            "id": 8664,
+                            "id": 8721,
                             "isConstant": false,
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
                             "memberName": "revealVote",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 8156,
+                            "referencedDeclaration": 8213,
                             "src": "1619:51:26",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Voting_$7848_storage_ptr_$_t_address_$_t_bool_$_t_uint256_$returns$__$bound_to$_t_struct$_Voting_$7848_storage_ptr_$",
+                              "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Voting_$7905_storage_ptr_$_t_address_$_t_bool_$_t_uint256_$returns$__$bound_to$_t_struct$_Voting_$7905_storage_ptr_$",
                               "typeString": "function (struct DaoStructs.Voting storage pointer,address,bool,uint256)"
                             }
                           },
-                          "id": 8674,
+                          "id": 8731,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -2396,7 +2396,7 @@
                             "typeString": "tuple()"
                           }
                         },
-                        "id": 8675,
+                        "id": 8732,
                         "nodeType": "ExpressionStatement",
                         "src": "1619:89:26"
                       }
@@ -2408,18 +2408,18 @@
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 8656,
+                    "id": 8713,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
                       "argumentTypes": null,
-                      "id": 8654,
+                      "id": 8711,
                       "name": "_i",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8651,
+                      "referencedDeclaration": 8708,
                       "src": "1585:2:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2430,11 +2430,11 @@
                     "operator": "<",
                     "rightExpression": {
                       "argumentTypes": null,
-                      "id": 8655,
+                      "id": 8712,
                       "name": "_length",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8647,
+                      "referencedDeclaration": 8704,
                       "src": "1590:7:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2447,18 +2447,18 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 8677,
+                  "id": 8734,
                   "initializationExpression": {
                     "assignments": [
-                      8651
+                      8708
                     ],
                     "declarations": [
                       {
                         "constant": false,
-                        "id": 8651,
+                        "id": 8708,
                         "name": "_i",
                         "nodeType": "VariableDeclaration",
-                        "scope": 8679,
+                        "scope": 8736,
                         "src": "1569:10:26",
                         "stateVariable": false,
                         "storageLocation": "default",
@@ -2467,7 +2467,7 @@
                           "typeString": "uint256"
                         },
                         "typeName": {
-                          "id": 8650,
+                          "id": 8707,
                           "name": "uint256",
                           "nodeType": "ElementaryTypeName",
                           "src": "1569:7:26",
@@ -2480,11 +2480,11 @@
                         "visibility": "internal"
                       }
                     ],
-                    "id": 8653,
+                    "id": 8710,
                     "initialValue": {
                       "argumentTypes": null,
                       "hexValue": "30",
-                      "id": 8652,
+                      "id": 8709,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -2505,7 +2505,7 @@
                   "loopExpression": {
                     "expression": {
                       "argumentTypes": null,
-                      "id": 8658,
+                      "id": 8715,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2516,11 +2516,11 @@
                       "src": "1599:4:26",
                       "subExpression": {
                         "argumentTypes": null,
-                        "id": 8657,
+                        "id": 8714,
                         "name": "_i",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 8651,
+                        "referencedDeclaration": 8708,
                         "src": "1599:2:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -2532,7 +2532,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 8659,
+                    "id": 8716,
                     "nodeType": "ExpressionStatement",
                     "src": "1599:4:26"
                   },
@@ -2542,7 +2542,7 @@
               ]
             },
             "documentation": null,
-            "id": 8679,
+            "id": 8736,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2550,15 +2550,15 @@
             "name": "mock_put_past_votes",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8648,
+              "id": 8705,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8636,
+                  "id": 8693,
                   "name": "_specialProposalId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8679,
+                  "scope": 8736,
                   "src": "1400:26:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2567,7 +2567,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 8635,
+                    "id": 8692,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1400:7:26",
@@ -2581,10 +2581,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8639,
+                  "id": 8696,
                   "name": "_voters",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8679,
+                  "scope": 8736,
                   "src": "1436:17:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2594,7 +2594,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8637,
+                      "id": 8694,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "1436:7:26",
@@ -2603,7 +2603,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 8638,
+                    "id": 8695,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "1436:9:26",
@@ -2617,10 +2617,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8642,
+                  "id": 8699,
                   "name": "_votes",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8679,
+                  "scope": 8736,
                   "src": "1463:13:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2630,7 +2630,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8640,
+                      "id": 8697,
                       "name": "bool",
                       "nodeType": "ElementaryTypeName",
                       "src": "1463:4:26",
@@ -2639,7 +2639,7 @@
                         "typeString": "bool"
                       }
                     },
-                    "id": 8641,
+                    "id": 8698,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "1463:6:26",
@@ -2653,10 +2653,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8645,
+                  "id": 8702,
                   "name": "_stakes",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8679,
+                  "scope": 8736,
                   "src": "1486:17:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2666,7 +2666,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8643,
+                      "id": 8700,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "1486:7:26",
@@ -2675,7 +2675,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 8644,
+                    "id": 8701,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "1486:9:26",
@@ -2689,10 +2689,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8647,
+                  "id": 8704,
                   "name": "_length",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8679,
+                  "scope": 8736,
                   "src": "1513:15:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2701,7 +2701,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8646,
+                    "id": 8703,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1513:7:26",
@@ -2718,19 +2718,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 8649,
+              "id": 8706,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1554:0:26"
             },
-            "scope": 8680,
+            "scope": 8737,
             "src": "1362:363:26",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 8681,
+        "scope": 8738,
         "src": "72:1655:26"
       }
     ],
@@ -2740,14 +2740,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/MockDaoSpecialStorage.sol",
     "exportedSymbols": {
       "MockDaoSpecialStorage": [
-        8680
+        8737
       ]
     },
-    "id": 8681,
+    "id": 8738,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 8504,
+        "id": 8561,
         "literals": [
           "solidity",
           "^",
@@ -2760,10 +2760,10 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/storage/DaoSpecialStorage.sol",
         "file": "./../storage/DaoSpecialStorage.sol",
-        "id": 8505,
+        "id": 8562,
         "nodeType": "ImportDirective",
-        "scope": 8681,
-        "sourceUnit": 15518,
+        "scope": 8738,
+        "sourceUnit": 15575,
         "src": "26:44:26",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2774,17 +2774,17 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 8506,
+              "id": 8563,
               "name": "DaoSpecialStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 15517,
+              "referencedDeclaration": 15574,
               "src": "106:17:26",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoSpecialStorage_$15517",
+                "typeIdentifier": "t_contract$_DaoSpecialStorage_$15574",
                 "typeString": "contract DaoSpecialStorage"
               }
             },
-            "id": 8507,
+            "id": 8564,
             "nodeType": "InheritanceSpecifier",
             "src": "106:17:26"
           }
@@ -2792,32 +2792,32 @@
         "contractDependencies": [
           1602,
           1841,
-          15517,
-          18546
+          15574,
+          18603
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 8680,
+        "id": 8737,
         "linearizedBaseContracts": [
-          8680,
-          15517,
+          8737,
+          15574,
           1841,
           1602,
-          18546
+          18603
         ],
         "name": "MockDaoSpecialStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 8515,
+              "id": 8572,
               "nodeType": "Block",
               "src": "198:2:26",
               "statements": []
             },
             "documentation": null,
-            "id": 8516,
+            "id": 8573,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -2826,11 +2826,11 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 8512,
+                    "id": 8569,
                     "name": "_resolver",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 8509,
+                    "referencedDeclaration": 8566,
                     "src": "187:9:26",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -2838,17 +2838,17 @@
                     }
                   }
                 ],
-                "id": 8513,
+                "id": 8570,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 8511,
+                  "id": 8568,
                   "name": "DaoSpecialStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 15517,
+                  "referencedDeclaration": 15574,
                   "src": "169:17:26",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoSpecialStorage_$15517_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoSpecialStorage_$15574_$",
                     "typeString": "type(contract DaoSpecialStorage)"
                   }
                 },
@@ -2859,15 +2859,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8510,
+              "id": 8567,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8509,
+                  "id": 8566,
                   "name": "_resolver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8516,
+                  "scope": 8573,
                   "src": "143:17:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2876,7 +2876,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 8508,
+                    "id": 8565,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "143:7:26",
@@ -2893,12 +2893,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 8514,
+              "id": 8571,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "198:0:26"
             },
-            "scope": 8680,
+            "scope": 8737,
             "src": "131:69:26",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -2906,7 +2906,7 @@
           },
           {
             "body": {
-              "id": 8593,
+              "id": 8650,
               "nodeType": "Block",
               "src": "455:565:26",
               "statements": [
@@ -2916,11 +2916,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 8537,
+                        "id": 8594,
                         "name": "_specialProposalId",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 8518,
+                        "referencedDeclaration": 8575,
                         "src": "482:18:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
@@ -2937,32 +2937,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 8534,
+                        "id": 8591,
                         "name": "proposals",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 15052,
+                        "referencedDeclaration": 15109,
                         "src": "465:9:26",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Bytes_$22523_storage",
+                          "typeIdentifier": "t_struct$_Bytes_$22580_storage",
                           "typeString": "struct DoublyLinkedList.Bytes storage ref"
                         }
                       },
-                      "id": 8536,
+                      "id": 8593,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "append",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 24503,
+                      "referencedDeclaration": 24560,
                       "src": "465:16:26",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Bytes_$22523_storage_ptr_$_t_bytes32_$returns$_t_bool_$bound_to$_t_struct$_Bytes_$22523_storage_ptr_$",
+                        "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Bytes_$22580_storage_ptr_$_t_bytes32_$returns$_t_bool_$bound_to$_t_struct$_Bytes_$22580_storage_ptr_$",
                         "typeString": "function (struct DoublyLinkedList.Bytes storage pointer,bytes32) returns (bool)"
                       }
                     },
-                    "id": 8538,
+                    "id": 8595,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2976,14 +2976,14 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 8539,
+                  "id": 8596,
                   "nodeType": "ExpressionStatement",
                   "src": "465:36:26"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8545,
+                    "id": 8602,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2994,25 +2994,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 8540,
+                          "id": 8597,
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15056,
+                          "referencedDeclaration": 15113,
                           "src": "511:13:26",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8336_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8393_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.SpecialProposal storage ref)"
                           }
                         },
-                        "id": 8542,
+                        "id": 8599,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 8541,
+                          "id": 8598,
                           "name": "_specialProposalId",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8518,
+                          "referencedDeclaration": 8575,
                           "src": "525:18:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -3026,18 +3026,18 @@
                         "nodeType": "IndexAccess",
                         "src": "511:33:26",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_SpecialProposal_$8336_storage",
+                          "typeIdentifier": "t_struct$_SpecialProposal_$8393_storage",
                           "typeString": "struct DaoStructs.SpecialProposal storage ref"
                         }
                       },
-                      "id": 8543,
+                      "id": 8600,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "proposalId",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8320,
+                      "referencedDeclaration": 8377,
                       "src": "511:44:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
@@ -3048,11 +3048,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 8544,
+                      "id": 8601,
                       "name": "_specialProposalId",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8518,
+                      "referencedDeclaration": 8575,
                       "src": "558:18:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
@@ -3065,14 +3065,14 @@
                       "typeString": "bytes32"
                     }
                   },
-                  "id": 8546,
+                  "id": 8603,
                   "nodeType": "ExpressionStatement",
                   "src": "511:65:26"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8552,
+                    "id": 8609,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3083,25 +3083,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 8547,
+                          "id": 8604,
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15056,
+                          "referencedDeclaration": 15113,
                           "src": "586:13:26",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8336_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8393_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.SpecialProposal storage ref)"
                           }
                         },
-                        "id": 8549,
+                        "id": 8606,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 8548,
+                          "id": 8605,
                           "name": "_specialProposalId",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8518,
+                          "referencedDeclaration": 8575,
                           "src": "600:18:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -3115,18 +3115,18 @@
                         "nodeType": "IndexAccess",
                         "src": "586:33:26",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_SpecialProposal_$8336_storage",
+                          "typeIdentifier": "t_struct$_SpecialProposal_$8393_storage",
                           "typeString": "struct DaoStructs.SpecialProposal storage ref"
                         }
                       },
-                      "id": 8550,
+                      "id": 8607,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "proposer",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8335,
+                      "referencedDeclaration": 8392,
                       "src": "586:42:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -3137,11 +3137,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 8551,
+                      "id": 8608,
                       "name": "_founder",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8520,
+                      "referencedDeclaration": 8577,
                       "src": "631:8:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -3154,14 +3154,14 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 8553,
+                  "id": 8610,
                   "nodeType": "ExpressionStatement",
                   "src": "586:53:26"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8562,
+                    "id": 8619,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3172,25 +3172,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 8554,
+                          "id": 8611,
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15056,
+                          "referencedDeclaration": 15113,
                           "src": "649:13:26",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8336_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8393_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.SpecialProposal storage ref)"
                           }
                         },
-                        "id": 8556,
+                        "id": 8613,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 8555,
+                          "id": 8612,
                           "name": "_specialProposalId",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8518,
+                          "referencedDeclaration": 8575,
                           "src": "663:18:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -3204,18 +3204,18 @@
                         "nodeType": "IndexAccess",
                         "src": "649:33:26",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_SpecialProposal_$8336_storage",
+                          "typeIdentifier": "t_struct$_SpecialProposal_$8393_storage",
                           "typeString": "struct DaoStructs.SpecialProposal storage ref"
                         }
                       },
-                      "id": 8557,
+                      "id": 8614,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "timeCreated",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8322,
+                      "referencedDeclaration": 8379,
                       "src": "649:45:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3230,7 +3230,7 @@
                         {
                           "argumentTypes": null,
                           "hexValue": "31",
-                          "id": 8560,
+                          "id": 8617,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -3255,32 +3255,32 @@
                         ],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 8558,
+                          "id": 8615,
                           "name": "_startOfVoting",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8531,
+                          "referencedDeclaration": 8588,
                           "src": "697:14:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
                           }
                         },
-                        "id": 8559,
+                        "id": 8616,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "sub",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 25504,
+                        "referencedDeclaration": 25561,
                         "src": "697:18:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
                           "typeString": "function (uint256,uint256) pure returns (uint256)"
                         }
                       },
-                      "id": 8561,
+                      "id": 8618,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3300,14 +3300,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 8563,
+                  "id": 8620,
                   "nodeType": "ExpressionStatement",
                   "src": "649:69:26"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8569,
+                    "id": 8626,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3318,25 +3318,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 8564,
+                          "id": 8621,
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15056,
+                          "referencedDeclaration": 15113,
                           "src": "728:13:26",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8336_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8393_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.SpecialProposal storage ref)"
                           }
                         },
-                        "id": 8566,
+                        "id": 8623,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 8565,
+                          "id": 8622,
                           "name": "_specialProposalId",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8518,
+                          "referencedDeclaration": 8575,
                           "src": "742:18:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -3350,18 +3350,18 @@
                         "nodeType": "IndexAccess",
                         "src": "728:33:26",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_SpecialProposal_$8336_storage",
+                          "typeIdentifier": "t_struct$_SpecialProposal_$8393_storage",
                           "typeString": "struct DaoStructs.SpecialProposal storage ref"
                         }
                       },
-                      "id": 8567,
+                      "id": 8624,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "uintConfigs",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8327,
+                      "referencedDeclaration": 8384,
                       "src": "728:45:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_uint256_$dyn_storage",
@@ -3372,11 +3372,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 8568,
+                      "id": 8625,
                       "name": "_uintConfigs",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8523,
+                      "referencedDeclaration": 8580,
                       "src": "776:12:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
@@ -3389,14 +3389,14 @@
                       "typeString": "uint256[] storage ref"
                     }
                   },
-                  "id": 8570,
+                  "id": 8627,
                   "nodeType": "ExpressionStatement",
                   "src": "728:60:26"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8576,
+                    "id": 8633,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3407,25 +3407,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 8571,
+                          "id": 8628,
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15056,
+                          "referencedDeclaration": 15113,
                           "src": "798:13:26",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8336_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8393_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.SpecialProposal storage ref)"
                           }
                         },
-                        "id": 8573,
+                        "id": 8630,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 8572,
+                          "id": 8629,
                           "name": "_specialProposalId",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8518,
+                          "referencedDeclaration": 8575,
                           "src": "812:18:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -3439,18 +3439,18 @@
                         "nodeType": "IndexAccess",
                         "src": "798:33:26",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_SpecialProposal_$8336_storage",
+                          "typeIdentifier": "t_struct$_SpecialProposal_$8393_storage",
                           "typeString": "struct DaoStructs.SpecialProposal storage ref"
                         }
                       },
-                      "id": 8574,
+                      "id": 8631,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "addressConfigs",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8330,
+                      "referencedDeclaration": 8387,
                       "src": "798:48:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_address_$dyn_storage",
@@ -3461,11 +3461,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 8575,
+                      "id": 8632,
                       "name": "_addressConfigs",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8526,
+                      "referencedDeclaration": 8583,
                       "src": "849:15:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
@@ -3478,14 +3478,14 @@
                       "typeString": "address[] storage ref"
                     }
                   },
-                  "id": 8577,
+                  "id": 8634,
                   "nodeType": "ExpressionStatement",
                   "src": "798:66:26"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8583,
+                    "id": 8640,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3496,25 +3496,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 8578,
+                          "id": 8635,
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15056,
+                          "referencedDeclaration": 15113,
                           "src": "874:13:26",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8336_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8393_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.SpecialProposal storage ref)"
                           }
                         },
-                        "id": 8580,
+                        "id": 8637,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 8579,
+                          "id": 8636,
                           "name": "_specialProposalId",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8518,
+                          "referencedDeclaration": 8575,
                           "src": "888:18:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -3528,18 +3528,18 @@
                         "nodeType": "IndexAccess",
                         "src": "874:33:26",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_SpecialProposal_$8336_storage",
+                          "typeIdentifier": "t_struct$_SpecialProposal_$8393_storage",
                           "typeString": "struct DaoStructs.SpecialProposal storage ref"
                         }
                       },
-                      "id": 8581,
+                      "id": 8638,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "bytesConfigs",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8333,
+                      "referencedDeclaration": 8390,
                       "src": "874:46:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_bytes32_$dyn_storage",
@@ -3550,11 +3550,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 8582,
+                      "id": 8639,
                       "name": "_bytesConfigs",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8529,
+                      "referencedDeclaration": 8586,
                       "src": "923:13:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
@@ -3567,14 +3567,14 @@
                       "typeString": "bytes32[] storage ref"
                     }
                   },
-                  "id": 8584,
+                  "id": 8641,
                   "nodeType": "ExpressionStatement",
                   "src": "874:62:26"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8591,
+                    "id": 8648,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3587,25 +3587,25 @@
                           "argumentTypes": null,
                           "baseExpression": {
                             "argumentTypes": null,
-                            "id": 8585,
+                            "id": 8642,
                             "name": "proposalsById",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 15056,
+                            "referencedDeclaration": 15113,
                             "src": "946:13:26",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8336_storage_$",
+                              "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8393_storage_$",
                               "typeString": "mapping(bytes32 => struct DaoStructs.SpecialProposal storage ref)"
                             }
                           },
-                          "id": 8587,
+                          "id": 8644,
                           "indexExpression": {
                             "argumentTypes": null,
-                            "id": 8586,
+                            "id": 8643,
                             "name": "_specialProposalId",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 8518,
+                            "referencedDeclaration": 8575,
                             "src": "960:18:26",
                             "typeDescriptions": {
                               "typeIdentifier": "t_bytes32",
@@ -3619,32 +3619,32 @@
                           "nodeType": "IndexAccess",
                           "src": "946:33:26",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_SpecialProposal_$8336_storage",
+                            "typeIdentifier": "t_struct$_SpecialProposal_$8393_storage",
                             "typeString": "struct DaoStructs.SpecialProposal storage ref"
                           }
                         },
-                        "id": 8588,
+                        "id": 8645,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "voting",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 8324,
+                        "referencedDeclaration": 8381,
                         "src": "946:40:26",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Voting_$7848_storage",
+                          "typeIdentifier": "t_struct$_Voting_$7905_storage",
                           "typeString": "struct DaoStructs.Voting storage ref"
                         }
                       },
-                      "id": 8589,
+                      "id": 8646,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "startTime",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 7825,
+                      "referencedDeclaration": 7882,
                       "src": "946:50:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3655,11 +3655,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 8590,
+                      "id": 8647,
                       "name": "_startOfVoting",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8531,
+                      "referencedDeclaration": 8588,
                       "src": "999:14:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3672,14 +3672,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 8592,
+                  "id": 8649,
                   "nodeType": "ExpressionStatement",
                   "src": "946:67:26"
                 }
               ]
             },
             "documentation": null,
-            "id": 8594,
+            "id": 8651,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -3687,15 +3687,15 @@
             "name": "mock_put_proposal_as",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8532,
+              "id": 8589,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8518,
+                  "id": 8575,
                   "name": "_specialProposalId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8594,
+                  "scope": 8651,
                   "src": "245:26:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3704,7 +3704,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 8517,
+                    "id": 8574,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "245:7:26",
@@ -3718,10 +3718,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8520,
+                  "id": 8577,
                   "name": "_founder",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8594,
+                  "scope": 8651,
                   "src": "281:16:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3730,7 +3730,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 8519,
+                    "id": 8576,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "281:7:26",
@@ -3744,10 +3744,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8523,
+                  "id": 8580,
                   "name": "_uintConfigs",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8594,
+                  "scope": 8651,
                   "src": "307:22:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3757,7 +3757,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8521,
+                      "id": 8578,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "307:7:26",
@@ -3766,7 +3766,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 8522,
+                    "id": 8579,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "307:9:26",
@@ -3780,10 +3780,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8526,
+                  "id": 8583,
                   "name": "_addressConfigs",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8594,
+                  "scope": 8651,
                   "src": "339:25:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3793,7 +3793,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8524,
+                      "id": 8581,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "339:7:26",
@@ -3802,7 +3802,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 8525,
+                    "id": 8582,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "339:9:26",
@@ -3816,10 +3816,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8529,
+                  "id": 8586,
                   "name": "_bytesConfigs",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8594,
+                  "scope": 8651,
                   "src": "374:23:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3829,7 +3829,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8527,
+                      "id": 8584,
                       "name": "bytes32",
                       "nodeType": "ElementaryTypeName",
                       "src": "374:7:26",
@@ -3838,7 +3838,7 @@
                         "typeString": "bytes32"
                       }
                     },
-                    "id": 8528,
+                    "id": 8585,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "374:9:26",
@@ -3852,10 +3852,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8531,
+                  "id": 8588,
                   "name": "_startOfVoting",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8594,
+                  "scope": 8651,
                   "src": "407:22:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3864,7 +3864,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8530,
+                    "id": 8587,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "407:7:26",
@@ -3881,12 +3881,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 8533,
+              "id": 8590,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "455:0:26"
             },
-            "scope": 8680,
+            "scope": 8737,
             "src": "206:814:26",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -3894,20 +3894,20 @@
           },
           {
             "body": {
-              "id": 8633,
+              "id": 8690,
               "nodeType": "Block",
               "src": "1198:158:26",
               "statements": [
                 {
                   "body": {
-                    "id": 8631,
+                    "id": 8688,
                     "nodeType": "Block",
                     "src": "1249:101:26",
                     "statements": [
                       {
                         "expression": {
                           "argumentTypes": null,
-                          "id": 8629,
+                          "id": 8686,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -3922,25 +3922,25 @@
                                   "argumentTypes": null,
                                   "baseExpression": {
                                     "argumentTypes": null,
-                                    "id": 8617,
+                                    "id": 8674,
                                     "name": "proposalsById",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 15056,
+                                    "referencedDeclaration": 15113,
                                     "src": "1263:13:26",
                                     "typeDescriptions": {
-                                      "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8336_storage_$",
+                                      "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8393_storage_$",
                                       "typeString": "mapping(bytes32 => struct DaoStructs.SpecialProposal storage ref)"
                                     }
                                   },
-                                  "id": 8619,
+                                  "id": 8676,
                                   "indexExpression": {
                                     "argumentTypes": null,
-                                    "id": 8618,
+                                    "id": 8675,
                                     "name": "_specialProposalId",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 8596,
+                                    "referencedDeclaration": 8653,
                                     "src": "1277:18:26",
                                     "typeDescriptions": {
                                       "typeIdentifier": "t_bytes32",
@@ -3954,62 +3954,62 @@
                                   "nodeType": "IndexAccess",
                                   "src": "1263:33:26",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_struct$_SpecialProposal_$8336_storage",
+                                    "typeIdentifier": "t_struct$_SpecialProposal_$8393_storage",
                                     "typeString": "struct DaoStructs.SpecialProposal storage ref"
                                   }
                                 },
-                                "id": 8620,
+                                "id": 8677,
                                 "isConstant": false,
                                 "isLValue": true,
                                 "isPure": false,
                                 "lValueRequested": false,
                                 "memberName": "voting",
                                 "nodeType": "MemberAccess",
-                                "referencedDeclaration": 8324,
+                                "referencedDeclaration": 8381,
                                 "src": "1263:40:26",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_struct$_Voting_$7848_storage",
+                                  "typeIdentifier": "t_struct$_Voting_$7905_storage",
                                   "typeString": "struct DaoStructs.Voting storage ref"
                                 }
                               },
-                              "id": 8621,
+                              "id": 8678,
                               "isConstant": false,
                               "isLValue": true,
                               "isPure": false,
                               "lValueRequested": false,
                               "memberName": "commits",
                               "nodeType": "MemberAccess",
-                              "referencedDeclaration": 7833,
+                              "referencedDeclaration": 7890,
                               "src": "1263:48:26",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_bytes32_$",
                                 "typeString": "mapping(address => bytes32)"
                               }
                             },
-                            "id": 8625,
+                            "id": 8682,
                             "indexExpression": {
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 8622,
+                                "id": 8679,
                                 "name": "_voters",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8599,
+                                "referencedDeclaration": 8656,
                                 "src": "1312:7:26",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                                   "typeString": "address[] memory"
                                 }
                               },
-                              "id": 8624,
+                              "id": 8681,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 8623,
+                                "id": 8680,
                                 "name": "_i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8608,
+                                "referencedDeclaration": 8665,
                                 "src": "1320:2:26",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -4044,25 +4044,25 @@
                             "argumentTypes": null,
                             "baseExpression": {
                               "argumentTypes": null,
-                              "id": 8626,
+                              "id": 8683,
                               "name": "_commits",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 8602,
+                              "referencedDeclaration": 8659,
                               "src": "1327:8:26",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
                                 "typeString": "bytes32[] memory"
                               }
                             },
-                            "id": 8628,
+                            "id": 8685,
                             "indexExpression": {
                               "argumentTypes": null,
-                              "id": 8627,
+                              "id": 8684,
                               "name": "_i",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 8608,
+                              "referencedDeclaration": 8665,
                               "src": "1336:2:26",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -4086,7 +4086,7 @@
                             "typeString": "bytes32"
                           }
                         },
-                        "id": 8630,
+                        "id": 8687,
                         "nodeType": "ExpressionStatement",
                         "src": "1263:76:26"
                       }
@@ -4098,18 +4098,18 @@
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 8613,
+                    "id": 8670,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
                       "argumentTypes": null,
-                      "id": 8611,
+                      "id": 8668,
                       "name": "_i",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8608,
+                      "referencedDeclaration": 8665,
                       "src": "1229:2:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -4120,11 +4120,11 @@
                     "operator": "<",
                     "rightExpression": {
                       "argumentTypes": null,
-                      "id": 8612,
+                      "id": 8669,
                       "name": "_length",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8604,
+                      "referencedDeclaration": 8661,
                       "src": "1234:7:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -4137,18 +4137,18 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 8632,
+                  "id": 8689,
                   "initializationExpression": {
                     "assignments": [
-                      8608
+                      8665
                     ],
                     "declarations": [
                       {
                         "constant": false,
-                        "id": 8608,
+                        "id": 8665,
                         "name": "_i",
                         "nodeType": "VariableDeclaration",
-                        "scope": 8634,
+                        "scope": 8691,
                         "src": "1213:10:26",
                         "stateVariable": false,
                         "storageLocation": "default",
@@ -4157,7 +4157,7 @@
                           "typeString": "uint256"
                         },
                         "typeName": {
-                          "id": 8607,
+                          "id": 8664,
                           "name": "uint256",
                           "nodeType": "ElementaryTypeName",
                           "src": "1213:7:26",
@@ -4170,11 +4170,11 @@
                         "visibility": "internal"
                       }
                     ],
-                    "id": 8610,
+                    "id": 8667,
                     "initialValue": {
                       "argumentTypes": null,
                       "hexValue": "30",
-                      "id": 8609,
+                      "id": 8666,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -4195,7 +4195,7 @@
                   "loopExpression": {
                     "expression": {
                       "argumentTypes": null,
-                      "id": 8615,
+                      "id": 8672,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -4206,11 +4206,11 @@
                       "src": "1243:4:26",
                       "subExpression": {
                         "argumentTypes": null,
-                        "id": 8614,
+                        "id": 8671,
                         "name": "_i",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 8608,
+                        "referencedDeclaration": 8665,
                         "src": "1243:2:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -4222,7 +4222,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 8616,
+                    "id": 8673,
                     "nodeType": "ExpressionStatement",
                     "src": "1243:4:26"
                   },
@@ -4232,7 +4232,7 @@
               ]
             },
             "documentation": null,
-            "id": 8634,
+            "id": 8691,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -4240,15 +4240,15 @@
             "name": "mock_put_commit_votes",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8605,
+              "id": 8662,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8596,
+                  "id": 8653,
                   "name": "_specialProposalId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8634,
+                  "scope": 8691,
                   "src": "1066:26:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -4257,7 +4257,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 8595,
+                    "id": 8652,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1066:7:26",
@@ -4271,10 +4271,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8599,
+                  "id": 8656,
                   "name": "_voters",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8634,
+                  "scope": 8691,
                   "src": "1102:17:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -4284,7 +4284,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8597,
+                      "id": 8654,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "1102:7:26",
@@ -4293,7 +4293,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 8598,
+                    "id": 8655,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "1102:9:26",
@@ -4307,10 +4307,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8602,
+                  "id": 8659,
                   "name": "_commits",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8634,
+                  "scope": 8691,
                   "src": "1129:18:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -4320,7 +4320,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8600,
+                      "id": 8657,
                       "name": "bytes32",
                       "nodeType": "ElementaryTypeName",
                       "src": "1129:7:26",
@@ -4329,7 +4329,7 @@
                         "typeString": "bytes32"
                       }
                     },
-                    "id": 8601,
+                    "id": 8658,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "1129:9:26",
@@ -4343,10 +4343,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8604,
+                  "id": 8661,
                   "name": "_length",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8634,
+                  "scope": 8691,
                   "src": "1157:15:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -4355,7 +4355,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8603,
+                    "id": 8660,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1157:7:26",
@@ -4372,12 +4372,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 8606,
+              "id": 8663,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1198:0:26"
             },
-            "scope": 8680,
+            "scope": 8737,
             "src": "1026:330:26",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -4385,13 +4385,13 @@
           },
           {
             "body": {
-              "id": 8678,
+              "id": 8735,
               "nodeType": "Block",
               "src": "1554:171:26",
               "statements": [
                 {
                   "body": {
-                    "id": 8676,
+                    "id": 8733,
                     "nodeType": "Block",
                     "src": "1605:114:26",
                     "statements": [
@@ -4403,25 +4403,25 @@
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 8665,
+                                "id": 8722,
                                 "name": "_voters",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8639,
+                                "referencedDeclaration": 8696,
                                 "src": "1671:7:26",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
                                   "typeString": "address[] memory"
                                 }
                               },
-                              "id": 8667,
+                              "id": 8724,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 8666,
+                                "id": 8723,
                                 "name": "_i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8651,
+                                "referencedDeclaration": 8708,
                                 "src": "1679:2:26",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -4443,25 +4443,25 @@
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 8668,
+                                "id": 8725,
                                 "name": "_votes",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8642,
+                                "referencedDeclaration": 8699,
                                 "src": "1684:6:26",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_bool_$dyn_memory_ptr",
                                   "typeString": "bool[] memory"
                                 }
                               },
-                              "id": 8670,
+                              "id": 8727,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 8669,
+                                "id": 8726,
                                 "name": "_i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8651,
+                                "referencedDeclaration": 8708,
                                 "src": "1691:2:26",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -4483,25 +4483,25 @@
                               "argumentTypes": null,
                               "baseExpression": {
                                 "argumentTypes": null,
-                                "id": 8671,
+                                "id": 8728,
                                 "name": "_stakes",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8645,
+                                "referencedDeclaration": 8702,
                                 "src": "1696:7:26",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
                                   "typeString": "uint256[] memory"
                                 }
                               },
-                              "id": 8673,
+                              "id": 8730,
                               "indexExpression": {
                                 "argumentTypes": null,
-                                "id": 8672,
+                                "id": 8729,
                                 "name": "_i",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8651,
+                                "referencedDeclaration": 8708,
                                 "src": "1704:2:26",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -4541,25 +4541,25 @@
                                 "argumentTypes": null,
                                 "baseExpression": {
                                   "argumentTypes": null,
-                                  "id": 8660,
+                                  "id": 8717,
                                   "name": "proposalsById",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 15056,
+                                  "referencedDeclaration": 15113,
                                   "src": "1619:13:26",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8336_storage_$",
+                                    "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8393_storage_$",
                                     "typeString": "mapping(bytes32 => struct DaoStructs.SpecialProposal storage ref)"
                                   }
                                 },
-                                "id": 8662,
+                                "id": 8719,
                                 "indexExpression": {
                                   "argumentTypes": null,
-                                  "id": 8661,
+                                  "id": 8718,
                                   "name": "_specialProposalId",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 8636,
+                                  "referencedDeclaration": 8693,
                                   "src": "1633:18:26",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_bytes32",
@@ -4573,39 +4573,39 @@
                                 "nodeType": "IndexAccess",
                                 "src": "1619:33:26",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_struct$_SpecialProposal_$8336_storage",
+                                  "typeIdentifier": "t_struct$_SpecialProposal_$8393_storage",
                                   "typeString": "struct DaoStructs.SpecialProposal storage ref"
                                 }
                               },
-                              "id": 8663,
+                              "id": 8720,
                               "isConstant": false,
                               "isLValue": true,
                               "isPure": false,
                               "lValueRequested": false,
                               "memberName": "voting",
                               "nodeType": "MemberAccess",
-                              "referencedDeclaration": 8324,
+                              "referencedDeclaration": 8381,
                               "src": "1619:40:26",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Voting_$7848_storage",
+                                "typeIdentifier": "t_struct$_Voting_$7905_storage",
                                 "typeString": "struct DaoStructs.Voting storage ref"
                               }
                             },
-                            "id": 8664,
+                            "id": 8721,
                             "isConstant": false,
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
                             "memberName": "revealVote",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 8156,
+                            "referencedDeclaration": 8213,
                             "src": "1619:51:26",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Voting_$7848_storage_ptr_$_t_address_$_t_bool_$_t_uint256_$returns$__$bound_to$_t_struct$_Voting_$7848_storage_ptr_$",
+                              "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Voting_$7905_storage_ptr_$_t_address_$_t_bool_$_t_uint256_$returns$__$bound_to$_t_struct$_Voting_$7905_storage_ptr_$",
                               "typeString": "function (struct DaoStructs.Voting storage pointer,address,bool,uint256)"
                             }
                           },
-                          "id": 8674,
+                          "id": 8731,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -4619,7 +4619,7 @@
                             "typeString": "tuple()"
                           }
                         },
-                        "id": 8675,
+                        "id": 8732,
                         "nodeType": "ExpressionStatement",
                         "src": "1619:89:26"
                       }
@@ -4631,18 +4631,18 @@
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 8656,
+                    "id": 8713,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
                       "argumentTypes": null,
-                      "id": 8654,
+                      "id": 8711,
                       "name": "_i",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8651,
+                      "referencedDeclaration": 8708,
                       "src": "1585:2:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -4653,11 +4653,11 @@
                     "operator": "<",
                     "rightExpression": {
                       "argumentTypes": null,
-                      "id": 8655,
+                      "id": 8712,
                       "name": "_length",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8647,
+                      "referencedDeclaration": 8704,
                       "src": "1590:7:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -4670,18 +4670,18 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 8677,
+                  "id": 8734,
                   "initializationExpression": {
                     "assignments": [
-                      8651
+                      8708
                     ],
                     "declarations": [
                       {
                         "constant": false,
-                        "id": 8651,
+                        "id": 8708,
                         "name": "_i",
                         "nodeType": "VariableDeclaration",
-                        "scope": 8679,
+                        "scope": 8736,
                         "src": "1569:10:26",
                         "stateVariable": false,
                         "storageLocation": "default",
@@ -4690,7 +4690,7 @@
                           "typeString": "uint256"
                         },
                         "typeName": {
-                          "id": 8650,
+                          "id": 8707,
                           "name": "uint256",
                           "nodeType": "ElementaryTypeName",
                           "src": "1569:7:26",
@@ -4703,11 +4703,11 @@
                         "visibility": "internal"
                       }
                     ],
-                    "id": 8653,
+                    "id": 8710,
                     "initialValue": {
                       "argumentTypes": null,
                       "hexValue": "30",
-                      "id": 8652,
+                      "id": 8709,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -4728,7 +4728,7 @@
                   "loopExpression": {
                     "expression": {
                       "argumentTypes": null,
-                      "id": 8658,
+                      "id": 8715,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -4739,11 +4739,11 @@
                       "src": "1599:4:26",
                       "subExpression": {
                         "argumentTypes": null,
-                        "id": 8657,
+                        "id": 8714,
                         "name": "_i",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 8651,
+                        "referencedDeclaration": 8708,
                         "src": "1599:2:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -4755,7 +4755,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 8659,
+                    "id": 8716,
                     "nodeType": "ExpressionStatement",
                     "src": "1599:4:26"
                   },
@@ -4765,7 +4765,7 @@
               ]
             },
             "documentation": null,
-            "id": 8679,
+            "id": 8736,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -4773,15 +4773,15 @@
             "name": "mock_put_past_votes",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8648,
+              "id": 8705,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8636,
+                  "id": 8693,
                   "name": "_specialProposalId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8679,
+                  "scope": 8736,
                   "src": "1400:26:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -4790,7 +4790,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 8635,
+                    "id": 8692,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1400:7:26",
@@ -4804,10 +4804,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8639,
+                  "id": 8696,
                   "name": "_voters",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8679,
+                  "scope": 8736,
                   "src": "1436:17:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -4817,7 +4817,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8637,
+                      "id": 8694,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "1436:7:26",
@@ -4826,7 +4826,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 8638,
+                    "id": 8695,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "1436:9:26",
@@ -4840,10 +4840,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8642,
+                  "id": 8699,
                   "name": "_votes",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8679,
+                  "scope": 8736,
                   "src": "1463:13:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -4853,7 +4853,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8640,
+                      "id": 8697,
                       "name": "bool",
                       "nodeType": "ElementaryTypeName",
                       "src": "1463:4:26",
@@ -4862,7 +4862,7 @@
                         "typeString": "bool"
                       }
                     },
-                    "id": 8641,
+                    "id": 8698,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "1463:6:26",
@@ -4876,10 +4876,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8645,
+                  "id": 8702,
                   "name": "_stakes",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8679,
+                  "scope": 8736,
                   "src": "1486:17:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -4889,7 +4889,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8643,
+                      "id": 8700,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "1486:7:26",
@@ -4898,7 +4898,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 8644,
+                    "id": 8701,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "1486:9:26",
@@ -4912,10 +4912,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8647,
+                  "id": 8704,
                   "name": "_length",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8679,
+                  "scope": 8736,
                   "src": "1513:15:26",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -4924,7 +4924,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8646,
+                    "id": 8703,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1513:7:26",
@@ -4941,19 +4941,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 8649,
+              "id": 8706,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1554:0:26"
             },
-            "scope": 8680,
+            "scope": 8737,
             "src": "1362:363:26",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 8681,
+        "scope": 8738,
         "src": "72:1655:26"
       }
     ],
@@ -4965,5 +4965,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-19T03:33:09.046Z"
+  "updatedAt": "2019-01-18T06:49:39.254Z"
 }

@@ -1,6 +1,6 @@
 {
   "name": "@digix/dao-contracts",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Smart contracts for DigixDAO",
   "main": "truffle-config.js",
   "directories": {

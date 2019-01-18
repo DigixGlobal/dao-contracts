@@ -306,14 +306,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/interactive/DaoSpecialProposal.sol",
     "exportedSymbols": {
       "DaoSpecialProposal": [
-        4913
+        4970
       ]
     },
-    "id": 4914,
+    "id": 4971,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 4796,
+        "id": 4853,
         "literals": [
           "solidity",
           "^",
@@ -326,9 +326,9 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/common/DaoCommon.sol",
         "file": "./../common/DaoCommon.sol",
-        "id": 4797,
+        "id": 4854,
         "nodeType": "ImportDirective",
-        "scope": 4914,
+        "scope": 4971,
         "sourceUnit": 861,
         "src": "26:35:14",
         "symbolAliases": [],
@@ -340,7 +340,7 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 4798,
+              "id": 4855,
               "name": "DaoCommon",
               "nodeType": "UserDefinedTypeName",
               "referencedDeclaration": 860,
@@ -350,7 +350,7 @@
                 "typeString": "contract DaoCommon"
               }
             },
-            "id": 4799,
+            "id": 4856,
             "nodeType": "InheritanceSpecifier",
             "src": "94:9:14"
           }
@@ -361,20 +361,20 @@
           1602,
           1841,
           1933,
-          18546
+          18603
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 4913,
+        "id": 4970,
         "linearizedBaseContracts": [
-          4913,
+          4970,
           860,
           1255,
           1933,
           1841,
           1602,
-          18546
+          18603
         ],
         "name": "DaoSpecialProposal",
         "nodeType": "ContractDefinition",
@@ -382,20 +382,20 @@
           {
             "anonymous": false,
             "documentation": null,
-            "id": 4803,
+            "id": 4860,
             "name": "StartSpecialProposal",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 4802,
+              "id": 4859,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4801,
+                  "id": 4858,
                   "indexed": true,
                   "name": "_specialProposalId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4803,
+                  "scope": 4860,
                   "src": "138:34:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -404,7 +404,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 4800,
+                    "id": 4857,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "138:7:14",
@@ -423,7 +423,7 @@
           },
           {
             "body": {
-              "id": 4815,
+              "id": 4872,
               "nodeType": "Block",
               "src": "218:72:14",
               "statements": [
@@ -436,7 +436,7 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 4810,
+                            "id": 4867,
                             "name": "CONTRACT_DAO_SPECIAL_PROPOSAL",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -449,11 +449,11 @@
                           },
                           {
                             "argumentTypes": null,
-                            "id": 4811,
+                            "id": 4868,
                             "name": "_resolver",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 4805,
+                            "referencedDeclaration": 4862,
                             "src": "272:9:14",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -472,18 +472,18 @@
                               "typeString": "address"
                             }
                           ],
-                          "id": 4809,
+                          "id": 4866,
                           "name": "init",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18514,
+                          "referencedDeclaration": 18571,
                           "src": "236:4:14",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_nonpayable$_t_bytes32_$_t_address_$returns$_t_bool_$",
                             "typeString": "function (bytes32,address) returns (bool)"
                           }
                         },
-                        "id": 4812,
+                        "id": 4869,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -505,21 +505,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 4808,
+                      "id": 4865,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "228:7:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 4813,
+                    "id": 4870,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -533,14 +533,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4814,
+                  "id": 4871,
                   "nodeType": "ExpressionStatement",
                   "src": "228:55:14"
                 }
               ]
             },
             "documentation": null,
-            "id": 4816,
+            "id": 4873,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -548,15 +548,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4806,
+              "id": 4863,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4805,
+                  "id": 4862,
                   "name": "_resolver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4816,
+                  "scope": 4873,
                   "src": "192:17:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -565,7 +565,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 4804,
+                    "id": 4861,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "192:7:14",
@@ -582,12 +582,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 4807,
+              "id": 4864,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "218:0:14"
             },
-            "scope": 4913,
+            "scope": 4970,
             "src": "180:110:14",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -595,7 +595,7 @@
           },
           {
             "body": {
-              "id": 4858,
+              "id": 4915,
               "nodeType": "Block",
               "src": "953:285:14",
               "statements": [
@@ -608,7 +608,7 @@
                         "arguments": [],
                         "expression": {
                           "argumentTypes": [],
-                          "id": 4835,
+                          "id": 4892,
                           "name": "isMainPhase",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
@@ -619,7 +619,7 @@
                             "typeString": "function () view returns (bool)"
                           }
                         },
-                        "id": 4836,
+                        "id": 4893,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -641,21 +641,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 4834,
+                      "id": 4891,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "963:7:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 4837,
+                    "id": 4894,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -669,21 +669,21 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4838,
+                  "id": 4895,
                   "nodeType": "ExpressionStatement",
                   "src": "963:22:14"
                 },
                 {
                   "assignments": [
-                    4840
+                    4897
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 4840,
+                      "id": 4897,
                       "name": "_proposer",
                       "nodeType": "VariableDeclaration",
-                      "scope": 4859,
+                      "scope": 4916,
                       "src": "995:17:14",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -692,7 +692,7 @@
                         "typeString": "address"
                       },
                       "typeName": {
-                        "id": 4839,
+                        "id": 4896,
                         "name": "address",
                         "nodeType": "ElementaryTypeName",
                         "src": "995:7:14",
@@ -705,23 +705,23 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 4843,
+                  "id": 4900,
                   "initialValue": {
                     "argumentTypes": null,
                     "expression": {
                       "argumentTypes": null,
-                      "id": 4841,
+                      "id": 4898,
                       "name": "msg",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 26100,
+                      "referencedDeclaration": 26157,
                       "src": "1015:3:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_magic_message",
                         "typeString": "msg"
                       }
                     },
-                    "id": 4842,
+                    "id": 4899,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -744,11 +744,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 4847,
+                        "id": 4904,
                         "name": "_doc",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4818,
+                        "referencedDeclaration": 4875,
                         "src": "1087:4:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
@@ -757,11 +757,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 4848,
+                        "id": 4905,
                         "name": "_proposer",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4840,
+                        "referencedDeclaration": 4897,
                         "src": "1105:9:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -770,11 +770,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 4849,
+                        "id": 4906,
                         "name": "_uintConfigs",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4821,
+                        "referencedDeclaration": 4878,
                         "src": "1128:12:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_uint256_$dyn_calldata_ptr",
@@ -783,11 +783,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 4850,
+                        "id": 4907,
                         "name": "_addressConfigs",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4824,
+                        "referencedDeclaration": 4881,
                         "src": "1154:15:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_address_$dyn_calldata_ptr",
@@ -796,11 +796,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 4851,
+                        "id": 4908,
                         "name": "_bytesConfigs",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4827,
+                        "referencedDeclaration": 4884,
                         "src": "1183:13:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_bytes32_$dyn_calldata_ptr",
@@ -836,18 +836,18 @@
                         "arguments": [],
                         "expression": {
                           "argumentTypes": [],
-                          "id": 4844,
+                          "id": 4901,
                           "name": "daoSpecialStorage",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 1196,
                           "src": "1035:17:14",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoSpecialStorage_$15517_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoSpecialStorage_$15574_$",
                             "typeString": "function () view returns (contract DaoSpecialStorage)"
                           }
                         },
-                        "id": 4845,
+                        "id": 4902,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -857,25 +857,25 @@
                         "nodeType": "FunctionCall",
                         "src": "1035:19:14",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoSpecialStorage_$15517",
+                          "typeIdentifier": "t_contract$_DaoSpecialStorage_$15574",
                           "typeString": "contract DaoSpecialStorage"
                         }
                       },
-                      "id": 4846,
+                      "id": 4903,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "addSpecialProposal",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 15155,
+                      "referencedDeclaration": 15212,
                       "src": "1035:38:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_bytes32_$_t_address_$_t_array$_t_uint256_$dyn_memory_ptr_$_t_array$_t_address_$dyn_memory_ptr_$_t_array$_t_bytes32_$dyn_memory_ptr_$returns$__$",
                         "typeString": "function (bytes32,address,uint256[] memory,address[] memory,bytes32[] memory) external"
                       }
                     },
-                    "id": 4852,
+                    "id": 4909,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -889,25 +889,25 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4853,
+                  "id": 4910,
                   "nodeType": "ExpressionStatement",
                   "src": "1035:171:14"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 4856,
+                    "id": 4913,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 4854,
+                      "id": 4911,
                       "name": "_success",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4832,
+                      "referencedDeclaration": 4889,
                       "src": "1216:8:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -919,7 +919,7 @@
                     "rightHandSide": {
                       "argumentTypes": null,
                       "hexValue": "74727565",
-                      "id": 4855,
+                      "id": 4912,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -940,24 +940,24 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 4857,
+                  "id": 4914,
                   "nodeType": "ExpressionStatement",
                   "src": "1216:15:14"
                 }
               ]
             },
             "documentation": "@notice Function to create a Special Proposal (can only be created by the founders)\n@param _doc hash of the IPFS doc of the special proposal details\n@param _uintConfigs Array of the new UINT256 configs\n@param _addressConfigs Array of the new Address configs\n@param _bytesConfigs Array of the new Bytes32 configs\n@return {\n\"_success\": \"true if created special successfully\"\n}",
-            "id": 4859,
+            "id": 4916,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
             "modifiers": [
               {
                 "arguments": [],
-                "id": 4830,
+                "id": 4887,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 4829,
+                  "id": 4886,
                   "name": "if_founder",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
@@ -975,15 +975,15 @@
             "name": "createSpecialProposal",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4828,
+              "id": 4885,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4818,
+                  "id": 4875,
                   "name": "_doc",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4859,
+                  "scope": 4916,
                   "src": "760:12:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -992,7 +992,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 4817,
+                    "id": 4874,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "760:7:14",
@@ -1006,10 +1006,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 4821,
+                  "id": 4878,
                   "name": "_uintConfigs",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4859,
+                  "scope": 4916,
                   "src": "782:22:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1019,7 +1019,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 4819,
+                      "id": 4876,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "782:7:14",
@@ -1028,7 +1028,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 4820,
+                    "id": 4877,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "782:9:14",
@@ -1042,10 +1042,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 4824,
+                  "id": 4881,
                   "name": "_addressConfigs",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4859,
+                  "scope": 4916,
                   "src": "814:25:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1055,7 +1055,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 4822,
+                      "id": 4879,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "814:7:14",
@@ -1064,7 +1064,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 4823,
+                    "id": 4880,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "814:9:14",
@@ -1078,10 +1078,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 4827,
+                  "id": 4884,
                   "name": "_bytesConfigs",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4859,
+                  "scope": 4916,
                   "src": "849:23:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1091,7 +1091,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 4825,
+                      "id": 4882,
                       "name": "bytes32",
                       "nodeType": "ElementaryTypeName",
                       "src": "849:7:14",
@@ -1100,7 +1100,7 @@
                         "typeString": "bytes32"
                       }
                     },
-                    "id": 4826,
+                    "id": 4883,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "849:9:14",
@@ -1117,15 +1117,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 4833,
+              "id": 4890,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4832,
+                  "id": 4889,
                   "name": "_success",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4859,
+                  "scope": 4916,
                   "src": "934:13:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1134,7 +1134,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 4831,
+                    "id": 4888,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "934:4:14",
@@ -1149,7 +1149,7 @@
               ],
               "src": "933:15:14"
             },
-            "scope": 4913,
+            "scope": 4970,
             "src": "720:518:14",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1157,7 +1157,7 @@
           },
           {
             "body": {
-              "id": 4911,
+              "id": 4968,
               "nodeType": "Block",
               "src": "1470:431:14",
               "statements": [
@@ -1170,7 +1170,7 @@
                         "arguments": [],
                         "expression": {
                           "argumentTypes": [],
-                          "id": 4865,
+                          "id": 4922,
                           "name": "isMainPhase",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
@@ -1181,7 +1181,7 @@
                             "typeString": "function () view returns (bool)"
                           }
                         },
-                        "id": 4866,
+                        "id": 4923,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1203,21 +1203,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 4864,
+                      "id": 4921,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "1480:7:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 4867,
+                    "id": 4924,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1231,7 +1231,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4868,
+                  "id": 4925,
                   "nodeType": "ExpressionStatement",
                   "src": "1480:22:14"
                 },
@@ -1245,7 +1245,7 @@
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 4877,
+                        "id": 4934,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1255,11 +1255,11 @@
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 4873,
+                              "id": 4930,
                               "name": "_proposalId",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4861,
+                              "referencedDeclaration": 4918,
                               "src": "1561:11:14",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_bytes32",
@@ -1279,18 +1279,18 @@
                               "arguments": [],
                               "expression": {
                                 "argumentTypes": [],
-                                "id": 4870,
+                                "id": 4927,
                                 "name": "daoSpecialStorage",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
                                 "referencedDeclaration": 1196,
                                 "src": "1520:17:14",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoSpecialStorage_$15517_$",
+                                  "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoSpecialStorage_$15574_$",
                                   "typeString": "function () view returns (contract DaoSpecialStorage)"
                                 }
                               },
-                              "id": 4871,
+                              "id": 4928,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -1300,25 +1300,25 @@
                               "nodeType": "FunctionCall",
                               "src": "1520:19:14",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_DaoSpecialStorage_$15517",
+                                "typeIdentifier": "t_contract$_DaoSpecialStorage_$15574",
                                 "typeString": "contract DaoSpecialStorage"
                               }
                             },
-                            "id": 4872,
+                            "id": 4929,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
                             "lValueRequested": false,
                             "memberName": "readProposalProposer",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 15213,
+                            "referencedDeclaration": 15270,
                             "src": "1520:40:14",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_address_$",
                               "typeString": "function (bytes32) view external returns (address)"
                             }
                           },
-                          "id": 4874,
+                          "id": 4931,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1338,18 +1338,18 @@
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 4875,
+                            "id": 4932,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 26100,
+                            "referencedDeclaration": 26157,
                             "src": "1577:3:14",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
-                          "id": 4876,
+                          "id": 4933,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1377,21 +1377,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 4869,
+                      "id": 4926,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "1512:7:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 4878,
+                    "id": 4935,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1405,7 +1405,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4879,
+                  "id": 4936,
                   "nodeType": "ExpressionStatement",
                   "src": "1512:76:14"
                 },
@@ -1419,7 +1419,7 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 4887,
+                        "id": 4944,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1429,11 +1429,11 @@
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 4884,
+                              "id": 4941,
                               "name": "_proposalId",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4861,
+                              "referencedDeclaration": 4918,
                               "src": "1641:11:14",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_bytes32",
@@ -1453,18 +1453,18 @@
                               "arguments": [],
                               "expression": {
                                 "argumentTypes": [],
-                                "id": 4881,
+                                "id": 4938,
                                 "name": "daoSpecialStorage",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
                                 "referencedDeclaration": 1196,
                                 "src": "1606:17:14",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoSpecialStorage_$15517_$",
+                                  "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoSpecialStorage_$15574_$",
                                   "typeString": "function () view returns (contract DaoSpecialStorage)"
                                 }
                               },
-                              "id": 4882,
+                              "id": 4939,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -1474,25 +1474,25 @@
                               "nodeType": "FunctionCall",
                               "src": "1606:19:14",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_DaoSpecialStorage_$15517",
+                                "typeIdentifier": "t_contract$_DaoSpecialStorage_$15574",
                                 "typeString": "contract DaoSpecialStorage"
                               }
                             },
-                            "id": 4883,
+                            "id": 4940,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
                             "lValueRequested": false,
                             "memberName": "readVotingTime",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 15296,
+                            "referencedDeclaration": 15353,
                             "src": "1606:34:14",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_uint256_$",
                               "typeString": "function (bytes32) view external returns (uint256)"
                             }
                           },
-                          "id": 4885,
+                          "id": 4942,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1511,7 +1511,7 @@
                         "rightExpression": {
                           "argumentTypes": null,
                           "hexValue": "30",
-                          "id": 4886,
+                          "id": 4943,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -1540,21 +1540,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 4880,
+                      "id": 4937,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "1598:7:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 4888,
+                    "id": 4945,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1568,7 +1568,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4889,
+                  "id": 4946,
                   "nodeType": "ExpressionStatement",
                   "src": "1598:61:14"
                 },
@@ -1582,7 +1582,7 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 4897,
+                        "id": 4954,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1592,11 +1592,11 @@
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 4892,
+                              "id": 4949,
                               "name": "now",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 26102,
+                              "referencedDeclaration": 26159,
                               "src": "1726:3:14",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -1611,7 +1611,7 @@
                                 "typeString": "uint256"
                               }
                             ],
-                            "id": 4891,
+                            "id": 4948,
                             "name": "getTimeLeftInQuarter",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -1622,7 +1622,7 @@
                               "typeString": "function (uint256) view returns (uint256)"
                             }
                           },
-                          "id": 4893,
+                          "id": 4950,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1643,7 +1643,7 @@
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 4895,
+                              "id": 4952,
                               "name": "CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
@@ -1662,7 +1662,7 @@
                                 "typeString": "bytes32"
                               }
                             ],
-                            "id": 4894,
+                            "id": 4951,
                             "name": "getUintConfig",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -1673,7 +1673,7 @@
                               "typeString": "function (bytes32) view returns (uint256)"
                             }
                           },
-                          "id": 4896,
+                          "id": 4953,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1701,21 +1701,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 4890,
+                      "id": 4947,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "1697:7:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 4898,
+                    "id": 4955,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1729,7 +1729,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4899,
+                  "id": 4956,
                   "nodeType": "ExpressionStatement",
                   "src": "1697:87:14"
                 },
@@ -1739,11 +1739,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 4903,
+                        "id": 4960,
                         "name": "_proposalId",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4861,
+                        "referencedDeclaration": 4918,
                         "src": "1828:11:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
@@ -1752,11 +1752,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 4904,
+                        "id": 4961,
                         "name": "now",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 26102,
+                        "referencedDeclaration": 26159,
                         "src": "1841:3:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1780,18 +1780,18 @@
                         "arguments": [],
                         "expression": {
                           "argumentTypes": [],
-                          "id": 4900,
+                          "id": 4957,
                           "name": "daoSpecialStorage",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 1196,
                           "src": "1794:17:14",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoSpecialStorage_$15517_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoSpecialStorage_$15574_$",
                             "typeString": "function () view returns (contract DaoSpecialStorage)"
                           }
                         },
-                        "id": 4901,
+                        "id": 4958,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1801,25 +1801,25 @@
                         "nodeType": "FunctionCall",
                         "src": "1794:19:14",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoSpecialStorage_$15517",
+                          "typeIdentifier": "t_contract$_DaoSpecialStorage_$15574",
                           "typeString": "contract DaoSpecialStorage"
                         }
                       },
-                      "id": 4902,
+                      "id": 4959,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "setVotingTime",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 15369,
+                      "referencedDeclaration": 15426,
                       "src": "1794:33:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_bytes32_$_t_uint256_$returns$__$",
                         "typeString": "function (bytes32,uint256) external"
                       }
                     },
-                    "id": 4905,
+                    "id": 4962,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1833,7 +1833,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4906,
+                  "id": 4963,
                   "nodeType": "ExpressionStatement",
                   "src": "1794:51:14"
                 },
@@ -1843,11 +1843,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 4908,
+                        "id": 4965,
                         "name": "_proposalId",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4861,
+                        "referencedDeclaration": 4918,
                         "src": "1882:11:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
@@ -1862,18 +1862,18 @@
                           "typeString": "bytes32"
                         }
                       ],
-                      "id": 4907,
+                      "id": 4964,
                       "name": "StartSpecialProposal",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4803,
+                      "referencedDeclaration": 4860,
                       "src": "1861:20:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_bytes32_$returns$__$",
                         "typeString": "function (bytes32)"
                       }
                     },
-                    "id": 4909,
+                    "id": 4966,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1887,14 +1887,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4910,
+                  "id": 4967,
                   "nodeType": "EmitStatement",
                   "src": "1856:38:14"
                 }
               ]
             },
             "documentation": "@notice Function to set start of voting round for special proposal\n@param _proposalId ID of the special proposal",
-            "id": 4912,
+            "id": 4969,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1902,15 +1902,15 @@
             "name": "startSpecialProposalVoting",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4862,
+              "id": 4919,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4861,
+                  "id": 4918,
                   "name": "_proposalId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4912,
+                  "scope": 4969,
                   "src": "1425:19:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1919,7 +1919,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 4860,
+                    "id": 4917,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1425:7:14",
@@ -1936,19 +1936,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 4863,
+              "id": 4920,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1470:0:14"
             },
-            "scope": 4913,
+            "scope": 4970,
             "src": "1380:521:14",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 4914,
+        "scope": 4971,
         "src": "63:1840:14"
       }
     ],
@@ -1958,14 +1958,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/interactive/DaoSpecialProposal.sol",
     "exportedSymbols": {
       "DaoSpecialProposal": [
-        4913
+        4970
       ]
     },
-    "id": 4914,
+    "id": 4971,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 4796,
+        "id": 4853,
         "literals": [
           "solidity",
           "^",
@@ -1978,9 +1978,9 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/common/DaoCommon.sol",
         "file": "./../common/DaoCommon.sol",
-        "id": 4797,
+        "id": 4854,
         "nodeType": "ImportDirective",
-        "scope": 4914,
+        "scope": 4971,
         "sourceUnit": 861,
         "src": "26:35:14",
         "symbolAliases": [],
@@ -1992,7 +1992,7 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 4798,
+              "id": 4855,
               "name": "DaoCommon",
               "nodeType": "UserDefinedTypeName",
               "referencedDeclaration": 860,
@@ -2002,7 +2002,7 @@
                 "typeString": "contract DaoCommon"
               }
             },
-            "id": 4799,
+            "id": 4856,
             "nodeType": "InheritanceSpecifier",
             "src": "94:9:14"
           }
@@ -2013,20 +2013,20 @@
           1602,
           1841,
           1933,
-          18546
+          18603
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 4913,
+        "id": 4970,
         "linearizedBaseContracts": [
-          4913,
+          4970,
           860,
           1255,
           1933,
           1841,
           1602,
-          18546
+          18603
         ],
         "name": "DaoSpecialProposal",
         "nodeType": "ContractDefinition",
@@ -2034,20 +2034,20 @@
           {
             "anonymous": false,
             "documentation": null,
-            "id": 4803,
+            "id": 4860,
             "name": "StartSpecialProposal",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 4802,
+              "id": 4859,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4801,
+                  "id": 4858,
                   "indexed": true,
                   "name": "_specialProposalId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4803,
+                  "scope": 4860,
                   "src": "138:34:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2056,7 +2056,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 4800,
+                    "id": 4857,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "138:7:14",
@@ -2075,7 +2075,7 @@
           },
           {
             "body": {
-              "id": 4815,
+              "id": 4872,
               "nodeType": "Block",
               "src": "218:72:14",
               "statements": [
@@ -2088,7 +2088,7 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 4810,
+                            "id": 4867,
                             "name": "CONTRACT_DAO_SPECIAL_PROPOSAL",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -2101,11 +2101,11 @@
                           },
                           {
                             "argumentTypes": null,
-                            "id": 4811,
+                            "id": 4868,
                             "name": "_resolver",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 4805,
+                            "referencedDeclaration": 4862,
                             "src": "272:9:14",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -2124,18 +2124,18 @@
                               "typeString": "address"
                             }
                           ],
-                          "id": 4809,
+                          "id": 4866,
                           "name": "init",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18514,
+                          "referencedDeclaration": 18571,
                           "src": "236:4:14",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_nonpayable$_t_bytes32_$_t_address_$returns$_t_bool_$",
                             "typeString": "function (bytes32,address) returns (bool)"
                           }
                         },
-                        "id": 4812,
+                        "id": 4869,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2157,21 +2157,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 4808,
+                      "id": 4865,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "228:7:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 4813,
+                    "id": 4870,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2185,14 +2185,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4814,
+                  "id": 4871,
                   "nodeType": "ExpressionStatement",
                   "src": "228:55:14"
                 }
               ]
             },
             "documentation": null,
-            "id": 4816,
+            "id": 4873,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -2200,15 +2200,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4806,
+              "id": 4863,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4805,
+                  "id": 4862,
                   "name": "_resolver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4816,
+                  "scope": 4873,
                   "src": "192:17:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2217,7 +2217,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 4804,
+                    "id": 4861,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "192:7:14",
@@ -2234,12 +2234,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 4807,
+              "id": 4864,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "218:0:14"
             },
-            "scope": 4913,
+            "scope": 4970,
             "src": "180:110:14",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -2247,7 +2247,7 @@
           },
           {
             "body": {
-              "id": 4858,
+              "id": 4915,
               "nodeType": "Block",
               "src": "953:285:14",
               "statements": [
@@ -2260,7 +2260,7 @@
                         "arguments": [],
                         "expression": {
                           "argumentTypes": [],
-                          "id": 4835,
+                          "id": 4892,
                           "name": "isMainPhase",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
@@ -2271,7 +2271,7 @@
                             "typeString": "function () view returns (bool)"
                           }
                         },
-                        "id": 4836,
+                        "id": 4893,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2293,21 +2293,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 4834,
+                      "id": 4891,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "963:7:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 4837,
+                    "id": 4894,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2321,21 +2321,21 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4838,
+                  "id": 4895,
                   "nodeType": "ExpressionStatement",
                   "src": "963:22:14"
                 },
                 {
                   "assignments": [
-                    4840
+                    4897
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 4840,
+                      "id": 4897,
                       "name": "_proposer",
                       "nodeType": "VariableDeclaration",
-                      "scope": 4859,
+                      "scope": 4916,
                       "src": "995:17:14",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -2344,7 +2344,7 @@
                         "typeString": "address"
                       },
                       "typeName": {
-                        "id": 4839,
+                        "id": 4896,
                         "name": "address",
                         "nodeType": "ElementaryTypeName",
                         "src": "995:7:14",
@@ -2357,23 +2357,23 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 4843,
+                  "id": 4900,
                   "initialValue": {
                     "argumentTypes": null,
                     "expression": {
                       "argumentTypes": null,
-                      "id": 4841,
+                      "id": 4898,
                       "name": "msg",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 26100,
+                      "referencedDeclaration": 26157,
                       "src": "1015:3:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_magic_message",
                         "typeString": "msg"
                       }
                     },
-                    "id": 4842,
+                    "id": 4899,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2396,11 +2396,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 4847,
+                        "id": 4904,
                         "name": "_doc",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4818,
+                        "referencedDeclaration": 4875,
                         "src": "1087:4:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
@@ -2409,11 +2409,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 4848,
+                        "id": 4905,
                         "name": "_proposer",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4840,
+                        "referencedDeclaration": 4897,
                         "src": "1105:9:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -2422,11 +2422,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 4849,
+                        "id": 4906,
                         "name": "_uintConfigs",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4821,
+                        "referencedDeclaration": 4878,
                         "src": "1128:12:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_uint256_$dyn_calldata_ptr",
@@ -2435,11 +2435,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 4850,
+                        "id": 4907,
                         "name": "_addressConfigs",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4824,
+                        "referencedDeclaration": 4881,
                         "src": "1154:15:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_address_$dyn_calldata_ptr",
@@ -2448,11 +2448,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 4851,
+                        "id": 4908,
                         "name": "_bytesConfigs",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4827,
+                        "referencedDeclaration": 4884,
                         "src": "1183:13:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_bytes32_$dyn_calldata_ptr",
@@ -2488,18 +2488,18 @@
                         "arguments": [],
                         "expression": {
                           "argumentTypes": [],
-                          "id": 4844,
+                          "id": 4901,
                           "name": "daoSpecialStorage",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 1196,
                           "src": "1035:17:14",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoSpecialStorage_$15517_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoSpecialStorage_$15574_$",
                             "typeString": "function () view returns (contract DaoSpecialStorage)"
                           }
                         },
-                        "id": 4845,
+                        "id": 4902,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2509,25 +2509,25 @@
                         "nodeType": "FunctionCall",
                         "src": "1035:19:14",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoSpecialStorage_$15517",
+                          "typeIdentifier": "t_contract$_DaoSpecialStorage_$15574",
                           "typeString": "contract DaoSpecialStorage"
                         }
                       },
-                      "id": 4846,
+                      "id": 4903,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "addSpecialProposal",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 15155,
+                      "referencedDeclaration": 15212,
                       "src": "1035:38:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_bytes32_$_t_address_$_t_array$_t_uint256_$dyn_memory_ptr_$_t_array$_t_address_$dyn_memory_ptr_$_t_array$_t_bytes32_$dyn_memory_ptr_$returns$__$",
                         "typeString": "function (bytes32,address,uint256[] memory,address[] memory,bytes32[] memory) external"
                       }
                     },
-                    "id": 4852,
+                    "id": 4909,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2541,25 +2541,25 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4853,
+                  "id": 4910,
                   "nodeType": "ExpressionStatement",
                   "src": "1035:171:14"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 4856,
+                    "id": 4913,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 4854,
+                      "id": 4911,
                       "name": "_success",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4832,
+                      "referencedDeclaration": 4889,
                       "src": "1216:8:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -2571,7 +2571,7 @@
                     "rightHandSide": {
                       "argumentTypes": null,
                       "hexValue": "74727565",
-                      "id": 4855,
+                      "id": 4912,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -2592,24 +2592,24 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 4857,
+                  "id": 4914,
                   "nodeType": "ExpressionStatement",
                   "src": "1216:15:14"
                 }
               ]
             },
             "documentation": "@notice Function to create a Special Proposal (can only be created by the founders)\n@param _doc hash of the IPFS doc of the special proposal details\n@param _uintConfigs Array of the new UINT256 configs\n@param _addressConfigs Array of the new Address configs\n@param _bytesConfigs Array of the new Bytes32 configs\n@return {\n\"_success\": \"true if created special successfully\"\n}",
-            "id": 4859,
+            "id": 4916,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
             "modifiers": [
               {
                 "arguments": [],
-                "id": 4830,
+                "id": 4887,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 4829,
+                  "id": 4886,
                   "name": "if_founder",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
@@ -2627,15 +2627,15 @@
             "name": "createSpecialProposal",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4828,
+              "id": 4885,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4818,
+                  "id": 4875,
                   "name": "_doc",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4859,
+                  "scope": 4916,
                   "src": "760:12:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2644,7 +2644,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 4817,
+                    "id": 4874,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "760:7:14",
@@ -2658,10 +2658,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 4821,
+                  "id": 4878,
                   "name": "_uintConfigs",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4859,
+                  "scope": 4916,
                   "src": "782:22:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2671,7 +2671,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 4819,
+                      "id": 4876,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "782:7:14",
@@ -2680,7 +2680,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 4820,
+                    "id": 4877,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "782:9:14",
@@ -2694,10 +2694,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 4824,
+                  "id": 4881,
                   "name": "_addressConfigs",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4859,
+                  "scope": 4916,
                   "src": "814:25:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2707,7 +2707,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 4822,
+                      "id": 4879,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "814:7:14",
@@ -2716,7 +2716,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 4823,
+                    "id": 4880,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "814:9:14",
@@ -2730,10 +2730,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 4827,
+                  "id": 4884,
                   "name": "_bytesConfigs",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4859,
+                  "scope": 4916,
                   "src": "849:23:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2743,7 +2743,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 4825,
+                      "id": 4882,
                       "name": "bytes32",
                       "nodeType": "ElementaryTypeName",
                       "src": "849:7:14",
@@ -2752,7 +2752,7 @@
                         "typeString": "bytes32"
                       }
                     },
-                    "id": 4826,
+                    "id": 4883,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "849:9:14",
@@ -2769,15 +2769,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 4833,
+              "id": 4890,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4832,
+                  "id": 4889,
                   "name": "_success",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4859,
+                  "scope": 4916,
                   "src": "934:13:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2786,7 +2786,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 4831,
+                    "id": 4888,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "934:4:14",
@@ -2801,7 +2801,7 @@
               ],
               "src": "933:15:14"
             },
-            "scope": 4913,
+            "scope": 4970,
             "src": "720:518:14",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -2809,7 +2809,7 @@
           },
           {
             "body": {
-              "id": 4911,
+              "id": 4968,
               "nodeType": "Block",
               "src": "1470:431:14",
               "statements": [
@@ -2822,7 +2822,7 @@
                         "arguments": [],
                         "expression": {
                           "argumentTypes": [],
-                          "id": 4865,
+                          "id": 4922,
                           "name": "isMainPhase",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
@@ -2833,7 +2833,7 @@
                             "typeString": "function () view returns (bool)"
                           }
                         },
-                        "id": 4866,
+                        "id": 4923,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2855,21 +2855,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 4864,
+                      "id": 4921,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "1480:7:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 4867,
+                    "id": 4924,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2883,7 +2883,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4868,
+                  "id": 4925,
                   "nodeType": "ExpressionStatement",
                   "src": "1480:22:14"
                 },
@@ -2897,7 +2897,7 @@
                           "typeIdentifier": "t_address",
                           "typeString": "address"
                         },
-                        "id": 4877,
+                        "id": 4934,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2907,11 +2907,11 @@
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 4873,
+                              "id": 4930,
                               "name": "_proposalId",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4861,
+                              "referencedDeclaration": 4918,
                               "src": "1561:11:14",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_bytes32",
@@ -2931,18 +2931,18 @@
                               "arguments": [],
                               "expression": {
                                 "argumentTypes": [],
-                                "id": 4870,
+                                "id": 4927,
                                 "name": "daoSpecialStorage",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
                                 "referencedDeclaration": 1196,
                                 "src": "1520:17:14",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoSpecialStorage_$15517_$",
+                                  "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoSpecialStorage_$15574_$",
                                   "typeString": "function () view returns (contract DaoSpecialStorage)"
                                 }
                               },
-                              "id": 4871,
+                              "id": 4928,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -2952,25 +2952,25 @@
                               "nodeType": "FunctionCall",
                               "src": "1520:19:14",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_DaoSpecialStorage_$15517",
+                                "typeIdentifier": "t_contract$_DaoSpecialStorage_$15574",
                                 "typeString": "contract DaoSpecialStorage"
                               }
                             },
-                            "id": 4872,
+                            "id": 4929,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
                             "lValueRequested": false,
                             "memberName": "readProposalProposer",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 15213,
+                            "referencedDeclaration": 15270,
                             "src": "1520:40:14",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_address_$",
                               "typeString": "function (bytes32) view external returns (address)"
                             }
                           },
-                          "id": 4874,
+                          "id": 4931,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -2990,18 +2990,18 @@
                           "argumentTypes": null,
                           "expression": {
                             "argumentTypes": null,
-                            "id": 4875,
+                            "id": 4932,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 26100,
+                            "referencedDeclaration": 26157,
                             "src": "1577:3:14",
                             "typeDescriptions": {
                               "typeIdentifier": "t_magic_message",
                               "typeString": "msg"
                             }
                           },
-                          "id": 4876,
+                          "id": 4933,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -3029,21 +3029,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 4869,
+                      "id": 4926,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "1512:7:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 4878,
+                    "id": 4935,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3057,7 +3057,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4879,
+                  "id": 4936,
                   "nodeType": "ExpressionStatement",
                   "src": "1512:76:14"
                 },
@@ -3071,7 +3071,7 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 4887,
+                        "id": 4944,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3081,11 +3081,11 @@
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 4884,
+                              "id": 4941,
                               "name": "_proposalId",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4861,
+                              "referencedDeclaration": 4918,
                               "src": "1641:11:14",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_bytes32",
@@ -3105,18 +3105,18 @@
                               "arguments": [],
                               "expression": {
                                 "argumentTypes": [],
-                                "id": 4881,
+                                "id": 4938,
                                 "name": "daoSpecialStorage",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
                                 "referencedDeclaration": 1196,
                                 "src": "1606:17:14",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoSpecialStorage_$15517_$",
+                                  "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoSpecialStorage_$15574_$",
                                   "typeString": "function () view returns (contract DaoSpecialStorage)"
                                 }
                               },
-                              "id": 4882,
+                              "id": 4939,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
@@ -3126,25 +3126,25 @@
                               "nodeType": "FunctionCall",
                               "src": "1606:19:14",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_contract$_DaoSpecialStorage_$15517",
+                                "typeIdentifier": "t_contract$_DaoSpecialStorage_$15574",
                                 "typeString": "contract DaoSpecialStorage"
                               }
                             },
-                            "id": 4883,
+                            "id": 4940,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
                             "lValueRequested": false,
                             "memberName": "readVotingTime",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 15296,
+                            "referencedDeclaration": 15353,
                             "src": "1606:34:14",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_uint256_$",
                               "typeString": "function (bytes32) view external returns (uint256)"
                             }
                           },
-                          "id": 4885,
+                          "id": 4942,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -3163,7 +3163,7 @@
                         "rightExpression": {
                           "argumentTypes": null,
                           "hexValue": "30",
-                          "id": 4886,
+                          "id": 4943,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -3192,21 +3192,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 4880,
+                      "id": 4937,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "1598:7:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 4888,
+                    "id": 4945,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3220,7 +3220,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4889,
+                  "id": 4946,
                   "nodeType": "ExpressionStatement",
                   "src": "1598:61:14"
                 },
@@ -3234,7 +3234,7 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 4897,
+                        "id": 4954,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3244,11 +3244,11 @@
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 4892,
+                              "id": 4949,
                               "name": "now",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 26102,
+                              "referencedDeclaration": 26159,
                               "src": "1726:3:14",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -3263,7 +3263,7 @@
                                 "typeString": "uint256"
                               }
                             ],
-                            "id": 4891,
+                            "id": 4948,
                             "name": "getTimeLeftInQuarter",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -3274,7 +3274,7 @@
                               "typeString": "function (uint256) view returns (uint256)"
                             }
                           },
-                          "id": 4893,
+                          "id": 4950,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -3295,7 +3295,7 @@
                           "arguments": [
                             {
                               "argumentTypes": null,
-                              "id": 4895,
+                              "id": 4952,
                               "name": "CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
@@ -3314,7 +3314,7 @@
                                 "typeString": "bytes32"
                               }
                             ],
-                            "id": 4894,
+                            "id": 4951,
                             "name": "getUintConfig",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -3325,7 +3325,7 @@
                               "typeString": "function (bytes32) view returns (uint256)"
                             }
                           },
-                          "id": 4896,
+                          "id": 4953,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -3353,21 +3353,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 4890,
+                      "id": 4947,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "1697:7:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 4898,
+                    "id": 4955,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3381,7 +3381,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4899,
+                  "id": 4956,
                   "nodeType": "ExpressionStatement",
                   "src": "1697:87:14"
                 },
@@ -3391,11 +3391,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 4903,
+                        "id": 4960,
                         "name": "_proposalId",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4861,
+                        "referencedDeclaration": 4918,
                         "src": "1828:11:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
@@ -3404,11 +3404,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 4904,
+                        "id": 4961,
                         "name": "now",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 26102,
+                        "referencedDeclaration": 26159,
                         "src": "1841:3:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -3432,18 +3432,18 @@
                         "arguments": [],
                         "expression": {
                           "argumentTypes": [],
-                          "id": 4900,
+                          "id": 4957,
                           "name": "daoSpecialStorage",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 1196,
                           "src": "1794:17:14",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoSpecialStorage_$15517_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoSpecialStorage_$15574_$",
                             "typeString": "function () view returns (contract DaoSpecialStorage)"
                           }
                         },
-                        "id": 4901,
+                        "id": 4958,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3453,25 +3453,25 @@
                         "nodeType": "FunctionCall",
                         "src": "1794:19:14",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoSpecialStorage_$15517",
+                          "typeIdentifier": "t_contract$_DaoSpecialStorage_$15574",
                           "typeString": "contract DaoSpecialStorage"
                         }
                       },
-                      "id": 4902,
+                      "id": 4959,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "setVotingTime",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 15369,
+                      "referencedDeclaration": 15426,
                       "src": "1794:33:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_bytes32_$_t_uint256_$returns$__$",
                         "typeString": "function (bytes32,uint256) external"
                       }
                     },
-                    "id": 4905,
+                    "id": 4962,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3485,7 +3485,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4906,
+                  "id": 4963,
                   "nodeType": "ExpressionStatement",
                   "src": "1794:51:14"
                 },
@@ -3495,11 +3495,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 4908,
+                        "id": 4965,
                         "name": "_proposalId",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4861,
+                        "referencedDeclaration": 4918,
                         "src": "1882:11:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
@@ -3514,18 +3514,18 @@
                           "typeString": "bytes32"
                         }
                       ],
-                      "id": 4907,
+                      "id": 4964,
                       "name": "StartSpecialProposal",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 4803,
+                      "referencedDeclaration": 4860,
                       "src": "1861:20:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_bytes32_$returns$__$",
                         "typeString": "function (bytes32)"
                       }
                     },
-                    "id": 4909,
+                    "id": 4966,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3539,14 +3539,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4910,
+                  "id": 4967,
                   "nodeType": "EmitStatement",
                   "src": "1856:38:14"
                 }
               ]
             },
             "documentation": "@notice Function to set start of voting round for special proposal\n@param _proposalId ID of the special proposal",
-            "id": 4912,
+            "id": 4969,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -3554,15 +3554,15 @@
             "name": "startSpecialProposalVoting",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4862,
+              "id": 4919,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4861,
+                  "id": 4918,
                   "name": "_proposalId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4912,
+                  "scope": 4969,
                   "src": "1425:19:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3571,7 +3571,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 4860,
+                    "id": 4917,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1425:7:14",
@@ -3588,19 +3588,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 4863,
+              "id": 4920,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1470:0:14"
             },
-            "scope": 4913,
+            "scope": 4970,
             "src": "1380:521:14",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 4914,
+        "scope": 4971,
         "src": "63:1840:14"
       }
     ],
@@ -3614,10 +3614,10 @@
     "42": {
       "events": {},
       "links": {},
-      "address": "0x517fe51db82d3c816925d60433a4960c11738608",
-      "transactionHash": "0x39ee259fb45e2bdea7dd7b57c3c17c166e316d6c0af92e63aee97fbbc36fee64"
+      "address": "0x1d40dbe3e7ff6ace1c6de3929d5cba269aa1b777",
+      "transactionHash": "0x6453727deae889b06bf694cbf81d284a613f97799e2852753a48213569815866"
     }
   },
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-19T03:42:00.672Z"
+  "updatedAt": "2019-01-18T07:00:57.821Z"
 }

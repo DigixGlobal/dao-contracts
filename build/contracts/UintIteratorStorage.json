@@ -11,14 +11,14 @@
     "absolutePath": "@digix/solidity-collections/contracts/abstract/UintIteratorStorage.sol",
     "exportedSymbols": {
       "UintIteratorStorage": [
-        22475
+        22532
       ]
     },
-    "id": 22476,
+    "id": 22533,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 22394,
+        "id": 22451,
         "literals": [
           "solidity",
           "^",
@@ -31,10 +31,10 @@
       {
         "absolutePath": "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol",
         "file": "../lib/DoublyLinkedList.sol",
-        "id": 22395,
+        "id": 22452,
         "nodeType": "ImportDirective",
-        "scope": 22476,
-        "sourceUnit": 25035,
+        "scope": 22533,
+        "sourceUnit": 25092,
         "src": "26:37:80",
         "symbolAliases": [],
         "unitAlias": ""
@@ -45,24 +45,24 @@
         "contractKind": "contract",
         "documentation": "@title Uint Iterator Storage\n@author DigixGlobal Pte Ltd",
         "fullyImplemented": true,
-        "id": 22475,
+        "id": 22532,
         "linearizedBaseContracts": [
-          22475
+          22532
         ],
         "name": "UintIteratorStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "id": 22398,
+            "id": 22455,
             "libraryName": {
               "contractScope": null,
-              "id": 22396,
+              "id": 22453,
               "name": "DoublyLinkedList",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 25034,
+              "referencedDeclaration": 25091,
               "src": "173:16:80",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DoublyLinkedList_$25034",
+                "typeIdentifier": "t_contract$_DoublyLinkedList_$25091",
                 "typeString": "library DoublyLinkedList"
               }
             },
@@ -70,38 +70,38 @@
             "src": "167:49:80",
             "typeName": {
               "contractScope": null,
-              "id": 22397,
+              "id": 22454,
               "name": "DoublyLinkedList.Uint",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 22526,
+              "referencedDeclaration": 22583,
               "src": "194:21:80",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                 "typeString": "struct DoublyLinkedList.Uint"
               }
             }
           },
           {
             "body": {
-              "id": 22411,
+              "id": 22468,
               "nodeType": "Block",
               "src": "535:37:80",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 22409,
+                    "id": 22466,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 22405,
+                      "id": 22462,
                       "name": "_item",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 22403,
+                      "referencedDeclaration": 22460,
                       "src": "541:5:80",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -117,32 +117,32 @@
                         "argumentTypes": [],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 22406,
+                          "id": 22463,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22400,
+                          "referencedDeclaration": 22457,
                           "src": "549:5:80",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                            "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                             "typeString": "struct DoublyLinkedList.Uint storage pointer"
                           }
                         },
-                        "id": 22407,
+                        "id": 22464,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "start_item",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 23334,
+                        "referencedDeclaration": 23391,
                         "src": "549:16:80",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Uint_$22526_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Uint_$22526_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Uint_$22583_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Uint_$22583_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.Uint storage pointer) view returns (uint256)"
                         }
                       },
-                      "id": 22408,
+                      "id": 22465,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -162,14 +162,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 22410,
+                  "id": 22467,
                   "nodeType": "ExpressionStatement",
                   "src": "541:26:80"
                 }
               ]
             },
             "documentation": "@notice Returns the first item from a `DoublyLinkedList.Uint` list\n@param _list The DoublyLinkedList.Uint list\n@return {\"_item\": \"The first item\"}",
-            "id": 22412,
+            "id": 22469,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -177,31 +177,31 @@
             "name": "read_first_from_uints",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 22401,
+              "id": 22458,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22400,
+                  "id": 22457,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22412,
+                  "scope": 22469,
                   "src": "421:35:80",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                    "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Uint"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 22399,
+                    "id": 22456,
                     "name": "DoublyLinkedList.Uint",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22526,
+                    "referencedDeclaration": 22583,
                     "src": "421:21:80",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                      "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                       "typeString": "struct DoublyLinkedList.Uint"
                     }
                   },
@@ -213,15 +213,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22404,
+              "id": 22461,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22403,
+                  "id": 22460,
                   "name": "_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22412,
+                  "scope": 22469,
                   "src": "518:13:80",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -230,7 +230,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 22402,
+                    "id": 22459,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "518:7:80",
@@ -245,7 +245,7 @@
               ],
               "src": "517:15:80"
             },
-            "scope": 22475,
+            "scope": 22532,
             "src": "390:182:80",
             "stateMutability": "view",
             "superFunction": null,
@@ -253,25 +253,25 @@
           },
           {
             "body": {
-              "id": 22425,
+              "id": 22482,
               "nodeType": "Block",
               "src": "888:35:80",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 22423,
+                    "id": 22480,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 22419,
+                      "id": 22476,
                       "name": "_item",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 22417,
+                      "referencedDeclaration": 22474,
                       "src": "894:5:80",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -287,32 +287,32 @@
                         "argumentTypes": [],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 22420,
+                          "id": 22477,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22414,
+                          "referencedDeclaration": 22471,
                           "src": "902:5:80",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                            "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                             "typeString": "struct DoublyLinkedList.Uint storage pointer"
                           }
                         },
-                        "id": 22421,
+                        "id": 22478,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "end_item",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 23366,
+                        "referencedDeclaration": 23423,
                         "src": "902:14:80",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Uint_$22526_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Uint_$22526_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Uint_$22583_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Uint_$22583_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.Uint storage pointer) view returns (uint256)"
                         }
                       },
-                      "id": 22422,
+                      "id": 22479,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -332,14 +332,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 22424,
+                  "id": 22481,
                   "nodeType": "ExpressionStatement",
                   "src": "894:24:80"
                 }
               ]
             },
             "documentation": "@notice Returns the last item from a `DoublyLinkedList.Uint` list\n@param _list The DoublyLinkedList.Uint list\n@return {\"_item\": \"The last item\"}",
-            "id": 22426,
+            "id": 22483,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -347,31 +347,31 @@
             "name": "read_last_from_uints",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 22415,
+              "id": 22472,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22414,
+                  "id": 22471,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22426,
+                  "scope": 22483,
                   "src": "774:35:80",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                    "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Uint"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 22413,
+                    "id": 22470,
                     "name": "DoublyLinkedList.Uint",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22526,
+                    "referencedDeclaration": 22583,
                     "src": "774:21:80",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                      "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                       "typeString": "struct DoublyLinkedList.Uint"
                     }
                   },
@@ -383,15 +383,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22418,
+              "id": 22475,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22417,
+                  "id": 22474,
                   "name": "_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22426,
+                  "scope": 22483,
                   "src": "871:13:80",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -400,7 +400,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 22416,
+                    "id": 22473,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "871:7:80",
@@ -415,7 +415,7 @@
               ],
               "src": "870:15:80"
             },
-            "scope": 22475,
+            "scope": 22532,
             "src": "744:179:80",
             "stateMutability": "view",
             "superFunction": null,
@@ -423,25 +423,25 @@
           },
           {
             "body": {
-              "id": 22442,
+              "id": 22499,
               "nodeType": "Block",
               "src": "1343:49:80",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 22440,
+                    "id": 22497,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 22435,
+                      "id": 22492,
                       "name": "_item",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 22433,
+                      "referencedDeclaration": 22490,
                       "src": "1349:5:80",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -455,11 +455,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 22438,
+                          "id": 22495,
                           "name": "_current_item",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22430,
+                          "referencedDeclaration": 22487,
                           "src": "1373:13:80",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -476,32 +476,32 @@
                         ],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 22436,
+                          "id": 22493,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22428,
+                          "referencedDeclaration": 22485,
                           "src": "1357:5:80",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                            "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                             "typeString": "struct DoublyLinkedList.Uint storage pointer"
                           }
                         },
-                        "id": 22437,
+                        "id": 22494,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "next_item",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 23484,
+                        "referencedDeclaration": 23541,
                         "src": "1357:15:80",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Uint_$22526_storage_ptr_$_t_uint256_$returns$_t_uint256_$bound_to$_t_struct$_Uint_$22526_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Uint_$22583_storage_ptr_$_t_uint256_$returns$_t_uint256_$bound_to$_t_struct$_Uint_$22583_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.Uint storage pointer,uint256) view returns (uint256)"
                         }
                       },
-                      "id": 22439,
+                      "id": 22496,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -521,14 +521,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 22441,
+                  "id": 22498,
                   "nodeType": "ExpressionStatement",
                   "src": "1349:38:80"
                 }
               ]
             },
             "documentation": "@notice Returns the next item from a `DoublyLinkedList.Uint` list based on the specified `_current_item`\n@param _list The DoublyLinkedList.Uint list\n@param _current_item The current item\n@return {\"_item\": \"The next item\"}",
-            "id": 22443,
+            "id": 22500,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -536,31 +536,31 @@
             "name": "read_next_from_uints",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 22431,
+              "id": 22488,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22428,
+                  "id": 22485,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22443,
+                  "scope": 22500,
                   "src": "1206:35:80",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                    "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Uint"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 22427,
+                    "id": 22484,
                     "name": "DoublyLinkedList.Uint",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22526,
+                    "referencedDeclaration": 22583,
                     "src": "1206:21:80",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                      "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                       "typeString": "struct DoublyLinkedList.Uint"
                     }
                   },
@@ -569,10 +569,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 22430,
+                  "id": 22487,
                   "name": "_current_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22443,
+                  "scope": 22500,
                   "src": "1243:21:80",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -581,7 +581,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 22429,
+                    "id": 22486,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1243:7:80",
@@ -598,15 +598,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22434,
+              "id": 22491,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22433,
+                  "id": 22490,
                   "name": "_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22443,
+                  "scope": 22500,
                   "src": "1326:13:80",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -615,7 +615,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 22432,
+                    "id": 22489,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1326:7:80",
@@ -630,7 +630,7 @@
               ],
               "src": "1325:15:80"
             },
-            "scope": 22475,
+            "scope": 22532,
             "src": "1176:216:80",
             "stateMutability": "view",
             "superFunction": null,
@@ -638,25 +638,25 @@
           },
           {
             "body": {
-              "id": 22459,
+              "id": 22516,
               "nodeType": "Block",
               "src": "1824:53:80",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 22457,
+                    "id": 22514,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 22452,
+                      "id": 22509,
                       "name": "_item",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 22450,
+                      "referencedDeclaration": 22507,
                       "src": "1830:5:80",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -670,11 +670,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 22455,
+                          "id": 22512,
                           "name": "_current_item",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22447,
+                          "referencedDeclaration": 22504,
                           "src": "1858:13:80",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -691,32 +691,32 @@
                         ],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 22453,
+                          "id": 22510,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22445,
+                          "referencedDeclaration": 22502,
                           "src": "1838:5:80",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                            "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                             "typeString": "struct DoublyLinkedList.Uint storage pointer"
                           }
                         },
-                        "id": 22454,
+                        "id": 22511,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "previous_item",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 23444,
+                        "referencedDeclaration": 23501,
                         "src": "1838:19:80",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Uint_$22526_storage_ptr_$_t_uint256_$returns$_t_uint256_$bound_to$_t_struct$_Uint_$22526_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Uint_$22583_storage_ptr_$_t_uint256_$returns$_t_uint256_$bound_to$_t_struct$_Uint_$22583_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.Uint storage pointer,uint256) view returns (uint256)"
                         }
                       },
-                      "id": 22456,
+                      "id": 22513,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -736,14 +736,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 22458,
+                  "id": 22515,
                   "nodeType": "ExpressionStatement",
                   "src": "1830:42:80"
                 }
               ]
             },
             "documentation": "@notice Returns the previous item from a `DoublyLinkedList.Uint` list based on the specified `_current_item`\n@param _list The DoublyLinkedList.Uint list\n@param _current_item The current item\n@return {\"_item\": \"The previous item\"}",
-            "id": 22460,
+            "id": 22517,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -751,31 +751,31 @@
             "name": "read_previous_from_uints",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 22448,
+              "id": 22505,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22445,
+                  "id": 22502,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22460,
+                  "scope": 22517,
                   "src": "1687:35:80",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                    "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Uint"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 22444,
+                    "id": 22501,
                     "name": "DoublyLinkedList.Uint",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22526,
+                    "referencedDeclaration": 22583,
                     "src": "1687:21:80",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                      "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                       "typeString": "struct DoublyLinkedList.Uint"
                     }
                   },
@@ -784,10 +784,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 22447,
+                  "id": 22504,
                   "name": "_current_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22460,
+                  "scope": 22517,
                   "src": "1724:21:80",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -796,7 +796,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 22446,
+                    "id": 22503,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1724:7:80",
@@ -813,15 +813,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22451,
+              "id": 22508,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22450,
+                  "id": 22507,
                   "name": "_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22460,
+                  "scope": 22517,
                   "src": "1807:13:80",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -830,7 +830,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 22449,
+                    "id": 22506,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1807:7:80",
@@ -845,7 +845,7 @@
               ],
               "src": "1806:15:80"
             },
-            "scope": 22475,
+            "scope": 22532,
             "src": "1653:224:80",
             "stateMutability": "view",
             "superFunction": null,
@@ -853,25 +853,25 @@
           },
           {
             "body": {
-              "id": 22473,
+              "id": 22530,
               "nodeType": "Block",
               "src": "2212:33:80",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 22471,
+                    "id": 22528,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 22467,
+                      "id": 22524,
                       "name": "_count",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 22465,
+                      "referencedDeclaration": 22522,
                       "src": "2218:6:80",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -887,32 +887,32 @@
                         "argumentTypes": [],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 22468,
+                          "id": 22525,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22462,
+                          "referencedDeclaration": 22519,
                           "src": "2227:5:80",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                            "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                             "typeString": "struct DoublyLinkedList.Uint storage pointer"
                           }
                         },
-                        "id": 22469,
+                        "id": 22526,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "total",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 23302,
+                        "referencedDeclaration": 23359,
                         "src": "2227:11:80",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Uint_$22526_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Uint_$22526_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Uint_$22583_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Uint_$22583_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.Uint storage pointer) view returns (uint256)"
                         }
                       },
-                      "id": 22470,
+                      "id": 22527,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -932,14 +932,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 22472,
+                  "id": 22529,
                   "nodeType": "ExpressionStatement",
                   "src": "2218:22:80"
                 }
               ]
             },
             "documentation": "@notice Returns the total count of itemsfrom a `DoublyLinkedList.Uint` list\n@param _list The DoublyLinkedList.Uint list\n@return {\"_count\": \"The total count of items\"}",
-            "id": 22474,
+            "id": 22531,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -947,31 +947,31 @@
             "name": "read_total_uints",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 22463,
+              "id": 22520,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22462,
+                  "id": 22519,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22474,
+                  "scope": 22531,
                   "src": "2097:35:80",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                    "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Uint"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 22461,
+                    "id": 22518,
                     "name": "DoublyLinkedList.Uint",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22526,
+                    "referencedDeclaration": 22583,
                     "src": "2097:21:80",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                      "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                       "typeString": "struct DoublyLinkedList.Uint"
                     }
                   },
@@ -983,15 +983,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22466,
+              "id": 22523,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22465,
+                  "id": 22522,
                   "name": "_count",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22474,
+                  "scope": 22531,
                   "src": "2194:14:80",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1000,7 +1000,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 22464,
+                    "id": 22521,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "2194:7:80",
@@ -1015,14 +1015,14 @@
               ],
               "src": "2193:16:80"
             },
-            "scope": 22475,
+            "scope": 22532,
             "src": "2071:174:80",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "internal"
           }
         ],
-        "scope": 22476,
+        "scope": 22533,
         "src": "133:2115:80"
       }
     ],
@@ -1032,14 +1032,14 @@
     "absolutePath": "@digix/solidity-collections/contracts/abstract/UintIteratorStorage.sol",
     "exportedSymbols": {
       "UintIteratorStorage": [
-        22475
+        22532
       ]
     },
-    "id": 22476,
+    "id": 22533,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 22394,
+        "id": 22451,
         "literals": [
           "solidity",
           "^",
@@ -1052,10 +1052,10 @@
       {
         "absolutePath": "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol",
         "file": "../lib/DoublyLinkedList.sol",
-        "id": 22395,
+        "id": 22452,
         "nodeType": "ImportDirective",
-        "scope": 22476,
-        "sourceUnit": 25035,
+        "scope": 22533,
+        "sourceUnit": 25092,
         "src": "26:37:80",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1066,24 +1066,24 @@
         "contractKind": "contract",
         "documentation": "@title Uint Iterator Storage\n@author DigixGlobal Pte Ltd",
         "fullyImplemented": true,
-        "id": 22475,
+        "id": 22532,
         "linearizedBaseContracts": [
-          22475
+          22532
         ],
         "name": "UintIteratorStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "id": 22398,
+            "id": 22455,
             "libraryName": {
               "contractScope": null,
-              "id": 22396,
+              "id": 22453,
               "name": "DoublyLinkedList",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 25034,
+              "referencedDeclaration": 25091,
               "src": "173:16:80",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DoublyLinkedList_$25034",
+                "typeIdentifier": "t_contract$_DoublyLinkedList_$25091",
                 "typeString": "library DoublyLinkedList"
               }
             },
@@ -1091,38 +1091,38 @@
             "src": "167:49:80",
             "typeName": {
               "contractScope": null,
-              "id": 22397,
+              "id": 22454,
               "name": "DoublyLinkedList.Uint",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 22526,
+              "referencedDeclaration": 22583,
               "src": "194:21:80",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                 "typeString": "struct DoublyLinkedList.Uint"
               }
             }
           },
           {
             "body": {
-              "id": 22411,
+              "id": 22468,
               "nodeType": "Block",
               "src": "535:37:80",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 22409,
+                    "id": 22466,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 22405,
+                      "id": 22462,
                       "name": "_item",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 22403,
+                      "referencedDeclaration": 22460,
                       "src": "541:5:80",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1138,32 +1138,32 @@
                         "argumentTypes": [],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 22406,
+                          "id": 22463,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22400,
+                          "referencedDeclaration": 22457,
                           "src": "549:5:80",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                            "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                             "typeString": "struct DoublyLinkedList.Uint storage pointer"
                           }
                         },
-                        "id": 22407,
+                        "id": 22464,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "start_item",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 23334,
+                        "referencedDeclaration": 23391,
                         "src": "549:16:80",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Uint_$22526_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Uint_$22526_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Uint_$22583_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Uint_$22583_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.Uint storage pointer) view returns (uint256)"
                         }
                       },
-                      "id": 22408,
+                      "id": 22465,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1183,14 +1183,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 22410,
+                  "id": 22467,
                   "nodeType": "ExpressionStatement",
                   "src": "541:26:80"
                 }
               ]
             },
             "documentation": "@notice Returns the first item from a `DoublyLinkedList.Uint` list\n@param _list The DoublyLinkedList.Uint list\n@return {\"_item\": \"The first item\"}",
-            "id": 22412,
+            "id": 22469,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1198,31 +1198,31 @@
             "name": "read_first_from_uints",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 22401,
+              "id": 22458,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22400,
+                  "id": 22457,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22412,
+                  "scope": 22469,
                   "src": "421:35:80",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                    "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Uint"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 22399,
+                    "id": 22456,
                     "name": "DoublyLinkedList.Uint",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22526,
+                    "referencedDeclaration": 22583,
                     "src": "421:21:80",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                      "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                       "typeString": "struct DoublyLinkedList.Uint"
                     }
                   },
@@ -1234,15 +1234,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22404,
+              "id": 22461,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22403,
+                  "id": 22460,
                   "name": "_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22412,
+                  "scope": 22469,
                   "src": "518:13:80",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1251,7 +1251,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 22402,
+                    "id": 22459,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "518:7:80",
@@ -1266,7 +1266,7 @@
               ],
               "src": "517:15:80"
             },
-            "scope": 22475,
+            "scope": 22532,
             "src": "390:182:80",
             "stateMutability": "view",
             "superFunction": null,
@@ -1274,25 +1274,25 @@
           },
           {
             "body": {
-              "id": 22425,
+              "id": 22482,
               "nodeType": "Block",
               "src": "888:35:80",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 22423,
+                    "id": 22480,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 22419,
+                      "id": 22476,
                       "name": "_item",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 22417,
+                      "referencedDeclaration": 22474,
                       "src": "894:5:80",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1308,32 +1308,32 @@
                         "argumentTypes": [],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 22420,
+                          "id": 22477,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22414,
+                          "referencedDeclaration": 22471,
                           "src": "902:5:80",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                            "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                             "typeString": "struct DoublyLinkedList.Uint storage pointer"
                           }
                         },
-                        "id": 22421,
+                        "id": 22478,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "end_item",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 23366,
+                        "referencedDeclaration": 23423,
                         "src": "902:14:80",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Uint_$22526_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Uint_$22526_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Uint_$22583_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Uint_$22583_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.Uint storage pointer) view returns (uint256)"
                         }
                       },
-                      "id": 22422,
+                      "id": 22479,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1353,14 +1353,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 22424,
+                  "id": 22481,
                   "nodeType": "ExpressionStatement",
                   "src": "894:24:80"
                 }
               ]
             },
             "documentation": "@notice Returns the last item from a `DoublyLinkedList.Uint` list\n@param _list The DoublyLinkedList.Uint list\n@return {\"_item\": \"The last item\"}",
-            "id": 22426,
+            "id": 22483,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1368,31 +1368,31 @@
             "name": "read_last_from_uints",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 22415,
+              "id": 22472,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22414,
+                  "id": 22471,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22426,
+                  "scope": 22483,
                   "src": "774:35:80",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                    "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Uint"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 22413,
+                    "id": 22470,
                     "name": "DoublyLinkedList.Uint",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22526,
+                    "referencedDeclaration": 22583,
                     "src": "774:21:80",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                      "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                       "typeString": "struct DoublyLinkedList.Uint"
                     }
                   },
@@ -1404,15 +1404,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22418,
+              "id": 22475,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22417,
+                  "id": 22474,
                   "name": "_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22426,
+                  "scope": 22483,
                   "src": "871:13:80",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1421,7 +1421,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 22416,
+                    "id": 22473,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "871:7:80",
@@ -1436,7 +1436,7 @@
               ],
               "src": "870:15:80"
             },
-            "scope": 22475,
+            "scope": 22532,
             "src": "744:179:80",
             "stateMutability": "view",
             "superFunction": null,
@@ -1444,25 +1444,25 @@
           },
           {
             "body": {
-              "id": 22442,
+              "id": 22499,
               "nodeType": "Block",
               "src": "1343:49:80",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 22440,
+                    "id": 22497,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 22435,
+                      "id": 22492,
                       "name": "_item",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 22433,
+                      "referencedDeclaration": 22490,
                       "src": "1349:5:80",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1476,11 +1476,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 22438,
+                          "id": 22495,
                           "name": "_current_item",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22430,
+                          "referencedDeclaration": 22487,
                           "src": "1373:13:80",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1497,32 +1497,32 @@
                         ],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 22436,
+                          "id": 22493,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22428,
+                          "referencedDeclaration": 22485,
                           "src": "1357:5:80",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                            "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                             "typeString": "struct DoublyLinkedList.Uint storage pointer"
                           }
                         },
-                        "id": 22437,
+                        "id": 22494,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "next_item",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 23484,
+                        "referencedDeclaration": 23541,
                         "src": "1357:15:80",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Uint_$22526_storage_ptr_$_t_uint256_$returns$_t_uint256_$bound_to$_t_struct$_Uint_$22526_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Uint_$22583_storage_ptr_$_t_uint256_$returns$_t_uint256_$bound_to$_t_struct$_Uint_$22583_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.Uint storage pointer,uint256) view returns (uint256)"
                         }
                       },
-                      "id": 22439,
+                      "id": 22496,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1542,14 +1542,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 22441,
+                  "id": 22498,
                   "nodeType": "ExpressionStatement",
                   "src": "1349:38:80"
                 }
               ]
             },
             "documentation": "@notice Returns the next item from a `DoublyLinkedList.Uint` list based on the specified `_current_item`\n@param _list The DoublyLinkedList.Uint list\n@param _current_item The current item\n@return {\"_item\": \"The next item\"}",
-            "id": 22443,
+            "id": 22500,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1557,31 +1557,31 @@
             "name": "read_next_from_uints",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 22431,
+              "id": 22488,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22428,
+                  "id": 22485,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22443,
+                  "scope": 22500,
                   "src": "1206:35:80",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                    "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Uint"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 22427,
+                    "id": 22484,
                     "name": "DoublyLinkedList.Uint",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22526,
+                    "referencedDeclaration": 22583,
                     "src": "1206:21:80",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                      "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                       "typeString": "struct DoublyLinkedList.Uint"
                     }
                   },
@@ -1590,10 +1590,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 22430,
+                  "id": 22487,
                   "name": "_current_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22443,
+                  "scope": 22500,
                   "src": "1243:21:80",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1602,7 +1602,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 22429,
+                    "id": 22486,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1243:7:80",
@@ -1619,15 +1619,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22434,
+              "id": 22491,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22433,
+                  "id": 22490,
                   "name": "_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22443,
+                  "scope": 22500,
                   "src": "1326:13:80",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1636,7 +1636,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 22432,
+                    "id": 22489,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1326:7:80",
@@ -1651,7 +1651,7 @@
               ],
               "src": "1325:15:80"
             },
-            "scope": 22475,
+            "scope": 22532,
             "src": "1176:216:80",
             "stateMutability": "view",
             "superFunction": null,
@@ -1659,25 +1659,25 @@
           },
           {
             "body": {
-              "id": 22459,
+              "id": 22516,
               "nodeType": "Block",
               "src": "1824:53:80",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 22457,
+                    "id": 22514,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 22452,
+                      "id": 22509,
                       "name": "_item",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 22450,
+                      "referencedDeclaration": 22507,
                       "src": "1830:5:80",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1691,11 +1691,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 22455,
+                          "id": 22512,
                           "name": "_current_item",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22447,
+                          "referencedDeclaration": 22504,
                           "src": "1858:13:80",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1712,32 +1712,32 @@
                         ],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 22453,
+                          "id": 22510,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22445,
+                          "referencedDeclaration": 22502,
                           "src": "1838:5:80",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                            "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                             "typeString": "struct DoublyLinkedList.Uint storage pointer"
                           }
                         },
-                        "id": 22454,
+                        "id": 22511,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "previous_item",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 23444,
+                        "referencedDeclaration": 23501,
                         "src": "1838:19:80",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Uint_$22526_storage_ptr_$_t_uint256_$returns$_t_uint256_$bound_to$_t_struct$_Uint_$22526_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Uint_$22583_storage_ptr_$_t_uint256_$returns$_t_uint256_$bound_to$_t_struct$_Uint_$22583_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.Uint storage pointer,uint256) view returns (uint256)"
                         }
                       },
-                      "id": 22456,
+                      "id": 22513,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1757,14 +1757,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 22458,
+                  "id": 22515,
                   "nodeType": "ExpressionStatement",
                   "src": "1830:42:80"
                 }
               ]
             },
             "documentation": "@notice Returns the previous item from a `DoublyLinkedList.Uint` list based on the specified `_current_item`\n@param _list The DoublyLinkedList.Uint list\n@param _current_item The current item\n@return {\"_item\": \"The previous item\"}",
-            "id": 22460,
+            "id": 22517,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1772,31 +1772,31 @@
             "name": "read_previous_from_uints",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 22448,
+              "id": 22505,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22445,
+                  "id": 22502,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22460,
+                  "scope": 22517,
                   "src": "1687:35:80",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                    "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Uint"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 22444,
+                    "id": 22501,
                     "name": "DoublyLinkedList.Uint",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22526,
+                    "referencedDeclaration": 22583,
                     "src": "1687:21:80",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                      "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                       "typeString": "struct DoublyLinkedList.Uint"
                     }
                   },
@@ -1805,10 +1805,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 22447,
+                  "id": 22504,
                   "name": "_current_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22460,
+                  "scope": 22517,
                   "src": "1724:21:80",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1817,7 +1817,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 22446,
+                    "id": 22503,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1724:7:80",
@@ -1834,15 +1834,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22451,
+              "id": 22508,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22450,
+                  "id": 22507,
                   "name": "_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22460,
+                  "scope": 22517,
                   "src": "1807:13:80",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1851,7 +1851,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 22449,
+                    "id": 22506,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1807:7:80",
@@ -1866,7 +1866,7 @@
               ],
               "src": "1806:15:80"
             },
-            "scope": 22475,
+            "scope": 22532,
             "src": "1653:224:80",
             "stateMutability": "view",
             "superFunction": null,
@@ -1874,25 +1874,25 @@
           },
           {
             "body": {
-              "id": 22473,
+              "id": 22530,
               "nodeType": "Block",
               "src": "2212:33:80",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 22471,
+                    "id": 22528,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 22467,
+                      "id": 22524,
                       "name": "_count",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 22465,
+                      "referencedDeclaration": 22522,
                       "src": "2218:6:80",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1908,32 +1908,32 @@
                         "argumentTypes": [],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 22468,
+                          "id": 22525,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22462,
+                          "referencedDeclaration": 22519,
                           "src": "2227:5:80",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                            "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                             "typeString": "struct DoublyLinkedList.Uint storage pointer"
                           }
                         },
-                        "id": 22469,
+                        "id": 22526,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "total",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 23302,
+                        "referencedDeclaration": 23359,
                         "src": "2227:11:80",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Uint_$22526_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Uint_$22526_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Uint_$22583_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Uint_$22583_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.Uint storage pointer) view returns (uint256)"
                         }
                       },
-                      "id": 22470,
+                      "id": 22527,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1953,14 +1953,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 22472,
+                  "id": 22529,
                   "nodeType": "ExpressionStatement",
                   "src": "2218:22:80"
                 }
               ]
             },
             "documentation": "@notice Returns the total count of itemsfrom a `DoublyLinkedList.Uint` list\n@param _list The DoublyLinkedList.Uint list\n@return {\"_count\": \"The total count of items\"}",
-            "id": 22474,
+            "id": 22531,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1968,31 +1968,31 @@
             "name": "read_total_uints",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 22463,
+              "id": 22520,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22462,
+                  "id": 22519,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22474,
+                  "scope": 22531,
                   "src": "2097:35:80",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                    "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Uint"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 22461,
+                    "id": 22518,
                     "name": "DoublyLinkedList.Uint",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22526,
+                    "referencedDeclaration": 22583,
                     "src": "2097:21:80",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Uint_$22526_storage_ptr",
+                      "typeIdentifier": "t_struct$_Uint_$22583_storage_ptr",
                       "typeString": "struct DoublyLinkedList.Uint"
                     }
                   },
@@ -2004,15 +2004,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22466,
+              "id": 22523,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22465,
+                  "id": 22522,
                   "name": "_count",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22474,
+                  "scope": 22531,
                   "src": "2194:14:80",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2021,7 +2021,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 22464,
+                    "id": 22521,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "2194:7:80",
@@ -2036,14 +2036,14 @@
               ],
               "src": "2193:16:80"
             },
-            "scope": 22475,
+            "scope": 22532,
             "src": "2071:174:80",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "internal"
           }
         ],
-        "scope": 22476,
+        "scope": 22533,
         "src": "133:2115:80"
       }
     ],
@@ -2055,5 +2055,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-19T03:33:09.105Z"
+  "updatedAt": "2019-01-18T06:49:39.317Z"
 }

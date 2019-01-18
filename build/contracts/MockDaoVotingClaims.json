@@ -326,14 +326,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/interactive/MockDaoVotingClaims.sol",
     "exportedSymbols": {
       "MockDaoVotingClaims": [
-        9193
+        9250
       ]
     },
-    "id": 9194,
+    "id": 9251,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 9180,
+        "id": 9237,
         "literals": [
           "solidity",
           "^",
@@ -346,10 +346,10 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/interactive/DaoVotingClaims.sol",
         "file": "../../interactive/DaoVotingClaims.sol",
-        "id": 9181,
+        "id": 9238,
         "nodeType": "ImportDirective",
-        "scope": 9194,
-        "sourceUnit": 7693,
+        "scope": 9251,
+        "sourceUnit": 7750,
         "src": "26:47:34",
         "symbolAliases": [],
         "unitAlias": ""
@@ -360,17 +360,17 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 9182,
+              "id": 9239,
               "name": "DaoVotingClaims",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 7692,
+              "referencedDeclaration": 7749,
               "src": "107:15:34",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoVotingClaims_$7692",
+                "typeIdentifier": "t_contract$_DaoVotingClaims_$7749",
                 "typeString": "contract DaoVotingClaims"
               }
             },
-            "id": 9183,
+            "id": 9240,
             "nodeType": "InheritanceSpecifier",
             "src": "107:15:34"
           }
@@ -381,35 +381,35 @@
           1602,
           1841,
           1933,
-          7692,
-          18546
+          7749,
+          18603
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 9193,
+        "id": 9250,
         "linearizedBaseContracts": [
-          9193,
-          7692,
+          9250,
+          7749,
           860,
           1255,
           1933,
           1841,
           1602,
-          18546
+          18603
         ],
         "name": "MockDaoVotingClaims",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 9191,
+              "id": 9248,
               "nodeType": "Block",
               "src": "195:7:34",
               "statements": []
             },
             "documentation": null,
-            "id": 9192,
+            "id": 9249,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -418,11 +418,11 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 9188,
+                    "id": 9245,
                     "name": "_resolver",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 9185,
+                    "referencedDeclaration": 9242,
                     "src": "184:9:34",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -430,17 +430,17 @@
                     }
                   }
                 ],
-                "id": 9189,
+                "id": 9246,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 9187,
+                  "id": 9244,
                   "name": "DaoVotingClaims",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 7692,
+                  "referencedDeclaration": 7749,
                   "src": "168:15:34",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoVotingClaims_$7692_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoVotingClaims_$7749_$",
                     "typeString": "type(contract DaoVotingClaims)"
                   }
                 },
@@ -451,15 +451,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 9186,
+              "id": 9243,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9185,
+                  "id": 9242,
                   "name": "_resolver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9192,
+                  "scope": 9249,
                   "src": "142:17:34",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -468,7 +468,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 9184,
+                    "id": 9241,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "142:7:34",
@@ -485,19 +485,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 9190,
+              "id": 9247,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "195:0:34"
             },
-            "scope": 9193,
+            "scope": 9250,
             "src": "130:72:34",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 9194,
+        "scope": 9251,
         "src": "75:129:34"
       }
     ],
@@ -507,14 +507,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/interactive/MockDaoVotingClaims.sol",
     "exportedSymbols": {
       "MockDaoVotingClaims": [
-        9193
+        9250
       ]
     },
-    "id": 9194,
+    "id": 9251,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 9180,
+        "id": 9237,
         "literals": [
           "solidity",
           "^",
@@ -527,10 +527,10 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/interactive/DaoVotingClaims.sol",
         "file": "../../interactive/DaoVotingClaims.sol",
-        "id": 9181,
+        "id": 9238,
         "nodeType": "ImportDirective",
-        "scope": 9194,
-        "sourceUnit": 7693,
+        "scope": 9251,
+        "sourceUnit": 7750,
         "src": "26:47:34",
         "symbolAliases": [],
         "unitAlias": ""
@@ -541,17 +541,17 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 9182,
+              "id": 9239,
               "name": "DaoVotingClaims",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 7692,
+              "referencedDeclaration": 7749,
               "src": "107:15:34",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoVotingClaims_$7692",
+                "typeIdentifier": "t_contract$_DaoVotingClaims_$7749",
                 "typeString": "contract DaoVotingClaims"
               }
             },
-            "id": 9183,
+            "id": 9240,
             "nodeType": "InheritanceSpecifier",
             "src": "107:15:34"
           }
@@ -562,35 +562,35 @@
           1602,
           1841,
           1933,
-          7692,
-          18546
+          7749,
+          18603
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 9193,
+        "id": 9250,
         "linearizedBaseContracts": [
-          9193,
-          7692,
+          9250,
+          7749,
           860,
           1255,
           1933,
           1841,
           1602,
-          18546
+          18603
         ],
         "name": "MockDaoVotingClaims",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 9191,
+              "id": 9248,
               "nodeType": "Block",
               "src": "195:7:34",
               "statements": []
             },
             "documentation": null,
-            "id": 9192,
+            "id": 9249,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -599,11 +599,11 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 9188,
+                    "id": 9245,
                     "name": "_resolver",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 9185,
+                    "referencedDeclaration": 9242,
                     "src": "184:9:34",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -611,17 +611,17 @@
                     }
                   }
                 ],
-                "id": 9189,
+                "id": 9246,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 9187,
+                  "id": 9244,
                   "name": "DaoVotingClaims",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 7692,
+                  "referencedDeclaration": 7749,
                   "src": "168:15:34",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoVotingClaims_$7692_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoVotingClaims_$7749_$",
                     "typeString": "type(contract DaoVotingClaims)"
                   }
                 },
@@ -632,15 +632,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 9186,
+              "id": 9243,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9185,
+                  "id": 9242,
                   "name": "_resolver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9192,
+                  "scope": 9249,
                   "src": "142:17:34",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -649,7 +649,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 9184,
+                    "id": 9241,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "142:7:34",
@@ -666,19 +666,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 9190,
+              "id": 9247,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "195:0:34"
             },
-            "scope": 9193,
+            "scope": 9250,
             "src": "130:72:34",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 9194,
+        "scope": 9251,
         "src": "75:129:34"
       }
     ],
@@ -690,5 +690,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-19T03:33:09.048Z"
+  "updatedAt": "2019-01-18T06:49:39.260Z"
 }

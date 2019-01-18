@@ -135,14 +135,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/storage/MockDaoProposalCounterStorage.sol",
     "exportedSymbols": {
       "MockDaoProposalCounterStorage": [
-        10670
+        10727
       ]
     },
-    "id": 10671,
+    "id": 10728,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 10643,
+        "id": 10700,
         "literals": [
           "solidity",
           "^",
@@ -155,10 +155,10 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/storage/DaoProposalCounterStorage.sol",
         "file": "../../storage/DaoProposalCounterStorage.sol",
-        "id": 10644,
+        "id": 10701,
         "nodeType": "ImportDirective",
-        "scope": 10671,
-        "sourceUnit": 14464,
+        "scope": 10728,
+        "sourceUnit": 14521,
         "src": "26:53:40",
         "symbolAliases": [],
         "unitAlias": ""
@@ -169,48 +169,48 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 10645,
+              "id": 10702,
               "name": "DaoProposalCounterStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 14463,
+              "referencedDeclaration": 14520,
               "src": "123:25:40",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoProposalCounterStorage_$14463",
+                "typeIdentifier": "t_contract$_DaoProposalCounterStorage_$14520",
                 "typeString": "contract DaoProposalCounterStorage"
               }
             },
-            "id": 10646,
+            "id": 10703,
             "nodeType": "InheritanceSpecifier",
             "src": "123:25:40"
           }
         ],
         "contractDependencies": [
           1602,
-          14463,
-          18546
+          14520,
+          18603
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 10670,
+        "id": 10727,
         "linearizedBaseContracts": [
-          10670,
-          14463,
+          10727,
+          14520,
           1602,
-          18546
+          18603
         ],
         "name": "MockDaoProposalCounterStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 10654,
+              "id": 10711,
               "nodeType": "Block",
               "src": "231:7:40",
               "statements": []
             },
             "documentation": null,
-            "id": 10655,
+            "id": 10712,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -219,11 +219,11 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 10651,
+                    "id": 10708,
                     "name": "_resolver",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 10648,
+                    "referencedDeclaration": 10705,
                     "src": "220:9:40",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -231,17 +231,17 @@
                     }
                   }
                 ],
-                "id": 10652,
+                "id": 10709,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 10650,
+                  "id": 10707,
                   "name": "DaoProposalCounterStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 14463,
+                  "referencedDeclaration": 14520,
                   "src": "194:25:40",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoProposalCounterStorage_$14463_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoProposalCounterStorage_$14520_$",
                     "typeString": "type(contract DaoProposalCounterStorage)"
                   }
                 },
@@ -252,15 +252,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10649,
+              "id": 10706,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10648,
+                  "id": 10705,
                   "name": "_resolver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10655,
+                  "scope": 10712,
                   "src": "168:17:40",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -269,7 +269,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 10647,
+                    "id": 10704,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "168:7:40",
@@ -286,12 +286,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10653,
+              "id": 10710,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "231:0:40"
             },
-            "scope": 10670,
+            "scope": 10727,
             "src": "156:82:40",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -299,14 +299,14 @@
           },
           {
             "body": {
-              "id": 10668,
+              "id": 10725,
               "nodeType": "Block",
               "src": "336:64:40",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 10666,
+                    "id": 10723,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -315,25 +315,25 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 10662,
+                        "id": 10719,
                         "name": "proposalCountByQuarter",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 14439,
+                        "referencedDeclaration": 14496,
                         "src": "346:22:40",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_uint256_$_t_uint256_$",
                           "typeString": "mapping(uint256 => uint256)"
                         }
                       },
-                      "id": 10664,
+                      "id": 10721,
                       "indexExpression": {
                         "argumentTypes": null,
-                        "id": 10663,
+                        "id": 10720,
                         "name": "_quarterNumber",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10657,
+                        "referencedDeclaration": 10714,
                         "src": "369:14:40",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -355,11 +355,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 10665,
+                      "id": 10722,
                       "name": "_count",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10659,
+                      "referencedDeclaration": 10716,
                       "src": "387:6:40",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -372,14 +372,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 10667,
+                  "id": 10724,
                   "nodeType": "ExpressionStatement",
                   "src": "346:47:40"
                 }
               ]
             },
             "documentation": null,
-            "id": 10669,
+            "id": 10726,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -387,15 +387,15 @@
             "name": "mock_set_proposal_count",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10660,
+              "id": 10717,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10657,
+                  "id": 10714,
                   "name": "_quarterNumber",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10669,
+                  "scope": 10726,
                   "src": "277:22:40",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -404,7 +404,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 10656,
+                    "id": 10713,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "277:7:40",
@@ -418,10 +418,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10659,
+                  "id": 10716,
                   "name": "_count",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10669,
+                  "scope": 10726,
                   "src": "301:14:40",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -430,7 +430,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 10658,
+                    "id": 10715,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "301:7:40",
@@ -447,19 +447,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10661,
+              "id": 10718,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "336:0:40"
             },
-            "scope": 10670,
+            "scope": 10727,
             "src": "244:156:40",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 10671,
+        "scope": 10728,
         "src": "81:321:40"
       }
     ],
@@ -469,14 +469,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/storage/MockDaoProposalCounterStorage.sol",
     "exportedSymbols": {
       "MockDaoProposalCounterStorage": [
-        10670
+        10727
       ]
     },
-    "id": 10671,
+    "id": 10728,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 10643,
+        "id": 10700,
         "literals": [
           "solidity",
           "^",
@@ -489,10 +489,10 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/storage/DaoProposalCounterStorage.sol",
         "file": "../../storage/DaoProposalCounterStorage.sol",
-        "id": 10644,
+        "id": 10701,
         "nodeType": "ImportDirective",
-        "scope": 10671,
-        "sourceUnit": 14464,
+        "scope": 10728,
+        "sourceUnit": 14521,
         "src": "26:53:40",
         "symbolAliases": [],
         "unitAlias": ""
@@ -503,48 +503,48 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 10645,
+              "id": 10702,
               "name": "DaoProposalCounterStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 14463,
+              "referencedDeclaration": 14520,
               "src": "123:25:40",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoProposalCounterStorage_$14463",
+                "typeIdentifier": "t_contract$_DaoProposalCounterStorage_$14520",
                 "typeString": "contract DaoProposalCounterStorage"
               }
             },
-            "id": 10646,
+            "id": 10703,
             "nodeType": "InheritanceSpecifier",
             "src": "123:25:40"
           }
         ],
         "contractDependencies": [
           1602,
-          14463,
-          18546
+          14520,
+          18603
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 10670,
+        "id": 10727,
         "linearizedBaseContracts": [
-          10670,
-          14463,
+          10727,
+          14520,
           1602,
-          18546
+          18603
         ],
         "name": "MockDaoProposalCounterStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 10654,
+              "id": 10711,
               "nodeType": "Block",
               "src": "231:7:40",
               "statements": []
             },
             "documentation": null,
-            "id": 10655,
+            "id": 10712,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -553,11 +553,11 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 10651,
+                    "id": 10708,
                     "name": "_resolver",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 10648,
+                    "referencedDeclaration": 10705,
                     "src": "220:9:40",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -565,17 +565,17 @@
                     }
                   }
                 ],
-                "id": 10652,
+                "id": 10709,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 10650,
+                  "id": 10707,
                   "name": "DaoProposalCounterStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 14463,
+                  "referencedDeclaration": 14520,
                   "src": "194:25:40",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoProposalCounterStorage_$14463_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoProposalCounterStorage_$14520_$",
                     "typeString": "type(contract DaoProposalCounterStorage)"
                   }
                 },
@@ -586,15 +586,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10649,
+              "id": 10706,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10648,
+                  "id": 10705,
                   "name": "_resolver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10655,
+                  "scope": 10712,
                   "src": "168:17:40",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -603,7 +603,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 10647,
+                    "id": 10704,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "168:7:40",
@@ -620,12 +620,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10653,
+              "id": 10710,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "231:0:40"
             },
-            "scope": 10670,
+            "scope": 10727,
             "src": "156:82:40",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -633,14 +633,14 @@
           },
           {
             "body": {
-              "id": 10668,
+              "id": 10725,
               "nodeType": "Block",
               "src": "336:64:40",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 10666,
+                    "id": 10723,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -649,25 +649,25 @@
                       "argumentTypes": null,
                       "baseExpression": {
                         "argumentTypes": null,
-                        "id": 10662,
+                        "id": 10719,
                         "name": "proposalCountByQuarter",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 14439,
+                        "referencedDeclaration": 14496,
                         "src": "346:22:40",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_uint256_$_t_uint256_$",
                           "typeString": "mapping(uint256 => uint256)"
                         }
                       },
-                      "id": 10664,
+                      "id": 10721,
                       "indexExpression": {
                         "argumentTypes": null,
-                        "id": 10663,
+                        "id": 10720,
                         "name": "_quarterNumber",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 10657,
+                        "referencedDeclaration": 10714,
                         "src": "369:14:40",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -689,11 +689,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 10665,
+                      "id": 10722,
                       "name": "_count",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 10659,
+                      "referencedDeclaration": 10716,
                       "src": "387:6:40",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -706,14 +706,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 10667,
+                  "id": 10724,
                   "nodeType": "ExpressionStatement",
                   "src": "346:47:40"
                 }
               ]
             },
             "documentation": null,
-            "id": 10669,
+            "id": 10726,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -721,15 +721,15 @@
             "name": "mock_set_proposal_count",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10660,
+              "id": 10717,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10657,
+                  "id": 10714,
                   "name": "_quarterNumber",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10669,
+                  "scope": 10726,
                   "src": "277:22:40",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -738,7 +738,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 10656,
+                    "id": 10713,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "277:7:40",
@@ -752,10 +752,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10659,
+                  "id": 10716,
                   "name": "_count",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10669,
+                  "scope": 10726,
                   "src": "301:14:40",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -764,7 +764,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 10658,
+                    "id": 10715,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "301:7:40",
@@ -781,19 +781,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 10661,
+              "id": 10718,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "336:0:40"
             },
-            "scope": 10670,
+            "scope": 10727,
             "src": "244:156:40",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 10671,
+        "scope": 10728,
         "src": "81:321:40"
       }
     ],
@@ -805,5 +805,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-19T03:33:09.057Z"
+  "updatedAt": "2019-01-18T06:49:39.266Z"
 }

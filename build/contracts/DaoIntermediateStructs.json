@@ -11,14 +11,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/lib/DaoIntermediateStructs.sol",
     "exportedSymbols": {
       "DaoIntermediateStructs": [
-        7801
+        7858
       ]
     },
-    "id": 7802,
+    "id": 7859,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 7789,
+        "id": 7846,
         "literals": [
           "solidity",
           "^",
@@ -34,23 +34,23 @@
         "contractKind": "library",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 7801,
+        "id": 7858,
         "linearizedBaseContracts": [
-          7801
+          7858
         ],
         "name": "DaoIntermediateStructs",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "canonicalName": "DaoIntermediateStructs.VotingCount",
-            "id": 7794,
+            "id": 7851,
             "members": [
               {
                 "constant": false,
-                "id": 7791,
+                "id": 7848,
                 "name": "forCount",
                 "nodeType": "VariableDeclaration",
-                "scope": 7794,
+                "scope": 7851,
                 "src": "316:16:22",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -59,7 +59,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 7790,
+                  "id": 7847,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "316:7:22",
@@ -73,10 +73,10 @@
               },
               {
                 "constant": false,
-                "id": 7793,
+                "id": 7850,
                 "name": "againstCount",
                 "nodeType": "VariableDeclaration",
-                "scope": 7794,
+                "scope": 7851,
                 "src": "396:20:22",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -85,7 +85,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 7792,
+                  "id": 7849,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "396:7:22",
@@ -100,20 +100,20 @@
             ],
             "name": "VotingCount",
             "nodeType": "StructDefinition",
-            "scope": 7801,
+            "scope": 7858,
             "src": "237:186:22",
             "visibility": "public"
           },
           {
             "canonicalName": "DaoIntermediateStructs.Users",
-            "id": 7800,
+            "id": 7857,
             "members": [
               {
                 "constant": false,
-                "id": 7796,
+                "id": 7853,
                 "name": "usersLength",
                 "nodeType": "VariableDeclaration",
-                "scope": 7800,
+                "scope": 7857,
                 "src": "551:19:22",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -122,7 +122,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 7795,
+                  "id": 7852,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "551:7:22",
@@ -136,10 +136,10 @@
               },
               {
                 "constant": false,
-                "id": 7799,
+                "id": 7856,
                 "name": "users",
                 "nodeType": "VariableDeclaration",
-                "scope": 7800,
+                "scope": 7857,
                 "src": "635:15:22",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -149,7 +149,7 @@
                 },
                 "typeName": {
                   "baseType": {
-                    "id": 7797,
+                    "id": 7854,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "635:7:22",
@@ -158,7 +158,7 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 7798,
+                  "id": 7855,
                   "length": null,
                   "nodeType": "ArrayTypeName",
                   "src": "635:9:22",
@@ -173,12 +173,12 @@
             ],
             "name": "Users",
             "nodeType": "StructDefinition",
-            "scope": 7801,
+            "scope": 7858,
             "src": "492:165:22",
             "visibility": "public"
           }
         ],
-        "scope": 7802,
+        "scope": 7859,
         "src": "26:633:22"
       }
     ],
@@ -188,14 +188,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/lib/DaoIntermediateStructs.sol",
     "exportedSymbols": {
       "DaoIntermediateStructs": [
-        7801
+        7858
       ]
     },
-    "id": 7802,
+    "id": 7859,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 7789,
+        "id": 7846,
         "literals": [
           "solidity",
           "^",
@@ -211,23 +211,23 @@
         "contractKind": "library",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 7801,
+        "id": 7858,
         "linearizedBaseContracts": [
-          7801
+          7858
         ],
         "name": "DaoIntermediateStructs",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "canonicalName": "DaoIntermediateStructs.VotingCount",
-            "id": 7794,
+            "id": 7851,
             "members": [
               {
                 "constant": false,
-                "id": 7791,
+                "id": 7848,
                 "name": "forCount",
                 "nodeType": "VariableDeclaration",
-                "scope": 7794,
+                "scope": 7851,
                 "src": "316:16:22",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -236,7 +236,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 7790,
+                  "id": 7847,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "316:7:22",
@@ -250,10 +250,10 @@
               },
               {
                 "constant": false,
-                "id": 7793,
+                "id": 7850,
                 "name": "againstCount",
                 "nodeType": "VariableDeclaration",
-                "scope": 7794,
+                "scope": 7851,
                 "src": "396:20:22",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -262,7 +262,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 7792,
+                  "id": 7849,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "396:7:22",
@@ -277,20 +277,20 @@
             ],
             "name": "VotingCount",
             "nodeType": "StructDefinition",
-            "scope": 7801,
+            "scope": 7858,
             "src": "237:186:22",
             "visibility": "public"
           },
           {
             "canonicalName": "DaoIntermediateStructs.Users",
-            "id": 7800,
+            "id": 7857,
             "members": [
               {
                 "constant": false,
-                "id": 7796,
+                "id": 7853,
                 "name": "usersLength",
                 "nodeType": "VariableDeclaration",
-                "scope": 7800,
+                "scope": 7857,
                 "src": "551:19:22",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -299,7 +299,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 7795,
+                  "id": 7852,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "551:7:22",
@@ -313,10 +313,10 @@
               },
               {
                 "constant": false,
-                "id": 7799,
+                "id": 7856,
                 "name": "users",
                 "nodeType": "VariableDeclaration",
-                "scope": 7800,
+                "scope": 7857,
                 "src": "635:15:22",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -326,7 +326,7 @@
                 },
                 "typeName": {
                   "baseType": {
-                    "id": 7797,
+                    "id": 7854,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "635:7:22",
@@ -335,7 +335,7 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 7798,
+                  "id": 7855,
                   "length": null,
                   "nodeType": "ArrayTypeName",
                   "src": "635:9:22",
@@ -350,12 +350,12 @@
             ],
             "name": "Users",
             "nodeType": "StructDefinition",
-            "scope": 7801,
+            "scope": 7858,
             "src": "492:165:22",
             "visibility": "public"
           }
         ],
-        "scope": 7802,
+        "scope": 7859,
         "src": "26:633:22"
       }
     ],
@@ -367,5 +367,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-19T03:33:09.043Z"
+  "updatedAt": "2019-01-18T06:49:39.252Z"
 }

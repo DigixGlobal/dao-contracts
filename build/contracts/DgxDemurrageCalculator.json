@@ -39,14 +39,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/interface/DgxDemurrageCalculator.sol",
     "exportedSymbols": {
       "DgxDemurrageCalculator": [
-        7777
+        7834
       ]
     },
-    "id": 7778,
+    "id": 7835,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 7765,
+        "id": 7822,
         "literals": [
           "solidity",
           "^",
@@ -62,9 +62,9 @@
         "contractKind": "contract",
         "documentation": "@title Digix Gold Token Demurrage Calculator\n @author Digix Holdings Pte Ltd\n @notice This contract is meant to be used by exchanges/other parties who want to calculate the DGX demurrage fees, provided an initial balance and the days elapsed",
         "fullyImplemented": false,
-        "id": 7777,
+        "id": 7834,
         "linearizedBaseContracts": [
-          7777
+          7834
         ],
         "name": "DgxDemurrageCalculator",
         "nodeType": "ContractDefinition",
@@ -72,7 +72,7 @@
           {
             "body": null,
             "documentation": null,
-            "id": 7776,
+            "id": 7833,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -80,15 +80,15 @@
             "name": "calculateDemurrage",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7770,
+              "id": 7827,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7767,
+                  "id": 7824,
                   "name": "_initial_balance",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7776,
+                  "scope": 7833,
                   "src": "344:24:20",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -97,7 +97,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 7766,
+                    "id": 7823,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "344:7:20",
@@ -111,10 +111,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 7769,
+                  "id": 7826,
                   "name": "_days_elapsed",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7776,
+                  "scope": 7833,
                   "src": "370:21:20",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -123,7 +123,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 7768,
+                    "id": 7825,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "370:7:20",
@@ -140,15 +140,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 7775,
+              "id": 7832,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7772,
+                  "id": 7829,
                   "name": "_demurrage_fees",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7776,
+                  "scope": 7833,
                   "src": "438:23:20",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -157,7 +157,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 7771,
+                    "id": 7828,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "438:7:20",
@@ -171,10 +171,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 7774,
+                  "id": 7831,
                   "name": "_no_demurrage_fees",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7776,
+                  "scope": 7833,
                   "src": "463:23:20",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -183,7 +183,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 7773,
+                    "id": 7830,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "463:4:20",
@@ -198,14 +198,14 @@
               ],
               "src": "437:50:20"
             },
-            "scope": 7777,
+            "scope": 7834,
             "src": "316:172:20",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 7778,
+        "scope": 7835,
         "src": "278:212:20"
       }
     ],
@@ -215,14 +215,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/interface/DgxDemurrageCalculator.sol",
     "exportedSymbols": {
       "DgxDemurrageCalculator": [
-        7777
+        7834
       ]
     },
-    "id": 7778,
+    "id": 7835,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 7765,
+        "id": 7822,
         "literals": [
           "solidity",
           "^",
@@ -238,9 +238,9 @@
         "contractKind": "contract",
         "documentation": "@title Digix Gold Token Demurrage Calculator\n @author Digix Holdings Pte Ltd\n @notice This contract is meant to be used by exchanges/other parties who want to calculate the DGX demurrage fees, provided an initial balance and the days elapsed",
         "fullyImplemented": false,
-        "id": 7777,
+        "id": 7834,
         "linearizedBaseContracts": [
-          7777
+          7834
         ],
         "name": "DgxDemurrageCalculator",
         "nodeType": "ContractDefinition",
@@ -248,7 +248,7 @@
           {
             "body": null,
             "documentation": null,
-            "id": 7776,
+            "id": 7833,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -256,15 +256,15 @@
             "name": "calculateDemurrage",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7770,
+              "id": 7827,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7767,
+                  "id": 7824,
                   "name": "_initial_balance",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7776,
+                  "scope": 7833,
                   "src": "344:24:20",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -273,7 +273,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 7766,
+                    "id": 7823,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "344:7:20",
@@ -287,10 +287,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 7769,
+                  "id": 7826,
                   "name": "_days_elapsed",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7776,
+                  "scope": 7833,
                   "src": "370:21:20",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -299,7 +299,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 7768,
+                    "id": 7825,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "370:7:20",
@@ -316,15 +316,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 7775,
+              "id": 7832,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7772,
+                  "id": 7829,
                   "name": "_demurrage_fees",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7776,
+                  "scope": 7833,
                   "src": "438:23:20",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -333,7 +333,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 7771,
+                    "id": 7828,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "438:7:20",
@@ -347,10 +347,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 7774,
+                  "id": 7831,
                   "name": "_no_demurrage_fees",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7776,
+                  "scope": 7833,
                   "src": "463:23:20",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -359,7 +359,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 7773,
+                    "id": 7830,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "463:4:20",
@@ -374,14 +374,14 @@
               ],
               "src": "437:50:20"
             },
-            "scope": 7777,
+            "scope": 7834,
             "src": "316:172:20",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 7778,
+        "scope": 7835,
         "src": "278:212:20"
       }
     ],
@@ -393,5 +393,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-19T03:33:09.043Z"
+  "updatedAt": "2019-01-18T06:49:39.252Z"
 }

@@ -159,14 +159,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/storage/IntermediateResultsStorage.sol",
     "exportedSymbols": {
       "IntermediateResultsStorage": [
-        18075
+        18132
       ]
     },
-    "id": 18076,
+    "id": 18133,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 17930,
+        "id": 17987,
         "literals": [
           "solidity",
           "^",
@@ -179,10 +179,10 @@
       {
         "absolutePath": "@digix/cacp-contracts-dao/contracts/ResolverClient.sol",
         "file": "@digix/cacp-contracts-dao/contracts/ResolverClient.sol",
-        "id": 17931,
+        "id": 17988,
         "nodeType": "ImportDirective",
-        "scope": 18076,
-        "sourceUnit": 18547,
+        "scope": 18133,
+        "sourceUnit": 18604,
         "src": "26:64:63",
         "symbolAliases": [],
         "unitAlias": ""
@@ -190,9 +190,9 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/common/DaoConstants.sol",
         "file": "../common/DaoConstants.sol",
-        "id": 17932,
+        "id": 17989,
         "nodeType": "ImportDirective",
-        "scope": 18076,
+        "scope": 18133,
         "sourceUnit": 1603,
         "src": "91:36:63",
         "symbolAliases": [],
@@ -201,10 +201,10 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/lib/DaoStructs.sol",
         "file": "../lib/DaoStructs.sol",
-        "id": 17933,
+        "id": 17990,
         "nodeType": "ImportDirective",
-        "scope": 18076,
-        "sourceUnit": 8370,
+        "scope": 18133,
+        "sourceUnit": 8427,
         "src": "128:31:63",
         "symbolAliases": [],
         "unitAlias": ""
@@ -215,17 +215,17 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 17934,
+              "id": 17991,
               "name": "ResolverClient",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 18546,
+              "referencedDeclaration": 18603,
               "src": "200:14:63",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ResolverClient_$18546",
+                "typeIdentifier": "t_contract$_ResolverClient_$18603",
                 "typeString": "contract ResolverClient"
               }
             },
-            "id": 17935,
+            "id": 17992,
             "nodeType": "InheritanceSpecifier",
             "src": "200:14:63"
           },
@@ -233,7 +233,7 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 17936,
+              "id": 17993,
               "name": "DaoConstants",
               "nodeType": "UserDefinedTypeName",
               "referencedDeclaration": 1602,
@@ -243,38 +243,38 @@
                 "typeString": "contract DaoConstants"
               }
             },
-            "id": 17937,
+            "id": 17994,
             "nodeType": "InheritanceSpecifier",
             "src": "216:12:63"
           }
         ],
         "contractDependencies": [
           1602,
-          18546
+          18603
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 18075,
+        "id": 18132,
         "linearizedBaseContracts": [
-          18075,
+          18132,
           1602,
-          18546
+          18603
         ],
         "name": "IntermediateResultsStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "id": 17940,
+            "id": 17997,
             "libraryName": {
               "contractScope": null,
-              "id": 17938,
+              "id": 17995,
               "name": "DaoStructs",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 8369,
+              "referencedDeclaration": 8426,
               "src": "241:10:63",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoStructs_$8369",
+                "typeIdentifier": "t_contract$_DaoStructs_$8426",
                 "typeString": "library DaoStructs"
               }
             },
@@ -282,20 +282,20 @@
             "src": "235:52:63",
             "typeName": {
               "contractScope": null,
-              "id": 17939,
+              "id": 17996,
               "name": "DaoStructs.IntermediateResults",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 8368,
+              "referencedDeclaration": 8425,
               "src": "256:30:63",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage_ptr",
+                "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage_ptr",
                 "typeString": "struct DaoStructs.IntermediateResults"
               }
             }
           },
           {
             "body": {
-              "id": 17952,
+              "id": 18009,
               "nodeType": "Block",
               "src": "331:80:63",
               "statements": [
@@ -308,7 +308,7 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 17947,
+                            "id": 18004,
                             "name": "CONTRACT_STORAGE_INTERMEDIATE_RESULTS",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -321,11 +321,11 @@
                           },
                           {
                             "argumentTypes": null,
-                            "id": 17948,
+                            "id": 18005,
                             "name": "_resolver",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 17942,
+                            "referencedDeclaration": 17999,
                             "src": "393:9:63",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -344,18 +344,18 @@
                               "typeString": "address"
                             }
                           ],
-                          "id": 17946,
+                          "id": 18003,
                           "name": "init",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18514,
+                          "referencedDeclaration": 18571,
                           "src": "349:4:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_nonpayable$_t_bytes32_$_t_address_$returns$_t_bool_$",
                             "typeString": "function (bytes32,address) returns (bool)"
                           }
                         },
-                        "id": 17949,
+                        "id": 18006,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -377,21 +377,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 17945,
+                      "id": 18002,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "341:7:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 17950,
+                    "id": 18007,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -405,14 +405,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 17951,
+                  "id": 18008,
                   "nodeType": "ExpressionStatement",
                   "src": "341:63:63"
                 }
               ]
             },
             "documentation": null,
-            "id": 17953,
+            "id": 18010,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -420,15 +420,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 17943,
+              "id": 18000,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 17942,
+                  "id": 17999,
                   "name": "_resolver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 17953,
+                  "scope": 18010,
                   "src": "305:17:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -437,7 +437,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 17941,
+                    "id": 17998,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "305:7:63",
@@ -454,12 +454,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 17944,
+              "id": 18001,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "331:0:63"
             },
-            "scope": 18075,
+            "scope": 18132,
             "src": "293:118:63",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -467,21 +467,21 @@
           },
           {
             "constant": false,
-            "id": 17957,
+            "id": 18014,
             "name": "allIntermediateResults",
             "nodeType": "VariableDeclaration",
-            "scope": 18075,
+            "scope": 18132,
             "src": "983:74:63",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+              "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
               "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults)"
             },
             "typeName": {
-              "id": 17956,
+              "id": 18013,
               "keyType": {
-                "id": 17954,
+                "id": 18011,
                 "name": "bytes32",
                 "nodeType": "ElementaryTypeName",
                 "src": "992:7:63",
@@ -493,18 +493,18 @@
               "nodeType": "Mapping",
               "src": "983:51:63",
               "typeDescriptions": {
-                "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+                "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
                 "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults)"
               },
               "valueType": {
                 "contractScope": null,
-                "id": 17955,
+                "id": 18012,
                 "name": "DaoStructs.IntermediateResults",
                 "nodeType": "UserDefinedTypeName",
-                "referencedDeclaration": 8368,
+                "referencedDeclaration": 8425,
                 "src": "1003:30:63",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage_ptr",
+                  "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage_ptr",
                   "typeString": "struct DaoStructs.IntermediateResults"
                 }
               }
@@ -514,25 +514,25 @@
           },
           {
             "body": {
-              "id": 17998,
+              "id": 18055,
               "nodeType": "Block",
               "src": "1335:327:63",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 17975,
+                    "id": 18032,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 17970,
+                      "id": 18027,
                       "name": "_countedUntil",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 17962,
+                      "referencedDeclaration": 18019,
                       "src": "1345:13:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -547,25 +547,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 17971,
+                          "id": 18028,
                           "name": "allIntermediateResults",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17957,
+                          "referencedDeclaration": 18014,
                           "src": "1361:22:63",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults storage ref)"
                           }
                         },
-                        "id": 17973,
+                        "id": 18030,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 17972,
+                          "id": 18029,
                           "name": "_key",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17959,
+                          "referencedDeclaration": 18016,
                           "src": "1384:4:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -579,18 +579,18 @@
                         "nodeType": "IndexAccess",
                         "src": "1361:28:63",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage",
+                          "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage",
                           "typeString": "struct DaoStructs.IntermediateResults storage ref"
                         }
                       },
-                      "id": 17974,
+                      "id": 18031,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "countedUntil",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8367,
+                      "referencedDeclaration": 8424,
                       "src": "1361:41:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -603,25 +603,25 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 17976,
+                  "id": 18033,
                   "nodeType": "ExpressionStatement",
                   "src": "1345:57:63"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 17982,
+                    "id": 18039,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 17977,
+                      "id": 18034,
                       "name": "_currentForCount",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 17964,
+                      "referencedDeclaration": 18021,
                       "src": "1412:16:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -636,25 +636,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 17978,
+                          "id": 18035,
                           "name": "allIntermediateResults",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17957,
+                          "referencedDeclaration": 18014,
                           "src": "1431:22:63",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults storage ref)"
                           }
                         },
-                        "id": 17980,
+                        "id": 18037,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 17979,
+                          "id": 18036,
                           "name": "_key",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17959,
+                          "referencedDeclaration": 18016,
                           "src": "1454:4:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -668,18 +668,18 @@
                         "nodeType": "IndexAccess",
                         "src": "1431:28:63",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage",
+                          "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage",
                           "typeString": "struct DaoStructs.IntermediateResults storage ref"
                         }
                       },
-                      "id": 17981,
+                      "id": 18038,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "currentForCount",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8361,
+                      "referencedDeclaration": 8418,
                       "src": "1431:44:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -692,25 +692,25 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 17983,
+                  "id": 18040,
                   "nodeType": "ExpressionStatement",
                   "src": "1412:63:63"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 17989,
+                    "id": 18046,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 17984,
+                      "id": 18041,
                       "name": "_currentAgainstCount",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 17966,
+                      "referencedDeclaration": 18023,
                       "src": "1485:20:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -725,25 +725,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 17985,
+                          "id": 18042,
                           "name": "allIntermediateResults",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17957,
+                          "referencedDeclaration": 18014,
                           "src": "1508:22:63",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults storage ref)"
                           }
                         },
-                        "id": 17987,
+                        "id": 18044,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 17986,
+                          "id": 18043,
                           "name": "_key",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17959,
+                          "referencedDeclaration": 18016,
                           "src": "1531:4:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -757,18 +757,18 @@
                         "nodeType": "IndexAccess",
                         "src": "1508:28:63",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage",
+                          "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage",
                           "typeString": "struct DaoStructs.IntermediateResults storage ref"
                         }
                       },
-                      "id": 17988,
+                      "id": 18045,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "currentAgainstCount",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8363,
+                      "referencedDeclaration": 8420,
                       "src": "1508:48:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -781,25 +781,25 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 17990,
+                  "id": 18047,
                   "nodeType": "ExpressionStatement",
                   "src": "1485:71:63"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 17996,
+                    "id": 18053,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 17991,
+                      "id": 18048,
                       "name": "_currentSumOfEffectiveBalance",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 17968,
+                      "referencedDeclaration": 18025,
                       "src": "1566:29:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -814,25 +814,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 17992,
+                          "id": 18049,
                           "name": "allIntermediateResults",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17957,
+                          "referencedDeclaration": 18014,
                           "src": "1598:22:63",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults storage ref)"
                           }
                         },
-                        "id": 17994,
+                        "id": 18051,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 17993,
+                          "id": 18050,
                           "name": "_key",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17959,
+                          "referencedDeclaration": 18016,
                           "src": "1621:4:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -846,18 +846,18 @@
                         "nodeType": "IndexAccess",
                         "src": "1598:28:63",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage",
+                          "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage",
                           "typeString": "struct DaoStructs.IntermediateResults storage ref"
                         }
                       },
-                      "id": 17995,
+                      "id": 18052,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "currentSumOfEffectiveBalance",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8365,
+                      "referencedDeclaration": 8422,
                       "src": "1598:57:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -870,14 +870,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 17997,
+                  "id": 18054,
                   "nodeType": "ExpressionStatement",
                   "src": "1566:89:63"
                 }
               ]
             },
             "documentation": null,
-            "id": 17999,
+            "id": 18056,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -885,15 +885,15 @@
             "name": "getIntermediateResults",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 17960,
+              "id": 18017,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 17959,
+                  "id": 18016,
                   "name": "_key",
                   "nodeType": "VariableDeclaration",
-                  "scope": 17999,
+                  "scope": 18056,
                   "src": "1096:12:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -902,7 +902,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 17958,
+                    "id": 18015,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1096:7:63",
@@ -919,15 +919,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 17969,
+              "id": 18026,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 17962,
+                  "id": 18019,
                   "name": "_countedUntil",
                   "nodeType": "VariableDeclaration",
-                  "scope": 17999,
+                  "scope": 18056,
                   "src": "1168:21:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -936,7 +936,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 17961,
+                    "id": 18018,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1168:7:63",
@@ -950,10 +950,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 17964,
+                  "id": 18021,
                   "name": "_currentForCount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 17999,
+                  "scope": 18056,
                   "src": "1203:24:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -962,7 +962,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 17963,
+                    "id": 18020,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1203:7:63",
@@ -976,10 +976,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 17966,
+                  "id": 18023,
                   "name": "_currentAgainstCount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 17999,
+                  "scope": 18056,
                   "src": "1241:28:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -988,7 +988,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 17965,
+                    "id": 18022,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1241:7:63",
@@ -1002,10 +1002,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 17968,
+                  "id": 18025,
                   "name": "_currentSumOfEffectiveBalance",
                   "nodeType": "VariableDeclaration",
-                  "scope": 17999,
+                  "scope": 18056,
                   "src": "1283:37:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1014,7 +1014,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 17967,
+                    "id": 18024,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1283:7:63",
@@ -1029,7 +1029,7 @@
               ],
               "src": "1154:176:63"
             },
-            "scope": 18075,
+            "scope": 18132,
             "src": "1064:598:63",
             "stateMutability": "view",
             "superFunction": null,
@@ -1037,7 +1037,7 @@
           },
           {
             "body": {
-              "id": 18022,
+              "id": 18079,
               "nodeType": "Block",
               "src": "1735:202:63",
               "statements": [
@@ -1053,7 +1053,7 @@
                             "components": [
                               {
                                 "argumentTypes": null,
-                                "id": 18006,
+                                "id": 18063,
                                 "name": "CONTRACT_DAO_REWARDS_MANAGER",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
@@ -1066,7 +1066,7 @@
                               },
                               {
                                 "argumentTypes": null,
-                                "id": 18007,
+                                "id": 18064,
                                 "name": "CONTRACT_DAO_VOTING_CLAIMS",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
@@ -1079,7 +1079,7 @@
                               },
                               {
                                 "argumentTypes": null,
-                                "id": 18008,
+                                "id": 18065,
                                 "name": "CONTRACT_DAO_SPECIAL_VOTING_CLAIMS",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
@@ -1091,7 +1091,7 @@
                                 }
                               }
                             ],
-                            "id": 18009,
+                            "id": 18066,
                             "isConstant": false,
                             "isInlineArray": true,
                             "isLValue": false,
@@ -1112,18 +1112,18 @@
                               "typeString": "bytes32[3] memory"
                             }
                           ],
-                          "id": 18005,
+                          "id": 18062,
                           "name": "sender_is_from",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18447,
+                          "referencedDeclaration": 18504,
                           "src": "1753:14:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_array$_t_bytes32_$3_memory_ptr_$returns$_t_bool_$",
                             "typeString": "function (bytes32[3] memory) view returns (bool)"
                           }
                         },
-                        "id": 18010,
+                        "id": 18067,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1145,21 +1145,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 18004,
+                      "id": 18061,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "1745:7:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 18011,
+                    "id": 18068,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1173,14 +1173,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 18012,
+                  "id": 18069,
                   "nodeType": "ExpressionStatement",
                   "src": "1745:119:63"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18020,
+                    "id": 18077,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1191,25 +1191,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 18013,
+                          "id": 18070,
                           "name": "allIntermediateResults",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17957,
+                          "referencedDeclaration": 18014,
                           "src": "1874:22:63",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults storage ref)"
                           }
                         },
-                        "id": 18015,
+                        "id": 18072,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 18014,
+                          "id": 18071,
                           "name": "_key",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18001,
+                          "referencedDeclaration": 18058,
                           "src": "1897:4:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -1223,18 +1223,18 @@
                         "nodeType": "IndexAccess",
                         "src": "1874:28:63",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage",
+                          "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage",
                           "typeString": "struct DaoStructs.IntermediateResults storage ref"
                         }
                       },
-                      "id": 18016,
+                      "id": 18073,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "countedUntil",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8367,
+                      "referencedDeclaration": 8424,
                       "src": "1874:41:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -1249,7 +1249,7 @@
                         {
                           "argumentTypes": null,
                           "hexValue": "307830",
-                          "id": 18018,
+                          "id": 18075,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -1272,7 +1272,7 @@
                             "typeString": "int_const 0"
                           }
                         ],
-                        "id": 18017,
+                        "id": 18074,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1285,7 +1285,7 @@
                         },
                         "typeName": "address"
                       },
-                      "id": 18019,
+                      "id": 18076,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -1305,14 +1305,14 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 18021,
+                  "id": 18078,
                   "nodeType": "ExpressionStatement",
                   "src": "1874:56:63"
                 }
               ]
             },
             "documentation": null,
-            "id": 18023,
+            "id": 18080,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1320,15 +1320,15 @@
             "name": "resetIntermediateResults",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 18002,
+              "id": 18059,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 18001,
+                  "id": 18058,
                   "name": "_key",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18023,
+                  "scope": 18080,
                   "src": "1702:12:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1337,7 +1337,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 18000,
+                    "id": 18057,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1702:7:63",
@@ -1354,12 +1354,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 18003,
+              "id": 18060,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1735:0:63"
             },
-            "scope": 18075,
+            "scope": 18132,
             "src": "1668:269:63",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1367,7 +1367,7 @@
           },
           {
             "body": {
-              "id": 18073,
+              "id": 18130,
               "nodeType": "Block",
               "src": "2172:456:63",
               "statements": [
@@ -1383,7 +1383,7 @@
                             "components": [
                               {
                                 "argumentTypes": null,
-                                "id": 18038,
+                                "id": 18095,
                                 "name": "CONTRACT_DAO_REWARDS_MANAGER",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
@@ -1396,7 +1396,7 @@
                               },
                               {
                                 "argumentTypes": null,
-                                "id": 18039,
+                                "id": 18096,
                                 "name": "CONTRACT_DAO_VOTING_CLAIMS",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
@@ -1409,7 +1409,7 @@
                               },
                               {
                                 "argumentTypes": null,
-                                "id": 18040,
+                                "id": 18097,
                                 "name": "CONTRACT_DAO_SPECIAL_VOTING_CLAIMS",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
@@ -1421,7 +1421,7 @@
                                 }
                               }
                             ],
-                            "id": 18041,
+                            "id": 18098,
                             "isConstant": false,
                             "isInlineArray": true,
                             "isLValue": false,
@@ -1442,18 +1442,18 @@
                               "typeString": "bytes32[3] memory"
                             }
                           ],
-                          "id": 18037,
+                          "id": 18094,
                           "name": "sender_is_from",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18447,
+                          "referencedDeclaration": 18504,
                           "src": "2190:14:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_array$_t_bytes32_$3_memory_ptr_$returns$_t_bool_$",
                             "typeString": "function (bytes32[3] memory) view returns (bool)"
                           }
                         },
-                        "id": 18042,
+                        "id": 18099,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1475,21 +1475,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 18036,
+                      "id": 18093,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "2182:7:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 18043,
+                    "id": 18100,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1503,14 +1503,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 18044,
+                  "id": 18101,
                   "nodeType": "ExpressionStatement",
                   "src": "2182:119:63"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18050,
+                    "id": 18107,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1521,25 +1521,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 18045,
+                          "id": 18102,
                           "name": "allIntermediateResults",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17957,
+                          "referencedDeclaration": 18014,
                           "src": "2311:22:63",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults storage ref)"
                           }
                         },
-                        "id": 18047,
+                        "id": 18104,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 18046,
+                          "id": 18103,
                           "name": "_key",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18025,
+                          "referencedDeclaration": 18082,
                           "src": "2334:4:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -1553,18 +1553,18 @@
                         "nodeType": "IndexAccess",
                         "src": "2311:28:63",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage",
+                          "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage",
                           "typeString": "struct DaoStructs.IntermediateResults storage ref"
                         }
                       },
-                      "id": 18048,
+                      "id": 18105,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "countedUntil",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8367,
+                      "referencedDeclaration": 8424,
                       "src": "2311:41:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -1575,11 +1575,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 18049,
+                      "id": 18106,
                       "name": "_countedUntil",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18027,
+                      "referencedDeclaration": 18084,
                       "src": "2355:13:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -1592,14 +1592,14 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 18051,
+                  "id": 18108,
                   "nodeType": "ExpressionStatement",
                   "src": "2311:57:63"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18057,
+                    "id": 18114,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1610,25 +1610,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 18052,
+                          "id": 18109,
                           "name": "allIntermediateResults",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17957,
+                          "referencedDeclaration": 18014,
                           "src": "2378:22:63",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults storage ref)"
                           }
                         },
-                        "id": 18054,
+                        "id": 18111,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 18053,
+                          "id": 18110,
                           "name": "_key",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18025,
+                          "referencedDeclaration": 18082,
                           "src": "2401:4:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -1642,18 +1642,18 @@
                         "nodeType": "IndexAccess",
                         "src": "2378:28:63",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage",
+                          "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage",
                           "typeString": "struct DaoStructs.IntermediateResults storage ref"
                         }
                       },
-                      "id": 18055,
+                      "id": 18112,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "currentForCount",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8361,
+                      "referencedDeclaration": 8418,
                       "src": "2378:44:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1664,11 +1664,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 18056,
+                      "id": 18113,
                       "name": "_currentForCount",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18029,
+                      "referencedDeclaration": 18086,
                       "src": "2425:16:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1681,14 +1681,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 18058,
+                  "id": 18115,
                   "nodeType": "ExpressionStatement",
                   "src": "2378:63:63"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18064,
+                    "id": 18121,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1699,25 +1699,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 18059,
+                          "id": 18116,
                           "name": "allIntermediateResults",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17957,
+                          "referencedDeclaration": 18014,
                           "src": "2451:22:63",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults storage ref)"
                           }
                         },
-                        "id": 18061,
+                        "id": 18118,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 18060,
+                          "id": 18117,
                           "name": "_key",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18025,
+                          "referencedDeclaration": 18082,
                           "src": "2474:4:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -1731,18 +1731,18 @@
                         "nodeType": "IndexAccess",
                         "src": "2451:28:63",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage",
+                          "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage",
                           "typeString": "struct DaoStructs.IntermediateResults storage ref"
                         }
                       },
-                      "id": 18062,
+                      "id": 18119,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "currentAgainstCount",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8363,
+                      "referencedDeclaration": 8420,
                       "src": "2451:48:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1753,11 +1753,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 18063,
+                      "id": 18120,
                       "name": "_currentAgainstCount",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18031,
+                      "referencedDeclaration": 18088,
                       "src": "2502:20:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1770,14 +1770,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 18065,
+                  "id": 18122,
                   "nodeType": "ExpressionStatement",
                   "src": "2451:71:63"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18071,
+                    "id": 18128,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1788,25 +1788,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 18066,
+                          "id": 18123,
                           "name": "allIntermediateResults",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17957,
+                          "referencedDeclaration": 18014,
                           "src": "2532:22:63",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults storage ref)"
                           }
                         },
-                        "id": 18068,
+                        "id": 18125,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 18067,
+                          "id": 18124,
                           "name": "_key",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18025,
+                          "referencedDeclaration": 18082,
                           "src": "2555:4:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -1820,18 +1820,18 @@
                         "nodeType": "IndexAccess",
                         "src": "2532:28:63",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage",
+                          "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage",
                           "typeString": "struct DaoStructs.IntermediateResults storage ref"
                         }
                       },
-                      "id": 18069,
+                      "id": 18126,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "currentSumOfEffectiveBalance",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8365,
+                      "referencedDeclaration": 8422,
                       "src": "2532:57:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1842,11 +1842,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 18070,
+                      "id": 18127,
                       "name": "_currentSumOfEffectiveBalance",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18033,
+                      "referencedDeclaration": 18090,
                       "src": "2592:29:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1859,14 +1859,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 18072,
+                  "id": 18129,
                   "nodeType": "ExpressionStatement",
                   "src": "2532:89:63"
                 }
               ]
             },
             "documentation": null,
-            "id": 18074,
+            "id": 18131,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1874,15 +1874,15 @@
             "name": "setIntermediateResults",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 18034,
+              "id": 18091,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 18025,
+                  "id": 18082,
                   "name": "_key",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18074,
+                  "scope": 18131,
                   "src": "1984:12:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1891,7 +1891,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 18024,
+                    "id": 18081,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1984:7:63",
@@ -1905,10 +1905,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 18027,
+                  "id": 18084,
                   "name": "_countedUntil",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18074,
+                  "scope": 18131,
                   "src": "2006:21:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1917,7 +1917,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 18026,
+                    "id": 18083,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "2006:7:63",
@@ -1931,10 +1931,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 18029,
+                  "id": 18086,
                   "name": "_currentForCount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18074,
+                  "scope": 18131,
                   "src": "2037:24:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1943,7 +1943,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 18028,
+                    "id": 18085,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "2037:7:63",
@@ -1957,10 +1957,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 18031,
+                  "id": 18088,
                   "name": "_currentAgainstCount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18074,
+                  "scope": 18131,
                   "src": "2071:28:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1969,7 +1969,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 18030,
+                    "id": 18087,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "2071:7:63",
@@ -1983,10 +1983,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 18033,
+                  "id": 18090,
                   "name": "_currentSumOfEffectiveBalance",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18074,
+                  "scope": 18131,
                   "src": "2109:37:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1995,7 +1995,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 18032,
+                    "id": 18089,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "2109:7:63",
@@ -2012,19 +2012,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 18035,
+              "id": 18092,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2172:0:63"
             },
-            "scope": 18075,
+            "scope": 18132,
             "src": "1943:685:63",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 18076,
+        "scope": 18133,
         "src": "161:2469:63"
       }
     ],
@@ -2034,14 +2034,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/storage/IntermediateResultsStorage.sol",
     "exportedSymbols": {
       "IntermediateResultsStorage": [
-        18075
+        18132
       ]
     },
-    "id": 18076,
+    "id": 18133,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 17930,
+        "id": 17987,
         "literals": [
           "solidity",
           "^",
@@ -2054,10 +2054,10 @@
       {
         "absolutePath": "@digix/cacp-contracts-dao/contracts/ResolverClient.sol",
         "file": "@digix/cacp-contracts-dao/contracts/ResolverClient.sol",
-        "id": 17931,
+        "id": 17988,
         "nodeType": "ImportDirective",
-        "scope": 18076,
-        "sourceUnit": 18547,
+        "scope": 18133,
+        "sourceUnit": 18604,
         "src": "26:64:63",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2065,9 +2065,9 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/common/DaoConstants.sol",
         "file": "../common/DaoConstants.sol",
-        "id": 17932,
+        "id": 17989,
         "nodeType": "ImportDirective",
-        "scope": 18076,
+        "scope": 18133,
         "sourceUnit": 1603,
         "src": "91:36:63",
         "symbolAliases": [],
@@ -2076,10 +2076,10 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/lib/DaoStructs.sol",
         "file": "../lib/DaoStructs.sol",
-        "id": 17933,
+        "id": 17990,
         "nodeType": "ImportDirective",
-        "scope": 18076,
-        "sourceUnit": 8370,
+        "scope": 18133,
+        "sourceUnit": 8427,
         "src": "128:31:63",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2090,17 +2090,17 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 17934,
+              "id": 17991,
               "name": "ResolverClient",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 18546,
+              "referencedDeclaration": 18603,
               "src": "200:14:63",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ResolverClient_$18546",
+                "typeIdentifier": "t_contract$_ResolverClient_$18603",
                 "typeString": "contract ResolverClient"
               }
             },
-            "id": 17935,
+            "id": 17992,
             "nodeType": "InheritanceSpecifier",
             "src": "200:14:63"
           },
@@ -2108,7 +2108,7 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 17936,
+              "id": 17993,
               "name": "DaoConstants",
               "nodeType": "UserDefinedTypeName",
               "referencedDeclaration": 1602,
@@ -2118,38 +2118,38 @@
                 "typeString": "contract DaoConstants"
               }
             },
-            "id": 17937,
+            "id": 17994,
             "nodeType": "InheritanceSpecifier",
             "src": "216:12:63"
           }
         ],
         "contractDependencies": [
           1602,
-          18546
+          18603
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 18075,
+        "id": 18132,
         "linearizedBaseContracts": [
-          18075,
+          18132,
           1602,
-          18546
+          18603
         ],
         "name": "IntermediateResultsStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "id": 17940,
+            "id": 17997,
             "libraryName": {
               "contractScope": null,
-              "id": 17938,
+              "id": 17995,
               "name": "DaoStructs",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 8369,
+              "referencedDeclaration": 8426,
               "src": "241:10:63",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoStructs_$8369",
+                "typeIdentifier": "t_contract$_DaoStructs_$8426",
                 "typeString": "library DaoStructs"
               }
             },
@@ -2157,20 +2157,20 @@
             "src": "235:52:63",
             "typeName": {
               "contractScope": null,
-              "id": 17939,
+              "id": 17996,
               "name": "DaoStructs.IntermediateResults",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 8368,
+              "referencedDeclaration": 8425,
               "src": "256:30:63",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage_ptr",
+                "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage_ptr",
                 "typeString": "struct DaoStructs.IntermediateResults"
               }
             }
           },
           {
             "body": {
-              "id": 17952,
+              "id": 18009,
               "nodeType": "Block",
               "src": "331:80:63",
               "statements": [
@@ -2183,7 +2183,7 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 17947,
+                            "id": 18004,
                             "name": "CONTRACT_STORAGE_INTERMEDIATE_RESULTS",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -2196,11 +2196,11 @@
                           },
                           {
                             "argumentTypes": null,
-                            "id": 17948,
+                            "id": 18005,
                             "name": "_resolver",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 17942,
+                            "referencedDeclaration": 17999,
                             "src": "393:9:63",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -2219,18 +2219,18 @@
                               "typeString": "address"
                             }
                           ],
-                          "id": 17946,
+                          "id": 18003,
                           "name": "init",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18514,
+                          "referencedDeclaration": 18571,
                           "src": "349:4:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_nonpayable$_t_bytes32_$_t_address_$returns$_t_bool_$",
                             "typeString": "function (bytes32,address) returns (bool)"
                           }
                         },
-                        "id": 17949,
+                        "id": 18006,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2252,21 +2252,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 17945,
+                      "id": 18002,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "341:7:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 17950,
+                    "id": 18007,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2280,14 +2280,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 17951,
+                  "id": 18008,
                   "nodeType": "ExpressionStatement",
                   "src": "341:63:63"
                 }
               ]
             },
             "documentation": null,
-            "id": 17953,
+            "id": 18010,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -2295,15 +2295,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 17943,
+              "id": 18000,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 17942,
+                  "id": 17999,
                   "name": "_resolver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 17953,
+                  "scope": 18010,
                   "src": "305:17:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2312,7 +2312,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 17941,
+                    "id": 17998,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "305:7:63",
@@ -2329,12 +2329,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 17944,
+              "id": 18001,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "331:0:63"
             },
-            "scope": 18075,
+            "scope": 18132,
             "src": "293:118:63",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -2342,21 +2342,21 @@
           },
           {
             "constant": false,
-            "id": 17957,
+            "id": 18014,
             "name": "allIntermediateResults",
             "nodeType": "VariableDeclaration",
-            "scope": 18075,
+            "scope": 18132,
             "src": "983:74:63",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+              "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
               "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults)"
             },
             "typeName": {
-              "id": 17956,
+              "id": 18013,
               "keyType": {
-                "id": 17954,
+                "id": 18011,
                 "name": "bytes32",
                 "nodeType": "ElementaryTypeName",
                 "src": "992:7:63",
@@ -2368,18 +2368,18 @@
               "nodeType": "Mapping",
               "src": "983:51:63",
               "typeDescriptions": {
-                "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+                "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
                 "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults)"
               },
               "valueType": {
                 "contractScope": null,
-                "id": 17955,
+                "id": 18012,
                 "name": "DaoStructs.IntermediateResults",
                 "nodeType": "UserDefinedTypeName",
-                "referencedDeclaration": 8368,
+                "referencedDeclaration": 8425,
                 "src": "1003:30:63",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage_ptr",
+                  "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage_ptr",
                   "typeString": "struct DaoStructs.IntermediateResults"
                 }
               }
@@ -2389,25 +2389,25 @@
           },
           {
             "body": {
-              "id": 17998,
+              "id": 18055,
               "nodeType": "Block",
               "src": "1335:327:63",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 17975,
+                    "id": 18032,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 17970,
+                      "id": 18027,
                       "name": "_countedUntil",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 17962,
+                      "referencedDeclaration": 18019,
                       "src": "1345:13:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -2422,25 +2422,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 17971,
+                          "id": 18028,
                           "name": "allIntermediateResults",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17957,
+                          "referencedDeclaration": 18014,
                           "src": "1361:22:63",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults storage ref)"
                           }
                         },
-                        "id": 17973,
+                        "id": 18030,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 17972,
+                          "id": 18029,
                           "name": "_key",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17959,
+                          "referencedDeclaration": 18016,
                           "src": "1384:4:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -2454,18 +2454,18 @@
                         "nodeType": "IndexAccess",
                         "src": "1361:28:63",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage",
+                          "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage",
                           "typeString": "struct DaoStructs.IntermediateResults storage ref"
                         }
                       },
-                      "id": 17974,
+                      "id": 18031,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "countedUntil",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8367,
+                      "referencedDeclaration": 8424,
                       "src": "1361:41:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -2478,25 +2478,25 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 17976,
+                  "id": 18033,
                   "nodeType": "ExpressionStatement",
                   "src": "1345:57:63"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 17982,
+                    "id": 18039,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 17977,
+                      "id": 18034,
                       "name": "_currentForCount",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 17964,
+                      "referencedDeclaration": 18021,
                       "src": "1412:16:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2511,25 +2511,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 17978,
+                          "id": 18035,
                           "name": "allIntermediateResults",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17957,
+                          "referencedDeclaration": 18014,
                           "src": "1431:22:63",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults storage ref)"
                           }
                         },
-                        "id": 17980,
+                        "id": 18037,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 17979,
+                          "id": 18036,
                           "name": "_key",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17959,
+                          "referencedDeclaration": 18016,
                           "src": "1454:4:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -2543,18 +2543,18 @@
                         "nodeType": "IndexAccess",
                         "src": "1431:28:63",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage",
+                          "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage",
                           "typeString": "struct DaoStructs.IntermediateResults storage ref"
                         }
                       },
-                      "id": 17981,
+                      "id": 18038,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "currentForCount",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8361,
+                      "referencedDeclaration": 8418,
                       "src": "1431:44:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2567,25 +2567,25 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 17983,
+                  "id": 18040,
                   "nodeType": "ExpressionStatement",
                   "src": "1412:63:63"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 17989,
+                    "id": 18046,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 17984,
+                      "id": 18041,
                       "name": "_currentAgainstCount",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 17966,
+                      "referencedDeclaration": 18023,
                       "src": "1485:20:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2600,25 +2600,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 17985,
+                          "id": 18042,
                           "name": "allIntermediateResults",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17957,
+                          "referencedDeclaration": 18014,
                           "src": "1508:22:63",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults storage ref)"
                           }
                         },
-                        "id": 17987,
+                        "id": 18044,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 17986,
+                          "id": 18043,
                           "name": "_key",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17959,
+                          "referencedDeclaration": 18016,
                           "src": "1531:4:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -2632,18 +2632,18 @@
                         "nodeType": "IndexAccess",
                         "src": "1508:28:63",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage",
+                          "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage",
                           "typeString": "struct DaoStructs.IntermediateResults storage ref"
                         }
                       },
-                      "id": 17988,
+                      "id": 18045,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "currentAgainstCount",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8363,
+                      "referencedDeclaration": 8420,
                       "src": "1508:48:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2656,25 +2656,25 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 17990,
+                  "id": 18047,
                   "nodeType": "ExpressionStatement",
                   "src": "1485:71:63"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 17996,
+                    "id": 18053,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 17991,
+                      "id": 18048,
                       "name": "_currentSumOfEffectiveBalance",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 17968,
+                      "referencedDeclaration": 18025,
                       "src": "1566:29:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2689,25 +2689,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 17992,
+                          "id": 18049,
                           "name": "allIntermediateResults",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17957,
+                          "referencedDeclaration": 18014,
                           "src": "1598:22:63",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults storage ref)"
                           }
                         },
-                        "id": 17994,
+                        "id": 18051,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 17993,
+                          "id": 18050,
                           "name": "_key",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17959,
+                          "referencedDeclaration": 18016,
                           "src": "1621:4:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -2721,18 +2721,18 @@
                         "nodeType": "IndexAccess",
                         "src": "1598:28:63",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage",
+                          "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage",
                           "typeString": "struct DaoStructs.IntermediateResults storage ref"
                         }
                       },
-                      "id": 17995,
+                      "id": 18052,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "currentSumOfEffectiveBalance",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8365,
+                      "referencedDeclaration": 8422,
                       "src": "1598:57:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2745,14 +2745,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 17997,
+                  "id": 18054,
                   "nodeType": "ExpressionStatement",
                   "src": "1566:89:63"
                 }
               ]
             },
             "documentation": null,
-            "id": 17999,
+            "id": 18056,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -2760,15 +2760,15 @@
             "name": "getIntermediateResults",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 17960,
+              "id": 18017,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 17959,
+                  "id": 18016,
                   "name": "_key",
                   "nodeType": "VariableDeclaration",
-                  "scope": 17999,
+                  "scope": 18056,
                   "src": "1096:12:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2777,7 +2777,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 17958,
+                    "id": 18015,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1096:7:63",
@@ -2794,15 +2794,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 17969,
+              "id": 18026,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 17962,
+                  "id": 18019,
                   "name": "_countedUntil",
                   "nodeType": "VariableDeclaration",
-                  "scope": 17999,
+                  "scope": 18056,
                   "src": "1168:21:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2811,7 +2811,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 17961,
+                    "id": 18018,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1168:7:63",
@@ -2825,10 +2825,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 17964,
+                  "id": 18021,
                   "name": "_currentForCount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 17999,
+                  "scope": 18056,
                   "src": "1203:24:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2837,7 +2837,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 17963,
+                    "id": 18020,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1203:7:63",
@@ -2851,10 +2851,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 17966,
+                  "id": 18023,
                   "name": "_currentAgainstCount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 17999,
+                  "scope": 18056,
                   "src": "1241:28:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2863,7 +2863,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 17965,
+                    "id": 18022,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1241:7:63",
@@ -2877,10 +2877,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 17968,
+                  "id": 18025,
                   "name": "_currentSumOfEffectiveBalance",
                   "nodeType": "VariableDeclaration",
-                  "scope": 17999,
+                  "scope": 18056,
                   "src": "1283:37:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2889,7 +2889,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 17967,
+                    "id": 18024,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1283:7:63",
@@ -2904,7 +2904,7 @@
               ],
               "src": "1154:176:63"
             },
-            "scope": 18075,
+            "scope": 18132,
             "src": "1064:598:63",
             "stateMutability": "view",
             "superFunction": null,
@@ -2912,7 +2912,7 @@
           },
           {
             "body": {
-              "id": 18022,
+              "id": 18079,
               "nodeType": "Block",
               "src": "1735:202:63",
               "statements": [
@@ -2928,7 +2928,7 @@
                             "components": [
                               {
                                 "argumentTypes": null,
-                                "id": 18006,
+                                "id": 18063,
                                 "name": "CONTRACT_DAO_REWARDS_MANAGER",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
@@ -2941,7 +2941,7 @@
                               },
                               {
                                 "argumentTypes": null,
-                                "id": 18007,
+                                "id": 18064,
                                 "name": "CONTRACT_DAO_VOTING_CLAIMS",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
@@ -2954,7 +2954,7 @@
                               },
                               {
                                 "argumentTypes": null,
-                                "id": 18008,
+                                "id": 18065,
                                 "name": "CONTRACT_DAO_SPECIAL_VOTING_CLAIMS",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
@@ -2966,7 +2966,7 @@
                                 }
                               }
                             ],
-                            "id": 18009,
+                            "id": 18066,
                             "isConstant": false,
                             "isInlineArray": true,
                             "isLValue": false,
@@ -2987,18 +2987,18 @@
                               "typeString": "bytes32[3] memory"
                             }
                           ],
-                          "id": 18005,
+                          "id": 18062,
                           "name": "sender_is_from",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18447,
+                          "referencedDeclaration": 18504,
                           "src": "1753:14:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_array$_t_bytes32_$3_memory_ptr_$returns$_t_bool_$",
                             "typeString": "function (bytes32[3] memory) view returns (bool)"
                           }
                         },
-                        "id": 18010,
+                        "id": 18067,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3020,21 +3020,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 18004,
+                      "id": 18061,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "1745:7:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 18011,
+                    "id": 18068,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3048,14 +3048,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 18012,
+                  "id": 18069,
                   "nodeType": "ExpressionStatement",
                   "src": "1745:119:63"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18020,
+                    "id": 18077,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3066,25 +3066,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 18013,
+                          "id": 18070,
                           "name": "allIntermediateResults",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17957,
+                          "referencedDeclaration": 18014,
                           "src": "1874:22:63",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults storage ref)"
                           }
                         },
-                        "id": 18015,
+                        "id": 18072,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 18014,
+                          "id": 18071,
                           "name": "_key",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18001,
+                          "referencedDeclaration": 18058,
                           "src": "1897:4:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -3098,18 +3098,18 @@
                         "nodeType": "IndexAccess",
                         "src": "1874:28:63",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage",
+                          "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage",
                           "typeString": "struct DaoStructs.IntermediateResults storage ref"
                         }
                       },
-                      "id": 18016,
+                      "id": 18073,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "countedUntil",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8367,
+                      "referencedDeclaration": 8424,
                       "src": "1874:41:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -3124,7 +3124,7 @@
                         {
                           "argumentTypes": null,
                           "hexValue": "307830",
-                          "id": 18018,
+                          "id": 18075,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -3147,7 +3147,7 @@
                             "typeString": "int_const 0"
                           }
                         ],
-                        "id": 18017,
+                        "id": 18074,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -3160,7 +3160,7 @@
                         },
                         "typeName": "address"
                       },
-                      "id": 18019,
+                      "id": 18076,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -3180,14 +3180,14 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 18021,
+                  "id": 18078,
                   "nodeType": "ExpressionStatement",
                   "src": "1874:56:63"
                 }
               ]
             },
             "documentation": null,
-            "id": 18023,
+            "id": 18080,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -3195,15 +3195,15 @@
             "name": "resetIntermediateResults",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 18002,
+              "id": 18059,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 18001,
+                  "id": 18058,
                   "name": "_key",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18023,
+                  "scope": 18080,
                   "src": "1702:12:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3212,7 +3212,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 18000,
+                    "id": 18057,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1702:7:63",
@@ -3229,12 +3229,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 18003,
+              "id": 18060,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1735:0:63"
             },
-            "scope": 18075,
+            "scope": 18132,
             "src": "1668:269:63",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -3242,7 +3242,7 @@
           },
           {
             "body": {
-              "id": 18073,
+              "id": 18130,
               "nodeType": "Block",
               "src": "2172:456:63",
               "statements": [
@@ -3258,7 +3258,7 @@
                             "components": [
                               {
                                 "argumentTypes": null,
-                                "id": 18038,
+                                "id": 18095,
                                 "name": "CONTRACT_DAO_REWARDS_MANAGER",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
@@ -3271,7 +3271,7 @@
                               },
                               {
                                 "argumentTypes": null,
-                                "id": 18039,
+                                "id": 18096,
                                 "name": "CONTRACT_DAO_VOTING_CLAIMS",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
@@ -3284,7 +3284,7 @@
                               },
                               {
                                 "argumentTypes": null,
-                                "id": 18040,
+                                "id": 18097,
                                 "name": "CONTRACT_DAO_SPECIAL_VOTING_CLAIMS",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
@@ -3296,7 +3296,7 @@
                                 }
                               }
                             ],
-                            "id": 18041,
+                            "id": 18098,
                             "isConstant": false,
                             "isInlineArray": true,
                             "isLValue": false,
@@ -3317,18 +3317,18 @@
                               "typeString": "bytes32[3] memory"
                             }
                           ],
-                          "id": 18037,
+                          "id": 18094,
                           "name": "sender_is_from",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18447,
+                          "referencedDeclaration": 18504,
                           "src": "2190:14:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_array$_t_bytes32_$3_memory_ptr_$returns$_t_bool_$",
                             "typeString": "function (bytes32[3] memory) view returns (bool)"
                           }
                         },
-                        "id": 18042,
+                        "id": 18099,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -3350,21 +3350,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 18036,
+                      "id": 18093,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26103,
-                        26104
+                        26160,
+                        26161
                       ],
-                      "referencedDeclaration": 26103,
+                      "referencedDeclaration": 26160,
                       "src": "2182:7:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 18043,
+                    "id": 18100,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3378,14 +3378,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 18044,
+                  "id": 18101,
                   "nodeType": "ExpressionStatement",
                   "src": "2182:119:63"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18050,
+                    "id": 18107,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3396,25 +3396,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 18045,
+                          "id": 18102,
                           "name": "allIntermediateResults",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17957,
+                          "referencedDeclaration": 18014,
                           "src": "2311:22:63",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults storage ref)"
                           }
                         },
-                        "id": 18047,
+                        "id": 18104,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 18046,
+                          "id": 18103,
                           "name": "_key",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18025,
+                          "referencedDeclaration": 18082,
                           "src": "2334:4:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -3428,18 +3428,18 @@
                         "nodeType": "IndexAccess",
                         "src": "2311:28:63",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage",
+                          "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage",
                           "typeString": "struct DaoStructs.IntermediateResults storage ref"
                         }
                       },
-                      "id": 18048,
+                      "id": 18105,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "countedUntil",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8367,
+                      "referencedDeclaration": 8424,
                       "src": "2311:41:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -3450,11 +3450,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 18049,
+                      "id": 18106,
                       "name": "_countedUntil",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18027,
+                      "referencedDeclaration": 18084,
                       "src": "2355:13:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -3467,14 +3467,14 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 18051,
+                  "id": 18108,
                   "nodeType": "ExpressionStatement",
                   "src": "2311:57:63"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18057,
+                    "id": 18114,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3485,25 +3485,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 18052,
+                          "id": 18109,
                           "name": "allIntermediateResults",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17957,
+                          "referencedDeclaration": 18014,
                           "src": "2378:22:63",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults storage ref)"
                           }
                         },
-                        "id": 18054,
+                        "id": 18111,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 18053,
+                          "id": 18110,
                           "name": "_key",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18025,
+                          "referencedDeclaration": 18082,
                           "src": "2401:4:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -3517,18 +3517,18 @@
                         "nodeType": "IndexAccess",
                         "src": "2378:28:63",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage",
+                          "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage",
                           "typeString": "struct DaoStructs.IntermediateResults storage ref"
                         }
                       },
-                      "id": 18055,
+                      "id": 18112,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "currentForCount",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8361,
+                      "referencedDeclaration": 8418,
                       "src": "2378:44:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3539,11 +3539,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 18056,
+                      "id": 18113,
                       "name": "_currentForCount",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18029,
+                      "referencedDeclaration": 18086,
                       "src": "2425:16:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3556,14 +3556,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 18058,
+                  "id": 18115,
                   "nodeType": "ExpressionStatement",
                   "src": "2378:63:63"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18064,
+                    "id": 18121,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3574,25 +3574,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 18059,
+                          "id": 18116,
                           "name": "allIntermediateResults",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17957,
+                          "referencedDeclaration": 18014,
                           "src": "2451:22:63",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults storage ref)"
                           }
                         },
-                        "id": 18061,
+                        "id": 18118,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 18060,
+                          "id": 18117,
                           "name": "_key",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18025,
+                          "referencedDeclaration": 18082,
                           "src": "2474:4:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -3606,18 +3606,18 @@
                         "nodeType": "IndexAccess",
                         "src": "2451:28:63",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage",
+                          "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage",
                           "typeString": "struct DaoStructs.IntermediateResults storage ref"
                         }
                       },
-                      "id": 18062,
+                      "id": 18119,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "currentAgainstCount",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8363,
+                      "referencedDeclaration": 8420,
                       "src": "2451:48:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3628,11 +3628,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 18063,
+                      "id": 18120,
                       "name": "_currentAgainstCount",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18031,
+                      "referencedDeclaration": 18088,
                       "src": "2502:20:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3645,14 +3645,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 18065,
+                  "id": 18122,
                   "nodeType": "ExpressionStatement",
                   "src": "2451:71:63"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18071,
+                    "id": 18128,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3663,25 +3663,25 @@
                         "argumentTypes": null,
                         "baseExpression": {
                           "argumentTypes": null,
-                          "id": 18066,
+                          "id": 18123,
                           "name": "allIntermediateResults",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 17957,
+                          "referencedDeclaration": 18014,
                           "src": "2532:22:63",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8368_storage_$",
+                            "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_IntermediateResults_$8425_storage_$",
                             "typeString": "mapping(bytes32 => struct DaoStructs.IntermediateResults storage ref)"
                           }
                         },
-                        "id": 18068,
+                        "id": 18125,
                         "indexExpression": {
                           "argumentTypes": null,
-                          "id": 18067,
+                          "id": 18124,
                           "name": "_key",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18025,
+                          "referencedDeclaration": 18082,
                           "src": "2555:4:63",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -3695,18 +3695,18 @@
                         "nodeType": "IndexAccess",
                         "src": "2532:28:63",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_IntermediateResults_$8368_storage",
+                          "typeIdentifier": "t_struct$_IntermediateResults_$8425_storage",
                           "typeString": "struct DaoStructs.IntermediateResults storage ref"
                         }
                       },
-                      "id": 18069,
+                      "id": 18126,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "currentSumOfEffectiveBalance",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8365,
+                      "referencedDeclaration": 8422,
                       "src": "2532:57:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3717,11 +3717,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 18070,
+                      "id": 18127,
                       "name": "_currentSumOfEffectiveBalance",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18033,
+                      "referencedDeclaration": 18090,
                       "src": "2592:29:63",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3734,14 +3734,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 18072,
+                  "id": 18129,
                   "nodeType": "ExpressionStatement",
                   "src": "2532:89:63"
                 }
               ]
             },
             "documentation": null,
-            "id": 18074,
+            "id": 18131,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -3749,15 +3749,15 @@
             "name": "setIntermediateResults",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 18034,
+              "id": 18091,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 18025,
+                  "id": 18082,
                   "name": "_key",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18074,
+                  "scope": 18131,
                   "src": "1984:12:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3766,7 +3766,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 18024,
+                    "id": 18081,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1984:7:63",
@@ -3780,10 +3780,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 18027,
+                  "id": 18084,
                   "name": "_countedUntil",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18074,
+                  "scope": 18131,
                   "src": "2006:21:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3792,7 +3792,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 18026,
+                    "id": 18083,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "2006:7:63",
@@ -3806,10 +3806,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 18029,
+                  "id": 18086,
                   "name": "_currentForCount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18074,
+                  "scope": 18131,
                   "src": "2037:24:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3818,7 +3818,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 18028,
+                    "id": 18085,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "2037:7:63",
@@ -3832,10 +3832,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 18031,
+                  "id": 18088,
                   "name": "_currentAgainstCount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18074,
+                  "scope": 18131,
                   "src": "2071:28:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3844,7 +3844,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 18030,
+                    "id": 18087,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "2071:7:63",
@@ -3858,10 +3858,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 18033,
+                  "id": 18090,
                   "name": "_currentSumOfEffectiveBalance",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18074,
+                  "scope": 18131,
                   "src": "2109:37:63",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3870,7 +3870,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 18032,
+                    "id": 18089,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "2109:7:63",
@@ -3887,19 +3887,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 18035,
+              "id": 18092,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2172:0:63"
             },
-            "scope": 18075,
+            "scope": 18132,
             "src": "1943:685:63",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 18076,
+        "scope": 18133,
         "src": "161:2469:63"
       }
     ],
@@ -3913,10 +3913,10 @@
     "42": {
       "events": {},
       "links": {},
-      "address": "0x921fbca0184a24197b7ee81df92687a8822e6e10",
-      "transactionHash": "0xbffc3f94e331c47e36bcea242becd6d00ea72ef163133e9930f676bbd23c0766"
+      "address": "0x2007dc10440b8acc2a600dbc0acadd2c2b30dd2d",
+      "transactionHash": "0x164ef4bae1943468db7f4dd9fc26c7ad0beb59835ee245f6a020495584f4f9c4"
     }
   },
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-19T03:41:22.184Z"
+  "updatedAt": "2019-01-18T07:00:33.888Z"
 }
