@@ -36,24 +36,13 @@ module.exports = {
       provider: new LightWalletProvider({
         keystore: KEYSTORE,
         password: PASSWORD,
-        rpcUrl: 'https://aethyr.digix.global/',
+        rpcUrl: 'https://mainnet.infura.io/',
         pollingInterval: 15000,
         // debug: true,
       }),
-      gas: 7900000,
+      gas: 8000000,
       gasPrice: 40 * (10 ** 9),
       network_id: '1',
-    },
-    classic: {
-      provider: new LightWalletProvider({
-        keystore: KEYSTORE,
-        password: PASSWORD,
-        rpcUrl: 'https://digixparity04.digix.io/',
-        pollingInterval: 5000,
-        // debug: true,
-      }),
-      gas: 400000,
-      network_id: '61',
     },
     development: {
       host: 'localhost',
