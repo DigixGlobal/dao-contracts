@@ -118,9 +118,9 @@ $ ./node_modules/.bin/truffle exec scripts/mainnet-deploy/2_forever_lock_contrac
 $ START_TIMESTAMP=<> ./node_modules/.bin/truffle exec scripts/mainnet-deploy/3_set_start_digixdao.js --network mainnet
 ```
 Note that the `START_TIMESTAMP` should be a UNIX Timestamp from the future
-* Add Ledger accounts as the new `Founder` and `PRL` roles. Add a keystore account as new `KYC Admin`
+* Add Ledger accounts as the `Founder`, `PRL` and `KYC Admin` roles. Add another keystore account as `KYC Admin`
 ```
-$ LEDGER_FOUNDER=<> LEDGER_PRL=<> KEYSTORE_KYC_ADMIN=<> ./node_modules/.bin/truffle exec scripts/mainnet-deploy/4_add_ledgers_as_roles.js --network mainnet
+$ LEDGER_FOUNDER=<> LEDGER_PRL=<> LEDGER_KYC_ADMIN=<> KEYSTORE_KYC_ADMIN=<> ./node_modules/.bin/truffle exec scripts/mainnet-deploy/4_add_ledgers_as_roles.js --network mainnet
 ```
 Make sure the keystore account for `KYC Admin` has been generated securely. This will later be used to be loaded into the Info-Server in order to automate the signing of KYC Approval transactions, read more [here]().
 * Remove sigmate accounts (`accounts[3]`) from their temporary roles (`founder`)
@@ -159,3 +159,22 @@ You'll have the `destination`, `value` and `data` fields from the above
 ## DAO Server Deployment
 
 ## Info Server Deployment
+
+#### KYC Admin
+The KYC Admin's keystore will be loaded into Info-server to automate the signing of transactions to approve/reject KYC applications. The following will be the file tree in info-server's repository:
+```
+info-server
+  ├── dbWrapper/
+  ├── dijixWrapper/
+  ...
+  ...
+  ├── web3Wrapper/
+  ├── keystore/
+  |     └── kyc-admin
+  ├── README.md
+  ├── app.js
+  ...
+  ...
+  └── package.js
+```
+Note: The `keystore/` directory will be ignore by git. The password to the `kyc-admin` keystore should be provided as an environment variable while running the nodeJS server.

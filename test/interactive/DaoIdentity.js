@@ -13,7 +13,9 @@ const {
   paddedHex,
   indexRange,
   randomAddress,
+  randomAddresses,
   randomBigNumber,
+  randomBigNumbers,
   getCurrentTimestamp,
 } = require('@digix/helpers/lib/helpers');
 
@@ -149,6 +151,43 @@ contract('DaoIdentity', function (accounts) {
       assert.deepEqual(user2[0], paddedHex(web3, 'doc 2'));
       assert.deepEqual(user1[1], expiry1);
       assert.deepEqual(user2[1], expiry2);
+    });
+  });
+
+  describe('bulkUpdateKyc', function () {
+    const randomUsers = randomAddresses(3);
+    const randomExpiries = randomBigNumbers(bN, 3);
+    const docs = ['doc a', 'doc b', 'doc c'];
+    it('[called by non-kycadmin account]: revert', async function () {
+      assert(await a.failure(contracts.daoIdentity.bulkUpdateKyc.call(
+        randomUsers,
+        docs,
+        randomExpiries,
+        { from: addressOf.root },
+      )));
+    });
+    it('[called by kycadmin]: success | verify storage layer', async function () {
+      assert.ok(await contracts.daoIdentity.bulkUpdateKyc.call(
+        randomUsers,
+        docs,
+        randomExpiries,
+        { from: addressOf.kycadmin },
+      ));
+      await contracts.daoIdentity.bulkUpdateKyc(
+        randomUsers,
+        docs,
+        randomExpiries,
+        { from: addressOf.kycadmin },
+      );
+      const user1 = await contracts.daoIdentityStorage.read_kyc_info.call(randomUsers[0]);
+      const user2 = await contracts.daoIdentityStorage.read_kyc_info.call(randomUsers[1]);
+      const user3 = await contracts.daoIdentityStorage.read_kyc_info.call(randomUsers[2]);
+      assert.deepEqual(user1[0], paddedHex(web3, 'doc a'));
+      assert.deepEqual(user2[0], paddedHex(web3, 'doc b'));
+      assert.deepEqual(user3[0], paddedHex(web3, 'doc c'));
+      assert.deepEqual(user1[1], randomExpiries[0]);
+      assert.deepEqual(user2[1], randomExpiries[1]);
+      assert.deepEqual(user3[1], randomExpiries[2]);
     });
   });
 });

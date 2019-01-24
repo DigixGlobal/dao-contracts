@@ -29,6 +29,12 @@ module.exports = async () => {
     );
     await daoIdentity.addGroupUser(
       bN(4),
+      process.env.LEDGER_KYC_ADMIN,
+      'add:ledger:kycadmin',
+      { from: addressOf.root },
+    );
+    await daoIdentity.addGroupUser(
+      bN(4),
       process.env.KEYSTORE_KYC_ADMIN,
       'add:keystore:kycadmin',
       { from: addressOf.root },

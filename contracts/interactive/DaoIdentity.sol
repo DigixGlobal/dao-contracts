@@ -65,6 +65,28 @@ contract DaoIdentity is IdentityCommon {
         public
         if_kyc_admin()
     {
+        privateUpdateKyc(_user, _doc, _id_expiration);
+    }
+
+    /**
+    @notice Function to update the KYC data of multiple users (expiry data of valid KYC) (can only be called by the KYC ADMIN role)
+    @param _users Ethereum addresses of the users
+    @param _docs hashes of the IPFS docs containing kyc information about these users
+    @param _id_expirations expiry dates of the KYC docs for these users
+    */
+    function bulkUpdateKyc(address[] _users, bytes32[] _docs, uint256[] _id_expirations)
+        external
+        if_kyc_admin()
+    {
+        uint256 _n = _users.length;
+        for (uint256 _i = 0; _i < _n; _i++) {
+            privateUpdateKyc(_users[_i], _docs[_i], _id_expirations[_i]);
+        }
+    }
+
+    function privateUpdateKyc(address _user, bytes32 _doc, uint256 _id_expiration)
+        private
+    {
         identity_storage().update_kyc(_user, _doc, _id_expiration);
     }
 }
