@@ -644,6 +644,16 @@ const fundUserAndApproveForStakeLocking = async (web3, contracts, bN, participan
   await contracts.badgeToken.transfer(addressOf.founderBadgeHolder, ENOUGH_BADGE);
   await contracts.dgdToken.approve(contracts.daoStakeLocking.address, bN(2 ** 255), { from: addressOf.founderBadgeHolder });
   await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(2 ** 255), { from: addressOf.founderBadgeHolder });
+
+  // set the allowance to zero for addressOf.dgdHolders[1] and addressOf.dgdHolders[2]
+  await contracts.badgeToken.transfer(addressOf.dgdHolders[1], ENOUGH_BADGE);
+  await contracts.badgeToken.transfer(addressOf.dgdHolders[2], ENOUGH_BADGE);
+  await contracts.badgeToken.transfer(addressOf.dgdHolders[3], ENOUGH_BADGE);
+  await contracts.badgeToken.transfer(addressOf.dgdHolders[4], ENOUGH_BADGE);
+  await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(0), { from: addressOf.dgdHolders[1] });
+  await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(0), { from: addressOf.dgdHolders[2] });
+  await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(0), { from: addressOf.dgdHolders[3] });
+  await contracts.badgeToken.approve(contracts.daoStakeLocking.address, bN(0), { from: addressOf.dgdHolders[4] });
 };
 
 // Get a dummy list of participants
