@@ -74,5 +74,24 @@
         ]
       }
     ]
+  },
+  {
+    "versions": [
+      {
+        "title": "fifth title",
+        "description": "fifth description version 1 fifth description version 1",
+        "details": "fifth details version 1 fifth details version 1 fifth details version 1 fifth details version 1 fifth details version 1",
+        "milestones": [
+          {
+            "title": "first milestone",
+            "description": "first milestone version 1 description in detail"
+          },
+          {
+            "title": "second milestone",
+            "description": "second milestone version 1 of proposal fifth description in detail"
+          }
+        ]
+      }
+    ]
   }
 ]

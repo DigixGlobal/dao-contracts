@@ -45,6 +45,8 @@ const {
   redeemBadges,
   endorseProposal,
   assignVotesAndCommits,
+  printDaoDetails,
+  printProposalDetails,
 } = require('../test/setup');
 
 const {
@@ -76,7 +78,9 @@ const setDummyConfig = async function (contracts, bN, initial = false) {
   await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_QUARTER_DURATION, bN(process.env.QUARTER_DURATION));
   if (initial) {
     await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_DRAFT_VOTING_PHASE, bN(10));
-    await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE, bN(5));
+    await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTE_CLAIMING_DEADLINE, bN(20));
+    await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTING_COMMIT_PHASE, bN(10));
+    await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTING_PHASE_TOTAL, bN(20));
   } else {
     await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTING_COMMIT_PHASE, bN(process.env.COMMIT_ROUND));
     await contracts.daoConfigsStorage.mock_set_uint_config(daoConstantsKeys().CONFIG_VOTING_PHASE_TOTAL, bN(process.env.VOTING_ROUND));
@@ -135,6 +139,17 @@ const getTestProposals = function (bN, addressOf, proposalHashes) {
         versionId: encodeHash(proposalHashes[3].versions[0].ipfsHash),
         milestoneFundings: [bN(1 * (10 ** 18)), bN(1 * (10 ** 18))],
         finalReward: bN(1 * (10 ** 18)),
+      }],
+    ),
+
+    getProposalStruct(
+      bN,
+      addressOf.dgdHolders[3],
+      addressOf.badgeHolders[3],
+      [{
+        versionId: encodeHash(proposalHashes[4].versions[0].ipfsHash),
+        milestoneFundings: [bN(1 * (10 ** 18)), bN(2 * (10 ** 18))],
+        finalReward: bN(3 * (10 ** 18)),
       }],
     ),
   ];
@@ -226,11 +241,56 @@ const draftVotingAndClaim = async function (contracts, addressOf, proposals) {
     );
   });
 
-  await waitFor(5, addressOf, web3);
+  // await waitFor(5, addressOf, web3);
 };
+
+const votingCommitAndRevealAndClaim = async function (contracts, addressOf, proposal) {
+  const { salts, votes, votingCommits } = assignVotesAndCommits(addressOf);
+
+  console.log('now = ', getCurrentTimestamp());
+  await printDaoDetails(bN, contracts);
+  await printProposalDetails(contracts, proposal);
+  await a.map(indexRange(0, 10), 20, async (holderIndex) => {
+    await contracts.daoVoting.commitVoteOnProposal(
+      proposal.id,
+      bN(0),
+      votingCommits[0][holderIndex],
+      { from: addressOf.allParticipants[holderIndex] },
+    );
+    console.log(`committed vote for holder ${holderIndex}`);
+  });
+
+
+  await waitFor(10, addressOf, web3);
+  // reveal
+
+  await a.map(indexRange(0, 10), 20, async (holderIndex) => {
+    await contracts.daoVoting.revealVoteOnProposal(
+      proposal.id,
+      bN(0),
+      votes[0][holderIndex],
+      salts[0][holderIndex],
+      { from: addressOf.allParticipants[holderIndex] },
+    );
+  });
+
+  await waitFor(10, addressOf, web3);
+
+  await contracts.daoVotingClaims.claimProposalVotingResult(
+    proposal.id,
+    bN(0),
+    bN(30),
+    { from: proposal.proposer },
+  );
+  console.log('\t\tClaimed proposal voting result');
+};
+
 
 const uploadAttestations = async function (_proposals) {
   const docs = [
+    {
+      versions: [],
+    },
     {
       versions: [],
     },
@@ -367,20 +427,22 @@ module.exports = async function () {
     await addProposals(contracts, proposals);
     console.log('added and proposals');
 
-    await endorseProposals(contracts, [proposals[1], proposals[2], proposals[3]]);
+    await endorseProposals(contracts, [proposals[1], proposals[2], proposals[3], proposals[4]]);
     console.log('endorsed proposals');
 
-    await finalizeProposals(contracts, [proposals[2], proposals[3]]);
+    await finalizeProposals(contracts, [proposals[2], proposals[3], proposals[4]]);
     console.log('finalized proposals');
 
-    await draftVotingAndClaim(contracts, addressOf, [proposals[3]]);
+    await draftVotingAndClaim(contracts, addressOf, [proposals[3], proposals[4]]);
     console.log('finished draft voting');
+
+    await votingCommitAndRevealAndClaim(contracts, addressOf, proposals[4]);
 
     // set dummy config for testing (initial config)
     await setDummyConfig(contracts, bN, false);
     console.log('setup dummy config');
-
-    const votesAndCommits = assignVotesAndCommits(addressOf, 2, 10);
-    console.log('votes and commits = ', votesAndCommits);
+    console.log('\tDONE');
+    // const votesAndCommits = assignVotesAndCommits(addressOf, 2, 10);
+    // console.log('votes and commits = ', votesAndCommits);
   });
 };
