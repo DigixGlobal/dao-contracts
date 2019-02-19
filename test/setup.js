@@ -353,13 +353,13 @@ const getTestProposals = function (bN, addressOf) {
 
 // Assigns true votes, salts and corresponding commits
 // This is used during any test/simulating voting round
-const assignVotesAndCommits = function (addressOf, proposalCount = 4, voterCount = BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT, voterAddresses = null) {
+const assignVotesAndCommits = function (addressOf, proposalCount = 4, voterCount = BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT, voterAddresses = null, result = true) {
   if (!voterAddresses) voterAddresses = addressOf.allParticipants;
 
   const salts = indexRange(0, proposalCount).map(() => indexRange(0, voterCount).map(() => randomBytes32()));
   // salts[proposalIndex][participantIndex] = salt
 
-  const votes = indexRange(0, proposalCount).map(() => indexRange(0, voterCount).map(() => true));
+  const votes = indexRange(0, proposalCount).map(() => indexRange(0, voterCount).map(() => result));
   // votes[proposalIndex][holderIndex] = true/false
 
   const votingCommits = indexRange(0, proposalCount).map(proposalIndex => indexRange(0, voterCount).map(holderIndex => web3Utils.soliditySha3(
