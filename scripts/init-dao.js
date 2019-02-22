@@ -260,7 +260,7 @@ const finalizeProposals = async function (contracts, proposals) {
   });
 };
 
-const draftVotingAndClaim = async function (contracts, addressOf, proposals) {
+const draftVotingAndClaim = async function (contracts, addressOf, proposals, shouldClaim = true) {
   await a.map(indexRange(0, proposals.length), 20, async (proposalIndex) => {
     await a.map(indexRange(0, addressOf.badgeHolders.length), 20, async (badgeHolderIndex) => {
       await contracts.daoVoting.voteOnDraft(
@@ -271,8 +271,12 @@ const draftVotingAndClaim = async function (contracts, addressOf, proposals) {
     });
   });
 
-  await waitFor(15, addressOf, web3);
 
+  if (!shouldClaim) {
+    return;
+  }
+
+  await waitFor(15, addressOf, web3);
   await a.map(indexRange(0, proposals.length), 20, async (proposalIndex) => {
     await contracts.daoVotingClaims.claimDraftVotingResult(
       proposals[proposalIndex].id,
@@ -528,6 +532,14 @@ module.exports = async function () {
 
     await finalizeProposals(contracts, [proposals[2], proposals[3], proposals[4]]);
     console.log('finalized proposals');
+
+    if (process.env.CLAIM_DRAFT_VOTING_DEV) {
+      await draftVotingAndClaim(contracts, addressOf, [proposals[3], proposals[4]], false);
+      console.log('finished draft voting for proposals 3, 4');
+      await setDummyConfig(contracts, bN, false);
+      console.log('Stopping here');
+      return;
+    }
 
     await draftVotingAndClaim(contracts, addressOf, [proposals[3], proposals[4]]);
     console.log('finished draft voting');
