@@ -17,7 +17,7 @@ const DaoRewardsManagerExtras = artifacts.require('DaoRewardsManagerExtras.sol')
 const DaoWhitelisting = artifacts.require('DaoWhitelisting.sol');
 
 module.exports = async (deployer, network) => {
-  if (network !== 'mainnet') { return null; }
+  if (network !== 'mainnet' && network !== 'kovan') { return null; }
   deployer.deploy(DaoWhitelisting, ContractResolver.address, [
     DaoCalculatorService.address,
     DaoListingService.address,

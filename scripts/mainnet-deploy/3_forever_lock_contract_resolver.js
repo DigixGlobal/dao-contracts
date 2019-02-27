@@ -1,6 +1,6 @@
 const {
   getAccountsAndAddressOf,
-} = require('../../test/setup');
+} = require('./helpers');
 
 const ContractResolver = artifacts.require('ContractResolver.sol');
 

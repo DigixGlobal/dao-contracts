@@ -6,7 +6,7 @@ const DaoRewardsManagerExtras = artifacts.require('DaoRewardsManagerExtras.sol')
 const DaoInformation = artifacts.require('DaoInformation.sol');
 
 module.exports = async (deployer, network) => {
-  if (network !== 'mainnet') { return null; }
+  if (network !== 'mainnet' && network !== 'kovan') { return null; }
   deployer.link(DaoStructs, DaoRewardsManager)
     .then(() => {
       return deployer.deploy(DaoRewardsManager, ContractResolver.address, process.env.DGX);

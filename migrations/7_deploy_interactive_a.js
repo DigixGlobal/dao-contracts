@@ -5,7 +5,7 @@ const DaoIdentity = artifacts.require('DaoIdentity.sol');
 const DaoFundingManager = artifacts.require('DaoFundingManager.sol');
 
 module.exports = async (deployer, network) => {
-  if (network !== 'mainnet') { return null; }
+  if (network !== 'mainnet' && network !== 'kovan') { return null; }
   deployer.deploy(
     DaoStakeLocking,
     ContractResolver.address,

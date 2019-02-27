@@ -7,7 +7,7 @@ const DaoConfigsStorage = artifacts.require('DaoConfigsStorage.sol');
 const DaoPointsStorage = artifacts.require('DaoPointsStorage.sol');
 
 module.exports = async (deployer, network) => {
-  if (network !== 'mainnet') { return null; }
+  if (network !== 'mainnet' && network !== 'kovan') { return null; }
   deployer.deploy(ContractResolver)
     .then(() => {
       return deployer.link(DoublyLinkedList, DaoIdentityStorage);

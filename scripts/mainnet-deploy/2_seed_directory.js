@@ -1,6 +1,6 @@
 const {
   getAccountsAndAddressOf,
-} = require('../../test/setup');
+} = require('./helpers');
 
 const DaoIdentity = artifacts.require('DaoIdentity.sol');
 

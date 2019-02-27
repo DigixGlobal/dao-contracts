@@ -1,10 +1,8 @@
 const {
   getAccountsAndAddressOf,
-} = require('../../test/setup');
+} = require('./helpers');
 
 const DaoIdentity = artifacts.require('DaoIdentity.sol');
-
-const bN = web3.toBigNumber;
 
 module.exports = async () => {
   web3.eth.getAccounts(async (e, accounts) => {
@@ -15,11 +13,10 @@ module.exports = async () => {
     const daoIdentity = await DaoIdentity.deployed();
     console.log('\tget contract instance \u2713');
 
-    await daoIdentity.addGroupUser(
-      bN(1),
-      process.env.MULTISIG,
-      'add:multisig:root',
+    await daoIdentity.removeGroupUser(
+      addressOf.founderBadgeHolder,
       { from: addressOf.root },
     );
+    console.log('\tremove sigmate founder \u2713');
   });
 };

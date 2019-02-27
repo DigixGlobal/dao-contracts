@@ -2,8 +2,11 @@ const assert = require('assert');
 
 const {
   getAccountsAndAddressOf,
+} = require('./helpers');
+
+const {
   getCurrentTimestamp,
-} = require('../../test/setup');
+} = require('@digix/helpers/lib/helpers');
 
 const Dao = artifacts.require('Dao.sol');
 

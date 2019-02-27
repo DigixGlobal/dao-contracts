@@ -7,7 +7,7 @@ const DaoStorage = artifacts.require('DaoStorage.sol');
 const DaoSpecialStorage = artifacts.require('DaoSpecialStorage.sol');
 
 module.exports = async (deployer, network) => {
-  if (network !== 'mainet') { return null; }
+  if (network !== 'mainnet' && network !== 'kovan') { return null; }
   deployer.link(DaoStructs, DaoStorage)
     .then(() => {
       deployer.link(DaoStructs, DaoSpecialStorage);

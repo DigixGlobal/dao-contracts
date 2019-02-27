@@ -6,7 +6,7 @@ const DaoWhitelistingStorage = artifacts.require('DaoWhitelistingStorage.sol');
 const IntermediateResultsStorage = artifacts.require('IntermediateResultsStorage.sol');
 
 module.exports = async (deployer, network) => {
-  if (network !== 'mainnet') { return null; }
+  if (network !== 'mainnet' && network !== 'kovan') { return null; }
   deployer.link(DaoStructs, IntermediateResultsStorage)
     .then(() => {
       return deployer.link(DaoStructs, DaoRewardsStorage);

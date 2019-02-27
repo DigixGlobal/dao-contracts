@@ -84,7 +84,7 @@ $ ./node_modules/.bin/truffle exec scripts/mainnet-deploy/0_print-relevant-accou
 ## Contract Deployment and Initialization
 
 #### Compile and deploy
-* Compile the contracts
+* Compile the contracts (Ignore the compilation warnings from the `MultiSigWallet.sol` contract)
 ```
 $ ./node_modules/.bin/truffle compile
 ```
@@ -102,40 +102,44 @@ the 400,000 ETH for DigixDAO. This deployment will be in the following parts
     * Part A, B, C, D and E for deploying `interactive` layer contracts
 
 #### Deploy new Multi-sig wallet for ROOT
+* We need a list of addresses that would be the owners of this MultiSigWallet. Provide these addresses as a comma-separated string, and the minimum required number of addresses is the number of addresses that need to sign an action for that action to be executed. As an example, for a configuration of 5 owners (`0x012`, `0xabc`, `0x319`, `0xa41` and `0x8da`) with at least 3 addresses required for an action:
+```
+$ OWNERS=0x012,0xabc,0x319,0xa41,0x8da MIN_REQUIRED=3 ./node_modules/.bin/truffle exec scripts/mainnet-deploy/1_deploy_multisig.js --network mainnet
+```
 
 #### Configuration after deployment
 * Seed the directory with relevant users (from sigmate accounts)
 ```
-$ ./node_modules/.bin/truffle exec scripts/mainnet-deploy/1_seed_directory.js --network mainnet
+$ ./node_modules/.bin/truffle exec scripts/mainnet-deploy/2_seed_directory.js --network mainnet
 ```
 This script will add `accounts[3]` as a founder role in DigixDAO
 * Lock the `ContractResolver` forever
 ```
-$ ./node_modules/.bin/truffle exec scripts/mainnet-deploy/2_forever_lock_contract_resolver.js --network mainnet
+$ ./node_modules/.bin/truffle exec scripts/mainnet-deploy/3_forever_lock_contract_resolver.js --network mainnet
 ```
 * Founder account marks the start of DigixDAO
 ```
-$ START_TIMESTAMP=<> ./node_modules/.bin/truffle exec scripts/mainnet-deploy/3_set_start_digixdao.js --network mainnet
+$ START_TIMESTAMP=<> ./node_modules/.bin/truffle exec scripts/mainnet-deploy/4_set_start_digixdao.js --network mainnet
 ```
 Note that the `START_TIMESTAMP` should be a UNIX Timestamp from the future
 * Add Ledger accounts as the `Founder`, `PRL` and `KYC Admin` roles. Add another keystore account as `KYC Admin`
 ```
-$ LEDGER_FOUNDER=<> LEDGER_PRL=<> LEDGER_KYC_ADMIN=<> KEYSTORE_KYC_ADMIN=<> ./node_modules/.bin/truffle exec scripts/mainnet-deploy/4_add_ledgers_as_roles.js --network mainnet
+$ LEDGER_FOUNDER=<> LEDGER_PRL=<> LEDGER_KYC_ADMIN=<> KEYSTORE_KYC_ADMIN=<> ./node_modules/.bin/truffle exec scripts/mainnet-deploy/5_add_ledgers_as_roles.js --network mainnet
 ```
 Make sure the keystore account for `KYC Admin` has been generated securely. This will later be used to be loaded into the Info-Server in order to automate the signing of KYC Approval transactions, read more [here]().
 * Remove sigmate accounts (`accounts[3]`) from their temporary roles (`founder`)
 ```
-$ ./node_modules/.bin/truffle exec scripts/mainnet-deploy/5_clean_temp_accounts.js --network mainnet
+$ ./node_modules/.bin/truffle exec scripts/mainnet-deploy/6_clean_temp_accounts.js --network mainnet
 ```
 * Add the multi-sig contract address as root in the directory
 ```
-$ MULTISIG=<> ./node_modules/.bin/truffle exec scripts/mainnet-deploy/6_add_root.js --network mainnet
+$ MULTISIG=<> ./node_modules/.bin/truffle exec scripts/mainnet-deploy/7_add_root.js --network mainnet
 ```
 * Recover leftover funds from sigmate `root` and `founder` accounts
 ```
-$ ./node_modules/.bin/truffle exec scripts/mainnet-deploy/7_recover_leftover_funds.js --network mainnet
+$ COLLECTOR=<> GAS_PRICE_IN_GWEI=<> ./node_modules/.bin/truffle exec scripts/mainnet-deploy/8_recover_leftover_funds.js --network mainnet
 ```
-provide it the address of the deployed multi-sig wallet contract
+provide it the address of the deployed multi-sig wallet contract to `collect` all the leftover funds. Also provide what is the gas price as set in `truffle.js` file
 * Remove the default root (`accounts[0]`) from Gnosis multi-sig GUI. Submit a transaction from Gnosis Multi-sig wallet interface (check [here]() for detailed instructions on getting these parameters)
     * `destination`: Address of the deployed `DaoIdentity` contract
     * `value`: Ether value to be sent, i.e. `0`

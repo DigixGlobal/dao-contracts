@@ -1,6 +1,6 @@
 const {
   getAccountsAndAddressOf,
-} = require('../../test/setup');
+} = require('./helpers');
 
 const bN = web3.toBigNumber;
 
@@ -11,7 +11,8 @@ module.exports = async () => {
     console.log('\tget accounts \u2713');
 
     const collector = process.env.COLLECTOR;
-    const gasNeededForTransfer = bN(100 * (10 ** 13));
+    const gasPriceInGwei = parseInt(process.env.GAS_PRICE_IN_GWEI, 10);
+    const gasNeededForTransfer = bN(21000 * gasPriceInGwei * (10 ** 9));
 
     const collectEth = (sender) => {
       web3.eth.getBalance(sender, (e, balance) => {
