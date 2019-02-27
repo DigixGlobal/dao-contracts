@@ -95,7 +95,8 @@ $ FUNDING_SOURCE=<> DGX_DEMURRAGE_REPORTER=<> DGD=<> DGD_BADGE=<> CV_1=<> CV_2=<
 ```
 Provide the addresses of the necessary contracts that have already been deployed
 on mainnet. The `FUNDING_SOURCE` is the multi-sig contract that is holding all
-the 400,000 ETH for DigixDAO. This deployment will be in the following parts
+the 400,000 ETH for DigixDAO.
+* This deployment will be in the following parts:
     * Deploying `library` contracts
     * Part A, B and C for deploying `storage` layer contracts
     * Deploying `service` layer contracts
