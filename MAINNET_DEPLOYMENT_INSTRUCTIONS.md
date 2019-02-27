@@ -140,7 +140,7 @@ $ MULTISIG=<> ./node_modules/.bin/truffle exec scripts/mainnet-deploy/7_add_root
 $ COLLECTOR=<> GAS_PRICE_IN_GWEI=<> ./node_modules/.bin/truffle exec scripts/mainnet-deploy/8_recover_leftover_funds.js --network mainnet
 ```
 provide it the address of the deployed multi-sig wallet contract to `collect` all the leftover funds. Also provide what is the gas price as set in `truffle.js` file
-* Remove the default root (`accounts[0]`) from Gnosis multi-sig GUI. Submit a transaction from Gnosis Multi-sig wallet interface (check [here]() for detailed instructions on getting these parameters)
+* Remove the default root (`accounts[0]`) from Gnosis multi-sig GUI. Submit a transaction from Gnosis Multi-sig wallet interface (check [here](https://github.com/DigixGlobal/dao-contracts/blob/mainnet-deploy/MAINNET_DEPLOYMENT_INSTRUCTIONS.md#steps-to-get-data-field-for-the-above-transaction) for detailed instructions on getting these parameters)
     * `destination`: Address of the deployed `DaoIdentity` contract
     * `value`: Ether value to be sent, i.e. `0`
     * `data`: The data field for the contract function call
@@ -148,7 +148,7 @@ provide it the address of the deployed multi-sig wallet contract to `collect` al
     * From the `FUNDING_SOURCE` multi-sig wallet
     * Transaction to send ETH to `DaoFundingManager`
 
-###### Steps to get `data` field for [the above transaction]()
+###### Steps to get `data` field for the above transaction
 ```
 $ ./node_modules/.bin/truffle console --network mainnet
 > var accounts
