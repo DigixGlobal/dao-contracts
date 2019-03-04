@@ -34,7 +34,7 @@ contract DaoInformation is DaoCommon {
     */
     function readUserInfo(address _user)
         public
-        constant
+        view
         returns (
             bool _isParticipant,
             bool _isModerator,
@@ -69,19 +69,23 @@ contract DaoInformation is DaoCommon {
       "_startOfQuarter": "The unix timestamp when the current quarter started",
       "_startOfMainPhase": "The unix timestamp when the main phase of current quarter has/will start",
       "_startOfNextQuarter": "The unix timestamp when the next quarter begins",
-      "_isMainPhase": "Boolean, true if this is the main phase, false if this is the locking phase"
+      "_isMainPhase": "Boolean, true if this is the main phase, false if this is the locking phase",
+      "_nModerators": "Number of moderators in DigixDAO",
+      "_nParticipants": "Number of participants in DigixDAO"
     }
     */
     function readDaoInfo()
         public
-        constant
+        view
         returns (
             uint256 _currentQuarterNumber,
             uint256 _startOfQuarter,
             uint256 _startOfMainPhase,
             uint256 _startOfNextQuarter,
             bool _isMainPhase,
-            bool _isGlobalRewardsSet
+            bool _isGlobalRewardsSet,
+            uint256 _nModerators,
+            uint256 _nParticipants
         )
     {
         _currentQuarterNumber = currentQuarterNumber();
@@ -90,5 +94,7 @@ contract DaoInformation is DaoCommon {
         _startOfNextQuarter = _startOfQuarter.add(getUintConfig(CONFIG_QUARTER_DURATION));
         _isMainPhase = isMainPhase();
         _isGlobalRewardsSet = daoRewardsStorage().readDgxDistributionDay(_currentQuarterNumber) > 0 ? true : false;
+        _nModerators = daoStakeStorage().readTotalModerators();
+        _nParticipants = daoStakeStorage().readTotalParticipant();
     }
 }
