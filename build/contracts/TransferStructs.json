@@ -11,14 +11,14 @@
     "absolutePath": "@digix/lite-dgx-contract/contracts/libs/TransferStructs.sol",
     "exportedSymbols": {
       "TransferStructs": [
-        21268
+        21315
       ]
     },
-    "id": 21269,
+    "id": 21316,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 21218,
+        "id": 21265,
         "literals": [
           "solidity",
           "^",
@@ -31,10 +31,10 @@
       {
         "absolutePath": "@digix/solidity-core-libraries/contracts/Types.sol",
         "file": "@digix/solidity-core-libraries/contracts/Types.sol",
-        "id": 21219,
+        "id": 21266,
         "nodeType": "ImportDirective",
-        "scope": 21269,
-        "sourceUnit": 25493,
+        "scope": 21316,
+        "sourceUnit": 25540,
         "src": "26:60:73",
         "symbolAliases": [],
         "unitAlias": ""
@@ -45,24 +45,24 @@
         "contractKind": "library",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 21268,
+        "id": 21315,
         "linearizedBaseContracts": [
-          21268
+          21315
         ],
         "name": "TransferStructs",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "id": 21222,
+            "id": 21269,
             "libraryName": {
               "contractScope": null,
-              "id": 21220,
+              "id": 21267,
               "name": "Types",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 25492,
+              "referencedDeclaration": 25539,
               "src": "122:5:73",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Types_$25492",
+                "typeIdentifier": "t_contract$_Types_$25539",
                 "typeString": "library Types"
               }
             },
@@ -70,28 +70,28 @@
             "src": "116:34:73",
             "typeName": {
               "contractScope": null,
-              "id": 21221,
+              "id": 21268,
               "name": "Types.MutableUint",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 25179,
+              "referencedDeclaration": 25226,
               "src": "132:17:73",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_MutableUint_$25179_storage_ptr",
+                "typeIdentifier": "t_struct$_MutableUint_$25226_storage_ptr",
                 "typeString": "struct Types.MutableUint"
               }
             }
           },
           {
-            "id": 21225,
+            "id": 21272,
             "libraryName": {
               "contractScope": null,
-              "id": 21223,
+              "id": 21270,
               "name": "Types",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 25492,
+              "referencedDeclaration": 25539,
               "src": "159:5:73",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Types_$25492",
+                "typeIdentifier": "t_contract$_Types_$25539",
                 "typeString": "library Types"
               }
             },
@@ -99,27 +99,27 @@
             "src": "153:39:73",
             "typeName": {
               "contractScope": null,
-              "id": 21224,
+              "id": 21271,
               "name": "Types.MutableTimestamp",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 25184,
+              "referencedDeclaration": 25231,
               "src": "169:22:73",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_MutableTimestamp_$25184_storage_ptr",
+                "typeIdentifier": "t_struct$_MutableTimestamp_$25231_storage_ptr",
                 "typeString": "struct Types.MutableTimestamp"
               }
             }
           },
           {
             "canonicalName": "TransferStructs.User",
-            "id": 21232,
+            "id": 21279,
             "members": [
               {
                 "constant": false,
-                "id": 21227,
+                "id": 21274,
                 "name": "account",
                 "nodeType": "VariableDeclaration",
-                "scope": 21232,
+                "scope": 21279,
                 "src": "214:15:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -128,7 +128,7 @@
                   "typeString": "address"
                 },
                 "typeName": {
-                  "id": 21226,
+                  "id": 21273,
                   "name": "address",
                   "nodeType": "ElementaryTypeName",
                   "src": "214:7:73",
@@ -142,26 +142,26 @@
               },
               {
                 "constant": false,
-                "id": 21229,
+                "id": 21276,
                 "name": "balance",
                 "nodeType": "VariableDeclaration",
-                "scope": 21232,
+                "scope": 21279,
                 "src": "235:25:73",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_MutableUint_$25179_storage_ptr",
+                  "typeIdentifier": "t_struct$_MutableUint_$25226_storage_ptr",
                   "typeString": "struct Types.MutableUint"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 21228,
+                  "id": 21275,
                   "name": "Types.MutableUint",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 25179,
+                  "referencedDeclaration": 25226,
                   "src": "235:17:73",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_MutableUint_$25179_storage_ptr",
+                    "typeIdentifier": "t_struct$_MutableUint_$25226_storage_ptr",
                     "typeString": "struct Types.MutableUint"
                   }
                 },
@@ -170,10 +170,10 @@
               },
               {
                 "constant": false,
-                "id": 21231,
+                "id": 21278,
                 "name": "no_transfer_fee",
                 "nodeType": "VariableDeclaration",
-                "scope": 21232,
+                "scope": 21279,
                 "src": "266:20:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -182,7 +182,7 @@
                   "typeString": "bool"
                 },
                 "typeName": {
-                  "id": 21230,
+                  "id": 21277,
                   "name": "bool",
                   "nodeType": "ElementaryTypeName",
                   "src": "266:4:73",
@@ -197,20 +197,20 @@
             ],
             "name": "User",
             "nodeType": "StructDefinition",
-            "scope": 21268,
+            "scope": 21315,
             "src": "196:95:73",
             "visibility": "public"
           },
           {
             "canonicalName": "TransferStructs.Spender",
-            "id": 21237,
+            "id": 21284,
             "members": [
               {
                 "constant": false,
-                "id": 21234,
+                "id": 21281,
                 "name": "account",
                 "nodeType": "VariableDeclaration",
-                "scope": 21237,
+                "scope": 21284,
                 "src": "316:15:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -219,7 +219,7 @@
                   "typeString": "address"
                 },
                 "typeName": {
-                  "id": 21233,
+                  "id": 21280,
                   "name": "address",
                   "nodeType": "ElementaryTypeName",
                   "src": "316:7:73",
@@ -233,26 +233,26 @@
               },
               {
                 "constant": false,
-                "id": 21236,
+                "id": 21283,
                 "name": "allowance",
                 "nodeType": "VariableDeclaration",
-                "scope": 21237,
+                "scope": 21284,
                 "src": "337:27:73",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_MutableUint_$25179_storage_ptr",
+                  "typeIdentifier": "t_struct$_MutableUint_$25226_storage_ptr",
                   "typeString": "struct Types.MutableUint"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 21235,
+                  "id": 21282,
                   "name": "Types.MutableUint",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 25179,
+                  "referencedDeclaration": 25226,
                   "src": "337:17:73",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_MutableUint_$25179_storage_ptr",
+                    "typeIdentifier": "t_struct$_MutableUint_$25226_storage_ptr",
                     "typeString": "struct Types.MutableUint"
                   }
                 },
@@ -262,36 +262,36 @@
             ],
             "name": "Spender",
             "nodeType": "StructDefinition",
-            "scope": 21268,
+            "scope": 21315,
             "src": "295:74:73",
             "visibility": "public"
           },
           {
             "canonicalName": "TransferStructs.Config",
-            "id": 21250,
+            "id": 21297,
             "members": [
               {
                 "constant": false,
-                "id": 21239,
+                "id": 21286,
                 "name": "collector_balance",
                 "nodeType": "VariableDeclaration",
-                "scope": 21250,
+                "scope": 21297,
                 "src": "393:35:73",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_MutableUint_$25179_storage_ptr",
+                  "typeIdentifier": "t_struct$_MutableUint_$25226_storage_ptr",
                   "typeString": "struct Types.MutableUint"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 21238,
+                  "id": 21285,
                   "name": "Types.MutableUint",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 25179,
+                  "referencedDeclaration": 25226,
                   "src": "393:17:73",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_MutableUint_$25179_storage_ptr",
+                    "typeIdentifier": "t_struct$_MutableUint_$25226_storage_ptr",
                     "typeString": "struct Types.MutableUint"
                   }
                 },
@@ -300,10 +300,10 @@
               },
               {
                 "constant": false,
-                "id": 21241,
+                "id": 21288,
                 "name": "collector",
                 "nodeType": "VariableDeclaration",
-                "scope": 21250,
+                "scope": 21297,
                 "src": "434:17:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -312,7 +312,7 @@
                   "typeString": "address"
                 },
                 "typeName": {
-                  "id": 21240,
+                  "id": 21287,
                   "name": "address",
                   "nodeType": "ElementaryTypeName",
                   "src": "434:7:73",
@@ -326,10 +326,10 @@
               },
               {
                 "constant": false,
-                "id": 21243,
+                "id": 21290,
                 "name": "base",
                 "nodeType": "VariableDeclaration",
-                "scope": 21250,
+                "scope": 21297,
                 "src": "457:12:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -338,7 +338,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 21242,
+                  "id": 21289,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "457:7:73",
@@ -352,10 +352,10 @@
               },
               {
                 "constant": false,
-                "id": 21245,
+                "id": 21292,
                 "name": "rate",
                 "nodeType": "VariableDeclaration",
-                "scope": 21250,
+                "scope": 21297,
                 "src": "475:12:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -364,7 +364,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 21244,
+                  "id": 21291,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "475:7:73",
@@ -378,10 +378,10 @@
               },
               {
                 "constant": false,
-                "id": 21247,
+                "id": 21294,
                 "name": "global_transfer_fee_disabled",
                 "nodeType": "VariableDeclaration",
-                "scope": 21250,
+                "scope": 21297,
                 "src": "493:33:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -390,7 +390,7 @@
                   "typeString": "bool"
                 },
                 "typeName": {
-                  "id": 21246,
+                  "id": 21293,
                   "name": "bool",
                   "nodeType": "ElementaryTypeName",
                   "src": "493:4:73",
@@ -404,10 +404,10 @@
               },
               {
                 "constant": false,
-                "id": 21249,
+                "id": 21296,
                 "name": "minimum_transfer_amount",
                 "nodeType": "VariableDeclaration",
-                "scope": 21250,
+                "scope": 21297,
                 "src": "532:31:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -416,7 +416,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 21248,
+                  "id": 21295,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "532:7:73",
@@ -431,36 +431,36 @@
             ],
             "name": "Config",
             "nodeType": "StructDefinition",
-            "scope": 21268,
+            "scope": 21315,
             "src": "373:195:73",
             "visibility": "public"
           },
           {
             "canonicalName": "TransferStructs.Transfer",
-            "id": 21267,
+            "id": 21314,
             "members": [
               {
                 "constant": false,
-                "id": 21252,
+                "id": 21299,
                 "name": "sender",
                 "nodeType": "VariableDeclaration",
-                "scope": 21267,
+                "scope": 21314,
                 "src": "594:11:73",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_User_$21232_storage_ptr",
+                  "typeIdentifier": "t_struct$_User_$21279_storage_ptr",
                   "typeString": "struct TransferStructs.User"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 21251,
+                  "id": 21298,
                   "name": "User",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 21232,
+                  "referencedDeclaration": 21279,
                   "src": "594:4:73",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_User_$21232_storage_ptr",
+                    "typeIdentifier": "t_struct$_User_$21279_storage_ptr",
                     "typeString": "struct TransferStructs.User"
                   }
                 },
@@ -469,26 +469,26 @@
               },
               {
                 "constant": false,
-                "id": 21254,
+                "id": 21301,
                 "name": "recipient",
                 "nodeType": "VariableDeclaration",
-                "scope": 21267,
+                "scope": 21314,
                 "src": "611:14:73",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_User_$21232_storage_ptr",
+                  "typeIdentifier": "t_struct$_User_$21279_storage_ptr",
                   "typeString": "struct TransferStructs.User"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 21253,
+                  "id": 21300,
                   "name": "User",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 21232,
+                  "referencedDeclaration": 21279,
                   "src": "611:4:73",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_User_$21232_storage_ptr",
+                    "typeIdentifier": "t_struct$_User_$21279_storage_ptr",
                     "typeString": "struct TransferStructs.User"
                   }
                 },
@@ -497,26 +497,26 @@
               },
               {
                 "constant": false,
-                "id": 21256,
+                "id": 21303,
                 "name": "spender",
                 "nodeType": "VariableDeclaration",
-                "scope": 21267,
+                "scope": 21314,
                 "src": "631:15:73",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_Spender_$21237_storage_ptr",
+                  "typeIdentifier": "t_struct$_Spender_$21284_storage_ptr",
                   "typeString": "struct TransferStructs.Spender"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 21255,
+                  "id": 21302,
                   "name": "Spender",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 21237,
+                  "referencedDeclaration": 21284,
                   "src": "631:7:73",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Spender_$21237_storage_ptr",
+                    "typeIdentifier": "t_struct$_Spender_$21284_storage_ptr",
                     "typeString": "struct TransferStructs.Spender"
                   }
                 },
@@ -525,26 +525,26 @@
               },
               {
                 "constant": false,
-                "id": 21258,
+                "id": 21305,
                 "name": "config",
                 "nodeType": "VariableDeclaration",
-                "scope": 21267,
+                "scope": 21314,
                 "src": "652:13:73",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_Config_$21250_storage_ptr",
+                  "typeIdentifier": "t_struct$_Config_$21297_storage_ptr",
                   "typeString": "struct TransferStructs.Config"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 21257,
+                  "id": 21304,
                   "name": "Config",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 21250,
+                  "referencedDeclaration": 21297,
                   "src": "652:6:73",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Config_$21250_storage_ptr",
+                    "typeIdentifier": "t_struct$_Config_$21297_storage_ptr",
                     "typeString": "struct TransferStructs.Config"
                   }
                 },
@@ -553,26 +553,26 @@
               },
               {
                 "constant": false,
-                "id": 21260,
+                "id": 21307,
                 "name": "received_amount",
                 "nodeType": "VariableDeclaration",
-                "scope": 21267,
+                "scope": 21314,
                 "src": "671:33:73",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_MutableUint_$25179_storage_ptr",
+                  "typeIdentifier": "t_struct$_MutableUint_$25226_storage_ptr",
                   "typeString": "struct Types.MutableUint"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 21259,
+                  "id": 21306,
                   "name": "Types.MutableUint",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 25179,
+                  "referencedDeclaration": 25226,
                   "src": "671:17:73",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_MutableUint_$25179_storage_ptr",
+                    "typeIdentifier": "t_struct$_MutableUint_$25226_storage_ptr",
                     "typeString": "struct Types.MutableUint"
                   }
                 },
@@ -581,10 +581,10 @@
               },
               {
                 "constant": false,
-                "id": 21262,
+                "id": 21309,
                 "name": "sent_amount",
                 "nodeType": "VariableDeclaration",
-                "scope": 21267,
+                "scope": 21314,
                 "src": "710:19:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -593,7 +593,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 21261,
+                  "id": 21308,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "710:7:73",
@@ -607,10 +607,10 @@
               },
               {
                 "constant": false,
-                "id": 21264,
+                "id": 21311,
                 "name": "fee",
                 "nodeType": "VariableDeclaration",
-                "scope": 21267,
+                "scope": 21314,
                 "src": "735:11:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -619,7 +619,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 21263,
+                  "id": 21310,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "735:7:73",
@@ -633,10 +633,10 @@
               },
               {
                 "constant": false,
-                "id": 21266,
+                "id": 21313,
                 "name": "is_transfer_from",
                 "nodeType": "VariableDeclaration",
-                "scope": 21267,
+                "scope": 21314,
                 "src": "752:21:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -645,7 +645,7 @@
                   "typeString": "bool"
                 },
                 "typeName": {
-                  "id": 21265,
+                  "id": 21312,
                   "name": "bool",
                   "nodeType": "ElementaryTypeName",
                   "src": "752:4:73",
@@ -660,12 +660,12 @@
             ],
             "name": "Transfer",
             "nodeType": "StructDefinition",
-            "scope": 21268,
+            "scope": 21315,
             "src": "572:206:73",
             "visibility": "public"
           }
         ],
-        "scope": 21269,
+        "scope": 21316,
         "src": "88:692:73"
       }
     ],
@@ -675,14 +675,14 @@
     "absolutePath": "@digix/lite-dgx-contract/contracts/libs/TransferStructs.sol",
     "exportedSymbols": {
       "TransferStructs": [
-        21268
+        21315
       ]
     },
-    "id": 21269,
+    "id": 21316,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 21218,
+        "id": 21265,
         "literals": [
           "solidity",
           "^",
@@ -695,10 +695,10 @@
       {
         "absolutePath": "@digix/solidity-core-libraries/contracts/Types.sol",
         "file": "@digix/solidity-core-libraries/contracts/Types.sol",
-        "id": 21219,
+        "id": 21266,
         "nodeType": "ImportDirective",
-        "scope": 21269,
-        "sourceUnit": 25493,
+        "scope": 21316,
+        "sourceUnit": 25540,
         "src": "26:60:73",
         "symbolAliases": [],
         "unitAlias": ""
@@ -709,24 +709,24 @@
         "contractKind": "library",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 21268,
+        "id": 21315,
         "linearizedBaseContracts": [
-          21268
+          21315
         ],
         "name": "TransferStructs",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "id": 21222,
+            "id": 21269,
             "libraryName": {
               "contractScope": null,
-              "id": 21220,
+              "id": 21267,
               "name": "Types",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 25492,
+              "referencedDeclaration": 25539,
               "src": "122:5:73",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Types_$25492",
+                "typeIdentifier": "t_contract$_Types_$25539",
                 "typeString": "library Types"
               }
             },
@@ -734,28 +734,28 @@
             "src": "116:34:73",
             "typeName": {
               "contractScope": null,
-              "id": 21221,
+              "id": 21268,
               "name": "Types.MutableUint",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 25179,
+              "referencedDeclaration": 25226,
               "src": "132:17:73",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_MutableUint_$25179_storage_ptr",
+                "typeIdentifier": "t_struct$_MutableUint_$25226_storage_ptr",
                 "typeString": "struct Types.MutableUint"
               }
             }
           },
           {
-            "id": 21225,
+            "id": 21272,
             "libraryName": {
               "contractScope": null,
-              "id": 21223,
+              "id": 21270,
               "name": "Types",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 25492,
+              "referencedDeclaration": 25539,
               "src": "159:5:73",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Types_$25492",
+                "typeIdentifier": "t_contract$_Types_$25539",
                 "typeString": "library Types"
               }
             },
@@ -763,27 +763,27 @@
             "src": "153:39:73",
             "typeName": {
               "contractScope": null,
-              "id": 21224,
+              "id": 21271,
               "name": "Types.MutableTimestamp",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 25184,
+              "referencedDeclaration": 25231,
               "src": "169:22:73",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_MutableTimestamp_$25184_storage_ptr",
+                "typeIdentifier": "t_struct$_MutableTimestamp_$25231_storage_ptr",
                 "typeString": "struct Types.MutableTimestamp"
               }
             }
           },
           {
             "canonicalName": "TransferStructs.User",
-            "id": 21232,
+            "id": 21279,
             "members": [
               {
                 "constant": false,
-                "id": 21227,
+                "id": 21274,
                 "name": "account",
                 "nodeType": "VariableDeclaration",
-                "scope": 21232,
+                "scope": 21279,
                 "src": "214:15:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -792,7 +792,7 @@
                   "typeString": "address"
                 },
                 "typeName": {
-                  "id": 21226,
+                  "id": 21273,
                   "name": "address",
                   "nodeType": "ElementaryTypeName",
                   "src": "214:7:73",
@@ -806,26 +806,26 @@
               },
               {
                 "constant": false,
-                "id": 21229,
+                "id": 21276,
                 "name": "balance",
                 "nodeType": "VariableDeclaration",
-                "scope": 21232,
+                "scope": 21279,
                 "src": "235:25:73",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_MutableUint_$25179_storage_ptr",
+                  "typeIdentifier": "t_struct$_MutableUint_$25226_storage_ptr",
                   "typeString": "struct Types.MutableUint"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 21228,
+                  "id": 21275,
                   "name": "Types.MutableUint",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 25179,
+                  "referencedDeclaration": 25226,
                   "src": "235:17:73",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_MutableUint_$25179_storage_ptr",
+                    "typeIdentifier": "t_struct$_MutableUint_$25226_storage_ptr",
                     "typeString": "struct Types.MutableUint"
                   }
                 },
@@ -834,10 +834,10 @@
               },
               {
                 "constant": false,
-                "id": 21231,
+                "id": 21278,
                 "name": "no_transfer_fee",
                 "nodeType": "VariableDeclaration",
-                "scope": 21232,
+                "scope": 21279,
                 "src": "266:20:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -846,7 +846,7 @@
                   "typeString": "bool"
                 },
                 "typeName": {
-                  "id": 21230,
+                  "id": 21277,
                   "name": "bool",
                   "nodeType": "ElementaryTypeName",
                   "src": "266:4:73",
@@ -861,20 +861,20 @@
             ],
             "name": "User",
             "nodeType": "StructDefinition",
-            "scope": 21268,
+            "scope": 21315,
             "src": "196:95:73",
             "visibility": "public"
           },
           {
             "canonicalName": "TransferStructs.Spender",
-            "id": 21237,
+            "id": 21284,
             "members": [
               {
                 "constant": false,
-                "id": 21234,
+                "id": 21281,
                 "name": "account",
                 "nodeType": "VariableDeclaration",
-                "scope": 21237,
+                "scope": 21284,
                 "src": "316:15:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -883,7 +883,7 @@
                   "typeString": "address"
                 },
                 "typeName": {
-                  "id": 21233,
+                  "id": 21280,
                   "name": "address",
                   "nodeType": "ElementaryTypeName",
                   "src": "316:7:73",
@@ -897,26 +897,26 @@
               },
               {
                 "constant": false,
-                "id": 21236,
+                "id": 21283,
                 "name": "allowance",
                 "nodeType": "VariableDeclaration",
-                "scope": 21237,
+                "scope": 21284,
                 "src": "337:27:73",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_MutableUint_$25179_storage_ptr",
+                  "typeIdentifier": "t_struct$_MutableUint_$25226_storage_ptr",
                   "typeString": "struct Types.MutableUint"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 21235,
+                  "id": 21282,
                   "name": "Types.MutableUint",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 25179,
+                  "referencedDeclaration": 25226,
                   "src": "337:17:73",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_MutableUint_$25179_storage_ptr",
+                    "typeIdentifier": "t_struct$_MutableUint_$25226_storage_ptr",
                     "typeString": "struct Types.MutableUint"
                   }
                 },
@@ -926,36 +926,36 @@
             ],
             "name": "Spender",
             "nodeType": "StructDefinition",
-            "scope": 21268,
+            "scope": 21315,
             "src": "295:74:73",
             "visibility": "public"
           },
           {
             "canonicalName": "TransferStructs.Config",
-            "id": 21250,
+            "id": 21297,
             "members": [
               {
                 "constant": false,
-                "id": 21239,
+                "id": 21286,
                 "name": "collector_balance",
                 "nodeType": "VariableDeclaration",
-                "scope": 21250,
+                "scope": 21297,
                 "src": "393:35:73",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_MutableUint_$25179_storage_ptr",
+                  "typeIdentifier": "t_struct$_MutableUint_$25226_storage_ptr",
                   "typeString": "struct Types.MutableUint"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 21238,
+                  "id": 21285,
                   "name": "Types.MutableUint",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 25179,
+                  "referencedDeclaration": 25226,
                   "src": "393:17:73",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_MutableUint_$25179_storage_ptr",
+                    "typeIdentifier": "t_struct$_MutableUint_$25226_storage_ptr",
                     "typeString": "struct Types.MutableUint"
                   }
                 },
@@ -964,10 +964,10 @@
               },
               {
                 "constant": false,
-                "id": 21241,
+                "id": 21288,
                 "name": "collector",
                 "nodeType": "VariableDeclaration",
-                "scope": 21250,
+                "scope": 21297,
                 "src": "434:17:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -976,7 +976,7 @@
                   "typeString": "address"
                 },
                 "typeName": {
-                  "id": 21240,
+                  "id": 21287,
                   "name": "address",
                   "nodeType": "ElementaryTypeName",
                   "src": "434:7:73",
@@ -990,10 +990,10 @@
               },
               {
                 "constant": false,
-                "id": 21243,
+                "id": 21290,
                 "name": "base",
                 "nodeType": "VariableDeclaration",
-                "scope": 21250,
+                "scope": 21297,
                 "src": "457:12:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1002,7 +1002,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 21242,
+                  "id": 21289,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "457:7:73",
@@ -1016,10 +1016,10 @@
               },
               {
                 "constant": false,
-                "id": 21245,
+                "id": 21292,
                 "name": "rate",
                 "nodeType": "VariableDeclaration",
-                "scope": 21250,
+                "scope": 21297,
                 "src": "475:12:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1028,7 +1028,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 21244,
+                  "id": 21291,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "475:7:73",
@@ -1042,10 +1042,10 @@
               },
               {
                 "constant": false,
-                "id": 21247,
+                "id": 21294,
                 "name": "global_transfer_fee_disabled",
                 "nodeType": "VariableDeclaration",
-                "scope": 21250,
+                "scope": 21297,
                 "src": "493:33:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1054,7 +1054,7 @@
                   "typeString": "bool"
                 },
                 "typeName": {
-                  "id": 21246,
+                  "id": 21293,
                   "name": "bool",
                   "nodeType": "ElementaryTypeName",
                   "src": "493:4:73",
@@ -1068,10 +1068,10 @@
               },
               {
                 "constant": false,
-                "id": 21249,
+                "id": 21296,
                 "name": "minimum_transfer_amount",
                 "nodeType": "VariableDeclaration",
-                "scope": 21250,
+                "scope": 21297,
                 "src": "532:31:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1080,7 +1080,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 21248,
+                  "id": 21295,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "532:7:73",
@@ -1095,36 +1095,36 @@
             ],
             "name": "Config",
             "nodeType": "StructDefinition",
-            "scope": 21268,
+            "scope": 21315,
             "src": "373:195:73",
             "visibility": "public"
           },
           {
             "canonicalName": "TransferStructs.Transfer",
-            "id": 21267,
+            "id": 21314,
             "members": [
               {
                 "constant": false,
-                "id": 21252,
+                "id": 21299,
                 "name": "sender",
                 "nodeType": "VariableDeclaration",
-                "scope": 21267,
+                "scope": 21314,
                 "src": "594:11:73",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_User_$21232_storage_ptr",
+                  "typeIdentifier": "t_struct$_User_$21279_storage_ptr",
                   "typeString": "struct TransferStructs.User"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 21251,
+                  "id": 21298,
                   "name": "User",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 21232,
+                  "referencedDeclaration": 21279,
                   "src": "594:4:73",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_User_$21232_storage_ptr",
+                    "typeIdentifier": "t_struct$_User_$21279_storage_ptr",
                     "typeString": "struct TransferStructs.User"
                   }
                 },
@@ -1133,26 +1133,26 @@
               },
               {
                 "constant": false,
-                "id": 21254,
+                "id": 21301,
                 "name": "recipient",
                 "nodeType": "VariableDeclaration",
-                "scope": 21267,
+                "scope": 21314,
                 "src": "611:14:73",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_User_$21232_storage_ptr",
+                  "typeIdentifier": "t_struct$_User_$21279_storage_ptr",
                   "typeString": "struct TransferStructs.User"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 21253,
+                  "id": 21300,
                   "name": "User",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 21232,
+                  "referencedDeclaration": 21279,
                   "src": "611:4:73",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_User_$21232_storage_ptr",
+                    "typeIdentifier": "t_struct$_User_$21279_storage_ptr",
                     "typeString": "struct TransferStructs.User"
                   }
                 },
@@ -1161,26 +1161,26 @@
               },
               {
                 "constant": false,
-                "id": 21256,
+                "id": 21303,
                 "name": "spender",
                 "nodeType": "VariableDeclaration",
-                "scope": 21267,
+                "scope": 21314,
                 "src": "631:15:73",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_Spender_$21237_storage_ptr",
+                  "typeIdentifier": "t_struct$_Spender_$21284_storage_ptr",
                   "typeString": "struct TransferStructs.Spender"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 21255,
+                  "id": 21302,
                   "name": "Spender",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 21237,
+                  "referencedDeclaration": 21284,
                   "src": "631:7:73",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Spender_$21237_storage_ptr",
+                    "typeIdentifier": "t_struct$_Spender_$21284_storage_ptr",
                     "typeString": "struct TransferStructs.Spender"
                   }
                 },
@@ -1189,26 +1189,26 @@
               },
               {
                 "constant": false,
-                "id": 21258,
+                "id": 21305,
                 "name": "config",
                 "nodeType": "VariableDeclaration",
-                "scope": 21267,
+                "scope": 21314,
                 "src": "652:13:73",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_Config_$21250_storage_ptr",
+                  "typeIdentifier": "t_struct$_Config_$21297_storage_ptr",
                   "typeString": "struct TransferStructs.Config"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 21257,
+                  "id": 21304,
                   "name": "Config",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 21250,
+                  "referencedDeclaration": 21297,
                   "src": "652:6:73",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Config_$21250_storage_ptr",
+                    "typeIdentifier": "t_struct$_Config_$21297_storage_ptr",
                     "typeString": "struct TransferStructs.Config"
                   }
                 },
@@ -1217,26 +1217,26 @@
               },
               {
                 "constant": false,
-                "id": 21260,
+                "id": 21307,
                 "name": "received_amount",
                 "nodeType": "VariableDeclaration",
-                "scope": 21267,
+                "scope": 21314,
                 "src": "671:33:73",
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_MutableUint_$25179_storage_ptr",
+                  "typeIdentifier": "t_struct$_MutableUint_$25226_storage_ptr",
                   "typeString": "struct Types.MutableUint"
                 },
                 "typeName": {
                   "contractScope": null,
-                  "id": 21259,
+                  "id": 21306,
                   "name": "Types.MutableUint",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 25179,
+                  "referencedDeclaration": 25226,
                   "src": "671:17:73",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_MutableUint_$25179_storage_ptr",
+                    "typeIdentifier": "t_struct$_MutableUint_$25226_storage_ptr",
                     "typeString": "struct Types.MutableUint"
                   }
                 },
@@ -1245,10 +1245,10 @@
               },
               {
                 "constant": false,
-                "id": 21262,
+                "id": 21309,
                 "name": "sent_amount",
                 "nodeType": "VariableDeclaration",
-                "scope": 21267,
+                "scope": 21314,
                 "src": "710:19:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1257,7 +1257,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 21261,
+                  "id": 21308,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "710:7:73",
@@ -1271,10 +1271,10 @@
               },
               {
                 "constant": false,
-                "id": 21264,
+                "id": 21311,
                 "name": "fee",
                 "nodeType": "VariableDeclaration",
-                "scope": 21267,
+                "scope": 21314,
                 "src": "735:11:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1283,7 +1283,7 @@
                   "typeString": "uint256"
                 },
                 "typeName": {
-                  "id": 21263,
+                  "id": 21310,
                   "name": "uint256",
                   "nodeType": "ElementaryTypeName",
                   "src": "735:7:73",
@@ -1297,10 +1297,10 @@
               },
               {
                 "constant": false,
-                "id": 21266,
+                "id": 21313,
                 "name": "is_transfer_from",
                 "nodeType": "VariableDeclaration",
-                "scope": 21267,
+                "scope": 21314,
                 "src": "752:21:73",
                 "stateVariable": false,
                 "storageLocation": "default",
@@ -1309,7 +1309,7 @@
                   "typeString": "bool"
                 },
                 "typeName": {
-                  "id": 21265,
+                  "id": 21312,
                   "name": "bool",
                   "nodeType": "ElementaryTypeName",
                   "src": "752:4:73",
@@ -1324,12 +1324,12 @@
             ],
             "name": "Transfer",
             "nodeType": "StructDefinition",
-            "scope": 21268,
+            "scope": 21315,
             "src": "572:206:73",
             "visibility": "public"
           }
         ],
-        "scope": 21269,
+        "scope": 21316,
         "src": "88:692:73"
       }
     ],
@@ -1341,5 +1341,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2019-01-18T06:49:39.309Z"
+  "updatedAt": "2019-03-05T03:39:14.153Z"
 }

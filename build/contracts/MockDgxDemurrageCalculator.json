@@ -64,14 +64,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/MockDgxDemurrageCalculator.sol",
     "exportedSymbols": {
       "MockDgxDemurrageCalculator": [
-        8804
+        8822
       ]
     },
-    "id": 8805,
+    "id": 8823,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 8739,
+        "id": 8757,
         "literals": [
           "solidity",
           "^",
@@ -84,10 +84,10 @@
       {
         "absolutePath": "@digix/lite-dgx-contract/contracts/DummyDGX.sol",
         "file": "@digix/lite-dgx-contract/contracts/DummyDGX.sol",
-        "id": 8740,
+        "id": 8758,
         "nodeType": "ImportDirective",
-        "scope": 8805,
-        "sourceUnit": 19586,
+        "scope": 8823,
+        "sourceUnit": 19633,
         "src": "26:57:27",
         "symbolAliases": [],
         "unitAlias": ""
@@ -98,19 +98,19 @@
         "contractKind": "contract",
         "documentation": "@title Digix Gold Token Demurrage Calculator\n @author Digix Holdings Pte Ltd\n @notice This contract is meant to be used by exchanges/other parties who want to calculate the DGX demurrage fees, provided an initial balance and the days elapsed",
         "fullyImplemented": true,
-        "id": 8804,
+        "id": 8822,
         "linearizedBaseContracts": [
-          8804
+          8822
         ],
         "name": "MockDgxDemurrageCalculator",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 8742,
+            "id": 8760,
             "name": "TOKEN_ADDRESS",
             "nodeType": "VariableDeclaration",
-            "scope": 8804,
+            "scope": 8822,
             "src": "379:28:27",
             "stateVariable": true,
             "storageLocation": "default",
@@ -119,7 +119,7 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 8741,
+              "id": 8759,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "379:7:27",
@@ -133,28 +133,28 @@
           },
           {
             "body": {
-              "id": 8753,
+              "id": 8771,
               "nodeType": "Block",
               "src": "471:49:27",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8751,
+                    "id": 8769,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 8747,
+                      "id": 8765,
                       "name": "_token",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8745,
+                      "referencedDeclaration": 8763,
                       "src": "481:6:27",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DummyDGX_$19585",
+                        "typeIdentifier": "t_contract$_DummyDGX_$19632",
                         "typeString": "contract DummyDGX"
                       }
                     },
@@ -165,11 +165,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 8749,
+                          "id": 8767,
                           "name": "TOKEN_ADDRESS",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8742,
+                          "referencedDeclaration": 8760,
                           "src": "499:13:27",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -184,18 +184,18 @@
                             "typeString": "address"
                           }
                         ],
-                        "id": 8748,
+                        "id": 8766,
                         "name": "DummyDGX",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 19585,
+                        "referencedDeclaration": 19632,
                         "src": "490:8:27",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DummyDGX_$19585_$",
+                          "typeIdentifier": "t_type$_t_contract$_DummyDGX_$19632_$",
                           "typeString": "type(contract DummyDGX)"
                         }
                       },
-                      "id": 8750,
+                      "id": 8768,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -205,24 +205,24 @@
                       "nodeType": "FunctionCall",
                       "src": "490:23:27",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DummyDGX_$19585",
+                        "typeIdentifier": "t_contract$_DummyDGX_$19632",
                         "typeString": "contract DummyDGX"
                       }
                     },
                     "src": "481:32:27",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DummyDGX_$19585",
+                      "typeIdentifier": "t_contract$_DummyDGX_$19632",
                       "typeString": "contract DummyDGX"
                     }
                   },
-                  "id": 8752,
+                  "id": 8770,
                   "nodeType": "ExpressionStatement",
                   "src": "481:32:27"
                 }
               ]
             },
             "documentation": null,
-            "id": 8754,
+            "id": 8772,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -230,38 +230,38 @@
             "name": "token",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8743,
+              "id": 8761,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "428:2:27"
             },
             "payable": false,
             "returnParameters": {
-              "id": 8746,
+              "id": 8764,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8745,
+                  "id": 8763,
                   "name": "_token",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8754,
+                  "scope": 8772,
                   "src": "454:15:27",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_DummyDGX_$19585",
+                    "typeIdentifier": "t_contract$_DummyDGX_$19632",
                     "typeString": "contract DummyDGX"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 8744,
+                    "id": 8762,
                     "name": "DummyDGX",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 19585,
+                    "referencedDeclaration": 19632,
                     "src": "454:8:27",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DummyDGX_$19585",
+                      "typeIdentifier": "t_contract$_DummyDGX_$19632",
                       "typeString": "contract DummyDGX"
                     }
                   },
@@ -271,7 +271,7 @@
               ],
               "src": "453:17:27"
             },
-            "scope": 8804,
+            "scope": 8822,
             "src": "414:106:27",
             "stateMutability": "view",
             "superFunction": null,
@@ -279,25 +279,25 @@
           },
           {
             "body": {
-              "id": 8763,
+              "id": 8781,
               "nodeType": "Block",
               "src": "569:47:27",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8761,
+                    "id": 8779,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 8759,
+                      "id": 8777,
                       "name": "TOKEN_ADDRESS",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8742,
+                      "referencedDeclaration": 8760,
                       "src": "579:13:27",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -308,11 +308,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 8760,
+                      "id": 8778,
                       "name": "_token_address",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8756,
+                      "referencedDeclaration": 8774,
                       "src": "595:14:27",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -325,14 +325,14 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 8762,
+                  "id": 8780,
                   "nodeType": "ExpressionStatement",
                   "src": "579:30:27"
                 }
               ]
             },
             "documentation": null,
-            "id": 8764,
+            "id": 8782,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -340,15 +340,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8757,
+              "id": 8775,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8756,
+                  "id": 8774,
                   "name": "_token_address",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8764,
+                  "scope": 8782,
                   "src": "538:22:27",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -357,7 +357,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 8755,
+                    "id": 8773,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "538:7:27",
@@ -374,12 +374,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 8758,
+              "id": 8776,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "569:0:27"
             },
-            "scope": 8804,
+            "scope": 8822,
             "src": "526:90:27",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -387,7 +387,7 @@
           },
           {
             "body": {
-              "id": 8802,
+              "id": 8820,
               "nodeType": "Block",
               "src": "798:208:27",
               "statements": [
@@ -396,10 +396,10 @@
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 8776,
+                      "id": 8794,
                       "name": "_base",
                       "nodeType": "VariableDeclaration",
-                      "scope": 8803,
+                      "scope": 8821,
                       "src": "808:13:27",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -408,7 +408,7 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 8775,
+                        "id": 8793,
                         "name": "uint256",
                         "nodeType": "ElementaryTypeName",
                         "src": "808:7:27",
@@ -421,7 +421,7 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 8777,
+                  "id": 8795,
                   "initialValue": null,
                   "nodeType": "VariableDeclarationStatement",
                   "src": "808:13:27"
@@ -431,10 +431,10 @@
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 8779,
+                      "id": 8797,
                       "name": "_rate",
                       "nodeType": "VariableDeclaration",
-                      "scope": 8803,
+                      "scope": 8821,
                       "src": "831:13:27",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -443,7 +443,7 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 8778,
+                        "id": 8796,
                         "name": "uint256",
                         "nodeType": "ElementaryTypeName",
                         "src": "831:7:27",
@@ -456,7 +456,7 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 8780,
+                  "id": 8798,
                   "initialValue": null,
                   "nodeType": "VariableDeclarationStatement",
                   "src": "831:13:27"
@@ -464,7 +464,7 @@
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8789,
+                    "id": 8807,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -474,11 +474,11 @@
                       "components": [
                         {
                           "argumentTypes": null,
-                          "id": 8781,
+                          "id": 8799,
                           "name": "_base",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8776,
+                          "referencedDeclaration": 8794,
                           "src": "855:5:27",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -487,11 +487,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 8782,
+                          "id": 8800,
                           "name": "_rate",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8779,
+                          "referencedDeclaration": 8797,
                           "src": "862:5:27",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -501,11 +501,11 @@
                         null,
                         {
                           "argumentTypes": null,
-                          "id": 8783,
+                          "id": 8801,
                           "name": "_no_demurrage_fees",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8773,
+                          "referencedDeclaration": 8791,
                           "src": "869:18:27",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bool",
@@ -513,7 +513,7 @@
                           }
                         }
                       ],
-                      "id": 8784,
+                      "id": 8802,
                       "isConstant": false,
                       "isInlineArray": false,
                       "isLValue": true,
@@ -538,18 +538,18 @@
                           "arguments": [],
                           "expression": {
                             "argumentTypes": [],
-                            "id": 8785,
+                            "id": 8803,
                             "name": "token",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 8754,
+                            "referencedDeclaration": 8772,
                             "src": "891:5:27",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$19585_$",
+                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$19632_$",
                               "typeString": "function () view returns (contract DummyDGX)"
                             }
                           },
-                          "id": 8786,
+                          "id": 8804,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -559,25 +559,25 @@
                           "nodeType": "FunctionCall",
                           "src": "891:7:27",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_DummyDGX_$19585",
+                            "typeIdentifier": "t_contract$_DummyDGX_$19632",
                             "typeString": "contract DummyDGX"
                           }
                         },
-                        "id": 8787,
+                        "id": 8805,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "showDemurrageConfigs",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 19544,
+                        "referencedDeclaration": 19591,
                         "src": "891:28:27",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$__$returns$_t_uint256_$_t_uint256_$_t_address_$_t_bool_$",
                           "typeString": "function () view external returns (uint256,uint256,address,bool)"
                         }
                       },
-                      "id": 8788,
+                      "id": 8806,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -597,25 +597,25 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 8790,
+                  "id": 8808,
                   "nodeType": "ExpressionStatement",
                   "src": "854:67:27"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8800,
+                    "id": 8818,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 8791,
+                      "id": 8809,
                       "name": "_demurrage_fees",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8771,
+                      "referencedDeclaration": 8789,
                       "src": "931:15:27",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -630,7 +630,7 @@
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       },
-                      "id": 8799,
+                      "id": 8817,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -644,7 +644,7 @@
                               "typeIdentifier": "t_uint256",
                               "typeString": "uint256"
                             },
-                            "id": 8796,
+                            "id": 8814,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -655,18 +655,18 @@
                                 "typeIdentifier": "t_uint256",
                                 "typeString": "uint256"
                               },
-                              "id": 8794,
+                              "id": 8812,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
                               "lValueRequested": false,
                               "leftExpression": {
                                 "argumentTypes": null,
-                                "id": 8792,
+                                "id": 8810,
                                 "name": "_initial_balance",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8766,
+                                "referencedDeclaration": 8784,
                                 "src": "950:16:27",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -677,11 +677,11 @@
                               "operator": "*",
                               "rightExpression": {
                                 "argumentTypes": null,
-                                "id": 8793,
+                                "id": 8811,
                                 "name": "_days_elapsed",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8768,
+                                "referencedDeclaration": 8786,
                                 "src": "969:13:27",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -698,11 +698,11 @@
                             "operator": "*",
                             "rightExpression": {
                               "argumentTypes": null,
-                              "id": 8795,
+                              "id": 8813,
                               "name": "_rate",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 8779,
+                              "referencedDeclaration": 8797,
                               "src": "985:5:27",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -716,7 +716,7 @@
                             }
                           }
                         ],
-                        "id": 8797,
+                        "id": 8815,
                         "isConstant": false,
                         "isInlineArray": false,
                         "isLValue": false,
@@ -733,11 +733,11 @@
                       "operator": "/",
                       "rightExpression": {
                         "argumentTypes": null,
-                        "id": 8798,
+                        "id": 8816,
                         "name": "_base",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 8776,
+                        "referencedDeclaration": 8794,
                         "src": "994:5:27",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -756,14 +756,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 8801,
+                  "id": 8819,
                   "nodeType": "ExpressionStatement",
                   "src": "931:68:27"
                 }
               ]
             },
             "documentation": null,
-            "id": 8803,
+            "id": 8821,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -771,15 +771,15 @@
             "name": "calculateDemurrage",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8769,
+              "id": 8787,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8766,
+                  "id": 8784,
                   "name": "_initial_balance",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8803,
+                  "scope": 8821,
                   "src": "650:24:27",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -788,7 +788,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8765,
+                    "id": 8783,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "650:7:27",
@@ -802,10 +802,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8768,
+                  "id": 8786,
                   "name": "_days_elapsed",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8803,
+                  "scope": 8821,
                   "src": "676:21:27",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -814,7 +814,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8767,
+                    "id": 8785,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "676:7:27",
@@ -831,15 +831,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 8774,
+              "id": 8792,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8771,
+                  "id": 8789,
                   "name": "_demurrage_fees",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8803,
+                  "scope": 8821,
                   "src": "744:23:27",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -848,7 +848,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8770,
+                    "id": 8788,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "744:7:27",
@@ -862,10 +862,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8773,
+                  "id": 8791,
                   "name": "_no_demurrage_fees",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8803,
+                  "scope": 8821,
                   "src": "769:23:27",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -874,7 +874,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 8772,
+                    "id": 8790,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "769:4:27",
@@ -889,14 +889,14 @@
               ],
               "src": "743:50:27"
             },
-            "scope": 8804,
+            "scope": 8822,
             "src": "622:384:27",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 8805,
+        "scope": 8823,
         "src": "337:671:27"
       }
     ],
@@ -906,14 +906,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/MockDgxDemurrageCalculator.sol",
     "exportedSymbols": {
       "MockDgxDemurrageCalculator": [
-        8804
+        8822
       ]
     },
-    "id": 8805,
+    "id": 8823,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 8739,
+        "id": 8757,
         "literals": [
           "solidity",
           "^",
@@ -926,10 +926,10 @@
       {
         "absolutePath": "@digix/lite-dgx-contract/contracts/DummyDGX.sol",
         "file": "@digix/lite-dgx-contract/contracts/DummyDGX.sol",
-        "id": 8740,
+        "id": 8758,
         "nodeType": "ImportDirective",
-        "scope": 8805,
-        "sourceUnit": 19586,
+        "scope": 8823,
+        "sourceUnit": 19633,
         "src": "26:57:27",
         "symbolAliases": [],
         "unitAlias": ""
@@ -940,19 +940,19 @@
         "contractKind": "contract",
         "documentation": "@title Digix Gold Token Demurrage Calculator\n @author Digix Holdings Pte Ltd\n @notice This contract is meant to be used by exchanges/other parties who want to calculate the DGX demurrage fees, provided an initial balance and the days elapsed",
         "fullyImplemented": true,
-        "id": 8804,
+        "id": 8822,
         "linearizedBaseContracts": [
-          8804
+          8822
         ],
         "name": "MockDgxDemurrageCalculator",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 8742,
+            "id": 8760,
             "name": "TOKEN_ADDRESS",
             "nodeType": "VariableDeclaration",
-            "scope": 8804,
+            "scope": 8822,
             "src": "379:28:27",
             "stateVariable": true,
             "storageLocation": "default",
@@ -961,7 +961,7 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 8741,
+              "id": 8759,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "379:7:27",
@@ -975,28 +975,28 @@
           },
           {
             "body": {
-              "id": 8753,
+              "id": 8771,
               "nodeType": "Block",
               "src": "471:49:27",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8751,
+                    "id": 8769,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 8747,
+                      "id": 8765,
                       "name": "_token",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8745,
+                      "referencedDeclaration": 8763,
                       "src": "481:6:27",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DummyDGX_$19585",
+                        "typeIdentifier": "t_contract$_DummyDGX_$19632",
                         "typeString": "contract DummyDGX"
                       }
                     },
@@ -1007,11 +1007,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 8749,
+                          "id": 8767,
                           "name": "TOKEN_ADDRESS",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8742,
+                          "referencedDeclaration": 8760,
                           "src": "499:13:27",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -1026,18 +1026,18 @@
                             "typeString": "address"
                           }
                         ],
-                        "id": 8748,
+                        "id": 8766,
                         "name": "DummyDGX",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 19585,
+                        "referencedDeclaration": 19632,
                         "src": "490:8:27",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DummyDGX_$19585_$",
+                          "typeIdentifier": "t_type$_t_contract$_DummyDGX_$19632_$",
                           "typeString": "type(contract DummyDGX)"
                         }
                       },
-                      "id": 8750,
+                      "id": 8768,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1047,24 +1047,24 @@
                       "nodeType": "FunctionCall",
                       "src": "490:23:27",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DummyDGX_$19585",
+                        "typeIdentifier": "t_contract$_DummyDGX_$19632",
                         "typeString": "contract DummyDGX"
                       }
                     },
                     "src": "481:32:27",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DummyDGX_$19585",
+                      "typeIdentifier": "t_contract$_DummyDGX_$19632",
                       "typeString": "contract DummyDGX"
                     }
                   },
-                  "id": 8752,
+                  "id": 8770,
                   "nodeType": "ExpressionStatement",
                   "src": "481:32:27"
                 }
               ]
             },
             "documentation": null,
-            "id": 8754,
+            "id": 8772,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1072,38 +1072,38 @@
             "name": "token",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8743,
+              "id": 8761,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "428:2:27"
             },
             "payable": false,
             "returnParameters": {
-              "id": 8746,
+              "id": 8764,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8745,
+                  "id": 8763,
                   "name": "_token",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8754,
+                  "scope": 8772,
                   "src": "454:15:27",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_DummyDGX_$19585",
+                    "typeIdentifier": "t_contract$_DummyDGX_$19632",
                     "typeString": "contract DummyDGX"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 8744,
+                    "id": 8762,
                     "name": "DummyDGX",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 19585,
+                    "referencedDeclaration": 19632,
                     "src": "454:8:27",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DummyDGX_$19585",
+                      "typeIdentifier": "t_contract$_DummyDGX_$19632",
                       "typeString": "contract DummyDGX"
                     }
                   },
@@ -1113,7 +1113,7 @@
               ],
               "src": "453:17:27"
             },
-            "scope": 8804,
+            "scope": 8822,
             "src": "414:106:27",
             "stateMutability": "view",
             "superFunction": null,
@@ -1121,25 +1121,25 @@
           },
           {
             "body": {
-              "id": 8763,
+              "id": 8781,
               "nodeType": "Block",
               "src": "569:47:27",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8761,
+                    "id": 8779,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 8759,
+                      "id": 8777,
                       "name": "TOKEN_ADDRESS",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8742,
+                      "referencedDeclaration": 8760,
                       "src": "579:13:27",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -1150,11 +1150,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 8760,
+                      "id": 8778,
                       "name": "_token_address",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8756,
+                      "referencedDeclaration": 8774,
                       "src": "595:14:27",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -1167,14 +1167,14 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 8762,
+                  "id": 8780,
                   "nodeType": "ExpressionStatement",
                   "src": "579:30:27"
                 }
               ]
             },
             "documentation": null,
-            "id": 8764,
+            "id": 8782,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -1182,15 +1182,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8757,
+              "id": 8775,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8756,
+                  "id": 8774,
                   "name": "_token_address",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8764,
+                  "scope": 8782,
                   "src": "538:22:27",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1199,7 +1199,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 8755,
+                    "id": 8773,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "538:7:27",
@@ -1216,12 +1216,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 8758,
+              "id": 8776,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "569:0:27"
             },
-            "scope": 8804,
+            "scope": 8822,
             "src": "526:90:27",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1229,7 +1229,7 @@
           },
           {
             "body": {
-              "id": 8802,
+              "id": 8820,
               "nodeType": "Block",
               "src": "798:208:27",
               "statements": [
@@ -1238,10 +1238,10 @@
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 8776,
+                      "id": 8794,
                       "name": "_base",
                       "nodeType": "VariableDeclaration",
-                      "scope": 8803,
+                      "scope": 8821,
                       "src": "808:13:27",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -1250,7 +1250,7 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 8775,
+                        "id": 8793,
                         "name": "uint256",
                         "nodeType": "ElementaryTypeName",
                         "src": "808:7:27",
@@ -1263,7 +1263,7 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 8777,
+                  "id": 8795,
                   "initialValue": null,
                   "nodeType": "VariableDeclarationStatement",
                   "src": "808:13:27"
@@ -1273,10 +1273,10 @@
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 8779,
+                      "id": 8797,
                       "name": "_rate",
                       "nodeType": "VariableDeclaration",
-                      "scope": 8803,
+                      "scope": 8821,
                       "src": "831:13:27",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -1285,7 +1285,7 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 8778,
+                        "id": 8796,
                         "name": "uint256",
                         "nodeType": "ElementaryTypeName",
                         "src": "831:7:27",
@@ -1298,7 +1298,7 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 8780,
+                  "id": 8798,
                   "initialValue": null,
                   "nodeType": "VariableDeclarationStatement",
                   "src": "831:13:27"
@@ -1306,7 +1306,7 @@
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8789,
+                    "id": 8807,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1316,11 +1316,11 @@
                       "components": [
                         {
                           "argumentTypes": null,
-                          "id": 8781,
+                          "id": 8799,
                           "name": "_base",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8776,
+                          "referencedDeclaration": 8794,
                           "src": "855:5:27",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1329,11 +1329,11 @@
                         },
                         {
                           "argumentTypes": null,
-                          "id": 8782,
+                          "id": 8800,
                           "name": "_rate",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8779,
+                          "referencedDeclaration": 8797,
                           "src": "862:5:27",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1343,11 +1343,11 @@
                         null,
                         {
                           "argumentTypes": null,
-                          "id": 8783,
+                          "id": 8801,
                           "name": "_no_demurrage_fees",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8773,
+                          "referencedDeclaration": 8791,
                           "src": "869:18:27",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bool",
@@ -1355,7 +1355,7 @@
                           }
                         }
                       ],
-                      "id": 8784,
+                      "id": 8802,
                       "isConstant": false,
                       "isInlineArray": false,
                       "isLValue": true,
@@ -1380,18 +1380,18 @@
                           "arguments": [],
                           "expression": {
                             "argumentTypes": [],
-                            "id": 8785,
+                            "id": 8803,
                             "name": "token",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 8754,
+                            "referencedDeclaration": 8772,
                             "src": "891:5:27",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$19585_$",
+                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$19632_$",
                               "typeString": "function () view returns (contract DummyDGX)"
                             }
                           },
-                          "id": 8786,
+                          "id": 8804,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1401,25 +1401,25 @@
                           "nodeType": "FunctionCall",
                           "src": "891:7:27",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_DummyDGX_$19585",
+                            "typeIdentifier": "t_contract$_DummyDGX_$19632",
                             "typeString": "contract DummyDGX"
                           }
                         },
-                        "id": 8787,
+                        "id": 8805,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "showDemurrageConfigs",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 19544,
+                        "referencedDeclaration": 19591,
                         "src": "891:28:27",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$__$returns$_t_uint256_$_t_uint256_$_t_address_$_t_bool_$",
                           "typeString": "function () view external returns (uint256,uint256,address,bool)"
                         }
                       },
-                      "id": 8788,
+                      "id": 8806,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1439,25 +1439,25 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 8790,
+                  "id": 8808,
                   "nodeType": "ExpressionStatement",
                   "src": "854:67:27"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 8800,
+                    "id": 8818,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 8791,
+                      "id": 8809,
                       "name": "_demurrage_fees",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8771,
+                      "referencedDeclaration": 8789,
                       "src": "931:15:27",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1472,7 +1472,7 @@
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       },
-                      "id": 8799,
+                      "id": 8817,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1486,7 +1486,7 @@
                               "typeIdentifier": "t_uint256",
                               "typeString": "uint256"
                             },
-                            "id": 8796,
+                            "id": 8814,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -1497,18 +1497,18 @@
                                 "typeIdentifier": "t_uint256",
                                 "typeString": "uint256"
                               },
-                              "id": 8794,
+                              "id": 8812,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": false,
                               "lValueRequested": false,
                               "leftExpression": {
                                 "argumentTypes": null,
-                                "id": 8792,
+                                "id": 8810,
                                 "name": "_initial_balance",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8766,
+                                "referencedDeclaration": 8784,
                                 "src": "950:16:27",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -1519,11 +1519,11 @@
                               "operator": "*",
                               "rightExpression": {
                                 "argumentTypes": null,
-                                "id": 8793,
+                                "id": 8811,
                                 "name": "_days_elapsed",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8768,
+                                "referencedDeclaration": 8786,
                                 "src": "969:13:27",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -1540,11 +1540,11 @@
                             "operator": "*",
                             "rightExpression": {
                               "argumentTypes": null,
-                              "id": 8795,
+                              "id": 8813,
                               "name": "_rate",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 8779,
+                              "referencedDeclaration": 8797,
                               "src": "985:5:27",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -1558,7 +1558,7 @@
                             }
                           }
                         ],
-                        "id": 8797,
+                        "id": 8815,
                         "isConstant": false,
                         "isInlineArray": false,
                         "isLValue": false,
@@ -1575,11 +1575,11 @@
                       "operator": "/",
                       "rightExpression": {
                         "argumentTypes": null,
-                        "id": 8798,
+                        "id": 8816,
                         "name": "_base",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 8776,
+                        "referencedDeclaration": 8794,
                         "src": "994:5:27",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1598,14 +1598,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 8801,
+                  "id": 8819,
                   "nodeType": "ExpressionStatement",
                   "src": "931:68:27"
                 }
               ]
             },
             "documentation": null,
-            "id": 8803,
+            "id": 8821,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1613,15 +1613,15 @@
             "name": "calculateDemurrage",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8769,
+              "id": 8787,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8766,
+                  "id": 8784,
                   "name": "_initial_balance",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8803,
+                  "scope": 8821,
                   "src": "650:24:27",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1630,7 +1630,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8765,
+                    "id": 8783,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "650:7:27",
@@ -1644,10 +1644,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8768,
+                  "id": 8786,
                   "name": "_days_elapsed",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8803,
+                  "scope": 8821,
                   "src": "676:21:27",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1656,7 +1656,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8767,
+                    "id": 8785,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "676:7:27",
@@ -1673,15 +1673,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 8774,
+              "id": 8792,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8771,
+                  "id": 8789,
                   "name": "_demurrage_fees",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8803,
+                  "scope": 8821,
                   "src": "744:23:27",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1690,7 +1690,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8770,
+                    "id": 8788,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "744:7:27",
@@ -1704,10 +1704,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 8773,
+                  "id": 8791,
                   "name": "_no_demurrage_fees",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8803,
+                  "scope": 8821,
                   "src": "769:23:27",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1716,7 +1716,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 8772,
+                    "id": 8790,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "769:4:27",
@@ -1731,14 +1731,14 @@
               ],
               "src": "743:50:27"
             },
-            "scope": 8804,
+            "scope": 8822,
             "src": "622:384:27",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 8805,
+        "scope": 8823,
         "src": "337:671:27"
       }
     ],
@@ -1750,5 +1750,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2019-01-18T06:49:39.255Z"
+  "updatedAt": "2019-03-05T03:39:14.101Z"
 }

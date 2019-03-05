@@ -39,14 +39,14 @@
     "absolutePath": "@digix/lite-dgx-contract/contracts/TokenReceiver.sol",
     "exportedSymbols": {
       "TokenReceiver": [
-        21181
+        21228
       ]
     },
-    "id": 21182,
+    "id": 21229,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 21169,
+        "id": 21216,
         "literals": [
           "solidity",
           "^",
@@ -62,9 +62,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 21181,
+        "id": 21228,
         "linearizedBaseContracts": [
-          21181
+          21228
         ],
         "name": "TokenReceiver",
         "nodeType": "ContractDefinition",
@@ -72,7 +72,7 @@
           {
             "body": null,
             "documentation": null,
-            "id": 21180,
+            "id": 21227,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -80,15 +80,15 @@
             "name": "tokenFallback",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 21176,
+              "id": 21223,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 21171,
+                  "id": 21218,
                   "name": "from",
                   "nodeType": "VariableDeclaration",
-                  "scope": 21180,
+                  "scope": 21227,
                   "src": "76:12:71",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -97,7 +97,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 21170,
+                    "id": 21217,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "76:7:71",
@@ -111,10 +111,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 21173,
+                  "id": 21220,
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 21180,
+                  "scope": 21227,
                   "src": "90:14:71",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -123,7 +123,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 21172,
+                    "id": 21219,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "90:7:71",
@@ -137,10 +137,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 21175,
+                  "id": 21222,
                   "name": "data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 21180,
+                  "scope": 21227,
                   "src": "106:12:71",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -149,7 +149,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 21174,
+                    "id": 21221,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "106:7:71",
@@ -166,15 +166,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 21179,
+              "id": 21226,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 21178,
+                  "id": 21225,
                   "name": "success",
                   "nodeType": "VariableDeclaration",
-                  "scope": 21180,
+                  "scope": 21227,
                   "src": "136:12:71",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -183,7 +183,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 21177,
+                    "id": 21224,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "136:4:71",
@@ -198,14 +198,14 @@
               ],
               "src": "135:14:71"
             },
-            "scope": 21181,
+            "scope": 21228,
             "src": "53:97:71",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 21182,
+        "scope": 21229,
         "src": "26:126:71"
       }
     ],
@@ -215,14 +215,14 @@
     "absolutePath": "@digix/lite-dgx-contract/contracts/TokenReceiver.sol",
     "exportedSymbols": {
       "TokenReceiver": [
-        21181
+        21228
       ]
     },
-    "id": 21182,
+    "id": 21229,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 21169,
+        "id": 21216,
         "literals": [
           "solidity",
           "^",
@@ -238,9 +238,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 21181,
+        "id": 21228,
         "linearizedBaseContracts": [
-          21181
+          21228
         ],
         "name": "TokenReceiver",
         "nodeType": "ContractDefinition",
@@ -248,7 +248,7 @@
           {
             "body": null,
             "documentation": null,
-            "id": 21180,
+            "id": 21227,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -256,15 +256,15 @@
             "name": "tokenFallback",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 21176,
+              "id": 21223,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 21171,
+                  "id": 21218,
                   "name": "from",
                   "nodeType": "VariableDeclaration",
-                  "scope": 21180,
+                  "scope": 21227,
                   "src": "76:12:71",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -273,7 +273,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 21170,
+                    "id": 21217,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "76:7:71",
@@ -287,10 +287,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 21173,
+                  "id": 21220,
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 21180,
+                  "scope": 21227,
                   "src": "90:14:71",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -299,7 +299,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 21172,
+                    "id": 21219,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "90:7:71",
@@ -313,10 +313,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 21175,
+                  "id": 21222,
                   "name": "data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 21180,
+                  "scope": 21227,
                   "src": "106:12:71",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -325,7 +325,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 21174,
+                    "id": 21221,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "106:7:71",
@@ -342,15 +342,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 21179,
+              "id": 21226,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 21178,
+                  "id": 21225,
                   "name": "success",
                   "nodeType": "VariableDeclaration",
-                  "scope": 21180,
+                  "scope": 21227,
                   "src": "136:12:71",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -359,7 +359,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 21177,
+                    "id": 21224,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "136:4:71",
@@ -374,14 +374,14 @@
               ],
               "src": "135:14:71"
             },
-            "scope": 21181,
+            "scope": 21228,
             "src": "53:97:71",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 21182,
+        "scope": 21229,
         "src": "26:126:71"
       }
     ],
@@ -393,5 +393,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2019-01-18T06:49:39.309Z"
+  "updatedAt": "2019-03-05T03:39:14.153Z"
 }

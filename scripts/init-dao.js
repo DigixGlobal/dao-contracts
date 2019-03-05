@@ -328,8 +328,8 @@ module.exports = async function () {
     console.log('got the deployed contracts');
 
     // set dummy config for testing (initial config)
-    await setDummyConfig(contracts, bN, false);
-    console.log('setup dummy config');
+    // await setDummyConfig(contracts, bN, false);
+    // console.log('setup dummy config');
 
     // start dao and fund dao
     await initDao(contracts, addressOf, bN, web3);

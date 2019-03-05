@@ -31,14 +31,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/interface/NumberCarbonVoting.sol",
     "exportedSymbols": {
       "NumberCarbonVoting": [
-        7844
+        7862
       ]
     },
-    "id": 7845,
+    "id": 7863,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 7836,
+        "id": 7854,
         "literals": [
           "solidity",
           "^",
@@ -54,9 +54,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 7844,
+        "id": 7862,
         "linearizedBaseContracts": [
-          7844
+          7862
         ],
         "name": "NumberCarbonVoting",
         "nodeType": "ContractDefinition",
@@ -64,7 +64,7 @@
           {
             "body": null,
             "documentation": null,
-            "id": 7843,
+            "id": 7861,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -72,15 +72,15 @@
             "name": "voted",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7839,
+              "id": 7857,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7838,
+                  "id": 7856,
                   "name": "_voter",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7843,
+                  "scope": 7861,
                   "src": "75:14:21",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -89,7 +89,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 7837,
+                    "id": 7855,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "75:7:21",
@@ -106,15 +106,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 7842,
+              "id": 7860,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7841,
+                  "id": 7859,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7843,
+                  "scope": 7861,
                   "src": "112:4:21",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -123,7 +123,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 7840,
+                    "id": 7858,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "112:4:21",
@@ -138,14 +138,14 @@
               ],
               "src": "111:6:21"
             },
-            "scope": 7844,
+            "scope": 7862,
             "src": "60:58:21",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 7845,
+        "scope": 7863,
         "src": "26:94:21"
       }
     ],
@@ -155,14 +155,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/interface/NumberCarbonVoting.sol",
     "exportedSymbols": {
       "NumberCarbonVoting": [
-        7844
+        7862
       ]
     },
-    "id": 7845,
+    "id": 7863,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 7836,
+        "id": 7854,
         "literals": [
           "solidity",
           "^",
@@ -178,9 +178,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 7844,
+        "id": 7862,
         "linearizedBaseContracts": [
-          7844
+          7862
         ],
         "name": "NumberCarbonVoting",
         "nodeType": "ContractDefinition",
@@ -188,7 +188,7 @@
           {
             "body": null,
             "documentation": null,
-            "id": 7843,
+            "id": 7861,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -196,15 +196,15 @@
             "name": "voted",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7839,
+              "id": 7857,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7838,
+                  "id": 7856,
                   "name": "_voter",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7843,
+                  "scope": 7861,
                   "src": "75:14:21",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -213,7 +213,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 7837,
+                    "id": 7855,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "75:7:21",
@@ -230,15 +230,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 7842,
+              "id": 7860,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7841,
+                  "id": 7859,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7843,
+                  "scope": 7861,
                   "src": "112:4:21",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -247,7 +247,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 7840,
+                    "id": 7858,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "112:4:21",
@@ -262,14 +262,14 @@
               ],
               "src": "111:6:21"
             },
-            "scope": 7844,
+            "scope": 7862,
             "src": "60:58:21",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 7845,
+        "scope": 7863,
         "src": "26:94:21"
       }
     ],
@@ -281,5 +281,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2019-01-18T06:49:39.252Z"
+  "updatedAt": "2019-03-05T03:39:14.099Z"
 }
