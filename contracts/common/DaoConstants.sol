@@ -6,8 +6,6 @@ contract DaoConstants {
     using SafeMath for uint256;
     bytes32 EMPTY_BYTES = bytes32(0x0);
     address EMPTY_ADDRESS = address(0x0);
-    uint256 ONE_BILLION = 1000000000;
-    uint256 ONE_MILLION = 1000000;
 
 
     bytes32 PROPOSAL_STATE_PREPROPOSAL = "proposal_state_preproposal";
