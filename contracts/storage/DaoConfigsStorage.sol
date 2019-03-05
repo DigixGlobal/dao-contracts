@@ -17,6 +17,9 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
     // config names can be found in DaoConstants contract
     mapping (bytes32 => bytes32) public bytesConfigs;
 
+    uint256 ONE_BILLION = 1000000000;
+    uint256 ONE_MILLION = 1000000;
+
     constructor(address _resolver)
         public
     {
@@ -24,8 +27,8 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
 
         uintConfigs[CONFIG_LOCKING_PHASE_DURATION] = 10 days;
         uintConfigs[CONFIG_QUARTER_DURATION] = QUARTER_DURATION;
-        uintConfigs[CONFIG_VOTING_COMMIT_PHASE] = 21 days;
-        uintConfigs[CONFIG_VOTING_PHASE_TOTAL] = 28 days;
+        uintConfigs[CONFIG_VOTING_COMMIT_PHASE] = 14 days;
+        uintConfigs[CONFIG_VOTING_PHASE_TOTAL] = 21 days;
         uintConfigs[CONFIG_INTERIM_COMMIT_PHASE] = 7 days;
         uintConfigs[CONFIG_INTERIM_PHASE_TOTAL] = 14 days;
 
@@ -86,7 +89,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_PORTION_TO_MODERATORS_NUM] = 42; //4.2% of DGX to moderator voting activity
         uintConfigs[CONFIG_PORTION_TO_MODERATORS_DEN] = 1000;
 
-        uintConfigs[CONFIG_DRAFT_VOTING_PHASE] = 10 days;
+        uintConfigs[CONFIG_DRAFT_VOTING_PHASE] = 7 days;
 
         uintConfigs[CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE] = 412500 * ONE_MILLION;
 
