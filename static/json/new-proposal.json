@@ -1,0 +1,15 @@
+{
+  "title": "new proposal",
+  "description": "new proposal created by script",
+  "details": "this proposal has been created by running the create-proposal.js script",
+  "milestones": [
+    {
+      "title": "first milestone",
+      "description": "first milestone description"
+    },
+    {
+      "title": "second milestone",
+      "description": "second milestone description"
+    }
+  ]
+}

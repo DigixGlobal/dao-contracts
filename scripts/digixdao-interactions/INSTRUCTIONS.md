@@ -23,7 +23,7 @@ PROPOSAL_ID=0xabc ACTION_ID=2 ./node_modules/.bin/truffle exec scripts/digixdao-
 * The account of proposer
     * for `accounts[9]` to be used, please provide `9`
 ```
-STAGE=<> PROPOSER_ACCOUNT=<> ./node_modules/.bin/truffle exec scripts/digixdao-interactions/create-proposal.js
+STAGE=<> ./node_modules/.bin/truffle exec scripts/digixdao-interactions/create-proposal.js
 ```
 
 #### Create Special Proposal

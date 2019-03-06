@@ -4,9 +4,12 @@ const {
   randomBytes32,
   randomBigNumber,
   randomBigNumbers,
+  getCurrentTimestamp,
 } = require('@digix/helpers/lib/helpers');
 
 const dijixUtil = require('../dijixUtil');
+
+const web3Utils = require('web3-utils');
 
 const BADGE_HOLDER_COUNT = 4;
 const DGD_HOLDER_COUNT = 6;
@@ -60,6 +63,28 @@ const uploadAttestation = async (
   );
 };
 
+const waitFor = async function (timeToWait, addressOf, web3) {
+  const timeThen = getCurrentTimestamp();
+  async function wait() {
+    await web3.eth.sendTransaction({ from: addressOf.root, to: addressOf.prl, value: web3.toWei(0.0001, 'ether') });
+    if ((getCurrentTimestamp() - timeThen) > timeToWait) return;
+    await wait();
+  }
+  await wait();
+};
+
+const assignVotesAndCommits = function (addressOf, proposalCount = 4, voterCount = BADGE_HOLDER_COUNT + DGD_HOLDER_COUNT, voterAddresses = null, result = true) {
+  if (!voterAddresses) voterAddresses = addressOf.allParticipants;
+  const salts = indexRange(0, proposalCount).map(() => indexRange(0, voterCount).map(() => randomBytes32()));
+  const votes = indexRange(0, proposalCount).map(() => indexRange(0, voterCount).map(() => result));
+  const votingCommits = indexRange(0, proposalCount).map(proposalIndex => indexRange(0, voterCount).map(holderIndex => web3Utils.soliditySha3(
+    { t: 'address', v: voterAddresses[holderIndex] },
+    { t: 'bool', v: votes[proposalIndex][holderIndex] },
+    { t: 'bytes32', v: salts[proposalIndex][holderIndex] },
+  )));
+  return { salts, votes, votingCommits };
+};
+
 const _getProposalStruct = (bN, proposer, endorser, versions, generateRandom = false) => {
   if (generateRandom) {
     versions = [];
@@ -85,4 +110,6 @@ module.exports = {
   getAccountsAndAddressOf,
   uploadAttestation,
   proposalStates,
+  waitFor,
+  assignVotesAndCommits,
 };
