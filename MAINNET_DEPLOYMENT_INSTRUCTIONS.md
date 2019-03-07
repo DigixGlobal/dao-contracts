@@ -103,6 +103,7 @@ the 400,000 ETH for DigixDAO.
     * Part A, B, C, D and E for deploying `interactive` layer contracts
 
 #### Deploy new Multi-sig wallet for ROOT
+* **!!!!!!! SKIP TO THE NEXT STEP FOR NOW !!!!!!!**
 * We need a list of addresses that would be the owners of this MultiSigWallet. Provide these addresses as a comma-separated string, and the minimum required number of addresses is the number of addresses that need to sign an action for that action to be executed. As an example, for a configuration of 5 owners (`0x012`, `0xabc`, `0x319`, `0xa41` and `0x8da`) with at least 3 addresses required for an action:
 ```
 $ OWNERS=0x012,0xabc,0x319,0xa41,0x8da MIN_REQUIRED=3 ./node_modules/.bin/truffle exec scripts/mainnet-deploy/1_deploy_multisig.js --network mainnet
