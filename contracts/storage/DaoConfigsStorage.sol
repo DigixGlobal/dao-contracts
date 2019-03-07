@@ -89,7 +89,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_PORTION_TO_MODERATORS_NUM] = 42; //4.2% of DGX to moderator voting activity
         uintConfigs[CONFIG_PORTION_TO_MODERATORS_DEN] = 1000;
 
-        uintConfigs[CONFIG_DRAFT_VOTING_PHASE] = 7 days;
+        uintConfigs[CONFIG_DRAFT_VOTING_PHASE] = 10 days;
 
         uintConfigs[CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE] = 412500 * ONE_MILLION;
 
