@@ -27,5 +27,7 @@ module.exports = async () => {
       { from: addressOf.root },
     );
     console.log('\tadd multisig wallet as root \u2713');
+
+    console.log('DONE');
   });
 };

@@ -33,6 +33,7 @@ module.exports = async () => {
             console.log('error : ', e);
           } else {
             console.log('\tsent eth, txn = ', r, ' \u2713');
+            console.log('DONE');
           }
         });
       });

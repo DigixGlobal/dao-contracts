@@ -86,6 +86,7 @@ $ ./node_modules/.bin/truffle exec scripts/mainnet-deploy/0_print_relevant_accou
 #### Compile and deploy
 * Compile the contracts
 ```
+$ rm -rf build/
 $ ./node_modules/.bin/truffle compile
 ```
 * Adjust `gasPrice` as per requirement in `truffle.js` file

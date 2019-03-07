@@ -41,5 +41,7 @@ module.exports = async () => {
       { from: addressOf.root },
     );
     console.log('\tadd accounts as roles \u2713');
+
+    console.log('DONE');
   });
 };

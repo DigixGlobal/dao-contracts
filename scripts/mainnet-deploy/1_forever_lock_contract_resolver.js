@@ -15,5 +15,7 @@ module.exports = async () => {
 
     await contractResolver.lock_resolver_forever({ from: addressOf.root });
     console.log('\tlock contract resolver \u2713');
+
+    console.log('DONE');
   });
 };
