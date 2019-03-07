@@ -121,22 +121,30 @@ $ MULTISIG=<> ./node_modules/.bin/truffle exec scripts/mainnet-deploy/3_add_root
 $ COLLECTOR=<> GAS_PRICE_IN_GWEI=<> ./node_modules/.bin/truffle exec scripts/mainnet-deploy/4_recover_leftover_funds.js --network mainnet
 ```
 provide it the address of the deployed multi-sig wallet (`FUNDING_SOURCE`) contract to `collect` all the leftover funds. Also provide what is the gas price as set in `truffle.js` file. If `GAS_PRICE_IN_GWEI` is not provided, a default value of 20 GWEI will be assigned
-* Remove the default `root` (`accounts[0]`) from Gnosis multi-sig GUI. Submit a transaction from Gnosis Multi-sig wallet interface (check [here](https://github.com/DigixGlobal/dao-contracts/blob/mainnet-deploy/MAINNET_DEPLOYMENT_INSTRUCTIONS.md#steps-to-get-data-field-for-the-above-transaction) for detailed instructions on getting these parameters)
-    * `destination`: Address of the deployed `DaoIdentity` contract
-    * `value`: Ether value to be sent, i.e. `0`
-    * `data`: The data field for the contract function call
+* Remove the default `root` (`accounts[0]`) from Gnosis multi-sig GUI.
+  * Option 1: Submit a transaction from Gnosis Multi-sig wallet interface (check [here](https://github.com/DigixGlobal/dao-contracts/blob/mainnet-deploy/MAINNET_DEPLOYMENT_INSTRUCTIONS.md#steps-to-get-data-field-for-the-above-transaction) for detailed instructions on getting these parameters)
+  * Option 2: First, get payload to remove the root user:
+  ```
+  DaoIdentity.at(DaoIdentity.address).removeGroupUser.request('<root user>')
+  ```
+  Then, get the destination and data and get payload to submit a transaction in the MultiSig, to be done by one of the key holders:
+  ```
+  # in Gnosis repo
+  MultiSigWallet.at(MultiSigWallet.address).submitTransaction.request('<dao identity contract>', 0, 'data from previous step')
+  ```
+  Finally, get the other key holders to send this payload:
+  ```
+  # assuming transaction id is 0
+  MultiSigWallet.at(MultiSigWallet.address).confirmTransaction.request(0)
+  ```
+
 * Transfer funds into the `DaoFundingManager` contract
     * From the `FUNDING_SOURCE` multi-sig wallet
     * Transaction to send ETH to `DaoFundingManager`
 
-###### Steps to get `data` field for the above transaction
+
+* Set start of first quarter:
+Get one of the founders to send this transaction:
 ```
-$ ./node_modules/.bin/truffle console --network mainnet
-> var accounts
-> web3.eth.getAccounts((e,r)=>accounts=r)
-> const destination = DaoIdentity.address
-> const value = 0
-> var daoIdentityInstance = DaoIdentity.at(DaoIdentity.address)
-> const data = daoIdentityInstance.removeGroupUser.request(accounts[0]).params[0].data
+Dao.at(Dao.address).setStartOfFirstQuarter.request(<timestamp>)
 ```
-You'll have the `destination`, `value` and `data` fields from the above
