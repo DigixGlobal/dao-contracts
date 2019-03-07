@@ -18,7 +18,7 @@ module.exports = async () => {
     const daoIdentity = await DaoIdentity.deployed();
     console.log('\tget contract instance \u2713');
 
-    assert.ok(isInvalid(process.env.MULTISIG), 'Please provide the address for MULTISIG');
+    assert.ok(!isInvalid(process.env.MULTISIG), 'Please provide the address for MULTISIG');
 
     await daoIdentity.addGroupUser(
       bN(1),

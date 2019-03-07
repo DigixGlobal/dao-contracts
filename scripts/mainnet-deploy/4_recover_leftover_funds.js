@@ -13,12 +13,12 @@ module.exports = async () => {
     getAccountsAndAddressOf(accounts, addressOf);
     console.log('\tget accounts \u2713');
 
-    assert.ok(isInvalid(process.env.COLLECTOR), 'Please provide the address for COLLECTOR');
+    assert.ok(!isInvalid(process.env.COLLECTOR), 'Please provide the address for COLLECTOR');
 
     const collector = process.env.COLLECTOR;
     const gasPriceInGwei = parseInt(process.env.GAS_PRICE_IN_GWEI, 10);
 
-    const gasNeededForTransfer = isInvalid(process.env.GAS_PRICE_IN_GWEI) ?
+    const gasNeededForTransfer = !isInvalid(process.env.GAS_PRICE_IN_GWEI) ?
       bN(21000 * 20 * (10 ** 9)) : bN(21000 * gasPriceInGwei * (10 ** 9));
 
     const collectEth = (sender) => {

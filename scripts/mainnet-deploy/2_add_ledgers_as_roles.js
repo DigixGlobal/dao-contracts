@@ -18,9 +18,9 @@ module.exports = async () => {
     const daoIdentity = await DaoIdentity.deployed();
     console.log('\tget contract instance \u2713');
 
-    assert.ok(isInvalid(process.env.LEDGER_FOUNDER), 'Please provide the address for LEDGER_FOUNDER');
-    assert.ok(isInvalid(process.env.LEDGER_PRL), 'Please provide the address for LEDGER_PRL');
-    assert.ok(isInvalid(process.env.LEDGER_KYC_ADMIN), 'Please provide the address for LEDGER_KYC_ADMIN');
+    assert.ok(!isInvalid(process.env.LEDGER_FOUNDER), 'Please provide the address for LEDGER_FOUNDER');
+    assert.ok(!isInvalid(process.env.LEDGER_PRL), 'Please provide the address for LEDGER_PRL');
+    assert.ok(!isInvalid(process.env.LEDGER_KYC_ADMIN), 'Please provide the address for LEDGER_KYC_ADMIN');
 
     await daoIdentity.addGroupUser(
       bN(2),
