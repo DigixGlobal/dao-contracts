@@ -1,5 +1,8 @@
+const assert = require('assert');
+
 const {
   getAccountsAndAddressOf,
+  isInvalid,
 } = require('./helpers');
 
 const DaoIdentity = artifacts.require('DaoIdentity.sol');
@@ -14,6 +17,10 @@ module.exports = async () => {
 
     const daoIdentity = await DaoIdentity.deployed();
     console.log('\tget contract instance \u2713');
+
+    assert.ok(isInvalid(process.env.LEDGER_FOUNDER), 'Please provide the address for LEDGER_FOUNDER');
+    assert.ok(isInvalid(process.env.LEDGER_PRL), 'Please provide the address for LEDGER_PRL');
+    assert.ok(isInvalid(process.env.LEDGER_KYC_ADMIN), 'Please provide the address for LEDGER_KYC_ADMIN');
 
     await daoIdentity.addGroupUser(
       bN(2),
@@ -31,12 +38,6 @@ module.exports = async () => {
       bN(4),
       process.env.LEDGER_KYC_ADMIN,
       'add:ledger:kycadmin',
-      { from: addressOf.root },
-    );
-    await daoIdentity.addGroupUser(
-      bN(4),
-      process.env.KEYSTORE_KYC_ADMIN,
-      'add:keystore:kycadmin',
       { from: addressOf.root },
     );
     console.log('\tadd accounts as roles \u2713');

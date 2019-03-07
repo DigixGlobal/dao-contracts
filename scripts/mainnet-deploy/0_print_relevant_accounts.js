@@ -12,7 +12,6 @@ module.exports = async () => {
 
     console.log('----------- ACCOUNTS -----------');
     console.log('ROOT    = ', addressOf.root, ' TO FUND = ', web3.toWei(6, 'ether') / (10 ** 18), ' ETH');
-    console.log('FOUNDER = ', addressOf.founderBadgeHolder, ' TO FUND = ', web3.toWei(1, 'ether') / (10 ** 18), ' ETH');
     console.log('----------- ACCOUNTS -----------');
   });
 };
