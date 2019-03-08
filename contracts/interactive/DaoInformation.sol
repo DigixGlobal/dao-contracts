@@ -29,7 +29,8 @@ contract DaoInformation is DaoCommon {
       "_lockedDgd": "The actual locked DGDs by this user in our contracts",
       "_reputationPoints": "The cumulative reputation points accumulated by this user in DigixDAO",
       "_quarterPoints": "Quarter points of this user in the current quarter",
-      "_claimableDgx": "DGX (in grams) that can be claimed by this user from DigixDAO"
+      "_claimableDgx": "DGX (in grams) that can be claimed by this user from DigixDAO",
+      "_quarterModeratorPoints": "Quarter Moderator points of this user in the current quarter"
     }
     */
     function readUserInfo(address _user)
@@ -46,7 +47,8 @@ contract DaoInformation is DaoCommon {
             uint256 _lockedDgd,
             uint256 _reputationPoints,
             uint256 _quarterPoints,
-            uint256 _claimableDgx
+            uint256 _claimableDgx,
+            uint256 _quarterModeratorPoints
         )
     {
          _lastParticipatedQuarter = daoRewardsStorage().lastParticipatedQuarter(_user);
@@ -55,6 +57,7 @@ contract DaoInformation is DaoCommon {
          (_lockedDgd, _lockedDgdStake) = daoStakeStorage().readUserDGDStake(_user);
          _reputationPoints = daoPointsStorage().getReputation(_user);
          _quarterPoints = daoPointsStorage().getQuarterPoint(_user, currentQuarterNumber());
+         _quarterModeratorPoints = daoPointsStorage().getQuarterModeratorPoint(_user, currentQuarterNumber());
          _isParticipant = isParticipant(_user);
          _isModerator = isModerator(_user);
          _isDigix = identity_storage().read_user_role_id(_user) == ROLES_FOUNDERS;
