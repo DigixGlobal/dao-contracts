@@ -110,7 +110,11 @@ $ ./node_modules/.bin/truffle exec scripts/mainnet-deploy/1_forever_lock_contrac
 ```
 * Add Ledger accounts as the `Founder`, `PRL` and `KYC Admin` roles
 ```
-$ LEDGER_FOUNDER=<> LEDGER_PRL=<> LEDGER_KYC_ADMIN=<> ./node_modules/.bin/truffle exec scripts/mainnet-deploy/2_add_ledgers_as_roles.js --network mainnet
+$ LEDGER_FOUNDER=<founder_1,> LEDGER_PRL=<prl_1,> ./node_modules/.bin/truffle exec scripts/mainnet-deploy/2_add_ledgers_as_roles.js --network mainnet
+```
+For instance, if you wish to add 2 founders and 3 PRLs, provide comma-separated address values
+```
+$ LEDGER_FOUNDER=0xabc,0x123 LEDGER_PRL=0xaaa,0xbbb,0xccc ./node_modules/.bin/truffle exec scripts/mainnet-deploy/2_add_ledgers_as_roles.js --network mainnet
 ```
 * Add the multi-sig contract address as root in the directory
 ```
