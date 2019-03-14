@@ -1,0 +1,247 @@
+{
+  "contractName": "MockDaoFundingManager",
+  "abi": [
+    {
+      "inputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "fallback"
+    }
+  ],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603280601d6000396000f30060806040520000a165627a7a7230582037b2444bb26e440f4a36c2cc6c75f2f6c49544da1734ba9093b26a0c045cc58f0029",
+  "deployedBytecode": "0x60806040520000a165627a7a7230582037b2444bb26e440f4a36c2cc6c75f2f6c49544da1734ba9093b26a0c045cc58f0029",
+  "sourceMap": "26:99:33:-;;;63:23;8:9:-1;5:2;;;30:1;27;20:12;5:2;63:23:33;26:99;;;;;;",
+  "deployedSourceMap": "26:99:33:-;;;",
+  "source": "pragma solidity ^0.4.25;\n\ncontract MockDaoFundingManager {\n    constructor() public {}\n\n    function () payable external {}\n}\n",
+  "sourcePath": "/home/vu/digix/dao-contracts/contracts/mock/interactive/MockDaoFundingManager.sol",
+  "ast": {
+    "absolutePath": "/home/vu/digix/dao-contracts/contracts/mock/interactive/MockDaoFundingManager.sol",
+    "exportedSymbols": {
+      "MockDaoFundingManager": [
+        9300
+      ]
+    },
+    "id": 9301,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 9291,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".25"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:33"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 9300,
+        "linearizedBaseContracts": [
+          9300
+        ],
+        "name": "MockDaoFundingManager",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 9294,
+              "nodeType": "Block",
+              "src": "84:2:33",
+              "statements": []
+            },
+            "documentation": null,
+            "id": 9295,
+            "implemented": true,
+            "isConstructor": true,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 9292,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "74:2:33"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 9293,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "84:0:33"
+            },
+            "scope": 9300,
+            "src": "63:23:33",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 9298,
+              "nodeType": "Block",
+              "src": "121:2:33",
+              "statements": []
+            },
+            "documentation": null,
+            "id": 9299,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 9296,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "101:2:33"
+            },
+            "payable": true,
+            "returnParameters": {
+              "id": 9297,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "121:0:33"
+            },
+            "scope": 9300,
+            "src": "92:31:33",
+            "stateMutability": "payable",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 9301,
+        "src": "26:99:33"
+      }
+    ],
+    "src": "0:126:33"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/vu/digix/dao-contracts/contracts/mock/interactive/MockDaoFundingManager.sol",
+    "exportedSymbols": {
+      "MockDaoFundingManager": [
+        9300
+      ]
+    },
+    "id": 9301,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 9291,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".25"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:33"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 9300,
+        "linearizedBaseContracts": [
+          9300
+        ],
+        "name": "MockDaoFundingManager",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 9294,
+              "nodeType": "Block",
+              "src": "84:2:33",
+              "statements": []
+            },
+            "documentation": null,
+            "id": 9295,
+            "implemented": true,
+            "isConstructor": true,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 9292,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "74:2:33"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 9293,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "84:0:33"
+            },
+            "scope": 9300,
+            "src": "63:23:33",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 9298,
+              "nodeType": "Block",
+              "src": "121:2:33",
+              "statements": []
+            },
+            "documentation": null,
+            "id": 9299,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 9296,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "101:2:33"
+            },
+            "payable": true,
+            "returnParameters": {
+              "id": 9297,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "121:0:33"
+            },
+            "scope": 9300,
+            "src": "92:31:33",
+            "stateMutability": "payable",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 9301,
+        "src": "26:99:33"
+      }
+    ],
+    "src": "0:126:33"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.25+commit.59dbf8f1.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.2",
+  "updatedAt": "2019-03-12T07:53:08.867Z"
+}
