@@ -464,7 +464,7 @@
         "id": 10819,
         "nodeType": "ImportDirective",
         "scope": 11125,
-        "sourceUnit": 14927,
+        "sourceUnit": 14925,
         "src": "26:44:39",
         "symbolAliases": [],
         "unitAlias": ""
@@ -478,10 +478,10 @@
               "id": 10820,
               "name": "DaoPointsStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 14926,
+              "referencedDeclaration": 14924,
               "src": "105:16:39",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoPointsStorage_$14926",
+                "typeIdentifier": "t_contract$_DaoPointsStorage_$14924",
                 "typeString": "contract DaoPointsStorage"
               }
             },
@@ -492,8 +492,8 @@
         ],
         "contractDependencies": [
           1580,
-          14926,
-          19058
+          14924,
+          19056
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -501,9 +501,9 @@
         "id": 11124,
         "linearizedBaseContracts": [
           11124,
-          14926,
+          14924,
           1580,
-          19058
+          19056
         ],
         "name": "MockDaoPointsStorage",
         "nodeType": "ContractDefinition",
@@ -544,10 +544,10 @@
                   "name": "DaoPointsStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 14926,
+                  "referencedDeclaration": 14924,
                   "src": "166:16:39",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoPointsStorage_$14926_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoPointsStorage_$14924_$",
                     "typeString": "type(contract DaoPointsStorage)"
                   }
                 },
@@ -627,10 +627,10 @@
                           "name": "quarterPoint",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 14534,
+                          "referencedDeclaration": 14532,
                           "src": "291:12:39",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                            "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                             "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                           }
                         },
@@ -655,7 +655,7 @@
                         "nodeType": "IndexAccess",
                         "src": "291:18:39",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Token_$14528_storage",
+                          "typeIdentifier": "t_struct$_Token_$14526_storage",
                           "typeString": "struct DaoPointsStorage.Token storage ref"
                         }
                       },
@@ -666,7 +666,7 @@
                       "lValueRequested": true,
                       "memberName": "totalSupply",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14523,
+                      "referencedDeclaration": 14521,
                       "src": "291:30:39",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -707,10 +707,10 @@
                               "name": "quarterPoint",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 14534,
+                              "referencedDeclaration": 14532,
                               "src": "324:12:39",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                 "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                               }
                             },
@@ -735,7 +735,7 @@
                             "nodeType": "IndexAccess",
                             "src": "324:18:39",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_Token_$14528_storage",
+                              "typeIdentifier": "t_struct$_Token_$14526_storage",
                               "typeString": "struct DaoPointsStorage.Token storage ref"
                             }
                           },
@@ -746,7 +746,7 @@
                           "lValueRequested": false,
                           "memberName": "totalSupply",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 14523,
+                          "referencedDeclaration": 14521,
                           "src": "324:30:39",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -767,10 +767,10 @@
                                 "name": "quarterPoint",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 14534,
+                                "referencedDeclaration": 14532,
                                 "src": "357:12:39",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                   "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                                 }
                               },
@@ -795,7 +795,7 @@
                               "nodeType": "IndexAccess",
                               "src": "357:18:39",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                "typeIdentifier": "t_struct$_Token_$14526_storage",
                                 "typeString": "struct DaoPointsStorage.Token storage ref"
                               }
                             },
@@ -806,7 +806,7 @@
                             "lValueRequested": false,
                             "memberName": "balance",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 14527,
+                            "referencedDeclaration": 14525,
                             "src": "357:26:39",
                             "typeDescriptions": {
                               "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -895,10 +895,10 @@
                             "name": "quarterPoint",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 14534,
+                            "referencedDeclaration": 14532,
                             "src": "416:12:39",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                              "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                               "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                             }
                           },
@@ -923,7 +923,7 @@
                           "nodeType": "IndexAccess",
                           "src": "416:18:39",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Token_$14528_storage",
+                            "typeIdentifier": "t_struct$_Token_$14526_storage",
                             "typeString": "struct DaoPointsStorage.Token storage ref"
                           }
                         },
@@ -934,7 +934,7 @@
                         "lValueRequested": false,
                         "memberName": "balance",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 14527,
+                        "referencedDeclaration": 14525,
                         "src": "416:26:39",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -1123,10 +1123,10 @@
                           "name": "quarterModeratorPoint",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 14538,
+                          "referencedDeclaration": 14536,
                           "src": "571:21:39",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                            "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                             "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                           }
                         },
@@ -1151,7 +1151,7 @@
                         "nodeType": "IndexAccess",
                         "src": "571:27:39",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Token_$14528_storage",
+                          "typeIdentifier": "t_struct$_Token_$14526_storage",
                           "typeString": "struct DaoPointsStorage.Token storage ref"
                         }
                       },
@@ -1162,7 +1162,7 @@
                       "lValueRequested": true,
                       "memberName": "totalSupply",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14523,
+                      "referencedDeclaration": 14521,
                       "src": "571:39:39",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1203,10 +1203,10 @@
                               "name": "quarterModeratorPoint",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 14538,
+                              "referencedDeclaration": 14536,
                               "src": "613:21:39",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                 "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                               }
                             },
@@ -1231,7 +1231,7 @@
                             "nodeType": "IndexAccess",
                             "src": "613:27:39",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_Token_$14528_storage",
+                              "typeIdentifier": "t_struct$_Token_$14526_storage",
                               "typeString": "struct DaoPointsStorage.Token storage ref"
                             }
                           },
@@ -1242,7 +1242,7 @@
                           "lValueRequested": false,
                           "memberName": "totalSupply",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 14523,
+                          "referencedDeclaration": 14521,
                           "src": "613:39:39",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1263,10 +1263,10 @@
                                 "name": "quarterModeratorPoint",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 14538,
+                                "referencedDeclaration": 14536,
                                 "src": "655:21:39",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                   "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                                 }
                               },
@@ -1291,7 +1291,7 @@
                               "nodeType": "IndexAccess",
                               "src": "655:27:39",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                "typeIdentifier": "t_struct$_Token_$14526_storage",
                                 "typeString": "struct DaoPointsStorage.Token storage ref"
                               }
                             },
@@ -1302,7 +1302,7 @@
                             "lValueRequested": false,
                             "memberName": "balance",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 14527,
+                            "referencedDeclaration": 14525,
                             "src": "655:35:39",
                             "typeDescriptions": {
                               "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -1391,10 +1391,10 @@
                             "name": "quarterModeratorPoint",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 14538,
+                            "referencedDeclaration": 14536,
                             "src": "723:21:39",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                              "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                               "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                             }
                           },
@@ -1419,7 +1419,7 @@
                           "nodeType": "IndexAccess",
                           "src": "723:27:39",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Token_$14528_storage",
+                            "typeIdentifier": "t_struct$_Token_$14526_storage",
                             "typeString": "struct DaoPointsStorage.Token storage ref"
                           }
                         },
@@ -1430,7 +1430,7 @@
                         "lValueRequested": false,
                         "memberName": "balance",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 14527,
+                        "referencedDeclaration": 14525,
                         "src": "723:35:39",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -1617,10 +1617,10 @@
                         "name": "reputationPoint",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 14530,
+                        "referencedDeclaration": 14528,
                         "src": "864:15:39",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Token_$14528_storage",
+                          "typeIdentifier": "t_struct$_Token_$14526_storage",
                           "typeString": "struct DaoPointsStorage.Token storage ref"
                         }
                       },
@@ -1631,7 +1631,7 @@
                       "lValueRequested": true,
                       "memberName": "totalSupply",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14523,
+                      "referencedDeclaration": 14521,
                       "src": "864:27:39",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1670,10 +1670,10 @@
                             "name": "reputationPoint",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 14530,
+                            "referencedDeclaration": 14528,
                             "src": "894:15:39",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_Token_$14528_storage",
+                              "typeIdentifier": "t_struct$_Token_$14526_storage",
                               "typeString": "struct DaoPointsStorage.Token storage ref"
                             }
                           },
@@ -1684,7 +1684,7 @@
                           "lValueRequested": false,
                           "memberName": "totalSupply",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 14523,
+                          "referencedDeclaration": 14521,
                           "src": "894:27:39",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1703,10 +1703,10 @@
                               "name": "reputationPoint",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 14530,
+                              "referencedDeclaration": 14528,
                               "src": "924:15:39",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                "typeIdentifier": "t_struct$_Token_$14526_storage",
                                 "typeString": "struct DaoPointsStorage.Token storage ref"
                               }
                             },
@@ -1717,7 +1717,7 @@
                             "lValueRequested": false,
                             "memberName": "balance",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 14527,
+                            "referencedDeclaration": 14525,
                             "src": "924:23:39",
                             "typeDescriptions": {
                               "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -1804,10 +1804,10 @@
                           "name": "reputationPoint",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 14530,
+                          "referencedDeclaration": 14528,
                           "src": "980:15:39",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Token_$14528_storage",
+                            "typeIdentifier": "t_struct$_Token_$14526_storage",
                             "typeString": "struct DaoPointsStorage.Token storage ref"
                           }
                         },
@@ -1818,7 +1818,7 @@
                         "lValueRequested": false,
                         "memberName": "balance",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 14527,
+                        "referencedDeclaration": 14525,
                         "src": "980:23:39",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -2052,10 +2052,10 @@
                                 "name": "quarterPoint",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 14534,
+                                "referencedDeclaration": 14532,
                                 "src": "1225:12:39",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                   "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                                 }
                               },
@@ -2080,7 +2080,7 @@
                               "nodeType": "IndexAccess",
                               "src": "1225:18:39",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                "typeIdentifier": "t_struct$_Token_$14526_storage",
                                 "typeString": "struct DaoPointsStorage.Token storage ref"
                               }
                             },
@@ -2091,7 +2091,7 @@
                             "lValueRequested": true,
                             "memberName": "totalSupply",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 14523,
+                            "referencedDeclaration": 14521,
                             "src": "1225:30:39",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -2132,10 +2132,10 @@
                                     "name": "quarterPoint",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 14534,
+                                    "referencedDeclaration": 14532,
                                     "src": "1258:12:39",
                                     "typeDescriptions": {
-                                      "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                      "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                       "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                                     }
                                   },
@@ -2160,7 +2160,7 @@
                                   "nodeType": "IndexAccess",
                                   "src": "1258:18:39",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                    "typeIdentifier": "t_struct$_Token_$14526_storage",
                                     "typeString": "struct DaoPointsStorage.Token storage ref"
                                   }
                                 },
@@ -2171,7 +2171,7 @@
                                 "lValueRequested": false,
                                 "memberName": "totalSupply",
                                 "nodeType": "MemberAccess",
-                                "referencedDeclaration": 14523,
+                                "referencedDeclaration": 14521,
                                 "src": "1258:30:39",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -2192,10 +2192,10 @@
                                       "name": "quarterPoint",
                                       "nodeType": "Identifier",
                                       "overloadedDeclarations": [],
-                                      "referencedDeclaration": 14534,
+                                      "referencedDeclaration": 14532,
                                       "src": "1291:12:39",
                                       "typeDescriptions": {
-                                        "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                        "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                         "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                                       }
                                     },
@@ -2220,7 +2220,7 @@
                                     "nodeType": "IndexAccess",
                                     "src": "1291:18:39",
                                     "typeDescriptions": {
-                                      "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                      "typeIdentifier": "t_struct$_Token_$14526_storage",
                                       "typeString": "struct DaoPointsStorage.Token storage ref"
                                     }
                                   },
@@ -2231,7 +2231,7 @@
                                   "lValueRequested": false,
                                   "memberName": "balance",
                                   "nodeType": "MemberAccess",
-                                  "referencedDeclaration": 14527,
+                                  "referencedDeclaration": 14525,
                                   "src": "1291:26:39",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -2374,10 +2374,10 @@
                                   "name": "quarterPoint",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 14534,
+                                  "referencedDeclaration": 14532,
                                   "src": "1362:12:39",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                    "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                     "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                                   }
                                 },
@@ -2402,7 +2402,7 @@
                                 "nodeType": "IndexAccess",
                                 "src": "1362:18:39",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                  "typeIdentifier": "t_struct$_Token_$14526_storage",
                                   "typeString": "struct DaoPointsStorage.Token storage ref"
                                 }
                               },
@@ -2413,7 +2413,7 @@
                               "lValueRequested": false,
                               "memberName": "balance",
                               "nodeType": "MemberAccess",
-                              "referencedDeclaration": 14527,
+                              "referencedDeclaration": 14525,
                               "src": "1362:26:39",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -2886,10 +2886,10 @@
                                 "name": "quarterModeratorPoint",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 14538,
+                                "referencedDeclaration": 14536,
                                 "src": "1638:21:39",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                   "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                                 }
                               },
@@ -2914,7 +2914,7 @@
                               "nodeType": "IndexAccess",
                               "src": "1638:27:39",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                "typeIdentifier": "t_struct$_Token_$14526_storage",
                                 "typeString": "struct DaoPointsStorage.Token storage ref"
                               }
                             },
@@ -2925,7 +2925,7 @@
                             "lValueRequested": true,
                             "memberName": "totalSupply",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 14523,
+                            "referencedDeclaration": 14521,
                             "src": "1638:39:39",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -2966,10 +2966,10 @@
                                     "name": "quarterModeratorPoint",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 14538,
+                                    "referencedDeclaration": 14536,
                                     "src": "1680:21:39",
                                     "typeDescriptions": {
-                                      "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                      "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                       "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                                     }
                                   },
@@ -2994,7 +2994,7 @@
                                   "nodeType": "IndexAccess",
                                   "src": "1680:27:39",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                    "typeIdentifier": "t_struct$_Token_$14526_storage",
                                     "typeString": "struct DaoPointsStorage.Token storage ref"
                                   }
                                 },
@@ -3005,7 +3005,7 @@
                                 "lValueRequested": false,
                                 "memberName": "totalSupply",
                                 "nodeType": "MemberAccess",
-                                "referencedDeclaration": 14523,
+                                "referencedDeclaration": 14521,
                                 "src": "1680:39:39",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -3026,10 +3026,10 @@
                                       "name": "quarterModeratorPoint",
                                       "nodeType": "Identifier",
                                       "overloadedDeclarations": [],
-                                      "referencedDeclaration": 14538,
+                                      "referencedDeclaration": 14536,
                                       "src": "1722:21:39",
                                       "typeDescriptions": {
-                                        "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                        "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                         "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                                       }
                                     },
@@ -3054,7 +3054,7 @@
                                     "nodeType": "IndexAccess",
                                     "src": "1722:27:39",
                                     "typeDescriptions": {
-                                      "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                      "typeIdentifier": "t_struct$_Token_$14526_storage",
                                       "typeString": "struct DaoPointsStorage.Token storage ref"
                                     }
                                   },
@@ -3065,7 +3065,7 @@
                                   "lValueRequested": false,
                                   "memberName": "balance",
                                   "nodeType": "MemberAccess",
-                                  "referencedDeclaration": 14527,
+                                  "referencedDeclaration": 14525,
                                   "src": "1722:35:39",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -3208,10 +3208,10 @@
                                   "name": "quarterModeratorPoint",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 14538,
+                                  "referencedDeclaration": 14536,
                                   "src": "1802:21:39",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                    "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                     "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                                   }
                                 },
@@ -3236,7 +3236,7 @@
                                 "nodeType": "IndexAccess",
                                 "src": "1802:27:39",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                  "typeIdentifier": "t_struct$_Token_$14526_storage",
                                   "typeString": "struct DaoPointsStorage.Token storage ref"
                                 }
                               },
@@ -3247,7 +3247,7 @@
                               "lValueRequested": false,
                               "memberName": "balance",
                               "nodeType": "MemberAccess",
-                              "referencedDeclaration": 14527,
+                              "referencedDeclaration": 14525,
                               "src": "1802:35:39",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -3718,10 +3718,10 @@
                               "name": "reputationPoint",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 14530,
+                              "referencedDeclaration": 14528,
                               "src": "2063:15:39",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                "typeIdentifier": "t_struct$_Token_$14526_storage",
                                 "typeString": "struct DaoPointsStorage.Token storage ref"
                               }
                             },
@@ -3732,7 +3732,7 @@
                             "lValueRequested": true,
                             "memberName": "totalSupply",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 14523,
+                            "referencedDeclaration": 14521,
                             "src": "2063:27:39",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -3771,10 +3771,10 @@
                                   "name": "reputationPoint",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 14530,
+                                  "referencedDeclaration": 14528,
                                   "src": "2093:15:39",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                    "typeIdentifier": "t_struct$_Token_$14526_storage",
                                     "typeString": "struct DaoPointsStorage.Token storage ref"
                                   }
                                 },
@@ -3785,7 +3785,7 @@
                                 "lValueRequested": false,
                                 "memberName": "totalSupply",
                                 "nodeType": "MemberAccess",
-                                "referencedDeclaration": 14523,
+                                "referencedDeclaration": 14521,
                                 "src": "2093:27:39",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -3804,10 +3804,10 @@
                                     "name": "reputationPoint",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 14530,
+                                    "referencedDeclaration": 14528,
                                     "src": "2123:15:39",
                                     "typeDescriptions": {
-                                      "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                      "typeIdentifier": "t_struct$_Token_$14526_storage",
                                       "typeString": "struct DaoPointsStorage.Token storage ref"
                                     }
                                   },
@@ -3818,7 +3818,7 @@
                                   "lValueRequested": false,
                                   "memberName": "balance",
                                   "nodeType": "MemberAccess",
-                                  "referencedDeclaration": 14527,
+                                  "referencedDeclaration": 14525,
                                   "src": "2123:23:39",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -3959,10 +3959,10 @@
                                 "name": "reputationPoint",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 14530,
+                                "referencedDeclaration": 14528,
                                 "src": "2191:15:39",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                  "typeIdentifier": "t_struct$_Token_$14526_storage",
                                   "typeString": "struct DaoPointsStorage.Token storage ref"
                                 }
                               },
@@ -3973,7 +3973,7 @@
                               "lValueRequested": false,
                               "memberName": "balance",
                               "nodeType": "MemberAccess",
-                              "referencedDeclaration": 14527,
+                              "referencedDeclaration": 14525,
                               "src": "2191:23:39",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -4359,7 +4359,7 @@
         "id": 10819,
         "nodeType": "ImportDirective",
         "scope": 11125,
-        "sourceUnit": 14927,
+        "sourceUnit": 14925,
         "src": "26:44:39",
         "symbolAliases": [],
         "unitAlias": ""
@@ -4373,10 +4373,10 @@
               "id": 10820,
               "name": "DaoPointsStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 14926,
+              "referencedDeclaration": 14924,
               "src": "105:16:39",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoPointsStorage_$14926",
+                "typeIdentifier": "t_contract$_DaoPointsStorage_$14924",
                 "typeString": "contract DaoPointsStorage"
               }
             },
@@ -4387,8 +4387,8 @@
         ],
         "contractDependencies": [
           1580,
-          14926,
-          19058
+          14924,
+          19056
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -4396,9 +4396,9 @@
         "id": 11124,
         "linearizedBaseContracts": [
           11124,
-          14926,
+          14924,
           1580,
-          19058
+          19056
         ],
         "name": "MockDaoPointsStorage",
         "nodeType": "ContractDefinition",
@@ -4439,10 +4439,10 @@
                   "name": "DaoPointsStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 14926,
+                  "referencedDeclaration": 14924,
                   "src": "166:16:39",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoPointsStorage_$14926_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoPointsStorage_$14924_$",
                     "typeString": "type(contract DaoPointsStorage)"
                   }
                 },
@@ -4522,10 +4522,10 @@
                           "name": "quarterPoint",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 14534,
+                          "referencedDeclaration": 14532,
                           "src": "291:12:39",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                            "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                             "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                           }
                         },
@@ -4550,7 +4550,7 @@
                         "nodeType": "IndexAccess",
                         "src": "291:18:39",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Token_$14528_storage",
+                          "typeIdentifier": "t_struct$_Token_$14526_storage",
                           "typeString": "struct DaoPointsStorage.Token storage ref"
                         }
                       },
@@ -4561,7 +4561,7 @@
                       "lValueRequested": true,
                       "memberName": "totalSupply",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14523,
+                      "referencedDeclaration": 14521,
                       "src": "291:30:39",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -4602,10 +4602,10 @@
                               "name": "quarterPoint",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 14534,
+                              "referencedDeclaration": 14532,
                               "src": "324:12:39",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                 "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                               }
                             },
@@ -4630,7 +4630,7 @@
                             "nodeType": "IndexAccess",
                             "src": "324:18:39",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_Token_$14528_storage",
+                              "typeIdentifier": "t_struct$_Token_$14526_storage",
                               "typeString": "struct DaoPointsStorage.Token storage ref"
                             }
                           },
@@ -4641,7 +4641,7 @@
                           "lValueRequested": false,
                           "memberName": "totalSupply",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 14523,
+                          "referencedDeclaration": 14521,
                           "src": "324:30:39",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -4662,10 +4662,10 @@
                                 "name": "quarterPoint",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 14534,
+                                "referencedDeclaration": 14532,
                                 "src": "357:12:39",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                   "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                                 }
                               },
@@ -4690,7 +4690,7 @@
                               "nodeType": "IndexAccess",
                               "src": "357:18:39",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                "typeIdentifier": "t_struct$_Token_$14526_storage",
                                 "typeString": "struct DaoPointsStorage.Token storage ref"
                               }
                             },
@@ -4701,7 +4701,7 @@
                             "lValueRequested": false,
                             "memberName": "balance",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 14527,
+                            "referencedDeclaration": 14525,
                             "src": "357:26:39",
                             "typeDescriptions": {
                               "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -4790,10 +4790,10 @@
                             "name": "quarterPoint",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 14534,
+                            "referencedDeclaration": 14532,
                             "src": "416:12:39",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                              "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                               "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                             }
                           },
@@ -4818,7 +4818,7 @@
                           "nodeType": "IndexAccess",
                           "src": "416:18:39",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Token_$14528_storage",
+                            "typeIdentifier": "t_struct$_Token_$14526_storage",
                             "typeString": "struct DaoPointsStorage.Token storage ref"
                           }
                         },
@@ -4829,7 +4829,7 @@
                         "lValueRequested": false,
                         "memberName": "balance",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 14527,
+                        "referencedDeclaration": 14525,
                         "src": "416:26:39",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -5018,10 +5018,10 @@
                           "name": "quarterModeratorPoint",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 14538,
+                          "referencedDeclaration": 14536,
                           "src": "571:21:39",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                            "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                             "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                           }
                         },
@@ -5046,7 +5046,7 @@
                         "nodeType": "IndexAccess",
                         "src": "571:27:39",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Token_$14528_storage",
+                          "typeIdentifier": "t_struct$_Token_$14526_storage",
                           "typeString": "struct DaoPointsStorage.Token storage ref"
                         }
                       },
@@ -5057,7 +5057,7 @@
                       "lValueRequested": true,
                       "memberName": "totalSupply",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14523,
+                      "referencedDeclaration": 14521,
                       "src": "571:39:39",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -5098,10 +5098,10 @@
                               "name": "quarterModeratorPoint",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 14538,
+                              "referencedDeclaration": 14536,
                               "src": "613:21:39",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                 "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                               }
                             },
@@ -5126,7 +5126,7 @@
                             "nodeType": "IndexAccess",
                             "src": "613:27:39",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_Token_$14528_storage",
+                              "typeIdentifier": "t_struct$_Token_$14526_storage",
                               "typeString": "struct DaoPointsStorage.Token storage ref"
                             }
                           },
@@ -5137,7 +5137,7 @@
                           "lValueRequested": false,
                           "memberName": "totalSupply",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 14523,
+                          "referencedDeclaration": 14521,
                           "src": "613:39:39",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -5158,10 +5158,10 @@
                                 "name": "quarterModeratorPoint",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 14538,
+                                "referencedDeclaration": 14536,
                                 "src": "655:21:39",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                   "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                                 }
                               },
@@ -5186,7 +5186,7 @@
                               "nodeType": "IndexAccess",
                               "src": "655:27:39",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                "typeIdentifier": "t_struct$_Token_$14526_storage",
                                 "typeString": "struct DaoPointsStorage.Token storage ref"
                               }
                             },
@@ -5197,7 +5197,7 @@
                             "lValueRequested": false,
                             "memberName": "balance",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 14527,
+                            "referencedDeclaration": 14525,
                             "src": "655:35:39",
                             "typeDescriptions": {
                               "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -5286,10 +5286,10 @@
                             "name": "quarterModeratorPoint",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 14538,
+                            "referencedDeclaration": 14536,
                             "src": "723:21:39",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                              "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                               "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                             }
                           },
@@ -5314,7 +5314,7 @@
                           "nodeType": "IndexAccess",
                           "src": "723:27:39",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Token_$14528_storage",
+                            "typeIdentifier": "t_struct$_Token_$14526_storage",
                             "typeString": "struct DaoPointsStorage.Token storage ref"
                           }
                         },
@@ -5325,7 +5325,7 @@
                         "lValueRequested": false,
                         "memberName": "balance",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 14527,
+                        "referencedDeclaration": 14525,
                         "src": "723:35:39",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -5512,10 +5512,10 @@
                         "name": "reputationPoint",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 14530,
+                        "referencedDeclaration": 14528,
                         "src": "864:15:39",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Token_$14528_storage",
+                          "typeIdentifier": "t_struct$_Token_$14526_storage",
                           "typeString": "struct DaoPointsStorage.Token storage ref"
                         }
                       },
@@ -5526,7 +5526,7 @@
                       "lValueRequested": true,
                       "memberName": "totalSupply",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14523,
+                      "referencedDeclaration": 14521,
                       "src": "864:27:39",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -5565,10 +5565,10 @@
                             "name": "reputationPoint",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 14530,
+                            "referencedDeclaration": 14528,
                             "src": "894:15:39",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_Token_$14528_storage",
+                              "typeIdentifier": "t_struct$_Token_$14526_storage",
                               "typeString": "struct DaoPointsStorage.Token storage ref"
                             }
                           },
@@ -5579,7 +5579,7 @@
                           "lValueRequested": false,
                           "memberName": "totalSupply",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 14523,
+                          "referencedDeclaration": 14521,
                           "src": "894:27:39",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -5598,10 +5598,10 @@
                               "name": "reputationPoint",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 14530,
+                              "referencedDeclaration": 14528,
                               "src": "924:15:39",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                "typeIdentifier": "t_struct$_Token_$14526_storage",
                                 "typeString": "struct DaoPointsStorage.Token storage ref"
                               }
                             },
@@ -5612,7 +5612,7 @@
                             "lValueRequested": false,
                             "memberName": "balance",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 14527,
+                            "referencedDeclaration": 14525,
                             "src": "924:23:39",
                             "typeDescriptions": {
                               "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -5699,10 +5699,10 @@
                           "name": "reputationPoint",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 14530,
+                          "referencedDeclaration": 14528,
                           "src": "980:15:39",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Token_$14528_storage",
+                            "typeIdentifier": "t_struct$_Token_$14526_storage",
                             "typeString": "struct DaoPointsStorage.Token storage ref"
                           }
                         },
@@ -5713,7 +5713,7 @@
                         "lValueRequested": false,
                         "memberName": "balance",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 14527,
+                        "referencedDeclaration": 14525,
                         "src": "980:23:39",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -5947,10 +5947,10 @@
                                 "name": "quarterPoint",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 14534,
+                                "referencedDeclaration": 14532,
                                 "src": "1225:12:39",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                   "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                                 }
                               },
@@ -5975,7 +5975,7 @@
                               "nodeType": "IndexAccess",
                               "src": "1225:18:39",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                "typeIdentifier": "t_struct$_Token_$14526_storage",
                                 "typeString": "struct DaoPointsStorage.Token storage ref"
                               }
                             },
@@ -5986,7 +5986,7 @@
                             "lValueRequested": true,
                             "memberName": "totalSupply",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 14523,
+                            "referencedDeclaration": 14521,
                             "src": "1225:30:39",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -6027,10 +6027,10 @@
                                     "name": "quarterPoint",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 14534,
+                                    "referencedDeclaration": 14532,
                                     "src": "1258:12:39",
                                     "typeDescriptions": {
-                                      "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                      "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                       "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                                     }
                                   },
@@ -6055,7 +6055,7 @@
                                   "nodeType": "IndexAccess",
                                   "src": "1258:18:39",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                    "typeIdentifier": "t_struct$_Token_$14526_storage",
                                     "typeString": "struct DaoPointsStorage.Token storage ref"
                                   }
                                 },
@@ -6066,7 +6066,7 @@
                                 "lValueRequested": false,
                                 "memberName": "totalSupply",
                                 "nodeType": "MemberAccess",
-                                "referencedDeclaration": 14523,
+                                "referencedDeclaration": 14521,
                                 "src": "1258:30:39",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -6087,10 +6087,10 @@
                                       "name": "quarterPoint",
                                       "nodeType": "Identifier",
                                       "overloadedDeclarations": [],
-                                      "referencedDeclaration": 14534,
+                                      "referencedDeclaration": 14532,
                                       "src": "1291:12:39",
                                       "typeDescriptions": {
-                                        "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                        "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                         "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                                       }
                                     },
@@ -6115,7 +6115,7 @@
                                     "nodeType": "IndexAccess",
                                     "src": "1291:18:39",
                                     "typeDescriptions": {
-                                      "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                      "typeIdentifier": "t_struct$_Token_$14526_storage",
                                       "typeString": "struct DaoPointsStorage.Token storage ref"
                                     }
                                   },
@@ -6126,7 +6126,7 @@
                                   "lValueRequested": false,
                                   "memberName": "balance",
                                   "nodeType": "MemberAccess",
-                                  "referencedDeclaration": 14527,
+                                  "referencedDeclaration": 14525,
                                   "src": "1291:26:39",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -6269,10 +6269,10 @@
                                   "name": "quarterPoint",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 14534,
+                                  "referencedDeclaration": 14532,
                                   "src": "1362:12:39",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                    "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                     "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                                   }
                                 },
@@ -6297,7 +6297,7 @@
                                 "nodeType": "IndexAccess",
                                 "src": "1362:18:39",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                  "typeIdentifier": "t_struct$_Token_$14526_storage",
                                   "typeString": "struct DaoPointsStorage.Token storage ref"
                                 }
                               },
@@ -6308,7 +6308,7 @@
                               "lValueRequested": false,
                               "memberName": "balance",
                               "nodeType": "MemberAccess",
-                              "referencedDeclaration": 14527,
+                              "referencedDeclaration": 14525,
                               "src": "1362:26:39",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -6781,10 +6781,10 @@
                                 "name": "quarterModeratorPoint",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 14538,
+                                "referencedDeclaration": 14536,
                                 "src": "1638:21:39",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                  "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                   "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                                 }
                               },
@@ -6809,7 +6809,7 @@
                               "nodeType": "IndexAccess",
                               "src": "1638:27:39",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                "typeIdentifier": "t_struct$_Token_$14526_storage",
                                 "typeString": "struct DaoPointsStorage.Token storage ref"
                               }
                             },
@@ -6820,7 +6820,7 @@
                             "lValueRequested": true,
                             "memberName": "totalSupply",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 14523,
+                            "referencedDeclaration": 14521,
                             "src": "1638:39:39",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -6861,10 +6861,10 @@
                                     "name": "quarterModeratorPoint",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 14538,
+                                    "referencedDeclaration": 14536,
                                     "src": "1680:21:39",
                                     "typeDescriptions": {
-                                      "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                      "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                       "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                                     }
                                   },
@@ -6889,7 +6889,7 @@
                                   "nodeType": "IndexAccess",
                                   "src": "1680:27:39",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                    "typeIdentifier": "t_struct$_Token_$14526_storage",
                                     "typeString": "struct DaoPointsStorage.Token storage ref"
                                   }
                                 },
@@ -6900,7 +6900,7 @@
                                 "lValueRequested": false,
                                 "memberName": "totalSupply",
                                 "nodeType": "MemberAccess",
-                                "referencedDeclaration": 14523,
+                                "referencedDeclaration": 14521,
                                 "src": "1680:39:39",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -6921,10 +6921,10 @@
                                       "name": "quarterModeratorPoint",
                                       "nodeType": "Identifier",
                                       "overloadedDeclarations": [],
-                                      "referencedDeclaration": 14538,
+                                      "referencedDeclaration": 14536,
                                       "src": "1722:21:39",
                                       "typeDescriptions": {
-                                        "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                        "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                         "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                                       }
                                     },
@@ -6949,7 +6949,7 @@
                                     "nodeType": "IndexAccess",
                                     "src": "1722:27:39",
                                     "typeDescriptions": {
-                                      "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                      "typeIdentifier": "t_struct$_Token_$14526_storage",
                                       "typeString": "struct DaoPointsStorage.Token storage ref"
                                     }
                                   },
@@ -6960,7 +6960,7 @@
                                   "lValueRequested": false,
                                   "memberName": "balance",
                                   "nodeType": "MemberAccess",
-                                  "referencedDeclaration": 14527,
+                                  "referencedDeclaration": 14525,
                                   "src": "1722:35:39",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -7103,10 +7103,10 @@
                                   "name": "quarterModeratorPoint",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 14538,
+                                  "referencedDeclaration": 14536,
                                   "src": "1802:21:39",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14528_storage_$",
+                                    "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_Token_$14526_storage_$",
                                     "typeString": "mapping(uint256 => struct DaoPointsStorage.Token storage ref)"
                                   }
                                 },
@@ -7131,7 +7131,7 @@
                                 "nodeType": "IndexAccess",
                                 "src": "1802:27:39",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                  "typeIdentifier": "t_struct$_Token_$14526_storage",
                                   "typeString": "struct DaoPointsStorage.Token storage ref"
                                 }
                               },
@@ -7142,7 +7142,7 @@
                               "lValueRequested": false,
                               "memberName": "balance",
                               "nodeType": "MemberAccess",
-                              "referencedDeclaration": 14527,
+                              "referencedDeclaration": 14525,
                               "src": "1802:35:39",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -7613,10 +7613,10 @@
                               "name": "reputationPoint",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 14530,
+                              "referencedDeclaration": 14528,
                               "src": "2063:15:39",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                "typeIdentifier": "t_struct$_Token_$14526_storage",
                                 "typeString": "struct DaoPointsStorage.Token storage ref"
                               }
                             },
@@ -7627,7 +7627,7 @@
                             "lValueRequested": true,
                             "memberName": "totalSupply",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 14523,
+                            "referencedDeclaration": 14521,
                             "src": "2063:27:39",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -7666,10 +7666,10 @@
                                   "name": "reputationPoint",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 14530,
+                                  "referencedDeclaration": 14528,
                                   "src": "2093:15:39",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                    "typeIdentifier": "t_struct$_Token_$14526_storage",
                                     "typeString": "struct DaoPointsStorage.Token storage ref"
                                   }
                                 },
@@ -7680,7 +7680,7 @@
                                 "lValueRequested": false,
                                 "memberName": "totalSupply",
                                 "nodeType": "MemberAccess",
-                                "referencedDeclaration": 14523,
+                                "referencedDeclaration": 14521,
                                 "src": "2093:27:39",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -7699,10 +7699,10 @@
                                     "name": "reputationPoint",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 14530,
+                                    "referencedDeclaration": 14528,
                                     "src": "2123:15:39",
                                     "typeDescriptions": {
-                                      "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                      "typeIdentifier": "t_struct$_Token_$14526_storage",
                                       "typeString": "struct DaoPointsStorage.Token storage ref"
                                     }
                                   },
@@ -7713,7 +7713,7 @@
                                   "lValueRequested": false,
                                   "memberName": "balance",
                                   "nodeType": "MemberAccess",
-                                  "referencedDeclaration": 14527,
+                                  "referencedDeclaration": 14525,
                                   "src": "2123:23:39",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -7854,10 +7854,10 @@
                                 "name": "reputationPoint",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 14530,
+                                "referencedDeclaration": 14528,
                                 "src": "2191:15:39",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_struct$_Token_$14528_storage",
+                                  "typeIdentifier": "t_struct$_Token_$14526_storage",
                                   "typeString": "struct DaoPointsStorage.Token storage ref"
                                 }
                               },
@@ -7868,7 +7868,7 @@
                               "lValueRequested": false,
                               "memberName": "balance",
                               "nodeType": "MemberAccess",
-                              "referencedDeclaration": 14527,
+                              "referencedDeclaration": 14525,
                               "src": "2191:23:39",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -8233,5 +8233,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.2",
-  "updatedAt": "2019-03-18T07:32:20.016Z"
+  "updatedAt": "2019-03-19T02:43:24.490Z"
 }

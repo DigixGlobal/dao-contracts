@@ -226,7 +226,7 @@
         "id": 7926,
         "nodeType": "ImportDirective",
         "scope": 8492,
-        "sourceUnit": 25547,
+        "sourceUnit": 25545,
         "src": "26:72:23",
         "symbolAliases": [],
         "unitAlias": ""
@@ -237,7 +237,7 @@
         "id": 7927,
         "nodeType": "ImportDirective",
         "scope": 8492,
-        "sourceUnit": 26042,
+        "sourceUnit": 26040,
         "src": "99:59:23",
         "symbolAliases": [],
         "unitAlias": ""
@@ -262,10 +262,10 @@
               "id": 7928,
               "name": "DoublyLinkedList",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 25546,
+              "referencedDeclaration": 25544,
               "src": "191:16:23",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DoublyLinkedList_$25546",
+                "typeIdentifier": "t_contract$_DoublyLinkedList_$25544",
                 "typeString": "library DoublyLinkedList"
               }
             },
@@ -276,10 +276,10 @@
               "id": 7929,
               "name": "DoublyLinkedList.Bytes",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 23035,
+              "referencedDeclaration": 23033,
               "src": "212:22:23",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_Bytes_$23035_storage_ptr",
+                "typeIdentifier": "t_struct$_Bytes_$23033_storage_ptr",
                 "typeString": "struct DoublyLinkedList.Bytes"
               }
             }
@@ -291,10 +291,10 @@
               "id": 7931,
               "name": "SafeMath",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 26041,
+              "referencedDeclaration": 26039,
               "src": "246:8:23",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_SafeMath_$26041",
+                "typeIdentifier": "t_contract$_SafeMath_$26039",
                 "typeString": "library SafeMath"
               }
             },
@@ -1055,7 +1055,7 @@
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_Bytes_$23035_storage_ptr",
+                  "typeIdentifier": "t_struct$_Bytes_$23033_storage_ptr",
                   "typeString": "struct DoublyLinkedList.Bytes"
                 },
                 "typeName": {
@@ -1063,10 +1063,10 @@
                   "id": 7992,
                   "name": "DoublyLinkedList.Bytes",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 23035,
+                  "referencedDeclaration": 23033,
                   "src": "3756:22:23",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Bytes_$23035_storage_ptr",
+                    "typeIdentifier": "t_struct$_Bytes_$23033_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Bytes"
                   }
                 },
@@ -1887,7 +1887,7 @@
                                       "lValueRequested": false,
                                       "memberName": "add",
                                       "nodeType": "MemberAccess",
-                                      "referencedDeclaration": 26040,
+                                      "referencedDeclaration": 26038,
                                       "src": "5935:12:23",
                                       "typeDescriptions": {
                                         "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -2066,7 +2066,7 @@
                                     "lValueRequested": false,
                                     "memberName": "add",
                                     "nodeType": "MemberAccess",
-                                    "referencedDeclaration": 26040,
+                                    "referencedDeclaration": 26038,
                                     "src": "5806:8:23",
                                     "typeDescriptions": {
                                       "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -5286,10 +5286,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26615,
-                        26616
+                        26613,
+                        26614
                       ],
-                      "referencedDeclaration": 26615,
+                      "referencedDeclaration": 26613,
                       "src": "8503:7:23",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -5375,10 +5375,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26615,
-                        26616
+                        26613,
+                        26614
                       ],
-                      "referencedDeclaration": 26615,
+                      "referencedDeclaration": 26613,
                       "src": "8556:7:23",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -5871,7 +5871,7 @@
                         "referencedDeclaration": 7993,
                         "src": "9098:29:23",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Bytes_$23035_storage",
+                          "typeIdentifier": "t_struct$_Bytes_$23033_storage",
                           "typeString": "struct DoublyLinkedList.Bytes storage ref"
                         }
                       },
@@ -5882,10 +5882,10 @@
                       "lValueRequested": false,
                       "memberName": "append",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 25015,
+                      "referencedDeclaration": 25013,
                       "src": "9098:36:23",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Bytes_$23035_storage_ptr_$_t_bytes32_$returns$_t_bool_$bound_to$_t_struct$_Bytes_$23035_storage_ptr_$",
+                        "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Bytes_$23033_storage_ptr_$_t_bytes32_$returns$_t_bool_$bound_to$_t_struct$_Bytes_$23033_storage_ptr_$",
                         "typeString": "function (struct DoublyLinkedList.Bytes storage pointer,bytes32) returns (bool)"
                       }
                     },
@@ -6100,7 +6100,7 @@
                       "name": "now",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 26614,
+                      "referencedDeclaration": 26612,
                       "src": "9266:3:23",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -7265,7 +7265,7 @@
         "id": 7926,
         "nodeType": "ImportDirective",
         "scope": 8492,
-        "sourceUnit": 25547,
+        "sourceUnit": 25545,
         "src": "26:72:23",
         "symbolAliases": [],
         "unitAlias": ""
@@ -7276,7 +7276,7 @@
         "id": 7927,
         "nodeType": "ImportDirective",
         "scope": 8492,
-        "sourceUnit": 26042,
+        "sourceUnit": 26040,
         "src": "99:59:23",
         "symbolAliases": [],
         "unitAlias": ""
@@ -7301,10 +7301,10 @@
               "id": 7928,
               "name": "DoublyLinkedList",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 25546,
+              "referencedDeclaration": 25544,
               "src": "191:16:23",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DoublyLinkedList_$25546",
+                "typeIdentifier": "t_contract$_DoublyLinkedList_$25544",
                 "typeString": "library DoublyLinkedList"
               }
             },
@@ -7315,10 +7315,10 @@
               "id": 7929,
               "name": "DoublyLinkedList.Bytes",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 23035,
+              "referencedDeclaration": 23033,
               "src": "212:22:23",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_Bytes_$23035_storage_ptr",
+                "typeIdentifier": "t_struct$_Bytes_$23033_storage_ptr",
                 "typeString": "struct DoublyLinkedList.Bytes"
               }
             }
@@ -7330,10 +7330,10 @@
               "id": 7931,
               "name": "SafeMath",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 26041,
+              "referencedDeclaration": 26039,
               "src": "246:8:23",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_SafeMath_$26041",
+                "typeIdentifier": "t_contract$_SafeMath_$26039",
                 "typeString": "library SafeMath"
               }
             },
@@ -8094,7 +8094,7 @@
                 "stateVariable": false,
                 "storageLocation": "default",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_struct$_Bytes_$23035_storage_ptr",
+                  "typeIdentifier": "t_struct$_Bytes_$23033_storage_ptr",
                   "typeString": "struct DoublyLinkedList.Bytes"
                 },
                 "typeName": {
@@ -8102,10 +8102,10 @@
                   "id": 7992,
                   "name": "DoublyLinkedList.Bytes",
                   "nodeType": "UserDefinedTypeName",
-                  "referencedDeclaration": 23035,
+                  "referencedDeclaration": 23033,
                   "src": "3756:22:23",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Bytes_$23035_storage_ptr",
+                    "typeIdentifier": "t_struct$_Bytes_$23033_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Bytes"
                   }
                 },
@@ -8926,7 +8926,7 @@
                                       "lValueRequested": false,
                                       "memberName": "add",
                                       "nodeType": "MemberAccess",
-                                      "referencedDeclaration": 26040,
+                                      "referencedDeclaration": 26038,
                                       "src": "5935:12:23",
                                       "typeDescriptions": {
                                         "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -9105,7 +9105,7 @@
                                     "lValueRequested": false,
                                     "memberName": "add",
                                     "nodeType": "MemberAccess",
-                                    "referencedDeclaration": 26040,
+                                    "referencedDeclaration": 26038,
                                     "src": "5806:8:23",
                                     "typeDescriptions": {
                                       "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -12325,10 +12325,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26615,
-                        26616
+                        26613,
+                        26614
                       ],
-                      "referencedDeclaration": 26615,
+                      "referencedDeclaration": 26613,
                       "src": "8503:7:23",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -12414,10 +12414,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26615,
-                        26616
+                        26613,
+                        26614
                       ],
-                      "referencedDeclaration": 26615,
+                      "referencedDeclaration": 26613,
                       "src": "8556:7:23",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -12910,7 +12910,7 @@
                         "referencedDeclaration": 7993,
                         "src": "9098:29:23",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Bytes_$23035_storage",
+                          "typeIdentifier": "t_struct$_Bytes_$23033_storage",
                           "typeString": "struct DoublyLinkedList.Bytes storage ref"
                         }
                       },
@@ -12921,10 +12921,10 @@
                       "lValueRequested": false,
                       "memberName": "append",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 25015,
+                      "referencedDeclaration": 25013,
                       "src": "9098:36:23",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Bytes_$23035_storage_ptr_$_t_bytes32_$returns$_t_bool_$bound_to$_t_struct$_Bytes_$23035_storage_ptr_$",
+                        "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Bytes_$23033_storage_ptr_$_t_bytes32_$returns$_t_bool_$bound_to$_t_struct$_Bytes_$23033_storage_ptr_$",
                         "typeString": "function (struct DoublyLinkedList.Bytes storage pointer,bytes32) returns (bool)"
                       }
                     },
@@ -13139,7 +13139,7 @@
                       "name": "now",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 26614,
+                      "referencedDeclaration": 26612,
                       "src": "9266:3:23",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -14285,12 +14285,12 @@
     "1": {
       "events": {},
       "links": {
-        "DoublyLinkedList": "0xa11c807b3f4feaff877e716517bdb27065253549"
+        "DoublyLinkedList": "0x84564c6c3a8d2c24fbb74ac804041c464e317293"
       },
-      "address": "0x9a096cf154694b5daebf0b6a5132facbe5880aac",
-      "transactionHash": "0x5b82dfd588c3418a9055c3351c9c57039494e8735c792ee83a26131932db3791"
+      "address": "0x047127350aa003d23ee758d846b6a895121ca3cc",
+      "transactionHash": "0x2d08cbc95da6876e0079e9469b24a15020dbae82372b8fae06d61dc55898d029"
     }
   },
   "schemaVersion": "2.0.2",
-  "updatedAt": "2019-03-18T09:12:09.292Z"
+  "updatedAt": "2019-03-19T05:23:58.733Z"
 }

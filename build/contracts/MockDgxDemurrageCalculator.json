@@ -87,7 +87,7 @@
         "id": 8805,
         "nodeType": "ImportDirective",
         "scope": 8870,
-        "sourceUnit": 20041,
+        "sourceUnit": 20039,
         "src": "26:57:27",
         "symbolAliases": [],
         "unitAlias": ""
@@ -154,7 +154,7 @@
                       "referencedDeclaration": 8810,
                       "src": "481:6:27",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DummyDGX_$20040",
+                        "typeIdentifier": "t_contract$_DummyDGX_$20038",
                         "typeString": "contract DummyDGX"
                       }
                     },
@@ -188,10 +188,10 @@
                         "name": "DummyDGX",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 20040,
+                        "referencedDeclaration": 20038,
                         "src": "490:8:27",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DummyDGX_$20040_$",
+                          "typeIdentifier": "t_type$_t_contract$_DummyDGX_$20038_$",
                           "typeString": "type(contract DummyDGX)"
                         }
                       },
@@ -205,13 +205,13 @@
                       "nodeType": "FunctionCall",
                       "src": "490:23:27",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DummyDGX_$20040",
+                        "typeIdentifier": "t_contract$_DummyDGX_$20038",
                         "typeString": "contract DummyDGX"
                       }
                     },
                     "src": "481:32:27",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DummyDGX_$20040",
+                      "typeIdentifier": "t_contract$_DummyDGX_$20038",
                       "typeString": "contract DummyDGX"
                     }
                   },
@@ -250,7 +250,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_DummyDGX_$20040",
+                    "typeIdentifier": "t_contract$_DummyDGX_$20038",
                     "typeString": "contract DummyDGX"
                   },
                   "typeName": {
@@ -258,10 +258,10 @@
                     "id": 8809,
                     "name": "DummyDGX",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 20040,
+                    "referencedDeclaration": 20038,
                     "src": "454:8:27",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DummyDGX_$20040",
+                      "typeIdentifier": "t_contract$_DummyDGX_$20038",
                       "typeString": "contract DummyDGX"
                     }
                   },
@@ -545,7 +545,7 @@
                             "referencedDeclaration": 8819,
                             "src": "891:5:27",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$20040_$",
+                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$20038_$",
                               "typeString": "function () view returns (contract DummyDGX)"
                             }
                           },
@@ -559,7 +559,7 @@
                           "nodeType": "FunctionCall",
                           "src": "891:7:27",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_DummyDGX_$20040",
+                            "typeIdentifier": "t_contract$_DummyDGX_$20038",
                             "typeString": "contract DummyDGX"
                           }
                         },
@@ -570,7 +570,7 @@
                         "lValueRequested": false,
                         "memberName": "showDemurrageConfigs",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 19999,
+                        "referencedDeclaration": 19997,
                         "src": "891:28:27",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$__$returns$_t_uint256_$_t_uint256_$_t_address_$_t_bool_$",
@@ -929,7 +929,7 @@
         "id": 8805,
         "nodeType": "ImportDirective",
         "scope": 8870,
-        "sourceUnit": 20041,
+        "sourceUnit": 20039,
         "src": "26:57:27",
         "symbolAliases": [],
         "unitAlias": ""
@@ -996,7 +996,7 @@
                       "referencedDeclaration": 8810,
                       "src": "481:6:27",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DummyDGX_$20040",
+                        "typeIdentifier": "t_contract$_DummyDGX_$20038",
                         "typeString": "contract DummyDGX"
                       }
                     },
@@ -1030,10 +1030,10 @@
                         "name": "DummyDGX",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 20040,
+                        "referencedDeclaration": 20038,
                         "src": "490:8:27",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DummyDGX_$20040_$",
+                          "typeIdentifier": "t_type$_t_contract$_DummyDGX_$20038_$",
                           "typeString": "type(contract DummyDGX)"
                         }
                       },
@@ -1047,13 +1047,13 @@
                       "nodeType": "FunctionCall",
                       "src": "490:23:27",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DummyDGX_$20040",
+                        "typeIdentifier": "t_contract$_DummyDGX_$20038",
                         "typeString": "contract DummyDGX"
                       }
                     },
                     "src": "481:32:27",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DummyDGX_$20040",
+                      "typeIdentifier": "t_contract$_DummyDGX_$20038",
                       "typeString": "contract DummyDGX"
                     }
                   },
@@ -1092,7 +1092,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_DummyDGX_$20040",
+                    "typeIdentifier": "t_contract$_DummyDGX_$20038",
                     "typeString": "contract DummyDGX"
                   },
                   "typeName": {
@@ -1100,10 +1100,10 @@
                     "id": 8809,
                     "name": "DummyDGX",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 20040,
+                    "referencedDeclaration": 20038,
                     "src": "454:8:27",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DummyDGX_$20040",
+                      "typeIdentifier": "t_contract$_DummyDGX_$20038",
                       "typeString": "contract DummyDGX"
                     }
                   },
@@ -1387,7 +1387,7 @@
                             "referencedDeclaration": 8819,
                             "src": "891:5:27",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$20040_$",
+                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$20038_$",
                               "typeString": "function () view returns (contract DummyDGX)"
                             }
                           },
@@ -1401,7 +1401,7 @@
                           "nodeType": "FunctionCall",
                           "src": "891:7:27",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_DummyDGX_$20040",
+                            "typeIdentifier": "t_contract$_DummyDGX_$20038",
                             "typeString": "contract DummyDGX"
                           }
                         },
@@ -1412,7 +1412,7 @@
                         "lValueRequested": false,
                         "memberName": "showDemurrageConfigs",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 19999,
+                        "referencedDeclaration": 19997,
                         "src": "891:28:27",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$__$returns$_t_uint256_$_t_uint256_$_t_address_$_t_bool_$",
@@ -1750,5 +1750,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.2",
-  "updatedAt": "2019-03-18T07:32:20.006Z"
+  "updatedAt": "2019-03-19T02:43:24.478Z"
 }

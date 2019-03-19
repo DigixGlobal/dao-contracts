@@ -316,7 +316,7 @@
         "id": 11945,
         "nodeType": "ImportDirective",
         "scope": 11988,
-        "sourceUnit": 26598,
+        "sourceUnit": 26596,
         "src": "26:71:47",
         "symbolAliases": [],
         "unitAlias": ""
@@ -330,10 +330,10 @@
               "id": 11946,
               "name": "StandardToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 26597,
+              "referencedDeclaration": 26595,
               "src": "119:13:47",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_StandardToken_$26597",
+                "typeIdentifier": "t_contract$_StandardToken_$26595",
                 "typeString": "contract StandardToken"
               }
             },
@@ -343,10 +343,10 @@
           }
         ],
         "contractDependencies": [
-          26275,
-          26318,
-          26350,
-          26597
+          26273,
+          26316,
+          26348,
+          26595
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -354,10 +354,10 @@
         "id": 11987,
         "linearizedBaseContracts": [
           11987,
-          26597,
-          26275,
-          26318,
-          26350
+          26595,
+          26273,
+          26316,
+          26348
         ],
         "name": "MockDgd",
         "nodeType": "ContractDefinition",
@@ -645,7 +645,7 @@
                       "name": "totalSupply_",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 26194,
+                      "referencedDeclaration": 26192,
                       "src": "446:12:47",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -693,7 +693,7 @@
                         "name": "balances",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 26192,
+                        "referencedDeclaration": 26190,
                         "src": "481:8:47",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -709,7 +709,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 26612,
+                          "referencedDeclaration": 26610,
                           "src": "490:3:47",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -796,7 +796,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 26612,
+                          "referencedDeclaration": 26610,
                           "src": "543:3:47",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -850,7 +850,7 @@
                       "name": "Transfer",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 26349,
+                      "referencedDeclaration": 26347,
                       "src": "529:8:47",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
@@ -938,7 +938,7 @@
         "id": 11945,
         "nodeType": "ImportDirective",
         "scope": 11988,
-        "sourceUnit": 26598,
+        "sourceUnit": 26596,
         "src": "26:71:47",
         "symbolAliases": [],
         "unitAlias": ""
@@ -952,10 +952,10 @@
               "id": 11946,
               "name": "StandardToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 26597,
+              "referencedDeclaration": 26595,
               "src": "119:13:47",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_StandardToken_$26597",
+                "typeIdentifier": "t_contract$_StandardToken_$26595",
                 "typeString": "contract StandardToken"
               }
             },
@@ -965,10 +965,10 @@
           }
         ],
         "contractDependencies": [
-          26275,
-          26318,
-          26350,
-          26597
+          26273,
+          26316,
+          26348,
+          26595
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -976,10 +976,10 @@
         "id": 11987,
         "linearizedBaseContracts": [
           11987,
-          26597,
-          26275,
-          26318,
-          26350
+          26595,
+          26273,
+          26316,
+          26348
         ],
         "name": "MockDgd",
         "nodeType": "ContractDefinition",
@@ -1267,7 +1267,7 @@
                       "name": "totalSupply_",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 26194,
+                      "referencedDeclaration": 26192,
                       "src": "446:12:47",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1315,7 +1315,7 @@
                         "name": "balances",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 26192,
+                        "referencedDeclaration": 26190,
                         "src": "481:8:47",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -1331,7 +1331,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 26612,
+                          "referencedDeclaration": 26610,
                           "src": "490:3:47",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -1418,7 +1418,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 26612,
+                          "referencedDeclaration": 26610,
                           "src": "543:3:47",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -1472,7 +1472,7 @@
                       "name": "Transfer",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 26349,
+                      "referencedDeclaration": 26347,
                       "src": "529:8:47",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
@@ -1539,5 +1539,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.2",
-  "updatedAt": "2019-03-18T07:32:20.026Z"
+  "updatedAt": "2019-03-19T02:43:24.501Z"
 }

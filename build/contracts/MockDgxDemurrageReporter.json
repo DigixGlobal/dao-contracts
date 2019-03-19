@@ -288,7 +288,7 @@
         "id": 8872,
         "nodeType": "ImportDirective",
         "scope": 9046,
-        "sourceUnit": 25948,
+        "sourceUnit": 25946,
         "src": "26:60:28",
         "symbolAliases": [],
         "unitAlias": ""
@@ -299,7 +299,7 @@
         "id": 8873,
         "nodeType": "ImportDirective",
         "scope": 9046,
-        "sourceUnit": 26094,
+        "sourceUnit": 26092,
         "src": "87:65:28",
         "symbolAliases": [],
         "unitAlias": ""
@@ -342,10 +342,10 @@
               "id": 8877,
               "name": "Claimable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 26093,
+              "referencedDeclaration": 26091,
               "src": "749:9:28",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Claimable_$26093",
+                "typeIdentifier": "t_contract$_Claimable_$26091",
                 "typeString": "contract Claimable"
               }
             },
@@ -356,8 +356,8 @@
         ],
         "contractDependencies": [
           8869,
-          26093,
-          26179
+          26091,
+          26177
         ],
         "contractKind": "contract",
         "documentation": "@title Digix Gold Token Demurrage Reporter\n @author Digix Holdings Pte Ltd\n @notice This contract is used to keep a close estimate of how much demurrage fees would have been collected on Digix Gold Token if the demurrage fees is on.\n @notice Anyone can call the function updateDemurrageReporter() to keep this contract updated to the lastest day. The more often this function is called the more accurate the estimate will be (but it can only be updated at most every 24hrs)",
@@ -365,8 +365,8 @@
         "id": 9045,
         "linearizedBaseContracts": [
           9045,
-          26093,
-          26179,
+          26091,
+          26177,
           8869
         ],
         "name": "MockDgxDemurrageReporter",
@@ -519,10 +519,10 @@
               "id": 8890,
               "name": "Types",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 25947,
+              "referencedDeclaration": 25945,
               "src": "1327:5:28",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Types_$25947",
+                "typeIdentifier": "t_contract$_Types_$25945",
                 "typeString": "library Types"
               }
             },
@@ -533,10 +533,10 @@
               "id": 8891,
               "name": "Types.MutableTimestamp",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 25639,
+              "referencedDeclaration": 25637,
               "src": "1337:22:28",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_MutableTimestamp_$25639_storage_ptr",
+                "typeIdentifier": "t_struct$_MutableTimestamp_$25637_storage_ptr",
                 "typeString": "struct Types.MutableTimestamp"
               }
             }
@@ -576,7 +576,7 @@
                       "name": "now",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 26614,
+                      "referencedDeclaration": 26612,
                       "src": "1491:3:28",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -622,7 +622,7 @@
                       "name": "now",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 26614,
+                      "referencedDeclaration": 26612,
                       "src": "1529:3:28",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -857,7 +857,7 @@
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 26127,
+                  "referencedDeclaration": 26125,
                   "src": "1633:9:28",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -935,7 +935,7 @@
                       "stateVariable": false,
                       "storageLocation": "memory",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_MutableTimestamp_$25639_memory_ptr",
+                        "typeIdentifier": "t_struct$_MutableTimestamp_$25637_memory_ptr",
                         "typeString": "struct Types.MutableTimestamp"
                       },
                       "typeName": {
@@ -943,10 +943,10 @@
                         "id": 8931,
                         "name": "Types.MutableTimestamp",
                         "nodeType": "UserDefinedTypeName",
-                        "referencedDeclaration": 25639,
+                        "referencedDeclaration": 25637,
                         "src": "1750:22:28",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_MutableTimestamp_$25639_storage_ptr",
+                          "typeIdentifier": "t_struct$_MutableTimestamp_$25637_storage_ptr",
                           "typeString": "struct Types.MutableTimestamp"
                         }
                       },
@@ -980,7 +980,7 @@
                           "referencedDeclaration": 8932,
                           "src": "1807:17:28",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_MutableTimestamp_$25639_memory_ptr",
+                            "typeIdentifier": "t_struct$_MutableTimestamp_$25637_memory_ptr",
                             "typeString": "struct Types.MutableTimestamp memory"
                           }
                         },
@@ -991,10 +991,10 @@
                         "lValueRequested": false,
                         "memberName": "time",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 25636,
+                        "referencedDeclaration": 25634,
                         "src": "1807:22:28",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_MutableUint_$25634_memory",
+                          "typeIdentifier": "t_struct$_MutableUint_$25632_memory",
                           "typeString": "struct Types.MutableUint memory"
                         }
                       },
@@ -1005,7 +1005,7 @@
                       "lValueRequested": true,
                       "memberName": "pre",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 25631,
+                      "referencedDeclaration": 25629,
                       "src": "1807:26:28",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1054,7 +1054,7 @@
                       "referencedDeclaration": 8932,
                       "src": "1868:17:28",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_MutableTimestamp_$25639_memory_ptr",
+                        "typeIdentifier": "t_struct$_MutableTimestamp_$25637_memory_ptr",
                         "typeString": "struct Types.MutableTimestamp memory"
                       }
                     },
@@ -1098,7 +1098,7 @@
                           "referencedDeclaration": 8932,
                           "src": "1888:17:28",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_MutableTimestamp_$25639_memory_ptr",
+                            "typeIdentifier": "t_struct$_MutableTimestamp_$25637_memory_ptr",
                             "typeString": "struct Types.MutableTimestamp memory"
                           }
                         },
@@ -1109,10 +1109,10 @@
                         "lValueRequested": false,
                         "memberName": "advance_by",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 25711,
+                        "referencedDeclaration": 25709,
                         "src": "1888:28:28",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_internal_view$_t_struct$_MutableTimestamp_$25639_memory_ptr_$_t_uint256_$returns$_t_struct$_MutableTimestamp_$25639_memory_ptr_$bound_to$_t_struct$_MutableTimestamp_$25639_memory_ptr_$",
+                          "typeIdentifier": "t_function_internal_view$_t_struct$_MutableTimestamp_$25637_memory_ptr_$_t_uint256_$returns$_t_struct$_MutableTimestamp_$25637_memory_ptr_$bound_to$_t_struct$_MutableTimestamp_$25637_memory_ptr_$",
                           "typeString": "function (struct Types.MutableTimestamp memory,uint256) view returns (struct Types.MutableTimestamp memory)"
                         }
                       },
@@ -1126,13 +1126,13 @@
                       "nodeType": "FunctionCall",
                       "src": "1888:36:28",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_MutableTimestamp_$25639_memory_ptr",
+                        "typeIdentifier": "t_struct$_MutableTimestamp_$25637_memory_ptr",
                         "typeString": "struct Types.MutableTimestamp memory"
                       }
                     },
                     "src": "1868:56:28",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_MutableTimestamp_$25639_memory_ptr",
+                      "typeIdentifier": "t_struct$_MutableTimestamp_$25637_memory_ptr",
                       "typeString": "struct Types.MutableTimestamp memory"
                     }
                   },
@@ -1282,7 +1282,7 @@
                             "referencedDeclaration": 8819,
                             "src": "2000:5:28",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$20040_$",
+                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$20038_$",
                               "typeString": "function () view returns (contract DummyDGX)"
                             }
                           },
@@ -1296,7 +1296,7 @@
                           "nodeType": "FunctionCall",
                           "src": "2000:7:28",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_DummyDGX_$20040",
+                            "typeIdentifier": "t_contract$_DummyDGX_$20038",
                             "typeString": "contract DummyDGX"
                           }
                         },
@@ -1307,7 +1307,7 @@
                         "lValueRequested": false,
                         "memberName": "showDemurrageConfigs",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 19999,
+                        "referencedDeclaration": 19997,
                         "src": "2000:28:28",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$__$returns$_t_uint256_$_t_uint256_$_t_address_$_t_bool_$",
@@ -1408,7 +1408,7 @@
                                   "referencedDeclaration": 8932,
                                   "src": "2077:17:28",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_struct$_MutableTimestamp_$25639_memory_ptr",
+                                    "typeIdentifier": "t_struct$_MutableTimestamp_$25637_memory_ptr",
                                     "typeString": "struct Types.MutableTimestamp memory"
                                   }
                                 },
@@ -1419,7 +1419,7 @@
                                 "lValueRequested": false,
                                 "memberName": "in_units",
                                 "nodeType": "MemberAccess",
-                                "referencedDeclaration": 25638,
+                                "referencedDeclaration": 25636,
                                 "src": "2077:26:28",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -1549,7 +1549,7 @@
                           "referencedDeclaration": 8932,
                           "src": "2184:17:28",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_MutableTimestamp_$25639_memory_ptr",
+                            "typeIdentifier": "t_struct$_MutableTimestamp_$25637_memory_ptr",
                             "typeString": "struct Types.MutableTimestamp memory"
                           }
                         },
@@ -1560,10 +1560,10 @@
                         "lValueRequested": false,
                         "memberName": "time",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 25636,
+                        "referencedDeclaration": 25634,
                         "src": "2184:22:28",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_MutableUint_$25634_memory",
+                          "typeIdentifier": "t_struct$_MutableUint_$25632_memory",
                           "typeString": "struct Types.MutableUint memory"
                         }
                       },
@@ -1574,7 +1574,7 @@
                       "lValueRequested": false,
                       "memberName": "post",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 25633,
+                      "referencedDeclaration": 25631,
                       "src": "2184:27:28",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1739,7 +1739,7 @@
                           "referencedDeclaration": 8819,
                           "src": "2417:5:28",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$20040_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$20038_$",
                             "typeString": "function () view returns (contract DummyDGX)"
                           }
                         },
@@ -1753,7 +1753,7 @@
                         "nodeType": "FunctionCall",
                         "src": "2417:7:28",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DummyDGX_$20040",
+                          "typeIdentifier": "t_contract$_DummyDGX_$20038",
                           "typeString": "contract DummyDGX"
                         }
                       },
@@ -1764,7 +1764,7 @@
                       "lValueRequested": false,
                       "memberName": "totalSupply",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 19808,
+                      "referencedDeclaration": 19806,
                       "src": "2417:19:28",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_view$__$returns$_t_uint256_$",
@@ -1934,7 +1934,7 @@
                                   "referencedDeclaration": 8819,
                                   "src": "2579:5:28",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$20040_$",
+                                    "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$20038_$",
                                     "typeString": "function () view returns (contract DummyDGX)"
                                   }
                                 },
@@ -1948,7 +1948,7 @@
                                 "nodeType": "FunctionCall",
                                 "src": "2579:7:28",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_contract$_DummyDGX_$20040",
+                                  "typeIdentifier": "t_contract$_DummyDGX_$20038",
                                   "typeString": "contract DummyDGX"
                                 }
                               },
@@ -1959,7 +1959,7 @@
                               "lValueRequested": false,
                               "memberName": "balanceOf",
                               "nodeType": "MemberAccess",
-                              "referencedDeclaration": 19825,
+                              "referencedDeclaration": 19823,
                               "src": "2579:17:28",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_uint256_$",
@@ -2421,7 +2421,7 @@
         "id": 8872,
         "nodeType": "ImportDirective",
         "scope": 9046,
-        "sourceUnit": 25948,
+        "sourceUnit": 25946,
         "src": "26:60:28",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2432,7 +2432,7 @@
         "id": 8873,
         "nodeType": "ImportDirective",
         "scope": 9046,
-        "sourceUnit": 26094,
+        "sourceUnit": 26092,
         "src": "87:65:28",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2475,10 +2475,10 @@
               "id": 8877,
               "name": "Claimable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 26093,
+              "referencedDeclaration": 26091,
               "src": "749:9:28",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Claimable_$26093",
+                "typeIdentifier": "t_contract$_Claimable_$26091",
                 "typeString": "contract Claimable"
               }
             },
@@ -2489,8 +2489,8 @@
         ],
         "contractDependencies": [
           8869,
-          26093,
-          26179
+          26091,
+          26177
         ],
         "contractKind": "contract",
         "documentation": "@title Digix Gold Token Demurrage Reporter\n @author Digix Holdings Pte Ltd\n @notice This contract is used to keep a close estimate of how much demurrage fees would have been collected on Digix Gold Token if the demurrage fees is on.\n @notice Anyone can call the function updateDemurrageReporter() to keep this contract updated to the lastest day. The more often this function is called the more accurate the estimate will be (but it can only be updated at most every 24hrs)",
@@ -2498,8 +2498,8 @@
         "id": 9045,
         "linearizedBaseContracts": [
           9045,
-          26093,
-          26179,
+          26091,
+          26177,
           8869
         ],
         "name": "MockDgxDemurrageReporter",
@@ -2652,10 +2652,10 @@
               "id": 8890,
               "name": "Types",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 25947,
+              "referencedDeclaration": 25945,
               "src": "1327:5:28",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Types_$25947",
+                "typeIdentifier": "t_contract$_Types_$25945",
                 "typeString": "library Types"
               }
             },
@@ -2666,10 +2666,10 @@
               "id": 8891,
               "name": "Types.MutableTimestamp",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 25639,
+              "referencedDeclaration": 25637,
               "src": "1337:22:28",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_MutableTimestamp_$25639_storage_ptr",
+                "typeIdentifier": "t_struct$_MutableTimestamp_$25637_storage_ptr",
                 "typeString": "struct Types.MutableTimestamp"
               }
             }
@@ -2709,7 +2709,7 @@
                       "name": "now",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 26614,
+                      "referencedDeclaration": 26612,
                       "src": "1491:3:28",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2755,7 +2755,7 @@
                       "name": "now",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 26614,
+                      "referencedDeclaration": 26612,
                       "src": "1529:3:28",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2990,7 +2990,7 @@
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 26127,
+                  "referencedDeclaration": 26125,
                   "src": "1633:9:28",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -3068,7 +3068,7 @@
                       "stateVariable": false,
                       "storageLocation": "memory",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_MutableTimestamp_$25639_memory_ptr",
+                        "typeIdentifier": "t_struct$_MutableTimestamp_$25637_memory_ptr",
                         "typeString": "struct Types.MutableTimestamp"
                       },
                       "typeName": {
@@ -3076,10 +3076,10 @@
                         "id": 8931,
                         "name": "Types.MutableTimestamp",
                         "nodeType": "UserDefinedTypeName",
-                        "referencedDeclaration": 25639,
+                        "referencedDeclaration": 25637,
                         "src": "1750:22:28",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_MutableTimestamp_$25639_storage_ptr",
+                          "typeIdentifier": "t_struct$_MutableTimestamp_$25637_storage_ptr",
                           "typeString": "struct Types.MutableTimestamp"
                         }
                       },
@@ -3113,7 +3113,7 @@
                           "referencedDeclaration": 8932,
                           "src": "1807:17:28",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_MutableTimestamp_$25639_memory_ptr",
+                            "typeIdentifier": "t_struct$_MutableTimestamp_$25637_memory_ptr",
                             "typeString": "struct Types.MutableTimestamp memory"
                           }
                         },
@@ -3124,10 +3124,10 @@
                         "lValueRequested": false,
                         "memberName": "time",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 25636,
+                        "referencedDeclaration": 25634,
                         "src": "1807:22:28",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_MutableUint_$25634_memory",
+                          "typeIdentifier": "t_struct$_MutableUint_$25632_memory",
                           "typeString": "struct Types.MutableUint memory"
                         }
                       },
@@ -3138,7 +3138,7 @@
                       "lValueRequested": true,
                       "memberName": "pre",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 25631,
+                      "referencedDeclaration": 25629,
                       "src": "1807:26:28",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3187,7 +3187,7 @@
                       "referencedDeclaration": 8932,
                       "src": "1868:17:28",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_MutableTimestamp_$25639_memory_ptr",
+                        "typeIdentifier": "t_struct$_MutableTimestamp_$25637_memory_ptr",
                         "typeString": "struct Types.MutableTimestamp memory"
                       }
                     },
@@ -3231,7 +3231,7 @@
                           "referencedDeclaration": 8932,
                           "src": "1888:17:28",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_MutableTimestamp_$25639_memory_ptr",
+                            "typeIdentifier": "t_struct$_MutableTimestamp_$25637_memory_ptr",
                             "typeString": "struct Types.MutableTimestamp memory"
                           }
                         },
@@ -3242,10 +3242,10 @@
                         "lValueRequested": false,
                         "memberName": "advance_by",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 25711,
+                        "referencedDeclaration": 25709,
                         "src": "1888:28:28",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_internal_view$_t_struct$_MutableTimestamp_$25639_memory_ptr_$_t_uint256_$returns$_t_struct$_MutableTimestamp_$25639_memory_ptr_$bound_to$_t_struct$_MutableTimestamp_$25639_memory_ptr_$",
+                          "typeIdentifier": "t_function_internal_view$_t_struct$_MutableTimestamp_$25637_memory_ptr_$_t_uint256_$returns$_t_struct$_MutableTimestamp_$25637_memory_ptr_$bound_to$_t_struct$_MutableTimestamp_$25637_memory_ptr_$",
                           "typeString": "function (struct Types.MutableTimestamp memory,uint256) view returns (struct Types.MutableTimestamp memory)"
                         }
                       },
@@ -3259,13 +3259,13 @@
                       "nodeType": "FunctionCall",
                       "src": "1888:36:28",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_MutableTimestamp_$25639_memory_ptr",
+                        "typeIdentifier": "t_struct$_MutableTimestamp_$25637_memory_ptr",
                         "typeString": "struct Types.MutableTimestamp memory"
                       }
                     },
                     "src": "1868:56:28",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_MutableTimestamp_$25639_memory_ptr",
+                      "typeIdentifier": "t_struct$_MutableTimestamp_$25637_memory_ptr",
                       "typeString": "struct Types.MutableTimestamp memory"
                     }
                   },
@@ -3415,7 +3415,7 @@
                             "referencedDeclaration": 8819,
                             "src": "2000:5:28",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$20040_$",
+                              "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$20038_$",
                               "typeString": "function () view returns (contract DummyDGX)"
                             }
                           },
@@ -3429,7 +3429,7 @@
                           "nodeType": "FunctionCall",
                           "src": "2000:7:28",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_DummyDGX_$20040",
+                            "typeIdentifier": "t_contract$_DummyDGX_$20038",
                             "typeString": "contract DummyDGX"
                           }
                         },
@@ -3440,7 +3440,7 @@
                         "lValueRequested": false,
                         "memberName": "showDemurrageConfigs",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 19999,
+                        "referencedDeclaration": 19997,
                         "src": "2000:28:28",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$__$returns$_t_uint256_$_t_uint256_$_t_address_$_t_bool_$",
@@ -3541,7 +3541,7 @@
                                   "referencedDeclaration": 8932,
                                   "src": "2077:17:28",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_struct$_MutableTimestamp_$25639_memory_ptr",
+                                    "typeIdentifier": "t_struct$_MutableTimestamp_$25637_memory_ptr",
                                     "typeString": "struct Types.MutableTimestamp memory"
                                   }
                                 },
@@ -3552,7 +3552,7 @@
                                 "lValueRequested": false,
                                 "memberName": "in_units",
                                 "nodeType": "MemberAccess",
-                                "referencedDeclaration": 25638,
+                                "referencedDeclaration": 25636,
                                 "src": "2077:26:28",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -3682,7 +3682,7 @@
                           "referencedDeclaration": 8932,
                           "src": "2184:17:28",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_MutableTimestamp_$25639_memory_ptr",
+                            "typeIdentifier": "t_struct$_MutableTimestamp_$25637_memory_ptr",
                             "typeString": "struct Types.MutableTimestamp memory"
                           }
                         },
@@ -3693,10 +3693,10 @@
                         "lValueRequested": false,
                         "memberName": "time",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 25636,
+                        "referencedDeclaration": 25634,
                         "src": "2184:22:28",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_MutableUint_$25634_memory",
+                          "typeIdentifier": "t_struct$_MutableUint_$25632_memory",
                           "typeString": "struct Types.MutableUint memory"
                         }
                       },
@@ -3707,7 +3707,7 @@
                       "lValueRequested": false,
                       "memberName": "post",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 25633,
+                      "referencedDeclaration": 25631,
                       "src": "2184:27:28",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3872,7 +3872,7 @@
                           "referencedDeclaration": 8819,
                           "src": "2417:5:28",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$20040_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$20038_$",
                             "typeString": "function () view returns (contract DummyDGX)"
                           }
                         },
@@ -3886,7 +3886,7 @@
                         "nodeType": "FunctionCall",
                         "src": "2417:7:28",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DummyDGX_$20040",
+                          "typeIdentifier": "t_contract$_DummyDGX_$20038",
                           "typeString": "contract DummyDGX"
                         }
                       },
@@ -3897,7 +3897,7 @@
                       "lValueRequested": false,
                       "memberName": "totalSupply",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 19808,
+                      "referencedDeclaration": 19806,
                       "src": "2417:19:28",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_view$__$returns$_t_uint256_$",
@@ -4067,7 +4067,7 @@
                                   "referencedDeclaration": 8819,
                                   "src": "2579:5:28",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$20040_$",
+                                    "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DummyDGX_$20038_$",
                                     "typeString": "function () view returns (contract DummyDGX)"
                                   }
                                 },
@@ -4081,7 +4081,7 @@
                                 "nodeType": "FunctionCall",
                                 "src": "2579:7:28",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_contract$_DummyDGX_$20040",
+                                  "typeIdentifier": "t_contract$_DummyDGX_$20038",
                                   "typeString": "contract DummyDGX"
                                 }
                               },
@@ -4092,7 +4092,7 @@
                               "lValueRequested": false,
                               "memberName": "balanceOf",
                               "nodeType": "MemberAccess",
-                              "referencedDeclaration": 19825,
+                              "referencedDeclaration": 19823,
                               "src": "2579:17:28",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_uint256_$",
@@ -4533,5 +4533,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.2",
-  "updatedAt": "2019-03-18T07:32:20.006Z"
+  "updatedAt": "2019-03-19T02:43:24.479Z"
 }

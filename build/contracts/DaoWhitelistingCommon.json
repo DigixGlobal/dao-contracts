@@ -107,7 +107,7 @@
         "id": 1777,
         "nodeType": "ImportDirective",
         "scope": 1820,
-        "sourceUnit": 18441,
+        "sourceUnit": 18439,
         "src": "55:47:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -118,7 +118,7 @@
         "id": 1778,
         "nodeType": "ImportDirective",
         "scope": 1820,
-        "sourceUnit": 19059,
+        "sourceUnit": 19057,
         "src": "103:64:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -132,10 +132,10 @@
               "id": 1779,
               "name": "ResolverClient",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 19058,
+              "referencedDeclaration": 19056,
               "src": "204:14:6",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ResolverClient_$19058",
+                "typeIdentifier": "t_contract$_ResolverClient_$19056",
                 "typeString": "contract ResolverClient"
               }
             },
@@ -164,7 +164,7 @@
         ],
         "contractDependencies": [
           1580,
-          19058
+          19056
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -173,7 +173,7 @@
         "linearizedBaseContracts": [
           1819,
           1580,
-          19058
+          19056
         ],
         "name": "DaoWhitelistingCommon",
         "nodeType": "ContractDefinition",
@@ -201,7 +201,7 @@
                       "referencedDeclaration": 1785,
                       "src": "369:9:6",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18440",
+                        "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18438",
                         "typeString": "contract DaoWhitelistingStorage"
                       }
                     },
@@ -238,7 +238,7 @@
                             "name": "get_contract",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19057,
+                            "referencedDeclaration": 19055,
                             "src": "404:12:6",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_view$_t_bytes32_$returns$_t_address_$",
@@ -271,10 +271,10 @@
                         "name": "DaoWhitelistingStorage",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 18440,
+                        "referencedDeclaration": 18438,
                         "src": "381:22:6",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DaoWhitelistingStorage_$18440_$",
+                          "typeIdentifier": "t_type$_t_contract$_DaoWhitelistingStorage_$18438_$",
                           "typeString": "type(contract DaoWhitelistingStorage)"
                         }
                       },
@@ -288,13 +288,13 @@
                       "nodeType": "FunctionCall",
                       "src": "381:71:6",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18440",
+                        "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18438",
                         "typeString": "contract DaoWhitelistingStorage"
                       }
                     },
                     "src": "369:83:6",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18440",
+                      "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18438",
                       "typeString": "contract DaoWhitelistingStorage"
                     }
                   },
@@ -333,7 +333,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18440",
+                    "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18438",
                     "typeString": "contract DaoWhitelistingStorage"
                   },
                   "typeName": {
@@ -341,10 +341,10 @@
                     "id": 1784,
                     "name": "DaoWhitelistingStorage",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 18440,
+                    "referencedDeclaration": 18438,
                     "src": "321:22:6",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18440",
+                      "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18438",
                       "typeString": "contract DaoWhitelistingStorage"
                     }
                   },
@@ -422,7 +422,7 @@
                                 "name": "msg",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 26612,
+                                "referencedDeclaration": 26610,
                                 "src": "942:3:6",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_message",
@@ -453,7 +453,7 @@
                                 "name": "tx",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 26624,
+                                "referencedDeclaration": 26622,
                                 "src": "956:2:6",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_transaction",
@@ -507,7 +507,7 @@
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 26612,
+                              "referencedDeclaration": 26610,
                               "src": "1005:3:6",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
@@ -548,7 +548,7 @@
                               "referencedDeclaration": 1796,
                               "src": "970:22:6",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoWhitelistingStorage_$18440_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoWhitelistingStorage_$18438_$",
                                 "typeString": "function () view returns (contract DaoWhitelistingStorage)"
                               }
                             },
@@ -562,7 +562,7 @@
                             "nodeType": "FunctionCall",
                             "src": "970:24:6",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18440",
+                              "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18438",
                               "typeString": "contract DaoWhitelistingStorage"
                             }
                           },
@@ -573,7 +573,7 @@
                           "lValueRequested": false,
                           "memberName": "whitelist",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 18406,
+                          "referencedDeclaration": 18404,
                           "src": "970:34:6",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_bool_$",
@@ -711,7 +711,7 @@
         "id": 1777,
         "nodeType": "ImportDirective",
         "scope": 1820,
-        "sourceUnit": 18441,
+        "sourceUnit": 18439,
         "src": "55:47:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -722,7 +722,7 @@
         "id": 1778,
         "nodeType": "ImportDirective",
         "scope": 1820,
-        "sourceUnit": 19059,
+        "sourceUnit": 19057,
         "src": "103:64:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -736,10 +736,10 @@
               "id": 1779,
               "name": "ResolverClient",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 19058,
+              "referencedDeclaration": 19056,
               "src": "204:14:6",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ResolverClient_$19058",
+                "typeIdentifier": "t_contract$_ResolverClient_$19056",
                 "typeString": "contract ResolverClient"
               }
             },
@@ -768,7 +768,7 @@
         ],
         "contractDependencies": [
           1580,
-          19058
+          19056
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -777,7 +777,7 @@
         "linearizedBaseContracts": [
           1819,
           1580,
-          19058
+          19056
         ],
         "name": "DaoWhitelistingCommon",
         "nodeType": "ContractDefinition",
@@ -805,7 +805,7 @@
                       "referencedDeclaration": 1785,
                       "src": "369:9:6",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18440",
+                        "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18438",
                         "typeString": "contract DaoWhitelistingStorage"
                       }
                     },
@@ -842,7 +842,7 @@
                             "name": "get_contract",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19057,
+                            "referencedDeclaration": 19055,
                             "src": "404:12:6",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_view$_t_bytes32_$returns$_t_address_$",
@@ -875,10 +875,10 @@
                         "name": "DaoWhitelistingStorage",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 18440,
+                        "referencedDeclaration": 18438,
                         "src": "381:22:6",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DaoWhitelistingStorage_$18440_$",
+                          "typeIdentifier": "t_type$_t_contract$_DaoWhitelistingStorage_$18438_$",
                           "typeString": "type(contract DaoWhitelistingStorage)"
                         }
                       },
@@ -892,13 +892,13 @@
                       "nodeType": "FunctionCall",
                       "src": "381:71:6",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18440",
+                        "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18438",
                         "typeString": "contract DaoWhitelistingStorage"
                       }
                     },
                     "src": "369:83:6",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18440",
+                      "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18438",
                       "typeString": "contract DaoWhitelistingStorage"
                     }
                   },
@@ -937,7 +937,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18440",
+                    "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18438",
                     "typeString": "contract DaoWhitelistingStorage"
                   },
                   "typeName": {
@@ -945,10 +945,10 @@
                     "id": 1784,
                     "name": "DaoWhitelistingStorage",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 18440,
+                    "referencedDeclaration": 18438,
                     "src": "321:22:6",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18440",
+                      "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18438",
                       "typeString": "contract DaoWhitelistingStorage"
                     }
                   },
@@ -1026,7 +1026,7 @@
                                 "name": "msg",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 26612,
+                                "referencedDeclaration": 26610,
                                 "src": "942:3:6",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_message",
@@ -1057,7 +1057,7 @@
                                 "name": "tx",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 26624,
+                                "referencedDeclaration": 26622,
                                 "src": "956:2:6",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_transaction",
@@ -1111,7 +1111,7 @@
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 26612,
+                              "referencedDeclaration": 26610,
                               "src": "1005:3:6",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
@@ -1152,7 +1152,7 @@
                               "referencedDeclaration": 1796,
                               "src": "970:22:6",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoWhitelistingStorage_$18440_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoWhitelistingStorage_$18438_$",
                                 "typeString": "function () view returns (contract DaoWhitelistingStorage)"
                               }
                             },
@@ -1166,7 +1166,7 @@
                             "nodeType": "FunctionCall",
                             "src": "970:24:6",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18440",
+                              "typeIdentifier": "t_contract$_DaoWhitelistingStorage_$18438",
                               "typeString": "contract DaoWhitelistingStorage"
                             }
                           },
@@ -1177,7 +1177,7 @@
                           "lValueRequested": false,
                           "memberName": "whitelist",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 18406,
+                          "referencedDeclaration": 18404,
                           "src": "970:34:6",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_bool_$",
@@ -1283,5 +1283,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.2",
-  "updatedAt": "2019-03-18T07:32:19.974Z"
+  "updatedAt": "2019-03-19T02:43:24.447Z"
 }

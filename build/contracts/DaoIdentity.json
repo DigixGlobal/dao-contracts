@@ -187,7 +187,7 @@
         "id": 3152,
         "nodeType": "ImportDirective",
         "scope": 3329,
-        "sourceUnit": 14514,
+        "sourceUnit": 14512,
         "src": "26:43:10",
         "symbolAliases": [],
         "unitAlias": ""
@@ -228,7 +228,7 @@
           1580,
           1819,
           1911,
-          19058
+          19056
         ],
         "contractKind": "contract",
         "documentation": "@title Contract to manage the admin roles in DAO (founders, prls, kyc admins)\n@author Digix Holdings",
@@ -239,7 +239,7 @@
           1911,
           1819,
           1580,
-          19058
+          19056
         ],
         "name": "DaoIdentity",
         "nodeType": "ContractDefinition",
@@ -299,7 +299,7 @@
                           "name": "init",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19026,
+                          "referencedDeclaration": 19024,
                           "src": "453:4:10",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_nonpayable$_t_bytes32_$_t_address_$returns$_t_bool_$",
@@ -332,10 +332,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26615,
-                        26616
+                        26613,
+                        26614
                       ],
-                      "referencedDeclaration": 26615,
+                      "referencedDeclaration": 26613,
                       "src": "445:7:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -419,7 +419,7 @@
                           "referencedDeclaration": 1910,
                           "src": "955:16:10",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14513_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14511_$",
                             "typeString": "function () view returns (contract DaoIdentityStorage)"
                           }
                         },
@@ -433,7 +433,7 @@
                         "nodeType": "FunctionCall",
                         "src": "955:18:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14513",
+                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14511",
                           "typeString": "contract DaoIdentityStorage"
                         }
                       },
@@ -444,7 +444,7 @@
                       "lValueRequested": false,
                       "memberName": "create_role",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14380,
+                      "referencedDeclaration": 14378,
                       "src": "955:30:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_uint256_$_t_bytes32_$returns$_t_bool_$",
@@ -528,7 +528,7 @@
                           "referencedDeclaration": 1910,
                           "src": "1023:16:10",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14513_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14511_$",
                             "typeString": "function () view returns (contract DaoIdentityStorage)"
                           }
                         },
@@ -542,7 +542,7 @@
                         "nodeType": "FunctionCall",
                         "src": "1023:18:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14513",
+                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14511",
                           "typeString": "contract DaoIdentityStorage"
                         }
                       },
@@ -553,7 +553,7 @@
                       "lValueRequested": false,
                       "memberName": "create_role",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14380,
+                      "referencedDeclaration": 14378,
                       "src": "1023:30:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_uint256_$_t_bytes32_$returns$_t_bool_$",
@@ -637,7 +637,7 @@
                           "referencedDeclaration": 1910,
                           "src": "1083:16:10",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14513_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14511_$",
                             "typeString": "function () view returns (contract DaoIdentityStorage)"
                           }
                         },
@@ -651,7 +651,7 @@
                         "nodeType": "FunctionCall",
                         "src": "1083:18:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14513",
+                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14511",
                           "typeString": "contract DaoIdentityStorage"
                         }
                       },
@@ -662,7 +662,7 @@
                       "lValueRequested": false,
                       "memberName": "create_role",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14380,
+                      "referencedDeclaration": 14378,
                       "src": "1083:30:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_uint256_$_t_bytes32_$returns$_t_bool_$",
@@ -768,7 +768,7 @@
                           "referencedDeclaration": 1910,
                           "src": "1154:16:10",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14513_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14511_$",
                             "typeString": "function () view returns (contract DaoIdentityStorage)"
                           }
                         },
@@ -782,7 +782,7 @@
                         "nodeType": "FunctionCall",
                         "src": "1154:18:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14513",
+                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14511",
                           "typeString": "contract DaoIdentityStorage"
                         }
                       },
@@ -793,7 +793,7 @@
                       "lValueRequested": false,
                       "memberName": "create_group",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14353,
+                      "referencedDeclaration": 14351,
                       "src": "1154:31:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_uint256_$_t_bytes32_$_t_bytes32_$returns$_t_bool_$_t_uint256_$",
@@ -899,7 +899,7 @@
                           "referencedDeclaration": 1910,
                           "src": "1249:16:10",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14513_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14511_$",
                             "typeString": "function () view returns (contract DaoIdentityStorage)"
                           }
                         },
@@ -913,7 +913,7 @@
                         "nodeType": "FunctionCall",
                         "src": "1249:18:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14513",
+                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14511",
                           "typeString": "contract DaoIdentityStorage"
                         }
                       },
@@ -924,7 +924,7 @@
                       "lValueRequested": false,
                       "memberName": "create_group",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14353,
+                      "referencedDeclaration": 14351,
                       "src": "1249:31:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_uint256_$_t_bytes32_$_t_bytes32_$returns$_t_bool_$_t_uint256_$",
@@ -1030,7 +1030,7 @@
                           "referencedDeclaration": 1910,
                           "src": "1336:16:10",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14513_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14511_$",
                             "typeString": "function () view returns (contract DaoIdentityStorage)"
                           }
                         },
@@ -1044,7 +1044,7 @@
                         "nodeType": "FunctionCall",
                         "src": "1336:18:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14513",
+                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14511",
                           "typeString": "contract DaoIdentityStorage"
                         }
                       },
@@ -1055,7 +1055,7 @@
                       "lValueRequested": false,
                       "memberName": "create_group",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14353,
+                      "referencedDeclaration": 14351,
                       "src": "1336:31:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_uint256_$_t_bytes32_$_t_bytes32_$returns$_t_bool_$_t_uint256_$",
@@ -1213,7 +1213,7 @@
                           "referencedDeclaration": 1910,
                           "src": "1817:16:10",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14513_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14511_$",
                             "typeString": "function () view returns (contract DaoIdentityStorage)"
                           }
                         },
@@ -1227,7 +1227,7 @@
                         "nodeType": "FunctionCall",
                         "src": "1817:18:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14513",
+                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14511",
                           "typeString": "contract DaoIdentityStorage"
                         }
                       },
@@ -1238,7 +1238,7 @@
                       "lValueRequested": false,
                       "memberName": "update_add_user_to_group",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14410,
+                      "referencedDeclaration": 14408,
                       "src": "1817:43:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_uint256_$_t_address_$_t_bytes32_$returns$_t_bool_$",
@@ -1434,7 +1434,7 @@
                           "referencedDeclaration": 1910,
                           "src": "2151:16:10",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14513_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14511_$",
                             "typeString": "function () view returns (contract DaoIdentityStorage)"
                           }
                         },
@@ -1448,7 +1448,7 @@
                         "nodeType": "FunctionCall",
                         "src": "2151:18:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14513",
+                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14511",
                           "typeString": "contract DaoIdentityStorage"
                         }
                       },
@@ -1459,7 +1459,7 @@
                       "lValueRequested": false,
                       "memberName": "update_remove_group_user",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14434,
+                      "referencedDeclaration": 14432,
                       "src": "2151:43:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$returns$_t_bool_$",
@@ -2402,7 +2402,7 @@
                           "referencedDeclaration": 1910,
                           "src": "3480:16:10",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14513_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14511_$",
                             "typeString": "function () view returns (contract DaoIdentityStorage)"
                           }
                         },
@@ -2416,7 +2416,7 @@
                         "nodeType": "FunctionCall",
                         "src": "3480:18:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14513",
+                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14511",
                           "typeString": "contract DaoIdentityStorage"
                         }
                       },
@@ -2427,7 +2427,7 @@
                       "lValueRequested": false,
                       "memberName": "update_kyc",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14464,
+                      "referencedDeclaration": 14462,
                       "src": "3480:29:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_bytes32_$_t_uint256_$returns$__$",
@@ -2594,7 +2594,7 @@
         "id": 3152,
         "nodeType": "ImportDirective",
         "scope": 3329,
-        "sourceUnit": 14514,
+        "sourceUnit": 14512,
         "src": "26:43:10",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2635,7 +2635,7 @@
           1580,
           1819,
           1911,
-          19058
+          19056
         ],
         "contractKind": "contract",
         "documentation": "@title Contract to manage the admin roles in DAO (founders, prls, kyc admins)\n@author Digix Holdings",
@@ -2646,7 +2646,7 @@
           1911,
           1819,
           1580,
-          19058
+          19056
         ],
         "name": "DaoIdentity",
         "nodeType": "ContractDefinition",
@@ -2706,7 +2706,7 @@
                           "name": "init",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19026,
+                          "referencedDeclaration": 19024,
                           "src": "453:4:10",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_nonpayable$_t_bytes32_$_t_address_$returns$_t_bool_$",
@@ -2739,10 +2739,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26615,
-                        26616
+                        26613,
+                        26614
                       ],
-                      "referencedDeclaration": 26615,
+                      "referencedDeclaration": 26613,
                       "src": "445:7:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -2826,7 +2826,7 @@
                           "referencedDeclaration": 1910,
                           "src": "955:16:10",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14513_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14511_$",
                             "typeString": "function () view returns (contract DaoIdentityStorage)"
                           }
                         },
@@ -2840,7 +2840,7 @@
                         "nodeType": "FunctionCall",
                         "src": "955:18:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14513",
+                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14511",
                           "typeString": "contract DaoIdentityStorage"
                         }
                       },
@@ -2851,7 +2851,7 @@
                       "lValueRequested": false,
                       "memberName": "create_role",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14380,
+                      "referencedDeclaration": 14378,
                       "src": "955:30:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_uint256_$_t_bytes32_$returns$_t_bool_$",
@@ -2935,7 +2935,7 @@
                           "referencedDeclaration": 1910,
                           "src": "1023:16:10",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14513_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14511_$",
                             "typeString": "function () view returns (contract DaoIdentityStorage)"
                           }
                         },
@@ -2949,7 +2949,7 @@
                         "nodeType": "FunctionCall",
                         "src": "1023:18:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14513",
+                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14511",
                           "typeString": "contract DaoIdentityStorage"
                         }
                       },
@@ -2960,7 +2960,7 @@
                       "lValueRequested": false,
                       "memberName": "create_role",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14380,
+                      "referencedDeclaration": 14378,
                       "src": "1023:30:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_uint256_$_t_bytes32_$returns$_t_bool_$",
@@ -3044,7 +3044,7 @@
                           "referencedDeclaration": 1910,
                           "src": "1083:16:10",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14513_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14511_$",
                             "typeString": "function () view returns (contract DaoIdentityStorage)"
                           }
                         },
@@ -3058,7 +3058,7 @@
                         "nodeType": "FunctionCall",
                         "src": "1083:18:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14513",
+                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14511",
                           "typeString": "contract DaoIdentityStorage"
                         }
                       },
@@ -3069,7 +3069,7 @@
                       "lValueRequested": false,
                       "memberName": "create_role",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14380,
+                      "referencedDeclaration": 14378,
                       "src": "1083:30:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_uint256_$_t_bytes32_$returns$_t_bool_$",
@@ -3175,7 +3175,7 @@
                           "referencedDeclaration": 1910,
                           "src": "1154:16:10",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14513_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14511_$",
                             "typeString": "function () view returns (contract DaoIdentityStorage)"
                           }
                         },
@@ -3189,7 +3189,7 @@
                         "nodeType": "FunctionCall",
                         "src": "1154:18:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14513",
+                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14511",
                           "typeString": "contract DaoIdentityStorage"
                         }
                       },
@@ -3200,7 +3200,7 @@
                       "lValueRequested": false,
                       "memberName": "create_group",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14353,
+                      "referencedDeclaration": 14351,
                       "src": "1154:31:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_uint256_$_t_bytes32_$_t_bytes32_$returns$_t_bool_$_t_uint256_$",
@@ -3306,7 +3306,7 @@
                           "referencedDeclaration": 1910,
                           "src": "1249:16:10",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14513_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14511_$",
                             "typeString": "function () view returns (contract DaoIdentityStorage)"
                           }
                         },
@@ -3320,7 +3320,7 @@
                         "nodeType": "FunctionCall",
                         "src": "1249:18:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14513",
+                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14511",
                           "typeString": "contract DaoIdentityStorage"
                         }
                       },
@@ -3331,7 +3331,7 @@
                       "lValueRequested": false,
                       "memberName": "create_group",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14353,
+                      "referencedDeclaration": 14351,
                       "src": "1249:31:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_uint256_$_t_bytes32_$_t_bytes32_$returns$_t_bool_$_t_uint256_$",
@@ -3437,7 +3437,7 @@
                           "referencedDeclaration": 1910,
                           "src": "1336:16:10",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14513_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14511_$",
                             "typeString": "function () view returns (contract DaoIdentityStorage)"
                           }
                         },
@@ -3451,7 +3451,7 @@
                         "nodeType": "FunctionCall",
                         "src": "1336:18:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14513",
+                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14511",
                           "typeString": "contract DaoIdentityStorage"
                         }
                       },
@@ -3462,7 +3462,7 @@
                       "lValueRequested": false,
                       "memberName": "create_group",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14353,
+                      "referencedDeclaration": 14351,
                       "src": "1336:31:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_uint256_$_t_bytes32_$_t_bytes32_$returns$_t_bool_$_t_uint256_$",
@@ -3620,7 +3620,7 @@
                           "referencedDeclaration": 1910,
                           "src": "1817:16:10",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14513_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14511_$",
                             "typeString": "function () view returns (contract DaoIdentityStorage)"
                           }
                         },
@@ -3634,7 +3634,7 @@
                         "nodeType": "FunctionCall",
                         "src": "1817:18:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14513",
+                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14511",
                           "typeString": "contract DaoIdentityStorage"
                         }
                       },
@@ -3645,7 +3645,7 @@
                       "lValueRequested": false,
                       "memberName": "update_add_user_to_group",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14410,
+                      "referencedDeclaration": 14408,
                       "src": "1817:43:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_uint256_$_t_address_$_t_bytes32_$returns$_t_bool_$",
@@ -3841,7 +3841,7 @@
                           "referencedDeclaration": 1910,
                           "src": "2151:16:10",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14513_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14511_$",
                             "typeString": "function () view returns (contract DaoIdentityStorage)"
                           }
                         },
@@ -3855,7 +3855,7 @@
                         "nodeType": "FunctionCall",
                         "src": "2151:18:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14513",
+                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14511",
                           "typeString": "contract DaoIdentityStorage"
                         }
                       },
@@ -3866,7 +3866,7 @@
                       "lValueRequested": false,
                       "memberName": "update_remove_group_user",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14434,
+                      "referencedDeclaration": 14432,
                       "src": "2151:43:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$returns$_t_bool_$",
@@ -4809,7 +4809,7 @@
                           "referencedDeclaration": 1910,
                           "src": "3480:16:10",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14513_$",
+                            "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoIdentityStorage_$14511_$",
                             "typeString": "function () view returns (contract DaoIdentityStorage)"
                           }
                         },
@@ -4823,7 +4823,7 @@
                         "nodeType": "FunctionCall",
                         "src": "3480:18:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14513",
+                          "typeIdentifier": "t_contract$_DaoIdentityStorage_$14511",
                           "typeString": "contract DaoIdentityStorage"
                         }
                       },
@@ -4834,7 +4834,7 @@
                       "lValueRequested": false,
                       "memberName": "update_kyc",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 14464,
+                      "referencedDeclaration": 14462,
                       "src": "3480:29:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_bytes32_$_t_uint256_$returns$__$",
@@ -4982,10 +4982,10 @@
     "1": {
       "events": {},
       "links": {},
-      "address": "0x7515a1470bde1b7d4fe957934f50a826cd65e759",
-      "transactionHash": "0x7c7e6616280cf778ad40196c72ea897b967b04badc5a46064e2dce2cfdc73906"
+      "address": "0x14c79981e76109aeaddd3badba4eaf881e9d7590",
+      "transactionHash": "0x473ac5150d9a0fdb4dfc84bed746ad49ffcf49a9cadfa52284d24747a58ec128"
     }
   },
   "schemaVersion": "2.0.2",
-  "updatedAt": "2019-03-18T09:32:27.625Z"
+  "updatedAt": "2019-03-19T05:26:59.152Z"
 }

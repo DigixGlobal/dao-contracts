@@ -424,7 +424,7 @@
         "id": 11893,
         "nodeType": "ImportDirective",
         "scope": 11903,
-        "sourceUnit": 21623,
+        "sourceUnit": 21621,
         "src": "26:64:45",
         "symbolAliases": [],
         "unitAlias": ""
@@ -438,10 +438,10 @@
               "id": 11894,
               "name": "DummyDGXStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 21622,
+              "referencedDeclaration": 21620,
               "src": "119:15:45",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DummyDGXStorage_$21622",
+                "typeIdentifier": "t_contract$_DummyDGXStorage_$21620",
                 "typeString": "contract DummyDGXStorage"
               }
             },
@@ -451,7 +451,7 @@
           }
         ],
         "contractDependencies": [
-          21622
+          21620
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -459,7 +459,7 @@
         "id": 11902,
         "linearizedBaseContracts": [
           11902,
-          21622
+          21620
         ],
         "name": "MockDgxStorage",
         "nodeType": "ContractDefinition",
@@ -486,10 +486,10 @@
                   "name": "DummyDGXStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 21622,
+                  "referencedDeclaration": 21620,
                   "src": "162:15:45",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DummyDGXStorage_$21622_$",
+                    "typeIdentifier": "t_type$_t_contract$_DummyDGXStorage_$21620_$",
                     "typeString": "type(contract DummyDGXStorage)"
                   }
                 },
@@ -552,7 +552,7 @@
         "id": 11893,
         "nodeType": "ImportDirective",
         "scope": 11903,
-        "sourceUnit": 21623,
+        "sourceUnit": 21621,
         "src": "26:64:45",
         "symbolAliases": [],
         "unitAlias": ""
@@ -566,10 +566,10 @@
               "id": 11894,
               "name": "DummyDGXStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 21622,
+              "referencedDeclaration": 21620,
               "src": "119:15:45",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DummyDGXStorage_$21622",
+                "typeIdentifier": "t_contract$_DummyDGXStorage_$21620",
                 "typeString": "contract DummyDGXStorage"
               }
             },
@@ -579,7 +579,7 @@
           }
         ],
         "contractDependencies": [
-          21622
+          21620
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -587,7 +587,7 @@
         "id": 11902,
         "linearizedBaseContracts": [
           11902,
-          21622
+          21620
         ],
         "name": "MockDgxStorage",
         "nodeType": "ContractDefinition",
@@ -614,10 +614,10 @@
                   "name": "DummyDGXStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 21622,
+                  "referencedDeclaration": 21620,
                   "src": "162:15:45",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DummyDGXStorage_$21622_$",
+                    "typeIdentifier": "t_type$_t_contract$_DummyDGXStorage_$21620_$",
                     "typeString": "type(contract DummyDGXStorage)"
                   }
                 },
@@ -659,5 +659,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.2",
-  "updatedAt": "2019-03-18T07:32:20.026Z"
+  "updatedAt": "2019-03-19T02:43:24.501Z"
 }

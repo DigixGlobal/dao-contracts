@@ -622,7 +622,7 @@
         "id": 11248,
         "nodeType": "ImportDirective",
         "scope": 11388,
-        "sourceUnit": 16457,
+        "sourceUnit": 16455,
         "src": "26:43:42",
         "symbolAliases": [],
         "unitAlias": ""
@@ -636,10 +636,10 @@
               "id": 11249,
               "name": "DaoStakeStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 16456,
+              "referencedDeclaration": 16454,
               "src": "103:15:42",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                 "typeString": "contract DaoStakeStorage"
               }
             },
@@ -650,9 +650,9 @@
         ],
         "contractDependencies": [
           1580,
-          16456,
-          19058,
-          22101
+          16454,
+          19056,
+          22099
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -660,10 +660,10 @@
         "id": 11387,
         "linearizedBaseContracts": [
           11387,
-          16456,
-          22101,
+          16454,
+          22099,
           1580,
-          19058
+          19056
         ],
         "name": "MockDaoStakeStorage",
         "nodeType": "ContractDefinition",
@@ -704,10 +704,10 @@
                   "name": "DaoStakeStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 16456,
+                  "referencedDeclaration": 16454,
                   "src": "157:15:42",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoStakeStorage_$16456_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoStakeStorage_$16454_$",
                     "typeString": "type(contract DaoStakeStorage)"
                   }
                 },
@@ -898,10 +898,10 @@
                               "name": "allModerators",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 16060,
+                              "referencedDeclaration": 16058,
                               "src": "389:13:42",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Address_$23032_storage",
+                                "typeIdentifier": "t_struct$_Address_$23030_storage",
                                 "typeString": "struct DoublyLinkedList.Address storage ref"
                               }
                             },
@@ -912,10 +912,10 @@
                             "lValueRequested": false,
                             "memberName": "append",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 24415,
+                            "referencedDeclaration": 24413,
                             "src": "389:20:42",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Address_$23032_storage_ptr_$_t_address_$returns$_t_bool_$bound_to$_t_struct$_Address_$23032_storage_ptr_$",
+                              "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Address_$23030_storage_ptr_$_t_address_$returns$_t_bool_$bound_to$_t_struct$_Address_$23030_storage_ptr_$",
                               "typeString": "function (struct DoublyLinkedList.Address storage pointer,address) returns (bool)"
                             }
                           },
@@ -953,7 +953,7 @@
                               "name": "actualLockedDGD",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 16052,
+                              "referencedDeclaration": 16050,
                               "src": "439:15:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -1080,7 +1080,7 @@
                               "name": "lockedDGDStake",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 16048,
+                              "referencedDeclaration": 16046,
                               "src": "499:14:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -1205,7 +1205,7 @@
                             "name": "totalModeratorLockedDGDStake",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 16056,
+                            "referencedDeclaration": 16054,
                             "src": "558:28:42",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -1711,10 +1711,10 @@
                               "name": "allParticipants",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 16058,
+                              "referencedDeclaration": 16056,
                               "src": "876:15:42",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Address_$23032_storage",
+                                "typeIdentifier": "t_struct$_Address_$23030_storage",
                                 "typeString": "struct DoublyLinkedList.Address storage ref"
                               }
                             },
@@ -1725,10 +1725,10 @@
                             "lValueRequested": false,
                             "memberName": "append",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 24415,
+                            "referencedDeclaration": 24413,
                             "src": "876:22:42",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Address_$23032_storage_ptr_$_t_address_$returns$_t_bool_$bound_to$_t_struct$_Address_$23032_storage_ptr_$",
+                              "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Address_$23030_storage_ptr_$_t_address_$returns$_t_bool_$bound_to$_t_struct$_Address_$23030_storage_ptr_$",
                               "typeString": "function (struct DoublyLinkedList.Address storage pointer,address) returns (bool)"
                             }
                           },
@@ -1766,7 +1766,7 @@
                               "name": "actualLockedDGD",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 16052,
+                              "referencedDeclaration": 16050,
                               "src": "930:15:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -1893,7 +1893,7 @@
                               "name": "lockedDGDStake",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 16048,
+                              "referencedDeclaration": 16046,
                               "src": "992:14:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -2018,7 +2018,7 @@
                             "name": "totalLockedDGDStake",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 16054,
+                            "referencedDeclaration": 16052,
                             "src": "1053:19:42",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -2352,7 +2352,7 @@
         "id": 11248,
         "nodeType": "ImportDirective",
         "scope": 11388,
-        "sourceUnit": 16457,
+        "sourceUnit": 16455,
         "src": "26:43:42",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2366,10 +2366,10 @@
               "id": 11249,
               "name": "DaoStakeStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 16456,
+              "referencedDeclaration": 16454,
               "src": "103:15:42",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                 "typeString": "contract DaoStakeStorage"
               }
             },
@@ -2380,9 +2380,9 @@
         ],
         "contractDependencies": [
           1580,
-          16456,
-          19058,
-          22101
+          16454,
+          19056,
+          22099
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -2390,10 +2390,10 @@
         "id": 11387,
         "linearizedBaseContracts": [
           11387,
-          16456,
-          22101,
+          16454,
+          22099,
           1580,
-          19058
+          19056
         ],
         "name": "MockDaoStakeStorage",
         "nodeType": "ContractDefinition",
@@ -2434,10 +2434,10 @@
                   "name": "DaoStakeStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 16456,
+                  "referencedDeclaration": 16454,
                   "src": "157:15:42",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoStakeStorage_$16456_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoStakeStorage_$16454_$",
                     "typeString": "type(contract DaoStakeStorage)"
                   }
                 },
@@ -2628,10 +2628,10 @@
                               "name": "allModerators",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 16060,
+                              "referencedDeclaration": 16058,
                               "src": "389:13:42",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Address_$23032_storage",
+                                "typeIdentifier": "t_struct$_Address_$23030_storage",
                                 "typeString": "struct DoublyLinkedList.Address storage ref"
                               }
                             },
@@ -2642,10 +2642,10 @@
                             "lValueRequested": false,
                             "memberName": "append",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 24415,
+                            "referencedDeclaration": 24413,
                             "src": "389:20:42",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Address_$23032_storage_ptr_$_t_address_$returns$_t_bool_$bound_to$_t_struct$_Address_$23032_storage_ptr_$",
+                              "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Address_$23030_storage_ptr_$_t_address_$returns$_t_bool_$bound_to$_t_struct$_Address_$23030_storage_ptr_$",
                               "typeString": "function (struct DoublyLinkedList.Address storage pointer,address) returns (bool)"
                             }
                           },
@@ -2683,7 +2683,7 @@
                               "name": "actualLockedDGD",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 16052,
+                              "referencedDeclaration": 16050,
                               "src": "439:15:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -2810,7 +2810,7 @@
                               "name": "lockedDGDStake",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 16048,
+                              "referencedDeclaration": 16046,
                               "src": "499:14:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -2935,7 +2935,7 @@
                             "name": "totalModeratorLockedDGDStake",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 16056,
+                            "referencedDeclaration": 16054,
                             "src": "558:28:42",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -3441,10 +3441,10 @@
                               "name": "allParticipants",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 16058,
+                              "referencedDeclaration": 16056,
                               "src": "876:15:42",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Address_$23032_storage",
+                                "typeIdentifier": "t_struct$_Address_$23030_storage",
                                 "typeString": "struct DoublyLinkedList.Address storage ref"
                               }
                             },
@@ -3455,10 +3455,10 @@
                             "lValueRequested": false,
                             "memberName": "append",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 24415,
+                            "referencedDeclaration": 24413,
                             "src": "876:22:42",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Address_$23032_storage_ptr_$_t_address_$returns$_t_bool_$bound_to$_t_struct$_Address_$23032_storage_ptr_$",
+                              "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Address_$23030_storage_ptr_$_t_address_$returns$_t_bool_$bound_to$_t_struct$_Address_$23030_storage_ptr_$",
                               "typeString": "function (struct DoublyLinkedList.Address storage pointer,address) returns (bool)"
                             }
                           },
@@ -3496,7 +3496,7 @@
                               "name": "actualLockedDGD",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 16052,
+                              "referencedDeclaration": 16050,
                               "src": "930:15:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -3623,7 +3623,7 @@
                               "name": "lockedDGDStake",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 16048,
+                              "referencedDeclaration": 16046,
                               "src": "992:14:42",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -3748,7 +3748,7 @@
                             "name": "totalLockedDGDStake",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 16054,
+                            "referencedDeclaration": 16052,
                             "src": "1053:19:42",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -4061,5 +4061,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.2",
-  "updatedAt": "2019-03-18T07:32:20.023Z"
+  "updatedAt": "2019-03-19T02:43:24.498Z"
 }

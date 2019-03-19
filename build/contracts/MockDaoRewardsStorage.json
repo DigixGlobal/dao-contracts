@@ -733,7 +733,7 @@
         "id": 11156,
         "nodeType": "ImportDirective",
         "scope": 11246,
-        "sourceUnit": 15546,
+        "sourceUnit": 15544,
         "src": "26:45:41",
         "symbolAliases": [],
         "unitAlias": ""
@@ -747,10 +747,10 @@
               "id": 11157,
               "name": "DaoRewardsStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 15545,
+              "referencedDeclaration": 15543,
               "src": "107:17:41",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoRewardsStorage_$15545",
+                "typeIdentifier": "t_contract$_DaoRewardsStorage_$15543",
                 "typeString": "contract DaoRewardsStorage"
               }
             },
@@ -761,8 +761,8 @@
         ],
         "contractDependencies": [
           1580,
-          15545,
-          19058
+          15543,
+          19056
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -770,9 +770,9 @@
         "id": 11245,
         "linearizedBaseContracts": [
           11245,
-          15545,
+          15543,
           1580,
-          19058
+          19056
         ],
         "name": "MockDaoRewardsStorage",
         "nodeType": "ContractDefinition",
@@ -813,10 +813,10 @@
                   "name": "DaoRewardsStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 15545,
+                  "referencedDeclaration": 15543,
                   "src": "170:17:41",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoRewardsStorage_$15545_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoRewardsStorage_$15543_$",
                     "typeString": "type(contract DaoRewardsStorage)"
                   }
                 },
@@ -894,7 +894,7 @@
                         "name": "lastParticipatedQuarter",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 15001,
+                        "referencedDeclaration": 14999,
                         "src": "319:23:41",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -1126,7 +1126,7 @@
                               "name": "lastParticipatedQuarter",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 15001,
+                              "referencedDeclaration": 14999,
                               "src": "582:23:41",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -1463,7 +1463,7 @@
                         "name": "lastQuarterThatRewardsWasUpdated",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 15009,
+                        "referencedDeclaration": 15007,
                         "src": "780:32:41",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -1626,7 +1626,7 @@
                           "name": "allQuartersInfo",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 14991,
+                          "referencedDeclaration": 14989,
                           "src": "970:15:41",
                           "typeDescriptions": {
                             "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_DaoQuarterInfo_$8481_storage_$",
@@ -1813,7 +1813,7 @@
         "id": 11156,
         "nodeType": "ImportDirective",
         "scope": 11246,
-        "sourceUnit": 15546,
+        "sourceUnit": 15544,
         "src": "26:45:41",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1827,10 +1827,10 @@
               "id": 11157,
               "name": "DaoRewardsStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 15545,
+              "referencedDeclaration": 15543,
               "src": "107:17:41",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoRewardsStorage_$15545",
+                "typeIdentifier": "t_contract$_DaoRewardsStorage_$15543",
                 "typeString": "contract DaoRewardsStorage"
               }
             },
@@ -1841,8 +1841,8 @@
         ],
         "contractDependencies": [
           1580,
-          15545,
-          19058
+          15543,
+          19056
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -1850,9 +1850,9 @@
         "id": 11245,
         "linearizedBaseContracts": [
           11245,
-          15545,
+          15543,
           1580,
-          19058
+          19056
         ],
         "name": "MockDaoRewardsStorage",
         "nodeType": "ContractDefinition",
@@ -1893,10 +1893,10 @@
                   "name": "DaoRewardsStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 15545,
+                  "referencedDeclaration": 15543,
                   "src": "170:17:41",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoRewardsStorage_$15545_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoRewardsStorage_$15543_$",
                     "typeString": "type(contract DaoRewardsStorage)"
                   }
                 },
@@ -1974,7 +1974,7 @@
                         "name": "lastParticipatedQuarter",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 15001,
+                        "referencedDeclaration": 14999,
                         "src": "319:23:41",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -2206,7 +2206,7 @@
                               "name": "lastParticipatedQuarter",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 15001,
+                              "referencedDeclaration": 14999,
                               "src": "582:23:41",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -2543,7 +2543,7 @@
                         "name": "lastQuarterThatRewardsWasUpdated",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 15009,
+                        "referencedDeclaration": 15007,
                         "src": "780:32:41",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -2706,7 +2706,7 @@
                           "name": "allQuartersInfo",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 14991,
+                          "referencedDeclaration": 14989,
                           "src": "970:15:41",
                           "typeDescriptions": {
                             "typeIdentifier": "t_mapping$_t_uint256_$_t_struct$_DaoQuarterInfo_$8481_storage_$",
@@ -2872,5 +2872,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.2",
-  "updatedAt": "2019-03-18T07:32:20.023Z"
+  "updatedAt": "2019-03-19T02:43:24.498Z"
 }

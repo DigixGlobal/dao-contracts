@@ -199,14 +199,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/storage/DaoUpgradeStorage.sol",
     "exportedSymbols": {
       "DaoUpgradeStorage": [
-        18394
+        18392
       ]
     },
-    "id": 18395,
+    "id": 18393,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 18306,
+        "id": 18304,
         "literals": [
           "solidity",
           "^",
@@ -219,10 +219,10 @@
       {
         "absolutePath": "@digix/cacp-contracts-dao/contracts/ResolverClient.sol",
         "file": "@digix/cacp-contracts-dao/contracts/ResolverClient.sol",
-        "id": 18307,
+        "id": 18305,
         "nodeType": "ImportDirective",
-        "scope": 18395,
-        "sourceUnit": 19059,
+        "scope": 18393,
+        "sourceUnit": 19057,
         "src": "26:64:61",
         "symbolAliases": [],
         "unitAlias": ""
@@ -230,9 +230,9 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/common/DaoConstants.sol",
         "file": "../common/DaoConstants.sol",
-        "id": 18308,
+        "id": 18306,
         "nodeType": "ImportDirective",
-        "scope": 18395,
+        "scope": 18393,
         "sourceUnit": 1581,
         "src": "91:36:61",
         "symbolAliases": [],
@@ -244,17 +244,17 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 18309,
+              "id": 18307,
               "name": "ResolverClient",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 19058,
+              "referencedDeclaration": 19056,
               "src": "159:14:61",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ResolverClient_$19058",
+                "typeIdentifier": "t_contract$_ResolverClient_$19056",
                 "typeString": "contract ResolverClient"
               }
             },
-            "id": 18310,
+            "id": 18308,
             "nodeType": "InheritanceSpecifier",
             "src": "159:14:61"
           },
@@ -262,7 +262,7 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 18311,
+              "id": 18309,
               "name": "DaoConstants",
               "nodeType": "UserDefinedTypeName",
               "referencedDeclaration": 1580,
@@ -272,33 +272,33 @@
                 "typeString": "contract DaoConstants"
               }
             },
-            "id": 18312,
+            "id": 18310,
             "nodeType": "InheritanceSpecifier",
             "src": "175:12:61"
           }
         ],
         "contractDependencies": [
           1580,
-          19058
+          19056
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 18394,
+        "id": 18392,
         "linearizedBaseContracts": [
-          18394,
+          18392,
           1580,
-          19058
+          19056
         ],
         "name": "DaoUpgradeStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 18314,
+            "id": 18312,
             "name": "startOfFirstQuarter",
             "nodeType": "VariableDeclaration",
-            "scope": 18394,
+            "scope": 18392,
             "src": "349:34:61",
             "stateVariable": true,
             "storageLocation": "default",
@@ -307,7 +307,7 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 18313,
+              "id": 18311,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
               "src": "349:7:61",
@@ -321,10 +321,10 @@
           },
           {
             "constant": false,
-            "id": 18316,
+            "id": 18314,
             "name": "isReplacedByNewDao",
             "nodeType": "VariableDeclaration",
-            "scope": 18394,
+            "scope": 18392,
             "src": "851:30:61",
             "stateVariable": true,
             "storageLocation": "default",
@@ -333,7 +333,7 @@
               "typeString": "bool"
             },
             "typeName": {
-              "id": 18315,
+              "id": 18313,
               "name": "bool",
               "nodeType": "ElementaryTypeName",
               "src": "851:4:61",
@@ -347,10 +347,10 @@
           },
           {
             "constant": false,
-            "id": 18318,
+            "id": 18316,
             "name": "newDaoContract",
             "nodeType": "VariableDeclaration",
-            "scope": 18394,
+            "scope": 18392,
             "src": "939:29:61",
             "stateVariable": true,
             "storageLocation": "default",
@@ -359,7 +359,7 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 18317,
+              "id": 18315,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "939:7:61",
@@ -373,10 +373,10 @@
           },
           {
             "constant": false,
-            "id": 18320,
+            "id": 18318,
             "name": "newDaoFundingManager",
             "nodeType": "VariableDeclaration",
-            "scope": 18394,
+            "scope": 18392,
             "src": "1137:35:61",
             "stateVariable": true,
             "storageLocation": "default",
@@ -385,7 +385,7 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 18319,
+              "id": 18317,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "1137:7:61",
@@ -399,10 +399,10 @@
           },
           {
             "constant": false,
-            "id": 18322,
+            "id": 18320,
             "name": "newDaoRewardsManager",
             "nodeType": "VariableDeclaration",
-            "scope": 18394,
+            "scope": 18392,
             "src": "1340:35:61",
             "stateVariable": true,
             "storageLocation": "default",
@@ -411,7 +411,7 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 18321,
+              "id": 18319,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "1340:7:61",
@@ -425,7 +425,7 @@
           },
           {
             "body": {
-              "id": 18334,
+              "id": 18332,
               "nodeType": "Block",
               "src": "1420:71:61",
               "statements": [
@@ -438,7 +438,7 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 18329,
+                            "id": 18327,
                             "name": "CONTRACT_STORAGE_DAO_UPGRADE",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -451,11 +451,11 @@
                           },
                           {
                             "argumentTypes": null,
-                            "id": 18330,
+                            "id": 18328,
                             "name": "_resolver",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 18324,
+                            "referencedDeclaration": 18322,
                             "src": "1473:9:61",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -474,18 +474,18 @@
                               "typeString": "address"
                             }
                           ],
-                          "id": 18328,
+                          "id": 18326,
                           "name": "init",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19026,
+                          "referencedDeclaration": 19024,
                           "src": "1438:4:61",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_nonpayable$_t_bytes32_$_t_address_$returns$_t_bool_$",
                             "typeString": "function (bytes32,address) returns (bool)"
                           }
                         },
-                        "id": 18331,
+                        "id": 18329,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -507,21 +507,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 18327,
+                      "id": 18325,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26615,
-                        26616
+                        26613,
+                        26614
                       ],
-                      "referencedDeclaration": 26615,
+                      "referencedDeclaration": 26613,
                       "src": "1430:7:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 18332,
+                    "id": 18330,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -535,14 +535,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 18333,
+                  "id": 18331,
                   "nodeType": "ExpressionStatement",
                   "src": "1430:54:61"
                 }
               ]
             },
             "documentation": null,
-            "id": 18335,
+            "id": 18333,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -550,15 +550,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 18325,
+              "id": 18323,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 18324,
+                  "id": 18322,
                   "name": "_resolver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18335,
+                  "scope": 18333,
                   "src": "1394:17:61",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -567,7 +567,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 18323,
+                    "id": 18321,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1394:7:61",
@@ -584,12 +584,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 18326,
+              "id": 18324,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1420:0:61"
             },
-            "scope": 18394,
+            "scope": 18392,
             "src": "1382:109:61",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -597,7 +597,7 @@
           },
           {
             "body": {
-              "id": 18350,
+              "id": 18348,
               "nodeType": "Block",
               "src": "1564:87:61",
               "statements": [
@@ -610,7 +610,7 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 18342,
+                            "id": 18340,
                             "name": "CONTRACT_DAO",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -629,18 +629,18 @@
                               "typeString": "bytes32"
                             }
                           ],
-                          "id": 18341,
+                          "id": 18339,
                           "name": "sender_is",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18891,
+                          "referencedDeclaration": 18889,
                           "src": "1582:9:61",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_bytes32_$returns$_t_bool_$",
                             "typeString": "function (bytes32) view returns (bool)"
                           }
                         },
-                        "id": 18343,
+                        "id": 18341,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -662,21 +662,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 18340,
+                      "id": 18338,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26615,
-                        26616
+                        26613,
+                        26614
                       ],
-                      "referencedDeclaration": 26615,
+                      "referencedDeclaration": 26613,
                       "src": "1574:7:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 18344,
+                    "id": 18342,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -690,25 +690,25 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 18345,
+                  "id": 18343,
                   "nodeType": "ExpressionStatement",
                   "src": "1574:32:61"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18348,
+                    "id": 18346,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 18346,
+                      "id": 18344,
                       "name": "startOfFirstQuarter",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18314,
+                      "referencedDeclaration": 18312,
                       "src": "1616:19:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -719,11 +719,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 18347,
+                      "id": 18345,
                       "name": "_start",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18337,
+                      "referencedDeclaration": 18335,
                       "src": "1638:6:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -736,14 +736,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 18349,
+                  "id": 18347,
                   "nodeType": "ExpressionStatement",
                   "src": "1616:28:61"
                 }
               ]
             },
             "documentation": null,
-            "id": 18351,
+            "id": 18349,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -751,15 +751,15 @@
             "name": "setStartOfFirstQuarter",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 18338,
+              "id": 18336,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 18337,
+                  "id": 18335,
                   "name": "_start",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18351,
+                  "scope": 18349,
                   "src": "1529:14:61",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -768,7 +768,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 18336,
+                    "id": 18334,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1529:7:61",
@@ -785,12 +785,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 18339,
+              "id": 18337,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1564:0:61"
             },
-            "scope": 18394,
+            "scope": 18392,
             "src": "1497:154:61",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -798,7 +798,7 @@
           },
           {
             "body": {
-              "id": 18378,
+              "id": 18376,
               "nodeType": "Block",
               "src": "1831:199:61",
               "statements": [
@@ -811,7 +811,7 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 18362,
+                            "id": 18360,
                             "name": "CONTRACT_DAO",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -830,18 +830,18 @@
                               "typeString": "bytes32"
                             }
                           ],
-                          "id": 18361,
+                          "id": 18359,
                           "name": "sender_is",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18891,
+                          "referencedDeclaration": 18889,
                           "src": "1849:9:61",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_bytes32_$returns$_t_bool_$",
                             "typeString": "function (bytes32) view returns (bool)"
                           }
                         },
-                        "id": 18363,
+                        "id": 18361,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -863,21 +863,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 18360,
+                      "id": 18358,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26615,
-                        26616
+                        26613,
+                        26614
                       ],
-                      "referencedDeclaration": 26615,
+                      "referencedDeclaration": 26613,
                       "src": "1841:7:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 18364,
+                    "id": 18362,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -891,25 +891,25 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 18365,
+                  "id": 18363,
                   "nodeType": "ExpressionStatement",
                   "src": "1841:32:61"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18368,
+                    "id": 18366,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 18366,
+                      "id": 18364,
                       "name": "newDaoContract",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18318,
+                      "referencedDeclaration": 18316,
                       "src": "1883:14:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -920,11 +920,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 18367,
+                      "id": 18365,
                       "name": "_newDaoContract",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18353,
+                      "referencedDeclaration": 18351,
                       "src": "1900:15:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -937,25 +937,25 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 18369,
+                  "id": 18367,
                   "nodeType": "ExpressionStatement",
                   "src": "1883:32:61"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18372,
+                    "id": 18370,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 18370,
+                      "id": 18368,
                       "name": "newDaoFundingManager",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18320,
+                      "referencedDeclaration": 18318,
                       "src": "1925:20:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -966,11 +966,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 18371,
+                      "id": 18369,
                       "name": "_newDaoFundingManager",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18355,
+                      "referencedDeclaration": 18353,
                       "src": "1948:21:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -983,25 +983,25 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 18373,
+                  "id": 18371,
                   "nodeType": "ExpressionStatement",
                   "src": "1925:44:61"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18376,
+                    "id": 18374,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 18374,
+                      "id": 18372,
                       "name": "newDaoRewardsManager",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18322,
+                      "referencedDeclaration": 18320,
                       "src": "1979:20:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -1012,11 +1012,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 18375,
+                      "id": 18373,
                       "name": "_newDaoRewardsManager",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18357,
+                      "referencedDeclaration": 18355,
                       "src": "2002:21:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -1029,14 +1029,14 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 18377,
+                  "id": 18375,
                   "nodeType": "ExpressionStatement",
                   "src": "1979:44:61"
                 }
               ]
             },
             "documentation": null,
-            "id": 18379,
+            "id": 18377,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1044,15 +1044,15 @@
             "name": "setNewContractAddresses",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 18358,
+              "id": 18356,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 18353,
+                  "id": 18351,
                   "name": "_newDaoContract",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18379,
+                  "scope": 18377,
                   "src": "1704:23:61",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1061,7 +1061,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 18352,
+                    "id": 18350,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1704:7:61",
@@ -1075,10 +1075,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 18355,
+                  "id": 18353,
                   "name": "_newDaoFundingManager",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18379,
+                  "scope": 18377,
                   "src": "1737:29:61",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1087,7 +1087,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 18354,
+                    "id": 18352,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1737:7:61",
@@ -1101,10 +1101,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 18357,
+                  "id": 18355,
                   "name": "_newDaoRewardsManager",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18379,
+                  "scope": 18377,
                   "src": "1776:29:61",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1113,7 +1113,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 18356,
+                    "id": 18354,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1776:7:61",
@@ -1130,12 +1130,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 18359,
+              "id": 18357,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1831:0:61"
             },
-            "scope": 18394,
+            "scope": 18392,
             "src": "1662:368:61",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1143,7 +1143,7 @@
           },
           {
             "body": {
-              "id": 18392,
+              "id": 18390,
               "nodeType": "Block",
               "src": "2093:84:61",
               "statements": [
@@ -1156,7 +1156,7 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 18384,
+                            "id": 18382,
                             "name": "CONTRACT_DAO",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -1175,18 +1175,18 @@
                               "typeString": "bytes32"
                             }
                           ],
-                          "id": 18383,
+                          "id": 18381,
                           "name": "sender_is",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18891,
+                          "referencedDeclaration": 18889,
                           "src": "2111:9:61",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_bytes32_$returns$_t_bool_$",
                             "typeString": "function (bytes32) view returns (bool)"
                           }
                         },
-                        "id": 18385,
+                        "id": 18383,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1208,21 +1208,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 18382,
+                      "id": 18380,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26615,
-                        26616
+                        26613,
+                        26614
                       ],
-                      "referencedDeclaration": 26615,
+                      "referencedDeclaration": 26613,
                       "src": "2103:7:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 18386,
+                    "id": 18384,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1236,25 +1236,25 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 18387,
+                  "id": 18385,
                   "nodeType": "ExpressionStatement",
                   "src": "2103:32:61"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18390,
+                    "id": 18388,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 18388,
+                      "id": 18386,
                       "name": "isReplacedByNewDao",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18316,
+                      "referencedDeclaration": 18314,
                       "src": "2145:18:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -1266,7 +1266,7 @@
                     "rightHandSide": {
                       "argumentTypes": null,
                       "hexValue": "74727565",
-                      "id": 18389,
+                      "id": 18387,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -1287,14 +1287,14 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 18391,
+                  "id": 18389,
                   "nodeType": "ExpressionStatement",
                   "src": "2145:25:61"
                 }
               ]
             },
             "documentation": null,
-            "id": 18393,
+            "id": 18391,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1302,26 +1302,26 @@
             "name": "updateForDaoMigration",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 18380,
+              "id": 18378,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2071:2:61"
             },
             "payable": false,
             "returnParameters": {
-              "id": 18381,
+              "id": 18379,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2093:0:61"
             },
-            "scope": 18394,
+            "scope": 18392,
             "src": "2041:136:61",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 18395,
+        "scope": 18393,
         "src": "129:2050:61"
       }
     ],
@@ -1331,14 +1331,14 @@
     "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/storage/DaoUpgradeStorage.sol",
     "exportedSymbols": {
       "DaoUpgradeStorage": [
-        18394
+        18392
       ]
     },
-    "id": 18395,
+    "id": 18393,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 18306,
+        "id": 18304,
         "literals": [
           "solidity",
           "^",
@@ -1351,10 +1351,10 @@
       {
         "absolutePath": "@digix/cacp-contracts-dao/contracts/ResolverClient.sol",
         "file": "@digix/cacp-contracts-dao/contracts/ResolverClient.sol",
-        "id": 18307,
+        "id": 18305,
         "nodeType": "ImportDirective",
-        "scope": 18395,
-        "sourceUnit": 19059,
+        "scope": 18393,
+        "sourceUnit": 19057,
         "src": "26:64:61",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1362,9 +1362,9 @@
       {
         "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/common/DaoConstants.sol",
         "file": "../common/DaoConstants.sol",
-        "id": 18308,
+        "id": 18306,
         "nodeType": "ImportDirective",
-        "scope": 18395,
+        "scope": 18393,
         "sourceUnit": 1581,
         "src": "91:36:61",
         "symbolAliases": [],
@@ -1376,17 +1376,17 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 18309,
+              "id": 18307,
               "name": "ResolverClient",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 19058,
+              "referencedDeclaration": 19056,
               "src": "159:14:61",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ResolverClient_$19058",
+                "typeIdentifier": "t_contract$_ResolverClient_$19056",
                 "typeString": "contract ResolverClient"
               }
             },
-            "id": 18310,
+            "id": 18308,
             "nodeType": "InheritanceSpecifier",
             "src": "159:14:61"
           },
@@ -1394,7 +1394,7 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 18311,
+              "id": 18309,
               "name": "DaoConstants",
               "nodeType": "UserDefinedTypeName",
               "referencedDeclaration": 1580,
@@ -1404,33 +1404,33 @@
                 "typeString": "contract DaoConstants"
               }
             },
-            "id": 18312,
+            "id": 18310,
             "nodeType": "InheritanceSpecifier",
             "src": "175:12:61"
           }
         ],
         "contractDependencies": [
           1580,
-          19058
+          19056
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 18394,
+        "id": 18392,
         "linearizedBaseContracts": [
-          18394,
+          18392,
           1580,
-          19058
+          19056
         ],
         "name": "DaoUpgradeStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 18314,
+            "id": 18312,
             "name": "startOfFirstQuarter",
             "nodeType": "VariableDeclaration",
-            "scope": 18394,
+            "scope": 18392,
             "src": "349:34:61",
             "stateVariable": true,
             "storageLocation": "default",
@@ -1439,7 +1439,7 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 18313,
+              "id": 18311,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
               "src": "349:7:61",
@@ -1453,10 +1453,10 @@
           },
           {
             "constant": false,
-            "id": 18316,
+            "id": 18314,
             "name": "isReplacedByNewDao",
             "nodeType": "VariableDeclaration",
-            "scope": 18394,
+            "scope": 18392,
             "src": "851:30:61",
             "stateVariable": true,
             "storageLocation": "default",
@@ -1465,7 +1465,7 @@
               "typeString": "bool"
             },
             "typeName": {
-              "id": 18315,
+              "id": 18313,
               "name": "bool",
               "nodeType": "ElementaryTypeName",
               "src": "851:4:61",
@@ -1479,10 +1479,10 @@
           },
           {
             "constant": false,
-            "id": 18318,
+            "id": 18316,
             "name": "newDaoContract",
             "nodeType": "VariableDeclaration",
-            "scope": 18394,
+            "scope": 18392,
             "src": "939:29:61",
             "stateVariable": true,
             "storageLocation": "default",
@@ -1491,7 +1491,7 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 18317,
+              "id": 18315,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "939:7:61",
@@ -1505,10 +1505,10 @@
           },
           {
             "constant": false,
-            "id": 18320,
+            "id": 18318,
             "name": "newDaoFundingManager",
             "nodeType": "VariableDeclaration",
-            "scope": 18394,
+            "scope": 18392,
             "src": "1137:35:61",
             "stateVariable": true,
             "storageLocation": "default",
@@ -1517,7 +1517,7 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 18319,
+              "id": 18317,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "1137:7:61",
@@ -1531,10 +1531,10 @@
           },
           {
             "constant": false,
-            "id": 18322,
+            "id": 18320,
             "name": "newDaoRewardsManager",
             "nodeType": "VariableDeclaration",
-            "scope": 18394,
+            "scope": 18392,
             "src": "1340:35:61",
             "stateVariable": true,
             "storageLocation": "default",
@@ -1543,7 +1543,7 @@
               "typeString": "address"
             },
             "typeName": {
-              "id": 18321,
+              "id": 18319,
               "name": "address",
               "nodeType": "ElementaryTypeName",
               "src": "1340:7:61",
@@ -1557,7 +1557,7 @@
           },
           {
             "body": {
-              "id": 18334,
+              "id": 18332,
               "nodeType": "Block",
               "src": "1420:71:61",
               "statements": [
@@ -1570,7 +1570,7 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 18329,
+                            "id": 18327,
                             "name": "CONTRACT_STORAGE_DAO_UPGRADE",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -1583,11 +1583,11 @@
                           },
                           {
                             "argumentTypes": null,
-                            "id": 18330,
+                            "id": 18328,
                             "name": "_resolver",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 18324,
+                            "referencedDeclaration": 18322,
                             "src": "1473:9:61",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -1606,18 +1606,18 @@
                               "typeString": "address"
                             }
                           ],
-                          "id": 18328,
+                          "id": 18326,
                           "name": "init",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19026,
+                          "referencedDeclaration": 19024,
                           "src": "1438:4:61",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_nonpayable$_t_bytes32_$_t_address_$returns$_t_bool_$",
                             "typeString": "function (bytes32,address) returns (bool)"
                           }
                         },
-                        "id": 18331,
+                        "id": 18329,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1639,21 +1639,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 18327,
+                      "id": 18325,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26615,
-                        26616
+                        26613,
+                        26614
                       ],
-                      "referencedDeclaration": 26615,
+                      "referencedDeclaration": 26613,
                       "src": "1430:7:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 18332,
+                    "id": 18330,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1667,14 +1667,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 18333,
+                  "id": 18331,
                   "nodeType": "ExpressionStatement",
                   "src": "1430:54:61"
                 }
               ]
             },
             "documentation": null,
-            "id": 18335,
+            "id": 18333,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -1682,15 +1682,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 18325,
+              "id": 18323,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 18324,
+                  "id": 18322,
                   "name": "_resolver",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18335,
+                  "scope": 18333,
                   "src": "1394:17:61",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1699,7 +1699,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 18323,
+                    "id": 18321,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1394:7:61",
@@ -1716,12 +1716,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 18326,
+              "id": 18324,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1420:0:61"
             },
-            "scope": 18394,
+            "scope": 18392,
             "src": "1382:109:61",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1729,7 +1729,7 @@
           },
           {
             "body": {
-              "id": 18350,
+              "id": 18348,
               "nodeType": "Block",
               "src": "1564:87:61",
               "statements": [
@@ -1742,7 +1742,7 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 18342,
+                            "id": 18340,
                             "name": "CONTRACT_DAO",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -1761,18 +1761,18 @@
                               "typeString": "bytes32"
                             }
                           ],
-                          "id": 18341,
+                          "id": 18339,
                           "name": "sender_is",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18891,
+                          "referencedDeclaration": 18889,
                           "src": "1582:9:61",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_bytes32_$returns$_t_bool_$",
                             "typeString": "function (bytes32) view returns (bool)"
                           }
                         },
-                        "id": 18343,
+                        "id": 18341,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1794,21 +1794,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 18340,
+                      "id": 18338,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26615,
-                        26616
+                        26613,
+                        26614
                       ],
-                      "referencedDeclaration": 26615,
+                      "referencedDeclaration": 26613,
                       "src": "1574:7:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 18344,
+                    "id": 18342,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1822,25 +1822,25 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 18345,
+                  "id": 18343,
                   "nodeType": "ExpressionStatement",
                   "src": "1574:32:61"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18348,
+                    "id": 18346,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 18346,
+                      "id": 18344,
                       "name": "startOfFirstQuarter",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18314,
+                      "referencedDeclaration": 18312,
                       "src": "1616:19:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1851,11 +1851,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 18347,
+                      "id": 18345,
                       "name": "_start",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18337,
+                      "referencedDeclaration": 18335,
                       "src": "1638:6:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1868,14 +1868,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 18349,
+                  "id": 18347,
                   "nodeType": "ExpressionStatement",
                   "src": "1616:28:61"
                 }
               ]
             },
             "documentation": null,
-            "id": 18351,
+            "id": 18349,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1883,15 +1883,15 @@
             "name": "setStartOfFirstQuarter",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 18338,
+              "id": 18336,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 18337,
+                  "id": 18335,
                   "name": "_start",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18351,
+                  "scope": 18349,
                   "src": "1529:14:61",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1900,7 +1900,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 18336,
+                    "id": 18334,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1529:7:61",
@@ -1917,12 +1917,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 18339,
+              "id": 18337,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1564:0:61"
             },
-            "scope": 18394,
+            "scope": 18392,
             "src": "1497:154:61",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1930,7 +1930,7 @@
           },
           {
             "body": {
-              "id": 18378,
+              "id": 18376,
               "nodeType": "Block",
               "src": "1831:199:61",
               "statements": [
@@ -1943,7 +1943,7 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 18362,
+                            "id": 18360,
                             "name": "CONTRACT_DAO",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -1962,18 +1962,18 @@
                               "typeString": "bytes32"
                             }
                           ],
-                          "id": 18361,
+                          "id": 18359,
                           "name": "sender_is",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18891,
+                          "referencedDeclaration": 18889,
                           "src": "1849:9:61",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_bytes32_$returns$_t_bool_$",
                             "typeString": "function (bytes32) view returns (bool)"
                           }
                         },
-                        "id": 18363,
+                        "id": 18361,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1995,21 +1995,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 18360,
+                      "id": 18358,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26615,
-                        26616
+                        26613,
+                        26614
                       ],
-                      "referencedDeclaration": 26615,
+                      "referencedDeclaration": 26613,
                       "src": "1841:7:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 18364,
+                    "id": 18362,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2023,25 +2023,25 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 18365,
+                  "id": 18363,
                   "nodeType": "ExpressionStatement",
                   "src": "1841:32:61"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18368,
+                    "id": 18366,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 18366,
+                      "id": 18364,
                       "name": "newDaoContract",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18318,
+                      "referencedDeclaration": 18316,
                       "src": "1883:14:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -2052,11 +2052,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 18367,
+                      "id": 18365,
                       "name": "_newDaoContract",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18353,
+                      "referencedDeclaration": 18351,
                       "src": "1900:15:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -2069,25 +2069,25 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 18369,
+                  "id": 18367,
                   "nodeType": "ExpressionStatement",
                   "src": "1883:32:61"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18372,
+                    "id": 18370,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 18370,
+                      "id": 18368,
                       "name": "newDaoFundingManager",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18320,
+                      "referencedDeclaration": 18318,
                       "src": "1925:20:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -2098,11 +2098,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 18371,
+                      "id": 18369,
                       "name": "_newDaoFundingManager",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18355,
+                      "referencedDeclaration": 18353,
                       "src": "1948:21:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -2115,25 +2115,25 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 18373,
+                  "id": 18371,
                   "nodeType": "ExpressionStatement",
                   "src": "1925:44:61"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18376,
+                    "id": 18374,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 18374,
+                      "id": 18372,
                       "name": "newDaoRewardsManager",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18322,
+                      "referencedDeclaration": 18320,
                       "src": "1979:20:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -2144,11 +2144,11 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 18375,
+                      "id": 18373,
                       "name": "_newDaoRewardsManager",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18357,
+                      "referencedDeclaration": 18355,
                       "src": "2002:21:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -2161,14 +2161,14 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 18377,
+                  "id": 18375,
                   "nodeType": "ExpressionStatement",
                   "src": "1979:44:61"
                 }
               ]
             },
             "documentation": null,
-            "id": 18379,
+            "id": 18377,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2176,15 +2176,15 @@
             "name": "setNewContractAddresses",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 18358,
+              "id": 18356,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 18353,
+                  "id": 18351,
                   "name": "_newDaoContract",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18379,
+                  "scope": 18377,
                   "src": "1704:23:61",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2193,7 +2193,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 18352,
+                    "id": 18350,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1704:7:61",
@@ -2207,10 +2207,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 18355,
+                  "id": 18353,
                   "name": "_newDaoFundingManager",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18379,
+                  "scope": 18377,
                   "src": "1737:29:61",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2219,7 +2219,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 18354,
+                    "id": 18352,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1737:7:61",
@@ -2233,10 +2233,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 18357,
+                  "id": 18355,
                   "name": "_newDaoRewardsManager",
                   "nodeType": "VariableDeclaration",
-                  "scope": 18379,
+                  "scope": 18377,
                   "src": "1776:29:61",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2245,7 +2245,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 18356,
+                    "id": 18354,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1776:7:61",
@@ -2262,12 +2262,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 18359,
+              "id": 18357,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1831:0:61"
             },
-            "scope": 18394,
+            "scope": 18392,
             "src": "1662:368:61",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -2275,7 +2275,7 @@
           },
           {
             "body": {
-              "id": 18392,
+              "id": 18390,
               "nodeType": "Block",
               "src": "2093:84:61",
               "statements": [
@@ -2288,7 +2288,7 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 18384,
+                            "id": 18382,
                             "name": "CONTRACT_DAO",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -2307,18 +2307,18 @@
                               "typeString": "bytes32"
                             }
                           ],
-                          "id": 18383,
+                          "id": 18381,
                           "name": "sender_is",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 18891,
+                          "referencedDeclaration": 18889,
                           "src": "2111:9:61",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_bytes32_$returns$_t_bool_$",
                             "typeString": "function (bytes32) view returns (bool)"
                           }
                         },
-                        "id": 18385,
+                        "id": 18383,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2340,21 +2340,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 18382,
+                      "id": 18380,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26615,
-                        26616
+                        26613,
+                        26614
                       ],
-                      "referencedDeclaration": 26615,
+                      "referencedDeclaration": 26613,
                       "src": "2103:7:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 18386,
+                    "id": 18384,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2368,25 +2368,25 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 18387,
+                  "id": 18385,
                   "nodeType": "ExpressionStatement",
                   "src": "2103:32:61"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 18390,
+                    "id": 18388,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 18388,
+                      "id": 18386,
                       "name": "isReplacedByNewDao",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18316,
+                      "referencedDeclaration": 18314,
                       "src": "2145:18:61",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -2398,7 +2398,7 @@
                     "rightHandSide": {
                       "argumentTypes": null,
                       "hexValue": "74727565",
-                      "id": 18389,
+                      "id": 18387,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -2419,14 +2419,14 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 18391,
+                  "id": 18389,
                   "nodeType": "ExpressionStatement",
                   "src": "2145:25:61"
                 }
               ]
             },
             "documentation": null,
-            "id": 18393,
+            "id": 18391,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2434,26 +2434,26 @@
             "name": "updateForDaoMigration",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 18380,
+              "id": 18378,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2071:2:61"
             },
             "payable": false,
             "returnParameters": {
-              "id": 18381,
+              "id": 18379,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2093:0:61"
             },
-            "scope": 18394,
+            "scope": 18392,
             "src": "2041:136:61",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 18395,
+        "scope": 18393,
         "src": "129:2050:61"
       }
     ],
@@ -2467,10 +2467,10 @@
     "1": {
       "events": {},
       "links": {},
-      "address": "0x5301d26907c77290d6697519454ef68ec01c7f38",
-      "transactionHash": "0x994896a54e36a2e5f916488ad75ab12cef0c01fe1dff1fe62ca8bc190cf2e8f8"
+      "address": "0x8d7cffd863a283ee3a8dc7461f2a9701a54fc295",
+      "transactionHash": "0xb973985facf946c7dee30209b40e3e746033dd05d3c512071df12295465c31a6"
     }
   },
   "schemaVersion": "2.0.2",
-  "updatedAt": "2019-03-18T08:05:53.943Z"
+  "updatedAt": "2019-03-19T02:43:24.522Z"
 }

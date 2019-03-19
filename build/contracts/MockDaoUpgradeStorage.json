@@ -236,7 +236,7 @@
         "id": 11868,
         "nodeType": "ImportDirective",
         "scope": 11891,
-        "sourceUnit": 18395,
+        "sourceUnit": 18393,
         "src": "26:45:44",
         "symbolAliases": [],
         "unitAlias": ""
@@ -250,10 +250,10 @@
               "id": 11869,
               "name": "DaoUpgradeStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 18394,
+              "referencedDeclaration": 18392,
               "src": "107:17:44",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoUpgradeStorage_$18394",
+                "typeIdentifier": "t_contract$_DaoUpgradeStorage_$18392",
                 "typeString": "contract DaoUpgradeStorage"
               }
             },
@@ -264,8 +264,8 @@
         ],
         "contractDependencies": [
           1580,
-          18394,
-          19058
+          18392,
+          19056
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -273,9 +273,9 @@
         "id": 11890,
         "linearizedBaseContracts": [
           11890,
-          18394,
+          18392,
           1580,
-          19058
+          19056
         ],
         "name": "MockDaoUpgradeStorage",
         "nodeType": "ContractDefinition",
@@ -316,10 +316,10 @@
                   "name": "DaoUpgradeStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 18394,
+                  "referencedDeclaration": 18392,
                   "src": "170:17:44",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoUpgradeStorage_$18394_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoUpgradeStorage_$18392_$",
                     "typeString": "type(contract DaoUpgradeStorage)"
                   }
                 },
@@ -395,7 +395,7 @@
                       "name": "startOfFirstQuarter",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18314,
+                      "referencedDeclaration": 18312,
                       "src": "301:19:44",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -517,7 +517,7 @@
         "id": 11868,
         "nodeType": "ImportDirective",
         "scope": 11891,
-        "sourceUnit": 18395,
+        "sourceUnit": 18393,
         "src": "26:45:44",
         "symbolAliases": [],
         "unitAlias": ""
@@ -531,10 +531,10 @@
               "id": 11869,
               "name": "DaoUpgradeStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 18394,
+              "referencedDeclaration": 18392,
               "src": "107:17:44",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoUpgradeStorage_$18394",
+                "typeIdentifier": "t_contract$_DaoUpgradeStorage_$18392",
                 "typeString": "contract DaoUpgradeStorage"
               }
             },
@@ -545,8 +545,8 @@
         ],
         "contractDependencies": [
           1580,
-          18394,
-          19058
+          18392,
+          19056
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -554,9 +554,9 @@
         "id": 11890,
         "linearizedBaseContracts": [
           11890,
-          18394,
+          18392,
           1580,
-          19058
+          19056
         ],
         "name": "MockDaoUpgradeStorage",
         "nodeType": "ContractDefinition",
@@ -597,10 +597,10 @@
                   "name": "DaoUpgradeStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 18394,
+                  "referencedDeclaration": 18392,
                   "src": "170:17:44",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoUpgradeStorage_$18394_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoUpgradeStorage_$18392_$",
                     "typeString": "type(contract DaoUpgradeStorage)"
                   }
                 },
@@ -676,7 +676,7 @@
                       "name": "startOfFirstQuarter",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 18314,
+                      "referencedDeclaration": 18312,
                       "src": "301:19:44",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -777,5 +777,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.2",
-  "updatedAt": "2019-03-18T07:32:20.026Z"
+  "updatedAt": "2019-03-19T02:43:24.501Z"
 }

@@ -540,7 +540,7 @@
         "id": 8627,
         "nodeType": "ImportDirective",
         "scope": 8803,
-        "sourceUnit": 16030,
+        "sourceUnit": 16028,
         "src": "26:44:26",
         "symbolAliases": [],
         "unitAlias": ""
@@ -554,10 +554,10 @@
               "id": 8628,
               "name": "DaoSpecialStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 16029,
+              "referencedDeclaration": 16027,
               "src": "106:17:26",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoSpecialStorage_$16029",
+                "typeIdentifier": "t_contract$_DaoSpecialStorage_$16027",
                 "typeString": "contract DaoSpecialStorage"
               }
             },
@@ -569,8 +569,8 @@
         "contractDependencies": [
           1580,
           1819,
-          16029,
-          19058
+          16027,
+          19056
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -578,10 +578,10 @@
         "id": 8802,
         "linearizedBaseContracts": [
           8802,
-          16029,
+          16027,
           1819,
           1580,
-          19058
+          19056
         ],
         "name": "MockDaoSpecialStorage",
         "nodeType": "ContractDefinition",
@@ -622,10 +622,10 @@
                   "name": "DaoSpecialStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 16029,
+                  "referencedDeclaration": 16027,
                   "src": "169:17:26",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoSpecialStorage_$16029_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoSpecialStorage_$16027_$",
                     "typeString": "type(contract DaoSpecialStorage)"
                   }
                 },
@@ -718,10 +718,10 @@
                         "name": "proposals",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 15564,
+                        "referencedDeclaration": 15562,
                         "src": "465:9:26",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Bytes_$23035_storage",
+                          "typeIdentifier": "t_struct$_Bytes_$23033_storage",
                           "typeString": "struct DoublyLinkedList.Bytes storage ref"
                         }
                       },
@@ -732,10 +732,10 @@
                       "lValueRequested": false,
                       "memberName": "append",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 25015,
+                      "referencedDeclaration": 25013,
                       "src": "465:16:26",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Bytes_$23035_storage_ptr_$_t_bytes32_$returns$_t_bool_$bound_to$_t_struct$_Bytes_$23035_storage_ptr_$",
+                        "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Bytes_$23033_storage_ptr_$_t_bytes32_$returns$_t_bool_$bound_to$_t_struct$_Bytes_$23033_storage_ptr_$",
                         "typeString": "function (struct DoublyLinkedList.Bytes storage pointer,bytes32) returns (bool)"
                       }
                     },
@@ -775,7 +775,7 @@
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15568,
+                          "referencedDeclaration": 15566,
                           "src": "511:13:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8458_storage_$",
@@ -864,7 +864,7 @@
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15568,
+                          "referencedDeclaration": 15566,
                           "src": "586:13:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8458_storage_$",
@@ -953,7 +953,7 @@
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15568,
+                          "referencedDeclaration": 15566,
                           "src": "649:13:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8458_storage_$",
@@ -1050,7 +1050,7 @@
                         "lValueRequested": false,
                         "memberName": "sub",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 26016,
+                        "referencedDeclaration": 26014,
                         "src": "697:18:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -1099,7 +1099,7 @@
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15568,
+                          "referencedDeclaration": 15566,
                           "src": "728:13:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8458_storage_$",
@@ -1188,7 +1188,7 @@
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15568,
+                          "referencedDeclaration": 15566,
                           "src": "798:13:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8458_storage_$",
@@ -1277,7 +1277,7 @@
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15568,
+                          "referencedDeclaration": 15566,
                           "src": "874:13:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8458_storage_$",
@@ -1368,7 +1368,7 @@
                             "name": "proposalsById",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 15568,
+                            "referencedDeclaration": 15566,
                             "src": "946:13:26",
                             "typeDescriptions": {
                               "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8458_storage_$",
@@ -1703,7 +1703,7 @@
                                     "name": "proposalsById",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 15568,
+                                    "referencedDeclaration": 15566,
                                     "src": "1263:13:26",
                                     "typeDescriptions": {
                                       "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8458_storage_$",
@@ -2322,7 +2322,7 @@
                                   "name": "proposalsById",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 15568,
+                                  "referencedDeclaration": 15566,
                                   "src": "1619:13:26",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8458_storage_$",
@@ -2763,7 +2763,7 @@
         "id": 8627,
         "nodeType": "ImportDirective",
         "scope": 8803,
-        "sourceUnit": 16030,
+        "sourceUnit": 16028,
         "src": "26:44:26",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2777,10 +2777,10 @@
               "id": 8628,
               "name": "DaoSpecialStorage",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 16029,
+              "referencedDeclaration": 16027,
               "src": "106:17:26",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DaoSpecialStorage_$16029",
+                "typeIdentifier": "t_contract$_DaoSpecialStorage_$16027",
                 "typeString": "contract DaoSpecialStorage"
               }
             },
@@ -2792,8 +2792,8 @@
         "contractDependencies": [
           1580,
           1819,
-          16029,
-          19058
+          16027,
+          19056
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -2801,10 +2801,10 @@
         "id": 8802,
         "linearizedBaseContracts": [
           8802,
-          16029,
+          16027,
           1819,
           1580,
-          19058
+          19056
         ],
         "name": "MockDaoSpecialStorage",
         "nodeType": "ContractDefinition",
@@ -2845,10 +2845,10 @@
                   "name": "DaoSpecialStorage",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 16029,
+                  "referencedDeclaration": 16027,
                   "src": "169:17:26",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_DaoSpecialStorage_$16029_$",
+                    "typeIdentifier": "t_type$_t_contract$_DaoSpecialStorage_$16027_$",
                     "typeString": "type(contract DaoSpecialStorage)"
                   }
                 },
@@ -2941,10 +2941,10 @@
                         "name": "proposals",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 15564,
+                        "referencedDeclaration": 15562,
                         "src": "465:9:26",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Bytes_$23035_storage",
+                          "typeIdentifier": "t_struct$_Bytes_$23033_storage",
                           "typeString": "struct DoublyLinkedList.Bytes storage ref"
                         }
                       },
@@ -2955,10 +2955,10 @@
                       "lValueRequested": false,
                       "memberName": "append",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 25015,
+                      "referencedDeclaration": 25013,
                       "src": "465:16:26",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Bytes_$23035_storage_ptr_$_t_bytes32_$returns$_t_bool_$bound_to$_t_struct$_Bytes_$23035_storage_ptr_$",
+                        "typeIdentifier": "t_function_delegatecall_nonpayable$_t_struct$_Bytes_$23033_storage_ptr_$_t_bytes32_$returns$_t_bool_$bound_to$_t_struct$_Bytes_$23033_storage_ptr_$",
                         "typeString": "function (struct DoublyLinkedList.Bytes storage pointer,bytes32) returns (bool)"
                       }
                     },
@@ -2998,7 +2998,7 @@
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15568,
+                          "referencedDeclaration": 15566,
                           "src": "511:13:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8458_storage_$",
@@ -3087,7 +3087,7 @@
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15568,
+                          "referencedDeclaration": 15566,
                           "src": "586:13:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8458_storage_$",
@@ -3176,7 +3176,7 @@
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15568,
+                          "referencedDeclaration": 15566,
                           "src": "649:13:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8458_storage_$",
@@ -3273,7 +3273,7 @@
                         "lValueRequested": false,
                         "memberName": "sub",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 26016,
+                        "referencedDeclaration": 26014,
                         "src": "697:18:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$bound_to$_t_uint256_$",
@@ -3322,7 +3322,7 @@
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15568,
+                          "referencedDeclaration": 15566,
                           "src": "728:13:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8458_storage_$",
@@ -3411,7 +3411,7 @@
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15568,
+                          "referencedDeclaration": 15566,
                           "src": "798:13:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8458_storage_$",
@@ -3500,7 +3500,7 @@
                           "name": "proposalsById",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 15568,
+                          "referencedDeclaration": 15566,
                           "src": "874:13:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8458_storage_$",
@@ -3591,7 +3591,7 @@
                             "name": "proposalsById",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 15568,
+                            "referencedDeclaration": 15566,
                             "src": "946:13:26",
                             "typeDescriptions": {
                               "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8458_storage_$",
@@ -3926,7 +3926,7 @@
                                     "name": "proposalsById",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 15568,
+                                    "referencedDeclaration": 15566,
                                     "src": "1263:13:26",
                                     "typeDescriptions": {
                                       "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8458_storage_$",
@@ -4545,7 +4545,7 @@
                                   "name": "proposalsById",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 15568,
+                                  "referencedDeclaration": 15566,
                                   "src": "1619:13:26",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_SpecialProposal_$8458_storage_$",
@@ -4965,5 +4965,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.2",
-  "updatedAt": "2019-03-18T07:32:20.005Z"
+  "updatedAt": "2019-03-19T02:43:24.478Z"
 }

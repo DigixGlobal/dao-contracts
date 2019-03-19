@@ -373,7 +373,7 @@
         "id": 12497,
         "nodeType": "ImportDirective",
         "scope": 12890,
-        "sourceUnit": 22019,
+        "sourceUnit": 22017,
         "src": "97:87:52",
         "symbolAliases": [],
         "unitAlias": ""
@@ -384,7 +384,7 @@
         "id": 12498,
         "nodeType": "ImportDirective",
         "scope": 12890,
-        "sourceUnit": 22397,
+        "sourceUnit": 22395,
         "src": "185:85:52",
         "symbolAliases": [],
         "unitAlias": ""
@@ -395,7 +395,7 @@
         "id": 12499,
         "nodeType": "ImportDirective",
         "scope": 12890,
-        "sourceUnit": 22905,
+        "sourceUnit": 22903,
         "src": "271:92:52",
         "symbolAliases": [],
         "unitAlias": ""
@@ -406,7 +406,7 @@
         "id": 12500,
         "nodeType": "ImportDirective",
         "scope": 12890,
-        "sourceUnit": 18305,
+        "sourceUnit": 18303,
         "src": "364:37:52",
         "symbolAliases": [],
         "unitAlias": ""
@@ -417,7 +417,7 @@
         "id": 12501,
         "nodeType": "ImportDirective",
         "scope": 12890,
-        "sourceUnit": 16457,
+        "sourceUnit": 16455,
         "src": "402:42:52",
         "symbolAliases": [],
         "unitAlias": ""
@@ -442,10 +442,10 @@
               "id": 12503,
               "name": "AddressIteratorInteractive",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 22018,
+              "referencedDeclaration": 22016,
               "src": "620:26:52",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_AddressIteratorInteractive_$22018",
+                "typeIdentifier": "t_contract$_AddressIteratorInteractive_$22016",
                 "typeString": "contract AddressIteratorInteractive"
               }
             },
@@ -460,10 +460,10 @@
               "id": 12505,
               "name": "BytesIteratorInteractive",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 22396,
+              "referencedDeclaration": 22394,
               "src": "652:24:52",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_BytesIteratorInteractive_$22396",
+                "typeIdentifier": "t_contract$_BytesIteratorInteractive_$22394",
                 "typeString": "contract BytesIteratorInteractive"
               }
             },
@@ -478,10 +478,10 @@
               "id": 12507,
               "name": "IndexedBytesIteratorInteractive",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 22904,
+              "referencedDeclaration": 22902,
               "src": "682:31:52",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_IndexedBytesIteratorInteractive_$22904",
+                "typeIdentifier": "t_contract$_IndexedBytesIteratorInteractive_$22902",
                 "typeString": "contract IndexedBytesIteratorInteractive"
               }
             },
@@ -511,10 +511,10 @@
         "contractDependencies": [
           1580,
           1819,
-          19058,
-          22018,
-          22396,
-          22904
+          19056,
+          22016,
+          22394,
+          22902
         ],
         "contractKind": "contract",
         "documentation": "@title Contract to list various storage states from DigixDAO\n@author Digix Holdings",
@@ -524,10 +524,10 @@
           12889,
           1819,
           1580,
-          19058,
-          22904,
-          22396,
-          22018
+          19056,
+          22902,
+          22394,
+          22016
         ],
         "name": "DaoListingService",
         "nodeType": "ContractDefinition",
@@ -587,7 +587,7 @@
                           "name": "init",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19026,
+                          "referencedDeclaration": 19024,
                           "src": "893:4:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_nonpayable$_t_bytes32_$_t_address_$returns$_t_bool_$",
@@ -620,10 +620,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26615,
-                        26616
+                        26613,
+                        26614
                       ],
-                      "referencedDeclaration": 26615,
+                      "referencedDeclaration": 26613,
                       "src": "885:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -727,7 +727,7 @@
                       "referencedDeclaration": 12526,
                       "src": "1067:9:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                        "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                         "typeString": "contract DaoStakeStorage"
                       }
                     },
@@ -764,7 +764,7 @@
                             "name": "get_contract",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19057,
+                            "referencedDeclaration": 19055,
                             "src": "1095:12:52",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_view$_t_bytes32_$returns$_t_address_$",
@@ -797,10 +797,10 @@
                         "name": "DaoStakeStorage",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 16456,
+                        "referencedDeclaration": 16454,
                         "src": "1079:15:52",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DaoStakeStorage_$16456_$",
+                          "typeIdentifier": "t_type$_t_contract$_DaoStakeStorage_$16454_$",
                           "typeString": "type(contract DaoStakeStorage)"
                         }
                       },
@@ -814,13 +814,13 @@
                       "nodeType": "FunctionCall",
                       "src": "1079:57:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                        "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                         "typeString": "contract DaoStakeStorage"
                       }
                     },
                     "src": "1067:69:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                      "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                       "typeString": "contract DaoStakeStorage"
                     }
                   },
@@ -859,7 +859,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                    "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                     "typeString": "contract DaoStakeStorage"
                   },
                   "typeName": {
@@ -867,10 +867,10 @@
                     "id": 12525,
                     "name": "DaoStakeStorage",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 16456,
+                    "referencedDeclaration": 16454,
                     "src": "1026:15:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                      "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                       "typeString": "contract DaoStakeStorage"
                     }
                   },
@@ -909,7 +909,7 @@
                       "referencedDeclaration": 12540,
                       "src": "1254:9:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                        "typeIdentifier": "t_contract$_DaoStorage_$18302",
                         "typeString": "contract DaoStorage"
                       }
                     },
@@ -946,7 +946,7 @@
                             "name": "get_contract",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19057,
+                            "referencedDeclaration": 19055,
                             "src": "1277:12:52",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_view$_t_bytes32_$returns$_t_address_$",
@@ -979,10 +979,10 @@
                         "name": "DaoStorage",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 18304,
+                        "referencedDeclaration": 18302,
                         "src": "1266:10:52",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DaoStorage_$18304_$",
+                          "typeIdentifier": "t_type$_t_contract$_DaoStorage_$18302_$",
                           "typeString": "type(contract DaoStorage)"
                         }
                       },
@@ -996,13 +996,13 @@
                       "nodeType": "FunctionCall",
                       "src": "1266:46:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                        "typeIdentifier": "t_contract$_DaoStorage_$18302",
                         "typeString": "contract DaoStorage"
                       }
                     },
                     "src": "1254:58:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                      "typeIdentifier": "t_contract$_DaoStorage_$18302",
                       "typeString": "contract DaoStorage"
                     }
                   },
@@ -1041,7 +1041,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                    "typeIdentifier": "t_contract$_DaoStorage_$18302",
                     "typeString": "contract DaoStorage"
                   },
                   "typeName": {
@@ -1049,10 +1049,10 @@
                     "id": 12539,
                     "name": "DaoStorage",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 18304,
+                    "referencedDeclaration": 18302,
                     "src": "1218:10:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                      "typeIdentifier": "t_contract$_DaoStorage_$18302",
                       "typeString": "contract DaoStorage"
                     }
                   },
@@ -1127,7 +1127,7 @@
                               "referencedDeclaration": 12537,
                               "src": "2145:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -1141,7 +1141,7 @@
                             "nodeType": "FunctionCall",
                             "src": "2145:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -1152,7 +1152,7 @@
                           "lValueRequested": false,
                           "memberName": "readFirstModerator",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16335,
+                          "referencedDeclaration": 16333,
                           "src": "2145:36:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
@@ -1173,7 +1173,7 @@
                               "referencedDeclaration": 12537,
                               "src": "2195:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -1187,7 +1187,7 @@
                             "nodeType": "FunctionCall",
                             "src": "2195:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -1198,7 +1198,7 @@
                           "lValueRequested": false,
                           "memberName": "readLastModerator",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16347,
+                          "referencedDeclaration": 16345,
                           "src": "2195:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
@@ -1219,7 +1219,7 @@
                               "referencedDeclaration": 12537,
                               "src": "2244:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -1233,7 +1233,7 @@
                             "nodeType": "FunctionCall",
                             "src": "2244:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -1244,7 +1244,7 @@
                           "lValueRequested": false,
                           "memberName": "readNextModerator",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16362,
+                          "referencedDeclaration": 16360,
                           "src": "2244:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_address_$",
@@ -1265,7 +1265,7 @@
                               "referencedDeclaration": 12537,
                               "src": "2293:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -1279,7 +1279,7 @@
                             "nodeType": "FunctionCall",
                             "src": "2293:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -1290,7 +1290,7 @@
                           "lValueRequested": false,
                           "memberName": "readPreviousModerator",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16377,
+                          "referencedDeclaration": 16375,
                           "src": "2293:39:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_address_$",
@@ -1342,7 +1342,7 @@
                         "name": "list_addresses",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 21790,
+                        "referencedDeclaration": 21788,
                         "src": "2097:14:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_uint256_$_t_function_external_view$__$returns$_t_address_$_$_t_function_external_view$__$returns$_t_address_$_$_t_function_external_view$_t_address_$returns$_t_address_$_$_t_function_external_view$_t_address_$returns$_t_address_$_$_t_bool_$returns$_t_array$_t_address_$dyn_memory_ptr_$",
@@ -1564,7 +1564,7 @@
                               "referencedDeclaration": 12537,
                               "src": "3616:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -1578,7 +1578,7 @@
                             "nodeType": "FunctionCall",
                             "src": "3616:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -1589,7 +1589,7 @@
                           "lValueRequested": false,
                           "memberName": "readFirstModerator",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16335,
+                          "referencedDeclaration": 16333,
                           "src": "3616:36:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
@@ -1610,7 +1610,7 @@
                               "referencedDeclaration": 12537,
                               "src": "3666:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -1624,7 +1624,7 @@
                             "nodeType": "FunctionCall",
                             "src": "3666:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -1635,7 +1635,7 @@
                           "lValueRequested": false,
                           "memberName": "readLastModerator",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16347,
+                          "referencedDeclaration": 16345,
                           "src": "3666:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
@@ -1656,7 +1656,7 @@
                               "referencedDeclaration": 12537,
                               "src": "3715:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -1670,7 +1670,7 @@
                             "nodeType": "FunctionCall",
                             "src": "3715:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -1681,7 +1681,7 @@
                           "lValueRequested": false,
                           "memberName": "readNextModerator",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16362,
+                          "referencedDeclaration": 16360,
                           "src": "3715:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_address_$",
@@ -1702,7 +1702,7 @@
                               "referencedDeclaration": 12537,
                               "src": "3764:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -1716,7 +1716,7 @@
                             "nodeType": "FunctionCall",
                             "src": "3764:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -1727,7 +1727,7 @@
                           "lValueRequested": false,
                           "memberName": "readPreviousModerator",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16377,
+                          "referencedDeclaration": 16375,
                           "src": "3764:39:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_address_$",
@@ -1783,7 +1783,7 @@
                         "name": "list_addresses_from",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 21855,
+                        "referencedDeclaration": 21853,
                         "src": "3532:19:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_address_$_t_uint256_$_t_function_external_view$__$returns$_t_address_$_$_t_function_external_view$__$returns$_t_address_$_$_t_function_external_view$_t_address_$returns$_t_address_$_$_t_function_external_view$_t_address_$returns$_t_address_$_$_t_bool_$returns$_t_array$_t_address_$dyn_memory_ptr_$",
@@ -2018,7 +2018,7 @@
                               "referencedDeclaration": 12537,
                               "src": "4691:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -2032,7 +2032,7 @@
                             "nodeType": "FunctionCall",
                             "src": "4691:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -2043,7 +2043,7 @@
                           "lValueRequested": false,
                           "memberName": "readFirstParticipant",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16401,
+                          "referencedDeclaration": 16399,
                           "src": "4691:38:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
@@ -2064,7 +2064,7 @@
                               "referencedDeclaration": 12537,
                               "src": "4743:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -2078,7 +2078,7 @@
                             "nodeType": "FunctionCall",
                             "src": "4743:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -2089,7 +2089,7 @@
                           "lValueRequested": false,
                           "memberName": "readLastParticipant",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16413,
+                          "referencedDeclaration": 16411,
                           "src": "4743:37:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
@@ -2110,7 +2110,7 @@
                               "referencedDeclaration": 12537,
                               "src": "4794:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -2124,7 +2124,7 @@
                             "nodeType": "FunctionCall",
                             "src": "4794:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -2135,7 +2135,7 @@
                           "lValueRequested": false,
                           "memberName": "readNextParticipant",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16428,
+                          "referencedDeclaration": 16426,
                           "src": "4794:37:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_address_$",
@@ -2156,7 +2156,7 @@
                               "referencedDeclaration": 12537,
                               "src": "4845:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -2170,7 +2170,7 @@
                             "nodeType": "FunctionCall",
                             "src": "4845:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -2181,7 +2181,7 @@
                           "lValueRequested": false,
                           "memberName": "readPreviousParticipant",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16443,
+                          "referencedDeclaration": 16441,
                           "src": "4845:41:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_address_$",
@@ -2233,7 +2233,7 @@
                         "name": "list_addresses",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 21790,
+                        "referencedDeclaration": 21788,
                         "src": "4643:14:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_uint256_$_t_function_external_view$__$returns$_t_address_$_$_t_function_external_view$__$returns$_t_address_$_$_t_function_external_view$_t_address_$returns$_t_address_$_$_t_function_external_view$_t_address_$returns$_t_address_$_$_t_bool_$returns$_t_array$_t_address_$dyn_memory_ptr_$",
@@ -2455,7 +2455,7 @@
                               "referencedDeclaration": 12537,
                               "src": "6209:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -2469,7 +2469,7 @@
                             "nodeType": "FunctionCall",
                             "src": "6209:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -2480,7 +2480,7 @@
                           "lValueRequested": false,
                           "memberName": "readFirstParticipant",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16401,
+                          "referencedDeclaration": 16399,
                           "src": "6209:38:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
@@ -2501,7 +2501,7 @@
                               "referencedDeclaration": 12537,
                               "src": "6261:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -2515,7 +2515,7 @@
                             "nodeType": "FunctionCall",
                             "src": "6261:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -2526,7 +2526,7 @@
                           "lValueRequested": false,
                           "memberName": "readLastParticipant",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16413,
+                          "referencedDeclaration": 16411,
                           "src": "6261:37:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
@@ -2547,7 +2547,7 @@
                               "referencedDeclaration": 12537,
                               "src": "6312:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -2561,7 +2561,7 @@
                             "nodeType": "FunctionCall",
                             "src": "6312:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -2572,7 +2572,7 @@
                           "lValueRequested": false,
                           "memberName": "readNextParticipant",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16428,
+                          "referencedDeclaration": 16426,
                           "src": "6312:37:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_address_$",
@@ -2593,7 +2593,7 @@
                               "referencedDeclaration": 12537,
                               "src": "6363:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -2607,7 +2607,7 @@
                             "nodeType": "FunctionCall",
                             "src": "6363:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -2618,7 +2618,7 @@
                           "lValueRequested": false,
                           "memberName": "readPreviousParticipant",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16443,
+                          "referencedDeclaration": 16441,
                           "src": "6363:41:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_address_$",
@@ -2674,7 +2674,7 @@
                         "name": "list_addresses_from",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 21855,
+                        "referencedDeclaration": 21853,
                         "src": "6123:19:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_address_$_t_uint256_$_t_function_external_view$__$returns$_t_address_$_$_t_function_external_view$__$returns$_t_address_$_$_t_function_external_view$_t_address_$returns$_t_address_$_$_t_function_external_view$_t_address_$returns$_t_address_$_$_t_bool_$returns$_t_array$_t_address_$dyn_memory_ptr_$",
@@ -2909,7 +2909,7 @@
                               "referencedDeclaration": 12551,
                               "src": "6943:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -2923,7 +2923,7 @@
                             "nodeType": "FunctionCall",
                             "src": "6943:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -2934,7 +2934,7 @@
                           "lValueRequested": false,
                           "memberName": "getFirstProposal",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16955,
+                          "referencedDeclaration": 16953,
                           "src": "6943:29:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_bytes32_$",
@@ -2955,7 +2955,7 @@
                               "referencedDeclaration": 12551,
                               "src": "6986:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -2969,7 +2969,7 @@
                             "nodeType": "FunctionCall",
                             "src": "6986:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -2980,7 +2980,7 @@
                           "lValueRequested": false,
                           "memberName": "getLastProposal",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16967,
+                          "referencedDeclaration": 16965,
                           "src": "6986:28:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_bytes32_$",
@@ -3001,7 +3001,7 @@
                               "referencedDeclaration": 12551,
                               "src": "7028:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -3015,7 +3015,7 @@
                             "nodeType": "FunctionCall",
                             "src": "7028:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -3026,7 +3026,7 @@
                           "lValueRequested": false,
                           "memberName": "getNextProposal",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16982,
+                          "referencedDeclaration": 16980,
                           "src": "7028:28:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -3047,7 +3047,7 @@
                               "referencedDeclaration": 12551,
                               "src": "7070:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -3061,7 +3061,7 @@
                             "nodeType": "FunctionCall",
                             "src": "7070:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -3072,7 +3072,7 @@
                           "lValueRequested": false,
                           "memberName": "getPreviousProposal",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16997,
+                          "referencedDeclaration": 16995,
                           "src": "7070:32:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -3124,7 +3124,7 @@
                         "name": "list_bytesarray",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 22168,
+                        "referencedDeclaration": 22166,
                         "src": "6894:15:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_uint256_$_t_function_external_view$__$returns$_t_bytes32_$_$_t_function_external_view$__$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_bool_$returns$_t_array$_t_bytes32_$dyn_memory_ptr_$",
@@ -3346,7 +3346,7 @@
                               "referencedDeclaration": 12551,
                               "src": "7807:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -3360,7 +3360,7 @@
                             "nodeType": "FunctionCall",
                             "src": "7807:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -3371,7 +3371,7 @@
                           "lValueRequested": false,
                           "memberName": "getFirstProposal",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16955,
+                          "referencedDeclaration": 16953,
                           "src": "7807:29:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_bytes32_$",
@@ -3392,7 +3392,7 @@
                               "referencedDeclaration": 12551,
                               "src": "7850:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -3406,7 +3406,7 @@
                             "nodeType": "FunctionCall",
                             "src": "7850:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -3417,7 +3417,7 @@
                           "lValueRequested": false,
                           "memberName": "getLastProposal",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16967,
+                          "referencedDeclaration": 16965,
                           "src": "7850:28:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_bytes32_$",
@@ -3438,7 +3438,7 @@
                               "referencedDeclaration": 12551,
                               "src": "7892:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -3452,7 +3452,7 @@
                             "nodeType": "FunctionCall",
                             "src": "7892:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -3463,7 +3463,7 @@
                           "lValueRequested": false,
                           "memberName": "getNextProposal",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16982,
+                          "referencedDeclaration": 16980,
                           "src": "7892:28:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -3484,7 +3484,7 @@
                               "referencedDeclaration": 12551,
                               "src": "7934:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -3498,7 +3498,7 @@
                             "nodeType": "FunctionCall",
                             "src": "7934:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -3509,7 +3509,7 @@
                           "lValueRequested": false,
                           "memberName": "getPreviousProposal",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16997,
+                          "referencedDeclaration": 16995,
                           "src": "7934:32:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -3565,7 +3565,7 @@
                         "name": "list_bytesarray_from",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 22233,
+                        "referencedDeclaration": 22231,
                         "src": "7723:20:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_bytes32_$_t_uint256_$_t_function_external_view$__$returns$_t_bytes32_$_$_t_function_external_view$__$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_bool_$returns$_t_array$_t_bytes32_$dyn_memory_ptr_$",
@@ -3793,10 +3793,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26615,
-                        26616
+                        26613,
+                        26614
                       ],
-                      "referencedDeclaration": 26615,
+                      "referencedDeclaration": 26613,
                       "src": "8532:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -3887,7 +3887,7 @@
                               "referencedDeclaration": 12551,
                               "src": "8666:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -3901,7 +3901,7 @@
                             "nodeType": "FunctionCall",
                             "src": "8666:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -3912,7 +3912,7 @@
                           "lValueRequested": false,
                           "memberName": "getFirstProposalInState",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17018,
+                          "referencedDeclaration": 17016,
                           "src": "8666:36:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -3933,7 +3933,7 @@
                               "referencedDeclaration": 12551,
                               "src": "8716:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -3947,7 +3947,7 @@
                             "nodeType": "FunctionCall",
                             "src": "8716:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -3958,7 +3958,7 @@
                           "lValueRequested": false,
                           "memberName": "getLastProposalInState",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17039,
+                          "referencedDeclaration": 17037,
                           "src": "8716:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -3979,7 +3979,7 @@
                               "referencedDeclaration": 12551,
                               "src": "8765:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -3993,7 +3993,7 @@
                             "nodeType": "FunctionCall",
                             "src": "8765:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -4004,7 +4004,7 @@
                           "lValueRequested": false,
                           "memberName": "getNextProposalInState",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17063,
+                          "referencedDeclaration": 17061,
                           "src": "8765:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$",
@@ -4025,7 +4025,7 @@
                               "referencedDeclaration": 12551,
                               "src": "8814:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -4039,7 +4039,7 @@
                             "nodeType": "FunctionCall",
                             "src": "8814:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -4050,7 +4050,7 @@
                           "lValueRequested": false,
                           "memberName": "getPreviousProposalInState",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17087,
+                          "referencedDeclaration": 17085,
                           "src": "8814:39:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$",
@@ -4106,7 +4106,7 @@
                         "name": "list_indexed_bytesarray",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 22658,
+                        "referencedDeclaration": 22656,
                         "src": "8587:23:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_bytes32_$_t_uint256_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$_$_t_bool_$returns$_t_array$_t_bytes32_$dyn_memory_ptr_$",
@@ -4334,10 +4334,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26615,
-                        26616
+                        26613,
+                        26614
                       ],
-                      "referencedDeclaration": 26615,
+                      "referencedDeclaration": 26613,
                       "src": "9550:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -4441,7 +4441,7 @@
                               "referencedDeclaration": 12551,
                               "src": "9719:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -4455,7 +4455,7 @@
                             "nodeType": "FunctionCall",
                             "src": "9719:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -4466,7 +4466,7 @@
                           "lValueRequested": false,
                           "memberName": "getFirstProposalInState",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17018,
+                          "referencedDeclaration": 17016,
                           "src": "9719:36:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -4487,7 +4487,7 @@
                               "referencedDeclaration": 12551,
                               "src": "9769:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -4501,7 +4501,7 @@
                             "nodeType": "FunctionCall",
                             "src": "9769:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -4512,7 +4512,7 @@
                           "lValueRequested": false,
                           "memberName": "getLastProposalInState",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17039,
+                          "referencedDeclaration": 17037,
                           "src": "9769:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -4533,7 +4533,7 @@
                               "referencedDeclaration": 12551,
                               "src": "9818:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -4547,7 +4547,7 @@
                             "nodeType": "FunctionCall",
                             "src": "9818:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -4558,7 +4558,7 @@
                           "lValueRequested": false,
                           "memberName": "getNextProposalInState",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17063,
+                          "referencedDeclaration": 17061,
                           "src": "9818:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$",
@@ -4579,7 +4579,7 @@
                               "referencedDeclaration": 12551,
                               "src": "9867:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -4593,7 +4593,7 @@
                             "nodeType": "FunctionCall",
                             "src": "9867:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -4604,7 +4604,7 @@
                           "lValueRequested": false,
                           "memberName": "getPreviousProposalInState",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17087,
+                          "referencedDeclaration": 17085,
                           "src": "9867:39:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$",
@@ -4664,7 +4664,7 @@
                         "name": "list_indexed_bytesarray_from",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 22735,
+                        "referencedDeclaration": 22733,
                         "src": "9605:28:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_bytes32_$_t_bytes32_$_t_uint256_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$_$_t_bool_$returns$_t_array$_t_bytes32_$dyn_memory_ptr_$",
@@ -4938,7 +4938,7 @@
                               "referencedDeclaration": 12551,
                               "src": "10548:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -4952,7 +4952,7 @@
                             "nodeType": "FunctionCall",
                             "src": "10548:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -4963,7 +4963,7 @@
                           "lValueRequested": false,
                           "memberName": "getFirstProposalVersion",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17209,
+                          "referencedDeclaration": 17207,
                           "src": "10548:36:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -4984,7 +4984,7 @@
                               "referencedDeclaration": 12551,
                               "src": "10598:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -4998,7 +4998,7 @@
                             "nodeType": "FunctionCall",
                             "src": "10598:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -5009,7 +5009,7 @@
                           "lValueRequested": false,
                           "memberName": "getLastProposalVersion",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17232,
+                          "referencedDeclaration": 17230,
                           "src": "10598:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -5030,7 +5030,7 @@
                               "referencedDeclaration": 12551,
                               "src": "10647:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -5044,7 +5044,7 @@
                             "nodeType": "FunctionCall",
                             "src": "10647:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -5055,7 +5055,7 @@
                           "lValueRequested": false,
                           "memberName": "getNextProposalVersion",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17258,
+                          "referencedDeclaration": 17256,
                           "src": "10647:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$",
@@ -5076,7 +5076,7 @@
                               "referencedDeclaration": 12551,
                               "src": "10696:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -5090,7 +5090,7 @@
                             "nodeType": "FunctionCall",
                             "src": "10696:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -5101,7 +5101,7 @@
                           "lValueRequested": false,
                           "memberName": "getPreviousProposalVersion",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17284,
+                          "referencedDeclaration": 17282,
                           "src": "10696:39:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$",
@@ -5157,7 +5157,7 @@
                         "name": "list_indexed_bytesarray",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 22658,
+                        "referencedDeclaration": 22656,
                         "src": "10466:23:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_bytes32_$_t_uint256_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$_$_t_bool_$returns$_t_array$_t_bytes32_$dyn_memory_ptr_$",
@@ -5418,7 +5418,7 @@
                               "referencedDeclaration": 12551,
                               "src": "11544:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -5432,7 +5432,7 @@
                             "nodeType": "FunctionCall",
                             "src": "11544:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -5443,7 +5443,7 @@
                           "lValueRequested": false,
                           "memberName": "getFirstProposalVersion",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17209,
+                          "referencedDeclaration": 17207,
                           "src": "11544:36:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -5464,7 +5464,7 @@
                               "referencedDeclaration": 12551,
                               "src": "11594:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -5478,7 +5478,7 @@
                             "nodeType": "FunctionCall",
                             "src": "11594:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -5489,7 +5489,7 @@
                           "lValueRequested": false,
                           "memberName": "getLastProposalVersion",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17232,
+                          "referencedDeclaration": 17230,
                           "src": "11594:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -5510,7 +5510,7 @@
                               "referencedDeclaration": 12551,
                               "src": "11643:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -5524,7 +5524,7 @@
                             "nodeType": "FunctionCall",
                             "src": "11643:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -5535,7 +5535,7 @@
                           "lValueRequested": false,
                           "memberName": "getNextProposalVersion",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17258,
+                          "referencedDeclaration": 17256,
                           "src": "11643:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$",
@@ -5556,7 +5556,7 @@
                               "referencedDeclaration": 12551,
                               "src": "11692:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -5570,7 +5570,7 @@
                             "nodeType": "FunctionCall",
                             "src": "11692:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -5581,7 +5581,7 @@
                           "lValueRequested": false,
                           "memberName": "getPreviousProposalVersion",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17284,
+                          "referencedDeclaration": 17282,
                           "src": "11692:39:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$",
@@ -5641,7 +5641,7 @@
                         "name": "list_indexed_bytesarray_from",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 22735,
+                        "referencedDeclaration": 22733,
                         "src": "11428:28:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_bytes32_$_t_bytes32_$_t_uint256_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$_$_t_bool_$returns$_t_array$_t_bytes32_$dyn_memory_ptr_$",
@@ -5877,7 +5877,7 @@
         "id": 12497,
         "nodeType": "ImportDirective",
         "scope": 12890,
-        "sourceUnit": 22019,
+        "sourceUnit": 22017,
         "src": "97:87:52",
         "symbolAliases": [],
         "unitAlias": ""
@@ -5888,7 +5888,7 @@
         "id": 12498,
         "nodeType": "ImportDirective",
         "scope": 12890,
-        "sourceUnit": 22397,
+        "sourceUnit": 22395,
         "src": "185:85:52",
         "symbolAliases": [],
         "unitAlias": ""
@@ -5899,7 +5899,7 @@
         "id": 12499,
         "nodeType": "ImportDirective",
         "scope": 12890,
-        "sourceUnit": 22905,
+        "sourceUnit": 22903,
         "src": "271:92:52",
         "symbolAliases": [],
         "unitAlias": ""
@@ -5910,7 +5910,7 @@
         "id": 12500,
         "nodeType": "ImportDirective",
         "scope": 12890,
-        "sourceUnit": 18305,
+        "sourceUnit": 18303,
         "src": "364:37:52",
         "symbolAliases": [],
         "unitAlias": ""
@@ -5921,7 +5921,7 @@
         "id": 12501,
         "nodeType": "ImportDirective",
         "scope": 12890,
-        "sourceUnit": 16457,
+        "sourceUnit": 16455,
         "src": "402:42:52",
         "symbolAliases": [],
         "unitAlias": ""
@@ -5946,10 +5946,10 @@
               "id": 12503,
               "name": "AddressIteratorInteractive",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 22018,
+              "referencedDeclaration": 22016,
               "src": "620:26:52",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_AddressIteratorInteractive_$22018",
+                "typeIdentifier": "t_contract$_AddressIteratorInteractive_$22016",
                 "typeString": "contract AddressIteratorInteractive"
               }
             },
@@ -5964,10 +5964,10 @@
               "id": 12505,
               "name": "BytesIteratorInteractive",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 22396,
+              "referencedDeclaration": 22394,
               "src": "652:24:52",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_BytesIteratorInteractive_$22396",
+                "typeIdentifier": "t_contract$_BytesIteratorInteractive_$22394",
                 "typeString": "contract BytesIteratorInteractive"
               }
             },
@@ -5982,10 +5982,10 @@
               "id": 12507,
               "name": "IndexedBytesIteratorInteractive",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 22904,
+              "referencedDeclaration": 22902,
               "src": "682:31:52",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_IndexedBytesIteratorInteractive_$22904",
+                "typeIdentifier": "t_contract$_IndexedBytesIteratorInteractive_$22902",
                 "typeString": "contract IndexedBytesIteratorInteractive"
               }
             },
@@ -6015,10 +6015,10 @@
         "contractDependencies": [
           1580,
           1819,
-          19058,
-          22018,
-          22396,
-          22904
+          19056,
+          22016,
+          22394,
+          22902
         ],
         "contractKind": "contract",
         "documentation": "@title Contract to list various storage states from DigixDAO\n@author Digix Holdings",
@@ -6028,10 +6028,10 @@
           12889,
           1819,
           1580,
-          19058,
-          22904,
-          22396,
-          22018
+          19056,
+          22902,
+          22394,
+          22016
         ],
         "name": "DaoListingService",
         "nodeType": "ContractDefinition",
@@ -6091,7 +6091,7 @@
                           "name": "init",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 19026,
+                          "referencedDeclaration": 19024,
                           "src": "893:4:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_nonpayable$_t_bytes32_$_t_address_$returns$_t_bool_$",
@@ -6124,10 +6124,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26615,
-                        26616
+                        26613,
+                        26614
                       ],
-                      "referencedDeclaration": 26615,
+                      "referencedDeclaration": 26613,
                       "src": "885:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -6231,7 +6231,7 @@
                       "referencedDeclaration": 12526,
                       "src": "1067:9:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                        "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                         "typeString": "contract DaoStakeStorage"
                       }
                     },
@@ -6268,7 +6268,7 @@
                             "name": "get_contract",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19057,
+                            "referencedDeclaration": 19055,
                             "src": "1095:12:52",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_view$_t_bytes32_$returns$_t_address_$",
@@ -6301,10 +6301,10 @@
                         "name": "DaoStakeStorage",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 16456,
+                        "referencedDeclaration": 16454,
                         "src": "1079:15:52",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DaoStakeStorage_$16456_$",
+                          "typeIdentifier": "t_type$_t_contract$_DaoStakeStorage_$16454_$",
                           "typeString": "type(contract DaoStakeStorage)"
                         }
                       },
@@ -6318,13 +6318,13 @@
                       "nodeType": "FunctionCall",
                       "src": "1079:57:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                        "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                         "typeString": "contract DaoStakeStorage"
                       }
                     },
                     "src": "1067:69:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                      "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                       "typeString": "contract DaoStakeStorage"
                     }
                   },
@@ -6363,7 +6363,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                    "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                     "typeString": "contract DaoStakeStorage"
                   },
                   "typeName": {
@@ -6371,10 +6371,10 @@
                     "id": 12525,
                     "name": "DaoStakeStorage",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 16456,
+                    "referencedDeclaration": 16454,
                     "src": "1026:15:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                      "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                       "typeString": "contract DaoStakeStorage"
                     }
                   },
@@ -6413,7 +6413,7 @@
                       "referencedDeclaration": 12540,
                       "src": "1254:9:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                        "typeIdentifier": "t_contract$_DaoStorage_$18302",
                         "typeString": "contract DaoStorage"
                       }
                     },
@@ -6450,7 +6450,7 @@
                             "name": "get_contract",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 19057,
+                            "referencedDeclaration": 19055,
                             "src": "1277:12:52",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_view$_t_bytes32_$returns$_t_address_$",
@@ -6483,10 +6483,10 @@
                         "name": "DaoStorage",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 18304,
+                        "referencedDeclaration": 18302,
                         "src": "1266:10:52",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DaoStorage_$18304_$",
+                          "typeIdentifier": "t_type$_t_contract$_DaoStorage_$18302_$",
                           "typeString": "type(contract DaoStorage)"
                         }
                       },
@@ -6500,13 +6500,13 @@
                       "nodeType": "FunctionCall",
                       "src": "1266:46:52",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                        "typeIdentifier": "t_contract$_DaoStorage_$18302",
                         "typeString": "contract DaoStorage"
                       }
                     },
                     "src": "1254:58:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                      "typeIdentifier": "t_contract$_DaoStorage_$18302",
                       "typeString": "contract DaoStorage"
                     }
                   },
@@ -6545,7 +6545,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                    "typeIdentifier": "t_contract$_DaoStorage_$18302",
                     "typeString": "contract DaoStorage"
                   },
                   "typeName": {
@@ -6553,10 +6553,10 @@
                     "id": 12539,
                     "name": "DaoStorage",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 18304,
+                    "referencedDeclaration": 18302,
                     "src": "1218:10:52",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                      "typeIdentifier": "t_contract$_DaoStorage_$18302",
                       "typeString": "contract DaoStorage"
                     }
                   },
@@ -6631,7 +6631,7 @@
                               "referencedDeclaration": 12537,
                               "src": "2145:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -6645,7 +6645,7 @@
                             "nodeType": "FunctionCall",
                             "src": "2145:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -6656,7 +6656,7 @@
                           "lValueRequested": false,
                           "memberName": "readFirstModerator",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16335,
+                          "referencedDeclaration": 16333,
                           "src": "2145:36:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
@@ -6677,7 +6677,7 @@
                               "referencedDeclaration": 12537,
                               "src": "2195:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -6691,7 +6691,7 @@
                             "nodeType": "FunctionCall",
                             "src": "2195:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -6702,7 +6702,7 @@
                           "lValueRequested": false,
                           "memberName": "readLastModerator",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16347,
+                          "referencedDeclaration": 16345,
                           "src": "2195:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
@@ -6723,7 +6723,7 @@
                               "referencedDeclaration": 12537,
                               "src": "2244:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -6737,7 +6737,7 @@
                             "nodeType": "FunctionCall",
                             "src": "2244:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -6748,7 +6748,7 @@
                           "lValueRequested": false,
                           "memberName": "readNextModerator",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16362,
+                          "referencedDeclaration": 16360,
                           "src": "2244:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_address_$",
@@ -6769,7 +6769,7 @@
                               "referencedDeclaration": 12537,
                               "src": "2293:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -6783,7 +6783,7 @@
                             "nodeType": "FunctionCall",
                             "src": "2293:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -6794,7 +6794,7 @@
                           "lValueRequested": false,
                           "memberName": "readPreviousModerator",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16377,
+                          "referencedDeclaration": 16375,
                           "src": "2293:39:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_address_$",
@@ -6846,7 +6846,7 @@
                         "name": "list_addresses",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 21790,
+                        "referencedDeclaration": 21788,
                         "src": "2097:14:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_uint256_$_t_function_external_view$__$returns$_t_address_$_$_t_function_external_view$__$returns$_t_address_$_$_t_function_external_view$_t_address_$returns$_t_address_$_$_t_function_external_view$_t_address_$returns$_t_address_$_$_t_bool_$returns$_t_array$_t_address_$dyn_memory_ptr_$",
@@ -7068,7 +7068,7 @@
                               "referencedDeclaration": 12537,
                               "src": "3616:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -7082,7 +7082,7 @@
                             "nodeType": "FunctionCall",
                             "src": "3616:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -7093,7 +7093,7 @@
                           "lValueRequested": false,
                           "memberName": "readFirstModerator",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16335,
+                          "referencedDeclaration": 16333,
                           "src": "3616:36:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
@@ -7114,7 +7114,7 @@
                               "referencedDeclaration": 12537,
                               "src": "3666:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -7128,7 +7128,7 @@
                             "nodeType": "FunctionCall",
                             "src": "3666:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -7139,7 +7139,7 @@
                           "lValueRequested": false,
                           "memberName": "readLastModerator",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16347,
+                          "referencedDeclaration": 16345,
                           "src": "3666:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
@@ -7160,7 +7160,7 @@
                               "referencedDeclaration": 12537,
                               "src": "3715:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -7174,7 +7174,7 @@
                             "nodeType": "FunctionCall",
                             "src": "3715:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -7185,7 +7185,7 @@
                           "lValueRequested": false,
                           "memberName": "readNextModerator",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16362,
+                          "referencedDeclaration": 16360,
                           "src": "3715:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_address_$",
@@ -7206,7 +7206,7 @@
                               "referencedDeclaration": 12537,
                               "src": "3764:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -7220,7 +7220,7 @@
                             "nodeType": "FunctionCall",
                             "src": "3764:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -7231,7 +7231,7 @@
                           "lValueRequested": false,
                           "memberName": "readPreviousModerator",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16377,
+                          "referencedDeclaration": 16375,
                           "src": "3764:39:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_address_$",
@@ -7287,7 +7287,7 @@
                         "name": "list_addresses_from",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 21855,
+                        "referencedDeclaration": 21853,
                         "src": "3532:19:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_address_$_t_uint256_$_t_function_external_view$__$returns$_t_address_$_$_t_function_external_view$__$returns$_t_address_$_$_t_function_external_view$_t_address_$returns$_t_address_$_$_t_function_external_view$_t_address_$returns$_t_address_$_$_t_bool_$returns$_t_array$_t_address_$dyn_memory_ptr_$",
@@ -7522,7 +7522,7 @@
                               "referencedDeclaration": 12537,
                               "src": "4691:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -7536,7 +7536,7 @@
                             "nodeType": "FunctionCall",
                             "src": "4691:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -7547,7 +7547,7 @@
                           "lValueRequested": false,
                           "memberName": "readFirstParticipant",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16401,
+                          "referencedDeclaration": 16399,
                           "src": "4691:38:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
@@ -7568,7 +7568,7 @@
                               "referencedDeclaration": 12537,
                               "src": "4743:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -7582,7 +7582,7 @@
                             "nodeType": "FunctionCall",
                             "src": "4743:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -7593,7 +7593,7 @@
                           "lValueRequested": false,
                           "memberName": "readLastParticipant",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16413,
+                          "referencedDeclaration": 16411,
                           "src": "4743:37:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
@@ -7614,7 +7614,7 @@
                               "referencedDeclaration": 12537,
                               "src": "4794:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -7628,7 +7628,7 @@
                             "nodeType": "FunctionCall",
                             "src": "4794:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -7639,7 +7639,7 @@
                           "lValueRequested": false,
                           "memberName": "readNextParticipant",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16428,
+                          "referencedDeclaration": 16426,
                           "src": "4794:37:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_address_$",
@@ -7660,7 +7660,7 @@
                               "referencedDeclaration": 12537,
                               "src": "4845:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -7674,7 +7674,7 @@
                             "nodeType": "FunctionCall",
                             "src": "4845:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -7685,7 +7685,7 @@
                           "lValueRequested": false,
                           "memberName": "readPreviousParticipant",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16443,
+                          "referencedDeclaration": 16441,
                           "src": "4845:41:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_address_$",
@@ -7737,7 +7737,7 @@
                         "name": "list_addresses",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 21790,
+                        "referencedDeclaration": 21788,
                         "src": "4643:14:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_uint256_$_t_function_external_view$__$returns$_t_address_$_$_t_function_external_view$__$returns$_t_address_$_$_t_function_external_view$_t_address_$returns$_t_address_$_$_t_function_external_view$_t_address_$returns$_t_address_$_$_t_bool_$returns$_t_array$_t_address_$dyn_memory_ptr_$",
@@ -7959,7 +7959,7 @@
                               "referencedDeclaration": 12537,
                               "src": "6209:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -7973,7 +7973,7 @@
                             "nodeType": "FunctionCall",
                             "src": "6209:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -7984,7 +7984,7 @@
                           "lValueRequested": false,
                           "memberName": "readFirstParticipant",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16401,
+                          "referencedDeclaration": 16399,
                           "src": "6209:38:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
@@ -8005,7 +8005,7 @@
                               "referencedDeclaration": 12537,
                               "src": "6261:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -8019,7 +8019,7 @@
                             "nodeType": "FunctionCall",
                             "src": "6261:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -8030,7 +8030,7 @@
                           "lValueRequested": false,
                           "memberName": "readLastParticipant",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16413,
+                          "referencedDeclaration": 16411,
                           "src": "6261:37:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_address_$",
@@ -8051,7 +8051,7 @@
                               "referencedDeclaration": 12537,
                               "src": "6312:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -8065,7 +8065,7 @@
                             "nodeType": "FunctionCall",
                             "src": "6312:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -8076,7 +8076,7 @@
                           "lValueRequested": false,
                           "memberName": "readNextParticipant",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16428,
+                          "referencedDeclaration": 16426,
                           "src": "6312:37:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_address_$",
@@ -8097,7 +8097,7 @@
                               "referencedDeclaration": 12537,
                               "src": "6363:15:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16456_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStakeStorage_$16454_$",
                                 "typeString": "function () view returns (contract DaoStakeStorage)"
                               }
                             },
@@ -8111,7 +8111,7 @@
                             "nodeType": "FunctionCall",
                             "src": "6363:17:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16456",
+                              "typeIdentifier": "t_contract$_DaoStakeStorage_$16454",
                               "typeString": "contract DaoStakeStorage"
                             }
                           },
@@ -8122,7 +8122,7 @@
                           "lValueRequested": false,
                           "memberName": "readPreviousParticipant",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16443,
+                          "referencedDeclaration": 16441,
                           "src": "6363:41:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_address_$",
@@ -8178,7 +8178,7 @@
                         "name": "list_addresses_from",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 21855,
+                        "referencedDeclaration": 21853,
                         "src": "6123:19:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_address_$_t_uint256_$_t_function_external_view$__$returns$_t_address_$_$_t_function_external_view$__$returns$_t_address_$_$_t_function_external_view$_t_address_$returns$_t_address_$_$_t_function_external_view$_t_address_$returns$_t_address_$_$_t_bool_$returns$_t_array$_t_address_$dyn_memory_ptr_$",
@@ -8413,7 +8413,7 @@
                               "referencedDeclaration": 12551,
                               "src": "6943:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -8427,7 +8427,7 @@
                             "nodeType": "FunctionCall",
                             "src": "6943:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -8438,7 +8438,7 @@
                           "lValueRequested": false,
                           "memberName": "getFirstProposal",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16955,
+                          "referencedDeclaration": 16953,
                           "src": "6943:29:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_bytes32_$",
@@ -8459,7 +8459,7 @@
                               "referencedDeclaration": 12551,
                               "src": "6986:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -8473,7 +8473,7 @@
                             "nodeType": "FunctionCall",
                             "src": "6986:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -8484,7 +8484,7 @@
                           "lValueRequested": false,
                           "memberName": "getLastProposal",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16967,
+                          "referencedDeclaration": 16965,
                           "src": "6986:28:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_bytes32_$",
@@ -8505,7 +8505,7 @@
                               "referencedDeclaration": 12551,
                               "src": "7028:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -8519,7 +8519,7 @@
                             "nodeType": "FunctionCall",
                             "src": "7028:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -8530,7 +8530,7 @@
                           "lValueRequested": false,
                           "memberName": "getNextProposal",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16982,
+                          "referencedDeclaration": 16980,
                           "src": "7028:28:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -8551,7 +8551,7 @@
                               "referencedDeclaration": 12551,
                               "src": "7070:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -8565,7 +8565,7 @@
                             "nodeType": "FunctionCall",
                             "src": "7070:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -8576,7 +8576,7 @@
                           "lValueRequested": false,
                           "memberName": "getPreviousProposal",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16997,
+                          "referencedDeclaration": 16995,
                           "src": "7070:32:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -8628,7 +8628,7 @@
                         "name": "list_bytesarray",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 22168,
+                        "referencedDeclaration": 22166,
                         "src": "6894:15:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_uint256_$_t_function_external_view$__$returns$_t_bytes32_$_$_t_function_external_view$__$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_bool_$returns$_t_array$_t_bytes32_$dyn_memory_ptr_$",
@@ -8850,7 +8850,7 @@
                               "referencedDeclaration": 12551,
                               "src": "7807:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -8864,7 +8864,7 @@
                             "nodeType": "FunctionCall",
                             "src": "7807:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -8875,7 +8875,7 @@
                           "lValueRequested": false,
                           "memberName": "getFirstProposal",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16955,
+                          "referencedDeclaration": 16953,
                           "src": "7807:29:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_bytes32_$",
@@ -8896,7 +8896,7 @@
                               "referencedDeclaration": 12551,
                               "src": "7850:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -8910,7 +8910,7 @@
                             "nodeType": "FunctionCall",
                             "src": "7850:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -8921,7 +8921,7 @@
                           "lValueRequested": false,
                           "memberName": "getLastProposal",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16967,
+                          "referencedDeclaration": 16965,
                           "src": "7850:28:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$__$returns$_t_bytes32_$",
@@ -8942,7 +8942,7 @@
                               "referencedDeclaration": 12551,
                               "src": "7892:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -8956,7 +8956,7 @@
                             "nodeType": "FunctionCall",
                             "src": "7892:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -8967,7 +8967,7 @@
                           "lValueRequested": false,
                           "memberName": "getNextProposal",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16982,
+                          "referencedDeclaration": 16980,
                           "src": "7892:28:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -8988,7 +8988,7 @@
                               "referencedDeclaration": 12551,
                               "src": "7934:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -9002,7 +9002,7 @@
                             "nodeType": "FunctionCall",
                             "src": "7934:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -9013,7 +9013,7 @@
                           "lValueRequested": false,
                           "memberName": "getPreviousProposal",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 16997,
+                          "referencedDeclaration": 16995,
                           "src": "7934:32:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -9069,7 +9069,7 @@
                         "name": "list_bytesarray_from",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 22233,
+                        "referencedDeclaration": 22231,
                         "src": "7723:20:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_bytes32_$_t_uint256_$_t_function_external_view$__$returns$_t_bytes32_$_$_t_function_external_view$__$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_bool_$returns$_t_array$_t_bytes32_$dyn_memory_ptr_$",
@@ -9297,10 +9297,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26615,
-                        26616
+                        26613,
+                        26614
                       ],
-                      "referencedDeclaration": 26615,
+                      "referencedDeclaration": 26613,
                       "src": "8532:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -9391,7 +9391,7 @@
                               "referencedDeclaration": 12551,
                               "src": "8666:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -9405,7 +9405,7 @@
                             "nodeType": "FunctionCall",
                             "src": "8666:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -9416,7 +9416,7 @@
                           "lValueRequested": false,
                           "memberName": "getFirstProposalInState",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17018,
+                          "referencedDeclaration": 17016,
                           "src": "8666:36:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -9437,7 +9437,7 @@
                               "referencedDeclaration": 12551,
                               "src": "8716:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -9451,7 +9451,7 @@
                             "nodeType": "FunctionCall",
                             "src": "8716:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -9462,7 +9462,7 @@
                           "lValueRequested": false,
                           "memberName": "getLastProposalInState",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17039,
+                          "referencedDeclaration": 17037,
                           "src": "8716:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -9483,7 +9483,7 @@
                               "referencedDeclaration": 12551,
                               "src": "8765:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -9497,7 +9497,7 @@
                             "nodeType": "FunctionCall",
                             "src": "8765:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -9508,7 +9508,7 @@
                           "lValueRequested": false,
                           "memberName": "getNextProposalInState",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17063,
+                          "referencedDeclaration": 17061,
                           "src": "8765:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$",
@@ -9529,7 +9529,7 @@
                               "referencedDeclaration": 12551,
                               "src": "8814:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -9543,7 +9543,7 @@
                             "nodeType": "FunctionCall",
                             "src": "8814:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -9554,7 +9554,7 @@
                           "lValueRequested": false,
                           "memberName": "getPreviousProposalInState",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17087,
+                          "referencedDeclaration": 17085,
                           "src": "8814:39:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$",
@@ -9610,7 +9610,7 @@
                         "name": "list_indexed_bytesarray",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 22658,
+                        "referencedDeclaration": 22656,
                         "src": "8587:23:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_bytes32_$_t_uint256_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$_$_t_bool_$returns$_t_array$_t_bytes32_$dyn_memory_ptr_$",
@@ -9838,10 +9838,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        26615,
-                        26616
+                        26613,
+                        26614
                       ],
-                      "referencedDeclaration": 26615,
+                      "referencedDeclaration": 26613,
                       "src": "9550:7:52",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -9945,7 +9945,7 @@
                               "referencedDeclaration": 12551,
                               "src": "9719:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -9959,7 +9959,7 @@
                             "nodeType": "FunctionCall",
                             "src": "9719:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -9970,7 +9970,7 @@
                           "lValueRequested": false,
                           "memberName": "getFirstProposalInState",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17018,
+                          "referencedDeclaration": 17016,
                           "src": "9719:36:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -9991,7 +9991,7 @@
                               "referencedDeclaration": 12551,
                               "src": "9769:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -10005,7 +10005,7 @@
                             "nodeType": "FunctionCall",
                             "src": "9769:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -10016,7 +10016,7 @@
                           "lValueRequested": false,
                           "memberName": "getLastProposalInState",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17039,
+                          "referencedDeclaration": 17037,
                           "src": "9769:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -10037,7 +10037,7 @@
                               "referencedDeclaration": 12551,
                               "src": "9818:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -10051,7 +10051,7 @@
                             "nodeType": "FunctionCall",
                             "src": "9818:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -10062,7 +10062,7 @@
                           "lValueRequested": false,
                           "memberName": "getNextProposalInState",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17063,
+                          "referencedDeclaration": 17061,
                           "src": "9818:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$",
@@ -10083,7 +10083,7 @@
                               "referencedDeclaration": 12551,
                               "src": "9867:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -10097,7 +10097,7 @@
                             "nodeType": "FunctionCall",
                             "src": "9867:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -10108,7 +10108,7 @@
                           "lValueRequested": false,
                           "memberName": "getPreviousProposalInState",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17087,
+                          "referencedDeclaration": 17085,
                           "src": "9867:39:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$",
@@ -10168,7 +10168,7 @@
                         "name": "list_indexed_bytesarray_from",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 22735,
+                        "referencedDeclaration": 22733,
                         "src": "9605:28:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_bytes32_$_t_bytes32_$_t_uint256_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$_$_t_bool_$returns$_t_array$_t_bytes32_$dyn_memory_ptr_$",
@@ -10442,7 +10442,7 @@
                               "referencedDeclaration": 12551,
                               "src": "10548:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -10456,7 +10456,7 @@
                             "nodeType": "FunctionCall",
                             "src": "10548:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -10467,7 +10467,7 @@
                           "lValueRequested": false,
                           "memberName": "getFirstProposalVersion",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17209,
+                          "referencedDeclaration": 17207,
                           "src": "10548:36:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -10488,7 +10488,7 @@
                               "referencedDeclaration": 12551,
                               "src": "10598:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -10502,7 +10502,7 @@
                             "nodeType": "FunctionCall",
                             "src": "10598:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -10513,7 +10513,7 @@
                           "lValueRequested": false,
                           "memberName": "getLastProposalVersion",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17232,
+                          "referencedDeclaration": 17230,
                           "src": "10598:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -10534,7 +10534,7 @@
                               "referencedDeclaration": 12551,
                               "src": "10647:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -10548,7 +10548,7 @@
                             "nodeType": "FunctionCall",
                             "src": "10647:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -10559,7 +10559,7 @@
                           "lValueRequested": false,
                           "memberName": "getNextProposalVersion",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17258,
+                          "referencedDeclaration": 17256,
                           "src": "10647:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$",
@@ -10580,7 +10580,7 @@
                               "referencedDeclaration": 12551,
                               "src": "10696:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -10594,7 +10594,7 @@
                             "nodeType": "FunctionCall",
                             "src": "10696:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -10605,7 +10605,7 @@
                           "lValueRequested": false,
                           "memberName": "getPreviousProposalVersion",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17284,
+                          "referencedDeclaration": 17282,
                           "src": "10696:39:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$",
@@ -10661,7 +10661,7 @@
                         "name": "list_indexed_bytesarray",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 22658,
+                        "referencedDeclaration": 22656,
                         "src": "10466:23:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_bytes32_$_t_uint256_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$_$_t_bool_$returns$_t_array$_t_bytes32_$dyn_memory_ptr_$",
@@ -10922,7 +10922,7 @@
                               "referencedDeclaration": 12551,
                               "src": "11544:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -10936,7 +10936,7 @@
                             "nodeType": "FunctionCall",
                             "src": "11544:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -10947,7 +10947,7 @@
                           "lValueRequested": false,
                           "memberName": "getFirstProposalVersion",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17209,
+                          "referencedDeclaration": 17207,
                           "src": "11544:36:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -10968,7 +10968,7 @@
                               "referencedDeclaration": 12551,
                               "src": "11594:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -10982,7 +10982,7 @@
                             "nodeType": "FunctionCall",
                             "src": "11594:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -10993,7 +10993,7 @@
                           "lValueRequested": false,
                           "memberName": "getLastProposalVersion",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17232,
+                          "referencedDeclaration": 17230,
                           "src": "11594:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$returns$_t_bytes32_$",
@@ -11014,7 +11014,7 @@
                               "referencedDeclaration": 12551,
                               "src": "11643:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -11028,7 +11028,7 @@
                             "nodeType": "FunctionCall",
                             "src": "11643:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -11039,7 +11039,7 @@
                           "lValueRequested": false,
                           "memberName": "getNextProposalVersion",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17258,
+                          "referencedDeclaration": 17256,
                           "src": "11643:35:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$",
@@ -11060,7 +11060,7 @@
                               "referencedDeclaration": 12551,
                               "src": "11692:10:52",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18304_$",
+                                "typeIdentifier": "t_function_internal_view$__$returns$_t_contract$_DaoStorage_$18302_$",
                                 "typeString": "function () view returns (contract DaoStorage)"
                               }
                             },
@@ -11074,7 +11074,7 @@
                             "nodeType": "FunctionCall",
                             "src": "11692:12:52",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_DaoStorage_$18304",
+                              "typeIdentifier": "t_contract$_DaoStorage_$18302",
                               "typeString": "contract DaoStorage"
                             }
                           },
@@ -11085,7 +11085,7 @@
                           "lValueRequested": false,
                           "memberName": "getPreviousProposalVersion",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 17284,
+                          "referencedDeclaration": 17282,
                           "src": "11692:39:52",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$",
@@ -11145,7 +11145,7 @@
                         "name": "list_indexed_bytesarray_from",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 22735,
+                        "referencedDeclaration": 22733,
                         "src": "11428:28:52",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_bytes32_$_t_bytes32_$_t_uint256_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$_$_t_function_external_view$_t_bytes32_$_t_bytes32_$returns$_t_bytes32_$_$_t_bool_$returns$_t_array$_t_bytes32_$dyn_memory_ptr_$",
@@ -11362,10 +11362,10 @@
     "1": {
       "events": {},
       "links": {},
-      "address": "0x1dc92dc8cb8b151b8b693f23988ea003a65e9b86",
-      "transactionHash": "0xe1e488d22351ec3348a8b3dec8f02b227b105d3d67ad1a7c40e5f2ce755bbef6"
+      "address": "0x36ee676641adc608a81ee381f5d3713955903703",
+      "transactionHash": "0xd5cb892d727ea4da32be57d4dc6eb83fbbd75c182b088a6660406d56606c356d"
     }
   },
   "schemaVersion": "2.0.2",
-  "updatedAt": "2019-03-18T09:32:27.647Z"
+  "updatedAt": "2019-03-19T05:26:59.161Z"
 }

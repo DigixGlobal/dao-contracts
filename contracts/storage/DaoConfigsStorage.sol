@@ -25,12 +25,12 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
     {
         require(init(CONTRACT_STORAGE_DAO_CONFIG, _resolver));
 
-        uintConfigs[CONFIG_LOCKING_PHASE_DURATION] = 10 days;
-        uintConfigs[CONFIG_QUARTER_DURATION] = QUARTER_DURATION;
-        uintConfigs[CONFIG_VOTING_COMMIT_PHASE] = 14 days;
-        uintConfigs[CONFIG_VOTING_PHASE_TOTAL] = 21 days;
-        uintConfigs[CONFIG_INTERIM_COMMIT_PHASE] = 7 days;
-        uintConfigs[CONFIG_INTERIM_PHASE_TOTAL] = 14 days;
+        uintConfigs[CONFIG_LOCKING_PHASE_DURATION] = 1 days;
+        uintConfigs[CONFIG_QUARTER_DURATION] = 7 days;
+        uintConfigs[CONFIG_VOTING_COMMIT_PHASE] = 10 minutes;
+        uintConfigs[CONFIG_VOTING_PHASE_TOTAL] = 20 minutes;
+        uintConfigs[CONFIG_INTERIM_COMMIT_PHASE] = 10 minutes;
+        uintConfigs[CONFIG_INTERIM_PHASE_TOTAL] = 20 minutes;
 
 
 
@@ -60,8 +60,8 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_BONUS_REPUTATION_NUMERATOR] = 15; // 15% bonus for consistent votes
         uintConfigs[CONFIG_BONUS_REPUTATION_DENOMINATOR] = 100; // 15% bonus for consistent votes
 
-        uintConfigs[CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE] = 28 days;
-        uintConfigs[CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL] = 35 days;
+        uintConfigs[CONFIG_SPECIAL_PROPOSAL_COMMIT_PHASE] = 10 minutes;
+        uintConfigs[CONFIG_SPECIAL_PROPOSAL_PHASE_TOTAL] = 20 minutes;
 
 
 
@@ -89,7 +89,7 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_PORTION_TO_MODERATORS_NUM] = 42; //4.2% of DGX to moderator voting activity
         uintConfigs[CONFIG_PORTION_TO_MODERATORS_DEN] = 1000;
 
-        uintConfigs[CONFIG_DRAFT_VOTING_PHASE] = 10 days;
+        uintConfigs[CONFIG_DRAFT_VOTING_PHASE] = 10 minutes;
 
         uintConfigs[CONFIG_REPUTATION_POINT_BOOST_FOR_BADGE] = 412500 * ONE_MILLION;
 
@@ -100,11 +100,11 @@ contract DaoConfigsStorage is ResolverClient, DaoConstants {
         uintConfigs[CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_NUM] = 1;
         uintConfigs[CONFIG_REPUTATION_PER_EXTRA_MODERATOR_QP_DEN] = 1;
 
-        uintConfigs[CONFIG_VOTE_CLAIMING_DEADLINE] = 10 days;
+        uintConfigs[CONFIG_VOTE_CLAIMING_DEADLINE] = 20 minutes;
 
-        uintConfigs[CONFIG_MINIMUM_LOCKED_DGD] = 10 * ONE_BILLION;
-        uintConfigs[CONFIG_MINIMUM_DGD_FOR_MODERATOR] = 842 * ONE_BILLION;
-        uintConfigs[CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR] = 400 * ONE_BILLION;
+        uintConfigs[CONFIG_MINIMUM_LOCKED_DGD] = 1 * ONE_BILLION;
+        uintConfigs[CONFIG_MINIMUM_DGD_FOR_MODERATOR] = 2 * ONE_BILLION;
+        uintConfigs[CONFIG_MINIMUM_REPUTATION_FOR_MODERATOR] = 0;
 
         uintConfigs[CONFIG_PREPROPOSAL_COLLATERAL] = 2 ether;
 
