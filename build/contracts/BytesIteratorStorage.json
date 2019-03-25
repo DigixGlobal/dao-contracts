@@ -11,14 +11,14 @@
     "absolutePath": "@digix/solidity-collections/contracts/abstract/BytesIteratorStorage.sol",
     "exportedSymbols": {
       "BytesIteratorStorage": [
-        22071
+        22143
       ]
     },
-    "id": 22072,
+    "id": 22144,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 21990,
+        "id": 22062,
         "literals": [
           "solidity",
           "^",
@@ -31,10 +31,10 @@
       {
         "absolutePath": "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol",
         "file": "../lib/DoublyLinkedList.sol",
-        "id": 21991,
+        "id": 22063,
         "nodeType": "ImportDirective",
-        "scope": 22072,
-        "sourceUnit": 25139,
+        "scope": 22144,
+        "sourceUnit": 25211,
         "src": "26:37:77",
         "symbolAliases": [],
         "unitAlias": ""
@@ -45,24 +45,24 @@
         "contractKind": "contract",
         "documentation": "@title Bytes Iterator Storage\n@author DigixGlobal Pte Ltd",
         "fullyImplemented": true,
-        "id": 22071,
+        "id": 22143,
         "linearizedBaseContracts": [
-          22071
+          22143
         ],
         "name": "BytesIteratorStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "id": 21994,
+            "id": 22066,
             "libraryName": {
               "contractScope": null,
-              "id": 21992,
+              "id": 22064,
               "name": "DoublyLinkedList",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 25138,
+              "referencedDeclaration": 25210,
               "src": "220:16:77",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DoublyLinkedList_$25138",
+                "typeIdentifier": "t_contract$_DoublyLinkedList_$25210",
                 "typeString": "library DoublyLinkedList"
               }
             },
@@ -70,38 +70,38 @@
             "src": "214:50:77",
             "typeName": {
               "contractScope": null,
-              "id": 21993,
+              "id": 22065,
               "name": "DoublyLinkedList.Bytes",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 22627,
+              "referencedDeclaration": 22699,
               "src": "241:22:77",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                 "typeString": "struct DoublyLinkedList.Bytes"
               }
             }
           },
           {
             "body": {
-              "id": 22007,
+              "id": 22079,
               "nodeType": "Block",
               "src": "573:37:77",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 22005,
+                    "id": 22077,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 22001,
+                      "id": 22073,
                       "name": "_item",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 21999,
+                      "referencedDeclaration": 22071,
                       "src": "579:5:77",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
@@ -117,32 +117,32 @@
                         "argumentTypes": [],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 22002,
+                          "id": 22074,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 21996,
+                          "referencedDeclaration": 22068,
                           "src": "587:5:77",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                            "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                             "typeString": "struct DoublyLinkedList.Bytes storage pointer"
                           }
                         },
-                        "id": 22003,
+                        "id": 22075,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "start_item",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 24688,
+                        "referencedDeclaration": 24760,
                         "src": "587:16:77",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Bytes_$22627_storage_ptr_$returns$_t_bytes32_$bound_to$_t_struct$_Bytes_$22627_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Bytes_$22699_storage_ptr_$returns$_t_bytes32_$bound_to$_t_struct$_Bytes_$22699_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.Bytes storage pointer) view returns (bytes32)"
                         }
                       },
-                      "id": 22004,
+                      "id": 22076,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -162,14 +162,14 @@
                       "typeString": "bytes32"
                     }
                   },
-                  "id": 22006,
+                  "id": 22078,
                   "nodeType": "ExpressionStatement",
                   "src": "579:26:77"
                 }
               ]
             },
             "documentation": "@notice Reads the first item from the list of Bytes\n@param _list The source list\n@return {\"_item\": \"The first item from the list\"}",
-            "id": 22008,
+            "id": 22080,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -177,31 +177,31 @@
             "name": "read_first_from_bytesarray",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 21997,
+              "id": 22069,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 21996,
+                  "id": 22068,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22008,
+                  "scope": 22080,
                   "src": "458:36:77",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                    "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Bytes"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 21995,
+                    "id": 22067,
                     "name": "DoublyLinkedList.Bytes",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22627,
+                    "referencedDeclaration": 22699,
                     "src": "458:22:77",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                      "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                       "typeString": "struct DoublyLinkedList.Bytes"
                     }
                   },
@@ -213,15 +213,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22000,
+              "id": 22072,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 21999,
+                  "id": 22071,
                   "name": "_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22008,
+                  "scope": 22080,
                   "src": "556:13:77",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -230,7 +230,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 21998,
+                    "id": 22070,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "556:7:77",
@@ -245,7 +245,7 @@
               ],
               "src": "555:15:77"
             },
-            "scope": 22071,
+            "scope": 22143,
             "src": "422:188:77",
             "stateMutability": "view",
             "superFunction": null,
@@ -253,25 +253,25 @@
           },
           {
             "body": {
-              "id": 22021,
+              "id": 22093,
               "nodeType": "Block",
               "src": "916:35:77",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 22019,
+                    "id": 22091,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 22015,
+                      "id": 22087,
                       "name": "_item",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 22013,
+                      "referencedDeclaration": 22085,
                       "src": "922:5:77",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
@@ -287,32 +287,32 @@
                         "argumentTypes": [],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 22016,
+                          "id": 22088,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22010,
+                          "referencedDeclaration": 22082,
                           "src": "930:5:77",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                            "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                             "typeString": "struct DoublyLinkedList.Bytes storage pointer"
                           }
                         },
-                        "id": 22017,
+                        "id": 22089,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "end_item",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 24718,
+                        "referencedDeclaration": 24790,
                         "src": "930:14:77",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Bytes_$22627_storage_ptr_$returns$_t_bytes32_$bound_to$_t_struct$_Bytes_$22627_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Bytes_$22699_storage_ptr_$returns$_t_bytes32_$bound_to$_t_struct$_Bytes_$22699_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.Bytes storage pointer) view returns (bytes32)"
                         }
                       },
-                      "id": 22018,
+                      "id": 22090,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -332,14 +332,14 @@
                       "typeString": "bytes32"
                     }
                   },
-                  "id": 22020,
+                  "id": 22092,
                   "nodeType": "ExpressionStatement",
                   "src": "922:24:77"
                 }
               ]
             },
             "documentation": "@notice Reads the last item from the list of Bytes\n@param _list The source list\n@return {\"_item\": \"The last item from the list\"}",
-            "id": 22022,
+            "id": 22094,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -347,31 +347,31 @@
             "name": "read_last_from_bytesarray",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 22011,
+              "id": 22083,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22010,
+                  "id": 22082,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22022,
+                  "scope": 22094,
                   "src": "801:36:77",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                    "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Bytes"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 22009,
+                    "id": 22081,
                     "name": "DoublyLinkedList.Bytes",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22627,
+                    "referencedDeclaration": 22699,
                     "src": "801:22:77",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                      "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                       "typeString": "struct DoublyLinkedList.Bytes"
                     }
                   },
@@ -383,15 +383,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22014,
+              "id": 22086,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22013,
+                  "id": 22085,
                   "name": "_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22022,
+                  "scope": 22094,
                   "src": "899:13:77",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -400,7 +400,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 22012,
+                    "id": 22084,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "899:7:77",
@@ -415,7 +415,7 @@
               ],
               "src": "898:15:77"
             },
-            "scope": 22071,
+            "scope": 22143,
             "src": "766:185:77",
             "stateMutability": "view",
             "superFunction": null,
@@ -423,25 +423,25 @@
           },
           {
             "body": {
-              "id": 22038,
+              "id": 22110,
               "nodeType": "Block",
               "src": "1484:49:77",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 22036,
+                    "id": 22108,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 22031,
+                      "id": 22103,
                       "name": "_item",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 22029,
+                      "referencedDeclaration": 22101,
                       "src": "1490:5:77",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
@@ -455,11 +455,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 22034,
+                          "id": 22106,
                           "name": "_current_item",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22026,
+                          "referencedDeclaration": 22098,
                           "src": "1514:13:77",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -476,32 +476,32 @@
                         ],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 22032,
+                          "id": 22104,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22024,
+                          "referencedDeclaration": 22096,
                           "src": "1498:5:77",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                            "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                             "typeString": "struct DoublyLinkedList.Bytes storage pointer"
                           }
                         },
-                        "id": 22033,
+                        "id": 22105,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "next_item",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 24826,
+                        "referencedDeclaration": 24898,
                         "src": "1498:15:77",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Bytes_$22627_storage_ptr_$_t_bytes32_$returns$_t_bytes32_$bound_to$_t_struct$_Bytes_$22627_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Bytes_$22699_storage_ptr_$_t_bytes32_$returns$_t_bytes32_$bound_to$_t_struct$_Bytes_$22699_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.Bytes storage pointer,bytes32) view returns (bytes32)"
                         }
                       },
-                      "id": 22035,
+                      "id": 22107,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -521,14 +521,14 @@
                       "typeString": "bytes32"
                     }
                   },
-                  "id": 22037,
+                  "id": 22109,
                   "nodeType": "ExpressionStatement",
                   "src": "1490:38:77"
                 }
               ]
             },
             "documentation": "@notice Reads the next item on the list of Bytes\n@param _list The source list\n@param _current_item The current item to be used as base line\n@return {\"_item\": \"The next item from the list based on the specieid `_current_item`\"}\nTODO: Need to verify what happens if the specified `_current_item` is the last item from the list",
-            "id": 22039,
+            "id": 22111,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -536,31 +536,31 @@
             "name": "read_next_from_bytesarray",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 22027,
+              "id": 22099,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22024,
+                  "id": 22096,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22039,
+                  "scope": 22111,
                   "src": "1346:36:77",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                    "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Bytes"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 22023,
+                    "id": 22095,
                     "name": "DoublyLinkedList.Bytes",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22627,
+                    "referencedDeclaration": 22699,
                     "src": "1346:22:77",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                      "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                       "typeString": "struct DoublyLinkedList.Bytes"
                     }
                   },
@@ -569,10 +569,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 22026,
+                  "id": 22098,
                   "name": "_current_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22039,
+                  "scope": 22111,
                   "src": "1384:21:77",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -581,7 +581,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 22025,
+                    "id": 22097,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1384:7:77",
@@ -598,15 +598,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22030,
+              "id": 22102,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22029,
+                  "id": 22101,
                   "name": "_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22039,
+                  "scope": 22111,
                   "src": "1467:13:77",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -615,7 +615,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 22028,
+                    "id": 22100,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1467:7:77",
@@ -630,7 +630,7 @@
               ],
               "src": "1466:15:77"
             },
-            "scope": 22071,
+            "scope": 22143,
             "src": "1311:222:77",
             "stateMutability": "view",
             "superFunction": null,
@@ -638,25 +638,25 @@
           },
           {
             "body": {
-              "id": 22055,
+              "id": 22127,
               "nodeType": "Block",
               "src": "2079:53:77",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 22053,
+                    "id": 22125,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 22048,
+                      "id": 22120,
                       "name": "_item",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 22046,
+                      "referencedDeclaration": 22118,
                       "src": "2085:5:77",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
@@ -670,11 +670,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 22051,
+                          "id": 22123,
                           "name": "_current_item",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22043,
+                          "referencedDeclaration": 22115,
                           "src": "2113:13:77",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -691,32 +691,32 @@
                         ],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 22049,
+                          "id": 22121,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22041,
+                          "referencedDeclaration": 22113,
                           "src": "2093:5:77",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                            "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                             "typeString": "struct DoublyLinkedList.Bytes storage pointer"
                           }
                         },
-                        "id": 22050,
+                        "id": 22122,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "previous_item",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 24790,
+                        "referencedDeclaration": 24862,
                         "src": "2093:19:77",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Bytes_$22627_storage_ptr_$_t_bytes32_$returns$_t_bytes32_$bound_to$_t_struct$_Bytes_$22627_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Bytes_$22699_storage_ptr_$_t_bytes32_$returns$_t_bytes32_$bound_to$_t_struct$_Bytes_$22699_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.Bytes storage pointer,bytes32) view returns (bytes32)"
                         }
                       },
-                      "id": 22052,
+                      "id": 22124,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -736,14 +736,14 @@
                       "typeString": "bytes32"
                     }
                   },
-                  "id": 22054,
+                  "id": 22126,
                   "nodeType": "ExpressionStatement",
                   "src": "2085:42:77"
                 }
               ]
             },
             "documentation": "@notice Reads the previous item on the list of Bytes\n@param _list The source list\n@param _current_item The current item to be used as base line\n@return {\"_item\": \"The previous item from the list based on the spcified `_current_item`\"}\nTODO: Need to verify what happens if the specified `_current_item` is the first item from the list",
-            "id": 22056,
+            "id": 22128,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -751,31 +751,31 @@
             "name": "read_previous_from_bytesarray",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 22044,
+              "id": 22116,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22041,
+                  "id": 22113,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22056,
+                  "scope": 22128,
                   "src": "1941:36:77",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                    "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Bytes"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 22040,
+                    "id": 22112,
                     "name": "DoublyLinkedList.Bytes",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22627,
+                    "referencedDeclaration": 22699,
                     "src": "1941:22:77",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                      "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                       "typeString": "struct DoublyLinkedList.Bytes"
                     }
                   },
@@ -784,10 +784,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 22043,
+                  "id": 22115,
                   "name": "_current_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22056,
+                  "scope": 22128,
                   "src": "1979:21:77",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -796,7 +796,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 22042,
+                    "id": 22114,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1979:7:77",
@@ -813,15 +813,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22047,
+              "id": 22119,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22046,
+                  "id": 22118,
                   "name": "_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22056,
+                  "scope": 22128,
                   "src": "2062:13:77",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -830,7 +830,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 22045,
+                    "id": 22117,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "2062:7:77",
@@ -845,7 +845,7 @@
               ],
               "src": "2061:15:77"
             },
-            "scope": 22071,
+            "scope": 22143,
             "src": "1902:230:77",
             "stateMutability": "view",
             "superFunction": null,
@@ -853,25 +853,25 @@
           },
           {
             "body": {
-              "id": 22069,
+              "id": 22141,
               "nodeType": "Block",
               "src": "2457:33:77",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 22067,
+                    "id": 22139,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 22063,
+                      "id": 22135,
                       "name": "_count",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 22061,
+                      "referencedDeclaration": 22133,
                       "src": "2463:6:77",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -887,32 +887,32 @@
                         "argumentTypes": [],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 22064,
+                          "id": 22136,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22058,
+                          "referencedDeclaration": 22130,
                           "src": "2472:5:77",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                            "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                             "typeString": "struct DoublyLinkedList.Bytes storage pointer"
                           }
                         },
-                        "id": 22065,
+                        "id": 22137,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "total",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 24658,
+                        "referencedDeclaration": 24730,
                         "src": "2472:11:77",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Bytes_$22627_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Bytes_$22627_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Bytes_$22699_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Bytes_$22699_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.Bytes storage pointer) view returns (uint256)"
                         }
                       },
-                      "id": 22066,
+                      "id": 22138,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -932,14 +932,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 22068,
+                  "id": 22140,
                   "nodeType": "ExpressionStatement",
                   "src": "2463:22:77"
                 }
               ]
             },
             "documentation": "@notice Reads the list of Bytes and returns the length of the list\n@param _list The source list\n@return {\"count\": \"`uint256` The lenght of the list\"}",
-            "id": 22070,
+            "id": 22142,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -947,31 +947,31 @@
             "name": "read_total_bytesarray",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 22059,
+              "id": 22131,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22058,
+                  "id": 22130,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22070,
+                  "scope": 22142,
                   "src": "2341:36:77",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                    "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Bytes"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 22057,
+                    "id": 22129,
                     "name": "DoublyLinkedList.Bytes",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22627,
+                    "referencedDeclaration": 22699,
                     "src": "2341:22:77",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                      "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                       "typeString": "struct DoublyLinkedList.Bytes"
                     }
                   },
@@ -983,15 +983,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22062,
+              "id": 22134,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22061,
+                  "id": 22133,
                   "name": "_count",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22070,
+                  "scope": 22142,
                   "src": "2439:14:77",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1000,7 +1000,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 22060,
+                    "id": 22132,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "2439:7:77",
@@ -1015,14 +1015,14 @@
               ],
               "src": "2438:16:77"
             },
-            "scope": 22071,
+            "scope": 22143,
             "src": "2310:180:77",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "internal"
           }
         ],
-        "scope": 22072,
+        "scope": 22144,
         "src": "135:2358:77"
       }
     ],
@@ -1032,14 +1032,14 @@
     "absolutePath": "@digix/solidity-collections/contracts/abstract/BytesIteratorStorage.sol",
     "exportedSymbols": {
       "BytesIteratorStorage": [
-        22071
+        22143
       ]
     },
-    "id": 22072,
+    "id": 22144,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 21990,
+        "id": 22062,
         "literals": [
           "solidity",
           "^",
@@ -1052,10 +1052,10 @@
       {
         "absolutePath": "@digix/solidity-collections/contracts/lib/DoublyLinkedList.sol",
         "file": "../lib/DoublyLinkedList.sol",
-        "id": 21991,
+        "id": 22063,
         "nodeType": "ImportDirective",
-        "scope": 22072,
-        "sourceUnit": 25139,
+        "scope": 22144,
+        "sourceUnit": 25211,
         "src": "26:37:77",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1066,24 +1066,24 @@
         "contractKind": "contract",
         "documentation": "@title Bytes Iterator Storage\n@author DigixGlobal Pte Ltd",
         "fullyImplemented": true,
-        "id": 22071,
+        "id": 22143,
         "linearizedBaseContracts": [
-          22071
+          22143
         ],
         "name": "BytesIteratorStorage",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "id": 21994,
+            "id": 22066,
             "libraryName": {
               "contractScope": null,
-              "id": 21992,
+              "id": 22064,
               "name": "DoublyLinkedList",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 25138,
+              "referencedDeclaration": 25210,
               "src": "220:16:77",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DoublyLinkedList_$25138",
+                "typeIdentifier": "t_contract$_DoublyLinkedList_$25210",
                 "typeString": "library DoublyLinkedList"
               }
             },
@@ -1091,38 +1091,38 @@
             "src": "214:50:77",
             "typeName": {
               "contractScope": null,
-              "id": 21993,
+              "id": 22065,
               "name": "DoublyLinkedList.Bytes",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 22627,
+              "referencedDeclaration": 22699,
               "src": "241:22:77",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                 "typeString": "struct DoublyLinkedList.Bytes"
               }
             }
           },
           {
             "body": {
-              "id": 22007,
+              "id": 22079,
               "nodeType": "Block",
               "src": "573:37:77",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 22005,
+                    "id": 22077,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 22001,
+                      "id": 22073,
                       "name": "_item",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 21999,
+                      "referencedDeclaration": 22071,
                       "src": "579:5:77",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
@@ -1138,32 +1138,32 @@
                         "argumentTypes": [],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 22002,
+                          "id": 22074,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 21996,
+                          "referencedDeclaration": 22068,
                           "src": "587:5:77",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                            "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                             "typeString": "struct DoublyLinkedList.Bytes storage pointer"
                           }
                         },
-                        "id": 22003,
+                        "id": 22075,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "start_item",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 24688,
+                        "referencedDeclaration": 24760,
                         "src": "587:16:77",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Bytes_$22627_storage_ptr_$returns$_t_bytes32_$bound_to$_t_struct$_Bytes_$22627_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Bytes_$22699_storage_ptr_$returns$_t_bytes32_$bound_to$_t_struct$_Bytes_$22699_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.Bytes storage pointer) view returns (bytes32)"
                         }
                       },
-                      "id": 22004,
+                      "id": 22076,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1183,14 +1183,14 @@
                       "typeString": "bytes32"
                     }
                   },
-                  "id": 22006,
+                  "id": 22078,
                   "nodeType": "ExpressionStatement",
                   "src": "579:26:77"
                 }
               ]
             },
             "documentation": "@notice Reads the first item from the list of Bytes\n@param _list The source list\n@return {\"_item\": \"The first item from the list\"}",
-            "id": 22008,
+            "id": 22080,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1198,31 +1198,31 @@
             "name": "read_first_from_bytesarray",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 21997,
+              "id": 22069,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 21996,
+                  "id": 22068,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22008,
+                  "scope": 22080,
                   "src": "458:36:77",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                    "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Bytes"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 21995,
+                    "id": 22067,
                     "name": "DoublyLinkedList.Bytes",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22627,
+                    "referencedDeclaration": 22699,
                     "src": "458:22:77",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                      "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                       "typeString": "struct DoublyLinkedList.Bytes"
                     }
                   },
@@ -1234,15 +1234,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22000,
+              "id": 22072,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 21999,
+                  "id": 22071,
                   "name": "_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22008,
+                  "scope": 22080,
                   "src": "556:13:77",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1251,7 +1251,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 21998,
+                    "id": 22070,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "556:7:77",
@@ -1266,7 +1266,7 @@
               ],
               "src": "555:15:77"
             },
-            "scope": 22071,
+            "scope": 22143,
             "src": "422:188:77",
             "stateMutability": "view",
             "superFunction": null,
@@ -1274,25 +1274,25 @@
           },
           {
             "body": {
-              "id": 22021,
+              "id": 22093,
               "nodeType": "Block",
               "src": "916:35:77",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 22019,
+                    "id": 22091,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 22015,
+                      "id": 22087,
                       "name": "_item",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 22013,
+                      "referencedDeclaration": 22085,
                       "src": "922:5:77",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
@@ -1308,32 +1308,32 @@
                         "argumentTypes": [],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 22016,
+                          "id": 22088,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22010,
+                          "referencedDeclaration": 22082,
                           "src": "930:5:77",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                            "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                             "typeString": "struct DoublyLinkedList.Bytes storage pointer"
                           }
                         },
-                        "id": 22017,
+                        "id": 22089,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "end_item",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 24718,
+                        "referencedDeclaration": 24790,
                         "src": "930:14:77",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Bytes_$22627_storage_ptr_$returns$_t_bytes32_$bound_to$_t_struct$_Bytes_$22627_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Bytes_$22699_storage_ptr_$returns$_t_bytes32_$bound_to$_t_struct$_Bytes_$22699_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.Bytes storage pointer) view returns (bytes32)"
                         }
                       },
-                      "id": 22018,
+                      "id": 22090,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1353,14 +1353,14 @@
                       "typeString": "bytes32"
                     }
                   },
-                  "id": 22020,
+                  "id": 22092,
                   "nodeType": "ExpressionStatement",
                   "src": "922:24:77"
                 }
               ]
             },
             "documentation": "@notice Reads the last item from the list of Bytes\n@param _list The source list\n@return {\"_item\": \"The last item from the list\"}",
-            "id": 22022,
+            "id": 22094,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1368,31 +1368,31 @@
             "name": "read_last_from_bytesarray",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 22011,
+              "id": 22083,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22010,
+                  "id": 22082,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22022,
+                  "scope": 22094,
                   "src": "801:36:77",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                    "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Bytes"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 22009,
+                    "id": 22081,
                     "name": "DoublyLinkedList.Bytes",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22627,
+                    "referencedDeclaration": 22699,
                     "src": "801:22:77",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                      "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                       "typeString": "struct DoublyLinkedList.Bytes"
                     }
                   },
@@ -1404,15 +1404,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22014,
+              "id": 22086,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22013,
+                  "id": 22085,
                   "name": "_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22022,
+                  "scope": 22094,
                   "src": "899:13:77",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1421,7 +1421,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 22012,
+                    "id": 22084,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "899:7:77",
@@ -1436,7 +1436,7 @@
               ],
               "src": "898:15:77"
             },
-            "scope": 22071,
+            "scope": 22143,
             "src": "766:185:77",
             "stateMutability": "view",
             "superFunction": null,
@@ -1444,25 +1444,25 @@
           },
           {
             "body": {
-              "id": 22038,
+              "id": 22110,
               "nodeType": "Block",
               "src": "1484:49:77",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 22036,
+                    "id": 22108,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 22031,
+                      "id": 22103,
                       "name": "_item",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 22029,
+                      "referencedDeclaration": 22101,
                       "src": "1490:5:77",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
@@ -1476,11 +1476,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 22034,
+                          "id": 22106,
                           "name": "_current_item",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22026,
+                          "referencedDeclaration": 22098,
                           "src": "1514:13:77",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -1497,32 +1497,32 @@
                         ],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 22032,
+                          "id": 22104,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22024,
+                          "referencedDeclaration": 22096,
                           "src": "1498:5:77",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                            "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                             "typeString": "struct DoublyLinkedList.Bytes storage pointer"
                           }
                         },
-                        "id": 22033,
+                        "id": 22105,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "next_item",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 24826,
+                        "referencedDeclaration": 24898,
                         "src": "1498:15:77",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Bytes_$22627_storage_ptr_$_t_bytes32_$returns$_t_bytes32_$bound_to$_t_struct$_Bytes_$22627_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Bytes_$22699_storage_ptr_$_t_bytes32_$returns$_t_bytes32_$bound_to$_t_struct$_Bytes_$22699_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.Bytes storage pointer,bytes32) view returns (bytes32)"
                         }
                       },
-                      "id": 22035,
+                      "id": 22107,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1542,14 +1542,14 @@
                       "typeString": "bytes32"
                     }
                   },
-                  "id": 22037,
+                  "id": 22109,
                   "nodeType": "ExpressionStatement",
                   "src": "1490:38:77"
                 }
               ]
             },
             "documentation": "@notice Reads the next item on the list of Bytes\n@param _list The source list\n@param _current_item The current item to be used as base line\n@return {\"_item\": \"The next item from the list based on the specieid `_current_item`\"}\nTODO: Need to verify what happens if the specified `_current_item` is the last item from the list",
-            "id": 22039,
+            "id": 22111,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1557,31 +1557,31 @@
             "name": "read_next_from_bytesarray",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 22027,
+              "id": 22099,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22024,
+                  "id": 22096,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22039,
+                  "scope": 22111,
                   "src": "1346:36:77",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                    "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Bytes"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 22023,
+                    "id": 22095,
                     "name": "DoublyLinkedList.Bytes",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22627,
+                    "referencedDeclaration": 22699,
                     "src": "1346:22:77",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                      "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                       "typeString": "struct DoublyLinkedList.Bytes"
                     }
                   },
@@ -1590,10 +1590,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 22026,
+                  "id": 22098,
                   "name": "_current_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22039,
+                  "scope": 22111,
                   "src": "1384:21:77",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1602,7 +1602,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 22025,
+                    "id": 22097,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1384:7:77",
@@ -1619,15 +1619,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22030,
+              "id": 22102,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22029,
+                  "id": 22101,
                   "name": "_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22039,
+                  "scope": 22111,
                   "src": "1467:13:77",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1636,7 +1636,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 22028,
+                    "id": 22100,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1467:7:77",
@@ -1651,7 +1651,7 @@
               ],
               "src": "1466:15:77"
             },
-            "scope": 22071,
+            "scope": 22143,
             "src": "1311:222:77",
             "stateMutability": "view",
             "superFunction": null,
@@ -1659,25 +1659,25 @@
           },
           {
             "body": {
-              "id": 22055,
+              "id": 22127,
               "nodeType": "Block",
               "src": "2079:53:77",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 22053,
+                    "id": 22125,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 22048,
+                      "id": 22120,
                       "name": "_item",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 22046,
+                      "referencedDeclaration": 22118,
                       "src": "2085:5:77",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
@@ -1691,11 +1691,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 22051,
+                          "id": 22123,
                           "name": "_current_item",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22043,
+                          "referencedDeclaration": 22115,
                           "src": "2113:13:77",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bytes32",
@@ -1712,32 +1712,32 @@
                         ],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 22049,
+                          "id": 22121,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22041,
+                          "referencedDeclaration": 22113,
                           "src": "2093:5:77",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                            "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                             "typeString": "struct DoublyLinkedList.Bytes storage pointer"
                           }
                         },
-                        "id": 22050,
+                        "id": 22122,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "previous_item",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 24790,
+                        "referencedDeclaration": 24862,
                         "src": "2093:19:77",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Bytes_$22627_storage_ptr_$_t_bytes32_$returns$_t_bytes32_$bound_to$_t_struct$_Bytes_$22627_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Bytes_$22699_storage_ptr_$_t_bytes32_$returns$_t_bytes32_$bound_to$_t_struct$_Bytes_$22699_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.Bytes storage pointer,bytes32) view returns (bytes32)"
                         }
                       },
-                      "id": 22052,
+                      "id": 22124,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1757,14 +1757,14 @@
                       "typeString": "bytes32"
                     }
                   },
-                  "id": 22054,
+                  "id": 22126,
                   "nodeType": "ExpressionStatement",
                   "src": "2085:42:77"
                 }
               ]
             },
             "documentation": "@notice Reads the previous item on the list of Bytes\n@param _list The source list\n@param _current_item The current item to be used as base line\n@return {\"_item\": \"The previous item from the list based on the spcified `_current_item`\"}\nTODO: Need to verify what happens if the specified `_current_item` is the first item from the list",
-            "id": 22056,
+            "id": 22128,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1772,31 +1772,31 @@
             "name": "read_previous_from_bytesarray",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 22044,
+              "id": 22116,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22041,
+                  "id": 22113,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22056,
+                  "scope": 22128,
                   "src": "1941:36:77",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                    "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Bytes"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 22040,
+                    "id": 22112,
                     "name": "DoublyLinkedList.Bytes",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22627,
+                    "referencedDeclaration": 22699,
                     "src": "1941:22:77",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                      "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                       "typeString": "struct DoublyLinkedList.Bytes"
                     }
                   },
@@ -1805,10 +1805,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 22043,
+                  "id": 22115,
                   "name": "_current_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22056,
+                  "scope": 22128,
                   "src": "1979:21:77",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1817,7 +1817,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 22042,
+                    "id": 22114,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1979:7:77",
@@ -1834,15 +1834,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22047,
+              "id": 22119,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22046,
+                  "id": 22118,
                   "name": "_item",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22056,
+                  "scope": 22128,
                   "src": "2062:13:77",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1851,7 +1851,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 22045,
+                    "id": 22117,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "2062:7:77",
@@ -1866,7 +1866,7 @@
               ],
               "src": "2061:15:77"
             },
-            "scope": 22071,
+            "scope": 22143,
             "src": "1902:230:77",
             "stateMutability": "view",
             "superFunction": null,
@@ -1874,25 +1874,25 @@
           },
           {
             "body": {
-              "id": 22069,
+              "id": 22141,
               "nodeType": "Block",
               "src": "2457:33:77",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 22067,
+                    "id": 22139,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 22063,
+                      "id": 22135,
                       "name": "_count",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 22061,
+                      "referencedDeclaration": 22133,
                       "src": "2463:6:77",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1908,32 +1908,32 @@
                         "argumentTypes": [],
                         "expression": {
                           "argumentTypes": null,
-                          "id": 22064,
+                          "id": 22136,
                           "name": "_list",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 22058,
+                          "referencedDeclaration": 22130,
                           "src": "2472:5:77",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                            "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                             "typeString": "struct DoublyLinkedList.Bytes storage pointer"
                           }
                         },
-                        "id": 22065,
+                        "id": 22137,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "total",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 24658,
+                        "referencedDeclaration": 24730,
                         "src": "2472:11:77",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Bytes_$22627_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Bytes_$22627_storage_ptr_$",
+                          "typeIdentifier": "t_function_delegatecall_view$_t_struct$_Bytes_$22699_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Bytes_$22699_storage_ptr_$",
                           "typeString": "function (struct DoublyLinkedList.Bytes storage pointer) view returns (uint256)"
                         }
                       },
-                      "id": 22066,
+                      "id": 22138,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1953,14 +1953,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 22068,
+                  "id": 22140,
                   "nodeType": "ExpressionStatement",
                   "src": "2463:22:77"
                 }
               ]
             },
             "documentation": "@notice Reads the list of Bytes and returns the length of the list\n@param _list The source list\n@return {\"count\": \"`uint256` The lenght of the list\"}",
-            "id": 22070,
+            "id": 22142,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1968,31 +1968,31 @@
             "name": "read_total_bytesarray",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 22059,
+              "id": 22131,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22058,
+                  "id": 22130,
                   "name": "_list",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22070,
+                  "scope": 22142,
                   "src": "2341:36:77",
                   "stateVariable": false,
                   "storageLocation": "storage",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                    "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                     "typeString": "struct DoublyLinkedList.Bytes"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 22057,
+                    "id": 22129,
                     "name": "DoublyLinkedList.Bytes",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 22627,
+                    "referencedDeclaration": 22699,
                     "src": "2341:22:77",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Bytes_$22627_storage_ptr",
+                      "typeIdentifier": "t_struct$_Bytes_$22699_storage_ptr",
                       "typeString": "struct DoublyLinkedList.Bytes"
                     }
                   },
@@ -2004,15 +2004,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 22062,
+              "id": 22134,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22061,
+                  "id": 22133,
                   "name": "_count",
                   "nodeType": "VariableDeclaration",
-                  "scope": 22070,
+                  "scope": 22142,
                   "src": "2439:14:77",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2021,7 +2021,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 22060,
+                    "id": 22132,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "2439:7:77",
@@ -2036,14 +2036,14 @@
               ],
               "src": "2438:16:77"
             },
-            "scope": 22071,
+            "scope": 22143,
             "src": "2310:180:77",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "internal"
           }
         ],
-        "scope": 22072,
+        "scope": 22144,
         "src": "135:2358:77"
       }
     ],
@@ -2054,6 +2054,6 @@
     "version": "0.4.25+commit.59dbf8f1.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "2.0.1",
-  "updatedAt": "2019-03-05T03:39:14.158Z"
+  "schemaVersion": "2.0.2",
+  "updatedAt": "2019-03-25T02:22:48.873Z"
 }
