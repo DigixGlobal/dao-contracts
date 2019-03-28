@@ -9,13 +9,13 @@ module.exports = async (deployer, network) => {
   if (network !== 'mainnet' && network !== 'kovan') { return null; }
   deployer.link(DaoStructs, DaoRewardsManager)
     .then(() => {
-      return deployer.deploy(DaoRewardsManager, ContractResolver.address, process.env.DGX);
+      return deployer.deploy(DaoRewardsManager, ContractResolver.address, process.env.DGX, { gas: 8000000, gasPrice: 30e9 });
     })
     .then(() => {
-      return deployer.deploy(DaoRewardsManagerExtras, ContractResolver.address);
+      return deployer.deploy(DaoRewardsManagerExtras, ContractResolver.address, { gas: 5000000 });
     })
     .then(() => {
-      return deployer.deploy(DaoInformation, ContractResolver.address);
+      return deployer.deploy(DaoInformation, ContractResolver.address, { gas: 5000000 });
     })
     .then(() => {
       console.log('Deployed Interactive Part D');

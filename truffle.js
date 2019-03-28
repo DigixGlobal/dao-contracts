@@ -40,8 +40,8 @@ module.exports = {
         pollingInterval: 15000,
         // debug: true,
       }),
-      gas: 8000000,
-      gasPrice: 40 * (10 ** 9),
+      gas: 100000,
+      gasPrice: 15 * (10 ** 9),
       network_id: '1',
     },
     development: {

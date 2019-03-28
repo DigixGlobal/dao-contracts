@@ -12,13 +12,13 @@ module.exports = async (deployer, network) => {
       return deployer.link(DaoStructs, DaoRewardsStorage);
     })
     .then(() => {
-      return deployer.deploy(DaoWhitelistingStorage, ContractResolver.address);
+      return deployer.deploy(DaoWhitelistingStorage, ContractResolver.address, { gas: 3000000 });
     })
     .then(() => {
-      return deployer.deploy(DaoRewardsStorage, ContractResolver.address);
+      return deployer.deploy(DaoRewardsStorage, ContractResolver.address, { gas: 5000000 });
     })
     .then(() => {
-      return deployer.deploy(IntermediateResultsStorage, ContractResolver.address);
+      return deployer.deploy(IntermediateResultsStorage, ContractResolver.address, { gas: 4000000 });
     })
     .then(() => {
       console.log('Deployed Storage Part C');

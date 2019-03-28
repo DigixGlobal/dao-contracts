@@ -17,5 +17,5 @@ module.exports = function (deployer, network) {
     assert.ok(!isInvalid(process.env.DGX), 'Please provide the address for DGX');
   }
 
-  deployer.deploy(Migrations);
+  deployer.deploy(Migrations, { gas: 300000 });
 };

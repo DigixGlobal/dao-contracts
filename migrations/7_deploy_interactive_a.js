@@ -13,12 +13,13 @@ module.exports = async (deployer, network) => {
     process.env.DGD_BADGE,
     process.env.CV_1,
     process.env.CV_2,
+    { gas: 8000000, gasPrice: 30e9 },
   )
     .then(() => {
-      return deployer.deploy(DaoFundingManager, ContractResolver.address, process.env.FUNDING_SOURCE);
+      return deployer.deploy(DaoFundingManager, ContractResolver.address, process.env.FUNDING_SOURCE, { gas: 5000000 });
     })
     .then(() => {
-      return deployer.deploy(DaoIdentity, ContractResolver.address);
+      return deployer.deploy(DaoIdentity, ContractResolver.address, { gas: 5000000 });
     })
     .then(() => {
       console.log('Deployed Interactive Part A');

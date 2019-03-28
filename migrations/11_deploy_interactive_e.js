@@ -31,7 +31,7 @@ module.exports = async (deployer, network) => {
     DaoSpecialVotingClaims.address,
     DaoRewardsManager.address,
     DaoRewardsManagerExtras.address,
-  ])
+  ], { gas: 5000000 })
     .then(() => {
       console.log('Deployed Interactive Part E');
     });
