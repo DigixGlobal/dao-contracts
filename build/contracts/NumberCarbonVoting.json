@@ -26,9 +26,9 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity ^0.4.25;\n\ncontract NumberCarbonVoting {\n    function voted(address _voter) public view returns (bool);\n}\n",
-  "sourcePath": "/home/vu/digix/dao-contracts/contracts/interface/NumberCarbonVoting.sol",
+  "sourcePath": "/home/rohit/Develop/dao-contracts/contracts/interface/NumberCarbonVoting.sol",
   "ast": {
-    "absolutePath": "/home/vu/digix/dao-contracts/contracts/interface/NumberCarbonVoting.sol",
+    "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/interface/NumberCarbonVoting.sol",
     "exportedSymbols": {
       "NumberCarbonVoting": [
         7909
@@ -152,7 +152,7 @@
     "src": "0:121:21"
   },
   "legacyAST": {
-    "absolutePath": "/home/vu/digix/dao-contracts/contracts/interface/NumberCarbonVoting.sol",
+    "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/interface/NumberCarbonVoting.sol",
     "exportedSymbols": {
       "NumberCarbonVoting": [
         7909
@@ -281,5 +281,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.2",
-  "updatedAt": "2019-03-12T07:53:08.857Z"
+  "updatedAt": "2019-03-29T03:16:45.785Z"
 }

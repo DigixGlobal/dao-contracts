@@ -127,9 +127,9 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity ^0.4.25;\n\ncontract DaoStorageInterface {\n    function readVotingRoundVotes(bytes32, uint256, address[], bool) public view returns (address[], uint256);\n    function readDraftVote(bytes32, address) public view returns (bool, uint256);\n    function readComittedVote(bytes32, uint256, address) public view returns (bytes32);\n    function readVote(bytes32, uint256, address) public view returns (bool, uint256);\n}\n",
-  "sourcePath": "/home/vu/digix/dao-contracts/contracts/mock/interface/DaoStorageInterface.sol",
+  "sourcePath": "/home/rohit/Develop/dao-contracts/contracts/mock/interface/DaoStorageInterface.sol",
   "ast": {
-    "absolutePath": "/home/vu/digix/dao-contracts/contracts/mock/interface/DaoStorageInterface.sol",
+    "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/interface/DaoStorageInterface.sol",
     "exportedSymbols": {
       "DaoStorageInterface": [
         9393
@@ -808,7 +808,7 @@
     "src": "0:426:36"
   },
   "legacyAST": {
-    "absolutePath": "/home/vu/digix/dao-contracts/contracts/mock/interface/DaoStorageInterface.sol",
+    "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/mock/interface/DaoStorageInterface.sol",
     "exportedSymbols": {
       "DaoStorageInterface": [
         9393
@@ -1492,5 +1492,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.2",
-  "updatedAt": "2019-03-12T07:53:08.867Z"
+  "updatedAt": "2019-03-29T03:16:45.794Z"
 }

@@ -34,9 +34,9 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity ^0.4.25;\n\n/// @title Digix Gold Token Demurrage Calculator\n/// @author Digix Holdings Pte Ltd\n/// @notice This contract is meant to be used by exchanges/other parties who want to calculate the DGX demurrage fees, provided an initial balance and the days elapsed\ncontract DgxDemurrageCalculator {\n    function calculateDemurrage(uint256 _initial_balance, uint256 _days_elapsed)\n        public\n        view\n        returns (uint256 _demurrage_fees, bool _no_demurrage_fees);\n}\n",
-  "sourcePath": "/home/vu/digix/dao-contracts/contracts/interface/DgxDemurrageCalculator.sol",
+  "sourcePath": "/home/rohit/Develop/dao-contracts/contracts/interface/DgxDemurrageCalculator.sol",
   "ast": {
-    "absolutePath": "/home/vu/digix/dao-contracts/contracts/interface/DgxDemurrageCalculator.sol",
+    "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/interface/DgxDemurrageCalculator.sol",
     "exportedSymbols": {
       "DgxDemurrageCalculator": [
         7899
@@ -212,7 +212,7 @@
     "src": "0:491:20"
   },
   "legacyAST": {
-    "absolutePath": "/home/vu/digix/dao-contracts/contracts/interface/DgxDemurrageCalculator.sol",
+    "absolutePath": "/home/rohit/Develop/dao-contracts/contracts/interface/DgxDemurrageCalculator.sol",
     "exportedSymbols": {
       "DgxDemurrageCalculator": [
         7899
@@ -393,5 +393,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.2",
-  "updatedAt": "2019-03-12T07:53:08.857Z"
+  "updatedAt": "2019-03-29T03:16:45.785Z"
 }
