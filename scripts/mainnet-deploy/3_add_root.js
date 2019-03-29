@@ -24,7 +24,7 @@ module.exports = async () => {
       bN(1),
       process.env.MULTISIG,
       'add:multisig:root',
-      { from: addressOf.root },
+      { from: addressOf.root, gas: 300000 },
     );
     console.log('\tadd multisig wallet as root \u2713');
 

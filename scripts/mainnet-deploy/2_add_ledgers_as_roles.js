@@ -30,7 +30,7 @@ module.exports = async () => {
         bN(2),
         founder,
         'add:ledger:founder',
-        { from: addressOf.root },
+        { from: addressOf.root, gas: 300000 },
       );
     }
     console.log('\tadd Founders \u2713');
@@ -40,7 +40,7 @@ module.exports = async () => {
         bN(3),
         prl,
         'add:ledger:prl',
-        { from: addressOf.root },
+        { from: addressOf.root, gas: 300000 },
       );
     }
     console.log('\tadd PRLs \u2713');

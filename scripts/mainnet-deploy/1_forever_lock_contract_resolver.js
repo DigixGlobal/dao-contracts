@@ -13,7 +13,7 @@ module.exports = async () => {
     const contractResolver = await ContractResolver.deployed();
     console.log('\tget contract instance \u2713');
 
-    await contractResolver.lock_resolver_forever({ from: addressOf.root });
+    await contractResolver.lock_resolver_forever({ from: addressOf.root, gas: 50000 });
     console.log('\tlock contract resolver \u2713');
 
     console.log('DONE');

@@ -17,7 +17,7 @@ module.exports = async () => {
 
     const collector = process.env.COLLECTOR;
     const gasPriceInGwei = !isInvalid(process.env.GAS_PRICE_IN_GWEI) ?
-      parseInt(process.env.GAS_PRICE_IN_GWEI, 10) : 20;
+      parseInt(process.env.GAS_PRICE_IN_GWEI, 10) : 10;
 
     const gasNeededForTransfer = bN(21000 * gasPriceInGwei * (10 ** 9));
 
