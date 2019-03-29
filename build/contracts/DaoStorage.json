@@ -48353,13 +48353,13 @@
     "1": {
       "events": {},
       "links": {
-        "DaoStructs": "0xfbee614dcfa54c561e532eff217c2e0c63dcd64f",
-        "DoublyLinkedList": "0x5dcbac109092766a169a82b9add3551bac7068f6"
+        "DaoStructs": "0x7f495ffbbe99c621b6643360139088f33a452496",
+        "DoublyLinkedList": "0xcf69af24412ad034f5ce2cc65c3141a77e3a768c"
       },
-      "address": "0x3f54ced72a1d82f32fdb7b744cb085207f232c57",
-      "transactionHash": "0x5dd989c37b6c192288990a70a4281f6b83b8fbadee104d8db7ed5b18966ca47e"
+      "address": "0x037e0ccdc07106f3f98ad4541f5d5958ba6be752",
+      "transactionHash": "0xaff909946440a77fe9c4d51e591e9412702c2f723681abdccf7e778e5e6fef32"
     }
   },
   "schemaVersion": "2.0.2",
-  "updatedAt": "2019-03-12T09:18:32.989Z"
+  "updatedAt": "2019-03-29T02:32:49.781Z"
 }
