@@ -11,7 +11,7 @@ module.exports = async (deployer, network) => {
       return deployer.deploy(DaoSpecialVotingClaims, ContractResolver.address, { gas: 5000000 });
     })
     .then(() => {
-      return deployer.deploy(DaoVotingClaims, ContractResolver.address, { gas: 5000000 });
+      return deployer.deploy(DaoVotingClaims, ContractResolver.address, { gas: 8000000, gasPrice: 30e9 });
     })
     .then(() => {
       console.log('Deployed Interactive Part C');

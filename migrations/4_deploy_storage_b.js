@@ -26,7 +26,7 @@ module.exports = async (deployer, network) => {
       return deployer.deploy(DaoStakeStorage, ContractResolver.address, { gas: 5000000 });
     })
     .then(() => {
-      return deployer.deploy(DaoProposalCounterStorage, ContractResolver.address, { gas: 8000000 });
+      return deployer.deploy(DaoProposalCounterStorage, ContractResolver.address, { gas: 3000000 });
     })
     .then(() => {
       console.log('Deployed Storage Part B');

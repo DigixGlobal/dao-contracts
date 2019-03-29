@@ -41,7 +41,7 @@ module.exports = {
         // debug: true,
       }),
       gas: 100000,
-      gasPrice: 15 * (10 ** 9),
+      gasPrice: 10 * (10 ** 9),
       network_id: '1',
     },
     development: {

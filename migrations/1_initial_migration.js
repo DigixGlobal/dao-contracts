@@ -6,7 +6,7 @@ const isInvalid = (param) => {
   return (param === '' || param === undefined);
 };
 
-module.exports = function (deployer, network) {
+module.exports = async function (deployer, network) {
   if (network !== 'development') {
     assert.ok(!isInvalid(process.env.DGX_DEMURRAGE_REPORTER), 'Please provide the address for DGX_DEMURRAGE_REPORTER');
     assert.ok(!isInvalid(process.env.DGD), 'Please provide the address for DGD');
@@ -17,5 +17,7 @@ module.exports = function (deployer, network) {
     assert.ok(!isInvalid(process.env.DGX), 'Please provide the address for DGX');
   }
 
-  deployer.deploy(Migrations, { gas: 300000 });
+  deployer.deploy(Migrations, { gas: 300000 }).then(() => {
+    console.log('Deployed Migrations');
+  });
 };
