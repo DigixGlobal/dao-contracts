@@ -49,3 +49,9 @@ STAGE=<> ./node_modules/.bin/truffle exec scripts/digixdao-interactions/create-p
 ```
 ./node_modules/.bin/truffle exec scripts/digixdao-interactions/create-special-proposal.js
 ```
+
+#### Create a Proposal that has additional docs (DGDG-322)
+This will add a proposal with one version (which is finalized), and has more documents added (specifically one PDF and one Image)
+```
+./node_modules/.bin/truffle exec scripts/digixdao-interactions/create-proposal-more-docs.js
+```

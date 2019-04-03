@@ -63,6 +63,19 @@ const uploadAttestation = async (
   );
 };
 
+const uploadMoreDoc = async () => {
+  const doc = await dijixUtil.getDijix()
+    .create('attestation', {
+      attestation: { title: 'more docs' },
+      proofs: [
+        { type: 'image', src: `${__dirname}/../../static/images/1.jpg` },
+        { type: 'pdf', src: `${__dirname}/../../static/pdfs/1.pdf` },
+      ],
+    });
+  console.log('uploaded doc = ', doc);
+  return encodeHash(doc.ipfsHash);
+};
+
 const waitFor = async function (timeToWait, addressOf, web3) {
   const timeThen = getCurrentTimestamp();
   async function wait() {
@@ -109,6 +122,7 @@ const _getProposalStruct = (bN, proposer, endorser, versions, generateRandom = f
 module.exports = {
   getAccountsAndAddressOf,
   uploadAttestation,
+  uploadMoreDoc,
   proposalStates,
   waitFor,
   assignVotesAndCommits,
