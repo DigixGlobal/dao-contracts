@@ -36,7 +36,7 @@ module.exports = {
       provider: new LightWalletProvider({
         keystore: KEYSTORE,
         password: PASSWORD,
-        rpcUrl: 'https://mainnet.infura.io/',
+        rpcUrl: 'https://mainnet.infura.io/v3/d356a5affcea4eec8e0cdde7e52570ba',
         pollingInterval: 15000,
         // debug: true,
       }),
