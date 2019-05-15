@@ -240,6 +240,7 @@ const kycProposers = async function (contracts, addressOf) {
     console.log('updating KYC for proposer ', proposal.proposer);
     await contracts.daoIdentity.updateKyc(proposal.proposer, '', expiry, { from: addressOf.kycadmin });
   });
+  await contracts.daoIdentity.updateKyc(addressOf.founderBadgeHolder, '', expiry, { from: addressOf.kycadmin });
 };
 
 const addProposals = async function (contracts, proposals) {
