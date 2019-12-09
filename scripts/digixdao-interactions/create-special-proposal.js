@@ -32,10 +32,6 @@ module.exports = async () => {
       configs, [], [],
       { from: addressOf.founderBadgeHolder },
     );
-    await daoSpecialProposal.startSpecialProposalVoting(
-      specialProposalId,
-      { from: addressOf.founderBadgeHolder },
-    );
     console.log('created special proposal = ', specialProposalId);
   });
 };
