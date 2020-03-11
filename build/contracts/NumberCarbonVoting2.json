@@ -1,0 +1,414 @@
+{
+  "contractName": "NumberCarbonVoting2",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "name",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "voted",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_user",
+          "type": "address"
+        }
+      ],
+      "name": "mock_set_voted",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_name",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b506040516020806102298339810180604052810190808051906020019092919050505080806000816000191690555050506101d9806100506000396000f300608060405260043610610057576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806306fdde031461005c578063aec2ccae1461008f578063cb86107b146100ea575b600080fd5b34801561006857600080fd5b5061007161012d565b60405180826000191660001916815260200191505060405180910390f35b34801561009b57600080fd5b506100d0600480360381019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610133565b604051808215151515815260200191505060405180910390f35b3480156100f657600080fd5b5061012b600480360381019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610153565b005b60005481565b60016020528060005260406000206000915054906101000a900460ff1681565b60018060008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060006101000a81548160ff021916908315150217905550505600a165627a7a72305820bb68742a9b8dda0d1b681045709b05ed14682c9206903aada4c5ec8872c596cb0029",
+  "deployedBytecode": "0x608060405260043610610057576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806306fdde031461005c578063aec2ccae1461008f578063cb86107b146100ea575b600080fd5b34801561006857600080fd5b5061007161012d565b60405180826000191660001916815260200191505060405180910390f35b34801561009b57600080fd5b506100d0600480360381019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610133565b604051808215151515815260200191505060405180910390f35b3480156100f657600080fd5b5061012b600480360381019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610153565b005b60005481565b60016020528060005260406000206000915054906101000a900460ff1681565b60018060008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060006101000a81548160ff021916908315150217905550505600a165627a7a72305820bb68742a9b8dda0d1b681045709b05ed14682c9206903aada4c5ec8872c596cb0029",
+  "sourceMap": "69:129:32:-;;;130:66;8:9:-1;5:2;;;30:1;27;20:12;5:2;130:66:32;;;;;;;;;;;;;;;;;;;;;;;;;;;;;187:5;185::29;178:4;:12;;;;;;;134:63;130:66:32;69:129;;;;;;",
+  "deployedSourceMap": "69:129:32:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;65:19:29;;8:9:-1;5:2;;;30:1;27;20:12;5:2;65:19:29;;;;;;;;;;;;;;;;;;;;;;;;;;;;;90:37;;8:9:-1;5:2;;;30:1;27;20:12;5:2;90:37:29;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;203:94;;8:9:-1;5:2;;;30:1;27;20:12;5:2;203:94:29;;;;;;;;;;;;;;;;;;;;;;;;;;;;65:19;;;;:::o;90:37::-;;;;;;;;;;;;;;;;;;;;;;:::o;203:94::-;286:4;271:5;:12;277:5;271:12;;;;;;;;;;;;;;;;:19;;;;;;;;;;;;;;;;;;203:94;:::o",
+  "source": "pragma solidity ^0.4.25;\n\nimport \"./../MockNumberCarbonVoting.sol\";\n\ncontract NumberCarbonVoting2 is MockNumberCarbonVoting {\n    constructor(bytes32 _name) public MockNumberCarbonVoting(_name) {}\n}\n",
+  "sourcePath": "/home/vu/digix/dao-contracts/contracts/mock/carbonvoting/NumberCarbonVoting2.sol",
+  "ast": {
+    "absolutePath": "/home/vu/digix/dao-contracts/contracts/mock/carbonvoting/NumberCarbonVoting2.sol",
+    "exportedSymbols": {
+      "NumberCarbonVoting2": [
+        9289
+      ]
+    },
+    "id": 9290,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 9276,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".25"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:32"
+      },
+      {
+        "absolutePath": "/home/vu/digix/dao-contracts/contracts/mock/MockNumberCarbonVoting.sol",
+        "file": "./../MockNumberCarbonVoting.sol",
+        "id": 9277,
+        "nodeType": "ImportDirective",
+        "scope": 9290,
+        "sourceUnit": 9077,
+        "src": "26:41:32",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 9278,
+              "name": "MockNumberCarbonVoting",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 9076,
+              "src": "101:22:32",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_MockNumberCarbonVoting_$9076",
+                "typeString": "contract MockNumberCarbonVoting"
+              }
+            },
+            "id": 9279,
+            "nodeType": "InheritanceSpecifier",
+            "src": "101:22:32"
+          }
+        ],
+        "contractDependencies": [
+          9076
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 9289,
+        "linearizedBaseContracts": [
+          9289,
+          9076
+        ],
+        "name": "NumberCarbonVoting2",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 9287,
+              "nodeType": "Block",
+              "src": "194:2:32",
+              "statements": []
+            },
+            "documentation": null,
+            "id": 9288,
+            "implemented": true,
+            "isConstructor": true,
+            "isDeclaredConst": false,
+            "modifiers": [
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "id": 9284,
+                    "name": "_name",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 9281,
+                    "src": "187:5:32",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  }
+                ],
+                "id": 9285,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 9283,
+                  "name": "MockNumberCarbonVoting",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 9076,
+                  "src": "164:22:32",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_type$_t_contract$_MockNumberCarbonVoting_$9076_$",
+                    "typeString": "type(contract MockNumberCarbonVoting)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "164:29:32"
+              }
+            ],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 9282,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 9281,
+                  "name": "_name",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 9288,
+                  "src": "142:13:32",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 9280,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "142:7:32",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "141:15:32"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 9286,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "194:0:32"
+            },
+            "scope": 9289,
+            "src": "130:66:32",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 9290,
+        "src": "69:129:32"
+      }
+    ],
+    "src": "0:199:32"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/vu/digix/dao-contracts/contracts/mock/carbonvoting/NumberCarbonVoting2.sol",
+    "exportedSymbols": {
+      "NumberCarbonVoting2": [
+        9289
+      ]
+    },
+    "id": 9290,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 9276,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".25"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:32"
+      },
+      {
+        "absolutePath": "/home/vu/digix/dao-contracts/contracts/mock/MockNumberCarbonVoting.sol",
+        "file": "./../MockNumberCarbonVoting.sol",
+        "id": 9277,
+        "nodeType": "ImportDirective",
+        "scope": 9290,
+        "sourceUnit": 9077,
+        "src": "26:41:32",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 9278,
+              "name": "MockNumberCarbonVoting",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 9076,
+              "src": "101:22:32",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_MockNumberCarbonVoting_$9076",
+                "typeString": "contract MockNumberCarbonVoting"
+              }
+            },
+            "id": 9279,
+            "nodeType": "InheritanceSpecifier",
+            "src": "101:22:32"
+          }
+        ],
+        "contractDependencies": [
+          9076
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 9289,
+        "linearizedBaseContracts": [
+          9289,
+          9076
+        ],
+        "name": "NumberCarbonVoting2",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 9287,
+              "nodeType": "Block",
+              "src": "194:2:32",
+              "statements": []
+            },
+            "documentation": null,
+            "id": 9288,
+            "implemented": true,
+            "isConstructor": true,
+            "isDeclaredConst": false,
+            "modifiers": [
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "id": 9284,
+                    "name": "_name",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 9281,
+                    "src": "187:5:32",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  }
+                ],
+                "id": 9285,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 9283,
+                  "name": "MockNumberCarbonVoting",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 9076,
+                  "src": "164:22:32",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_type$_t_contract$_MockNumberCarbonVoting_$9076_$",
+                    "typeString": "type(contract MockNumberCarbonVoting)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "164:29:32"
+              }
+            ],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 9282,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 9281,
+                  "name": "_name",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 9288,
+                  "src": "142:13:32",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 9280,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "142:7:32",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "141:15:32"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 9286,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "194:0:32"
+            },
+            "scope": 9289,
+            "src": "130:66:32",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 9290,
+        "src": "69:129:32"
+      }
+    ],
+    "src": "0:199:32"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.25+commit.59dbf8f1.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.2",
+  "updatedAt": "2019-03-12T07:53:08.867Z"
+}

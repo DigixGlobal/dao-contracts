@@ -7,6 +7,7 @@ contract DaoConstants {
     bytes32 EMPTY_BYTES = bytes32(0x0);
     address EMPTY_ADDRESS = address(0x0);
 
+
     bytes32 PROPOSAL_STATE_PREPROPOSAL = "proposal_state_preproposal";
     bytes32 PROPOSAL_STATE_DRAFT = "proposal_state_draft";
     bytes32 PROPOSAL_STATE_MODERATED = "proposal_state_moderated";

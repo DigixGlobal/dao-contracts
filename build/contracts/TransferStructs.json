@@ -1,0 +1,1345 @@
+{
+  "contractName": "TransferStructs",
+  "abi": [],
+  "bytecode": "0x604c602c600b82828239805160001a60731460008114601c57601e565bfe5b5030600052607381538281f30073000000000000000000000000000000000000000030146080604052600080fd00a165627a7a7230582049f74fb084e826aa2be5b5b650785c60e596aa44d17c52fb0180dfd32144df190029",
+  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fd00a165627a7a7230582049f74fb084e826aa2be5b5b650785c60e596aa44d17c52fb0180dfd32144df190029",
+  "sourceMap": "88:692:73:-;;132:2:-1;166:7;155:9;146:7;137:37;252:7;246:14;243:1;238:23;232:4;229:33;270:1;265:20;;;;222:63;;265:20;274:9;222:63;;298:9;295:1;288:20;328:4;319:7;311:22;352:7;343;336:24",
+  "deployedSourceMap": "88:692:73:-;;;;;;;;",
+  "source": "pragma solidity ^0.4.19;\n\nimport \"@digix/solidity-core-libraries/contracts/Types.sol\";\n\nlibrary TransferStructs {\n  using Types for Types.MutableUint;\n  using Types for Types.MutableTimestamp;\n\n  struct User {\n    address account;\n    Types.MutableUint balance;\n    bool no_transfer_fee;\n  }\n\n  struct Spender {\n    address account;\n    Types.MutableUint allowance;\n  }\n\n  struct Config {\n    Types.MutableUint collector_balance;\n    address collector;\n    uint256 base;\n    uint256 rate;\n    bool global_transfer_fee_disabled;\n    uint256 minimum_transfer_amount;\n  }\n\n  struct Transfer {\n    User sender;\n    User recipient;\n    Spender spender;\n    Config config;\n    Types.MutableUint received_amount;\n    uint256 sent_amount;\n    uint256 fee;\n    bool is_transfer_from;\n  }\n}\n",
+  "sourcePath": "@digix/lite-dgx-contract/contracts/libs/TransferStructs.sol",
+  "ast": {
+    "absolutePath": "@digix/lite-dgx-contract/contracts/libs/TransferStructs.sol",
+    "exportedSymbols": {
+      "TransferStructs": [
+        21723
+      ]
+    },
+    "id": 21724,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 21673,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".19"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:73"
+      },
+      {
+        "absolutePath": "@digix/solidity-core-libraries/contracts/Types.sol",
+        "file": "@digix/solidity-core-libraries/contracts/Types.sol",
+        "id": 21674,
+        "nodeType": "ImportDirective",
+        "scope": 21724,
+        "sourceUnit": 25948,
+        "src": "26:60:73",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "library",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 21723,
+        "linearizedBaseContracts": [
+          21723
+        ],
+        "name": "TransferStructs",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "id": 21677,
+            "libraryName": {
+              "contractScope": null,
+              "id": 21675,
+              "name": "Types",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 25947,
+              "src": "122:5:73",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Types_$25947",
+                "typeString": "library Types"
+              }
+            },
+            "nodeType": "UsingForDirective",
+            "src": "116:34:73",
+            "typeName": {
+              "contractScope": null,
+              "id": 21676,
+              "name": "Types.MutableUint",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 25634,
+              "src": "132:17:73",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_MutableUint_$25634_storage_ptr",
+                "typeString": "struct Types.MutableUint"
+              }
+            }
+          },
+          {
+            "id": 21680,
+            "libraryName": {
+              "contractScope": null,
+              "id": 21678,
+              "name": "Types",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 25947,
+              "src": "159:5:73",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Types_$25947",
+                "typeString": "library Types"
+              }
+            },
+            "nodeType": "UsingForDirective",
+            "src": "153:39:73",
+            "typeName": {
+              "contractScope": null,
+              "id": 21679,
+              "name": "Types.MutableTimestamp",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 25639,
+              "src": "169:22:73",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_MutableTimestamp_$25639_storage_ptr",
+                "typeString": "struct Types.MutableTimestamp"
+              }
+            }
+          },
+          {
+            "canonicalName": "TransferStructs.User",
+            "id": 21687,
+            "members": [
+              {
+                "constant": false,
+                "id": 21682,
+                "name": "account",
+                "nodeType": "VariableDeclaration",
+                "scope": 21687,
+                "src": "214:15:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 21681,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "214:7:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21684,
+                "name": "balance",
+                "nodeType": "VariableDeclaration",
+                "scope": 21687,
+                "src": "235:25:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_MutableUint_$25634_storage_ptr",
+                  "typeString": "struct Types.MutableUint"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21683,
+                  "name": "Types.MutableUint",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 25634,
+                  "src": "235:17:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_MutableUint_$25634_storage_ptr",
+                    "typeString": "struct Types.MutableUint"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21686,
+                "name": "no_transfer_fee",
+                "nodeType": "VariableDeclaration",
+                "scope": 21687,
+                "src": "266:20:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 21685,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "266:4:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "User",
+            "nodeType": "StructDefinition",
+            "scope": 21723,
+            "src": "196:95:73",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "TransferStructs.Spender",
+            "id": 21692,
+            "members": [
+              {
+                "constant": false,
+                "id": 21689,
+                "name": "account",
+                "nodeType": "VariableDeclaration",
+                "scope": 21692,
+                "src": "316:15:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 21688,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "316:7:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21691,
+                "name": "allowance",
+                "nodeType": "VariableDeclaration",
+                "scope": 21692,
+                "src": "337:27:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_MutableUint_$25634_storage_ptr",
+                  "typeString": "struct Types.MutableUint"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21690,
+                  "name": "Types.MutableUint",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 25634,
+                  "src": "337:17:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_MutableUint_$25634_storage_ptr",
+                    "typeString": "struct Types.MutableUint"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Spender",
+            "nodeType": "StructDefinition",
+            "scope": 21723,
+            "src": "295:74:73",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "TransferStructs.Config",
+            "id": 21705,
+            "members": [
+              {
+                "constant": false,
+                "id": 21694,
+                "name": "collector_balance",
+                "nodeType": "VariableDeclaration",
+                "scope": 21705,
+                "src": "393:35:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_MutableUint_$25634_storage_ptr",
+                  "typeString": "struct Types.MutableUint"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21693,
+                  "name": "Types.MutableUint",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 25634,
+                  "src": "393:17:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_MutableUint_$25634_storage_ptr",
+                    "typeString": "struct Types.MutableUint"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21696,
+                "name": "collector",
+                "nodeType": "VariableDeclaration",
+                "scope": 21705,
+                "src": "434:17:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 21695,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "434:7:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21698,
+                "name": "base",
+                "nodeType": "VariableDeclaration",
+                "scope": 21705,
+                "src": "457:12:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 21697,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "457:7:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21700,
+                "name": "rate",
+                "nodeType": "VariableDeclaration",
+                "scope": 21705,
+                "src": "475:12:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 21699,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "475:7:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21702,
+                "name": "global_transfer_fee_disabled",
+                "nodeType": "VariableDeclaration",
+                "scope": 21705,
+                "src": "493:33:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 21701,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "493:4:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21704,
+                "name": "minimum_transfer_amount",
+                "nodeType": "VariableDeclaration",
+                "scope": 21705,
+                "src": "532:31:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 21703,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "532:7:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Config",
+            "nodeType": "StructDefinition",
+            "scope": 21723,
+            "src": "373:195:73",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "TransferStructs.Transfer",
+            "id": 21722,
+            "members": [
+              {
+                "constant": false,
+                "id": 21707,
+                "name": "sender",
+                "nodeType": "VariableDeclaration",
+                "scope": 21722,
+                "src": "594:11:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_User_$21687_storage_ptr",
+                  "typeString": "struct TransferStructs.User"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21706,
+                  "name": "User",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 21687,
+                  "src": "594:4:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_User_$21687_storage_ptr",
+                    "typeString": "struct TransferStructs.User"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21709,
+                "name": "recipient",
+                "nodeType": "VariableDeclaration",
+                "scope": 21722,
+                "src": "611:14:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_User_$21687_storage_ptr",
+                  "typeString": "struct TransferStructs.User"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21708,
+                  "name": "User",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 21687,
+                  "src": "611:4:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_User_$21687_storage_ptr",
+                    "typeString": "struct TransferStructs.User"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21711,
+                "name": "spender",
+                "nodeType": "VariableDeclaration",
+                "scope": 21722,
+                "src": "631:15:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_Spender_$21692_storage_ptr",
+                  "typeString": "struct TransferStructs.Spender"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21710,
+                  "name": "Spender",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 21692,
+                  "src": "631:7:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_Spender_$21692_storage_ptr",
+                    "typeString": "struct TransferStructs.Spender"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21713,
+                "name": "config",
+                "nodeType": "VariableDeclaration",
+                "scope": 21722,
+                "src": "652:13:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_Config_$21705_storage_ptr",
+                  "typeString": "struct TransferStructs.Config"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21712,
+                  "name": "Config",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 21705,
+                  "src": "652:6:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_Config_$21705_storage_ptr",
+                    "typeString": "struct TransferStructs.Config"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21715,
+                "name": "received_amount",
+                "nodeType": "VariableDeclaration",
+                "scope": 21722,
+                "src": "671:33:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_MutableUint_$25634_storage_ptr",
+                  "typeString": "struct Types.MutableUint"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21714,
+                  "name": "Types.MutableUint",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 25634,
+                  "src": "671:17:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_MutableUint_$25634_storage_ptr",
+                    "typeString": "struct Types.MutableUint"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21717,
+                "name": "sent_amount",
+                "nodeType": "VariableDeclaration",
+                "scope": 21722,
+                "src": "710:19:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 21716,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "710:7:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21719,
+                "name": "fee",
+                "nodeType": "VariableDeclaration",
+                "scope": 21722,
+                "src": "735:11:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 21718,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "735:7:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21721,
+                "name": "is_transfer_from",
+                "nodeType": "VariableDeclaration",
+                "scope": 21722,
+                "src": "752:21:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 21720,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "752:4:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Transfer",
+            "nodeType": "StructDefinition",
+            "scope": 21723,
+            "src": "572:206:73",
+            "visibility": "public"
+          }
+        ],
+        "scope": 21724,
+        "src": "88:692:73"
+      }
+    ],
+    "src": "0:781:73"
+  },
+  "legacyAST": {
+    "absolutePath": "@digix/lite-dgx-contract/contracts/libs/TransferStructs.sol",
+    "exportedSymbols": {
+      "TransferStructs": [
+        21723
+      ]
+    },
+    "id": 21724,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 21673,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".19"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:73"
+      },
+      {
+        "absolutePath": "@digix/solidity-core-libraries/contracts/Types.sol",
+        "file": "@digix/solidity-core-libraries/contracts/Types.sol",
+        "id": 21674,
+        "nodeType": "ImportDirective",
+        "scope": 21724,
+        "sourceUnit": 25948,
+        "src": "26:60:73",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "library",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 21723,
+        "linearizedBaseContracts": [
+          21723
+        ],
+        "name": "TransferStructs",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "id": 21677,
+            "libraryName": {
+              "contractScope": null,
+              "id": 21675,
+              "name": "Types",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 25947,
+              "src": "122:5:73",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Types_$25947",
+                "typeString": "library Types"
+              }
+            },
+            "nodeType": "UsingForDirective",
+            "src": "116:34:73",
+            "typeName": {
+              "contractScope": null,
+              "id": 21676,
+              "name": "Types.MutableUint",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 25634,
+              "src": "132:17:73",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_MutableUint_$25634_storage_ptr",
+                "typeString": "struct Types.MutableUint"
+              }
+            }
+          },
+          {
+            "id": 21680,
+            "libraryName": {
+              "contractScope": null,
+              "id": 21678,
+              "name": "Types",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 25947,
+              "src": "159:5:73",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Types_$25947",
+                "typeString": "library Types"
+              }
+            },
+            "nodeType": "UsingForDirective",
+            "src": "153:39:73",
+            "typeName": {
+              "contractScope": null,
+              "id": 21679,
+              "name": "Types.MutableTimestamp",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 25639,
+              "src": "169:22:73",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_MutableTimestamp_$25639_storage_ptr",
+                "typeString": "struct Types.MutableTimestamp"
+              }
+            }
+          },
+          {
+            "canonicalName": "TransferStructs.User",
+            "id": 21687,
+            "members": [
+              {
+                "constant": false,
+                "id": 21682,
+                "name": "account",
+                "nodeType": "VariableDeclaration",
+                "scope": 21687,
+                "src": "214:15:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 21681,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "214:7:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21684,
+                "name": "balance",
+                "nodeType": "VariableDeclaration",
+                "scope": 21687,
+                "src": "235:25:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_MutableUint_$25634_storage_ptr",
+                  "typeString": "struct Types.MutableUint"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21683,
+                  "name": "Types.MutableUint",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 25634,
+                  "src": "235:17:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_MutableUint_$25634_storage_ptr",
+                    "typeString": "struct Types.MutableUint"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21686,
+                "name": "no_transfer_fee",
+                "nodeType": "VariableDeclaration",
+                "scope": 21687,
+                "src": "266:20:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 21685,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "266:4:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "User",
+            "nodeType": "StructDefinition",
+            "scope": 21723,
+            "src": "196:95:73",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "TransferStructs.Spender",
+            "id": 21692,
+            "members": [
+              {
+                "constant": false,
+                "id": 21689,
+                "name": "account",
+                "nodeType": "VariableDeclaration",
+                "scope": 21692,
+                "src": "316:15:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 21688,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "316:7:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21691,
+                "name": "allowance",
+                "nodeType": "VariableDeclaration",
+                "scope": 21692,
+                "src": "337:27:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_MutableUint_$25634_storage_ptr",
+                  "typeString": "struct Types.MutableUint"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21690,
+                  "name": "Types.MutableUint",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 25634,
+                  "src": "337:17:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_MutableUint_$25634_storage_ptr",
+                    "typeString": "struct Types.MutableUint"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Spender",
+            "nodeType": "StructDefinition",
+            "scope": 21723,
+            "src": "295:74:73",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "TransferStructs.Config",
+            "id": 21705,
+            "members": [
+              {
+                "constant": false,
+                "id": 21694,
+                "name": "collector_balance",
+                "nodeType": "VariableDeclaration",
+                "scope": 21705,
+                "src": "393:35:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_MutableUint_$25634_storage_ptr",
+                  "typeString": "struct Types.MutableUint"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21693,
+                  "name": "Types.MutableUint",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 25634,
+                  "src": "393:17:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_MutableUint_$25634_storage_ptr",
+                    "typeString": "struct Types.MutableUint"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21696,
+                "name": "collector",
+                "nodeType": "VariableDeclaration",
+                "scope": 21705,
+                "src": "434:17:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 21695,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "434:7:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21698,
+                "name": "base",
+                "nodeType": "VariableDeclaration",
+                "scope": 21705,
+                "src": "457:12:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 21697,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "457:7:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21700,
+                "name": "rate",
+                "nodeType": "VariableDeclaration",
+                "scope": 21705,
+                "src": "475:12:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 21699,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "475:7:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21702,
+                "name": "global_transfer_fee_disabled",
+                "nodeType": "VariableDeclaration",
+                "scope": 21705,
+                "src": "493:33:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 21701,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "493:4:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21704,
+                "name": "minimum_transfer_amount",
+                "nodeType": "VariableDeclaration",
+                "scope": 21705,
+                "src": "532:31:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 21703,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "532:7:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Config",
+            "nodeType": "StructDefinition",
+            "scope": 21723,
+            "src": "373:195:73",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "TransferStructs.Transfer",
+            "id": 21722,
+            "members": [
+              {
+                "constant": false,
+                "id": 21707,
+                "name": "sender",
+                "nodeType": "VariableDeclaration",
+                "scope": 21722,
+                "src": "594:11:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_User_$21687_storage_ptr",
+                  "typeString": "struct TransferStructs.User"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21706,
+                  "name": "User",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 21687,
+                  "src": "594:4:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_User_$21687_storage_ptr",
+                    "typeString": "struct TransferStructs.User"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21709,
+                "name": "recipient",
+                "nodeType": "VariableDeclaration",
+                "scope": 21722,
+                "src": "611:14:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_User_$21687_storage_ptr",
+                  "typeString": "struct TransferStructs.User"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21708,
+                  "name": "User",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 21687,
+                  "src": "611:4:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_User_$21687_storage_ptr",
+                    "typeString": "struct TransferStructs.User"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21711,
+                "name": "spender",
+                "nodeType": "VariableDeclaration",
+                "scope": 21722,
+                "src": "631:15:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_Spender_$21692_storage_ptr",
+                  "typeString": "struct TransferStructs.Spender"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21710,
+                  "name": "Spender",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 21692,
+                  "src": "631:7:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_Spender_$21692_storage_ptr",
+                    "typeString": "struct TransferStructs.Spender"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21713,
+                "name": "config",
+                "nodeType": "VariableDeclaration",
+                "scope": 21722,
+                "src": "652:13:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_Config_$21705_storage_ptr",
+                  "typeString": "struct TransferStructs.Config"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21712,
+                  "name": "Config",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 21705,
+                  "src": "652:6:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_Config_$21705_storage_ptr",
+                    "typeString": "struct TransferStructs.Config"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21715,
+                "name": "received_amount",
+                "nodeType": "VariableDeclaration",
+                "scope": 21722,
+                "src": "671:33:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_MutableUint_$25634_storage_ptr",
+                  "typeString": "struct Types.MutableUint"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21714,
+                  "name": "Types.MutableUint",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 25634,
+                  "src": "671:17:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_MutableUint_$25634_storage_ptr",
+                    "typeString": "struct Types.MutableUint"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21717,
+                "name": "sent_amount",
+                "nodeType": "VariableDeclaration",
+                "scope": 21722,
+                "src": "710:19:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 21716,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "710:7:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21719,
+                "name": "fee",
+                "nodeType": "VariableDeclaration",
+                "scope": 21722,
+                "src": "735:11:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 21718,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "735:7:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21721,
+                "name": "is_transfer_from",
+                "nodeType": "VariableDeclaration",
+                "scope": 21722,
+                "src": "752:21:73",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 21720,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "752:4:73",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Transfer",
+            "nodeType": "StructDefinition",
+            "scope": 21723,
+            "src": "572:206:73",
+            "visibility": "public"
+          }
+        ],
+        "scope": 21724,
+        "src": "88:692:73"
+      }
+    ],
+    "src": "0:781:73"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.25+commit.59dbf8f1.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.2",
+  "updatedAt": "2019-03-12T07:53:08.925Z"
+}

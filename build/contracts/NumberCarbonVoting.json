@@ -1,0 +1,285 @@
+{
+  "contractName": "NumberCarbonVoting",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_voter",
+          "type": "address"
+        }
+      ],
+      "name": "voted",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.4.25;\n\ncontract NumberCarbonVoting {\n    function voted(address _voter) public view returns (bool);\n}\n",
+  "sourcePath": "/home/vu/digix/dao-contracts/contracts/interface/NumberCarbonVoting.sol",
+  "ast": {
+    "absolutePath": "/home/vu/digix/dao-contracts/contracts/interface/NumberCarbonVoting.sol",
+    "exportedSymbols": {
+      "NumberCarbonVoting": [
+        7909
+      ]
+    },
+    "id": 7910,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 7901,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".25"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:21"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 7909,
+        "linearizedBaseContracts": [
+          7909
+        ],
+        "name": "NumberCarbonVoting",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": null,
+            "id": 7908,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "voted",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 7904,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 7903,
+                  "name": "_voter",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 7908,
+                  "src": "75:14:21",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 7902,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "75:7:21",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "74:16:21"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 7907,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 7906,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 7908,
+                  "src": "112:4:21",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 7905,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "112:4:21",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "111:6:21"
+            },
+            "scope": 7909,
+            "src": "60:58:21",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 7910,
+        "src": "26:94:21"
+      }
+    ],
+    "src": "0:121:21"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/vu/digix/dao-contracts/contracts/interface/NumberCarbonVoting.sol",
+    "exportedSymbols": {
+      "NumberCarbonVoting": [
+        7909
+      ]
+    },
+    "id": 7910,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 7901,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".25"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:21"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 7909,
+        "linearizedBaseContracts": [
+          7909
+        ],
+        "name": "NumberCarbonVoting",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": null,
+            "id": 7908,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "voted",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 7904,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 7903,
+                  "name": "_voter",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 7908,
+                  "src": "75:14:21",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 7902,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "75:7:21",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "74:16:21"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 7907,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 7906,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 7908,
+                  "src": "112:4:21",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 7905,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "112:4:21",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "111:6:21"
+            },
+            "scope": 7909,
+            "src": "60:58:21",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 7910,
+        "src": "26:94:21"
+      }
+    ],
+    "src": "0:121:21"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.25+commit.59dbf8f1.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.2",
+  "updatedAt": "2019-03-12T07:53:08.857Z"
+}
