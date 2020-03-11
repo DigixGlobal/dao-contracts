@@ -12,7 +12,7 @@ module.exports = {
       provider: new LightWalletProvider({
         keystore: KEYSTORE,
         password: PASSWORD,
-        rpcUrl: 'https://kovan.infura.io/',
+        rpcUrl: 'https://kovan.infura.io/v3/2a85a86547944f95a459766a3f3d1ab9',
         pollingInterval: 2000,
         // debug: true,
       }),
