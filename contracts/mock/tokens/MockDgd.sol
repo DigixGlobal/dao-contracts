@@ -17,4 +17,16 @@ contract MockDgd is StandardToken {
     balances[msg.sender] = INITIAL_SUPPLY;
     emit Transfer(0x0, msg.sender, INITIAL_SUPPLY);
   }
+
+  function transferFrom(address owner, address buyer, uint numTokens) public returns (bool _success) {
+    require(numTokens <= balances[owner]);
+    require(numTokens <= allowed[owner][msg.sender]);
+
+    balances[owner] = balances[owner] - numTokens;
+    allowed[owner][msg.sender] = allowed[owner][msg.sender] - numTokens;
+    balances[buyer] = balances[buyer] + numTokens;
+
+    emit Transfer(owner, buyer, numTokens);
+    _success = true;
+  }
 }
