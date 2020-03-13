@@ -1,0 +1,895 @@
+{
+  "contractName": "DemurrageStructs",
+  "abi": [],
+  "bytecode": "0x604c602c600b82828239805160001a60731460008114601c57601e565bfe5b5030600052607381538281f30073000000000000000000000000000000000000000030146080604052600080fd00a165627a7a72305820013dc04f6d705875d429afa9ec37ee1433bfb37c3d8e216f318a4397a14ae2710029",
+  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fd00a165627a7a72305820013dc04f6d705875d429afa9ec37ee1433bfb37c3d8e216f318a4397a14ae2710029",
+  "sourceMap": "88:458:72:-;;132:2:-1;166:7;155:9;146:7;137:37;252:7;246:14;243:1;238:23;232:4;229:33;270:1;265:20;;;;222:63;;265:20;274:9;222:63;;298:9;295:1;288:20;328:4;319:7;311:22;352:7;343;336:24",
+  "deployedSourceMap": "88:458:72:-;;;;;;;;",
+  "source": "pragma solidity ^0.4.19;\n\nimport \"@digix/solidity-core-libraries/contracts/Types.sol\";\n\nlibrary DemurrageStructs {\n  using Types for Types.MutableUint;\n  using Types for Types.MutableTimestamp;\n\n  struct User {\n    address account;\n    bool no_demurrage_fee;\n    Types.MutableUint balance;\n    Types.MutableTimestamp payment_date;\n  }\n\n  struct Config {\n    Types.MutableUint collector_balance;\n    uint256 base;\n    uint256 rate;\n    address collector;\n  }\n\n  struct Demurrage {\n    Config config;\n    User user;\n    uint256 collected_fee;\n  }\n}\n",
+  "sourcePath": "@digix/lite-dgx-contract/contracts/libs/DemurrageStructs.sol",
+  "ast": {
+    "absolutePath": "@digix/lite-dgx-contract/contracts/libs/DemurrageStructs.sol",
+    "exportedSymbols": {
+      "DemurrageStructs": [
+        21241
+      ]
+    },
+    "id": 21242,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 21208,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".19"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:72"
+      },
+      {
+        "absolutePath": "@digix/solidity-core-libraries/contracts/Types.sol",
+        "file": "@digix/solidity-core-libraries/contracts/Types.sol",
+        "id": 21209,
+        "nodeType": "ImportDirective",
+        "scope": 21242,
+        "sourceUnit": 25518,
+        "src": "26:60:72",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "library",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 21241,
+        "linearizedBaseContracts": [
+          21241
+        ],
+        "name": "DemurrageStructs",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "id": 21212,
+            "libraryName": {
+              "contractScope": null,
+              "id": 21210,
+              "name": "Types",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 25517,
+              "src": "123:5:72",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Types_$25517",
+                "typeString": "library Types"
+              }
+            },
+            "nodeType": "UsingForDirective",
+            "src": "117:34:72",
+            "typeName": {
+              "contractScope": null,
+              "id": 21211,
+              "name": "Types.MutableUint",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 25204,
+              "src": "133:17:72",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_MutableUint_$25204_storage_ptr",
+                "typeString": "struct Types.MutableUint"
+              }
+            }
+          },
+          {
+            "id": 21215,
+            "libraryName": {
+              "contractScope": null,
+              "id": 21213,
+              "name": "Types",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 25517,
+              "src": "160:5:72",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Types_$25517",
+                "typeString": "library Types"
+              }
+            },
+            "nodeType": "UsingForDirective",
+            "src": "154:39:72",
+            "typeName": {
+              "contractScope": null,
+              "id": 21214,
+              "name": "Types.MutableTimestamp",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 25209,
+              "src": "170:22:72",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_MutableTimestamp_$25209_storage_ptr",
+                "typeString": "struct Types.MutableTimestamp"
+              }
+            }
+          },
+          {
+            "canonicalName": "DemurrageStructs.User",
+            "id": 21224,
+            "members": [
+              {
+                "constant": false,
+                "id": 21217,
+                "name": "account",
+                "nodeType": "VariableDeclaration",
+                "scope": 21224,
+                "src": "215:15:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 21216,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "215:7:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21219,
+                "name": "no_demurrage_fee",
+                "nodeType": "VariableDeclaration",
+                "scope": 21224,
+                "src": "236:21:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 21218,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "236:4:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21221,
+                "name": "balance",
+                "nodeType": "VariableDeclaration",
+                "scope": 21224,
+                "src": "263:25:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_MutableUint_$25204_storage_ptr",
+                  "typeString": "struct Types.MutableUint"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21220,
+                  "name": "Types.MutableUint",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 25204,
+                  "src": "263:17:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_MutableUint_$25204_storage_ptr",
+                    "typeString": "struct Types.MutableUint"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21223,
+                "name": "payment_date",
+                "nodeType": "VariableDeclaration",
+                "scope": 21224,
+                "src": "294:35:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_MutableTimestamp_$25209_storage_ptr",
+                  "typeString": "struct Types.MutableTimestamp"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21222,
+                  "name": "Types.MutableTimestamp",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 25209,
+                  "src": "294:22:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_MutableTimestamp_$25209_storage_ptr",
+                    "typeString": "struct Types.MutableTimestamp"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "User",
+            "nodeType": "StructDefinition",
+            "scope": 21241,
+            "src": "197:137:72",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "DemurrageStructs.Config",
+            "id": 21233,
+            "members": [
+              {
+                "constant": false,
+                "id": 21226,
+                "name": "collector_balance",
+                "nodeType": "VariableDeclaration",
+                "scope": 21233,
+                "src": "358:35:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_MutableUint_$25204_storage_ptr",
+                  "typeString": "struct Types.MutableUint"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21225,
+                  "name": "Types.MutableUint",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 25204,
+                  "src": "358:17:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_MutableUint_$25204_storage_ptr",
+                    "typeString": "struct Types.MutableUint"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21228,
+                "name": "base",
+                "nodeType": "VariableDeclaration",
+                "scope": 21233,
+                "src": "399:12:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 21227,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "399:7:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21230,
+                "name": "rate",
+                "nodeType": "VariableDeclaration",
+                "scope": 21233,
+                "src": "417:12:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 21229,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "417:7:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21232,
+                "name": "collector",
+                "nodeType": "VariableDeclaration",
+                "scope": 21233,
+                "src": "435:17:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 21231,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "435:7:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Config",
+            "nodeType": "StructDefinition",
+            "scope": 21241,
+            "src": "338:119:72",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "DemurrageStructs.Demurrage",
+            "id": 21240,
+            "members": [
+              {
+                "constant": false,
+                "id": 21235,
+                "name": "config",
+                "nodeType": "VariableDeclaration",
+                "scope": 21240,
+                "src": "484:13:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_Config_$21233_storage_ptr",
+                  "typeString": "struct DemurrageStructs.Config"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21234,
+                  "name": "Config",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 21233,
+                  "src": "484:6:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_Config_$21233_storage_ptr",
+                    "typeString": "struct DemurrageStructs.Config"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21237,
+                "name": "user",
+                "nodeType": "VariableDeclaration",
+                "scope": 21240,
+                "src": "503:9:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_User_$21224_storage_ptr",
+                  "typeString": "struct DemurrageStructs.User"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21236,
+                  "name": "User",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 21224,
+                  "src": "503:4:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_User_$21224_storage_ptr",
+                    "typeString": "struct DemurrageStructs.User"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21239,
+                "name": "collected_fee",
+                "nodeType": "VariableDeclaration",
+                "scope": 21240,
+                "src": "518:21:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 21238,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "518:7:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Demurrage",
+            "nodeType": "StructDefinition",
+            "scope": 21241,
+            "src": "461:83:72",
+            "visibility": "public"
+          }
+        ],
+        "scope": 21242,
+        "src": "88:458:72"
+      }
+    ],
+    "src": "0:547:72"
+  },
+  "legacyAST": {
+    "absolutePath": "@digix/lite-dgx-contract/contracts/libs/DemurrageStructs.sol",
+    "exportedSymbols": {
+      "DemurrageStructs": [
+        21241
+      ]
+    },
+    "id": 21242,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 21208,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".19"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:72"
+      },
+      {
+        "absolutePath": "@digix/solidity-core-libraries/contracts/Types.sol",
+        "file": "@digix/solidity-core-libraries/contracts/Types.sol",
+        "id": 21209,
+        "nodeType": "ImportDirective",
+        "scope": 21242,
+        "sourceUnit": 25518,
+        "src": "26:60:72",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "library",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 21241,
+        "linearizedBaseContracts": [
+          21241
+        ],
+        "name": "DemurrageStructs",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "id": 21212,
+            "libraryName": {
+              "contractScope": null,
+              "id": 21210,
+              "name": "Types",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 25517,
+              "src": "123:5:72",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Types_$25517",
+                "typeString": "library Types"
+              }
+            },
+            "nodeType": "UsingForDirective",
+            "src": "117:34:72",
+            "typeName": {
+              "contractScope": null,
+              "id": 21211,
+              "name": "Types.MutableUint",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 25204,
+              "src": "133:17:72",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_MutableUint_$25204_storage_ptr",
+                "typeString": "struct Types.MutableUint"
+              }
+            }
+          },
+          {
+            "id": 21215,
+            "libraryName": {
+              "contractScope": null,
+              "id": 21213,
+              "name": "Types",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 25517,
+              "src": "160:5:72",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Types_$25517",
+                "typeString": "library Types"
+              }
+            },
+            "nodeType": "UsingForDirective",
+            "src": "154:39:72",
+            "typeName": {
+              "contractScope": null,
+              "id": 21214,
+              "name": "Types.MutableTimestamp",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 25209,
+              "src": "170:22:72",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_MutableTimestamp_$25209_storage_ptr",
+                "typeString": "struct Types.MutableTimestamp"
+              }
+            }
+          },
+          {
+            "canonicalName": "DemurrageStructs.User",
+            "id": 21224,
+            "members": [
+              {
+                "constant": false,
+                "id": 21217,
+                "name": "account",
+                "nodeType": "VariableDeclaration",
+                "scope": 21224,
+                "src": "215:15:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 21216,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "215:7:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21219,
+                "name": "no_demurrage_fee",
+                "nodeType": "VariableDeclaration",
+                "scope": 21224,
+                "src": "236:21:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 21218,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "236:4:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21221,
+                "name": "balance",
+                "nodeType": "VariableDeclaration",
+                "scope": 21224,
+                "src": "263:25:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_MutableUint_$25204_storage_ptr",
+                  "typeString": "struct Types.MutableUint"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21220,
+                  "name": "Types.MutableUint",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 25204,
+                  "src": "263:17:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_MutableUint_$25204_storage_ptr",
+                    "typeString": "struct Types.MutableUint"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21223,
+                "name": "payment_date",
+                "nodeType": "VariableDeclaration",
+                "scope": 21224,
+                "src": "294:35:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_MutableTimestamp_$25209_storage_ptr",
+                  "typeString": "struct Types.MutableTimestamp"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21222,
+                  "name": "Types.MutableTimestamp",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 25209,
+                  "src": "294:22:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_MutableTimestamp_$25209_storage_ptr",
+                    "typeString": "struct Types.MutableTimestamp"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "User",
+            "nodeType": "StructDefinition",
+            "scope": 21241,
+            "src": "197:137:72",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "DemurrageStructs.Config",
+            "id": 21233,
+            "members": [
+              {
+                "constant": false,
+                "id": 21226,
+                "name": "collector_balance",
+                "nodeType": "VariableDeclaration",
+                "scope": 21233,
+                "src": "358:35:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_MutableUint_$25204_storage_ptr",
+                  "typeString": "struct Types.MutableUint"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21225,
+                  "name": "Types.MutableUint",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 25204,
+                  "src": "358:17:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_MutableUint_$25204_storage_ptr",
+                    "typeString": "struct Types.MutableUint"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21228,
+                "name": "base",
+                "nodeType": "VariableDeclaration",
+                "scope": 21233,
+                "src": "399:12:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 21227,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "399:7:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21230,
+                "name": "rate",
+                "nodeType": "VariableDeclaration",
+                "scope": 21233,
+                "src": "417:12:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 21229,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "417:7:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21232,
+                "name": "collector",
+                "nodeType": "VariableDeclaration",
+                "scope": 21233,
+                "src": "435:17:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 21231,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "435:7:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Config",
+            "nodeType": "StructDefinition",
+            "scope": 21241,
+            "src": "338:119:72",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "DemurrageStructs.Demurrage",
+            "id": 21240,
+            "members": [
+              {
+                "constant": false,
+                "id": 21235,
+                "name": "config",
+                "nodeType": "VariableDeclaration",
+                "scope": 21240,
+                "src": "484:13:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_Config_$21233_storage_ptr",
+                  "typeString": "struct DemurrageStructs.Config"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21234,
+                  "name": "Config",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 21233,
+                  "src": "484:6:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_Config_$21233_storage_ptr",
+                    "typeString": "struct DemurrageStructs.Config"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21237,
+                "name": "user",
+                "nodeType": "VariableDeclaration",
+                "scope": 21240,
+                "src": "503:9:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_User_$21224_storage_ptr",
+                  "typeString": "struct DemurrageStructs.User"
+                },
+                "typeName": {
+                  "contractScope": null,
+                  "id": 21236,
+                  "name": "User",
+                  "nodeType": "UserDefinedTypeName",
+                  "referencedDeclaration": 21224,
+                  "src": "503:4:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_User_$21224_storage_ptr",
+                    "typeString": "struct DemurrageStructs.User"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21239,
+                "name": "collected_fee",
+                "nodeType": "VariableDeclaration",
+                "scope": 21240,
+                "src": "518:21:72",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 21238,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "518:7:72",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Demurrage",
+            "nodeType": "StructDefinition",
+            "scope": 21241,
+            "src": "461:83:72",
+            "visibility": "public"
+          }
+        ],
+        "scope": 21242,
+        "src": "88:458:72"
+      }
+    ],
+    "src": "0:547:72"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.25+commit.59dbf8f1.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.2",
+  "updatedAt": "2020-03-13T02:38:46.136Z"
+}
