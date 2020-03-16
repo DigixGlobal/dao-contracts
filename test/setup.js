@@ -397,15 +397,21 @@ const readDummyConfig = async function (contracts) {
 // This function sends some Ethers into the DaoFundingManager contract
 // This function sets the start of the first quarter (marking the start of DigixDAO)
 const initDao = async function (contracts, addressOf, bN, web3) {
+  console.log("founder badge");
   await contracts.daoIdentity.addGroupUser(bN(2), addressOf.founderBadgeHolder, '', { from: addressOf.root });
+  console.log("PRL");
   await contracts.daoIdentity.addGroupUser(bN(3), addressOf.prl, '', { from: addressOf.root });
+  console.log("kycadmin");
   await contracts.daoIdentity.addGroupUser(bN(4), addressOf.kycadmin, '', { from: addressOf.root });
+  console.log("setting start of first quarter");
   await contracts.dao.setStartOfFirstQuarter(getCurrentTimestamp(), { from: addressOf.founderBadgeHolder });
-  await web3.eth.sendTransaction({
-    from: addressOf.root,
-    to: contracts.daoFundingManager.address,
-    value: web3.toWei(1000, 'ether'),
-  });
+  console.log("sending ETH to funding manager");
+  //web3.eth.sendTransaction({
+  //  from: addressOf.root,
+  //  to: contracts.daoFundingManager.address,
+  //  value: web3.toWei(1000, 'ether'),
+  //});
+  console.log("end of init dao");
 };
 
 // Function to wait for some timeToWait seconds

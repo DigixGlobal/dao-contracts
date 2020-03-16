@@ -11343,12 +11343,12 @@
     "42": {
       "events": {},
       "links": {
-        "DoublyLinkedList": "0x7dad402f6734a246a4df3f6ff097de48715088b5"
+        "DoublyLinkedList": "0x8045c179449f1501786a1bc68224fc49f8463d08"
       },
-      "address": "0xdc2b9f4a3ebbfc2df315d1333fa1820f12fed278",
-      "transactionHash": "0x3a8389262af863e80fda8204492e278229e3cbb1bff15ba0c96311e28e523477"
+      "address": "0x48f4568ac9a8d2460e9226b72f9fd90c368937c7",
+      "transactionHash": "0x002adaf86682148db983ed640af1eccaada3d877682342fe762dc9d5970467f2"
     }
   },
   "schemaVersion": "2.0.2",
-  "updatedAt": "2020-03-16T04:04:29.014Z"
+  "updatedAt": "2020-03-16T08:53:12.894Z"
 }
