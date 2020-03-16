@@ -12719,13 +12719,13 @@
     "42": {
       "events": {},
       "links": {
-        "DaoStructs": "0x0f1135eeb01f097c2a18e1fe6ed12502bc6e47da",
-        "DoublyLinkedList": "0x15953a83f1cfc3b58cf037854d4d0db7267e3479"
+        "DaoStructs": "0xce224597bdaa4997a8f7771720f461de62cf37cd",
+        "DoublyLinkedList": "0x7dad402f6734a246a4df3f6ff097de48715088b5"
       },
-      "address": "0xd8904ae57192ad0eb48dc21594803b753424b6d0",
-      "transactionHash": "0x7fea86ca2c4cef31ec74aa67c937b115c3a1e79561ba28dff7746d649d480889"
+      "address": "0x1e5ecc5a9f6db8eefa3b7198393bf2cd1b5adf63",
+      "transactionHash": "0x713d88eddc1d07965b6943b3264821dc898e7b32085cf37b7b47d71f94909ed1"
     }
   },
   "schemaVersion": "2.0.2",
-  "updatedAt": "2020-03-13T02:42:25.306Z"
+  "updatedAt": "2020-03-16T04:04:29.034Z"
 }
